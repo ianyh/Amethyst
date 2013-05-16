@@ -9,8 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface AMAccessibilityElement : NSObject
+@property (nonatomic, assign, readonly) AXUIElementRef axElementRef;
+
 - (id)init DEPRECATED_ATTRIBUTE;
 - (id)initWithAXElementRef:(AXUIElementRef)axElementRef;
 
-- (NSString *)title;
+- (NSString *)stringForKey:(CFStringRef)accessibilityValueKey;
+- (NSNumber *)numberForKey:(CFStringRef)accessibilityValueKey;
+- (NSArray *)arrayForKey:(CFStringRef)accessibilityValueKey;
+- (pid_t)processIdentifier;
 @end

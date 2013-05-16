@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */; };
 		4010E7EF17453EE00066097B /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
+		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
 		402DB6EE1742E41A00D1C936 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6ED1742E41A00D1C936 /* main.m */; };
@@ -24,6 +25,8 @@
 		4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAccessibilityElement.m; sourceTree = "<group>"; };
 		4010E7ED17453EE00066097B /* AMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindow.h; sourceTree = "<group>"; };
 		4010E7EE17453EE00066097B /* AMWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindow.m; sourceTree = "<group>"; };
+		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
+		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -111,6 +114,8 @@
 				4010E7EC17453ED10066097B /* Accessibility */,
 				402DB6F31742E41A00D1C936 /* AMAppDelegate.h */,
 				402DB6F41742E41A00D1C936 /* AMAppDelegate.m */,
+				4010E7F0174540220066097B /* AMWindowManager.h */,
+				4010E7F1174540220066097B /* AMWindowManager.m */,
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
 				402DB6E81742E41A00D1C936 /* Supporting Files */,
 			);
@@ -199,6 +204,7 @@
 				402DB723174537FE00D1C936 /* AMApplication.m in Sources */,
 				4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */,
 				4010E7EF17453EE00066097B /* AMWindow.m in Sources */,
+				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

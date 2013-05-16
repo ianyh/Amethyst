@@ -8,8 +8,13 @@
 
 #import "AMAccessibilityElement.h"
 
+typedef void (^AMObserverCallback)(AMAccessibilityElement *accessibilityElement);
+
 @interface AMApplication : AMAccessibilityElement
 
 + (instancetype)applicationWithRunningApplication:(NSRunningApplication *)runningApplication;
+
+- (void)observeNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement callback:(AMObserverCallback)callback;
+- (NSArray *)windows;
 
 @end

@@ -10,4 +10,12 @@
 
 @implementation AMWindow
 
+- (BOOL)isHidden {
+    return [[self numberForKey:kAXHiddenAttribute] boolValue];
+}
+
+- (BOOL)isMinimized {
+    return [[self numberForKey:kAXHiddenAttribute] boolValue];    
+}
+
 @end

@@ -10,8 +10,6 @@
 
 @interface AMAccessibilityElement ()
 @property (nonatomic, assign) AXUIElementRef axElementRef;
-
-@property (nonatomic, strong) NSString *cachedTitle;
 @end
 
 @implementation AMAccessibilityElement
@@ -35,7 +33,7 @@
 #pragma mark NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ <Title: %@", [super description], [self title]];
+    return [NSString stringWithFormat:@"%@ <Title: %@", [super description], [self stringForKey:kAXTitleAttribute]];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -58,17 +56,50 @@
 
 #pragma mark - Public Accessors
 
-- (NSString *)title {
-    if (!self.cachedTitle) {
-        CFStringRef titleRef;
-        AXUIElementCopyAttributeValue(self.axElementRef, kAXTitleAttribute, (CFTypeRef *)&titleRef);
-        if (titleRef) {
-            self.cachedTitle = CFBridgingRelease(titleRef);
-        } else {
-            self.cachedTitle = @"";
-        }
-    }
-    return self.cachedTitle;
+- (NSString *)stringForKey:(CFStringRef)accessibilityValueKey {
+    CFTypeRef valueRef;
+    AXError error;
+
+    error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, (CFTypeRef *)&valueRef);
+
+    if (error || !valueRef) return nil;
+    if (CFGetTypeID(valueRef) != CFStringGetTypeID()) return nil;
+
+    return CFBridgingRelease(valueRef);
+}
+
+- (NSNumber *)numberForKey:(CFStringRef)accessibilityValueKey {
+    CFTypeRef valueRef;
+    AXError error;
+
+    error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, (CFTypeRef *)&valueRef);
+
+    if (error || !valueRef) return nil;
+    if (CFGetTypeID(valueRef) != CFNumberGetTypeID() && CFGetTypeID(valueRef) != CFBooleanGetTypeID()) return nil;
+    
+    return CFBridgingRelease(valueRef);
+}
+
+- (NSArray *)arrayForKey:(CFStringRef)accessibilityValueKey {
+    CFArrayRef arrayRef;
+    AXError error;
+
+    error = AXUIElementCopyAttributeValues(self.axElementRef, accessibilityValueKey, 0, 100, &arrayRef);
+
+    if (error || !arrayRef) return nil;
+
+    return CFBridgingRelease(arrayRef);
+}
+
+- (pid_t)processIdentifier {
+    pid_t processIdentifier;
+    AXError error;
+    
+    error = AXUIElementGetPid(self.axElementRef, &processIdentifier);
+    
+    if (error) return -1;
+    
+    return processIdentifier;
 }
 
 @end

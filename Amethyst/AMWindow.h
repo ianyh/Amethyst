@@ -10,4 +10,7 @@
 
 @interface AMWindow : AMAccessibilityElement
 
+- (BOOL)isHidden;
+- (BOOL)isMinimized;
+
 @end
