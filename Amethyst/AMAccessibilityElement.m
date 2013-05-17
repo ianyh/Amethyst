@@ -33,7 +33,7 @@
 #pragma mark NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ <Title: %@", [super description], [self stringForKey:kAXTitleAttribute]];
+    return [NSString stringWithFormat:@"%@ <Title: %@>", [super description], [self stringForKey:kAXTitleAttribute]];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -62,7 +62,7 @@
 
     error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, (CFTypeRef *)&valueRef);
 
-    if (error || !valueRef) return nil;
+    if (error != kAXErrorSuccess || !valueRef) return nil;
     if (CFGetTypeID(valueRef) != CFStringGetTypeID()) return nil;
 
     return CFBridgingRelease(valueRef);
@@ -74,7 +74,7 @@
 
     error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, (CFTypeRef *)&valueRef);
 
-    if (error || !valueRef) return nil;
+    if (error != kAXErrorSuccess || !valueRef) return nil;
     if (CFGetTypeID(valueRef) != CFNumberGetTypeID() && CFGetTypeID(valueRef) != CFBooleanGetTypeID()) return nil;
     
     return CFBridgingRelease(valueRef);
@@ -86,7 +86,7 @@
 
     error = AXUIElementCopyAttributeValues(self.axElementRef, accessibilityValueKey, 0, 100, &arrayRef);
 
-    if (error || !arrayRef) return nil;
+    if (error != kAXErrorSuccess || !arrayRef) return nil;
 
     return CFBridgingRelease(arrayRef);
 }
@@ -97,7 +97,7 @@
     
     error = AXUIElementGetPid(self.axElementRef, &processIdentifier);
     
-    if (error) return -1;
+    if (error != kAXErrorSuccess) return -1;
     
     return processIdentifier;
 }

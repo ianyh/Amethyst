@@ -8,7 +8,7 @@
 
 #import "AMApplication.h"
 
-#import "AMWindow.h"
+#import "AMWindow.h" 
 
 typedef void (^AXObserverCallbackBlock)(AXObserverRef, AXUIElementRef, CFStringRef, void *);
 
@@ -38,28 +38,26 @@ typedef void (^AXObserverCallbackBlock)(AXObserverRef, AXUIElementRef, CFStringR
 
 #pragma mark AXObserver
 
+void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRef notification, void *refcon) {
+    AMObserverCallback callback = (__bridge AMObserverCallback)refcon;
+    callback([[AMWindow alloc] initWithAXElementRef:element]);
+}
+
 - (void)observeNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement callback:(AMObserverCallback)callback {
     if (!self.observerRef) {
         AXObserverRef observerRef;
-        __unsafe_unretained typeof(self) weakSelf = self;
-        self.observerCallback = ^(AXObserverRef observer, AXUIElementRef element, CFStringRef notification, void *refcon) {
-            AMObserverCallback callback = (__bridge AMObserverCallback)refcon;
-            if (element == weakSelf.axElementRef) {
-                callback(weakSelf);
-            } else {
-                callback([[AMWindow alloc] initWithAXElementRef:element]);
-            }
-        };
-        self.notificationCallbacks = [NSMutableArray array];
+        AXError error = AXObserverCreate([self processIdentifier], &observerCallback, &observerRef);
 
-        AXObserverCreate([self processIdentifier], (__bridge void *)self.observerCallback, &observerRef);
+        if (error != kAXErrorSuccess) return;
 
-        CFRunLoopAddSource(CFRunLoopGetCurrent(), AXObserverGetRunLoopSource(self.observerRef), kCFRunLoopDefaultMode);
+        CFRunLoopAddSource(CFRunLoopGetCurrent(), AXObserverGetRunLoopSource(observerRef), kCFRunLoopDefaultMode);
 
         self.observerRef = observerRef;
+        self.notificationCallbacks = [NSMutableArray array];
     }
 
-    [self.notificationCallbacks addObject:[callback copy]];
+    callback = [callback copy];
+    [self.notificationCallbacks addObject:callback];
     AXObserverAddNotification(self.observerRef, accessibilityElement.axElementRef, notification, (__bridge void *)callback);
 }
 

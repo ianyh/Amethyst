@@ -8,7 +8,11 @@
 
 #import "AMAppDelegate.h"
 
+#import "AMWindowManager.h"
+
 @interface AMAppDelegate ()
+@property (nonatomic, strong) AMWindowManager *windowManager;
+
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) IBOutlet NSMenu *statusItemMenu;
 @end
@@ -16,7 +20,7 @@
 @implementation AMAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    // Insert code here to initialize your application
+    self.windowManager = [[AMWindowManager alloc] init];
 }
 
 - (void)awakeFromNib {

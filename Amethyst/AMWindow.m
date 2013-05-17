@@ -15,7 +15,7 @@
 }
 
 - (BOOL)isMinimized {
-    return [[self numberForKey:kAXHiddenAttribute] boolValue];    
+    return [[self numberForKey:kAXHiddenAttribute] boolValue];
 }
 
 @end

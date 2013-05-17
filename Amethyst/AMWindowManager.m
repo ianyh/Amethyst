@@ -16,6 +16,8 @@
 @property (nonatomic, strong) NSMutableArray *activeWindows;
 @property (nonatomic, strong) NSMutableArray *inactiveWindows;
 
+@property (nonatomic, strong) NSMutableArray *screensToReflow;
+
 - (void)applicationDidLaunch:(NSNotification *)notification;
 - (void)applicationDidTerminate:(NSNotification *)notification;
 - (void)applicationDidHide:(NSNotification *)notification;
@@ -41,6 +43,11 @@
     self = [super init];
     if (self) {
         self.applications = [NSMutableArray array];
+        self.activeWindows = [NSMutableArray array];
+        self.inactiveWindows = [NSMutableArray array];
+
+        self.screensToReflow = [NSMutableArray array];
+
         for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
             AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
             [self addApplication:application];
