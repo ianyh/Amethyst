@@ -8,6 +8,8 @@
 
 #import "AMWindow.h"
 
+#import "NSScreen+FrameFlipping.h"
+
 @implementation AMWindow
 
 - (id)initWithAXElementRef:(AXUIElementRef)axElementRef {
@@ -50,15 +52,39 @@
     return frame;
 }
 
+- (void)setFrame:(CGRect)frame {
+    CGRect currentFrame = [self frame];
+    CGPoint position = frame.origin;
+    CGSize size = frame.size;
+    AXValueRef positionRef = AXValueCreate(kAXValueCGPointType, &position);
+    AXValueRef sizeRef = AXValueCreate(kAXValueCGSizeType, &size);
+    AXError error;
+
+    if (!CGPointEqualToPoint(frame.origin, currentFrame.origin)) {
+        error = AXUIElementSetAttributeValue(self.axElementRef, kAXPositionAttribute, positionRef);
+        if (error != kAXErrorSuccess) {
+            NSLog(@"Position Error: %d", error);
+            return;
+        }
+    }
+
+    if (!CGSizeEqualToSize(frame.size, currentFrame.size)) {
+        error = AXUIElementSetAttributeValue(self.axElementRef, kAXSizeAttribute, sizeRef);
+        if (error != kAXErrorSuccess) {
+            NSLog(@"Size Error: %d", error);
+            return;
+        }
+    }
+}
+
 - (NSScreen *)screen {
     CGRect frame = [self frame];
 
     if (CGRectIsNull(frame)) return [NSScreen mainScreen];
 
-    CGPoint center = { .x = CGRectGetMidX(frame), .y = CGRectGetMidY(frame) };
-
     for (NSScreen *screen in [NSScreen screens]) {
-        if (CGRectContainsPoint(NSRectToCGRect([screen frame]), center)) {
+        CGRect screenFrame = [screen flippedFrame];
+        if (CGRectContainsPoint(screenFrame, frame.origin)) {
             return screen;
         }
     }

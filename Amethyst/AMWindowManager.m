@@ -9,6 +9,7 @@
 #import "AMWindowManager.h"
 
 #import "AMApplication.h"
+#import "AMFullscreenLayout.h"
 #import "AMWindow.h"
 
 @interface AMWindowManager ()
@@ -17,6 +18,8 @@
 @property (nonatomic, strong) NSMutableArray *inactiveWindows;
 
 @property (nonatomic, strong) NSMutableArray *screensToReflow;
+
+@property (nonatomic, strong) AMFullscreenLayout *layout;
 
 - (void)applicationDidLaunch:(NSNotification *)notification;
 - (void)applicationDidTerminate:(NSNotification *)notification;
@@ -49,6 +52,8 @@
 
         self.screensToReflow = [NSMutableArray array];
 
+        self.layout = [[AMFullscreenLayout alloc] init];
+
         for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
             AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
             [self addApplication:application];
@@ -70,12 +75,24 @@
                                                                selector:@selector(applicationDidUnhide:)
                                                                    name:NSWorkspaceDidUnhideApplicationNotification
                                                                  object:nil];
+
+        [self markScreenToReflow:[NSScreen mainScreen]];
+        [self reflow];
     }
     return self;
 }
 
 - (void)dealloc {
     [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+}
+
+#pragma mark Public Accessors
+
+- (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
+    return [self.activeWindows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        AMWindow *window = (AMWindow *)evaluatedObject;
+        return [[window screen] isEqual:screen];
+    }]];
 }
 
 #pragma mark Notification Handlers
@@ -129,6 +146,7 @@
                          withElement:application
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 [self addWindow:(AMWindow *)accessibilityElement];
+                                [self reflow];
                             }];
 }
 
@@ -166,9 +184,9 @@
     [self markScreenToReflow:[window screen]];
 
     if ([window isHidden] || [window isMinimized]) {
-        [self.activeWindows addObject:window];
-    } else {
         [self.inactiveWindows addObject:window];
+    } else {
+        [self.activeWindows addObject:window];
     }
 
     AMApplication *application = [self applicationWithProcessIdentifier:[window processIdentifier]];
@@ -228,7 +246,7 @@
 
 - (void)reflow {
     for (NSScreen *screen in self.screensToReflow) {
-        // TODO: reflow windows on the screen
+        [self.layout reflowScreen:screen withWindowManager:self];
     }
     [self.screensToReflow removeAllObjects];
 }

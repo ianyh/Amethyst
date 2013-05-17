@@ -18,6 +18,9 @@
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		402DB723174537FE00D1C936 /* AMApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB722174537FE00D1C936 /* AMApplication.m */; };
+		40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
+		40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
+		40B337E81745D1830001D8FC /* NSScreen+FrameFlipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +46,12 @@
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		402DB721174537FE00D1C936 /* AMApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMApplication.h; sourceTree = "<group>"; };
 		402DB722174537FE00D1C936 /* AMApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMApplication.m; sourceTree = "<group>"; };
+		40B337DE1745CE2B0001D8FC /* AMLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayout.h; sourceTree = "<group>"; };
+		40B337DF1745CE2B0001D8FC /* AMLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayout.m; sourceTree = "<group>"; };
+		40B337E21745D0620001D8FC /* AMFullscreenLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFullscreenLayout.h; sourceTree = "<group>"; };
+		40B337E31745D0620001D8FC /* AMFullscreenLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayout.m; sourceTree = "<group>"; };
+		40B337E61745D1830001D8FC /* NSScreen+FrameFlipping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+FrameFlipping.h"; sourceTree = "<group>"; };
+		40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+FrameFlipping.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +120,8 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				40B337E51745D1600001D8FC /* Categories */,
+				40B337E11745CE340001D8FC /* Layout */,
 				4010E7EC17453ED10066097B /* Accessibility */,
 				402DB6F31742E41A00D1C936 /* AMAppDelegate.h */,
 				402DB6F41742E41A00D1C936 /* AMAppDelegate.m */,
@@ -132,6 +143,26 @@
 				402DB6F01742E41A00D1C936 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		40B337E11745CE340001D8FC /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				40B337DE1745CE2B0001D8FC /* AMLayout.h */,
+				40B337DF1745CE2B0001D8FC /* AMLayout.m */,
+				40B337E21745D0620001D8FC /* AMFullscreenLayout.h */,
+				40B337E31745D0620001D8FC /* AMFullscreenLayout.m */,
+			);
+			name = Layout;
+			sourceTree = "<group>";
+		};
+		40B337E51745D1600001D8FC /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				40B337E61745D1830001D8FC /* NSScreen+FrameFlipping.h */,
+				40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */,
+			);
+			name = Categories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +236,9 @@
 				4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */,
 				4010E7EF17453EE00066097B /* AMWindow.m in Sources */,
 				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
+				40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */,
+				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
+				40B337E81745D1830001D8FC /* NSScreen+FrameFlipping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

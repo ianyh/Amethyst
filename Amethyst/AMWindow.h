@@ -14,6 +14,7 @@
 - (BOOL)isMinimized;
 
 - (CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 
 - (NSScreen *)screen;
 

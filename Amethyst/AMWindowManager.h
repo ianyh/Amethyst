@@ -10,4 +10,6 @@
 
 @interface AMWindowManager : NSObject
 
+- (NSArray *)activeWindowsForScreen:(NSScreen *)screen;
+
 @end
