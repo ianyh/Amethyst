@@ -21,6 +21,7 @@
 		40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
 		40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
 		40B337E81745D1830001D8FC /* NSScreen+FrameFlipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */; };
+		40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,8 @@
 		40B337E31745D0620001D8FC /* AMFullscreenLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayout.m; sourceTree = "<group>"; };
 		40B337E61745D1830001D8FC /* NSScreen+FrameFlipping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+FrameFlipping.h"; sourceTree = "<group>"; };
 		40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+FrameFlipping.m"; sourceTree = "<group>"; };
+		40B337E917465ADF0001D8FC /* AMTallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTallLayout.h; sourceTree = "<group>"; };
+		40B337EA17465AE00001D8FC /* AMTallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallLayout.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +155,8 @@
 				40B337DF1745CE2B0001D8FC /* AMLayout.m */,
 				40B337E21745D0620001D8FC /* AMFullscreenLayout.h */,
 				40B337E31745D0620001D8FC /* AMFullscreenLayout.m */,
+				40B337E917465ADF0001D8FC /* AMTallLayout.h */,
+				40B337EA17465AE00001D8FC /* AMTallLayout.m */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -239,6 +244,7 @@
 				40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */,
 				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
 				40B337E81745D1830001D8FC /* NSScreen+FrameFlipping.m in Sources */,
+				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

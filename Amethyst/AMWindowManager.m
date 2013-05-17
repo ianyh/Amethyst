@@ -10,6 +10,7 @@
 
 #import "AMApplication.h"
 #import "AMFullscreenLayout.h"
+#import "AMTallLayout.h"
 #import "AMWindow.h"
 
 @interface AMWindowManager ()
@@ -19,7 +20,8 @@
 
 @property (nonatomic, strong) NSMutableArray *screensToReflow;
 
-@property (nonatomic, strong) AMFullscreenLayout *layout;
+@property (nonatomic, strong) NSArray *layouts;
+@property (nonatomic, assign) NSUInteger currentLayoutIndex;
 
 - (void)applicationDidLaunch:(NSNotification *)notification;
 - (void)applicationDidTerminate:(NSNotification *)notification;
@@ -52,7 +54,11 @@
 
         self.screensToReflow = [NSMutableArray array];
 
-        self.layout = [[AMFullscreenLayout alloc] init];
+        self.layouts = @[
+                         [[AMTallLayout alloc] init],
+                         [[AMFullscreenLayout alloc] init],
+        ];
+        self.currentLayoutIndex = 0;
 
         for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
             AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
@@ -181,6 +187,8 @@
 #pragma mark Windows Management
 
 - (void)addWindow:(AMWindow *)window {
+    if (![window isResizable]) return;
+
     [self markScreenToReflow:[window screen]];
 
     if ([window isHidden] || [window isMinimized]) {
@@ -246,7 +254,7 @@
 
 - (void)reflow {
     for (NSScreen *screen in self.screensToReflow) {
-        [self.layout reflowScreen:screen withWindowManager:self];
+        [self.layouts[self.currentLayoutIndex] reflowScreen:screen withWindowManager:self];
     }
     [self.screensToReflow removeAllObjects];
 }

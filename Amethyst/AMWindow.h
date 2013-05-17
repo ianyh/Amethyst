@@ -12,6 +12,7 @@
 
 - (BOOL)isHidden;
 - (BOOL)isMinimized;
+- (BOOL)isResizable;
 
 - (CGRect)frame;
 - (void)setFrame:(CGRect)frame;

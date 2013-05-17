@@ -10,13 +10,11 @@
 
 #import "NSScreen+FrameFlipping.h"
 
-@implementation AMWindow
+@interface AMWindow ()
+@property (nonatomic, strong) NSScreen *cachedScreen;
+@end
 
-- (id)initWithAXElementRef:(AXUIElementRef)axElementRef {
-    self = [super initWithAXElementRef:axElementRef];
-    [self frame];
-    return self;
-}
+@implementation AMWindow
 
 - (BOOL)isHidden {
     return [[self numberForKey:kAXHiddenAttribute] boolValue];
@@ -24,6 +22,14 @@
 
 - (BOOL)isMinimized {
     return [[self numberForKey:kAXHiddenAttribute] boolValue];
+}
+
+- (BOOL)isResizable {
+    Boolean sizeWriteable = NO;
+    AXError error = AXUIElementIsAttributeSettable(self.axElementRef, kAXSizeAttribute, &sizeWriteable);
+    if (error != kAXErrorSuccess) return NO;
+
+    return sizeWriteable;
 }
 
 - (CGRect)frame {
@@ -78,18 +84,29 @@
 }
 
 - (NSScreen *)screen {
-    CGRect frame = [self frame];
-
-    if (CGRectIsNull(frame)) return [NSScreen mainScreen];
-
-    for (NSScreen *screen in [NSScreen screens]) {
-        CGRect screenFrame = [screen flippedFrame];
-        if (CGRectContainsPoint(screenFrame, frame.origin)) {
-            return screen;
+    // We cache the screen for two reasons:
+    //   - Better performance
+    //   - Window destruction leaves us with no way to compute the screen but we still need an accurate reference.
+    if (!self.cachedScreen) {
+        CGRect frame = [self frame];
+        
+        if (CGRectIsNull(frame)) {
+            self.cachedScreen = [NSScreen mainScreen];
+        } else {
+            CGPoint center = { .x = CGRectGetMidX(frame), .y = CGRectGetMidY(frame) };
+            
+            for (NSScreen *screen in [NSScreen screens]) {
+                CGRect screenFrame = [screen flippedFrame];
+                if (CGRectContainsPoint(screenFrame, center)) {
+                    self.cachedScreen = screen;
+                }
+            }
         }
+
+        self.cachedScreen = self.cachedScreen ?: [NSScreen mainScreen];
     }
 
-    return [NSScreen mainScreen];
+    return self.cachedScreen;
 }
 
 @end
