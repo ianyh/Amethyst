@@ -34,6 +34,7 @@
 - (void)activateWindow:(AMWindow *)window;
 - (void)deactivateWindow:(AMWindow *)window;
 
+- (void)markScreenToReflow:(NSScreen *)screen;
 - (void)reflow;
 @end
 
@@ -132,10 +133,10 @@
 }
 
 - (void)removeApplication:(AMApplication *)application {
-    for (AMWindow *window in self.activeWindows) {
+    for (AMWindow *window in [self.activeWindows copy]) {
         [self removeWindow:window];
     }
-    for (AMWindow *window in self.inactiveWindows) {
+    for (AMWindow *window in [self.inactiveWindows copy]) {
         [self removeWindow:window];
     }
     [self.applications removeObject:application];
@@ -143,7 +144,7 @@
 
 - (void)activateApplication:(AMApplication *)application {
     pid_t processIdentifier = [application processIdentifier];
-    for (AMWindow *window in self.inactiveWindows) {
+    for (AMWindow *window in [self.inactiveWindows copy]) {
         if ([window processIdentifier] == processIdentifier) {
             [self activateWindow:window];
         }
@@ -152,7 +153,7 @@
 
 - (void)deactivateApplication:(AMApplication *)application {
     pid_t processIdentifier = [application processIdentifier];
-    for (AMWindow *window in self.activeWindows) {
+    for (AMWindow *window in [self.activeWindows copy]) {
         if ([window processIdentifier] == processIdentifier) {
             [self deactivateWindow:window];
         }
@@ -162,6 +163,8 @@
 #pragma mark Windows Management
 
 - (void)addWindow:(AMWindow *)window {
+    [self markScreenToReflow:[window screen]];
+
     if ([window isHidden] || [window isMinimized]) {
         [self.activeWindows addObject:window];
     } else {
@@ -190,6 +193,8 @@
 }
 
 - (void)removeWindow:(AMWindow *)window {
+    [self markScreenToReflow:[window screen]];
+
     // TODO: leaking memory here in the observation callbacks above.
     [self.activeWindows removeObject:window];
     [self.inactiveWindows removeObject:window];
@@ -198,6 +203,8 @@
 - (void)activateWindow:(AMWindow *)window {
     if ([self.activeWindows containsObject:window]) return;
 
+    [self markScreenToReflow:[window screen]];
+
     [self.activeWindows addObject:window];
     [self.inactiveWindows removeObject:window];
 }
@@ -205,14 +212,25 @@
 - (void)deactivateWindow:(AMWindow *)window {
     if ([self.inactiveWindows containsObject:window]) return;
 
+    [self markScreenToReflow:[window screen]];
+
     [self.activeWindows addObject:window];
     [self.inactiveWindows removeObject:window];
 }
 
 #pragma mark Layout
 
+- (void)markScreenToReflow:(NSScreen *)screen {
+    if ([self.screensToReflow containsObject:screen]) return;
+
+    [self.screensToReflow addObject:screen];
+}
+
 - (void)reflow {
-    
+    for (NSScreen *screen in self.screensToReflow) {
+        // TODO: reflow windows on the screen
+    }
+    [self.screensToReflow removeAllObjects];
 }
 
 @end

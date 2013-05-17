@@ -13,4 +13,8 @@
 - (BOOL)isHidden;
 - (BOOL)isMinimized;
 
+- (CGRect)frame;
+
+- (NSScreen *)screen;
+
 @end
