@@ -39,6 +39,7 @@
 - (void)activateWindow:(AMWindow *)window;
 - (void)deactivateWindow:(AMWindow *)window;
 
+- (void)markAllScreensToReflow;
 - (void)markScreenToReflow:(NSScreen *)screen;
 - (void)reflow;
 @end
@@ -92,13 +93,19 @@
     [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
 }
 
-#pragma mark Public Accessors
+#pragma mark Public Methods
 
 - (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
     return [self.activeWindows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         AMWindow *window = (AMWindow *)evaluatedObject;
         return [[window screen] isEqual:screen];
     }]];
+}
+
+- (void)cycleLayout {
+    self.currentLayoutIndex = (self.currentLayoutIndex + 1) % [self.layouts count];
+    [self markAllScreensToReflow];
+    [self reflow];
 }
 
 #pragma mark Notification Handlers
@@ -245,6 +252,12 @@
 }
 
 #pragma mark Layout
+
+- (void)markAllScreensToReflow {
+    for (NSScreen *screen in [NSScreen screens]) {
+        [self markScreenToReflow:screen];
+    }
+}
 
 - (void)markScreenToReflow:(NSScreen *)screen {
     if ([self.screensToReflow containsObject:screen]) return;

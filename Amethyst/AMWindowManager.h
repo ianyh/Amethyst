@@ -10,6 +10,8 @@
 
 @interface AMWindowManager : NSObject
 
+- (void)cycleLayout;
+
 - (NSArray *)activeWindowsForScreen:(NSScreen *)screen;
 
 @end

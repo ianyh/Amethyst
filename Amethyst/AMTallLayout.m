@@ -61,6 +61,7 @@
         }
 
         [window setFrame:windowFrame];
+        [window setFrame:windowFrame];
     }
 }
 

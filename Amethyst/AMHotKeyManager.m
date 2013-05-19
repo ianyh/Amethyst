@@ -8,11 +8,38 @@
 
 #import "AMHotKeyManager.h"
 
-#import "NSEvent+Identifier.h"
+#import <Carbon/Carbon.h>
+
+@interface AMHotKey : NSObject
+@property (nonatomic, assign) EventHotKeyRef hotKeyRef;
+@property (nonatomic, copy) AMHotKeyHandler handler;
+
+- (id)init DEPRECATED_ATTRIBUTE;
+- (id)initWithHotKeyRef:(EventHotKeyRef)hotKeyRef handler:(AMHotKeyHandler)handler;
+@end
+
+@implementation AMHotKey
+
+- (id)init { return nil; }
+
+- (id)initWithHotKeyRef:(EventHotKeyRef)hotKeyRef handler:(AMHotKeyHandler)handler {
+    self = [super init];
+    if (self) {
+        self.hotKeyRef = hotKeyRef;
+        self.handler = handler;
+    }
+    return self;
+}
+
+@end
 
 @interface AMHotKeyManager ()
-@property (nonatomic, strong) id eventMonitor;
-@property (nonatomic, strong) NSMutableDictionary *hotKeyHandlers;
+@property (nonatomic, assign) EventHandlerRef eventHandlerRef;
+
+@property (nonatomic, strong) NSMutableArray *hotKeys;
+@property (nonatomic, strong) NSMutableDictionary *stringToKeyCode;
+
+- (void)constructStringToKeyCodeMap;
 @end
 
 @implementation AMHotKeyManager
@@ -22,41 +49,124 @@
 - (id)init {
     self = [super init];
     if (self) {
-        self.hotKeyHandlers = [NSMutableDictionary dictionary];
+        self.hotKeys = [NSMutableArray array];
+        self.stringToKeyCode = [NSMutableDictionary dictionary];
+
         [self installEventHandler];
+        [self constructStringToKeyCodeMap];
     }
     return self;
 }
 
+- (void)constructStringToKeyCodeMap {
+    TISInputSourceRef inputSourceRef = TISCopyCurrentASCIICapableKeyboardLayoutInputSource();
+    CFDataRef keyboardLayoutDataRef = TISGetInputSourceProperty(inputSourceRef, kTISPropertyUnicodeKeyLayoutData);
+    
+    for (UInt16 keyCode = 0; keyCode < 128; ++keyCode) {
+        @autoreleasepool {
+            UInt32 deadKeyState;
+            UniCharCount actualStringLength;
+            UniChar unicodeString;
+            NSString *keyCodeString;
+            
+            UCKeyTranslate((UCKeyboardLayout *)CFDataGetBytePtr(keyboardLayoutDataRef),
+                           keyCode,
+                           kUCKeyActionDisplay,
+                           0, // Options
+                           LMGetKbdType(),
+                           kUCKeyTranslateNoDeadKeysMask,
+                           &deadKeyState,
+                           4, // Max length
+                           &actualStringLength,
+                           &unicodeString);
+            
+            keyCodeString = [NSString stringWithCharacters:&unicodeString length:actualStringLength];
+            
+            self.stringToKeyCode[keyCodeString] = @( keyCode );
+        }
+    }
+    
+    CFRelease(inputSourceRef);
+}
+
 - (void)dealloc {
-    [NSEvent removeMonitor:_eventMonitor];
+    for (AMHotKey *hotKey in self.hotKeys) {
+        UnregisterEventHotKey(hotKey.hotKeyRef);
+    }
+
+    if (_eventHandlerRef) {
+        RemoveEventHandler(_eventHandlerRef);
+    }
 }
 
 #pragma mark Event Handling
 
-- (void)installEventHandler {
-    if (self.eventMonitor) return;
+OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData) {
+    EventHotKeyID hotKeyIdentifier;
+    AMHotKey *hotKey;
+    OSStatus error;
+    AMHotKeyManager *hotKeyManager = (__bridge AMHotKeyManager *)inUserData;
 
-    self.eventMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:NSKeyDownMask handler:^(NSEvent *event) {
-        AMHotKeyHandler handler = self.hotKeyHandlers[[event hotKeyIdentifier]];
-        if (handler) {
-            handler();
-        }
-    }];
+    error = GetEventParameter(inEvent, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(hotKeyIdentifier), NULL, &hotKeyIdentifier);
+
+    if (error != noErr) return error;
+
+    hotKey = hotKeyManager.hotKeys[hotKeyIdentifier.id];
+    if (hotKey) {
+        hotKey.handler();
+    }
+
+    return noErr;
+}
+
+- (void)installEventHandler {
+    EventTypeSpec eventTypeSpec = { .eventClass = kEventClassKeyboard, .eventKind = kEventHotKeyPressed };
+    EventHandlerRef eventHandlerRef;
+    OSStatus error;
+
+    error = InstallEventHandler(GetApplicationEventTarget(), &eventHandlerCallback, 1, &eventTypeSpec, (__bridge void *)self, &eventHandlerRef);
+
+    if (error != noErr) {
+        NSLog(@"Error installing event handler");
+        return;
+    }
+
+    self.eventHandlerRef = eventHandlerRef;
 }
 
 #pragma mark Hot Key Management
 
-- (void)registerHotKeyWithKey:(NSString *)key modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler {
-    NSString *hotKeyIdentifier = [NSEvent hotKeyIdentifierWithCharacters:key modifiers:modifiers];
+- (UInt32)carbonModifiersFromModifiers:(NSUInteger)modifiers {
+    UInt32 carbonModifiers = 0;
 
-    self.hotKeyHandlers[hotKeyIdentifier] = [handler copy];
+    if (modifiers & NSShiftKeyMask) {
+        carbonModifiers = carbonModifiers | shiftKey;
+    }
+
+    if (modifiers & NSCommandKeyMask) {
+        carbonModifiers = carbonModifiers | cmdKey;
+    }
+
+    if (modifiers & NSAlternateKeyMask) {
+        carbonModifiers = carbonModifiers | optionKey;
+    }
+
+    if (modifiers & NSControlKeyMask) {
+        carbonModifiers = carbonModifiers | controlKey;
+    }
+
+    return carbonModifiers;
 }
 
-- (void)unregisterHotKeyWithKey:(NSString *)key modifiers:(NSUInteger)modifiers {
-    NSString *hotKeyIdentifier = [NSEvent hotKeyIdentifierWithCharacters:key modifiers:modifiers];
+- (void)registerHotKeyWithKey:(NSString *)key modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler {
+    UInt16 keyCode = [self.stringToKeyCode[key] unsignedShortValue];
+    UInt32 carbonModifiers = [self carbonModifiersFromModifiers:modifiers];
+    EventHotKeyID eventHotKeyID = { .signature = 'amyt', .id = (UInt32)[self.hotKeys count] };
+    EventHotKeyRef hotKeyRef;
 
-    self.hotKeyHandlers[hotKeyIdentifier] = nil;
+    RegisterEventHotKey(keyCode, carbonModifiers, eventHotKeyID, GetEventDispatcherTarget(), kEventHotKeyNoOptions, &hotKeyRef);
+
+    [self.hotKeys addObject:[[AMHotKey alloc] initWithHotKeyRef:hotKeyRef handler:handler]];
 }
 
 @end

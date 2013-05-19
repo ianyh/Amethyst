@@ -8,13 +8,14 @@
 
 #import "AMAppDelegate.h"
 
+#import "AMConfiguration.h"
 #import "AMHotKeyManager.h"
 #import "AMWindowManager.h"
-#import <Carbon/Carbon.h>
 
 @interface AMAppDelegate ()
 @property (nonatomic, strong) AMWindowManager *windowManager;
 @property (nonatomic, strong) AMHotKeyManager *hotKeyManager;
+@property (nonatomic, strong) AMConfiguration *configuration;
 
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) IBOutlet NSMenu *statusItemMenu;
@@ -25,6 +26,9 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     self.windowManager = [[AMWindowManager alloc] init];
     self.hotKeyManager = [[AMHotKeyManager alloc] init];
+    self.configuration = [[AMConfiguration alloc] init];
+
+    [self.configuration setUpWithHotKeyManager:self.hotKeyManager windowManager:self.windowManager];
 }
 
 - (void)awakeFromNib {

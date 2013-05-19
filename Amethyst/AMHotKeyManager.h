@@ -12,5 +12,4 @@ typedef void (^AMHotKeyHandler)(void);
 
 @interface AMHotKeyManager : NSObject
 - (void)registerHotKeyWithKey:(NSString *)key modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler;
-- (void)unregisterHotKeyWithKey:(NSString *)key modifiers:(NSUInteger)modifiers;
 @end
