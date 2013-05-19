@@ -22,6 +22,8 @@
 		40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
 		40B337E81745D1830001D8FC /* NSScreen+FrameFlipping.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */; };
 		40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
+		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
+		40B337F5174956CE0001D8FC /* NSEvent+Identifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F4174956CE0001D8FC /* NSEvent+Identifier.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,10 @@
 		40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+FrameFlipping.m"; sourceTree = "<group>"; };
 		40B337E917465ADF0001D8FC /* AMTallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTallLayout.h; sourceTree = "<group>"; };
 		40B337EA17465AE00001D8FC /* AMTallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallLayout.m; sourceTree = "<group>"; };
+		40B337EC1746D8540001D8FC /* AMHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMHotKeyManager.h; sourceTree = "<group>"; };
+		40B337ED1746D8540001D8FC /* AMHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMHotKeyManager.m; sourceTree = "<group>"; };
+		40B337F3174956CE0001D8FC /* NSEvent+Identifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEvent+Identifier.h"; sourceTree = "<group>"; };
+		40B337F4174956CE0001D8FC /* NSEvent+Identifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEvent+Identifier.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +129,7 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				40B337EF174935ED0001D8FC /* Event Handling */,
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
 				4010E7EC17453ED10066097B /* Accessibility */,
@@ -168,6 +175,17 @@
 				40B337E71745D1830001D8FC /* NSScreen+FrameFlipping.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		40B337EF174935ED0001D8FC /* Event Handling */ = {
+			isa = PBXGroup;
+			children = (
+				40B337EC1746D8540001D8FC /* AMHotKeyManager.h */,
+				40B337ED1746D8540001D8FC /* AMHotKeyManager.m */,
+				40B337F3174956CE0001D8FC /* NSEvent+Identifier.h */,
+				40B337F4174956CE0001D8FC /* NSEvent+Identifier.m */,
+			);
+			name = "Event Handling";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,6 +263,8 @@
 				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
 				40B337E81745D1830001D8FC /* NSScreen+FrameFlipping.m in Sources */,
 				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
+				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
+				40B337F5174956CE0001D8FC /* NSEvent+Identifier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
