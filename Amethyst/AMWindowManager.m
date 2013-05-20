@@ -95,13 +95,6 @@
 
 #pragma mark Public Methods
 
-- (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
-    return [self.activeWindows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        AMWindow *window = (AMWindow *)evaluatedObject;
-        return [[window screen] isEqual:screen];
-    }]];
-}
-
 - (void)cycleLayout {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
     for (AMScreenManager *screenManager in self.screenManagers) {
@@ -109,6 +102,29 @@
             [screenManager cycleLayout];
         }
     }
+}
+
+- (void)throwToScreenAtIndex:(NSUInteger)screenIndex {
+    screenIndex = screenIndex - 1;
+
+    if (screenIndex >= [[NSScreen screens] count]) return;
+
+    AMScreenManager *screenManager = self.screenManagers[screenIndex];
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+
+    // Have to find the managed window object so that we can clear it's screen cache.
+    for (AMWindow *window in self.activeWindows) {
+	if ([window isEqual:focusedWindow]) {
+	    focusedWindow = window;
+	}
+    }
+
+    // If the window is already on the screen do nothing.
+    if ([[focusedWindow screen] isEqual:screenManager.screen]) return;
+
+    [self markScreenForReflow:[focusedWindow screen]];
+    [focusedWindow moveToScreen:screenManager.screen];
+    [self markScreenForReflow:screenManager.screen];
 }
 
 #pragma mark Notification Handlers

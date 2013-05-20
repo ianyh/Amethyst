@@ -20,5 +20,6 @@
 - (void)setFrame:(CGRect)frame;
 
 - (NSScreen *)screen;
+- (void)moveToScreen:(NSScreen *)screen;
 
 @end

@@ -79,22 +79,28 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-    CGRect currentFrame = [self frame];
-    CGPoint position = frame.origin;
-    CGSize size = frame.size;
+    [self setPosition:frame.origin];
+    [self setSize:frame.size];
+}
+
+- (void)setPosition:(CGPoint)position {
     AXValueRef positionRef = AXValueCreate(kAXValueCGPointType, &position);
-    AXValueRef sizeRef = AXValueCreate(kAXValueCGSizeType, &size);
     AXError error;
 
-    if (!CGPointEqualToPoint(frame.origin, currentFrame.origin)) {
+    if (!CGPointEqualToPoint(position, [self frame].origin)) {
         error = AXUIElementSetAttributeValue(self.axElementRef, kAXPositionAttribute, positionRef);
         if (error != kAXErrorSuccess) {
             NSLog(@"Position Error: %d", error);
             return;
         }
     }
+}
 
-    if (!CGSizeEqualToSize(frame.size, currentFrame.size)) {
+- (void)setSize:(CGSize)size {
+    AXValueRef sizeRef = AXValueCreate(kAXValueCGSizeType, &size);
+    AXError error;
+
+    if (!CGSizeEqualToSize(size, [self frame].size)) {
         error = AXUIElementSetAttributeValue(self.axElementRef, kAXSizeAttribute, sizeRef);
         if (error != kAXErrorSuccess) {
             NSLog(@"Size Error: %d", error);
@@ -127,6 +133,11 @@
     }
 
     return self.cachedScreen;
+}
+
+- (void)moveToScreen:(NSScreen *)screen {
+    self.cachedScreen = nil;
+    [self setPosition:[screen flippedFrame].origin];
 }
 
 @end
