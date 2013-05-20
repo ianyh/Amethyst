@@ -18,4 +18,7 @@
 // This method is a no-op if there is no screen at the supplied index.
 - (void)throwToScreenAtIndex:(NSUInteger)screenIndex;
 
+- (void)shrinkMainPane;
+- (void)expandMainPane;
+
 @end

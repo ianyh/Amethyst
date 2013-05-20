@@ -14,4 +14,7 @@
 // Subclasses should NOT call super's implementation.
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows;
 
+- (void)shrinkMainPane;
+- (void)expandMainPane;
+
 @end

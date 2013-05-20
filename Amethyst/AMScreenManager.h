@@ -24,5 +24,7 @@
 - (void)setNeedsReflow;
 
 - (void)cycleLayout;
+- (void)shrinkMainPane;
+- (void)expandMainPane;
 
 @end

@@ -64,4 +64,14 @@
     [self setNeedsReflow];
 }
 
+- (void)shrinkMainPane {
+    [self.layouts[self.currentLayoutIndex] shrinkMainPane];
+    [self setNeedsReflow];
+}
+
+- (void)expandMainPane {
+    [self.layouts[self.currentLayoutIndex] expandMainPane];
+    [self setNeedsReflow];
+}
+
 @end

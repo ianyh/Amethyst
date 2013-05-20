@@ -21,7 +21,6 @@
 @property (nonatomic, strong) NSMutableArray *inactiveWindows;
 
 @property (nonatomic, strong) NSArray *screenManagers;
-@property (nonatomic, strong) NSMutableArray *screensToReflow;
 
 - (void)applicationDidLaunch:(NSNotification *)notification;
 - (void)applicationDidTerminate:(NSNotification *)notification;
@@ -53,9 +52,7 @@
         self.applications = [NSMutableArray array];
         self.activeWindows = [NSMutableArray array];
         self.inactiveWindows = [NSMutableArray array];
-        
-        self.screensToReflow = [NSMutableArray array];
-        
+
         for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
             AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
             [self addApplication:application];
@@ -93,16 +90,17 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark Public Methods
-
-- (void)cycleLayout {
+- (AMScreenManager *)focusedScreenManager {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
     for (AMScreenManager *screenManager in self.screenManagers) {
         if ([screenManager.screen isEqual:[focusedWindow screen]]) {
-            [screenManager cycleLayout];
+            return screenManager;
         }
     }
+    return nil;
 }
+
+#pragma mark Public Methods
 
 - (void)throwToScreenAtIndex:(NSUInteger)screenIndex {
     screenIndex = screenIndex - 1;
@@ -125,6 +123,18 @@
     [self markScreenForReflow:[focusedWindow screen]];
     [focusedWindow moveToScreen:screenManager.screen];
     [self markScreenForReflow:screenManager.screen];
+}
+
+- (void)cycleLayout {
+    [[self focusedScreenManager] cycleLayout];
+}
+
+- (void)shrinkMainPane {
+    [[self focusedScreenManager] shrinkMainPane];
+}
+
+- (void)expandMainPane {
+    [[self focusedScreenManager] expandMainPane];
 }
 
 #pragma mark Notification Handlers

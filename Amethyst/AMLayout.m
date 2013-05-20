@@ -14,4 +14,7 @@
     @throw [NSException exceptionWithName:NSGenericException reason:@"Method should be implemented by subclasses." userInfo:nil];
 }
 
+- (void)shrinkMainPane {}
+- (void)expandMainPane {}
+
 @end
