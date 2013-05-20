@@ -10,23 +10,24 @@
 
 #import "AMApplication.h"
 #import "AMFullscreenLayout.h"
+#import "AMScreenManager.h"
 #import "AMTallLayout.h"
 #import "AMWindow.h"
+#import "NSScreen+FrameFlipping.h"
 
-@interface AMWindowManager ()
+@interface AMWindowManager () <AMScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
 @property (nonatomic, strong) NSMutableArray *activeWindows;
 @property (nonatomic, strong) NSMutableArray *inactiveWindows;
 
+@property (nonatomic, strong) NSArray *screenManagers;
 @property (nonatomic, strong) NSMutableArray *screensToReflow;
-
-@property (nonatomic, strong) NSArray *layouts;
-@property (nonatomic, assign) NSUInteger currentLayoutIndex;
 
 - (void)applicationDidLaunch:(NSNotification *)notification;
 - (void)applicationDidTerminate:(NSNotification *)notification;
 - (void)applicationDidHide:(NSNotification *)notification;
 - (void)applicationDidUnhide:(NSNotification *)notification;
+- (void)screenParametersDidChange:(NSNotification *)notification;
 
 - (AMApplication *)applicationWithProcessIdentifier:(pid_t)processIdentifier;
 - (void)addApplication:(AMApplication *)application;
@@ -39,9 +40,9 @@
 - (void)activateWindow:(AMWindow *)window;
 - (void)deactivateWindow:(AMWindow *)window;
 
-- (void)markAllScreensToReflow;
-- (void)markScreenToReflow:(NSScreen *)screen;
-- (void)reflow;
+- (void)updateScreenManagers;
+- (void)markAllScreensForReflow;
+- (void)markScreenForReflow:(NSScreen *)screen;
 @end
 
 @implementation AMWindowManager
@@ -54,12 +55,6 @@
         self.inactiveWindows = [NSMutableArray array];
 
         self.screensToReflow = [NSMutableArray array];
-
-        self.layouts = @[
-                         [[AMTallLayout alloc] init],
-                         [[AMFullscreenLayout alloc] init],
-        ];
-        self.currentLayoutIndex = 0;
 
         for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
             AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
@@ -82,15 +77,20 @@
                                                                selector:@selector(applicationDidUnhide:)
                                                                    name:NSWorkspaceDidUnhideApplicationNotification
                                                                  object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(screenParametersDidChange:)
+                                                     name:NSApplicationDidChangeScreenParametersNotification
+                                                   object:nil];
 
-        [self markScreenToReflow:[NSScreen mainScreen]];
-        [self reflow];
+
+        [self updateScreenManagers];
     }
     return self;
 }
 
 - (void)dealloc {
     [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Public Methods
@@ -103,9 +103,12 @@
 }
 
 - (void)cycleLayout {
-    self.currentLayoutIndex = (self.currentLayoutIndex + 1) % [self.layouts count];
-    [self markAllScreensToReflow];
-    [self reflow];
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    for (AMScreenManager *screenManager in self.screenManagers) {
+        if ([screenManager.screen isEqual:[focusedWindow screen]]) {
+            [screenManager cycleLayout];
+        }
+    }
 }
 
 #pragma mark Notification Handlers
@@ -134,6 +137,10 @@
     [self activateApplication:application];
 }
 
+- (void)screenParametersDidChange:(NSNotification *)notification {
+    [self updateScreenManagers];
+}
+
 #pragma mark Applications Management
 
 - (AMApplication *)applicationWithProcessIdentifier:(pid_t)processIdentifier {
@@ -158,8 +165,9 @@
     [application observeNotification:kAXWindowCreatedNotification
                          withElement:application
                             callback:^(AMAccessibilityElement *accessibilityElement) {
-                                [self addWindow:(AMWindow *)accessibilityElement];
-                                [self reflow];
+                                AMWindow *window = (AMWindow *)accessibilityElement;
+                                [self addWindow:window];
+                                [self markScreenForReflow:[window screen]];
                             }];
 }
 
@@ -196,7 +204,7 @@
 - (void)addWindow:(AMWindow *)window {
     if (![window isResizable]) return;
 
-    [self markScreenToReflow:[window screen]];
+    [self markScreenForReflow:[window screen]];
 
     if ([window isHidden] || [window isMinimized]) {
         [self.inactiveWindows addObject:window];
@@ -209,24 +217,24 @@
                          withElement:window
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 [self removeWindow:window];
-                                [self reflow];
+                                [self markScreenForReflow:[window screen]];
                             }];
     [application observeNotification:kAXWindowMiniaturizedNotification
                          withElement:window
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 [self deactivateWindow:window];
-                                [self reflow];
+                                [self markScreenForReflow:[window screen]];
                             }];
     [application observeNotification:kAXWindowDeminiaturizedNotification
                          withElement:window
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 [self activateWindow:window];
-                                [self reflow];
+                                [self markScreenForReflow:[window screen]];
                             }];
 }
 
 - (void)removeWindow:(AMWindow *)window {
-    [self markScreenToReflow:[window screen]];
+    [self markScreenForReflow:[window screen]];
 
     // TODO: leaking memory here in the observation callbacks above.
     [self.activeWindows removeObject:window];
@@ -236,7 +244,7 @@
 - (void)activateWindow:(AMWindow *)window {
     if ([self.activeWindows containsObject:window]) return;
 
-    [self markScreenToReflow:[window screen]];
+    [self markScreenForReflow:[window screen]];
 
     [self.activeWindows addObject:window];
     [self.inactiveWindows removeObject:window];
@@ -245,31 +253,75 @@
 - (void)deactivateWindow:(AMWindow *)window {
     if ([self.inactiveWindows containsObject:window]) return;
 
-    [self markScreenToReflow:[window screen]];
+    [self markScreenForReflow:[window screen]];
 
     [self.activeWindows addObject:window];
     [self.inactiveWindows removeObject:window];
 }
 
-#pragma mark Layout
+#pragma mark Screen Management
 
-- (void)markAllScreensToReflow {
+- (void)updateScreenManagers {
+    NSMutableArray *screenManagers = [NSMutableArray arrayWithCapacity:[[NSScreen screens] count]];
+    
     for (NSScreen *screen in [NSScreen screens]) {
-        [self markScreenToReflow:screen];
+        AMScreenManager *screenManager;
+        
+        for (AMScreenManager *oldScreenManager in self.screenManagers) {
+            if ([oldScreenManager.screen isEqual:screen]) {
+                screenManager = oldScreenManager;
+                break;
+            }
+        }
+        
+        if (!screenManager) {
+            screenManager = [[AMScreenManager alloc] initWithScreen:screen delegate:self];
+        }
+        
+        [screenManagers addObject:screenManager];
+    }
+    
+    // Window managers are sorted by screen position along the x-axis.
+    [screenManagers sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSScreen *screen1 = ((AMScreenManager *)obj1).screen;
+        NSScreen *screen2 = ((AMScreenManager *)obj2).screen;
+        
+        CGFloat x1 = [screen1 flippedFrame].origin.x;
+        CGFloat x2 = [screen2 flippedFrame].origin.x;
+        
+        if (x1 > x2) {
+            return NSOrderedDescending;
+        } else if (x1 < x2) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedSame;
+        }
+    }];
+    
+    self.screenManagers = screenManagers;
+}
+
+- (void)markAllScreensForReflow {
+    for (AMScreenManager *screenManager in self.screenManagers) {
+        [screenManager setNeedsReflow];
     }
 }
 
-- (void)markScreenToReflow:(NSScreen *)screen {
-    if ([self.screensToReflow containsObject:screen]) return;
-
-    [self.screensToReflow addObject:screen];
+- (void)markScreenForReflow:(NSScreen *)screen {
+    for (AMScreenManager *screenManager in self.screenManagers) {
+        if ([screenManager.screen isEqual:screen]) {
+            [screenManager setNeedsReflow];
+        }
+    }
 }
 
-- (void)reflow {
-    for (NSScreen *screen in self.screensToReflow) {
-        [self.layouts[self.currentLayoutIndex] reflowScreen:screen withWindowManager:self];
-    }
-    [self.screensToReflow removeAllObjects];
+#pragma mark AMScreenManagerDelegate
+
+- (NSArray *)activeWindowsForScreenManager:(AMScreenManager *)screenManager {
+    return [self.activeWindows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        AMWindow *window = (AMWindow *)evaluatedObject;
+        return [[window screen] isEqual:screenManager.screen];
+    }]];
 }
 
 @end

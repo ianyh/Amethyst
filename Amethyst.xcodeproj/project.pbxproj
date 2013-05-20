@@ -24,6 +24,8 @@
 		40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
 		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
 		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
+		40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337FA174993D40001D8FC /* AMScreenManager.m */; };
+		40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B338011749AC8A0001D8FC /* AMSystemWideElement.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,10 @@
 		40B337ED1746D8540001D8FC /* AMHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMHotKeyManager.m; sourceTree = "<group>"; };
 		40B337F617495D7D0001D8FC /* AMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConfiguration.h; sourceTree = "<group>"; };
 		40B337F717495D7D0001D8FC /* AMConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfiguration.m; sourceTree = "<group>"; };
+		40B337F9174993D40001D8FC /* AMScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMScreenManager.h; sourceTree = "<group>"; };
+		40B337FA174993D40001D8FC /* AMScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMScreenManager.m; sourceTree = "<group>"; };
+		40B338001749AC8A0001D8FC /* AMSystemWideElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSystemWideElement.h; sourceTree = "<group>"; };
+		40B338011749AC8A0001D8FC /* AMSystemWideElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSystemWideElement.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +91,8 @@
 				4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */,
 				4010E7ED17453EE00066097B /* AMWindow.h */,
 				4010E7EE17453EE00066097B /* AMWindow.m */,
+				40B338001749AC8A0001D8FC /* AMSystemWideElement.h */,
+				40B338011749AC8A0001D8FC /* AMSystemWideElement.m */,
 			);
 			name = Accessibility;
 			sourceTree = "<group>";
@@ -137,6 +145,8 @@
 				402DB6F41742E41A00D1C936 /* AMAppDelegate.m */,
 				4010E7F0174540220066097B /* AMWindowManager.h */,
 				4010E7F1174540220066097B /* AMWindowManager.m */,
+				40B337F9174993D40001D8FC /* AMScreenManager.h */,
+				40B337FA174993D40001D8FC /* AMScreenManager.m */,
 				40B337F617495D7D0001D8FC /* AMConfiguration.h */,
 				40B337F717495D7D0001D8FC /* AMConfiguration.m */,
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
@@ -265,6 +275,8 @@
 				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
 				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
 				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
+				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
+				40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

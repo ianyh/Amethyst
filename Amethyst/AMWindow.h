@@ -10,6 +10,8 @@
 
 @interface AMWindow : AMAccessibilityElement
 
++ (AMWindow *)focusedWindow;
+
 - (BOOL)isHidden;
 - (BOOL)isMinimized;
 - (BOOL)isResizable;

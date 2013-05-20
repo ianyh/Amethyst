@@ -14,8 +14,7 @@
 
 @implementation AMFullscreenLayout
 
-- (void)reflowScreen:(NSScreen *)screen withWindowManager:(AMWindowManager *)windowManager {
-    NSArray *windows = [windowManager activeWindowsForScreen:screen];
+- (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     CGRect screenFrame = [screen flippedFrame];
 
     for (AMWindow *window in windows) {

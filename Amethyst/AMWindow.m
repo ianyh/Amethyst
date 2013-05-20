@@ -8,6 +8,7 @@
 
 #import "AMWindow.h"
 
+#import "AMSystemWideElement.h"
 #import "NSScreen+FrameFlipping.h"
 
 @interface AMWindow ()
@@ -15,6 +16,25 @@
 @end
 
 @implementation AMWindow
+
++ (AMWindow *)focusedWindow {
+    AXUIElementRef applicationRef;
+    AXUIElementRef windowRef;
+    AXError error;
+
+    error = AXUIElementCopyAttributeValue([AMSystemWideElement systemWideElement].axElementRef, kAXFocusedApplicationAttribute, (CFTypeRef *)&applicationRef);
+    if (error != kAXErrorSuccess || !applicationRef) return nil;
+
+    error = AXUIElementCopyAttributeValue(applicationRef, kAXFocusedWindowAttribute, (CFTypeRef *)&windowRef);
+    if (error != kAXErrorSuccess || !windowRef) return nil;
+
+    AMWindow *window = [[AMWindow alloc] initWithAXElementRef:windowRef];
+
+    CFRelease(applicationRef);
+    CFRelease(windowRef);
+
+    return window;
+}
 
 - (BOOL)isHidden {
     return [[self numberForKey:kAXHiddenAttribute] boolValue];

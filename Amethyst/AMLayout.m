@@ -10,7 +10,7 @@
 
 @implementation AMLayout
 
-- (void)reflowScreen:(NSScreen *)screen withWindowManager:(AMWindowManager *)windowManager {
+- (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     @throw [NSException exceptionWithName:NSGenericException reason:@"Method should be implemented by subclasses." userInfo:nil];
 }
 

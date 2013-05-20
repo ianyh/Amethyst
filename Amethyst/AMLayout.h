@@ -8,12 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@class AMWindowManager;
-
 @interface AMLayout : NSObject
 
 // Subclasses should override this method to layout windows according to their specified algorithm.
 // Subclasses should NOT call super's implementation.
-- (void)reflowScreen:(NSScreen *)screen withWindowManager:(AMWindowManager *)windowManager;
+- (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows;
 
 @end
