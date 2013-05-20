@@ -19,6 +19,7 @@
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
     NSUInteger modifier = NSAlternateKeyMask | NSShiftKeyMask;
+    NSUInteger modifier2 = modifier | NSControlKeyMask;
 
     [hotKeyManager registerHotKeyWithKeyCode:kVK_Space modifiers:modifier handler:^{
         [[windowManager focusedScreenManager] cycleLayout];
@@ -67,6 +68,14 @@
 
     [hotKeyManager registerHotKeyWithKeyCode:kVK_Return modifiers:modifier handler:^{
         [windowManager swapFocusedWindowToMain];
+    }];
+
+    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_J modifiers:modifier2 handler:^{
+        [windowManager swapFocusedWindowCounterClockwise];
+    }];
+
+    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_K modifiers:modifier2 handler:^{
+        [windowManager swapFocusedWindowClockwise];
     }];
 }
 

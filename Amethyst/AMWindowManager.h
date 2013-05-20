@@ -23,5 +23,7 @@
 - (void)moveFocusClockwise;
 
 - (void)swapFocusedWindowToMain;
+- (void)swapFocusedWindowCounterClockwise;
+- (void)swapFocusedWindowClockwise;
 
 @end

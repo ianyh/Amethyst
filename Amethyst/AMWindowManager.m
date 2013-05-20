@@ -157,6 +157,36 @@
     [self markScreenForReflow:[focusedWindow screen]];
 }
 
+- (void)swapFocusedWindowCounterClockwise {
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    NSScreen *screen = [focusedWindow screen];
+    NSArray *windows = [self activeWindowsForScreen:screen];
+
+    NSUInteger focusedWindowIndex = [windows indexOfObject:focusedWindow];
+    AMWindow *windowToSwapWith = windows[(focusedWindowIndex == 0 ? [windows count] - 1 : focusedWindowIndex - 1)];
+
+    NSUInteger focusedWindowActiveIndex = [self.activeWindows indexOfObject:focusedWindow];
+    NSUInteger windowToSwapWithActiveIndex = [self.activeWindows indexOfObject:windowToSwapWith];
+    
+    [self.activeWindows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
+    [self markScreenForReflow:[focusedWindow screen]];
+}
+
+- (void)swapFocusedWindowClockwise {
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    NSScreen *screen = [focusedWindow screen];
+    NSArray *windows = [self activeWindowsForScreen:screen];
+
+    NSUInteger focusedWindowIndex = [windows indexOfObject:focusedWindow];
+    AMWindow *windowToSwapWith = windows[(focusedWindowIndex + 1) % [windows count]];
+    
+    NSUInteger focusedWindowActiveIndex = [self.activeWindows indexOfObject:focusedWindow];
+    NSUInteger windowToSwapWithActiveIndex = [self.activeWindows indexOfObject:windowToSwapWith];
+    
+    [self.activeWindows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
+    [self markScreenForReflow:[focusedWindow screen]];
+}
+
 #pragma mark Notification Handlers
 
 - (void)applicationDidLaunch:(NSNotification *)notification {
