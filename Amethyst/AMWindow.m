@@ -21,18 +21,18 @@
     AXUIElementRef applicationRef;
     AXUIElementRef windowRef;
     AXError error;
-
+    
     error = AXUIElementCopyAttributeValue([AMSystemWideElement systemWideElement].axElementRef, kAXFocusedApplicationAttribute, (CFTypeRef *)&applicationRef);
     if (error != kAXErrorSuccess || !applicationRef) return nil;
-
+    
     error = AXUIElementCopyAttributeValue(applicationRef, kAXFocusedWindowAttribute, (CFTypeRef *)&windowRef);
     if (error != kAXErrorSuccess || !windowRef) return nil;
-
+    
     AMWindow *window = [[AMWindow alloc] initWithAXElementRef:windowRef];
-
+    
     CFRelease(applicationRef);
     CFRelease(windowRef);
-
+    
     return window;
 }
 
@@ -48,7 +48,7 @@
     Boolean sizeWriteable = NO;
     AXError error = AXUIElementIsAttributeSettable(self.axElementRef, kAXSizeAttribute, &sizeWriteable);
     if (error != kAXErrorSuccess) return NO;
-
+    
     return sizeWriteable;
 }
 
@@ -56,25 +56,25 @@
     CFTypeRef pointRef;
     CFTypeRef sizeRef;
     AXError error;
-
+    
     error = AXUIElementCopyAttributeValue(self.axElementRef, kAXPositionAttribute, &pointRef);
     if (error != kAXErrorSuccess || !pointRef) return CGRectNull;
-
+    
     error = AXUIElementCopyAttributeValue(self.axElementRef, kAXSizeAttribute, &sizeRef);
     if (error != kAXErrorSuccess || !sizeRef) return CGRectNull;
-
+    
     CGPoint point;
     CGSize size;
     bool success;
-
+    
     success = AXValueGetValue(pointRef, kAXValueCGPointType, &point);
     if (!success) return CGRectNull;
-
+    
     success = AXValueGetValue(sizeRef, kAXValueCGSizeType, &size);
     if (!success) return CGRectNull;
-
+    
     CGRect frame = { .origin.x = point.x, .origin.y = point.y, .size.width = size.width, .size.height = size.height };
-
+    
     return frame;
 }
 
@@ -86,7 +86,7 @@
 - (void)setPosition:(CGPoint)position {
     AXValueRef positionRef = AXValueCreate(kAXValueCGPointType, &position);
     AXError error;
-
+    
     if (!CGPointEqualToPoint(position, [self frame].origin)) {
         error = AXUIElementSetAttributeValue(self.axElementRef, kAXPositionAttribute, positionRef);
         if (error != kAXErrorSuccess) {
@@ -99,7 +99,7 @@
 - (void)setSize:(CGSize)size {
     AXValueRef sizeRef = AXValueCreate(kAXValueCGSizeType, &size);
     AXError error;
-
+    
     if (!CGSizeEqualToSize(size, [self frame].size)) {
         error = AXUIElementSetAttributeValue(self.axElementRef, kAXSizeAttribute, sizeRef);
         if (error != kAXErrorSuccess) {
@@ -128,10 +128,10 @@
                 }
             }
         }
-
+        
         self.cachedScreen = self.cachedScreen ?: [NSScreen mainScreen];
     }
-
+    
     return self.cachedScreen;
 }
 

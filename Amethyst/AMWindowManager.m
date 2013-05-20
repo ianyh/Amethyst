@@ -53,14 +53,14 @@
         self.applications = [NSMutableArray array];
         self.activeWindows = [NSMutableArray array];
         self.inactiveWindows = [NSMutableArray array];
-
+        
         self.screensToReflow = [NSMutableArray array];
-
+        
         for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
             AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
             [self addApplication:application];
         }
-
+        
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
                                                                selector:@selector(applicationDidLaunch:)
                                                                    name:NSWorkspaceDidLaunchApplicationNotification
@@ -81,8 +81,8 @@
                                                  selector:@selector(screenParametersDidChange:)
                                                      name:NSApplicationDidChangeScreenParametersNotification
                                                    object:nil];
-
-
+        
+        
         [self updateScreenManagers];
     }
     return self;
@@ -106,22 +106,22 @@
 
 - (void)throwToScreenAtIndex:(NSUInteger)screenIndex {
     screenIndex = screenIndex - 1;
-
+    
     if (screenIndex >= [[NSScreen screens] count]) return;
-
+    
     AMScreenManager *screenManager = self.screenManagers[screenIndex];
     AMWindow *focusedWindow = [AMWindow focusedWindow];
-
+    
     // Have to find the managed window object so that we can clear it's screen cache.
     for (AMWindow *window in self.activeWindows) {
-	if ([window isEqual:focusedWindow]) {
-	    focusedWindow = window;
-	}
+        if ([window isEqual:focusedWindow]) {
+            focusedWindow = window;
+        }
     }
-
+    
     // If the window is already on the screen do nothing.
     if ([[focusedWindow screen] isEqual:screenManager.screen]) return;
-
+    
     [self markScreenForReflow:[focusedWindow screen]];
     [focusedWindow moveToScreen:screenManager.screen];
     [self markScreenForReflow:screenManager.screen];
@@ -165,19 +165,19 @@
             return application;
         }
     }
-
+    
     return nil;
 }
 
 - (void)addApplication:(AMApplication *)application {
     if ([self.applications containsObject:application]) return;
-
+    
     [self.applications addObject:application];
-
+    
     for (AMWindow *window in [application windows]) {
         [self addWindow:window];
     }
-
+    
     [application observeNotification:kAXWindowCreatedNotification
                          withElement:application
                             callback:^(AMAccessibilityElement *accessibilityElement) {
@@ -219,15 +219,15 @@
 
 - (void)addWindow:(AMWindow *)window {
     if (![window isResizable]) return;
-
+    
     [self markScreenForReflow:[window screen]];
-
+    
     if ([window isHidden] || [window isMinimized]) {
         [self.inactiveWindows addObject:window];
     } else {
         [self.activeWindows addObject:window];
     }
-
+    
     AMApplication *application = [self applicationWithProcessIdentifier:[window processIdentifier]];
     [application observeNotification:kAXUIElementDestroyedNotification
                          withElement:window
@@ -251,7 +251,7 @@
 
 - (void)removeWindow:(AMWindow *)window {
     [self markScreenForReflow:[window screen]];
-
+    
     // TODO: leaking memory here in the observation callbacks above.
     [self.activeWindows removeObject:window];
     [self.inactiveWindows removeObject:window];
@@ -259,18 +259,18 @@
 
 - (void)activateWindow:(AMWindow *)window {
     if ([self.activeWindows containsObject:window]) return;
-
+    
     [self markScreenForReflow:[window screen]];
-
+    
     [self.activeWindows addObject:window];
     [self.inactiveWindows removeObject:window];
 }
 
 - (void)deactivateWindow:(AMWindow *)window {
     if ([self.inactiveWindows containsObject:window]) return;
-
+    
     [self markScreenForReflow:[window screen]];
-
+    
     [self.activeWindows addObject:window];
     [self.inactiveWindows removeObject:window];
 }

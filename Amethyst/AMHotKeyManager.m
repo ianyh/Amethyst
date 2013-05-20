@@ -130,8 +130,8 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
     OSStatus error = RegisterEventHotKey(keyCode, carbonModifiers, eventHotKeyID, GetEventDispatcherTarget(), kEventHotKeyNoOptions, &hotKeyRef);
 
     if (error != noErr) {
-	NSLog(@"Error encountered when registering hotkey with keyCode %d and mods %lu: %d", keyCode, (unsigned long)modifiers, error);
-	return;
+        NSLog(@"Error encountered when registering hotkey with keyCode %d and mods %lu: %d", keyCode, (unsigned long)modifiers, error);
+        return;
     }
 
     [self.hotKeys addObject:[[AMHotKey alloc] initWithHotKeyRef:hotKeyRef handler:handler]];
