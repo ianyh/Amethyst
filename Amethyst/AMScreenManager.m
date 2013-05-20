@@ -17,8 +17,10 @@
 @property (nonatomic, strong) NSScreen *screen;
 
 @property (nonatomic, assign) BOOL needsReflow;
+
 @property (nonatomic, strong) NSArray *layouts;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
+- (AMLayout *)currentLayout;
 @end
 
 @implementation AMScreenManager
@@ -59,18 +61,27 @@
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }
 
+- (void)updateCurrentLayout:(AMScreenManagerLayoutUpdater)updater {
+    updater([self currentLayout]);
+    [self setNeedsReflow];
+}
+
+- (AMLayout *)currentLayout {
+    return self.layouts[self.currentLayoutIndex];
+}
+
 - (void)cycleLayout {
     self.currentLayoutIndex = (self.currentLayoutIndex + 1) % [self.layouts count];
     [self setNeedsReflow];
 }
 
 - (void)shrinkMainPane {
-    [self.layouts[self.currentLayoutIndex] shrinkMainPane];
+    [[self currentLayout] shrinkMainPane];
     [self setNeedsReflow];
 }
 
 - (void)expandMainPane {
-    [self.layouts[self.currentLayoutIndex] expandMainPane];
+    [[self currentLayout] expandMainPane];
     [self setNeedsReflow];
 }
 

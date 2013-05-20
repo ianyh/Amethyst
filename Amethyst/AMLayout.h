@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class AMLayout;
+
 @interface AMLayout : NSObject
 
 // Subclasses should override this method to layout windows according to their specified algorithm.
@@ -16,5 +18,8 @@
 
 - (void)shrinkMainPane;
 - (void)expandMainPane;
+
+- (void)increaseMainPaneCount;
+- (void)decreaseMainPaneCount;
 
 @end

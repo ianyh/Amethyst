@@ -8,17 +8,19 @@
 
 #import "AMConfiguration.h"
 
-#import "AMHotKeyManager.h"
-#import "AMWindowManager.h"
-
 #import <Carbon/Carbon.h>
+
+#import "AMHotKeyManager.h"
+#import "AMLayout.h"
+#import "AMScreenManager.h"
+#import "AMWindowManager.h"
 
 @implementation AMConfiguration
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
     NSUInteger modifier = NSAlternateKeyMask | NSShiftKeyMask;
     [hotKeyManager registerHotKeyWithKeyCode:kVK_Space modifiers:modifier handler:^{
-        [windowManager cycleLayout];
+        [[windowManager focusedScreenManager] cycleLayout];
     }];
 
     // ANSI 1-3 are consecutive values in the virtual layout.
@@ -31,11 +33,27 @@
     }
 
     [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_H modifiers:modifier handler:^{
-        [windowManager shrinkMainPane];
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+            [layout shrinkMainPane];
+        }];
     }];
 
     [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_L modifiers:modifier handler:^{
-        [windowManager expandMainPane];
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+            [layout expandMainPane];
+        }];
+    }];
+
+    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_Comma modifiers:modifier handler:^{
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+            [layout increaseMainPaneCount];
+        }];
+    }];
+
+    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_Period modifiers:modifier handler:^{
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+            [layout decreaseMainPaneCount];
+        }];
     }];
 }
 

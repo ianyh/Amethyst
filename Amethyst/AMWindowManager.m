@@ -90,6 +90,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark Public Methods
+
 - (AMScreenManager *)focusedScreenManager {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
     for (AMScreenManager *screenManager in self.screenManagers) {
@@ -99,8 +101,6 @@
     }
     return nil;
 }
-
-#pragma mark Public Methods
 
 - (void)throwToScreenAtIndex:(NSUInteger)screenIndex {
     screenIndex = screenIndex - 1;
@@ -123,18 +123,6 @@
     [self markScreenForReflow:[focusedWindow screen]];
     [focusedWindow moveToScreen:screenManager.screen];
     [self markScreenForReflow:screenManager.screen];
-}
-
-- (void)cycleLayout {
-    [[self focusedScreenManager] cycleLayout];
-}
-
-- (void)shrinkMainPane {
-    [[self focusedScreenManager] shrinkMainPane];
-}
-
-- (void)expandMainPane {
-    [[self focusedScreenManager] expandMainPane];
 }
 
 #pragma mark Notification Handlers

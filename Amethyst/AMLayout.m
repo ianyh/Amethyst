@@ -17,4 +17,7 @@
 - (void)shrinkMainPane {}
 - (void)expandMainPane {}
 
+- (void)increaseMainPaneCount {}
+- (void)decreaseMainPaneCount {}
+
 @end

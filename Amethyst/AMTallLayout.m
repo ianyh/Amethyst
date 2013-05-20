@@ -15,6 +15,8 @@
 @interface AMTallLayout ()
 // Ratio of screen width taken up by main pane
 @property (nonatomic, assign) CGFloat mainPaneRatio;
+// The number of windows that should be displayed in the main pane.
+@property (nonatomic, assign) NSInteger mainPaneCount;
 @end
 
 @implementation AMTallLayout
@@ -30,17 +32,11 @@
     return self;
 }
 
-#pragma mark Public Methods
-
-- (void)setMainPaneCount:(NSInteger)mainPaneCount {
-    if (_mainPaneCount == mainPaneCount) return;
-
-    _mainPaneCount = MAX(1, mainPaneCount);
-}
-
 #pragma mark AMLayout
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
+    self.mainPaneCount = MIN([windows count], self.mainPaneCount);
+
     NSInteger secondaryPaneCount = [windows count] - self.mainPaneCount;
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
 
@@ -78,6 +74,14 @@
 
 - (void)shrinkMainPane {
     self.mainPaneRatio = MAX(0, self.mainPaneRatio - 0.05);
+}
+
+- (void)increaseMainPaneCount {
+    self.mainPaneCount = self.mainPaneCount + 1;
+}
+
+- (void)decreaseMainPaneCount {
+    self.mainPaneCount = MAX(1, self.mainPaneCount - 1);
 }
 
 @end

@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class AMLayout;
 @class AMScreenManager;
+
+typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *);
 
 @protocol AMScreenManagerDelegate <NSObject>
 - (NSArray *)activeWindowsForScreenManager:(AMScreenManager *)screenManager;
@@ -23,8 +26,7 @@
 
 - (void)setNeedsReflow;
 
+- (void)updateCurrentLayout:(AMScreenManagerLayoutUpdater)updater;
 - (void)cycleLayout;
-- (void)shrinkMainPane;
-- (void)expandMainPane;
 
 @end
