@@ -140,4 +140,11 @@
     [self setPosition:[screen flippedFrame].origin];
 }
 
+- (void)bringToFocus {
+    NSRunningApplication *runningApplication = [NSRunningApplication runningApplicationWithProcessIdentifier:[self processIdentifier]];
+    [runningApplication activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
+
+    AXUIElementPerformAction(self.axElementRef, kAXRaiseAction);
+}
+
 @end

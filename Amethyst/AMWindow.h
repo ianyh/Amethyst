@@ -22,4 +22,6 @@
 - (NSScreen *)screen;
 - (void)moveToScreen:(NSScreen *)screen;
 
+- (void)bringToFocus;
+
 @end

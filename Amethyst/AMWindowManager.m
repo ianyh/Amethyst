@@ -125,6 +125,38 @@
     [self markScreenForReflow:screenManager.screen];
 }
 
+- (void)moveFocusCounterClockwise {
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    NSScreen *screen = [focusedWindow screen];
+    NSArray *windows = [self activeWindowsForScreen:screen];
+    NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
+    NSUInteger windowToFocusIndex = (windowIndex == 0 ? [windows count] - 1 : windowIndex - 1);
+    AMWindow *windowToFocus = windows[windowToFocusIndex];
+
+    [windowToFocus bringToFocus];
+}
+
+- (void)moveFocusClockwise {
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    NSScreen *screen = [focusedWindow screen];
+    NSArray *windows = [self activeWindowsForScreen:screen];
+    NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
+    AMWindow *windowToFocus = windows[(windowIndex + 1) % [windows count]];
+    
+    [windowToFocus bringToFocus];
+}
+
+- (void)swapFocusedWindowToMain {
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    NSScreen *screen = [focusedWindow screen];
+    NSArray *windows = [self activeWindowsForScreen:screen];
+    NSUInteger focusedWindowIndex = [self.activeWindows indexOfObject:focusedWindow];
+    NSUInteger mainWindowIndex = [self.activeWindows indexOfObject:windows[0]];
+
+    [self.activeWindows exchangeObjectAtIndex:focusedWindowIndex withObjectAtIndex:mainWindowIndex];
+    [self markScreenForReflow:[focusedWindow screen]];
+}
+
 #pragma mark Notification Handlers
 
 - (void)applicationDidLaunch:(NSNotification *)notification {
@@ -273,6 +305,13 @@
     [self.inactiveWindows removeObject:window];
 }
 
+- (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
+    return [self.activeWindows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        AMWindow *window = (AMWindow *)evaluatedObject;
+        return [[window screen] isEqual:screen];
+    }]];
+}
+
 #pragma mark Screen Management
 
 - (void)updateScreenManagers {
@@ -332,10 +371,7 @@
 #pragma mark AMScreenManagerDelegate
 
 - (NSArray *)activeWindowsForScreenManager:(AMScreenManager *)screenManager {
-    return [self.activeWindows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        AMWindow *window = (AMWindow *)evaluatedObject;
-        return [[window screen] isEqual:screenManager.screen];
-    }]];
+    return [self activeWindowsForScreen:screenManager.screen];
 }
 
 @end
