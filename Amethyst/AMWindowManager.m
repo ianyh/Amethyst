@@ -125,6 +125,19 @@
     [self markScreenForReflow:screenManager.screen];
 }
 
+- (void)focusScreenAtIndex:(NSUInteger)screenIndex {
+    screenIndex = screenIndex - 1;
+    
+    if (screenIndex >= [[NSScreen screens] count]) return;
+    
+    AMScreenManager *screenManager = self.screenManagers[screenIndex];
+    NSArray *windows = [self activeWindowsForScreen:screenManager.screen];
+
+    if ([windows count] == 0) return;
+
+    [windows[0] bringToFocus];
+}
+
 - (void)moveFocusCounterClockwise {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
     NSScreen *screen = [focusedWindow screen];

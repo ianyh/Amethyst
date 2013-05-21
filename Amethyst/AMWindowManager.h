@@ -18,6 +18,7 @@
 // Screens are ordered from left to right along the x-axis, with 1 being the left-most screen.
 // This method is a no-op if there is no screen at the supplied index.
 - (void)throwToScreenAtIndex:(NSUInteger)screenIndex;
+- (void)focusScreenAtIndex:(NSUInteger)screenIndex;
 
 - (void)moveFocusCounterClockwise;
 - (void)moveFocusClockwise;
