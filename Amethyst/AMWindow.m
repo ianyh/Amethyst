@@ -79,6 +79,21 @@
 }
 
 - (void)setFrame:(CGRect)frame {
+    // For some reason the accessibility frameworks seem to have issues with changing size in different directions.
+    // i.e., increasing width while decreasing height doesn't seem to work correctly.
+    // Therefore we collapse the window to its minimum based on the input frame and the existing frame and then expand out to meet the new frame.
+    // This means that the first operation is always a contraction, and the second operation is always an expansion.
+    CGRect currentFrame = [self frame];
+    CGRect minimumFrame = {
+        .origin.x = MIN(currentFrame.origin.x, frame.origin.x),
+        .origin.y = MIN(currentFrame.origin.y, frame.origin.y),
+        .size.width = MIN(currentFrame.size.width, frame.size.width),
+        .size.height = MIN(currentFrame.size.width, frame.size.width)
+    };
+
+    [self setPosition:minimumFrame.origin];
+    [self setSize:minimumFrame.size];
+
     [self setPosition:frame.origin];
     [self setSize:frame.size];
 }
