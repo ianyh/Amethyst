@@ -79,6 +79,8 @@
 }
 
 - (void)setFrame:(CGRect)frame {
+    if (CGRectEqualToRect([self frame], frame)) return;
+
     // For some reason the accessibility frameworks seem to have issues with changing size in different directions.
     // e.g., increasing width while decreasing height doesn't seem to work correctly.
     // Therefore we collapse the window to zero and then expand out to meet the new frame.
