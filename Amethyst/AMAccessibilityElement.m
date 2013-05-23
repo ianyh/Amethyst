@@ -33,7 +33,7 @@
 #pragma mark NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ <Title: %@>", [super description], [self stringForKey:kAXTitleAttribute]];
+    return [NSString stringWithFormat:@"%@ <Title: %@> <pid: %d>", [super description], [self stringForKey:kAXTitleAttribute], [self processIdentifier]];
 }
 
 - (BOOL)isEqual:(id)object {

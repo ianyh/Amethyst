@@ -261,10 +261,7 @@
 }
 
 - (void)removeApplication:(AMApplication *)application {
-    for (AMWindow *window in [self.activeWindows copy]) {
-        [self removeWindow:window];
-    }
-    for (AMWindow *window in [self.inactiveWindows copy]) {
+    for (AMWindow *window in [application windows]) {
         [self removeWindow:window];
     }
     [self.applications removeObject:application];
