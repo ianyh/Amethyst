@@ -41,7 +41,6 @@
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
 
     CGRect screenFrame = [screen adjustedFrame];
-    NSLog(@"frame %@ adjusted frame %@", CGRectCreateDictionaryRepresentation([screen frame]), CGRectCreateDictionaryRepresentation(screenFrame));
 
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height / self.mainPaneCount);
     CGFloat secondaryPaneWindowHeight = (hasSecondaryPane ? round(screenFrame.size.height / secondaryPaneCount) : 0.0);
