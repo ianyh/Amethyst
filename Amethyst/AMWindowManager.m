@@ -392,6 +392,8 @@
     }];
     
     self.screenManagers = screenManagers;
+
+    [self markAllScreensForReflow];
 }
 
 - (void)markAllScreensForReflow {
