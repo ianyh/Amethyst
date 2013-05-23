@@ -9,7 +9,7 @@
 #import "AMWindow.h"
 
 #import "AMSystemWideElement.h"
-#import "NSScreen+FrameFlipping.h"
+#import "NSScreen+FrameAdjustment.h"
 
 @interface AMWindow ()
 @property (nonatomic, strong) NSScreen *cachedScreen;
@@ -128,7 +128,7 @@
             CGPoint center = { .x = CGRectGetMidX(frame), .y = CGRectGetMidY(frame) };
             
             for (NSScreen *screen in [NSScreen screens]) {
-                CGRect screenFrame = [screen flippedFrame];
+                CGRect screenFrame = [screen adjustedFrame];
                 if (CGRectContainsPoint(screenFrame, center)) {
                     self.cachedScreen = screen;
                 }
@@ -143,7 +143,7 @@
 
 - (void)moveToScreen:(NSScreen *)screen {
     self.cachedScreen = nil;
-    [self setPosition:[screen flippedFrame].origin];
+    [self setPosition:[screen adjustedFrame].origin];
 }
 
 - (void)bringToFocus {

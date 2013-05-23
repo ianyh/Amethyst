@@ -13,7 +13,7 @@
 #import "AMScreenManager.h"
 #import "AMTallLayout.h"
 #import "AMWindow.h"
-#import "NSScreen+FrameFlipping.h"
+#import "NSScreen+FrameAdjustment.h"
 
 @interface AMWindowManager () <AMScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
@@ -382,8 +382,8 @@
         NSScreen *screen1 = ((AMScreenManager *)obj1).screen;
         NSScreen *screen2 = ((AMScreenManager *)obj2).screen;
         
-        CGFloat x1 = [screen1 flippedFrame].origin.x;
-        CGFloat x2 = [screen2 flippedFrame].origin.x;
+        CGFloat x1 = [screen1 adjustedFrame].origin.x;
+        CGFloat x2 = [screen2 adjustedFrame].origin.x;
         
         if (x1 > x2) {
             return NSOrderedDescending;

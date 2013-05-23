@@ -1,5 +1,5 @@
 //
-//  NSScreen+FrameFlipping.h
+//  NSScreen+FrameAdjustment.h
 //  Amethyst
 //
 //  Created by Ian on 5/16/13.
@@ -8,9 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSScreen (FrameFlipping)
+@interface NSScreen (FrameAdjustment)
 
-- (CGRect)flippedFrameRelativeToFrame:(CGRect)mainFrame;
-- (CGRect)flippedFrame;
+- (CGRect)adjustedFrame;
 
 @end
