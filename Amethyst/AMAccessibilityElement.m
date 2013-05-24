@@ -54,7 +54,13 @@
     return CFHash(self.axElementRef);
 }
 
-#pragma mark - Public Accessors
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+    return [[[self class] allocWithZone:zone] initWithAXElementRef:self.axElementRef];
+}
+
+#pragma mark Public Accessors
 
 - (NSString *)stringForKey:(CFStringRef)accessibilityValueKey {
     CFTypeRef valueRef;

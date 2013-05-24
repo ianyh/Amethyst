@@ -8,14 +8,19 @@
 
 #import "AMApplication.h"
 
-#import "AMWindow.h" 
+#import "AMWindow.h"
 
-typedef void (^AXObserverCallbackBlock)(AXObserverRef, AXUIElementRef, CFStringRef, void *);
+@interface AMApplicationObservation : NSObject
+@property (nonatomic, strong) NSString *notification;
+@property (nonatomic, copy) AMAXNotificationHandler handler;
+@end
+
+@implementation AMApplicationObservation
+@end
 
 @interface AMApplication ()
 @property (nonatomic, assign) AXObserverRef observerRef;
-@property (nonatomic, copy) AXObserverCallbackBlock observerCallback;
-@property (nonatomic, strong) NSMutableArray *notificationCallbacks;
+@property (nonatomic, strong) NSMutableDictionary *elementToObservations;
 
 @property (nonatomic, strong) NSMutableArray *cachedWindows;
 @end
@@ -33,17 +38,24 @@ typedef void (^AXObserverCallbackBlock)(AXObserverRef, AXUIElementRef, CFStringR
 }
 
 - (void)dealloc {
-    CFRelease(_observerRef);
+    if (_observerRef) {
+        for (AMAccessibilityElement *element in [self.elementToObservations allKeys]) {
+            for (AMApplicationObservation *observation in self.elementToObservations[element]) {
+                AXObserverRemoveNotification(_observerRef, element.axElementRef, (__bridge CFStringRef)observation.notification);
+            }
+        }
+        CFRelease(_observerRef);
+    }
 }
 
 #pragma mark AXObserver
 
 void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRef notification, void *refcon) {
-    AMObserverCallback callback = (__bridge AMObserverCallback)refcon;
+    AMAXNotificationHandler callback = (__bridge AMAXNotificationHandler)refcon;
     callback([[AMWindow alloc] initWithAXElementRef:element]);
 }
 
-- (void)observeNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement callback:(AMObserverCallback)callback {
+- (void)observeNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement handler:(AMAXNotificationHandler)handler {
     if (!self.observerRef) {
         AXObserverRef observerRef;
         AXError error = AXObserverCreate([self processIdentifier], &observerCallback, &observerRef);
@@ -53,12 +65,26 @@ void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRe
         CFRunLoopAddSource(CFRunLoopGetCurrent(), AXObserverGetRunLoopSource(observerRef), kCFRunLoopDefaultMode);
 
         self.observerRef = observerRef;
-        self.notificationCallbacks = [NSMutableArray array];
+        self.elementToObservations = [NSMutableDictionary dictionaryWithCapacity:1];
     }
 
-    callback = [callback copy];
-    [self.notificationCallbacks addObject:callback];
-    AXObserverAddNotification(self.observerRef, accessibilityElement.axElementRef, notification, (__bridge void *)callback);
+    AMApplicationObservation *observation = [[AMApplicationObservation alloc] init];
+    observation.notification = (__bridge NSString *)notification;
+    observation.handler = handler;
+
+    if (!self.elementToObservations[accessibilityElement]) {
+        self.elementToObservations[accessibilityElement] = [NSMutableArray array];
+    }
+    [self.elementToObservations[accessibilityElement] addObject:observation];
+
+    AXObserverAddNotification(self.observerRef, accessibilityElement.axElementRef, notification, (__bridge void *)observation.handler);
+}
+
+- (void)unobserveNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement {
+    for (AMApplicationObservation *observation in self.elementToObservations[accessibilityElement]) {
+        AXObserverRemoveNotification(self.observerRef, accessibilityElement.axElementRef, (__bridge CFStringRef)observation.notification);
+    }
+    [self.elementToObservations removeObjectForKey:accessibilityElement];
 }
 
 #pragma mark Public Accessors

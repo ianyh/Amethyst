@@ -17,6 +17,8 @@
 
 @implementation AMWindow
 
+#pragma mark Lifecycle
+
 + (AMWindow *)focusedWindow {
     AXUIElementRef applicationRef;
     AXUIElementRef windowRef;
@@ -34,6 +36,12 @@
     CFRelease(windowRef);
     
     return window;
+}
+
+#pragma mark NSObject
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@ <frame: %@>", [super description], CGRectCreateDictionaryRepresentation([self frame])];
 }
 
 - (BOOL)shouldBeManaged {

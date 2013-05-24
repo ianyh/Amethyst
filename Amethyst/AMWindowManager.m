@@ -140,6 +140,11 @@
 
 - (void)moveFocusCounterClockwise {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
+    if (!focusedWindow) {
+        [self focusScreenAtIndex:1];
+        return;
+    }
+
     NSScreen *screen = [focusedWindow screen];
     NSArray *windows = [self activeWindowsForScreen:screen];
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
@@ -151,6 +156,11 @@
 
 - (void)moveFocusClockwise {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
+    if (!focusedWindow) {
+        [self focusScreenAtIndex:1];
+        return;
+    }
+
     NSScreen *screen = [focusedWindow screen];
     NSArray *windows = [self activeWindowsForScreen:screen];
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
@@ -161,6 +171,8 @@
 
 - (void)swapFocusedWindowToMain {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
+    if (!focusedWindow) return;
+
     NSScreen *screen = [focusedWindow screen];
     NSArray *windows = [self activeWindowsForScreen:screen];
     NSUInteger focusedWindowIndex = [self.activeWindows indexOfObject:focusedWindow];
@@ -172,6 +184,11 @@
 
 - (void)swapFocusedWindowCounterClockwise {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
+    if (!focusedWindow) {
+        [self focusScreenAtIndex:1];
+        return;
+    }
+
     NSScreen *screen = [focusedWindow screen];
     NSArray *windows = [self activeWindowsForScreen:screen];
 
@@ -187,6 +204,11 @@
 
 - (void)swapFocusedWindowClockwise {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
+    if (!focusedWindow) {
+        [self focusScreenAtIndex:1];
+        return;
+    }
+
     NSScreen *screen = [focusedWindow screen];
     NSArray *windows = [self activeWindowsForScreen:screen];
 
@@ -253,7 +275,7 @@
     
     [application observeNotification:kAXWindowCreatedNotification
                          withElement:application
-                            callback:^(AMAccessibilityElement *accessibilityElement) {
+                            handler:^(AMAccessibilityElement *accessibilityElement) {
                                 AMWindow *window = (AMWindow *)accessibilityElement;
                                 [self addWindow:window];
                             }];
@@ -300,25 +322,29 @@
     AMApplication *application = [self applicationWithProcessIdentifier:[window processIdentifier]];
     [application observeNotification:kAXUIElementDestroyedNotification
                          withElement:window
-                            callback:^(AMAccessibilityElement *accessibilityElement) {
+                            handler:^(AMAccessibilityElement *accessibilityElement) {
                                 [self removeWindow:window];
                             }];
     [application observeNotification:kAXWindowMiniaturizedNotification
                          withElement:window
-                            callback:^(AMAccessibilityElement *accessibilityElement) {
+                            handler:^(AMAccessibilityElement *accessibilityElement) {
                                 [self deactivateWindow:window];
                             }];
     [application observeNotification:kAXWindowDeminiaturizedNotification
                          withElement:window
-                            callback:^(AMAccessibilityElement *accessibilityElement) {
+                            handler:^(AMAccessibilityElement *accessibilityElement) {
                                 [self activateWindow:window];
                             }];
 }
 
 - (void)removeWindow:(AMWindow *)window {
     [self markScreenForReflow:[window screen]];
-    
-    // TODO: leaking memory here in the observation callbacks above.
+
+    AMApplication *application = [self applicationWithProcessIdentifier:[window processIdentifier]];
+    [application unobserveNotification:kAXUIElementDestroyedNotification withElement:window];
+    [application unobserveNotification:kAXWindowMiniaturizedNotification withElement:window];
+    [application unobserveNotification:kAXWindowDeminiaturizedNotification withElement:window];
+
     [self.activeWindows removeObject:window];
     [self.inactiveWindows removeObject:window];
 }

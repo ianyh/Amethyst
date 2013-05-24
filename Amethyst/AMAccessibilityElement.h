@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface AMAccessibilityElement : NSObject
+@interface AMAccessibilityElement : NSObject <NSCopying>
 @property (nonatomic, assign, readonly) AXUIElementRef axElementRef;
 
 - (id)init DEPRECATED_ATTRIBUTE;
