@@ -116,8 +116,9 @@
 
     AMAccessibilityElement *zoomButtonElement = [self elementForKey:kAXZoomButtonAttribute];
     CGRect zoomButtonFrame = zoomButtonElement.frame;
+    CGRect windowFrame = [self frame];
     
-    CGPoint mouseCursorPoint = { .x = CGRectGetMaxX(zoomButtonFrame) + 5.0, .y = CGRectGetMidY(zoomButtonFrame) };
+    CGPoint mouseCursorPoint = { .x = CGRectGetMaxX(zoomButtonFrame) + 5.0, .y = windowFrame.origin.y + 5.0 };
 
     CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
     CGEventRef mouseDownEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, mouseCursorPoint, kCGMouseButtonLeft);
