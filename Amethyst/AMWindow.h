@@ -17,9 +17,6 @@
 - (BOOL)isMinimized;
 - (BOOL)isResizable;
 
-- (CGRect)frame;
-- (void)setFrame:(CGRect)frame;
-
 - (NSScreen *)screen;
 - (void)moveToScreen:(NSScreen *)screen;
 

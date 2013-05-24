@@ -81,6 +81,10 @@
     [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_K modifiers:modifier2 handler:^{
         [windowManager swapFocusedWindowClockwise];
     }];
+
+    [hotKeyManager registerHotKeyWithKeyCode:kVK_RightArrow modifiers:modifier handler:^{
+        [windowManager pushToDesktopRight];
+    }];
 }
 
 @end

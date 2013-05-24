@@ -84,7 +84,7 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
 }
 
 - (void)installEventHandler {
-    EventTypeSpec eventTypeSpec = { .eventClass = kEventClassKeyboard, .eventKind = kEventHotKeyPressed };
+    EventTypeSpec eventTypeSpec = { .eventClass = kEventClassKeyboard, .eventKind = kEventHotKeyReleased };
     EventHandlerRef eventHandlerRef;
     OSStatus error;
 
