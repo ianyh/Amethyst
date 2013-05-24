@@ -117,12 +117,15 @@
     AMAccessibilityElement *zoomButtonElement = [self elementForKey:kAXZoomButtonAttribute];
     CGRect zoomButtonFrame = zoomButtonElement.frame;
     CGRect windowFrame = [self frame];
-    
+
+    CGEventRef defaultEvent = CGEventCreate(NULL);
+    CGPoint startingCursorPoint = CGEventGetLocation(defaultEvent);
     CGPoint mouseCursorPoint = { .x = CGRectGetMaxX(zoomButtonFrame) + 5.0, .y = windowFrame.origin.y + 5.0 };
 
     CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
     CGEventRef mouseDownEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, mouseCursorPoint, kCGMouseButtonLeft);
     CGEventRef mouseUpEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, mouseCursorPoint, kCGMouseButtonLeft);
+    CGEventRef mouseRestoreEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, startingCursorPoint, kCGMouseButtonLeft);
 
     CGKeyCode keyCode = [AMHotKeyManager keyCodeForNumber:@( space )];
 
@@ -144,10 +147,14 @@
     CGEventPost(kCGHIDEventTap, keyboardEventUp);
     // Let go of the window.
     CGEventPost(kCGHIDEventTap, mouseUpEvent);
+    // Move the cursor back to its previous position.
+    CGEventPost(kCGHIDEventTap, mouseRestoreEvent);
 
+    CFRelease(defaultEvent);
     CFRelease(mouseMoveEvent);
     CFRelease(mouseDownEvent);
     CFRelease(mouseUpEvent);
+    CFRelease(mouseRestoreEvent);
     CFRelease(keyboardEvent);
     CFRelease(keyboardEventUp);
 }
