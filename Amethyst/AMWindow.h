@@ -12,6 +12,7 @@
 
 + (AMWindow *)focusedWindow;
 
+- (BOOL)shouldBeManaged;
 - (BOOL)isHidden;
 - (BOOL)isMinimized;
 - (BOOL)isResizable;

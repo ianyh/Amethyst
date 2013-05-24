@@ -256,7 +256,6 @@
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 AMWindow *window = (AMWindow *)accessibilityElement;
                                 [self addWindow:window];
-                                [self markScreenForReflow:[window screen]];
                             }];
 }
 
@@ -288,7 +287,7 @@
 #pragma mark Windows Management
 
 - (void)addWindow:(AMWindow *)window {
-    if (![window isResizable]) return;
+    if (![window shouldBeManaged]) return;
     
     [self markScreenForReflow:[window screen]];
     
@@ -303,19 +302,16 @@
                          withElement:window
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 [self removeWindow:window];
-                                [self markScreenForReflow:[window screen]];
                             }];
     [application observeNotification:kAXWindowMiniaturizedNotification
                          withElement:window
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 [self deactivateWindow:window];
-                                [self markScreenForReflow:[window screen]];
                             }];
     [application observeNotification:kAXWindowDeminiaturizedNotification
                          withElement:window
                             callback:^(AMAccessibilityElement *accessibilityElement) {
                                 [self activateWindow:window];
-                                [self markScreenForReflow:[window screen]];
                             }];
 }
 

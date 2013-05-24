@@ -36,6 +36,17 @@
     return window;
 }
 
+- (BOOL)shouldBeManaged {
+    if (![self isResizable]) return NO;
+
+    NSString *subrole = [self stringForKey:kAXSubroleAttribute];
+
+    if (!subrole) return YES;
+    if ([subrole isEqualToString:(__bridge NSString *)kAXStandardWindowSubrole]) return YES;
+
+    return NO;
+}
+
 - (BOOL)isHidden {
     return [[self numberForKey:kAXHiddenAttribute] boolValue];
 }
