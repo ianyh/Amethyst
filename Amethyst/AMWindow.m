@@ -8,6 +8,7 @@
 
 #import "AMWindow.h"
 
+#import "AMHotKeyManager.h"
 #import "AMSystemWideElement.h"
 #import "NSScreen+FrameAdjustment.h"
 
@@ -100,6 +101,54 @@
 - (void)moveToScreen:(NSScreen *)screen {
     self.cachedScreen = nil;
     [self setPosition:[screen adjustedFrame].origin];
+}
+
+- (AMModifierFlags)eventFlagsForSpace:(NSUInteger)space {
+    AMModifierFlags eventFlags = kCGEventFlagMaskControl;
+    if (space > 10) {
+        eventFlags = eventFlags | kCGEventFlagMaskAlternate;
+    }
+    return eventFlags;
+}
+
+- (void)moveToSpace:(NSUInteger)space {
+    if (space > 16) return;
+
+    AMAccessibilityElement *zoomButtonElement = [self elementForKey:kAXZoomButtonAttribute];
+    CGRect zoomButtonFrame = zoomButtonElement.frame;
+    
+    CGPoint mouseCursorPoint = { .x = CGRectGetMaxX(zoomButtonFrame) + 5.0, .y = CGRectGetMidY(zoomButtonFrame) };
+
+    CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
+    CGEventRef mouseDownEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, mouseCursorPoint, kCGMouseButtonLeft);
+    CGEventRef mouseUpEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, mouseCursorPoint, kCGMouseButtonLeft);
+
+    CGKeyCode keyCode = [AMHotKeyManager keyCodeForNumber:@( space )];
+
+    CGEventRef keyboardEvent = CGEventCreateKeyboardEvent(NULL, keyCode, true);
+    CGEventRef keyboardEventUp = CGEventCreateKeyboardEvent(NULL, keyCode, false);
+
+    CGEventSetFlags(mouseMoveEvent, 0);
+    CGEventSetFlags(mouseDownEvent, 0);
+    CGEventSetFlags(mouseUpEvent, 0);
+    CGEventSetFlags(keyboardEvent, kCGEventFlagMaskControl);
+    CGEventSetFlags(keyboardEventUp, 0);
+
+    // Move the mouse into place at the window's toolbar
+    CGEventPost(kCGHIDEventTap, mouseMoveEvent);
+    // Mouse down to grab hold of the window
+    CGEventPost(kCGHIDEventTap, mouseDownEvent);
+    // Send the shortcut command to get Mission Control to switch spaces from under the window.
+    CGEventPost(kCGHIDEventTap, keyboardEvent);
+    CGEventPost(kCGHIDEventTap, keyboardEventUp);
+    // Let go of the window.
+    CGEventPost(kCGHIDEventTap, mouseUpEvent);
+
+    CFRelease(mouseMoveEvent);
+    CFRelease(mouseDownEvent);
+    CFRelease(mouseUpEvent);
+    CFRelease(keyboardEvent);
+    CFRelease(keyboardEventUp);
 }
 
 - (void)bringToFocus {

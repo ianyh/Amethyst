@@ -20,6 +20,8 @@
 - (NSScreen *)screen;
 - (void)moveToScreen:(NSScreen *)screen;
 
+- (void)moveToSpace:(NSUInteger)space;
+
 - (void)bringToFocus;
 
 @end

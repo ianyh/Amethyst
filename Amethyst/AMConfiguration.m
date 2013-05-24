@@ -8,8 +8,6 @@
 
 #import "AMConfiguration.h"
 
-#import <Carbon/Carbon.h>
-
 #import "AMHotKeyManager.h"
 #import "AMLayout.h"
 #import "AMScreenManager.h"
@@ -18,17 +16,16 @@
 @implementation AMConfiguration
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
-    NSUInteger modifier = NSAlternateKeyMask | NSShiftKeyMask;
-    NSUInteger modifier2 = modifier | NSControlKeyMask;
+    AMModifierFlags modifier = NSAlternateKeyMask | NSShiftKeyMask;
+    AMModifierFlags modifier2 = modifier | NSControlKeyMask;
+    AMModifierFlags modifier3 = NSAlternateKeyMask | NSControlKeyMask;
 
     [hotKeyManager registerHotKeyWithKeyCode:kVK_Space modifiers:modifier handler:^{
         [[windowManager focusedScreenManager] cycleLayout];
     }];
 
-    // ANSI 1-3 are consecutive values in the virtual layout.
-    // As far as I know Mac systems don't support more than three screens (laptop with 2 monitors) so this is probably fine
     for (NSUInteger screenIndex = 1; screenIndex <= 3; ++screenIndex) {
-        UInt16 keyCode = kVK_ANSI_1 + (screenIndex - 1);
+        AMKeyCode keyCode = [AMHotKeyManager keyCodeForNumber:@( screenIndex )];
         [hotKeyManager registerHotKeyWithKeyCode:keyCode modifiers:modifier handler:^{
             [windowManager focusScreenAtIndex:screenIndex];
         }];
@@ -82,9 +79,12 @@
         [windowManager swapFocusedWindowClockwise];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_RightArrow modifiers:modifier handler:^{
-        [windowManager pushToDesktopRight];
-    }];
+    for (NSUInteger space = 1; space <= 10; ++space) {
+        AMKeyCode keyCode = [AMHotKeyManager keyCodeForNumber:@( space )];
+        [hotKeyManager registerHotKeyWithKeyCode:keyCode modifiers:modifier3 handler:^{
+            [windowManager pushFocusedWindowToSpace:space];
+        }];
+    }
 }
 
 @end

@@ -15,8 +15,6 @@
 #import "AMWindow.h"
 #import "NSScreen+FrameAdjustment.h"
 
-#import <Carbon/Carbon.h>
-
 @interface AMWindowManager () <AMScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
 @property (nonatomic, strong) NSMutableArray *activeWindows;
@@ -224,31 +222,11 @@
     [self markScreenForReflow:[focusedWindow screen]];
 }
 
-- (void)pushToDesktopRight {
+- (void)pushFocusedWindowToSpace:(NSUInteger)space {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
     if (!focusedWindow) return;
-    
-    AMAccessibilityElement *zoomButtonElement = [focusedWindow elementForKey:kAXZoomButtonAttribute];
-    CGRect zoomButtonFrame = zoomButtonElement.frame;
 
-    CGPoint mouseCursorPoint = { .x = CGRectGetMaxX(zoomButtonFrame) + 5.0, .y = CGRectGetMidY(zoomButtonFrame) };
-
-    CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
-    CGEventRef mouseDownEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, mouseCursorPoint, kCGMouseButtonLeft);
-    CGEventRef mouseUpEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, mouseCursorPoint, kCGMouseButtonLeft);
-    CGEventRef keyboardEvent = CGEventCreateKeyboardEvent(NULL, kVK_ANSI_2, true);
-    CGEventRef keyboardEventUp = CGEventCreateKeyboardEvent(NULL, kVK_ANSI_2, false);
-    CGEventSetFlags(keyboardEvent, kCGEventFlagMaskControl);
-    
-    CGEventPost(kCGHIDEventTap, mouseMoveEvent);
-    CGEventPost(kCGHIDEventTap, mouseDownEvent);
-    CGEventPost(kCGHIDEventTap, keyboardEvent);
-    CGEventPost(kCGHIDEventTap, keyboardEventUp);
-    CGEventPost(kCGHIDEventTap, mouseUpEvent);
-    
-    CFRelease(mouseDownEvent);
-    CFRelease(mouseUpEvent);
-    CFRelease(keyboardEvent);
+    [focusedWindow moveToSpace:space];
 }
 
 #pragma mark Notification Handlers
