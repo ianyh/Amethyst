@@ -103,14 +103,6 @@
     [self setPosition:[screen adjustedFrame].origin];
 }
 
-- (AMModifierFlags)eventFlagsForSpace:(NSUInteger)space {
-    AMModifierFlags eventFlags = kCGEventFlagMaskControl;
-    if (space > 10) {
-        eventFlags = eventFlags | kCGEventFlagMaskAlternate;
-    }
-    return eventFlags;
-}
-
 - (void)moveToSpace:(NSUInteger)space {
     if (space > 16) return;
 
