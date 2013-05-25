@@ -17,5 +17,12 @@
 - (NSString *)stringForKey:(CFStringRef)accessibilityValueKey;
 - (NSNumber *)numberForKey:(CFStringRef)accessibilityValueKey;
 - (NSArray *)arrayForKey:(CFStringRef)accessibilityValueKey;
+- (AMAccessibilityElement *)elementForKey:(CFStringRef)accessibilityValueKey;
+
+- (CGRect)frame;
+- (void)setFrame:(CGRect)frame;
+- (void)setPosition:(CGPoint)position;
+- (void)setSize:(CGSize)size;
+
 - (pid_t)processIdentifier;
 @end

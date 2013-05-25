@@ -9,7 +9,13 @@
 #import <Foundation/Foundation.h>
 
 typedef void (^AMHotKeyHandler)(void);
+typedef UInt16 AMKeyCode;
+typedef NSUInteger AMModifierFlags;
+
+extern AMKeyCode AMKeyCodeInvalid;
 
 @interface AMHotKeyManager : NSObject
-- (void)registerHotKeyWithKeyCode:(UInt16)keyCode modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler;
++ (AMKeyCode)keyCodeForNumber:(NSNumber *)number;
+
+- (void)registerHotKeyWithKeyCode:(AMKeyCode)keyCode modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler;
 @end

@@ -27,4 +27,6 @@
 - (void)swapFocusedWindowCounterClockwise;
 - (void)swapFocusedWindowClockwise;
 
+- (void)pushFocusedWindowToSpace:(NSUInteger)space;
+
 @end

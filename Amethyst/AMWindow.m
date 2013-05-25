@@ -8,6 +8,7 @@
 
 #import "AMWindow.h"
 
+#import "AMHotKeyManager.h"
 #import "AMSystemWideElement.h"
 #import "NSScreen+FrameAdjustment.h"
 
@@ -48,19 +49,33 @@
     if (![self isResizable]) return NO;
 
     NSString *subrole = [self stringForKey:kAXSubroleAttribute];
-
+    
     if (!subrole) return YES;
     if ([subrole isEqualToString:(__bridge NSString *)kAXStandardWindowSubrole]) return YES;
-
+    
     return NO;
 }
 
-- (BOOL)isHidden {
-    return [[self numberForKey:kAXHiddenAttribute] boolValue];
-}
+- (BOOL)isActive {
+    if ([[self numberForKey:kAXHiddenAttribute] boolValue]) return NO;
+    if ([[self numberForKey:kAXMinimizedAttribute] boolValue]) return NO;
 
-- (BOOL)isMinimized {
-    return [[self numberForKey:kAXHiddenAttribute] boolValue];
+    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    pid_t processIdentifier = self.processIdentifier;
+    for (NSDictionary *dictionary in (__bridge NSArray *)windowDescriptions) {
+        pid_t windowOwnerProcessIdentifier = [dictionary[(__bridge NSString *)kCGWindowOwnerPID] intValue];
+        if (windowOwnerProcessIdentifier != processIdentifier) continue;
+
+        CGRect windowFrame;
+        NSDictionary *boundsDictionary = dictionary[(__bridge NSString *)kCGWindowBounds];
+        CGRectMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)boundsDictionary, &windowFrame);
+        if (!CGRectEqualToRect(windowFrame, self.frame)) continue;
+
+        NSNumber *windowOnScreen = dictionary[(__bridge NSString *)kCGWindowIsOnscreen];
+        if ([windowOnScreen boolValue]) return YES;
+    }
+
+    return NO;
 }
 
 - (BOOL)isResizable {
@@ -69,71 +84,6 @@
     if (error != kAXErrorSuccess) return NO;
     
     return sizeWriteable;
-}
-
-- (CGRect)frame {
-    CFTypeRef pointRef;
-    CFTypeRef sizeRef;
-    AXError error;
-    
-    error = AXUIElementCopyAttributeValue(self.axElementRef, kAXPositionAttribute, &pointRef);
-    if (error != kAXErrorSuccess || !pointRef) return CGRectNull;
-    
-    error = AXUIElementCopyAttributeValue(self.axElementRef, kAXSizeAttribute, &sizeRef);
-    if (error != kAXErrorSuccess || !sizeRef) return CGRectNull;
-    
-    CGPoint point;
-    CGSize size;
-    bool success;
-    
-    success = AXValueGetValue(pointRef, kAXValueCGPointType, &point);
-    if (!success) return CGRectNull;
-    
-    success = AXValueGetValue(sizeRef, kAXValueCGSizeType, &size);
-    if (!success) return CGRectNull;
-    
-    CGRect frame = { .origin.x = point.x, .origin.y = point.y, .size.width = size.width, .size.height = size.height };
-    
-    return frame;
-}
-
-- (void)setFrame:(CGRect)frame {
-    if (CGRectEqualToRect([self frame], frame)) return;
-
-    // For some reason the accessibility frameworks seem to have issues with changing size in different directions.
-    // e.g., increasing width while decreasing height doesn't seem to work correctly.
-    // Therefore we collapse the window to zero and then expand out to meet the new frame.
-    // This means that the first operation is always a contraction, and the second operation is always an expansion.
-    [self setPosition:CGPointZero];
-    [self setSize:CGSizeZero];
-    [self setPosition:frame.origin];
-    [self setSize:frame.size];
-}
-
-- (void)setPosition:(CGPoint)position {
-    AXValueRef positionRef = AXValueCreate(kAXValueCGPointType, &position);
-    AXError error;
-    
-    if (!CGPointEqualToPoint(position, [self frame].origin)) {
-        error = AXUIElementSetAttributeValue(self.axElementRef, kAXPositionAttribute, positionRef);
-        if (error != kAXErrorSuccess) {
-            NSLog(@"Position Error: %d", error);
-            return;
-        }
-    }
-}
-
-- (void)setSize:(CGSize)size {
-    AXValueRef sizeRef = AXValueCreate(kAXValueCGSizeType, &size);
-    AXError error;
-    
-    if (!CGSizeEqualToSize(size, [self frame].size)) {
-        error = AXUIElementSetAttributeValue(self.axElementRef, kAXSizeAttribute, sizeRef);
-        if (error != kAXErrorSuccess) {
-            NSLog(@"Size Error: %d", error);
-            return;
-        }
-    }
 }
 
 - (NSScreen *)screen {
@@ -165,6 +115,54 @@
 - (void)moveToScreen:(NSScreen *)screen {
     self.cachedScreen = nil;
     [self setPosition:[screen adjustedFrame].origin];
+}
+
+- (void)moveToSpace:(NSUInteger)space {
+    if (space > 16) return;
+
+    AMAccessibilityElement *zoomButtonElement = [self elementForKey:kAXZoomButtonAttribute];
+    CGRect zoomButtonFrame = zoomButtonElement.frame;
+    CGRect windowFrame = [self frame];
+
+    CGEventRef defaultEvent = CGEventCreate(NULL);
+    CGPoint startingCursorPoint = CGEventGetLocation(defaultEvent);
+    CGPoint mouseCursorPoint = { .x = CGRectGetMaxX(zoomButtonFrame) + 5.0, .y = windowFrame.origin.y + 5.0 };
+
+    CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
+    CGEventRef mouseDownEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, mouseCursorPoint, kCGMouseButtonLeft);
+    CGEventRef mouseUpEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseUp, mouseCursorPoint, kCGMouseButtonLeft);
+    CGEventRef mouseRestoreEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, startingCursorPoint, kCGMouseButtonLeft);
+
+    CGKeyCode keyCode = [AMHotKeyManager keyCodeForNumber:@( space )];
+
+    CGEventRef keyboardEvent = CGEventCreateKeyboardEvent(NULL, keyCode, true);
+    CGEventRef keyboardEventUp = CGEventCreateKeyboardEvent(NULL, keyCode, false);
+
+    CGEventSetFlags(mouseMoveEvent, 0);
+    CGEventSetFlags(mouseDownEvent, 0);
+    CGEventSetFlags(mouseUpEvent, 0);
+    CGEventSetFlags(keyboardEvent, kCGEventFlagMaskControl);
+    CGEventSetFlags(keyboardEventUp, 0);
+
+    // Move the mouse into place at the window's toolbar
+    CGEventPost(kCGHIDEventTap, mouseMoveEvent);
+    // Mouse down to grab hold of the window
+    CGEventPost(kCGHIDEventTap, mouseDownEvent);
+    // Send the shortcut command to get Mission Control to switch spaces from under the window.
+    CGEventPost(kCGHIDEventTap, keyboardEvent);
+    CGEventPost(kCGHIDEventTap, keyboardEventUp);
+    // Let go of the window.
+    CGEventPost(kCGHIDEventTap, mouseUpEvent);
+    // Move the cursor back to its previous position.
+    CGEventPost(kCGHIDEventTap, mouseRestoreEvent);
+
+    CFRelease(defaultEvent);
+    CFRelease(mouseMoveEvent);
+    CFRelease(mouseDownEvent);
+    CFRelease(mouseUpEvent);
+    CFRelease(mouseRestoreEvent);
+    CFRelease(keyboardEvent);
+    CFRelease(keyboardEventUp);
 }
 
 - (void)bringToFocus {

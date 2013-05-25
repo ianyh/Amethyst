@@ -66,7 +66,7 @@
     CFTypeRef valueRef;
     AXError error;
 
-    error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, (CFTypeRef *)&valueRef);
+    error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, &valueRef);
 
     if (error != kAXErrorSuccess || !valueRef) return nil;
     if (CFGetTypeID(valueRef) != CFStringGetTypeID()) return nil;
@@ -78,7 +78,7 @@
     CFTypeRef valueRef;
     AXError error;
 
-    error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, (CFTypeRef *)&valueRef);
+    error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, &valueRef);
 
     if (error != kAXErrorSuccess || !valueRef) return nil;
     if (CFGetTypeID(valueRef) != CFNumberGetTypeID() && CFGetTypeID(valueRef) != CFBooleanGetTypeID()) return nil;
@@ -95,6 +95,87 @@
     if (error != kAXErrorSuccess || !arrayRef) return nil;
 
     return CFBridgingRelease(arrayRef);
+}
+
+- (AMAccessibilityElement *)elementForKey:(CFStringRef)accessibilityValueKey {
+    CFTypeRef valueRef;
+    AXError error;
+
+    error = AXUIElementCopyAttributeValue(self.axElementRef, accessibilityValueKey, &valueRef);
+
+    if (error != kAXErrorSuccess || !valueRef) return nil;
+    if (CFGetTypeID(valueRef) != AXUIElementGetTypeID()) return nil;
+
+    AMAccessibilityElement *element = [[AMAccessibilityElement alloc] initWithAXElementRef:(AXUIElementRef)valueRef];
+
+    CFRelease(valueRef);
+
+    return element;
+}
+
+- (CGRect)frame {
+    CFTypeRef pointRef;
+    CFTypeRef sizeRef;
+    AXError error;
+    
+    error = AXUIElementCopyAttributeValue(self.axElementRef, kAXPositionAttribute, &pointRef);
+    if (error != kAXErrorSuccess || !pointRef) return CGRectNull;
+    
+    error = AXUIElementCopyAttributeValue(self.axElementRef, kAXSizeAttribute, &sizeRef);
+    if (error != kAXErrorSuccess || !sizeRef) return CGRectNull;
+    
+    CGPoint point;
+    CGSize size;
+    bool success;
+    
+    success = AXValueGetValue(pointRef, kAXValueCGPointType, &point);
+    if (!success) return CGRectNull;
+    
+    success = AXValueGetValue(sizeRef, kAXValueCGSizeType, &size);
+    if (!success) return CGRectNull;
+    
+    CGRect frame = { .origin.x = point.x, .origin.y = point.y, .size.width = size.width, .size.height = size.height };
+    
+    return frame;
+}
+
+- (void)setFrame:(CGRect)frame {
+    if (CGRectEqualToRect([self frame], frame)) return;
+    
+    // For some reason the accessibility frameworks seem to have issues with changing size in different directions.
+    // e.g., increasing width while decreasing height doesn't seem to work correctly.
+    // Therefore we collapse the window to zero and then expand out to meet the new frame.
+    // This means that the first operation is always a contraction, and the second operation is always an expansion.
+    [self setPosition:CGPointZero];
+    [self setSize:CGSizeZero];
+    [self setPosition:frame.origin];
+    [self setSize:frame.size];
+}
+
+- (void)setPosition:(CGPoint)position {
+    AXValueRef positionRef = AXValueCreate(kAXValueCGPointType, &position);
+    AXError error;
+    
+    if (!CGPointEqualToPoint(position, [self frame].origin)) {
+        error = AXUIElementSetAttributeValue(self.axElementRef, kAXPositionAttribute, positionRef);
+        if (error != kAXErrorSuccess) {
+            NSLog(@"Position Error: %d", error);
+            return;
+        }
+    }
+}
+
+- (void)setSize:(CGSize)size {
+    AXValueRef sizeRef = AXValueCreate(kAXValueCGSizeType, &size);
+    AXError error;
+    
+    if (!CGSizeEqualToSize(size, [self frame].size)) {
+        error = AXUIElementSetAttributeValue(self.axElementRef, kAXSizeAttribute, sizeRef);
+        if (error != kAXErrorSuccess) {
+            NSLog(@"Size Error: %d", error);
+            return;
+        }
+    }
 }
 
 - (pid_t)processIdentifier {

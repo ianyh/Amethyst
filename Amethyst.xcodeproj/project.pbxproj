@@ -10,6 +10,7 @@
 		4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */; };
 		4010E7EF17453EE00066097B /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
+		4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
 		402DB6EE1742E41A00D1C936 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6ED1742E41A00D1C936 /* main.m */; };
@@ -35,6 +36,8 @@
 		4010E7EE17453EE00066097B /* AMWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindow.m; sourceTree = "<group>"; };
 		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
 		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
+		4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRunningApplication+Manageable.h"; sourceTree = "<group>"; };
+		4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRunningApplication+Manageable.m"; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -185,6 +188,8 @@
 			children = (
 				40B337E61745D1830001D8FC /* NSScreen+FrameAdjustment.h */,
 				40B337E71745D1830001D8FC /* NSScreen+FrameAdjustment.m */,
+				4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */,
+				4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
 				40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */,
+				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
