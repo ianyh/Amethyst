@@ -8,7 +8,7 @@
 
 #import "AMHotKeyManager.h"
 
-#import <Carbon/Carbon.h>
+AMKeyCode AMKeyCodeInvalid = 0xFF;
 
 @interface AMHotKey : NSObject
 @property (nonatomic, assign) EventHotKeyRef hotKeyRef;
@@ -63,6 +63,39 @@
     }
 }
 
+#pragma mark Public Methods
+
++ (AMKeyCode)keyCodeForNumber:(NSNumber *)number {
+    NSString *string = [NSString stringWithFormat:@"%@", number];
+
+    if (string.length == 0) return AMKeyCodeInvalid;
+
+    switch ([string characterAtIndex:string.length - 1]) {
+        case '1':
+            return kVK_ANSI_1;
+        case '2':
+            return kVK_ANSI_2;
+        case '3':
+            return kVK_ANSI_3;
+        case '4':
+            return kVK_ANSI_4;
+        case '5':
+            return kVK_ANSI_5;
+        case '6':
+            return kVK_ANSI_6;
+        case '7':
+            return kVK_ANSI_7;
+        case '8':
+            return kVK_ANSI_8;
+        case '9':
+            return kVK_ANSI_9;
+        case '0':
+            return kVK_ANSI_0;
+        default:
+            return AMKeyCodeInvalid;
+    }
+}
+
 #pragma mark Event Handling
 
 OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData) {
@@ -84,7 +117,7 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
 }
 
 - (void)installEventHandler {
-    EventTypeSpec eventTypeSpec = { .eventClass = kEventClassKeyboard, .eventKind = kEventHotKeyPressed };
+    EventTypeSpec eventTypeSpec = { .eventClass = kEventClassKeyboard, .eventKind = kEventHotKeyReleased };
     EventHandlerRef eventHandlerRef;
     OSStatus error;
 
