@@ -35,7 +35,7 @@
     [super awakeFromNib];
 
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    [self.statusItem setTitle:@"AM"];
+    [self.statusItem setImage:[NSImage imageNamed:@"icon-statusitem"]];
     [self.statusItem setMenu:self.statusItemMenu];
     [self.statusItem setHighlightMode:YES];
 }
