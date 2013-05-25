@@ -140,7 +140,14 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-    if (CGRectEqualToRect([self frame], frame)) return;
+    CGRect currentFrame = self.frame;
+    if (CGPointEqualToPoint(currentFrame.origin, frame.origin)) {
+        if (abs(currentFrame.size.width - frame.size.width) < 5) {
+            if (abs(currentFrame.size.height - frame.size.height) < 5) {
+                return;
+            }
+        }
+    }
     
     // For some reason the accessibility frameworks seem to have issues with changing size in different directions.
     // e.g., increasing width while decreasing height doesn't seem to work correctly.

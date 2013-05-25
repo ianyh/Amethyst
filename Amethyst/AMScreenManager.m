@@ -16,7 +16,7 @@
 @interface AMScreenManager ()
 @property (nonatomic, strong) NSScreen *screen;
 
-@property (nonatomic, assign) BOOL needsReflow;
+@property (nonatomic, strong) NSTimer *reflowTimer;
 
 @property (nonatomic, strong) NSArray *layouts;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
@@ -45,18 +45,13 @@
 }
 
 - (void)setNeedsReflow {
-    self.needsReflow = YES;
-    double delayInSeconds = 0.01;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self reflow];
-    });
+    [self.reflowTimer invalidate];
+    self.reflowTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(reflow) userInfo:nil repeats:NO];
 }
 
 - (void)reflow {
-    if (!self.needsReflow) return;
-
-    self.needsReflow = NO;
+    [self.reflowTimer invalidate];
+    self.reflowTimer = nil;
 
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }
