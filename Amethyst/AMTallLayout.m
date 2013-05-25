@@ -35,6 +35,8 @@
 #pragma mark AMLayout
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
+    if (windows.count == 0) return;
+
     self.mainPaneCount = MIN([windows count], self.mainPaneCount);
 
     NSInteger secondaryPaneCount = [windows count] - self.mainPaneCount;
