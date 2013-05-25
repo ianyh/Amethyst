@@ -265,6 +265,21 @@
 }
 
 - (void)activeSpaceDidChange:(NSNotification *)notification {
+    NSArray *inactiveWindows = [self.inactiveWindows copy];
+    NSArray *activeWindows = [self.activeWindows copy];
+
+    for (AMWindow *window in inactiveWindows) {
+        if (window.isActive) {
+            
+            [self activateWindow:window];
+        }
+    }
+    for (AMWindow *window in activeWindows) {
+        if (!window.isActive) {
+            [self deactivateWindow:window];
+        }
+    }
+
     for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
         if (!runningApplication.isManageable) continue;
 
@@ -394,8 +409,8 @@
     
     [self markScreenForReflow:[window screen]];
     
-    [self.activeWindows addObject:window];
-    [self.inactiveWindows removeObject:window];
+    [self.activeWindows removeObject:window];
+    [self.inactiveWindows addObject:window];
 }
 
 - (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
