@@ -13,9 +13,7 @@
 + (AMWindow *)focusedWindow;
 
 - (BOOL)shouldBeManaged;
-- (BOOL)isHidden;
-- (BOOL)isMinimized;
-- (BOOL)isResizable;
+- (BOOL)isActive;
 
 - (NSScreen *)screen;
 - (void)moveToScreen:(NSScreen *)screen;

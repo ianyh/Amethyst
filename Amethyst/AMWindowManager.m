@@ -13,6 +13,7 @@
 #import "AMScreenManager.h"
 #import "AMTallLayout.h"
 #import "AMWindow.h"
+#import "NSRunningApplication+Manageable.h"
 #import "NSScreen+FrameAdjustment.h"
 
 @interface AMWindowManager () <AMScreenManagerDelegate>
@@ -26,6 +27,7 @@
 - (void)applicationDidTerminate:(NSNotification *)notification;
 - (void)applicationDidHide:(NSNotification *)notification;
 - (void)applicationDidUnhide:(NSNotification *)notification;
+- (void)activeSpaceDidChange:(NSNotification *)notification;
 - (void)screenParametersDidChange:(NSNotification *)notification;
 
 - (AMApplication *)applicationWithProcessIdentifier:(pid_t)processIdentifier;
@@ -54,6 +56,8 @@
         self.inactiveWindows = [NSMutableArray array];
 
         for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
+            if (!runningApplication.isManageable) continue;
+
             AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
             [self addApplication:application];
         }
@@ -74,6 +78,11 @@
                                                                selector:@selector(applicationDidUnhide:)
                                                                    name:NSWorkspaceDidUnhideApplicationNotification
                                                                  object:nil];
+        [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
+                                                               selector:@selector(activeSpaceDidChange:)
+                                                                   name:NSWorkspaceActiveSpaceDidChangeNotification
+                                                                 object:nil];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(screenParametersDidChange:)
                                                      name:NSApplicationDidChangeScreenParametersNotification
@@ -255,6 +264,19 @@
     [self activateApplication:application];
 }
 
+- (void)activeSpaceDidChange:(NSNotification *)notification {
+    for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
+        if (!runningApplication.isManageable) continue;
+
+        pid_t processIdentifier = runningApplication.processIdentifier;
+        AMApplication *existingApplication = [self applicationWithProcessIdentifier:processIdentifier];
+        [self removeApplication:existingApplication];
+
+        AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
+        [self addApplication:application];
+    }
+}
+
 - (void)screenParametersDidChange:(NSNotification *)notification {
     [self updateScreenManagers];
 }
@@ -316,14 +338,16 @@
 #pragma mark Windows Management
 
 - (void)addWindow:(AMWindow *)window {
+    if ([self.activeWindows containsObject:window] || [self.inactiveWindows containsObject:window]) return;
+
     if (![window shouldBeManaged]) return;
-    
+
     [self markScreenForReflow:[window screen]];
-    
-    if ([window isHidden] || [window isMinimized]) {
-        [self.inactiveWindows addObject:window];
-    } else {
+
+    if ([window isActive]) {
         [self.activeWindows addObject:window];
+    } else {
+        [self.inactiveWindows addObject:window];
     }
     
     AMApplication *application = [self applicationWithProcessIdentifier:[window processIdentifier]];

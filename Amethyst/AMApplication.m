@@ -90,17 +90,15 @@ void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRe
 #pragma mark Public Accessors
 
 - (NSArray *)windows {
-    if (!self.cachedWindows) {
-        self.cachedWindows = [NSMutableArray array];
-        NSArray *windowRefs = [self arrayForKey:kAXWindowsAttribute];
-        for (NSUInteger index = 0; index < windowRefs.count; ++index) {
-            AXUIElementRef windowRef = (__bridge AXUIElementRef)windowRefs[index];
-            AMWindow *window = [[AMWindow alloc] initWithAXElementRef:windowRef];
+    NSArray *windowRefs = [self arrayForKey:kAXWindowsAttribute];
+    NSMutableArray *windows = [NSMutableArray arrayWithCapacity:windowRefs.count];
+    for (NSUInteger index = 0; index < windowRefs.count; ++index) {
+        AXUIElementRef windowRef = (__bridge AXUIElementRef)windowRefs[index];
+        AMWindow *window = [[AMWindow alloc] initWithAXElementRef:windowRef];
 
-            [self.cachedWindows addObject:window];
-        }
+        [windows addObject:window];
     }
-    return self.cachedWindows;
+    return windows;
 }
 
 @end

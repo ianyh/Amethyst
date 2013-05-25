@@ -49,19 +49,18 @@
     if (![self isResizable]) return NO;
 
     NSString *subrole = [self stringForKey:kAXSubroleAttribute];
-
+    
     if (!subrole) return YES;
     if ([subrole isEqualToString:(__bridge NSString *)kAXStandardWindowSubrole]) return YES;
-
+    
     return NO;
 }
 
-- (BOOL)isHidden {
-    return [[self numberForKey:kAXHiddenAttribute] boolValue];
-}
+- (BOOL)isActive {
+    if ([[self numberForKey:kAXHiddenAttribute] boolValue]) return NO;
+    if ([[self numberForKey:kAXMinimizedAttribute] boolValue]) return NO;
 
-- (BOOL)isMinimized {
-    return [[self numberForKey:kAXMinimizedAttribute] boolValue];
+    return YES;
 }
 
 - (BOOL)isResizable {
