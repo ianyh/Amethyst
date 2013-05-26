@@ -50,6 +50,8 @@
     CGFloat mainPaneWindowWidth = round(screenFrame.size.width * (hasSecondaryPane ? self.mainPaneRatio : 1));
     CGFloat secondaryPaneWindowWidth = screenFrame.size.width - mainPaneWindowWidth;
 
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
         AMWindow *window = windows[windowIndex];
         CGRect windowFrame;
@@ -67,6 +69,16 @@
         }
 
         [window setFrame:windowFrame];
+
+        if ([window isEqual:focusedWindow]) {
+            windowFrame = window.frame;
+            if (!CGRectContainsRect(screenFrame, windowFrame)) {
+                windowFrame.origin.x = MIN(windowFrame.origin.x, CGRectGetMaxX(screenFrame) - CGRectGetWidth(windowFrame));
+                windowFrame.origin.y = MIN(windowFrame.origin.y, CGRectGetMaxY(screenFrame) - CGRectGetHeight(windowFrame));
+
+                [window setPosition:windowFrame.origin];
+            }
+        }
     }
 }
 

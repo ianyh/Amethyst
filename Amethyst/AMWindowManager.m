@@ -326,6 +326,12 @@
                                 AMWindow *window = (AMWindow *)accessibilityElement;
                                 [self addWindow:window];
                             }];
+    [application observeNotification:kAXFocusedWindowChangedNotification
+                         withElement:application
+                             handler:^(AMAccessibilityElement *accessibilityElement) {
+                                 AMWindow *focusedWindow = [AMWindow focusedWindow];
+                                 [self markScreenForReflow:[focusedWindow screen]];
+                             }];
 }
 
 - (void)removeApplication:(AMApplication *)application {
