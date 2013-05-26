@@ -140,11 +140,12 @@
 }
 
 - (void)setFrame:(CGRect)frame {
+    BOOL shouldSetSize = YES;
     CGRect currentFrame = self.frame;
     if (CGPointEqualToPoint(currentFrame.origin, frame.origin)) {
-        if (abs(currentFrame.size.width - frame.size.width) < 5) {
-            if (abs(currentFrame.size.height - frame.size.height) < 5) {
-                return;
+        if (abs(currentFrame.size.width - frame.size.width) < 25) {
+            if (abs(currentFrame.size.height - frame.size.height) < 25) {
+                shouldSetSize = NO;
             }
         }
     }
@@ -153,10 +154,10 @@
     // e.g., increasing width while decreasing height doesn't seem to work correctly.
     // Therefore we collapse the window to zero and then expand out to meet the new frame.
     // This means that the first operation is always a contraction, and the second operation is always an expansion.
-    [self setPosition:CGPointZero];
-    [self setSize:CGSizeZero];
+    if (shouldSetSize) [self setPosition:CGPointZero];
+    if (shouldSetSize) [self setSize:CGSizeZero];
     [self setPosition:frame.origin];
-    [self setSize:frame.size];
+    if (shouldSetSize) [self setSize:frame.size];
 }
 
 - (void)setPosition:(CGPoint)position {
