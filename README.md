@@ -16,6 +16,9 @@ logic and structure.
 Using Amethyst
 ==============
 
+The `Enable access for assistive devices` option on the Accessibility
+preferences pane must be enabled for Amethyst to function.
+
 Keyboard Shortcuts
 ------------------
 
@@ -40,3 +43,13 @@ And defines the following commands.
 * `mod2 + j` - move the focused window one space counterclockwise
 * `mod2 + k` - move the focused window one space clockwise
 * `mod1 + return` - swap the focused window with the main window
+
+Setting Up Spaces Support
+-------------------------
+
+Spaces are, unfortunately, not supported right out of the box. To enable it you
+must activate Mission Control's keyboard shortcuts for switching to specific
+Desktops, as Mac OS X calls them. This option is in the Keyboard Shortcuts tab
+of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
+[n]`. Amethyst is only able to send a window to the `n`th space if the shortcut
+`ctrl + n` is enabled.
