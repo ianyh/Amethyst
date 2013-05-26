@@ -12,6 +12,7 @@
 
 - (BOOL)isManageable {
     if ([self.bundleIdentifier hasPrefix:@"com.apple.dashboard"]) return NO;
+    if ([self.bundleIdentifier hasPrefix:@"com.apple.loginwindow"]) return NO;
 
     return YES;
 }
