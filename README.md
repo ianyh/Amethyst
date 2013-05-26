@@ -7,6 +7,8 @@ alternative to [fjolnir's](https://github.com/fjolnir) awesome
 Objective-C. It's expanded to include some more features like Spaces support not
 reliant on fragile private APIs.
 
+![Screenshot](https://raw.github.com/ianyh/Amethyst/gh-pages/images/screenshot-small.png)
+
 Credits
 -------
 
