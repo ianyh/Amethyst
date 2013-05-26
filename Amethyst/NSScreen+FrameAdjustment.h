@@ -10,6 +10,8 @@
 
 @interface NSScreen (FrameAdjustment)
 
+// Returns the frame of the screen relative to the main screen's frame and
+// accounting for any presence of a menu bar.
 - (CGRect)adjustedFrame;
 
 @end

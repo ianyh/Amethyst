@@ -8,8 +8,10 @@
 
 #import "AMAccessibilityElement.h"
 
+// Wrapper around the system-wide element.
 @interface AMSystemWideElement : AMAccessibilityElement
 
+// Returns a globally shared reference to the system-wide accessibility element.
 + (AMSystemWideElement *)systemWideElement;
 
 @end

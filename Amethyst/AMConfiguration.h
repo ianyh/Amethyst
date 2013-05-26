@@ -11,6 +11,16 @@
 @class AMHotKeyManager;
 @class AMWindowManager;
 
+// Object for managing the mapping of hot keys (managed by the AMHotKeyManager)
+// to window management operations (exposed by AMWindowManager)
 @interface AMConfiguration : NSObject
+
+// Establish a hot key to management operation mapping.
+//
+// hotKeyManager - The AMHotKeyManager responsible for maintaining hot key
+//                 handlers.
+// windowManager - The AMWindowManager that can be used for performing window
+//                 management operations.
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager;
+
 @end

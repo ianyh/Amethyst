@@ -10,6 +10,8 @@
 
 @interface NSRunningApplication (Manageable)
 
+// Returns YES is the application's windows can be managed by Amethyst, and NO
+// otherwise.
 - (BOOL)isManageable;
 
 @end
