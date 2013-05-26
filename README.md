@@ -19,6 +19,8 @@ Using Amethyst
 The `Enable access for assistive devices` option on the Accessibility
 preferences pane must be enabled for Amethyst to function.
 
+![Enable access for assistive devices](https://raw.github.com/ianyh/Amethyst/gh-pages/images/accessibility-window.png)
+
 Keyboard Shortcuts
 ------------------
 
@@ -53,3 +55,5 @@ Desktops, as Mac OS X calls them. This option is in the Keyboard Shortcuts tab
 of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 [n]`. Amethyst is only able to send a window to the `n`th space if the shortcut
 `ctrl + n` is enabled.
+
+![Mission Control keyboard shortcuts](https://raw.github.com/ianyh/Amethyst/gh-pages/images/missioncontrol-shortcuts.png)
