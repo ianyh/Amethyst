@@ -103,4 +103,8 @@ void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRe
     return self.cachedWindows;
 }
 
+- (void)dropWindowsCache {
+    self.cachedWindows = nil;
+}
+
 @end

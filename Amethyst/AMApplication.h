@@ -18,5 +18,6 @@ typedef void (^AMAXNotificationHandler)(AMAccessibilityElement *accessibilityEle
 - (void)unobserveNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement;
 
 - (NSArray *)windows;
+- (void)dropWindowsCache;
 
 @end

@@ -284,11 +284,14 @@
         if (!runningApplication.isManageable) continue;
 
         pid_t processIdentifier = runningApplication.processIdentifier;
-        AMApplication *existingApplication = [self applicationWithProcessIdentifier:processIdentifier];
-        [self removeApplication:existingApplication];
+        AMApplication *application = [self applicationWithProcessIdentifier:processIdentifier];
+        if (application) {
+            [application dropWindowsCache];
 
-        AMApplication *application = [AMApplication applicationWithRunningApplication:runningApplication];
-        [self addApplication:application];
+            for (AMWindow *window in application.windows) {
+                [self addWindow:window];
+            }
+        }
     }
 }
 
