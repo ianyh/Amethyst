@@ -10,6 +10,8 @@
 
 @interface AMAccessibilityElement ()
 @property (nonatomic, assign) AXUIElementRef axElementRef;
+
+@property (nonatomic, assign) CGSize minimumSize;
 @end
 
 @implementation AMAccessibilityElement
@@ -22,6 +24,8 @@
     self = [super init];
     if (self) {
         self.axElementRef = CFRetain(axElementRef);
+
+        self.minimumSize = CGSizeZero;
     }
     return self;
 }
@@ -140,24 +144,38 @@
 }
 
 - (void)setFrame:(CGRect)frame {
+    // Modify the frame to use the best known minimum size.
+    frame.size.width = MAX(self.minimumSize.width, frame.size.width);
+    frame.size.height = MAX(self.minimumSize.height, frame.size.height);
+
+    // We only want to set the size if the size has actually changed.
     BOOL shouldSetSize = YES;
     CGRect currentFrame = self.frame;
-    if (CGPointEqualToPoint(currentFrame.origin, frame.origin)) {
-        if (abs(currentFrame.size.width - frame.size.width) < 25) {
-            if (abs(currentFrame.size.height - frame.size.height) < 25) {
-                shouldSetSize = NO;
-            }
+    if (abs(currentFrame.size.width - frame.size.width) < 25) {
+        if (abs(currentFrame.size.height - frame.size.height) < 25) {
+            shouldSetSize = NO;
         }
     }
-    
+
     // For some reason the accessibility frameworks seem to have issues with changing size in different directions.
     // e.g., increasing width while decreasing height doesn't seem to work correctly.
-    // Therefore we collapse the window to zero and then expand out to meet the new frame.
+    // Therefore we collapse the window to minimum and then expand out to meet the new frame.
     // This means that the first operation is always a contraction, and the second operation is always an expansion.
-    if (shouldSetSize) [self setPosition:CGPointZero];
-    if (shouldSetSize) [self setSize:CGSizeZero];
+    if (shouldSetSize) {
+        [self setPosition:CGPointZero];
+        [self setSize:self.minimumSize];
+
+        currentFrame = self.frame;
+        if (!CGSizeEqualToSize(currentFrame.size, self.minimumSize)) {
+            self.minimumSize = currentFrame.size;
+        }
+    }
+
     [self setPosition:frame.origin];
-    if (shouldSetSize) [self setSize:frame.size];
+
+    if (shouldSetSize) {
+        [self setSize:frame.size];
+    }
 }
 
 - (void)setPosition:(CGPoint)position {
