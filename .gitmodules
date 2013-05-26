@@ -1,0 +1,3 @@
+[submodule "External/libextobjc"]
+	path = External/libextobjc
+	url = https://github.com/jspahrsummers/libextobjc

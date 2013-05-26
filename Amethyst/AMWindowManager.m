@@ -63,28 +63,28 @@
         }
         
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@selector(applicationDidLaunch:)
+                                                               selector:@checkselector(self, applicationDidLaunch:)
                                                                    name:NSWorkspaceDidLaunchApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@selector(applicationDidTerminate:)
+                                                               selector:@checkselector(self, applicationDidTerminate:)
                                                                    name:NSWorkspaceDidTerminateApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@selector(applicationDidHide:)
+                                                               selector:@checkselector(self, applicationDidHide:)
                                                                    name:NSWorkspaceDidHideApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@selector(applicationDidUnhide:)
+                                                               selector:@checkselector(self, applicationDidUnhide:)
                                                                    name:NSWorkspaceDidUnhideApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@selector(activeSpaceDidChange:)
+                                                               selector:@checkselector(self, activeSpaceDidChange:)
                                                                    name:NSWorkspaceActiveSpaceDidChangeNotification
                                                                  object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(screenParametersDidChange:)
+                                                 selector:@checkselector(self, screenParametersDidChange:)
                                                      name:NSApplicationDidChangeScreenParametersNotification
                                                    object:nil];
         

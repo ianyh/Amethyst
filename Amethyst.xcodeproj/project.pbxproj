@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		400F0F371752A50D00178F8A /* EXTSelectorChecking.m in Sources */ = {isa = PBXBuildFile; fileRef = 400F0F361752A50D00178F8A /* EXTSelectorChecking.m */; };
 		4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */; };
 		4010E7EF17453EE00066097B /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
@@ -33,6 +34,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		400F0F351752A50D00178F8A /* EXTSelectorChecking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTSelectorChecking.h; path = External/libextobjc/extobjc/EXTSelectorChecking.h; sourceTree = SOURCE_ROOT; };
+		400F0F361752A50D00178F8A /* EXTSelectorChecking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTSelectorChecking.m; path = External/libextobjc/extobjc/EXTSelectorChecking.m; sourceTree = SOURCE_ROOT; };
 		4010E7E917453ABF0066097B /* AMAccessibilityElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMAccessibilityElement.h; sourceTree = "<group>"; };
 		4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAccessibilityElement.m; sourceTree = "<group>"; };
 		4010E7ED17453EE00066097B /* AMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindow.h; sourceTree = "<group>"; };
@@ -91,6 +94,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		400F0F341752A4F600178F8A /* External */ = {
+			isa = PBXGroup;
+			children = (
+				400F0F351752A50D00178F8A /* EXTSelectorChecking.h */,
+				400F0F361752A50D00178F8A /* EXTSelectorChecking.m */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
 		4010E7EC17453ED10066097B /* Accessibility */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,6 +158,7 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				400F0F341752A4F600178F8A /* External */,
 				40B337EF174935ED0001D8FC /* Event Handling */,
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
@@ -295,6 +308,7 @@
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
 				40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */,
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
+				400F0F371752A50D00178F8A /* EXTSelectorChecking.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

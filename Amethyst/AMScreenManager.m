@@ -46,7 +46,7 @@
 
 - (void)setNeedsReflow {
     [self.reflowTimer invalidate];
-    self.reflowTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(reflow) userInfo:nil repeats:NO];
+    self.reflowTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@checkselector0(self, reflow) userInfo:nil repeats:NO];
 }
 
 - (void)reflow {
