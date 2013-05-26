@@ -66,6 +66,22 @@
 
 #pragma mark Public Accessors
 
+- (BOOL)isResizable {
+    Boolean sizeWriteable = false;
+    AXError error = AXUIElementIsAttributeSettable(self.axElementRef, kAXSizeAttribute, &sizeWriteable);
+    if (error != kAXErrorSuccess) return NO;
+    
+    return sizeWriteable;
+}
+
+- (BOOL)isMovable {
+    Boolean positionWriteable = false;
+    AXError error = AXUIElementIsAttributeSettable(self.axElementRef, kAXPositionAttribute, &positionWriteable);
+    if (error != kAXErrorSuccess) return NO;
+    
+    return positionWriteable;
+}
+
 - (NSString *)stringForKey:(CFStringRef)accessibilityValueKey {
     CFTypeRef valueRef;
     AXError error;
@@ -151,10 +167,14 @@
     // We only want to set the size if the size has actually changed.
     BOOL shouldSetSize = YES;
     CGRect currentFrame = self.frame;
-    if (abs(currentFrame.size.width - frame.size.width) < 25) {
-        if (abs(currentFrame.size.height - frame.size.height) < 25) {
-            shouldSetSize = NO;
+    if ([self isResizable]) {
+        if (abs(currentFrame.size.width - frame.size.width) < 25) {
+            if (abs(currentFrame.size.height - frame.size.height) < 25) {
+                shouldSetSize = NO;
+            }
         }
+    } else {
+        shouldSetSize = NO;
     }
 
     // For some reason the accessibility frameworks seem to have issues with changing size in different directions.

@@ -46,7 +46,7 @@
 }
 
 - (BOOL)shouldBeManaged {
-    if (![self isResizable]) return NO;
+    if (![self isMovable]) return NO;
 
     NSString *subrole = [self stringForKey:kAXSubroleAttribute];
     
@@ -76,14 +76,6 @@
     }
 
     return NO;
-}
-
-- (BOOL)isResizable {
-    Boolean sizeWriteable = NO;
-    AXError error = AXUIElementIsAttributeSettable(self.axElementRef, kAXSizeAttribute, &sizeWriteable);
-    if (error != kAXErrorSuccess) return NO;
-    
-    return sizeWriteable;
 }
 
 - (NSScreen *)screen {

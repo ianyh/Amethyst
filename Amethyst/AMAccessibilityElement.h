@@ -14,6 +14,9 @@
 - (id)init DEPRECATED_ATTRIBUTE;
 - (id)initWithAXElementRef:(AXUIElementRef)axElementRef;
 
+- (BOOL)isResizable;
+- (BOOL)isMovable;
+
 - (NSString *)stringForKey:(CFStringRef)accessibilityValueKey;
 - (NSNumber *)numberForKey:(CFStringRef)accessibilityValueKey;
 - (NSArray *)arrayForKey:(CFStringRef)accessibilityValueKey;
