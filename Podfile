@@ -1,0 +1,3 @@
+platform :osx
+
+pod 'libextobjc'

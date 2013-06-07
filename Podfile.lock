@@ -1,0 +1,95 @@
+PODS:
+  - libextobjc (0.2.5):
+    - libextobjc/EXTADT
+    - libextobjc/EXTAnnotation
+    - libextobjc/EXTAspect
+    - libextobjc/EXTBlockMethod
+    - libextobjc/EXTBlockTarget
+    - libextobjc/EXTConcreteProtocol
+    - libextobjc/EXTDispatchObject
+    - libextobjc/EXTFinalMethod
+    - libextobjc/EXTKeyPathCoding
+    - libextobjc/EXTMaybe
+    - libextobjc/EXTMixin
+    - libextobjc/EXTMultimethod
+    - libextobjc/EXTMultiObject
+    - libextobjc/EXTNil
+    - libextobjc/EXTPassthrough
+    - libextobjc/EXTPrivateMethod
+    - libextobjc/EXTProtocolCategory
+    - libextobjc/EXTSafeCategory
+    - libextobjc/EXTScope
+    - libextobjc/EXTSelectorChecking
+    - libextobjc/EXTSwizzle
+    - libextobjc/EXTSynthesize
+    - libextobjc/EXTTuple
+    - libextobjc/EXTVarargs
+    - libextobjc/NSInvocation+EXT
+    - libextobjc/NSMethodSignature+EXT
+    - libextobjc/RuntimeExtensions
+    - libextobjc/UmbrellaHeader
+  - libextobjc/EXTADT (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTAnnotation (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTAspect (0.2.5):
+    - libextobjc/RuntimeExtensions
+    - libffi
+  - libextobjc/EXTBlockMethod (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTBlockTarget (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTConcreteProtocol (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTDispatchObject (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTFinalMethod (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTKeyPathCoding (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMaybe (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMixin (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMultimethod (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTMultiObject (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTNil (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTPassthrough (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTPrivateMethod (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTProtocolCategory (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSafeCategory (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTScope (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSelectorChecking (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSwizzle (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSynthesize (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTTuple (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTVarargs (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSInvocation+EXT (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSMethodSignature+EXT (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.2.5)
+  - libextobjc/UmbrellaHeader (0.2.5)
+  - libffi (3.0.13)
+
+DEPENDENCIES:
+  - libextobjc
+
+SPEC CHECKSUMS:
+  libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
+
+COCOAPODS: 0.20.2

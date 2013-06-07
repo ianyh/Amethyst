@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		400F0F371752A50D00178F8A /* EXTSelectorChecking.m in Sources */ = {isa = PBXBuildFile; fileRef = 400F0F361752A50D00178F8A /* EXTSelectorChecking.m */; };
+		00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0530B06777D42039F419322 /* libPods.a */; };
 		4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */; };
 		4010E7EF17453EE00066097B /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
@@ -34,8 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		400F0F351752A50D00178F8A /* EXTSelectorChecking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTSelectorChecking.h; path = External/libextobjc/extobjc/EXTSelectorChecking.h; sourceTree = SOURCE_ROOT; };
-		400F0F361752A50D00178F8A /* EXTSelectorChecking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTSelectorChecking.m; path = External/libextobjc/extobjc/EXTSelectorChecking.m; sourceTree = SOURCE_ROOT; };
+		3500E790DD334ACB848077E1 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		4010E7E917453ABF0066097B /* AMAccessibilityElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMAccessibilityElement.h; sourceTree = "<group>"; };
 		4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAccessibilityElement.m; sourceTree = "<group>"; };
 		4010E7ED17453EE00066097B /* AMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindow.h; sourceTree = "<group>"; };
@@ -79,6 +78,7 @@
 		40B337FA174993D40001D8FC /* AMScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMScreenManager.m; sourceTree = "<group>"; };
 		40B338001749AC8A0001D8FC /* AMSystemWideElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSystemWideElement.h; sourceTree = "<group>"; };
 		40B338011749AC8A0001D8FC /* AMSystemWideElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSystemWideElement.m; sourceTree = "<group>"; };
+		B0530B06777D42039F419322 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,21 +88,13 @@
 			files = (
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
+				00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		400F0F341752A4F600178F8A /* External */ = {
-			isa = PBXGroup;
-			children = (
-				400F0F351752A50D00178F8A /* EXTSelectorChecking.h */,
-				400F0F361752A50D00178F8A /* EXTSelectorChecking.m */,
-			);
-			name = External;
-			sourceTree = "<group>";
-		};
 		4010E7EC17453ED10066097B /* Accessibility */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +116,7 @@
 				402DB6E71742E41A00D1C936 /* Amethyst */,
 				402DB6E01742E41A00D1C936 /* Frameworks */,
 				402DB6DF1742E41A00D1C936 /* Products */,
+				3500E790DD334ACB848077E1 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -141,6 +134,7 @@
 				402DB6FE1742E44E00D1C936 /* Carbon.framework */,
 				402DB6E11742E41A00D1C936 /* Cocoa.framework */,
 				402DB6E31742E41A00D1C936 /* Other Frameworks */,
+				B0530B06777D42039F419322 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -158,7 +152,6 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
-				400F0F341752A4F600178F8A /* External */,
 				40B337EF174935ED0001D8FC /* Event Handling */,
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
@@ -232,9 +225,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
+				C226F91CEBCF40B2B1E905D2 /* Check Pods Manifest.lock */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
+				A45D6998D05F454B956A7978 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -288,6 +283,37 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		A45D6998D05F454B956A7978 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+		C226F91CEBCF40B2B1E905D2 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		402DB6DA1742E41A00D1C936 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -308,7 +334,6 @@
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
 				40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */,
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
-				400F0F371752A50D00178F8A /* EXTSelectorChecking.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +428,7 @@
 		};
 		402DB6FC1742E41A00D1C936 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -416,6 +442,7 @@
 		};
 		402DB6FD1742E41A00D1C936 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
