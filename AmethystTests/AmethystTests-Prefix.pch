@@ -4,4 +4,7 @@
 
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
+    #import <Carbon/Carbon.h>
+
+    #import "EXTSelectorChecking.h"
 #endif

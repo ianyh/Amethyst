@@ -5,5 +5,5 @@ pod 'libextobjc'
 target :AmethystTests do
   pod 'Kiwi'
   pod 'Expecta'
-  pod 'OCMockito'
+  pod 'OCMock'
 end

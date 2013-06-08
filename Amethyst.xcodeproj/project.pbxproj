@@ -11,6 +11,23 @@
 		400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400299E3176393F10049001F /* SenTestingKit.framework */; };
 		400299E5176393F10049001F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		400299EB176393F10049001F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 400299E9176393F10049001F /* InfoPlist.strings */; };
+		400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 400299F5176396D30049001F /* AMFullscreenLayoutTest.m */; };
+		400299F717639AE40049001F /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
+		400299F817639AEA0049001F /* NSScreen+FrameAdjustment.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E71745D1830001D8FC /* NSScreen+FrameAdjustment.m */; };
+		400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
+		400299FA17639AF20049001F /* AMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6F41742E41A00D1C936 /* AMAppDelegate.m */; };
+		400299FB17639AF20049001F /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
+		400299FC17639AF20049001F /* AMScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337FA174993D40001D8FC /* AMScreenManager.m */; };
+		400299FD17639AF20049001F /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
+		400299FE17639AF70049001F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
+		40029A0017639B050049001F /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
+		40029A0117639B050049001F /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
+		40029A0217639B050049001F /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
+		40029A0317639B0F0049001F /* AMApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB722174537FE00D1C936 /* AMApplication.m */; };
+		40029A0417639B0F0049001F /* AMAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */; };
+		40029A0517639B0F0049001F /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
+		40029A0617639B0F0049001F /* AMSystemWideElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B338011749AC8A0001D8FC /* AMSystemWideElement.m */; };
+		40029A0717639BDA0049001F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */; };
 		4010E7EF17453EE00066097B /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
@@ -44,6 +61,7 @@
 		400299E8176393F10049001F /* AmethystTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AmethystTests-Info.plist"; sourceTree = "<group>"; };
 		400299EA176393F10049001F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		400299EF176393F10049001F /* AmethystTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Prefix.pch"; sourceTree = "<group>"; };
+		400299F5176396D30049001F /* AMFullscreenLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayoutTest.m; sourceTree = "<group>"; };
 		4010E7E917453ABF0066097B /* AMAccessibilityElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMAccessibilityElement.h; sourceTree = "<group>"; };
 		4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAccessibilityElement.m; sourceTree = "<group>"; };
 		4010E7ED17453EE00066097B /* AMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindow.h; sourceTree = "<group>"; };
@@ -97,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40029A0717639BDA0049001F /* Carbon.framework in Frameworks */,
 				400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */,
 				400299E5176393F10049001F /* Cocoa.framework in Frameworks */,
 				6718BDA0D79F4A19BED950F4 /* libPods-AmethystTests.a in Frameworks */,
@@ -120,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				400299E7176393F10049001F /* Supporting Files */,
+				400299F5176396D30049001F /* AMFullscreenLayoutTest.m */,
 			);
 			path = AmethystTests;
 			sourceTree = "<group>";
@@ -338,6 +358,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				400299EB176393F10049001F /* InfoPlist.strings in Resources */,
+				400299FE17639AF70049001F /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +454,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */,
+				400299F717639AE40049001F /* AMHotKeyManager.m in Sources */,
+				400299F817639AEA0049001F /* NSScreen+FrameAdjustment.m in Sources */,
+				400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */,
+				400299FA17639AF20049001F /* AMAppDelegate.m in Sources */,
+				400299FB17639AF20049001F /* AMWindowManager.m in Sources */,
+				400299FC17639AF20049001F /* AMScreenManager.m in Sources */,
+				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
+				40029A0017639B050049001F /* AMLayout.m in Sources */,
+				40029A0117639B050049001F /* AMFullscreenLayout.m in Sources */,
+				40029A0217639B050049001F /* AMTallLayout.m in Sources */,
+				40029A0317639B0F0049001F /* AMApplication.m in Sources */,
+				40029A0417639B0F0049001F /* AMAccessibilityElement.m in Sources */,
+				40029A0517639B0F0049001F /* AMWindow.m in Sources */,
+				40029A0617639B0F0049001F /* AMSystemWideElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
