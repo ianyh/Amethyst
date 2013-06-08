@@ -28,6 +28,7 @@
 		40029A0517639B0F0049001F /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
 		40029A0617639B0F0049001F /* AMSystemWideElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B338011749AC8A0001D8FC /* AMSystemWideElement.m */; };
 		40029A0717639BDA0049001F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
+		40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40029A081763A06A0049001F /* AMTallLayoutTest.m */; };
 		4010E7EB17453ABF0066097B /* AMAccessibilityElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */; };
 		4010E7EF17453EE00066097B /* AMWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7EE17453EE00066097B /* AMWindow.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
@@ -62,6 +63,7 @@
 		400299EA176393F10049001F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		400299EF176393F10049001F /* AmethystTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Prefix.pch"; sourceTree = "<group>"; };
 		400299F5176396D30049001F /* AMFullscreenLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayoutTest.m; sourceTree = "<group>"; };
+		40029A081763A06A0049001F /* AMTallLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallLayoutTest.m; sourceTree = "<group>"; };
 		4010E7E917453ABF0066097B /* AMAccessibilityElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMAccessibilityElement.h; sourceTree = "<group>"; };
 		4010E7EA17453ABF0066097B /* AMAccessibilityElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAccessibilityElement.m; sourceTree = "<group>"; };
 		4010E7ED17453EE00066097B /* AMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindow.h; sourceTree = "<group>"; };
@@ -140,6 +142,7 @@
 			children = (
 				400299E7176393F10049001F /* Supporting Files */,
 				400299F5176396D30049001F /* AMFullscreenLayoutTest.m */,
+				40029A081763A06A0049001F /* AMTallLayoutTest.m */,
 			);
 			path = AmethystTests;
 			sourceTree = "<group>";
@@ -469,6 +472,7 @@
 				40029A0417639B0F0049001F /* AMAccessibilityElement.m in Sources */,
 				40029A0517639B0F0049001F /* AMWindow.m in Sources */,
 				40029A0617639B0F0049001F /* AMSystemWideElement.m in Sources */,
+				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
