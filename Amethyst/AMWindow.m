@@ -71,8 +71,10 @@
         CGRectMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)boundsDictionary, &windowFrame);
         if (!CGRectEqualToRect(windowFrame, self.frame)) continue;
 
-        NSNumber *windowOnScreen = dictionary[(__bridge NSString *)kCGWindowIsOnscreen];
-        if ([windowOnScreen boolValue]) return YES;
+        NSString *windowTitle = dictionary[(__bridge NSString *)kCGWindowName];
+        if (![windowTitle isEqualToString:[self stringForKey:kAXTitleAttribute]]) continue;
+
+        return YES;
     }
 
     return NO;
