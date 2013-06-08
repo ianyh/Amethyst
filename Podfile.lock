@@ -1,4 +1,6 @@
 PODS:
+  - Expecta (0.2.1)
+  - Kiwi (2.1)
   - libextobjc (0.2.5):
     - libextobjc/EXTADT
     - libextobjc/EXTAnnotation
@@ -84,12 +86,22 @@ PODS:
   - libextobjc/RuntimeExtensions (0.2.5)
   - libextobjc/UmbrellaHeader (0.2.5)
   - libffi (3.0.13)
+  - OCHamcrest (1.9)
+  - OCMockito (0.23):
+    - OCHamcrest (= 1.9)
 
 DEPENDENCIES:
+  - Expecta
+  - Kiwi
   - libextobjc
+  - OCMockito
 
 SPEC CHECKSUMS:
+  Expecta: d46fb1bd78c90a83da0158b9b1e108de106e369f
+  Kiwi: 054ef97d0e50c279b21113a0880a906fa153a7fd
   libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
   libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
+  OCHamcrest: f8393efd5a49d91879be573635d6183effacc0ab
+  OCMockito: 2223021dd82697fc536c403d6850d2ed8ffae578
 
 COCOAPODS: 0.20.2
