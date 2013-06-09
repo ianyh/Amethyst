@@ -1,2 +1,2 @@
 language: objective-c
-script: xctool -workspace Amethyst.xcworkspace -scheme Amethyst build test
+script: xctool -workspace Amethyst.xcworkspace -scheme AmethystTests build test
