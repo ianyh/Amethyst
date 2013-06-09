@@ -11,6 +11,9 @@
 #import "AMConfiguration.h"
 #import "AMHotKeyManager.h"
 #import "AMWindowManager.h"
+#import "NSBundle+LoginItem.h"
+
+#import <CoreServices/CoreServices.h>
 
 @interface AMAppDelegate ()
 @property (nonatomic, strong) AMWindowManager *windowManager;
@@ -19,6 +22,9 @@
 
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) IBOutlet NSMenu *statusItemMenu;
+@property (nonatomic, strong) IBOutlet NSMenuItem *startAtLoginMenuItem;
+
+- (IBAction)toggleStartAtLogin:(id)sender;
 @end
 
 @implementation AMAppDelegate
@@ -35,9 +41,20 @@
     [super awakeFromNib];
 
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    [self.statusItem setImage:[NSImage imageNamed:@"icon-statusitem"]];
-    [self.statusItem setMenu:self.statusItemMenu];
-    [self.statusItem setHighlightMode:YES];
+    self.statusItem.image = [NSImage imageNamed:@"icon-statusitem"];
+    self.statusItem.menu = self.statusItemMenu;
+    self.statusItem.highlightMode = YES;
+
+    self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
+}
+
+- (IBAction)toggleStartAtLogin:(id)sender {
+    if (self.startAtLoginMenuItem.state == NSOffState) {
+        [NSBundle.mainBundle addToLoginItems];
+    } else {
+        [NSBundle.mainBundle removeFromLoginItems];
+    }
+    self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
 }
 
 @end

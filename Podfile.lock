@@ -1,5 +1,6 @@
 PODS:
   - Expecta (0.2.1)
+  - IYLoginItem (0.1)
   - Kiwi (2.1)
   - libextobjc (0.2.5):
     - libextobjc/EXTADT
@@ -90,12 +91,18 @@ PODS:
 
 DEPENDENCIES:
   - Expecta
+  - IYLoginItem (from `https://github.com/ianyh/IYLoginItem.git`)
   - Kiwi
   - libextobjc
   - OCMock
 
+EXTERNAL SOURCES:
+  IYLoginItem:
+    :git: https://github.com/ianyh/IYLoginItem.git
+
 SPEC CHECKSUMS:
   Expecta: d46fb1bd78c90a83da0158b9b1e108de106e369f
+  IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
   Kiwi: 054ef97d0e50c279b21113a0880a906fa153a7fd
   libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
   libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
