@@ -1,6 +1,8 @@
 Amethyst
 ========
 
+[![Build Status](https://travis-ci.org/ianyh/Amethyst.png?branch=master)](https://travis-ci.org/ianyh/Amethyst)
+
 Tiling window manager for OS X similar to xmonad. Was originally written as an
 alternative to [fjolnir's](https://github.com/fjolnir) awesome
 [xnomad](https://github.com/fjolnir/xnomad) but written in pure
