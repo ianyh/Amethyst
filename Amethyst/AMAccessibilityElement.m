@@ -182,7 +182,6 @@
     // Therefore we collapse the window to minimum and then expand out to meet the new frame.
     // This means that the first operation is always a contraction, and the second operation is always an expansion.
     if (shouldSetSize) {
-        [self setPosition:CGPointZero];
         [self setSize:self.minimumSize];
 
         currentFrame = self.frame;
