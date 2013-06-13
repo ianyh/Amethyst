@@ -55,6 +55,8 @@
 		40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
 		40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
 		40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */; };
+		40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
+		40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
 		6718BDA0D79F4A19BED950F4 /* libPods-AmethystTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */; };
 /* End PBXBuildFile section */
 
@@ -113,6 +115,8 @@
 		40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMColumnLayout.h; sourceTree = "<group>"; };
 		40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayout.m; sourceTree = "<group>"; };
 		40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayoutTest.m; sourceTree = "<group>"; };
+		40D82F06176A22A800DE1A40 /* AMWideLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWideLayout.h; sourceTree = "<group>"; };
+		40D82F07176A22A900DE1A40 /* AMWideLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWideLayout.m; sourceTree = "<group>"; };
 		B0530B06777D42039F419322 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6950BE9E95C4952BCA05552 /* Pods-AmethystTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.xcconfig"; path = "Pods/Pods-AmethystTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AmethystTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +274,8 @@
 				40B337EA17465AE00001D8FC /* AMTallLayout.m */,
 				40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */,
 				40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */,
+				40D82F06176A22A800DE1A40 /* AMWideLayout.h */,
+				40D82F07176A22A900DE1A40 /* AMWideLayout.m */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -484,6 +490,7 @@
 				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
 				40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
 				40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */,
+				40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +514,7 @@
 				40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */,
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
 				40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
+				40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

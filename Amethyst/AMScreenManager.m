@@ -12,6 +12,7 @@
 #import "AMFullscreenLayout.h"
 #import "AMLayout.h"
 #import "AMTallLayout.h"
+#import "AMWideLayout.h"
 #import "AMWindowManager.h"
 
 @interface AMScreenManager ()
@@ -40,6 +41,7 @@
                          [[AMTallLayout alloc] init],
                          [[AMFullscreenLayout alloc] init],
                          [[AMColumnLayout alloc] init],
+                         [[AMWideLayout alloc] init],
                          ];
         self.currentLayoutIndex = 0;
     }
