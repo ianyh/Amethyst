@@ -52,6 +52,9 @@
 		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
 		40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337FA174993D40001D8FC /* AMScreenManager.m */; };
 		40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B338011749AC8A0001D8FC /* AMSystemWideElement.m */; };
+		40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
+		40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
+		40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */; };
 		6718BDA0D79F4A19BED950F4 /* libPods-AmethystTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +110,9 @@
 		40B337FA174993D40001D8FC /* AMScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMScreenManager.m; sourceTree = "<group>"; };
 		40B338001749AC8A0001D8FC /* AMSystemWideElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSystemWideElement.h; sourceTree = "<group>"; };
 		40B338011749AC8A0001D8FC /* AMSystemWideElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSystemWideElement.m; sourceTree = "<group>"; };
+		40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMColumnLayout.h; sourceTree = "<group>"; };
+		40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayout.m; sourceTree = "<group>"; };
+		40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayoutTest.m; sourceTree = "<group>"; };
 		B0530B06777D42039F419322 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6950BE9E95C4952BCA05552 /* Pods-AmethystTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.xcconfig"; path = "Pods/Pods-AmethystTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AmethystTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +149,7 @@
 				400299E7176393F10049001F /* Supporting Files */,
 				400299F5176396D30049001F /* AMFullscreenLayoutTest.m */,
 				40029A081763A06A0049001F /* AMTallLayoutTest.m */,
+				40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */,
 			);
 			path = AmethystTests;
 			sourceTree = "<group>";
@@ -261,6 +268,8 @@
 				40B337E31745D0620001D8FC /* AMFullscreenLayout.m */,
 				40B337E917465ADF0001D8FC /* AMTallLayout.h */,
 				40B337EA17465AE00001D8FC /* AMTallLayout.m */,
+				40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */,
+				40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -473,6 +482,8 @@
 				40029A0517639B0F0049001F /* AMWindow.m in Sources */,
 				40029A0617639B0F0049001F /* AMSystemWideElement.m in Sources */,
 				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
+				40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
+				40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +506,7 @@
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
 				40B338021749AC8A0001D8FC /* AMSystemWideElement.m in Sources */,
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
+				40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

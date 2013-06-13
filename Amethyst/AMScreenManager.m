@@ -8,8 +8,9 @@
 
 #import "AMScreenManager.h"
 
-#import "AMLayout.h"
+#import "AMColumnLayout.h"
 #import "AMFullscreenLayout.h"
+#import "AMLayout.h"
 #import "AMTallLayout.h"
 #import "AMWindowManager.h"
 
@@ -38,6 +39,7 @@
         self.layouts = @[
                          [[AMTallLayout alloc] init],
                          [[AMFullscreenLayout alloc] init],
+                         [[AMColumnLayout alloc] init],
                          ];
         self.currentLayoutIndex = 0;
     }
