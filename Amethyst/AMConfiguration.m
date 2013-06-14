@@ -20,69 +20,69 @@
     AMModifierFlags modifier2 = modifier | NSControlKeyMask;
     AMModifierFlags modifier3 = NSAlternateKeyMask | NSControlKeyMask;
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_Space modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"space" modifiers:modifier handler:^{
         [[windowManager focusedScreenManager] cycleLayout];
     }];
 
-    for (NSUInteger screenIndex = 1; screenIndex <= 3; ++screenIndex) {
-        AMKeyCode keyCode = [AMHotKeyManager keyCodeForNumber:@( screenIndex )];
-        [hotKeyManager registerHotKeyWithKeyCode:keyCode modifiers:modifier handler:^{
-            [windowManager focusScreenAtIndex:screenIndex];
+    for (NSUInteger screenNumber = 1; screenNumber <= 3; ++screenNumber) {
+        NSString *screenNumberString = [NSString stringWithFormat:@"%d", (unsigned int)screenNumber];
+        [hotKeyManager registerHotKeyWithKeyString:screenNumberString modifiers:modifier handler:^{
+            [windowManager focusScreenAtIndex:screenNumber];
         }];
 
-        [hotKeyManager registerHotKeyWithKeyCode:keyCode modifiers:modifier2 handler:^{
-            [windowManager throwToScreenAtIndex:screenIndex];
+        [hotKeyManager registerHotKeyWithKeyString:screenNumberString modifiers:modifier2 handler:^{
+            [windowManager throwToScreenAtIndex:screenNumber];
         }];
     }
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_H modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"h" modifiers:modifier handler:^{
         [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
             [layout shrinkMainPane];
         }];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_L modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"l" modifiers:modifier handler:^{
         [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
             [layout expandMainPane];
         }];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_Comma modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"," modifiers:modifier handler:^{
         [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
             [layout increaseMainPaneCount];
         }];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_Period modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"." modifiers:modifier handler:^{
         [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
             [layout decreaseMainPaneCount];
         }];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_J modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"j" modifiers:modifier handler:^{
         [windowManager moveFocusCounterClockwise];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_K modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"k" modifiers:modifier handler:^{
         [windowManager moveFocusClockwise];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_Return modifiers:modifier handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"enter" modifiers:modifier handler:^{
         [windowManager swapFocusedWindowToMain];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_J modifiers:modifier2 handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"j" modifiers:modifier2 handler:^{
         [windowManager swapFocusedWindowCounterClockwise];
     }];
 
-    [hotKeyManager registerHotKeyWithKeyCode:kVK_ANSI_K modifiers:modifier2 handler:^{
+    [hotKeyManager registerHotKeyWithKeyString:@"k" modifiers:modifier2 handler:^{
         [windowManager swapFocusedWindowClockwise];
     }];
 
-    for (NSUInteger space = 1; space <= 10; ++space) {
-        AMKeyCode keyCode = [AMHotKeyManager keyCodeForNumber:@( space )];
-        [hotKeyManager registerHotKeyWithKeyCode:keyCode modifiers:modifier3 handler:^{
-            [windowManager pushFocusedWindowToSpace:space];
+    for (NSUInteger spaceNumber = 1; spaceNumber < 10; ++spaceNumber) {
+        NSString *spaceNumberString = [NSString stringWithFormat:@"%d", (unsigned int)spaceNumber];
+        [hotKeyManager registerHotKeyWithKeyString:spaceNumberString modifiers:modifier3 handler:^{
+            [windowManager pushFocusedWindowToSpace:spaceNumber];
         }];
     }
 }

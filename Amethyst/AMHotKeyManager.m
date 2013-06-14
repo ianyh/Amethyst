@@ -34,6 +34,8 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
 @end
 
 @interface AMHotKeyManager ()
+@property (nonatomic, copy) NSDictionary *stringToKeyCodes;
+
 @property (nonatomic, assign) EventHandlerRef eventHandlerRef;
 
 @property (nonatomic, strong) NSMutableArray *hotKeys;
@@ -48,6 +50,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     if (self) {
         self.hotKeys = [NSMutableArray array];
 
+        [self constructKeyCodeMap];
         [self installEventHandler];
     }
     return self;
@@ -94,6 +97,57 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
         default:
             return AMKeyCodeInvalid;
     }
+}
+
+#pragma mark Key Code Mapping
+
+- (void)constructKeyCodeMap {
+    if (self.stringToKeyCodes) return;
+
+    NSMutableDictionary *stringToKeyCodes = [NSMutableDictionary dictionary];
+
+    // Generate unicode character keymapping from keyboard layout data.  We go
+    // through all keycodes and create a map of string representations to a list
+    // of key codes. It has to map to a list because a string representation
+    // canmap to multiple codes (e.g., 1 and numpad 1 both have string
+    // representation "1").
+    TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
+    CFDataRef layoutData = TISGetInputSourceProperty(currentKeyboard, kTISPropertyUnicodeKeyLayoutData);
+    const UCKeyboardLayout *keyboardLayout = (const UCKeyboardLayout *)CFDataGetBytePtr(layoutData);
+
+    UInt32 keysDown = 0;
+    UniChar chars[4];
+    UniCharCount realLength;
+
+    for (AMKeyCode keyCode = 0; keyCode < AMKeyCodeInvalid; ++keyCode) {
+        UCKeyTranslate(keyboardLayout,
+                       keyCode,
+                       kUCKeyActionDisplay,
+                       0,
+                       LMGetKbdType(),
+                       kUCKeyTranslateNoDeadKeysBit,
+                       &keysDown,
+                       sizeof(chars) / sizeof(chars[0]),
+                       &realLength,
+                       chars);
+
+        NSString *string = (__bridge NSString *)CFStringCreateWithCharacters(kCFAllocatorDefault, chars, realLength);
+
+        if (stringToKeyCodes[string]) {
+            stringToKeyCodes[string] = [stringToKeyCodes[string] arrayByAddingObject:@(keyCode)];
+        } else {
+            stringToKeyCodes[string] = @[ @(keyCode) ];
+        }
+    }
+
+    CFRelease(currentKeyboard);
+
+    // Add codes for non-printable characters. They are not printable so they
+    // are not generated from the keyboard layout data.
+    stringToKeyCodes[@"space"] = @[ @(kVK_Space) ];
+    stringToKeyCodes[@"enter"] = @[ @(kVK_Return) ];
+
+    self.stringToKeyCodes = stringToKeyCodes;
 }
 
 #pragma mark Event Handling
@@ -152,7 +206,18 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
         carbonModifiers = carbonModifiers | controlKey;
     }
 
-    return carbonModifiers;
+    return carbonModifie// Registers a global hot key handler.
+    //
+    // keyCode   - The virtual code representing the key on the keyboard for the hot
+    //             key.
+    // modifiers - The modifiers mask representing some combination of modifier keys
+    //             on the keyboard. Masks should be OR'd together.
+    // handler   - The block to be called when the hot key is released.
+    //
+    // Note: handlers are called on key released, not key pressed. Repeats are not
+    //       recognized, i.e., holding down a hot key will not send multiple calls
+    //       to the handler.
+rs;
 }
 
 - (void)registerHotKeyWithKeyCode:(UInt16)keyCode modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler {
@@ -168,6 +233,19 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
     }
 
     [self.hotKeys addObject:[[AMHotKey alloc] initWithHotKeyRef:hotKeyRef handler:handler]];
+}
+
+- (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler {
+    NSArray *keyCodes = self.stringToKeyCodes[string.lowercaseString];
+
+    if (keyCodes.count == 0) {
+        NSLog(@"String \"%@\" does not map to any keycodes", string);
+        return;
+    }
+
+    for (NSNumber *keyCode in keyCodes) {
+        [self registerHotKeyWithKeyCode:keyCode.unsignedShortValue modifiers:modifiers handler:handler];
+    }
 }
 
 @end
