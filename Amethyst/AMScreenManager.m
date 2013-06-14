@@ -65,7 +65,7 @@
 }
 
 - (void)updateCurrentLayout:(AMScreenManagerLayoutUpdater)updater {
-    updater([self currentLayout]);
+    updater(self.currentLayout);
     [self setNeedsReflow];
 }
 
@@ -74,17 +74,17 @@
 }
 
 - (void)cycleLayout {
-    self.currentLayoutIndex = (self.currentLayoutIndex + 1) % [self.layouts count];
+    self.currentLayoutIndex = (self.currentLayoutIndex + 1) % self.layouts.count;
     [self setNeedsReflow];
 }
 
 - (void)shrinkMainPane {
-    [[self currentLayout] shrinkMainPane];
+    [self.currentLayout shrinkMainPane];
     [self setNeedsReflow];
 }
 
 - (void)expandMainPane {
-    [[self currentLayout] expandMainPane];
+    [self.currentLayout expandMainPane];
     [self setNeedsReflow];
 }
 

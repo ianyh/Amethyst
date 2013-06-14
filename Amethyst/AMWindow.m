@@ -42,11 +42,11 @@
 #pragma mark NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ <frame: %@>", [super description], CGRectCreateDictionaryRepresentation([self frame])];
+    return [NSString stringWithFormat:@"%@ <frame: %@>", super.description, CGRectCreateDictionaryRepresentation(self.frame)];
 }
 
 - (BOOL)shouldBeManaged {
-    if (![self isMovable]) return NO;
+    if (!self.isMovable) return NO;
 
     NSString *subrole = [self stringForKey:kAXSubroleAttribute];
     
@@ -85,22 +85,22 @@
     //   - Better performance
     //   - Window destruction leaves us with no way to compute the screen but we still need an accurate reference.
     if (!self.cachedScreen) {
-        CGRect frame = [self frame];
+        CGRect frame = self.frame;
         
         if (CGRectIsNull(frame)) {
-            self.cachedScreen = [NSScreen mainScreen];
+            self.cachedScreen = NSScreen.mainScreen;
         } else {
             CGPoint center = { .x = CGRectGetMidX(frame), .y = CGRectGetMidY(frame) };
             
-            for (NSScreen *screen in [NSScreen screens]) {
-                CGRect screenFrame = [screen adjustedFrame];
+            for (NSScreen *screen in NSScreen.screens) {
+                CGRect screenFrame = screen.adjustedFrame;
                 if (CGRectContainsPoint(screenFrame, center)) {
                     self.cachedScreen = screen;
                 }
             }
         }
         
-        self.cachedScreen = self.cachedScreen ?: [NSScreen mainScreen];
+        self.cachedScreen = self.cachedScreen ?: NSScreen.mainScreen;
     }
     
     return self.cachedScreen;
@@ -108,7 +108,7 @@
 
 - (void)moveToScreen:(NSScreen *)screen {
     self.cachedScreen = nil;
-    [self setPosition:[screen adjustedFrame].origin];
+    self.position = screen.adjustedFrame.origin;
 }
 
 - (void)moveToSpace:(NSUInteger)space {
@@ -116,7 +116,7 @@
 
     AMAccessibilityElement *zoomButtonElement = [self elementForKey:kAXZoomButtonAttribute];
     CGRect zoomButtonFrame = zoomButtonElement.frame;
-    CGRect windowFrame = [self frame];
+    CGRect windowFrame = self.frame;
 
     CGEventRef defaultEvent = CGEventCreate(NULL);
     CGPoint startingCursorPoint = CGEventGetLocation(defaultEvent);
@@ -160,7 +160,7 @@
 }
 
 - (void)bringToFocus {
-    NSRunningApplication *runningApplication = [NSRunningApplication runningApplicationWithProcessIdentifier:[self processIdentifier]];
+    NSRunningApplication *runningApplication = [NSRunningApplication runningApplicationWithProcessIdentifier:self.processIdentifier];
     [runningApplication activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
 
     AXUIElementPerformAction(self.axElementRef, kAXRaiseAction);

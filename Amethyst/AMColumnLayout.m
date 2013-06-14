@@ -40,7 +40,7 @@
                 windowFrame.origin.x = MIN(windowFrame.origin.x, CGRectGetMaxX(screenFrame) - CGRectGetWidth(windowFrame));
                 windowFrame.origin.y = MIN(windowFrame.origin.y, CGRectGetMaxY(screenFrame) - CGRectGetHeight(windowFrame));
 
-                [window setPosition:windowFrame.origin];
+                window.position = windowFrame.origin;
             }
         }
     }

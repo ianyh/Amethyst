@@ -11,7 +11,7 @@
 @implementation NSScreen (FrameAdjustment)
 
 - (BOOL)hasMenuBar {
-    NSArray *screens = [NSScreen screens];
+    NSArray *screens = NSScreen.screens;
     
     if (screens.count == 0) return NO;
     
@@ -26,7 +26,7 @@
 
     // If the screen has the menu bar adjust the frame accordingly.
     // Don't use visibleFrame as it doesn't actually work correctly for our purposes.
-    if ([self hasMenuBar]) {
+    if (self.hasMenuBar) {
         frame.origin.y += 22.0;
         frame.size.height -= 22.0;
     }

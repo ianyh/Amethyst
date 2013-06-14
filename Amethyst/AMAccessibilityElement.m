@@ -37,7 +37,7 @@
 #pragma mark NSObject
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"%@ <Title: %@> <pid: %d>", [super description], [self stringForKey:kAXTitleAttribute], [self processIdentifier]];
+    return [NSString stringWithFormat:@"%@ <Title: %@> <pid: %d>", super.description, [self stringForKey:kAXTitleAttribute], self.processIdentifier];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -167,7 +167,7 @@
     // We only want to set the size if the size has actually changed.
     BOOL shouldSetSize = YES;
     CGRect currentFrame = self.frame;
-    if ([self isResizable]) {
+    if (self.isResizable) {
         if (abs(currentFrame.size.width - frame.size.width) < 25) {
             if (abs(currentFrame.size.height - frame.size.height) < 25) {
                 shouldSetSize = NO;
@@ -182,7 +182,7 @@
     // Therefore we collapse the window to minimum and then expand out to meet the new frame.
     // This means that the first operation is always a contraction, and the second operation is always an expansion.
     if (shouldSetSize) {
-        [self setSize:self.minimumSize];
+        self.size = self.minimumSize;
 
         currentFrame = self.frame;
         if (!CGSizeEqualToSize(currentFrame.size, self.minimumSize)) {
@@ -190,10 +190,10 @@
         }
     }
 
-    [self setPosition:frame.origin];
+    self.position = frame.origin;
 
     if (shouldSetSize) {
-        [self setSize:frame.size];
+        self.size = frame.size;
     }
 }
 

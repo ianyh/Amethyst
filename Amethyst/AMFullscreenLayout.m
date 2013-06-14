@@ -15,10 +15,10 @@
 @implementation AMFullscreenLayout
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-    CGRect screenFrame = [screen adjustedFrame];
+    CGRect screenFrame = screen.adjustedFrame;
 
     for (AMWindow *window in windows) {
-        [window setFrame:screenFrame];
+        window.frame = screenFrame;
     }
 }
 

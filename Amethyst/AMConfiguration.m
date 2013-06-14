@@ -21,7 +21,7 @@
     AMModifierFlags modifier3 = NSAlternateKeyMask | NSControlKeyMask;
 
     [hotKeyManager registerHotKeyWithKeyString:@"space" modifiers:modifier handler:^{
-        [[windowManager focusedScreenManager] cycleLayout];
+        [windowManager.focusedScreenManager cycleLayout];
     }];
 
     for (NSUInteger screenNumber = 1; screenNumber <= 3; ++screenNumber) {

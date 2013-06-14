@@ -30,7 +30,7 @@
 #pragma mark Lifecycle
 
 + (instancetype)applicationWithRunningApplication:(NSRunningApplication *)runningApplication {
-    AXUIElementRef axElementRef = AXUIElementCreateApplication([runningApplication processIdentifier]);
+    AXUIElementRef axElementRef = AXUIElementCreateApplication(runningApplication.processIdentifier);
     AMApplication *application = [[AMApplication alloc] initWithAXElementRef:axElementRef];
     CFRelease(axElementRef);
 
@@ -39,7 +39,7 @@
 
 - (void)dealloc {
     if (_observerRef) {
-        for (AMAccessibilityElement *element in [self.elementToObservations allKeys]) {
+        for (AMAccessibilityElement *element in self.elementToObservations.allKeys) {
             for (AMApplicationObservation *observation in self.elementToObservations[element]) {
                 AXObserverRemoveNotification(_observerRef, element.axElementRef, (__bridge CFStringRef)observation.notification);
             }
@@ -58,7 +58,7 @@ void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRe
 - (void)observeNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement handler:(AMAXNotificationHandler)handler {
     if (!self.observerRef) {
         AXObserverRef observerRef;
-        AXError error = AXObserverCreate([self processIdentifier], &observerCallback, &observerRef);
+        AXError error = AXObserverCreate(self.processIdentifier, &observerCallback, &observerRef);
 
         if (error != kAXErrorSuccess) return;
 

@@ -50,7 +50,7 @@
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height * (hasSecondaryPane ? self.mainPaneRatio : 1));
     CGFloat secondaryPaneWindowHeight = screenFrame.size.width - mainPaneWindowHeight;
     
-    AMWindow *focusedWindow = AMWindow.focusedWindow;
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
 
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
         AMWindow *window = windows[windowIndex];
