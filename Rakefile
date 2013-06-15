@@ -1,3 +1,9 @@
 task :test do
-  system 'rake test'
+  system 'xctool build test'
 end
+
+task :install do
+  system 'xcodebuild install'
+end
+
+task :default => :test
