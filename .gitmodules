@@ -1,3 +1,3 @@
 [submodule "Sparkle"]
 	path = Sparkle
-	url = git://github.com/andymatuschak/Sparkle.git
+	url = https://github.com/ianyh/Sparkle.git
