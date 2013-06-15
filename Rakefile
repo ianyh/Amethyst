@@ -3,7 +3,7 @@ task :test do
 end
 
 task :install do
-  system 'xcodebuild install'
+  system 'xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst -configuration Release install'
 end
 
 task :default => :test
