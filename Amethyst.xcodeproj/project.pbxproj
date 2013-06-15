@@ -36,6 +36,8 @@
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
 		4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B317517CE100548DBE /* icon-statusitem.png */; };
 		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
+		4017800A176D262800C8216C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40CD2F8B176D0E5E00251338 /* Sparkle.framework */; };
+		4017800C176D268100C8216C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40CD2F8B176D0E5E00251338 /* Sparkle.framework */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
 		402DB6EE1742E41A00D1C936 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6ED1742E41A00D1C936 /* main.m */; };
@@ -101,6 +103,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		4017800B176D267900C8216C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4017800C176D268100C8216C /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40CD2F95176D0F4A00251338 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,6 +193,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4017800A176D262800C8216C /* Sparkle.framework in Frameworks */,
 				40029A0717639BDA0049001F /* Carbon.framework in Frameworks */,
 				400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */,
 				400299E5176393F10049001F /* Cocoa.framework in Frameworks */,
@@ -389,6 +402,7 @@
 				400299DF176393F10049001F /* Resources */,
 				400299E0176393F10049001F /* ShellScript */,
 				2009177CB0564662B8D8773B /* Copy Pods Resources */,
+				4017800B176D267900C8216C /* CopyFiles */,
 			);
 			buildRules = (
 			);

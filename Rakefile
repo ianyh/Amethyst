@@ -1,5 +1,5 @@
 task :test do
-  system 'xctool build test'
+  system 'xctool clean build test'
 end
 
 task :install do
