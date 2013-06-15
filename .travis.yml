@@ -1,2 +1,5 @@
 language: objective-c
-script: xctool -workspace Amethyst.xcworkspace -scheme AmethystTests build test
+before_install:
+        - brew update
+        - brew install xctool
+script: xctool build test

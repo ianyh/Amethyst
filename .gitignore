@@ -16,3 +16,4 @@ DerivedData
 .idea/
 *.hmap
 Pods
+build
