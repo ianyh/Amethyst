@@ -788,7 +788,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
@@ -803,7 +802,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DSTROOT = /;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
