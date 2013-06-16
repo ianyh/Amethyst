@@ -8,11 +8,8 @@
 
 #import "AMScreenManager.h"
 
-#import "AMColumnLayout.h"
-#import "AMFullscreenLayout.h"
+#import "AMConfiguration.h"
 #import "AMLayout.h"
-#import "AMTallLayout.h"
-#import "AMWideLayout.h"
 #import "AMWindowManager.h"
 
 @interface AMScreenManager ()
@@ -20,7 +17,7 @@
 
 @property (nonatomic, strong) NSTimer *reflowTimer;
 
-@property (nonatomic, strong) NSArray *layouts;
+@property (nonatomic, copy) NSArray *layouts;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
 @end
@@ -37,12 +34,12 @@
         self.delegate = delegate;
 
         self.screen = screen;
-        self.layouts = @[
-                         [[AMTallLayout alloc] init],
-                         [[AMFullscreenLayout alloc] init],
-                         [[AMColumnLayout alloc] init],
-                         [[AMWideLayout alloc] init],
-                         ];
+
+        NSMutableArray *layouts = [NSMutableArray array];
+        for (Class layoutClass in [[AMConfiguration sharedConfiguration] layouts]) {
+            [layouts addObject:[[layoutClass alloc] init]];
+        }
+        self.layouts = layouts;
         self.currentLayoutIndex = 0;
     }
     return self;

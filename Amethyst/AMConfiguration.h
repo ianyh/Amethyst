@@ -15,6 +15,12 @@
 // to window management operations (exposed by AMWindowManager)
 @interface AMConfiguration : NSObject
 
+// Returns the globally shared configuration.
++ (AMConfiguration *)sharedConfiguration;
+
+// Loads configuration.
+- (void)loadConfiguration;
+
 // Establish a hot key to management operation mapping.
 //
 // hotKeyManager - The AMHotKeyManager responsible for maintaining hot key
@@ -22,5 +28,8 @@
 // windowManager - The AMWindowManager that can be used for performing window
 //                 management operations.
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager;
+
+// Returns an array of AMLayout Class objects to generate layouts from.
+- (NSArray *)layouts;
 
 @end

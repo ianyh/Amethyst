@@ -9,11 +9,55 @@
 #import "AMConfiguration.h"
 
 #import "AMHotKeyManager.h"
+#import "AMWideLayout.h"
+#import "AMTallLayout.h"
+#import "AMFullscreenLayout.h"
+#import "AMColumnLayout.h"
 #import "AMLayout.h"
 #import "AMScreenManager.h"
 #import "AMWindowManager.h"
 
+static NSString *const AMConfigurationLayoutsKey = @"layouts";
+
+@interface AMConfiguration ()
+@property (nonatomic, copy) NSDictionary *configuration;
+@end
+
 @implementation AMConfiguration
+
+#pragma mark Lifecycle
+
++ (AMConfiguration *)sharedConfiguration {
+    static AMConfiguration *sharedConfiguration;
+    @synchronized (AMConfiguration.class) {
+        if (!sharedConfiguration) sharedConfiguration = [[AMConfiguration alloc] init];
+        return sharedConfiguration;
+    }
+}
+
+#pragma mark Configuration Loading
+
+- (void)loadConfiguration {
+    [self loadConfigurationFile];
+}
+
+- (void)loadConfigurationFile {
+    NSString *amethystConfigPath = [NSHomeDirectory() stringByAppendingPathComponent:@".amethyst"];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:amethystConfigPath]) return;
+
+    NSData *data = [NSData dataWithContentsOfFile:amethystConfigPath];
+    NSError *error;
+
+    NSDictionary *configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+    if (error) {
+        NSLog(@"error loading configuration: %@", error);
+        return;
+    }
+
+    self.configuration = configuration;
+}
+
+#pragma mark Hot Key Mapping
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
     AMModifierFlags modifier = NSAlternateKeyMask | NSShiftKeyMask;
@@ -85,6 +129,37 @@
             [windowManager pushFocusedWindowToSpace:spaceNumber];
         }];
     }
+}
+
++ (Class)layoutClassForString:(NSString *)layoutString {
+    if ([layoutString isEqualToString:@"tall"]) return [AMTallLayout class];
+    if ([layoutString isEqualToString:@"wide"]) return [AMWideLayout class];
+    if ([layoutString isEqualToString:@"fullscreen"]) return [AMFullscreenLayout class];
+    if ([layoutString isEqualToString:@"column"]) return [AMColumnLayout class];
+    return nil;
+}
+
+- (NSArray *)layouts {
+    if (self.configuration[AMConfigurationLayoutsKey]) {
+        NSMutableArray *layouts = [NSMutableArray array];
+        for (NSString *layoutString in self.configuration[AMConfigurationLayoutsKey]) {
+            Class layoutClass = [self.class layoutClassForString:layoutString];
+            if (!layoutClass) {
+                NSLog(@"Unrecognized layout string: %@", layoutString);
+                continue;
+            }
+
+            [layouts addObject:layoutClass];
+        }
+        return layouts;
+    }
+
+    return @[
+             AMTallLayout.class,
+             AMWideLayout.class,
+             AMFullscreenLayout.class,
+             AMColumnLayout.class
+             ];
 }
 
 @end

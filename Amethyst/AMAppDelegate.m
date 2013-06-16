@@ -18,7 +18,6 @@
 @interface AMAppDelegate ()
 @property (nonatomic, strong) AMWindowManager *windowManager;
 @property (nonatomic, strong) AMHotKeyManager *hotKeyManager;
-@property (nonatomic, strong) AMConfiguration *configuration;
 
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) IBOutlet NSMenu *statusItemMenu;
@@ -30,11 +29,12 @@
 @implementation AMAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [AMConfiguration.sharedConfiguration loadConfiguration];
+
     self.windowManager = [[AMWindowManager alloc] init];
     self.hotKeyManager = [[AMHotKeyManager alloc] init];
-    self.configuration = [[AMConfiguration alloc] init];
 
-    [self.configuration setUpWithHotKeyManager:self.hotKeyManager windowManager:self.windowManager];
+    [AMConfiguration.sharedConfiguration setUpWithHotKeyManager:self.hotKeyManager windowManager:self.windowManager];
 }
 
 - (void)awakeFromNib {
