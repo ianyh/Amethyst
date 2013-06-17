@@ -43,7 +43,9 @@ static NSString *const AMConfigurationLayoutsKey = @"layouts";
 
 - (void)loadConfigurationFile {
     NSString *amethystConfigPath = [NSHomeDirectory() stringByAppendingPathComponent:@".amethyst"];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:amethystConfigPath]) return;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:amethystConfigPath]) {
+        amethystConfigPath = [[NSBundle mainBundle] pathForResource:@"default" ofType:@"amethyst"];
+    }
 
     NSData *data = [NSData dataWithContentsOfFile:amethystConfigPath];
     NSError *error;
@@ -140,26 +142,17 @@ static NSString *const AMConfigurationLayoutsKey = @"layouts";
 }
 
 - (NSArray *)layouts {
-    if (self.configuration[AMConfigurationLayoutsKey]) {
-        NSMutableArray *layouts = [NSMutableArray array];
-        for (NSString *layoutString in self.configuration[AMConfigurationLayoutsKey]) {
-            Class layoutClass = [self.class layoutClassForString:layoutString];
-            if (!layoutClass) {
-                NSLog(@"Unrecognized layout string: %@", layoutString);
-                continue;
-            }
-
-            [layouts addObject:layoutClass];
+    NSMutableArray *layouts = [NSMutableArray array];
+    for (NSString *layoutString in self.configuration[AMConfigurationLayoutsKey]) {
+        Class layoutClass = [self.class layoutClassForString:layoutString];
+        if (!layoutClass) {
+            NSLog(@"Unrecognized layout string: %@", layoutString);
+            continue;
         }
-        return layouts;
+        
+        [layouts addObject:layoutClass];
     }
-
-    return @[
-             AMTallLayout.class,
-             AMWideLayout.class,
-             AMFullscreenLayout.class,
-             AMColumnLayout.class
-             ];
+    return layouts;
 }
 
 @end

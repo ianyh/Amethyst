@@ -61,6 +61,8 @@
 		40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */; };
 		40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
 		40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
+		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
+		40E705D9176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		6718BDA0D79F4A19BED950F4 /* libPods-AmethystTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */; };
 /* End PBXBuildFile section */
 
@@ -183,6 +185,7 @@
 		40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayoutTest.m; sourceTree = "<group>"; };
 		40D82F06176A22A800DE1A40 /* AMWideLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWideLayout.h; sourceTree = "<group>"; };
 		40D82F07176A22A900DE1A40 /* AMWideLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWideLayout.m; sourceTree = "<group>"; };
+		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
 		B0530B06777D42039F419322 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6950BE9E95C4952BCA05552 /* Pods-AmethystTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.xcconfig"; path = "Pods/Pods-AmethystTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AmethystTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -328,6 +331,7 @@
 				402DB6ED1742E41A00D1C936 /* main.m */,
 				402DB6EF1742E41A00D1C936 /* Amethyst-Prefix.pch */,
 				402DB6F01742E41A00D1C936 /* Credits.rtf */,
+				40E705D7176EAD7800850DA6 /* default.amethyst */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -512,6 +516,7 @@
 			files = (
 				400299EB176393F10049001F /* InfoPlist.strings in Resources */,
 				400299FE17639AF70049001F /* MainMenu.xib in Resources */,
+				40E705D9176EAD7800850DA6 /* default.amethyst in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -525,6 +530,7 @@
 				4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */,
 				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
 				4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */,
+				40E705D8176EAD7800850DA6 /* default.amethyst in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
