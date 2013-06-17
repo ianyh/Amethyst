@@ -18,6 +18,9 @@
 #import "AMWindowManager.h"
 
 static NSString *const AMConfigurationLayoutsKey = @"layouts";
+static NSString *const AMConfigurationMod1Key = @"mod1";
+static NSString *const AMConfigurationMod2Key = @"mod2";
+static NSString *const AMConfigurationMod3Key = @"mod3";
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -61,10 +64,22 @@ static NSString *const AMConfigurationLayoutsKey = @"layouts";
 
 #pragma mark Hot Key Mapping
 
+- (AMModifierFlags)modifierFlagsForStrings:(NSArray *)modifierStrings {
+    AMModifierFlags flags = 0;
+    for (NSString *modifierString in modifierStrings) {
+        if ([modifierString isEqualToString:@"option"]) flags = flags | NSAlternateKeyMask;
+        else if ([modifierString isEqualToString:@"shift"]) flags = flags | NSShiftKeyMask;
+        else if ([modifierString isEqualToString:@"control"]) flags = flags | NSControlKeyMask;
+        else if ([modifierString isEqualToString:@"command"]) flags = flags | NSCommandKeyMask;
+        else NSLog(@"Unrecognized modifier string: %@", modifierString);
+    }
+    return flags;
+}
+
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
-    AMModifierFlags modifier = NSAlternateKeyMask | NSShiftKeyMask;
-    AMModifierFlags modifier2 = modifier | NSControlKeyMask;
-    AMModifierFlags modifier3 = NSAlternateKeyMask | NSControlKeyMask;
+    AMModifierFlags modifier = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod1Key]];
+    AMModifierFlags modifier2 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod2Key]];
+    AMModifierFlags modifier3 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod3Key]];;
 
     [hotKeyManager registerHotKeyWithKeyString:@"space" modifiers:modifier handler:^{
         [windowManager.focusedScreenManager cycleLayout];

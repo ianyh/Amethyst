@@ -4,5 +4,19 @@
         "wide",
         "fullscreen",
         "column"
-        ]
+    ],
+
+    "mod1": [
+        "option",
+        "shift"
+    ],
+    "mod2": [
+        "option",
+        "shift",
+        "control"
+    ],
+    "mod3": [
+        "option",
+        "control"
+    ]
 }
