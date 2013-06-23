@@ -10,8 +10,8 @@
 #import "AMWindow.h"
 #import "NSScreen+FrameAdjustment.h"
 
-#import "Kiwi.h"
-#import "OCMock.h"
+#import <Kiwi/Kiwi.h>
+#import <OCMock/OCMock.h>
 
 @interface AMTallLayout (AMTallLayoutTest)
 @property (nonatomic, assign) CGFloat mainPaneRatio;
