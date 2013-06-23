@@ -28,18 +28,21 @@ preferences pane must be enabled for Amethyst to function.
 Keyboard Shortcuts
 ------------------
 
-Amethyst uses three modifier combinations.
+Amethyst uses two modifier combinations.
 
 * `mod1` - `option + shift`
 * `mod2` - `ctrl + option + shift`
-* `mod3` - `ctrl + option`
 
-And defines the following commands.
+And defines the following commands, mostly a mapping to xmonad key combinations.
 
 * `mod1 + space` — change layout
-* `mod1 + [n]` - focus the nth screen
-* `mod2 + [n]` - move focused window to nth screen
-* `mod3 + [n]` - move focused window to nth space
+* `mod1 + w` - focus 1st screen
+* `mod1 + e` - focus 2nd screen
+* `mod1 + r` - focus 3rd screen
+* `mod2 + w` - move focused window to 1st screen
+* `mod2 + e` - move focused window to 2nd screen
+* `mod2 + r` - move focused window to 3rd screen
+* `mod2 + [n]` - move focused window to nth space
 * `mod1 + h` - shrink the main pane
 * `mod1 + l` - expand the main pane
 * `mod1 + ,` - increase the number of windows in the main pane
