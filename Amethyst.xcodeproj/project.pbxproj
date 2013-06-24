@@ -432,6 +432,7 @@
 				402DB6DC1742E41A00D1C936 /* Resources */,
 				A45D6998D05F454B956A7978 /* Copy Pods Resources */,
 				40CD2F95176D0F4A00251338 /* CopyFiles */,
+				4026AB451777C357001E3783 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -568,6 +569,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		4026AB451777C357001E3783 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "cp -r \"$BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME\" \"/Applications\"";
 		};
 		75325DC6A6114F52971C92AF /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -815,11 +829,9 @@
 			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				DSTROOT = /;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				INSTALL_PATH = ".$(LOCAL_APPS_DIR)";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
