@@ -24,14 +24,25 @@
     AXUIElementRef applicationRef;
     AXUIElementRef windowRef;
     AXError error;
-    
+
+    // Get the focused application from the systemwide element.
     error = AXUIElementCopyAttributeValue([AMSystemWideElement systemWideElement].axElementRef, kAXFocusedApplicationAttribute, (CFTypeRef *)&applicationRef);
     if (error != kAXErrorSuccess || !applicationRef) return nil;
-    
+
+    // Get the focused window from the focused application.
     error = AXUIElementCopyAttributeValue(applicationRef, kAXFocusedWindowAttribute, (CFTypeRef *)&windowRef);
     if (error != kAXErrorSuccess || !windowRef) return nil;
-    
+
+    // Generate the window object for the ax element.
     AMWindow *window = [[AMWindow alloc] initWithAXElementRef:windowRef];
+
+    // The window can actually be a sheet, and if that is the case we actually
+    // want to return the sheet's parent window as it contains the sheet and
+    // it's what we are actually going to be managing.
+    if (window.isSheet) {
+        AMAccessibilityElement *parent = [window elementForKey:kAXParentAttribute];
+        window = [[AMWindow alloc] initWithAXElementRef:parent.axElementRef];
+    }
     
     CFRelease(applicationRef);
     CFRelease(windowRef);
@@ -78,6 +89,10 @@
     }
 
     return NO;
+}
+
+- (BOOL)isSheet {
+    return [[self stringForKey:kAXRoleAttribute] isEqualToString:(__bridge NSString *)kAXSheetRole];
 }
 
 - (NSScreen *)screen {

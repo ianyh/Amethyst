@@ -27,6 +27,9 @@
 // otherwise.
 - (BOOL)isActive;
 
+// Returns YES if the window is a sheet contained by another window.
+- (BOOL)isSheet;
+
 // Returns the screen that the window's center is currently displayed on.
 //
 // Only valid if the window is active.
