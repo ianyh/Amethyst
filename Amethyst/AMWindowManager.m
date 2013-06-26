@@ -296,6 +296,12 @@
 }
 
 - (void)screenParametersDidChange:(NSNotification *)notification {
+    [self.activeWindows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [obj dropScreenCache];
+    }];
+    [self.inactiveWindows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [obj dropScreenCache];
+    }];
     [self updateScreenManagers];
 }
 

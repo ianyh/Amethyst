@@ -107,8 +107,12 @@
 }
 
 - (void)moveToScreen:(NSScreen *)screen {
-    self.cachedScreen = nil;
+    [self dropScreenCache];
     self.position = screen.adjustedFrame.origin;
+}
+
+- (void)dropScreenCache {
+    self.cachedScreen = nil;
 }
 
 - (void)moveToSpace:(NSUInteger)space {

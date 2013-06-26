@@ -39,6 +39,9 @@
 // Does not resize the window.
 - (void)moveToScreen:(NSScreen *)screen;
 
+// Drops any cached screen so that a new screen can be computed.
+- (void)dropScreenCache;
+
 // Moves the window to the supplied space.
 //
 // space - The space to move the window to. Should be a number in [1, 10], 1
