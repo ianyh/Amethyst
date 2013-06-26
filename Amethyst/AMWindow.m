@@ -124,7 +124,10 @@
 
     CGEventRef defaultEvent = CGEventCreate(NULL);
     CGPoint startingCursorPoint = CGEventGetLocation(defaultEvent);
-    CGPoint mouseCursorPoint = { .x = CGRectGetMaxX(zoomButtonFrame) + 5.0, .y = windowFrame.origin.y + 5.0 };
+    CGPoint mouseCursorPoint = {
+        .x = (zoomButtonElement ? CGRectGetMaxX(zoomButtonFrame) + 5.0 : windowFrame.origin.x + 5.0),
+        .y = windowFrame.origin.y + 5.0
+    };
 
     CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
     CGEventRef mouseDownEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, mouseCursorPoint, kCGMouseButtonLeft);
