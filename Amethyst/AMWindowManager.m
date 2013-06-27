@@ -142,7 +142,7 @@
     AMScreenManager *screenManager = self.screenManagers[screenIndex];
     NSArray *windows = [self activeWindowsForScreen:screenManager.screen];
 
-    if ([windows count] == 0) return;
+    if (windows.count == 0) return;
 
     [windows[0] bringToFocus];
 }
@@ -325,7 +325,7 @@
     for (AMWindow *window in application.windows) {
         [self addWindow:window];
     }
-    
+
     [application observeNotification:kAXWindowCreatedNotification
                          withElement:application
                             handler:^(AMAccessibilityElement *accessibilityElement) {
@@ -333,6 +333,12 @@
                                 [self addWindow:window];
                             }];
     [application observeNotification:kAXFocusedWindowChangedNotification
+                         withElement:application
+                             handler:^(AMAccessibilityElement *accessibilityElement) {
+                                 AMWindow *focusedWindow = [AMWindow focusedWindow];
+                                 [self markScreenForReflow:focusedWindow.screen];
+                             }];
+    [application observeNotification:kAXApplicationActivatedNotification
                          withElement:application
                              handler:^(AMAccessibilityElement *accessibilityElement) {
                                  AMWindow *focusedWindow = [AMWindow focusedWindow];
