@@ -69,3 +69,19 @@ Customization
 -------------
 
 Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in `Amethyst/default.amethyst`.
+
+Building
+--------
+
+0. Install the latest version of XCode
+1. Clone the project, then `cd` to the Amethyst directory.
+2. `brew update`
+3. `brew install xctool`
+    - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license` 
+2. `gem install cocoapods`
+3. `pod install`
+4. `git submodule init`
+5. `git submodule update`
+6. `rake`
+7. `rake install`
+8. `cp Amethyst/default.amethyst ~/.amethyst`
