@@ -11,4 +11,6 @@
 
 #import <libextobjc/EXTSelectorChecking.h>
 
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
 #endif
