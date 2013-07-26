@@ -182,6 +182,7 @@
 		40B337FA174993D40001D8FC /* AMScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMScreenManager.m; sourceTree = "<group>"; };
 		40B338001749AC8A0001D8FC /* AMSystemWideElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSystemWideElement.h; sourceTree = "<group>"; };
 		40B338011749AC8A0001D8FC /* AMSystemWideElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSystemWideElement.m; sourceTree = "<group>"; };
+		40C90FE417A330E900CE174B /* AMPrefixImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMPrefixImport.h; sourceTree = "<group>"; };
 		40CD2F82176D0E5E00251338 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMColumnLayout.h; sourceTree = "<group>"; };
 		40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayout.m; sourceTree = "<group>"; };
@@ -321,6 +322,7 @@
 				4026AB411777C017001E3783 /* AMConfiguration+Private.h */,
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
 				402DB6E81742E41A00D1C936 /* Supporting Files */,
+				40C90FE417A330E900CE174B /* AMPrefixImport.h */,
 			);
 			path = Amethyst;
 			sourceTree = "<group>";
