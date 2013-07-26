@@ -1,6 +1,7 @@
 PODS:
   - Expecta (0.2.1)
   - IYLoginItem (0.1)
+  - JRSwizzle (1.0)
   - Kiwi (2.1)
   - libextobjc (0.2.5):
     - libextobjc/EXTADT
@@ -88,24 +89,33 @@ PODS:
   - libextobjc/UmbrellaHeader (0.2.5)
   - libffi (3.0.13)
   - OCMock (2.1.1)
+  - ReactiveCocoa (1.9.6):
+    - ReactiveCocoa/Core
+    - ReactiveCocoa/RACExtensions
+  - ReactiveCocoa/Core (1.9.6):
+    - JRSwizzle (~> 1.0)
+    - libextobjc/EXTConcreteProtocol (~> 0.2.5)
+    - libextobjc/EXTKeyPathCoding (~> 0.2.5)
+    - libextobjc/EXTScope (~> 0.2.5)
+  - ReactiveCocoa/RACExtensions (1.9.6):
+    - ReactiveCocoa/Core
 
 DEPENDENCIES:
   - Expecta
-  - IYLoginItem (from `https://github.com/ianyh/IYLoginItem.git`)
+  - IYLoginItem
   - Kiwi
   - libextobjc
   - OCMock
-
-EXTERNAL SOURCES:
-  IYLoginItem:
-    :git: https://github.com/ianyh/IYLoginItem.git
+  - ReactiveCocoa
 
 SPEC CHECKSUMS:
   Expecta: d46fb1bd78c90a83da0158b9b1e108de106e369f
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
+  JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   Kiwi: 054ef97d0e50c279b21113a0880a906fa153a7fd
   libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
   libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
   OCMock: 79212e5e328378af5cfd6edb5feacfd6c49cd8a3
+  ReactiveCocoa: 0586996422c05830e2f70ca8c8a5214e9070983f
 
 COCOAPODS: 0.20.2
