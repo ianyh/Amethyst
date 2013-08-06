@@ -1,4 +1,5 @@
 PODS:
+  - CocoaLumberjack (1.6.2)
   - Expecta (0.2.1)
   - IYLoginItem (0.1)
   - JRSwizzle (1.0)
@@ -101,6 +102,7 @@ PODS:
     - ReactiveCocoa/Core
 
 DEPENDENCIES:
+  - CocoaLumberjack
   - Expecta
   - IYLoginItem
   - Kiwi
@@ -109,6 +111,7 @@ DEPENDENCIES:
   - ReactiveCocoa
 
 SPEC CHECKSUMS:
+  CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
   Expecta: d46fb1bd78c90a83da0158b9b1e108de106e369f
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
