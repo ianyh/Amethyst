@@ -17,12 +17,6 @@
 #import <CoreServices/CoreServices.h>
 #import <IYLoginItem/NSBundle+LoginItem.h>
 
-#ifdef DEBUG
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
-#else
-static const int ddLogLevel = LOG_LEVEL_WARN;
-#endif
-
 @interface AMAppDelegate ()
 @property (nonatomic, strong) AMWindowManager *windowManager;
 @property (nonatomic, strong) AMHotKeyManager *hotKeyManager;
@@ -37,8 +31,8 @@ static const int ddLogLevel = LOG_LEVEL_WARN;
 @implementation AMAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [DDLog addLogger:[DDASLLogger sharedInstance]];
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:DDASLLogger.sharedInstance];
+    [DDLog addLogger:DDTTYLogger.sharedInstance];
 
     [AMConfiguration.sharedConfiguration loadConfiguration];
 

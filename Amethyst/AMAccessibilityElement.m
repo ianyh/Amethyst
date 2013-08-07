@@ -204,7 +204,7 @@
     if (!CGPointEqualToPoint(position, [self frame].origin)) {
         error = AXUIElementSetAttributeValue(self.axElementRef, kAXPositionAttribute, positionRef);
         if (error != kAXErrorSuccess) {
-            NSLog(@"Position Error: %d", error);
+            DDLogWarn(@"Position Error: %d", error);
             return;
         }
     }
@@ -217,7 +217,7 @@
     if (!CGSizeEqualToSize(size, [self frame].size)) {
         error = AXUIElementSetAttributeValue(self.axElementRef, kAXSizeAttribute, sizeRef);
         if (error != kAXErrorSuccess) {
-            NSLog(@"Size Error: %d", error);
+            DDLogWarn(@"Size Error: %d", error);
             return;
         }
     }

@@ -86,7 +86,7 @@ static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-scre
         else if ([modifierString isEqualToString:@"shift"]) flags = flags | NSShiftKeyMask;
         else if ([modifierString isEqualToString:@"control"]) flags = flags | NSControlKeyMask;
         else if ([modifierString isEqualToString:@"command"]) flags = flags | NSCommandKeyMask;
-        else NSLog(@"Unrecognized modifier string: %@", modifierString);
+        else DDLogError(@"Unrecognized modifier string: %@", modifierString);
     }
     return flags;
 }
@@ -115,7 +115,7 @@ static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-scre
     if (data) {
         configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
         if (error) {
-            NSLog(@"error loading configuration: %@", error);
+            DDLogError(@"error loading configuration: %@", error);
             return;
         }
 
@@ -125,7 +125,7 @@ static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-scre
     data = [NSData dataWithContentsOfFile:defaultAmethystConfigPath];
     configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     if (error) {
-        NSLog(@"error loading default configuration: %@", error);
+        DDLogError(@"error loading default configuration: %@", error);
         return;
     }
 
@@ -141,7 +141,7 @@ static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-scre
     if ([modifierString isEqualToString:@"mod1"]) return self.modifier1;
     if ([modifierString isEqualToString:@"mod2"]) return self.modifier2;
 
-    NSLog(@"Unknown modifier string: %@", modifierString);
+    DDLogError(@"Unknown modifier string: %@", modifierString);
 
     return self.modifier1;
 }
@@ -156,7 +156,7 @@ static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-scre
     } else if ([commandModifierString isEqualToString:@"mod2"]) {
         commandFlags = self.modifier2;
     } else {
-        NSLog(@"Unknown modifier string: %@", commandModifierString);
+        DDLogError(@"Unknown modifier string: %@", commandModifierString);
         return;
     }
 
@@ -240,7 +240,7 @@ static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-scre
     for (NSString *layoutString in layoutStrings) {
         Class layoutClass = [self.class layoutClassForString:layoutString];
         if (!layoutClass) {
-            NSLog(@"Unrecognized layout string: %@", layoutString);
+            DDLogError(@"Unrecognized layout string: %@", layoutString);
             continue;
         }
         

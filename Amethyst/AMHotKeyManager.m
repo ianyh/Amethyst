@@ -178,7 +178,7 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
     error = InstallEventHandler(GetApplicationEventTarget(), &eventHandlerCallback, 1, &eventTypeSpec, (__bridge void *)self, &eventHandlerRef);
 
     if (error != noErr) {
-        NSLog(@"Error installing event handler");
+        DDLogError(@"Error installing event handler");
         return;
     }
 
@@ -217,7 +217,7 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
     OSStatus error = RegisterEventHotKey(keyCode, carbonModifiers, eventHotKeyID, GetEventDispatcherTarget(), kEventHotKeyNoOptions, &hotKeyRef);
 
     if (error != noErr) {
-        NSLog(@"Error encountered when registering hotkey with keyCode %d and mods %lu: %d", keyCode, (unsigned long)modifiers, error);
+        DDLogError(@"Error encountered when registering hotkey with keyCode %d and mods %lu: %d", keyCode, (unsigned long)modifiers, error);
         return;
     }
 
@@ -228,7 +228,7 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
     NSArray *keyCodes = self.stringToKeyCodes[string.lowercaseString];
 
     if (keyCodes.count == 0) {
-        NSLog(@"String \"%@\" does not map to any keycodes", string);
+        DDLogError(@"String \"%@\" does not map to any keycodes", string);
         return;
     }
 

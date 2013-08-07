@@ -88,6 +88,8 @@
         return YES;
     }
 
+    DDLogWarn(@"Couldn't find matching window description for window %@", self);
+
     return NO;
 }
 
@@ -122,6 +124,7 @@
 }
 
 - (void)moveToScreen:(NSScreen *)screen {
+    DDLogInfo(@"Moving window %@ to screen %@", self, screen);
     [self dropScreenCache];
     self.position = screen.adjustedFrame.origin;
 }
@@ -160,6 +163,11 @@
     CGEventSetFlags(keyboardEvent, kCGEventFlagMaskControl);
     CGEventSetFlags(keyboardEventUp, 0);
 
+    DDLogInfo(@"Sending window %@ to space %d using anchor point %@",
+              self,
+              (unsigned int)space,
+              CGPointCreateDictionaryRepresentation(mouseCursorPoint));
+
     // Move the mouse into place at the window's toolbar
     CGEventPost(kCGHIDEventTap, mouseMoveEvent);
     // Mouse down to grab hold of the window
@@ -184,6 +192,8 @@
 - (void)bringToFocus {
     NSRunningApplication *runningApplication = [NSRunningApplication runningApplicationWithProcessIdentifier:self.processIdentifier];
     [runningApplication activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
+
+    DDLogInfo(@"Bringing window to focus %@", self);
 
     AXUIElementPerformAction(self.axElementRef, kAXRaiseAction);
 }
