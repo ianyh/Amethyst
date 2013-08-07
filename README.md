@@ -79,6 +79,7 @@ Building
 3. `brew install xctool`
     - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license` 
 2. `gem install cocoapods`
+    - you may need to `exec zsh` or similar for this command to be found, if using rbenv.
 3. `pod install`
 4. `git submodule init`
 5. `git submodule update`
