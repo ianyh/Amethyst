@@ -11,9 +11,17 @@
 #import "AMConfiguration.h"
 #import "AMHotKeyManager.h"
 #import "AMWindowManager.h"
-#import "NSBundle+LoginItem.h"
 
+#import <CocoaLumberjack/DDASLLogger.h>
+#import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
+#import <IYLoginItem/NSBundle+LoginItem.h>
+
+#ifdef DEBUG
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+#else
+static const int ddLogLevel = LOG_LEVEL_WARN;
+#endif
 
 @interface AMAppDelegate ()
 @property (nonatomic, strong) AMWindowManager *windowManager;
@@ -29,6 +37,9 @@
 @implementation AMAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
     [AMConfiguration.sharedConfiguration loadConfiguration];
 
     self.windowManager = [[AMWindowManager alloc] init];
@@ -40,7 +51,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 
-    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    self.statusItem = [NSStatusBar.systemStatusBar statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.image = [NSImage imageNamed:@"icon-statusitem"];
     self.statusItem.menu = self.statusItemMenu;
     self.statusItem.highlightMode = YES;
