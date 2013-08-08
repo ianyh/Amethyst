@@ -7,6 +7,5 @@ pod 'CocoaLumberjack'
 
 target :AmethystTests do
   pod 'Kiwi'
-  pod 'Expecta'
   pod 'OCMock'
 end

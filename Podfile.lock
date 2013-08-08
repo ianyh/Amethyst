@@ -1,6 +1,5 @@
 PODS:
   - CocoaLumberjack (1.6.2)
-  - Expecta (0.2.2)
   - IYLoginItem (0.1)
   - JRSwizzle (1.0)
   - Kiwi (2.2)
@@ -103,7 +102,6 @@ PODS:
 
 DEPENDENCIES:
   - CocoaLumberjack
-  - Expecta
   - IYLoginItem
   - Kiwi
   - libextobjc
@@ -112,7 +110,6 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
-  Expecta: 99adbb2e366a02796477523bfd426143350d9caf
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
   JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   Kiwi: db174bba4ee8068b15d7122f1b22fb64b7c1d378

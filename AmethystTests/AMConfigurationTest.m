@@ -13,7 +13,6 @@
 #import "AMWideLayout.h"
 
 #import <Kiwi/Kiwi.h>
-#import <Expecta/Expecta.h>
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -28,7 +27,7 @@ describe(@"AMConfiguration Layouts", ^{
         configuration.configuration = nil;
         configuration.defaultConfiguration = @{ @"layouts": @[ @"tall" ] };
 
-        EXP_expect(configuration.layouts).to.equal(@[ AMTallLayout.class ]);
+        [[configuration.layouts should] equal:@[ AMTallLayout.class ]];
     });
 
     it(@"should take default value is user configuration doesn't specify", ^{
@@ -36,7 +35,7 @@ describe(@"AMConfiguration Layouts", ^{
         configuration.configuration = @{ @"foo": @"bar" };
         configuration.defaultConfiguration = @{ @"layouts": @[ @"tall" ] };
 
-        EXP_expect(configuration.layouts).to.equal(@[ AMTallLayout.class ]);
+        [[configuration.layouts should] equal:@[ AMTallLayout.class ]];
     });
 
     it(@"should take user value over default", ^{
@@ -44,7 +43,7 @@ describe(@"AMConfiguration Layouts", ^{
         configuration.configuration = @{ @"layouts": @[ @"wide" ] };
         configuration.defaultConfiguration = @{ @"layouts": @[ @"tall" ] };
 
-        EXP_expect(configuration.layouts).to.equal(@[ AMWideLayout.class ]);
+        [[configuration.layouts should] equal:@[ AMWideLayout.class ]];
     });
 });
 
