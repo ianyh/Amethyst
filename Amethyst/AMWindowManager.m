@@ -18,8 +18,7 @@
 
 @interface AMWindowManager () <AMScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
-@property (nonatomic, strong) NSMutableArray *activeWindows;
-@property (nonatomic, strong) NSMutableArray *inactiveWindows;
+@property (nonatomic, strong) NSMutableArray *windows;
 
 @property (nonatomic, strong) NSArray *screenManagers;
 
@@ -52,8 +51,7 @@
     self = [super init];
     if (self) {
         self.applications = [NSMutableArray array];
-        self.activeWindows = [NSMutableArray array];
-        self.inactiveWindows = [NSMutableArray array];
+        self.windows = [NSMutableArray array];
 
         for (NSRunningApplication *runningApplication in NSWorkspace.sharedWorkspace.runningApplications) {
             if (!runningApplication.isManageable) continue;
@@ -120,7 +118,7 @@
     AMWindow *focusedWindow = [AMWindow focusedWindow];
     
     // Have to find the managed window object so that we can clear it's screen cache.
-    for (AMWindow *window in self.activeWindows) {
+    for (AMWindow *window in self.windows) {
         if ([window isEqual:focusedWindow]) {
             focusedWindow = window;
         }
@@ -184,10 +182,10 @@
 
     NSScreen *screen = focusedWindow.screen;
     NSArray *windows = [self activeWindowsForScreen:screen];
-    NSUInteger focusedWindowIndex = [self.activeWindows indexOfObject:focusedWindow];
-    NSUInteger mainWindowIndex = [self.activeWindows indexOfObject:windows[0]];
+    NSUInteger focusedWindowIndex = [self.windows indexOfObject:focusedWindow];
+    NSUInteger mainWindowIndex = [self.windows indexOfObject:windows[0]];
 
-    [self.activeWindows exchangeObjectAtIndex:focusedWindowIndex withObjectAtIndex:mainWindowIndex];
+    [self.windows exchangeObjectAtIndex:focusedWindowIndex withObjectAtIndex:mainWindowIndex];
     [self markScreenForReflow:focusedWindow.screen];
 }
 
@@ -204,10 +202,10 @@
     NSUInteger focusedWindowIndex = [windows indexOfObject:focusedWindow];
     AMWindow *windowToSwapWith = windows[(focusedWindowIndex == 0 ? windows.count - 1 : focusedWindowIndex - 1)];
 
-    NSUInteger focusedWindowActiveIndex = [self.activeWindows indexOfObject:focusedWindow];
-    NSUInteger windowToSwapWithActiveIndex = [self.activeWindows indexOfObject:windowToSwapWith];
+    NSUInteger focusedWindowActiveIndex = [self.windows indexOfObject:focusedWindow];
+    NSUInteger windowToSwapWithActiveIndex = [self.windows indexOfObject:windowToSwapWith];
     
-    [self.activeWindows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
+    [self.windows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
     [self markScreenForReflow:focusedWindow.screen];
 }
 
@@ -224,10 +222,10 @@
     NSUInteger focusedWindowIndex = [windows indexOfObject:focusedWindow];
     AMWindow *windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count];
     
-    NSUInteger focusedWindowActiveIndex = [self.activeWindows indexOfObject:focusedWindow];
-    NSUInteger windowToSwapWithActiveIndex = [self.activeWindows indexOfObject:windowToSwapWith];
+    NSUInteger focusedWindowActiveIndex = [self.windows indexOfObject:focusedWindow];
+    NSUInteger windowToSwapWithActiveIndex = [self.windows indexOfObject:windowToSwapWith];
     
-    [self.activeWindows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
+    [self.windows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
     [self markScreenForReflow:focusedWindow.screen];
 }
 
@@ -265,20 +263,7 @@
 }
 
 - (void)activeSpaceDidChange:(NSNotification *)notification {
-    NSArray *inactiveWindows = [self.inactiveWindows copy];
-    NSArray *activeWindows = [self.activeWindows copy];
-
-    for (AMWindow *window in inactiveWindows) {
-        if (window.isActive) {
-            
-            [self activateWindow:window];
-        }
-    }
-    for (AMWindow *window in activeWindows) {
-        if (!window.isActive) {
-            [self deactivateWindow:window];
-        }
-    }
+    [self markAllScreensForReflow];
 
     for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
         if (!runningApplication.isManageable) continue;
@@ -296,10 +281,7 @@
 }
 
 - (void)screenParametersDidChange:(NSNotification *)notification {
-    [self.activeWindows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [obj dropScreenCache];
-    }];
-    [self.inactiveWindows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [self.windows enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         [obj dropScreenCache];
     }];
     [self updateScreenManagers];
@@ -355,7 +337,7 @@
 
 - (void)activateApplication:(AMApplication *)application {
     pid_t processIdentifier = application.processIdentifier;
-    for (AMWindow *window in [self.inactiveWindows copy]) {
+    for (AMWindow *window in [self.windows copy]) {
         if (window.processIdentifier == processIdentifier) {
             [self activateWindow:window];
         }
@@ -364,7 +346,7 @@
 
 - (void)deactivateApplication:(AMApplication *)application {
     pid_t processIdentifier = application.processIdentifier;
-    for (AMWindow *window in [self.activeWindows copy]) {
+    for (AMWindow *window in [self.windows copy]) {
         if (window.processIdentifier == processIdentifier) {
             [self deactivateWindow:window];
         }
@@ -374,18 +356,11 @@
 #pragma mark Windows Management
 
 - (void)addWindow:(AMWindow *)window {
-    if ([self.activeWindows containsObject:window] || [self.inactiveWindows containsObject:window]) return;
+    if ([self.windows containsObject:window]) return;
 
-    if (!window.shouldBeManaged) return;
-
+    [self.windows addObject:window];
     [self markScreenForReflow:window.screen];
 
-    if (window.isActive) {
-        [self.activeWindows addObject:window];
-    } else {
-        [self.inactiveWindows addObject:window];
-    }
-    
     AMApplication *application = [self applicationWithProcessIdentifier:window.processIdentifier];
     [application observeNotification:kAXUIElementDestroyedNotification
                          withElement:window
@@ -395,12 +370,12 @@
     [application observeNotification:kAXWindowMiniaturizedNotification
                          withElement:window
                             handler:^(AMAccessibilityElement *accessibilityElement) {
-                                [self deactivateWindow:window];
+                                [self markScreenForReflow:window.screen];
                             }];
     [application observeNotification:kAXWindowDeminiaturizedNotification
                          withElement:window
                             handler:^(AMAccessibilityElement *accessibilityElement) {
-                                [self activateWindow:window];
+                                [self markScreenForReflow:window.screen];
                             }];
 }
 
@@ -412,32 +387,13 @@
     [application unobserveNotification:kAXWindowMiniaturizedNotification withElement:window];
     [application unobserveNotification:kAXWindowDeminiaturizedNotification withElement:window];
 
-    [self.activeWindows removeObject:window];
-    [self.inactiveWindows removeObject:window];
-}
-
-- (void)activateWindow:(AMWindow *)window {
-    if ([self.activeWindows containsObject:window]) return;
-    
-    [self markScreenForReflow:window.screen];
-    
-    [self.activeWindows addObject:window];
-    [self.inactiveWindows removeObject:window];
-}
-
-- (void)deactivateWindow:(AMWindow *)window {
-    if ([self.inactiveWindows containsObject:window]) return;
-    
-    [self markScreenForReflow:window.screen];
-    
-    [self.activeWindows removeObject:window];
-    [self.inactiveWindows addObject:window];
+    [self.windows removeObject:window];
 }
 
 - (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
-    return [self.activeWindows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+    return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         AMWindow *window = (AMWindow *)evaluatedObject;
-        return [window.screen isEqual:screen];
+        return [window.screen isEqual:screen] && window.isActive && window.shouldBeManaged;
     }]];
 }
 
