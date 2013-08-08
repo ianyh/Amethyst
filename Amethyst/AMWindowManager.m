@@ -356,6 +356,8 @@
 - (void)addWindow:(AMWindow *)window {
     if ([self.windows containsObject:window]) return;
 
+    if (!window.shouldBeManaged) return;
+
     [self.windows addObject:window];
     [self markScreenForReflow:window.screen];
 

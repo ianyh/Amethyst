@@ -57,8 +57,6 @@
 }
 
 - (BOOL)shouldBeManaged {
-    if (!self.isMovable) return NO;
-
     NSString *subrole = [self stringForKey:kAXSubroleAttribute];
     
     if (!subrole) return YES;
