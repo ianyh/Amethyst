@@ -76,4 +76,6 @@
 // This method is a no-op if there is no focused window.
 - (void)pushFocusedWindowToSpace:(NSUInteger)space;
 
+- (void)toggleFloatForFocusedWindow;
+
 @end

@@ -56,6 +56,7 @@ static NSString *const AMConfigurationCommandSwapMainKey = @"swap-main";
 static NSString *const AMConfigurationCommandThrowSpacePrefixKey = @"throw-space";
 static NSString *const AMConfigurationCommandFocusScreenPrefixKey = @"focus-screen";
 static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-screen";
+static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -232,6 +233,10 @@ static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-scre
             [windowManager pushFocusedWindowToSpace:spaceNumber];
         }];
     }
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandToggleFloatKey handler:^{
+        [windowManager toggleFloatForFocusedWindow];
+    }];
 }
 
 - (NSArray *)layouts {

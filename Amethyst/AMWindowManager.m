@@ -37,8 +37,6 @@
 
 - (void)addWindow:(AMWindow *)window;
 - (void)removeWindow:(AMWindow *)window;
-- (void)activateWindow:(AMWindow *)window;
-- (void)deactivateWindow:(AMWindow *)window;
 
 - (void)updateScreenManagers;
 - (void)markAllScreensForReflow;
@@ -138,7 +136,7 @@
     if (screenIndex >= NSScreen.screens.count) return;
     
     AMScreenManager *screenManager = self.screenManagers[screenIndex];
-    NSArray *windows = [self activeWindowsForScreen:screenManager.screen];
+    NSArray *windows = [self windowsForScreen:screenManager.screen];
 
     if (windows.count == 0) return;
 
@@ -153,7 +151,7 @@
     }
 
     NSScreen *screen = focusedWindow.screen;
-    NSArray *windows = [self activeWindowsForScreen:screen];
+    NSArray *windows = [self windowsForScreen:screen];
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
     NSUInteger windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1);
     AMWindow *windowToFocus = windows[windowToFocusIndex];
@@ -169,7 +167,7 @@
     }
 
     NSScreen *screen = focusedWindow.screen;
-    NSArray *windows = [self activeWindowsForScreen:screen];
+    NSArray *windows = [self windowsForScreen:screen];
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
     AMWindow *windowToFocus = windows[(windowIndex + 1) % windows.count];
     
@@ -178,7 +176,7 @@
 
 - (void)swapFocusedWindowToMain {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
-    if (!focusedWindow) return;
+    if (!focusedWindow || focusedWindow.floating) return;
 
     NSScreen *screen = focusedWindow.screen;
     NSArray *windows = [self activeWindowsForScreen:screen];
@@ -191,7 +189,7 @@
 
 - (void)swapFocusedWindowCounterClockwise {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
-    if (!focusedWindow) {
+    if (!focusedWindow || focusedWindow.floating) {
         [self focusScreenAtIndex:1];
         return;
     }
@@ -211,7 +209,7 @@
 
 - (void)swapFocusedWindowClockwise {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
-    if (!focusedWindow) {
+    if (!focusedWindow || focusedWindow.floating) {
         [self focusScreenAtIndex:1];
         return;
     }
@@ -339,7 +337,7 @@
     pid_t processIdentifier = application.processIdentifier;
     for (AMWindow *window in [self.windows copy]) {
         if (window.processIdentifier == processIdentifier) {
-            [self activateWindow:window];
+            [self markScreenForReflow:window.screen];
         }
     }
 }
@@ -348,7 +346,7 @@
     pid_t processIdentifier = application.processIdentifier;
     for (AMWindow *window in [self.windows copy]) {
         if (window.processIdentifier == processIdentifier) {
-            [self deactivateWindow:window];
+            [self markScreenForReflow:window.screen];
         }
     }
 }
@@ -390,11 +388,31 @@
     [self.windows removeObject:window];
 }
 
+- (NSArray *)windowsForScreen:(NSScreen *)screen {
+    return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        AMWindow *window = (AMWindow *)evaluatedObject;
+        return [window.screen isEqual:screen] && window.isActive;
+    }]];
+}
+
 - (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
     return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         AMWindow *window = (AMWindow *)evaluatedObject;
-        return [window.screen isEqual:screen] && window.isActive && window.shouldBeManaged;
+        return [window.screen isEqual:screen] && window.isActive && window.shouldBeManaged && !window.floating;
     }]];
+}
+
+- (void)toggleFloatForFocusedWindow {
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+
+    for (AMWindow *window in self.windows) {
+        if ([window isEqual:focusedWindow]) {
+            focusedWindow = window;
+        }
+    }
+
+    focusedWindow.floating = !focusedWindow.floating;
+    [self markScreenForReflow:focusedWindow.screen];
 }
 
 #pragma mark Screen Management
