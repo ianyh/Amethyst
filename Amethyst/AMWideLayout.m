@@ -36,15 +36,15 @@
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
+
+    NSUInteger mainPaneCount = MIN(windows.count, self.mainPaneCount);
     
-    self.mainPaneCount = MIN(windows.count, self.mainPaneCount);
-    
-    NSInteger secondaryPaneCount = windows.count - self.mainPaneCount;
+    NSInteger secondaryPaneCount = windows.count - mainPaneCount;
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
     
     CGRect screenFrame = screen.adjustedFrame;
     
-    CGFloat mainPaneWindowWidth = round(screenFrame.size.width / self.mainPaneCount);
+    CGFloat mainPaneWindowWidth = round(screenFrame.size.width / mainPaneCount);
     CGFloat secondaryPaneWindowWidth = (hasSecondaryPane ? round(screenFrame.size.width / secondaryPaneCount) : 0.0);
 
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height * (hasSecondaryPane ? self.mainPaneRatio : 1));
@@ -56,13 +56,13 @@
         AMWindow *window = windows[windowIndex];
         CGRect windowFrame;
 
-        if (windowIndex < self.mainPaneCount) {
+        if (windowIndex < mainPaneCount) {
             windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * windowIndex);
             windowFrame.origin.y = screenFrame.origin.y;
             windowFrame.size.width = mainPaneWindowWidth;
             windowFrame.size.height = mainPaneWindowHeight;
         } else {
-            windowFrame.origin.x = screenFrame.origin.x + (secondaryPaneWindowWidth * (windowIndex - self.mainPaneCount));
+            windowFrame.origin.x = screenFrame.origin.x + (secondaryPaneWindowWidth * (windowIndex - mainPaneCount));
             windowFrame.origin.y = screenFrame.origin.y + mainPaneWindowHeight;
             windowFrame.size.width = secondaryPaneWindowWidth;
             windowFrame.size.height = secondaryPaneWindowHeight;
