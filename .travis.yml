@@ -2,4 +2,5 @@ language: objective-c
 before_install:
         - brew update
         - brew install xctool
+        - export LC_ALL="en_US.UTF-8"
 script: xctool build test
