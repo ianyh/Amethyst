@@ -52,6 +52,7 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 * `mod2 + j` - move the focused window one space counterclockwise
 * `mod2 + k` - move the focused window one space clockwise
 * `mod1 + return` - swap the focused window with the main window
+* `mod1 + t` - toggle whether or not the focused window is floating
 
 Setting Up Spaces Support
 -------------------------
