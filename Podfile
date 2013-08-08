@@ -1,8 +1,8 @@
 platform :osx, '10.7'
 
+pod 'ReactiveCocoa'
 pod 'libextobjc'
 pod 'IYLoginItem'
-pod 'ReactiveCocoa'
 pod 'CocoaLumberjack'
 
 target :AmethystTests do
