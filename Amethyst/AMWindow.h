@@ -56,4 +56,8 @@
 // Brings the window into focus.
 - (void)bringToFocus;
 
+// If a window is floating it is not actively tiled, but is still in the focus
+// loop.
+@property (nonatomic, assign) BOOL floating;
+
 @end

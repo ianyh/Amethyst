@@ -52,6 +52,7 @@
         "throw-space-7": "Throw the focused window to the seventh space",
         "throw-space-8": "Throw the focused window to the eighth space",
         "throw-space-9": "Throw the focused window to the ninth space",
+        "toggle-float": "Toggle the focused window between being floating and tiled"
     },
 
     "cycle-layout": {
@@ -153,5 +154,9 @@
     "throw-space-9": {
         "mod": "mod2",
         "key": "9"
+    },
+    "toggle-float": {
+        "mod": "mod1",
+        "key": "t"
     }
 }
