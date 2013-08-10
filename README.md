@@ -76,14 +76,11 @@ Building
 
 0. Install the latest version of XCode
 1. Clone the project, then `cd` to the Amethyst directory.
-2. `brew update`
-3. `brew install xctool`
-    - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license` 
-2. `gem install cocoapods`
+2. Install xctool
+    - `brew update && brew install xctool` 
+    - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license`
+3. Install cocoapods
+    - `gem install cocoapods`
     - you may need to `exec zsh` or similar for this command to be found, if using rbenv.
-3. `pod install`
-4. `git submodule init`
-5. `git submodule update`
-6. `rake`
 7. `rake install`
 8. `cp Amethyst/default.amethyst ~/.amethyst`
