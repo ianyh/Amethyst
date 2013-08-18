@@ -158,5 +158,8 @@
     "toggle-float": {
         "mod": "mod1",
         "key": "t"
-    }
+    },
+
+    "MISC": "----------------------",
+    "floating": []
 }
