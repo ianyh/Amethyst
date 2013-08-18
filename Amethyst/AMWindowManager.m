@@ -306,10 +306,13 @@
         [self addWindow:window];
     }
 
+    BOOL floating = application.floating;
+
     [application observeNotification:kAXWindowCreatedNotification
                          withElement:application
                             handler:^(AMAccessibilityElement *accessibilityElement) {
                                 AMWindow *window = (AMWindow *)accessibilityElement;
+                                window.floating = floating;
                                 [self addWindow:window];
                             }];
     [application observeNotification:kAXFocusedWindowChangedNotification
@@ -362,6 +365,9 @@
     [self markScreenForReflow:window.screen];
 
     AMApplication *application = [self applicationWithProcessIdentifier:window.processIdentifier];
+
+    window.floating = application.floating;
+
     [application observeNotification:kAXUIElementDestroyedNotification
                          withElement:window
                             handler:^(AMAccessibilityElement *accessibilityElement) {

@@ -61,4 +61,12 @@ typedef void (^AMAXNotificationHandler)(AMAccessibilityElement *accessibilityEle
 // will be representative of the most up to date state of the application.
 - (void)dropWindowsCache;
 
+// Note: this value is only correctly set when initializing from a running
+// application. The window manager maintains a master list of such applications
+// and all of the relevant interactions are performed via that master list.
+//
+// This solution is less than ideal. Eventually a lot of this API should move
+// behind NSRunningApplication itself to avoid having to manage state here.
+@property (nonatomic, assign, readonly) BOOL floating;
+
 @end

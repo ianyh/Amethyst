@@ -32,4 +32,6 @@
 // Returns an array of AMLayout Class objects to generate layouts from.
 - (NSArray *)layouts;
 
+- (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication;
+
 @end

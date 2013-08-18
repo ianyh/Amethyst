@@ -8,6 +8,7 @@
 
 #import "AMApplication.h"
 
+#import "AMConfiguration.h"
 #import "AMWindow.h"
 
 @interface AMApplicationObservation : NSObject
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) NSMutableDictionary *elementToObservations;
 
 @property (nonatomic, strong) NSMutableArray *cachedWindows;
+
+@property (nonatomic, assign) BOOL floating;
 @end
 
 @implementation AMApplication
@@ -33,6 +36,8 @@
     AXUIElementRef axElementRef = AXUIElementCreateApplication(runningApplication.processIdentifier);
     AMApplication *application = [[AMApplication alloc] initWithAXElementRef:axElementRef];
     CFRelease(axElementRef);
+
+    application.floating = [[AMConfiguration sharedConfiguration] runningApplicationShouldFloat:runningApplication];
 
     return application;
 }
@@ -52,7 +57,8 @@
 
 void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRef notification, void *refcon) {
     AMAXNotificationHandler callback = (__bridge AMAXNotificationHandler)refcon;
-    callback([[AMWindow alloc] initWithAXElementRef:element]);
+    AMWindow *window = [[AMWindow alloc] initWithAXElementRef:element];
+    callback(window);
 }
 
 - (void)observeNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement handler:(AMAXNotificationHandler)handler {

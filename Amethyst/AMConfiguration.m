@@ -58,6 +58,10 @@ static NSString *const AMConfigurationCommandFocusScreenPrefixKey = @"focus-scre
 static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-screen";
 static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
 
+// Key to reference an array of application bundle identifiers whose windows
+// should always be floating by default.
+static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
+
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
 @property (nonatomic, copy) NSDictionary *defaultConfiguration;
@@ -239,6 +243,8 @@ static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
     }];
 }
 
+#pragma mark Public Methods
+
 - (NSArray *)layouts {
     NSArray *layoutStrings = self.configuration[AMConfigurationLayoutsKey] ?: self.defaultConfiguration[AMConfigurationLayoutsKey];
     NSMutableArray *layouts = [NSMutableArray array];
@@ -252,6 +258,10 @@ static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
         [layouts addObject:layoutClass];
     }
     return layouts;
+}
+
+- (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication {
+    return [self.configuration[AMConfigurationFloatingBundleIdentifiers] containsObject:runningApplication.bundleIdentifier];
 }
 
 @end
