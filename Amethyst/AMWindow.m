@@ -41,6 +41,9 @@
     // it's what we are actually going to be managing.
     if (window.isSheet) {
         AMAccessibilityElement *parent = [window elementForKey:kAXParentAttribute];
+
+        if (!parent) return nil;
+
         window = [[AMWindow alloc] initWithAXElementRef:parent.axElementRef];
     }
     
