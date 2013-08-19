@@ -582,8 +582,8 @@
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "cp -r \"$BUILT_PRODUCTS_DIR/$FULL_PRODUCT_NAME\" \"/Applications\"";
+			shellPath = /bin/bash;
+			shellScript = "rm -rf \"/Applications/$FULL_PRODUCT_NAME\"\ncp -R \"$INSTALL_DIR/$FULL_PRODUCT_NAME\" \"/Applications\"";
 		};
 		75325DC6A6114F52971C92AF /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
