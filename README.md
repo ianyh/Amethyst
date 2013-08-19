@@ -71,6 +71,15 @@ Customization
 
 Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in `Amethyst/default.amethyst`.
 
+Getting Amethyst
+================
+
+Amethyst is available for direct download [here](http://ianyh.com/Amethyst/versions/Amethyst-0.8.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+
+```
+brew cask install amethyst
+```
+
 Building
 --------
 
