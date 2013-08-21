@@ -9,7 +9,7 @@ alternative to [fjolnir's](https://github.com/fjolnir) awesome
 Objective-C. It's expanded to include some more features like Spaces support not
 reliant on fragile private APIs.
 
-![Screenshot](https://raw.github.com/ianyh/Amethyst/gh-pages/images/screenshot-small.png)
+![Screenshot](http://ianyh.com/amethyst/images/screenshot-small.png)
 
 Credits
 -------
@@ -17,13 +17,36 @@ Credits
 Credit goes to [fjolnir](https://github.com/fjolnir) for the bulk of the initial
 logic and structure.
 
+Getting Amethyst
+================
+
+Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+
+```
+brew cask install amethyst
+```
+
+Building
+--------
+
+0. Install the latest version of XCode
+1. Clone the project, then `cd` to the Amethyst directory.
+2. Install xctool
+    - `brew update && brew install xctool` 
+    - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license`
+3. Install cocoapods
+    - `gem install cocoapods`
+    - you may need to `exec zsh` or similar for this command to be found, if using rbenv.
+7. `rake install`
+8. `cp Amethyst/default.amethyst ~/.amethyst`
+
 Using Amethyst
 ==============
 
 The `Enable access for assistive devices` option on the Accessibility
 preferences pane must be enabled for Amethyst to function.
 
-![Enable access for assistive devices](https://raw.github.com/ianyh/Amethyst/gh-pages/images/accessibility-window.png)
+![Enable access for assistive devices](http://ianyh.com/amethyst/images/accessibility-window.png)
 
 Keyboard Shortcuts
 ------------------
@@ -64,32 +87,9 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 [n]`. Amethyst is only able to send a window to the `n`th space if the shortcut
 `ctrl + n` is enabled.
 
-![Mission Control keyboard shortcuts](https://raw.github.com/ianyh/Amethyst/gh-pages/images/missioncontrol-shortcuts.png)
+![Mission Control keyboard shortcuts](http://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
 
 Customization
 -------------
 
 Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in `Amethyst/default.amethyst`.
-
-Getting Amethyst
-================
-
-Amethyst is available for direct download [here](http://ianyh.com/Amethyst/versions/Amethyst-0.8.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
-
-```
-brew cask install amethyst
-```
-
-Building
---------
-
-0. Install the latest version of XCode
-1. Clone the project, then `cd` to the Amethyst directory.
-2. Install xctool
-    - `brew update && brew install xctool` 
-    - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license`
-3. Install cocoapods
-    - `gem install cocoapods`
-    - you may need to `exec zsh` or similar for this command to be found, if using rbenv.
-7. `rake install`
-8. `cp Amethyst/default.amethyst ~/.amethyst`
