@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Amethyst Changelog</title>
+    <link>http://ianyh.com/amethyst/appcast.xml</link>
+    <language>en</language>      
+    <item>
+      <title>Version 0.7</title>
+      <description>
+        
+      </description>
+      <pubDate>Sat, 15 Jun 2013 17:19:11 +0000</pubDate>
+      <sparkle:releaseNotesLink>http://ianyh.com/amethyst/versions/Amethyst-0.7.html</sparkle:releaseNotesLink>
+      <enclosure url="http://ianyh.com/amethyst/versions/Amethyst-0.7.zip"
+                 sparkle:version="2"
+                 sparkle:shortVersionString="0.7"
+                 length="4374740"
+                 type="application/octet-stream"
+                 />
+    </item>
+    <item>
+      <title>Version 0.8</title>
+      <description>
+        
+      </description>
+      <pubDate>Sun, 18 Aug 2013 21:14:00 +0000</pubDate>
+      <sparkle:releaseNotesLink>http://ianyh.com/amethyst/versions/Amethyst-0.8.html</sparkle:releaseNotesLink>
+      <enclosure url="http://ianyh.com/amethyst/versions/Amethyst-0.8.zip"
+                 sparkle:version="3"
+                 sparkle:shortVersionString="0.8"
+                 length="1606135"
+                 type="application/octet-stream"
+                 />
+    </item>
+  </channel>
+</rss>
