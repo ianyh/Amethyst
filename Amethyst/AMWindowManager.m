@@ -152,6 +152,10 @@
 
     NSScreen *screen = focusedWindow.screen;
     NSArray *windows = [self windowsForScreen:screen];
+
+    // If there are no windows there is nothing to change focus to.
+    if (windows.count == 0) return;
+
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
     NSUInteger windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1);
     AMWindow *windowToFocus = windows[windowToFocusIndex];
@@ -168,6 +172,10 @@
 
     NSScreen *screen = focusedWindow.screen;
     NSArray *windows = [self windowsForScreen:screen];
+
+    // If there are no windows there is nothing to change focus to.
+    if (windows.count == 0) return;
+
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
     AMWindow *windowToFocus = windows[(windowIndex + 1) % windows.count];
     
