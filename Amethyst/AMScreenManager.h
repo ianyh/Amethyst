@@ -40,6 +40,9 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 // Delegate for obtaining windows on a screen.
 @property (nonatomic, assign) id<AMScreenManagerDelegate> delegate;
 
+// The identifier of the currently active space.
+@property (nonatomic, copy) NSString *currentSpaceIdentifier;
+
 // Default init is deprecated for compile-time checking.
 - (id)init DEPRECATED_ATTRIBUTE;
 

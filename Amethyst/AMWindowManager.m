@@ -19,6 +19,7 @@
 @interface AMWindowManager () <AMScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
 @property (nonatomic, strong) NSMutableArray *windows;
+@property (nonatomic, strong) NSString *currentSpaceIdentifier;
 
 @property (nonatomic, strong) NSArray *screenManagers;
 
@@ -84,7 +85,9 @@
                                                      name:NSApplicationDidChangeScreenParametersNotification
                                                    object:nil];
         
-        
+
+        self.currentSpaceIdentifier = [self activeSpaceIdentifier];
+
         [self updateScreenManagers];
     }
     return self;
@@ -96,6 +99,32 @@
 }
 
 #pragma mark Public Methods
+
+- (NSString *)activeSpaceIdentifier {
+    [[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.apple.spaces"];
+    [[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.apple.spaces"];
+
+    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    NSArray *spaceProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesConfiguration"][@"Space Properties"];
+    NSString *activeSpaceIdentifier = nil;
+
+    for (NSDictionary *dictionary in (__bridge NSArray *)windowDescriptions) {
+        NSNumber *windowNumber = dictionary[(__bridge NSString *)kCGWindowNumber];
+        for (NSDictionary *spaceDictionary in spaceProperties) {
+            NSArray *windows = spaceDictionary[@"windows"];
+            if ([windows containsObject:windowNumber]) {
+                activeSpaceIdentifier = spaceDictionary[@"name"];
+                break;
+            }
+        }
+
+        if (activeSpaceIdentifier) break;
+    }
+
+    CFRelease(windowDescriptions);
+
+    return activeSpaceIdentifier;
+}
 
 - (AMScreenManager *)focusedScreenManager {
     AMWindow *focusedWindow = [AMWindow focusedWindow];
@@ -273,6 +302,8 @@
 }
 
 - (void)activeSpaceDidChange:(NSNotification *)notification {
+    self.currentSpaceIdentifier = [self activeSpaceIdentifier];
+
     [self markAllScreensForReflow];
 
     for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
@@ -323,6 +354,7 @@
     [application observeNotification:kAXWindowCreatedNotification
                          withElement:application
                             handler:^(AMAccessibilityElement *accessibilityElement) {
+                                [[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.apple.spaces"];
                                 AMWindow *window = (AMWindow *)accessibilityElement;
                                 window.floating = floating;
                                 [self addWindow:window];
@@ -452,6 +484,7 @@
         
         if (!screenManager) {
             screenManager = [[AMScreenManager alloc] initWithScreen:screen delegate:self];
+            RAC(screenManager, currentSpaceIdentifier) = RACAbleWithStart(self.currentSpaceIdentifier);
         }
         
         [screenManagers addObject:screenManager];
