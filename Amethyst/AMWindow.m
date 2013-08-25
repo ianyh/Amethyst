@@ -176,16 +176,21 @@
     // Send the shortcut command to get Mission Control to switch spaces from under the window.
     CGEventPost(kCGHIDEventTap, keyboardEvent);
     CGEventPost(kCGHIDEventTap, keyboardEventUp);
-    // Let go of the window.
-    CGEventPost(kCGHIDEventTap, mouseUpEvent);
-    // Move the cursor back to its previous position.
-    CGEventPost(kCGHIDEventTap, mouseRestoreEvent);
+
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        // Let go of the window.
+        CGEventPost(kCGHIDEventTap, mouseUpEvent);
+        // Move the cursor back to its previous position.
+        CGEventPost(kCGHIDEventTap, mouseRestoreEvent);
+        CFRelease(mouseUpEvent);
+        CFRelease(mouseRestoreEvent);
+    });
 
     CFRelease(defaultEvent);
     CFRelease(mouseMoveEvent);
     CFRelease(mouseDownEvent);
-    CFRelease(mouseUpEvent);
-    CFRelease(mouseRestoreEvent);
     CFRelease(keyboardEvent);
     CFRelease(keyboardEventUp);
 }
