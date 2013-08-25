@@ -206,6 +206,8 @@
     NSArray *windows = [self activeWindowsForScreen:screen];
 
     NSUInteger focusedWindowIndex = [windows indexOfObject:focusedWindow];
+    if (focusedWindowIndex == NSNotFound) return;
+
     AMWindow *windowToSwapWith = windows[(focusedWindowIndex == 0 ? windows.count - 1 : focusedWindowIndex - 1)];
 
     NSUInteger focusedWindowActiveIndex = [self.windows indexOfObject:focusedWindow];
@@ -226,6 +228,8 @@
     NSArray *windows = [self activeWindowsForScreen:screen];
 
     NSUInteger focusedWindowIndex = [windows indexOfObject:focusedWindow];
+    if (focusedWindowIndex == NSNotFound) return;
+
     AMWindow *windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count];
     
     NSUInteger focusedWindowActiveIndex = [self.windows indexOfObject:focusedWindow];
