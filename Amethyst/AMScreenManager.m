@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSTimer *reflowTimer;
 
 @property (nonatomic, copy) NSArray *layouts;
+@property (nonatomic, strong) NSMutableDictionary *currentLayoutIndexBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
 @end
@@ -40,9 +41,24 @@
             [layouts addObject:[[layoutClass alloc] init]];
         }
         self.layouts = layouts;
+        self.currentLayoutIndexBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.currentLayoutIndex = 0;
     }
     return self;
+}
+
+- (void)setCurrentSpaceIdentifier:(NSString *)currentSpaceIdentifier {
+    if ([_currentSpaceIdentifier isEqualToString:currentSpaceIdentifier]) return;
+
+    if (_currentSpaceIdentifier) {
+        self.currentLayoutIndexBySpaceIdentifier[_currentSpaceIdentifier] = @(self.currentLayoutIndex);
+    }
+
+    _currentSpaceIdentifier = currentSpaceIdentifier;
+
+    if (_currentSpaceIdentifier) {
+        self.currentLayoutIndex = [self.currentLayoutIndexBySpaceIdentifier[_currentSpaceIdentifier] integerValue];
+    }
 }
 
 - (void)setNeedsReflow {
