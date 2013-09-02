@@ -26,8 +26,8 @@
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
         AMWindow *window = windows[windowIndex];
         CGRect windowFrame = {
-            .origin.x = windowIndex * windowWidth,
-            .origin.y = 0,
+            .origin.x = screen.adjustedFrame.origin.x + windowIndex * windowWidth,
+            .origin.y = screen.adjustedFrame.origin.y,
             .size.width = windowWidth,
             .size.height = screenFrame.size.height
         };
