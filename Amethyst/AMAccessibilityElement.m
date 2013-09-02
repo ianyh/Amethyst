@@ -10,8 +10,6 @@
 
 @interface AMAccessibilityElement ()
 @property (nonatomic, assign) AXUIElementRef axElementRef;
-
-@property (nonatomic, assign) CGSize minimumSize;
 @end
 
 @implementation AMAccessibilityElement
@@ -24,8 +22,6 @@
     self = [super init];
     if (self) {
         self.axElementRef = CFRetain(axElementRef);
-
-        self.minimumSize = CGSizeZero;
     }
     return self;
 }
@@ -160,10 +156,6 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-    // Modify the frame to use the best known minimum size.
-    frame.size.width = MAX(self.minimumSize.width, frame.size.width);
-    frame.size.height = MAX(self.minimumSize.height, frame.size.height);
-
     // We only want to set the size if the size has actually changed.
     BOOL shouldSetSize = YES;
     CGRect currentFrame = self.frame;
@@ -177,17 +169,11 @@
         shouldSetSize = NO;
     }
 
-    // For some reason the accessibility frameworks seem to have issues with changing size in different directions.
-    // e.g., increasing width while decreasing height doesn't seem to work correctly.
-    // Therefore we collapse the window to minimum and then expand out to meet the new frame.
-    // This means that the first operation is always a contraction, and the second operation is always an expansion.
+    // We set the size before and after setting the position because the
+    // accessibility APIs are really finicky with setting size.
+    // Note: this still occasionally silently fails to set the correct size.
     if (shouldSetSize) {
-        self.size = self.minimumSize;
-
-        currentFrame = self.frame;
-        if (!CGSizeEqualToSize(currentFrame.size, self.minimumSize)) {
-            self.minimumSize = currentFrame.size;
-        }
+        self.size = frame.size;
     }
 
     self.position = frame.origin;
