@@ -104,21 +104,30 @@
     [[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.apple.spaces"];
     [[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.apple.spaces"];
 
-    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
     NSArray *spaceProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesConfiguration"][@"Space Properties"];
+    NSMutableDictionary *spaceIdentifiersByWindowNumber = [NSMutableDictionary dictionary];
+    for (NSDictionary *spaceDictionary in spaceProperties) {
+        NSArray *windows = spaceDictionary[@"windows"];
+        for (NSNumber *window in windows) {
+            if (spaceIdentifiersByWindowNumber[window]) {
+                spaceIdentifiersByWindowNumber[window] = [spaceIdentifiersByWindowNumber[window] arrayByAddingObject:spaceDictionary[@"name"]];
+            } else {
+                spaceIdentifiersByWindowNumber[window] = @[ spaceDictionary[@"name"] ];
+            }
+        }
+    }
+
+    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
     NSString *activeSpaceIdentifier = nil;
 
     for (NSDictionary *dictionary in (__bridge NSArray *)windowDescriptions) {
         NSNumber *windowNumber = dictionary[(__bridge NSString *)kCGWindowNumber];
-        for (NSDictionary *spaceDictionary in spaceProperties) {
-            NSArray *windows = spaceDictionary[@"windows"];
-            if ([windows containsObject:windowNumber]) {
-                activeSpaceIdentifier = spaceDictionary[@"name"];
-                break;
-            }
-        }
+        NSArray *spaceIdentifiers = spaceIdentifiersByWindowNumber[windowNumber];
 
-        if (activeSpaceIdentifier) break;
+        if (spaceIdentifiers.count == 1) {
+            activeSpaceIdentifier = spaceIdentifiers[0];
+            break;
+        }
     }
 
     CFRelease(windowDescriptions);
