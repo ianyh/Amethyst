@@ -311,6 +311,7 @@
 }
 
 - (void)activeSpaceDidChange:(NSNotification *)notification {
+    self.currentSpaceIdentifier = nil;
     self.currentSpaceIdentifier = [self activeSpaceIdentifier];
 
     [self markAllScreensForReflow];
@@ -377,9 +378,16 @@
     [application observeNotification:kAXApplicationActivatedNotification
                          withElement:application
                              handler:^(AMAccessibilityElement *accessibilityElement) {
-                                 AMWindow *focusedWindow = [AMWindow focusedWindow];
-                                 [self markScreenForReflow:focusedWindow.screen];
+                                 [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                                                          selector:@checkselector(self, applicationActivated:)
+                                                                            object:nil];
+                                 [self performSelector:@checkselector(self, applicationActivated:) withObject:nil afterDelay:0.2];
                              }];
+}
+
+- (void)applicationActivated:(id)sender {
+    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    [self markScreenForReflow:focusedWindow.screen];
 }
 
 - (void)removeApplication:(AMApplication *)application {
