@@ -493,7 +493,7 @@
         
         if (!screenManager) {
             screenManager = [[AMScreenManager alloc] initWithScreen:screen delegate:self];
-            RAC(screenManager, currentSpaceIdentifier) = RACAbleWithStart(self.currentSpaceIdentifier);
+            RAC(screenManager, currentSpaceIdentifier) = RACObserve(self, currentSpaceIdentifier);
         }
         
         [screenManagers addObject:screenManager];
