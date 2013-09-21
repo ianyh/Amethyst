@@ -63,7 +63,7 @@
 
 - (void)setNeedsReflow {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.1];
+    [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.2];
 }
 
 - (void)reflow:(NSTimer *)timer {
