@@ -62,18 +62,11 @@
 }
 
 - (void)setNeedsReflow {
-    [self.reflowTimer invalidate];
-    self.reflowTimer = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                        target:self
-                                                      selector:@checkselector(self, reflow:)
-                                                      userInfo:nil
-                                                       repeats:NO];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.1];
 }
 
 - (void)reflow:(NSTimer *)timer {
-    [self.reflowTimer invalidate];
-    self.reflowTimer = nil;
-
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }
 
