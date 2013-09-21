@@ -1,9 +1,14 @@
 PODS:
   - CocoaLumberjack (1.6.2)
   - IYLoginItem (0.1)
-  - JRSwizzle (1.0)
-  - Kiwi (2.2)
-  - libextobjc (0.2.5):
+  - Kiwi (2.2.2):
+    - Kiwi/SenTestingKit
+  - Kiwi/ARC (2.2.2)
+  - Kiwi/NonARC (2.2.2)
+  - Kiwi/SenTestingKit (2.2.2):
+    - Kiwi/ARC
+    - Kiwi/NonARC
+  - libextobjc (0.3):
     - libextobjc/EXTADT
     - libextobjc/EXTAnnotation
     - libextobjc/EXTAspect
@@ -32,72 +37,71 @@ PODS:
     - libextobjc/NSMethodSignature+EXT
     - libextobjc/RuntimeExtensions
     - libextobjc/UmbrellaHeader
-  - libextobjc/EXTADT (0.2.5):
+  - libextobjc/EXTADT (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTAnnotation (0.2.5):
+  - libextobjc/EXTAnnotation (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTAspect (0.2.5):
+  - libextobjc/EXTAspect (0.3):
     - libextobjc/RuntimeExtensions
     - libffi
-  - libextobjc/EXTBlockMethod (0.2.5):
+  - libextobjc/EXTBlockMethod (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTBlockTarget (0.2.5):
+  - libextobjc/EXTBlockTarget (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTConcreteProtocol (0.2.5):
+  - libextobjc/EXTConcreteProtocol (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTDispatchObject (0.2.5):
+  - libextobjc/EXTDispatchObject (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTFinalMethod (0.2.5):
+  - libextobjc/EXTFinalMethod (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTKeyPathCoding (0.2.5):
+  - libextobjc/EXTKeyPathCoding (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMaybe (0.2.5):
+  - libextobjc/EXTMaybe (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMixin (0.2.5):
+  - libextobjc/EXTMixin (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMultimethod (0.2.5):
+  - libextobjc/EXTMultimethod (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMultiObject (0.2.5):
+  - libextobjc/EXTMultiObject (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTNil (0.2.5):
+  - libextobjc/EXTNil (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTPassthrough (0.2.5):
+  - libextobjc/EXTPassthrough (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTPrivateMethod (0.2.5):
+  - libextobjc/EXTPrivateMethod (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTProtocolCategory (0.2.5):
+  - libextobjc/EXTProtocolCategory (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSafeCategory (0.2.5):
+  - libextobjc/EXTSafeCategory (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTScope (0.2.5):
+  - libextobjc/EXTScope (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSelectorChecking (0.2.5):
+  - libextobjc/EXTSelectorChecking (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSwizzle (0.2.5):
+  - libextobjc/EXTSwizzle (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSynthesize (0.2.5):
+  - libextobjc/EXTSynthesize (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTTuple (0.2.5):
+  - libextobjc/EXTTuple (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTVarargs (0.2.5):
+  - libextobjc/EXTVarargs (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/NSInvocation+EXT (0.2.5):
+  - libextobjc/NSInvocation+EXT (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/NSMethodSignature+EXT (0.2.5):
+  - libextobjc/NSMethodSignature+EXT (0.3):
     - libextobjc/RuntimeExtensions
-  - libextobjc/RuntimeExtensions (0.2.5)
-  - libextobjc/UmbrellaHeader (0.2.5)
+  - libextobjc/RuntimeExtensions (0.3)
+  - libextobjc/UmbrellaHeader (0.3)
   - libffi (3.0.13)
-  - OCMock (2.2)
-  - ReactiveCocoa (1.9.6):
+  - OCMock (2.2.1)
+  - ReactiveCocoa (2.0):
     - ReactiveCocoa/Core
+    - ReactiveCocoa/no-arc
     - ReactiveCocoa/RACExtensions
-  - ReactiveCocoa/Core (1.9.6):
-    - JRSwizzle (~> 1.0)
-    - libextobjc/EXTConcreteProtocol (~> 0.2.5)
-    - libextobjc/EXTKeyPathCoding (~> 0.2.5)
-    - libextobjc/EXTScope (~> 0.2.5)
-  - ReactiveCocoa/RACExtensions (1.9.6):
+  - ReactiveCocoa/Core (2.0):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.0)
+  - ReactiveCocoa/RACExtensions (2.0):
     - ReactiveCocoa/Core
 
 DEPENDENCIES:
@@ -111,11 +115,10 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
-  JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
-  Kiwi: db174bba4ee8068b15d7122f1b22fb64b7c1d378
-  libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  Kiwi: 03539aeb004ccd42bdbc31253617b26364315df4
+  libextobjc: 820a79dbbbc498611e04fffd07d2d52a5588e7ac
   libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
-  OCMock: 5300ae6b75398fc3ae6cbf9102191333d35f6852
-  ReactiveCocoa: 0586996422c05830e2f70ca8c8a5214e9070983f
+  OCMock: 80e4cfbc71a0e1bd28caf10a9fda27da7c4c8402
+  ReactiveCocoa: 04f49b91365cc946e7ca327bcfb5765fcea69e76
 
 COCOAPODS: 0.23.0

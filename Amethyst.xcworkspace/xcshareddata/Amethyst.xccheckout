@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>21724DEA-2765-4526-B612-377E2C5B4DDC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Amethyst</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>863ECECC-D03A-4251-AD78-63426D1F5177</key>
+		<string>https://github.com/ianyh/Amethyst.git</string>
+		<key>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</key>
+		<string>https://github.com/ianyh/Sparkle.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Amethyst.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>863ECECC-D03A-4251-AD78-63426D1F5177</key>
+		<string>..</string>
+		<key>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</key>
+		<string>../Sparkle</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ianyh/Amethyst.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>863ECECC-D03A-4251-AD78-63426D1F5177</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>863ECECC-D03A-4251-AD78-63426D1F5177</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Amethyst</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Sparkle</string>
+		</dict>
+	</array>
+</dict>
+</plist>
