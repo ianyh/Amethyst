@@ -19,6 +19,7 @@
 
 @property (nonatomic, copy) NSArray *layouts;
 @property (nonatomic, strong) NSMutableDictionary *currentLayoutIndexBySpaceIdentifier;
+@property (nonatomic, strong) NSMutableDictionary *layoutsBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
 @end
@@ -42,6 +43,7 @@
         }
         self.layouts = layouts;
         self.currentLayoutIndexBySpaceIdentifier = [NSMutableDictionary dictionary];
+        self.layoutsBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.currentLayoutIndex = 0;
     }
     return self;
@@ -58,6 +60,16 @@
 
     if (_currentSpaceIdentifier) {
         self.currentLayoutIndex = [self.currentLayoutIndexBySpaceIdentifier[_currentSpaceIdentifier] integerValue];
+        if (self.layoutsBySpaceIdentifier[_currentSpaceIdentifier]) {
+            self.layouts = self.layoutsBySpaceIdentifier[_currentSpaceIdentifier];
+        } else {
+            NSMutableArray *layouts = [NSMutableArray array];
+            for (Class layoutClass in [[AMConfiguration sharedConfiguration] layouts]) {
+                [layouts addObject:[[layoutClass alloc] init]];
+            }
+            self.layouts = layouts;
+            self.layoutsBySpaceIdentifier[_currentSpaceIdentifier] = layouts;
+        }
     }
 }
 
