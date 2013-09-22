@@ -3,5 +3,6 @@ before_install:
         - brew update
         - brew install xctool || true
         - brew upgrade xctool
+        - gem install cocoapods
         - export LC_ALL="en_US.UTF-8"
 script: rake test
