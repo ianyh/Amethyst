@@ -8,13 +8,24 @@
 
 #import "NSRunningApplication+Manageable.h"
 
+@interface NSRunningApplication (ManageablePrivate)
+- (BOOL)isAgent;
+@end
+
 @implementation NSRunningApplication (Manageable)
 
 - (BOOL)isManageable {
     if ([self.bundleIdentifier hasPrefix:@"com.apple.dashboard"]) return NO;
     if ([self.bundleIdentifier hasPrefix:@"com.apple.loginwindow"]) return NO;
+    if (self.isAgent) return NO;
 
     return YES;
+}
+
+- (BOOL)isAgent {
+    NSURL *bundleInfoPath = [[self.bundleURL URLByAppendingPathComponent:@"Contents"] URLByAppendingPathComponent:@"Info.plist"];
+    NSDictionary *applicationBundleInfoDictionary = [NSDictionary dictionaryWithContentsOfURL:bundleInfoPath];
+    return [applicationBundleInfoDictionary[@"LSUIElement"] boolValue];
 }
 
 @end
