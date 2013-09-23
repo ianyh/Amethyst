@@ -32,5 +32,19 @@
                  type="application/octet-stream"
                  />
     </item>
+    <item>
+      <title>Version 0.8.1</title>
+      <description>
+        
+      </description>
+      <pubDate>Sun, 22 Sep 2013 21:59:00 +0000</pubDate>
+      <sparkle:releaseNotesLink>http://ianyh.com/amethyst/versions/Amethyst-0.8.1.html</sparkle:releaseNotesLink>
+      <enclosure url="http://ianyh.com/amethyst/versions/Amethyst-0.8.1.zip"
+                 sparkle:version="4"
+                 sparkle:shortVersionString="0.8.1"
+                 length="1615591"
+                 type="application/octet-stream"
+                 />
+    </item>
   </channel>
 </rss>
