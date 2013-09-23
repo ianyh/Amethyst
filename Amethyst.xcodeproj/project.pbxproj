@@ -454,6 +454,11 @@
 				CLASSPREFIX = AM;
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
+				TargetAttributes = {
+					402DB6DD1742E41A00D1C936 = {
+						DevelopmentTeam = 82P2XLB4UH;
+					};
+				};
 			};
 			buildConfigurationList = 402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */;
 			compatibilityVersion = "Xcode 3.2";
