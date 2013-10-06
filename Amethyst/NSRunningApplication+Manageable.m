@@ -8,10 +8,6 @@
 
 #import "NSRunningApplication+Manageable.h"
 
-@interface NSRunningApplication (ManageablePrivate)
-- (BOOL)isAgent;
-@end
-
 @implementation NSRunningApplication (Manageable)
 
 - (BOOL)isManageable {
@@ -20,12 +16,6 @@
     if (self.isAgent) return NO;
 
     return YES;
-}
-
-- (BOOL)isAgent {
-    NSURL *bundleInfoPath = [[self.bundleURL URLByAppendingPathComponent:@"Contents"] URLByAppendingPathComponent:@"Info.plist"];
-    NSDictionary *applicationBundleInfoDictionary = [NSDictionary dictionaryWithContentsOfURL:bundleInfoPath];
-    return [applicationBundleInfoDictionary[@"LSUIElement"] boolValue];
 }
 
 @end

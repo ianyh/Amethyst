@@ -55,7 +55,7 @@
 
 #pragma mark AXObserver
 
-void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRef notification, void *refcon) {
+void am_observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRef notification, void *refcon) {
     AMAXNotificationHandler callback = (__bridge AMAXNotificationHandler)refcon;
     AMWindow *window = [[AMWindow alloc] initWithAXElementRef:element];
     callback(window);
@@ -64,7 +64,7 @@ void observerCallback(AXObserverRef observer, AXUIElementRef element, CFStringRe
 - (void)observeNotification:(CFStringRef)notification withElement:(AMAccessibilityElement *)accessibilityElement handler:(AMAXNotificationHandler)handler {
     if (!self.observerRef) {
         AXObserverRef observerRef;
-        AXError error = AXObserverCreate(self.processIdentifier, &observerCallback, &observerRef);
+        AXError error = AXObserverCreate(self.processIdentifier, &am_observerCallback, &observerRef);
 
         if (error != kAXErrorSuccess) return;
 
