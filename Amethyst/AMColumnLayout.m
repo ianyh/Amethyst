@@ -8,8 +8,6 @@
 
 #import "AMColumnLayout.h"
 
-#import "AMWindow.h"
-
 @implementation AMColumnLayout
 
 #pragma mark AMLayout
@@ -20,10 +18,10 @@
     CGRect screenFrame = screen.frameWithoutDockOrMenu;
     CGFloat windowWidth = screenFrame.size.width / windows.count;
 
-    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    SIWindow *focusedWindow = [SIWindow focusedWindow];
 
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
-        AMWindow *window = windows[windowIndex];
+        SIWindow *window = windows[windowIndex];
         CGRect windowFrame = {
             .origin.x = screen.frameWithoutDockOrMenu.origin.x + windowIndex * windowWidth,
             .origin.y = screen.frameWithoutDockOrMenu.origin.y,

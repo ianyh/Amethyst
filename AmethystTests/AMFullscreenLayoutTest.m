@@ -7,7 +7,7 @@
 //
 
 #import "AMFullscreenLayout.h"
-#import "AMWindow.h"
+
 #import "NSScreen+FrameAdjustment.h"
 
 #import <Kiwi/Kiwi.h>
@@ -17,8 +17,8 @@ SPEC_BEGIN(AMFullscreenLayoutTest)
 
 describe(@"Fullscreen Layout Algorithm", ^{
     it(@"should always make all windows fullscreen", ^{
-        id window1 = [OCMockObject niceMockForClass:[AMWindow class]];
-        id window2 = [OCMockObject niceMockForClass:[AMWindow class]];
+        id window1 = [OCMockObject niceMockForClass:[SIWindow class]];
+        id window2 = [OCMockObject niceMockForClass:[SIWindow class]];
         id screen = [OCMockObject niceMockForClass:[NSScreen class]];
 
         CGRect screenFrame = { .origin.x = 0, .origin.y = 0, .size.width = 500, .size.height = 500 };

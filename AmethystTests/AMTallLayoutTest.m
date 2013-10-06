@@ -7,7 +7,7 @@
 //
 
 #import "AMTallLayout.h"
-#import "AMWindow.h"
+
 #import "NSScreen+FrameAdjustment.h"
 
 #import <Kiwi/Kiwi.h>
@@ -23,8 +23,8 @@ SPEC_BEGIN(AMTallLayoutTest)
 describe(@"Tall Layout Algorithm", ^{
     it(@"Should organize windows according to mainPaneCount", ^{
         AMTallLayout *layout = [[AMTallLayout alloc] init];
-        id window1 = [OCMockObject niceMockForClass:[AMWindow class]];
-        id window2 = [OCMockObject niceMockForClass:[AMWindow class]];
+        id window1 = [OCMockObject niceMockForClass:[SIWindow class]];
+        id window2 = [OCMockObject niceMockForClass:[SIWindow class]];
         id screen = [OCMockObject niceMockForClass:[NSScreen class]];
 
         CGRect screenFrame = { .origin.x = 0, .origin.y = 0, .size.width = 500, .size.height = 500 };
@@ -54,8 +54,8 @@ describe(@"Tall Layout Algorithm", ^{
 
     it(@"should organize windows according to mainPaneRatio", ^{
         AMTallLayout *layout = [[AMTallLayout alloc] init];
-        id window1 = [OCMockObject niceMockForClass:[AMWindow class]];
-        id window2 = [OCMockObject niceMockForClass:[AMWindow class]];
+        id window1 = [OCMockObject niceMockForClass:[SIWindow class]];
+        id window2 = [OCMockObject niceMockForClass:[SIWindow class]];
         id screen = [OCMockObject niceMockForClass:[NSScreen class]];
         
         CGRect screenFrame = { .origin.x = 0, .origin.y = 0, .size.width = 500, .size.height = 500 };

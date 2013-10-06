@@ -124,6 +124,6 @@ SPEC CHECKSUMS:
   libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
   OCMock: 80e4cfbc71a0e1bd28caf10a9fda27da7c4c8402
   ReactiveCocoa: b686fa735c28c2dc7311fbd2f0895b4d4ae07360
-  Silica: 386df29ce000cb3ac410583034eacfdf42a9a6a2
+  Silica: 33e66b790d3cfdde69369f1b87f4943cf9091542
 
 COCOAPODS: 0.25.0

@@ -13,6 +13,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <CocoaLumberjack/DDLog.h>
 #import <Silica/Silica.h>
+#import "SIWindow+Amethyst.h"
 
 #ifdef DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;

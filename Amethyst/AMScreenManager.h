@@ -20,7 +20,7 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 // contained windows.
 @protocol AMScreenManagerDelegate <NSObject>
 
-// Should return array of AMWindow objects contained on the screen manager's
+// Should return array of SIWindow objects contained on the screen manager's
 // screen.
 //
 // screenManager - The screen manager whose screen contains the returned

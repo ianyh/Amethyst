@@ -8,7 +8,6 @@
 
 #import "AMWideLayout.h"
 
-#import "AMWindow.h"
 #import "AMWindowManager.h"
 
 @interface AMWideLayout ()
@@ -49,10 +48,10 @@
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height * (hasSecondaryPane ? self.mainPaneRatio : 1));
     CGFloat secondaryPaneWindowHeight = screenFrame.size.width - mainPaneWindowHeight;
     
-    AMWindow *focusedWindow = [AMWindow focusedWindow];
+    SIWindow *focusedWindow = [SIWindow focusedWindow];
 
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
-        AMWindow *window = windows[windowIndex];
+        SIWindow *window = windows[windowIndex];
         CGRect windowFrame;
 
         if (windowIndex < mainPaneCount) {
