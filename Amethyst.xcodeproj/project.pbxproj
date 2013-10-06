@@ -31,6 +31,8 @@
 		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
 		4017800A176D262800C8216C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40CD2F8B176D0E5E00251338 /* Sparkle.framework */; };
 		4017800C176D268100C8216C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40CD2F8B176D0E5E00251338 /* Sparkle.framework */; };
+		401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
+		401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
 		4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
@@ -136,6 +138,8 @@
 		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
 		4015D9B317517CE100548DBE /* icon-statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem.png"; sourceTree = "<group>"; };
 		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
+		401A406F1801C82B00136DC9 /* SIApplication+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIApplication+Amethyst.h"; sourceTree = "<group>"; };
+		401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIApplication+Amethyst.m"; sourceTree = "<group>"; };
 		4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfigurationTest.m; sourceTree = "<group>"; };
 		4026AB411777C017001E3783 /* AMConfiguration+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AMConfiguration+Private.h"; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,6 +339,8 @@
 				4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */,
 				404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */,
 				404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */,
+				401A406F1801C82B00136DC9 /* SIApplication+Amethyst.h */,
+				401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -611,6 +617,7 @@
 				400299F717639AE40049001F /* AMHotKeyManager.m in Sources */,
 				400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */,
 				400299FA17639AF20049001F /* AMAppDelegate.m in Sources */,
+				401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
 				400299FB17639AF20049001F /* AMWindowManager.m in Sources */,
 				400299FC17639AF20049001F /* AMScreenManager.m in Sources */,
 				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
@@ -637,6 +644,7 @@
 				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
 				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
 				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
+				401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
 				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
 				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,

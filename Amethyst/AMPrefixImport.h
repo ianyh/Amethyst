@@ -14,6 +14,7 @@
 #import <CocoaLumberjack/DDLog.h>
 #import <Silica/Silica.h>
 #import "SIWindow+Amethyst.h"
+#import "SIApplication+Amethyst.h"
 
 #ifdef DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
