@@ -441,7 +441,7 @@
 }
 
 - (void)removeWindow:(SIWindow *)window {
-    [self markScreenForReflow:window.screen];
+    [self markAllScreensForReflow];
 
     SIApplication *application = [self applicationWithProcessIdentifier:window.processIdentifier];
     [application unobserveNotification:kAXUIElementDestroyedNotification withElement:window];
