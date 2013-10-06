@@ -17,10 +17,6 @@
 // manager.
 - (BOOL)shouldBeManaged;
 
-// Returns YES if the window is currently visible on the screen and NO
-// otherwise.
-- (BOOL)isActive;
-
 // If a window is floating it is not actively tiled, but is still in the focus
 // loop.
 @property (nonatomic, assign) BOOL floating;
