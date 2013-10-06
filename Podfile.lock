@@ -94,15 +94,14 @@ PODS:
   - libextobjc/UmbrellaHeader (0.3)
   - libffi (3.0.13)
   - OCMock (2.2.1)
-  - ReactiveCocoa (2.0):
+  - ReactiveCocoa (2.1):
     - ReactiveCocoa/Core
     - ReactiveCocoa/no-arc
-    - ReactiveCocoa/RACExtensions
-  - ReactiveCocoa/Core (2.0):
+  - ReactiveCocoa/Core (2.1):
     - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.0)
-  - ReactiveCocoa/RACExtensions (2.0):
-    - ReactiveCocoa/Core
+  - ReactiveCocoa/no-arc (2.1)
+  - Silica (0.0.2):
+    - libextobjc
 
 DEPENDENCIES:
   - CocoaLumberjack
@@ -111,6 +110,11 @@ DEPENDENCIES:
   - libextobjc
   - OCMock
   - ReactiveCocoa
+  - Silica (from `https://github.com/SiO2/Silica.git`)
+
+EXTERNAL SOURCES:
+  Silica:
+    :git: https://github.com/SiO2/Silica.git
 
 SPEC CHECKSUMS:
   CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
@@ -119,6 +123,7 @@ SPEC CHECKSUMS:
   libextobjc: 820a79dbbbc498611e04fffd07d2d52a5588e7ac
   libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
   OCMock: 80e4cfbc71a0e1bd28caf10a9fda27da7c4c8402
-  ReactiveCocoa: 04f49b91365cc946e7ca327bcfb5765fcea69e76
+  ReactiveCocoa: b686fa735c28c2dc7311fbd2f0895b4d4ae07360
+  Silica: 386df29ce000cb3ac410583034eacfdf42a9a6a2
 
 COCOAPODS: 0.25.0
