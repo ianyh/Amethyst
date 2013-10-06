@@ -100,7 +100,7 @@ PODS:
   - ReactiveCocoa/Core (2.1):
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/no-arc (2.1)
-  - Silica (0.0.2):
+  - Silica (0.1):
     - libextobjc
 
 DEPENDENCIES:
@@ -110,11 +110,7 @@ DEPENDENCIES:
   - libextobjc
   - OCMock
   - ReactiveCocoa
-  - Silica (from `https://github.com/SiO2/Silica.git`)
-
-EXTERNAL SOURCES:
-  Silica:
-    :git: https://github.com/SiO2/Silica.git
+  - Silica
 
 SPEC CHECKSUMS:
   CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
@@ -124,6 +120,6 @@ SPEC CHECKSUMS:
   libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
   OCMock: 80e4cfbc71a0e1bd28caf10a9fda27da7c4c8402
   ReactiveCocoa: b686fa735c28c2dc7311fbd2f0895b4d4ae07360
-  Silica: 33e66b790d3cfdde69369f1b87f4943cf9091542
+  Silica: c5f1082b1068da4f471ca8673c63b505e2da418e
 
 COCOAPODS: 0.25.0
