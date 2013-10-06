@@ -10,7 +10,6 @@
 
 #import "AMHotKeyManager.h"
 #import "AMSystemWideElement.h"
-#import "NSScreen+FrameAdjustment.h"
 
 @interface AMWindow ()
 @property (nonatomic, strong) NSScreen *cachedScreen;
@@ -111,7 +110,7 @@
             CGPoint center = { .x = CGRectGetMidX(frame), .y = CGRectGetMidY(frame) };
             
             for (NSScreen *screen in NSScreen.screens) {
-                CGRect screenFrame = screen.adjustedFrame;
+                CGRect screenFrame = screen.frameWithoutDockOrMenu;
                 if (CGRectContainsPoint(screenFrame, center)) {
                     self.cachedScreen = screen;
                 }
@@ -127,7 +126,7 @@
 - (void)moveToScreen:(NSScreen *)screen {
     DDLogInfo(@"Moving window %@ to screen %@", self, screen);
     [self dropScreenCache];
-    self.position = screen.adjustedFrame.origin;
+    self.position = screen.frameWithoutDockOrMenu.origin;
 }
 
 - (void)dropScreenCache {

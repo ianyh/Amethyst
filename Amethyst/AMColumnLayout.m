@@ -9,7 +9,6 @@
 #import "AMColumnLayout.h"
 
 #import "AMWindow.h"
-#import "NSScreen+FrameAdjustment.h"
 
 @implementation AMColumnLayout
 
@@ -18,7 +17,7 @@
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
 
-    CGRect screenFrame = screen.adjustedFrame;
+    CGRect screenFrame = screen.frameWithoutDockOrMenu;
     CGFloat windowWidth = screenFrame.size.width / windows.count;
 
     AMWindow *focusedWindow = [AMWindow focusedWindow];
@@ -26,8 +25,8 @@
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
         AMWindow *window = windows[windowIndex];
         CGRect windowFrame = {
-            .origin.x = screen.adjustedFrame.origin.x + windowIndex * windowWidth,
-            .origin.y = screen.adjustedFrame.origin.y,
+            .origin.x = screen.frameWithoutDockOrMenu.origin.x + windowIndex * windowWidth,
+            .origin.y = screen.frameWithoutDockOrMenu.origin.y,
             .size.width = windowWidth,
             .size.height = screenFrame.size.height
         };

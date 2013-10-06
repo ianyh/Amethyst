@@ -10,7 +10,6 @@
 
 #import "AMWindow.h"
 #import "AMWindowManager.h"
-#import "NSScreen+FrameAdjustment.h"
 
 @interface AMTallLayout ()
 // Ratio of screen width taken up by main pane
@@ -42,7 +41,7 @@
     NSInteger secondaryPaneCount = windows.count - mainPaneCount;
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
 
-    CGRect screenFrame = screen.adjustedFrame;
+    CGRect screenFrame = screen.frameWithoutDockOrMenu;
 
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height / mainPaneCount);
     CGFloat secondaryPaneWindowHeight = (hasSecondaryPane ? round(screenFrame.size.height / secondaryPaneCount) : 0.0);

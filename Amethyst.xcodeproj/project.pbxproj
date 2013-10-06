@@ -13,7 +13,6 @@
 		400299EB176393F10049001F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 400299E9176393F10049001F /* InfoPlist.strings */; };
 		400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 400299F5176396D30049001F /* AMFullscreenLayoutTest.m */; };
 		400299F717639AE40049001F /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
-		400299F817639AEA0049001F /* NSScreen+FrameAdjustment.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E71745D1830001D8FC /* NSScreen+FrameAdjustment.m */; };
 		400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
 		400299FA17639AF20049001F /* AMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6F41742E41A00D1C936 /* AMAppDelegate.m */; };
 		400299FB17639AF20049001F /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
@@ -49,7 +48,6 @@
 		402DB723174537FE00D1C936 /* AMApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB722174537FE00D1C936 /* AMApplication.m */; };
 		40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
 		40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
-		40B337E81745D1830001D8FC /* NSScreen+FrameAdjustment.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E71745D1830001D8FC /* NSScreen+FrameAdjustment.m */; };
 		40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
 		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
 		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
@@ -170,8 +168,6 @@
 		40B337DF1745CE2B0001D8FC /* AMLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayout.m; sourceTree = "<group>"; };
 		40B337E21745D0620001D8FC /* AMFullscreenLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFullscreenLayout.h; sourceTree = "<group>"; };
 		40B337E31745D0620001D8FC /* AMFullscreenLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayout.m; sourceTree = "<group>"; };
-		40B337E61745D1830001D8FC /* NSScreen+FrameAdjustment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+FrameAdjustment.h"; sourceTree = "<group>"; };
-		40B337E71745D1830001D8FC /* NSScreen+FrameAdjustment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+FrameAdjustment.m"; sourceTree = "<group>"; };
 		40B337E917465ADF0001D8FC /* AMTallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTallLayout.h; sourceTree = "<group>"; };
 		40B337EA17465AE00001D8FC /* AMTallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallLayout.m; sourceTree = "<group>"; };
 		40B337EC1746D8540001D8FC /* AMHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMHotKeyManager.h; sourceTree = "<group>"; };
@@ -363,8 +359,6 @@
 		40B337E51745D1600001D8FC /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				40B337E61745D1830001D8FC /* NSScreen+FrameAdjustment.h */,
-				40B337E71745D1830001D8FC /* NSScreen+FrameAdjustment.m */,
 				4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */,
 				4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */,
 			);
@@ -641,7 +635,6 @@
 			files = (
 				400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */,
 				400299F717639AE40049001F /* AMHotKeyManager.m in Sources */,
-				400299F817639AEA0049001F /* NSScreen+FrameAdjustment.m in Sources */,
 				400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */,
 				400299FA17639AF20049001F /* AMAppDelegate.m in Sources */,
 				400299FB17639AF20049001F /* AMWindowManager.m in Sources */,
@@ -674,7 +667,6 @@
 				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
 				40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */,
 				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
-				40B337E81745D1830001D8FC /* NSScreen+FrameAdjustment.m in Sources */,
 				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
 				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
 				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,

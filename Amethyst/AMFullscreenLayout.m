@@ -10,12 +10,11 @@
 
 #import "AMWindow.h"
 #import "AMWindowManager.h"
-#import "NSScreen+FrameAdjustment.h"
 
 @implementation AMFullscreenLayout
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-    CGRect screenFrame = screen.adjustedFrame;
+    CGRect screenFrame = screen.frameWithoutDockOrMenu;
 
     for (AMWindow *window in windows) {
         window.frame = screenFrame;
