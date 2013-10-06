@@ -29,6 +29,7 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
 
     CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
     pid_t processIdentifier = self.processIdentifier;
+    BOOL isActive = NO;
     for (NSDictionary *dictionary in (__bridge NSArray *)windowDescriptions) {
         pid_t windowOwnerProcessIdentifier = [dictionary[(__bridge NSString *)kCGWindowOwnerPID] intValue];
         if (windowOwnerProcessIdentifier != processIdentifier) continue;
@@ -41,12 +42,13 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
         NSString *windowTitle = dictionary[(__bridge NSString *)kCGWindowName];
         if (![windowTitle isEqualToString:[self stringForKey:kAXTitleAttribute]]) continue;
 
-        return YES;
+        isActive = YES;
+        break;
     }
 
-    DDLogWarn(@"Couldn't find matching window description for window %@", self);
-    
-    return NO;
+    CFRelease(windowDescriptions);
+
+    return isActive;
 }
 
 - (BOOL)floating {
