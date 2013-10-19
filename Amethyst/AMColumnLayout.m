@@ -15,7 +15,8 @@
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
 
-    CGRect screenFrame = screen.frameWithoutDockOrMenu;
+    //CGRect screenFrame = screen.frameWithoutDockOrMenu;
+    CGRect screenFrame = screen.frame;
     CGFloat windowWidth = screenFrame.size.width / windows.count;
 
     SIWindow *focusedWindow = [SIWindow focusedWindow];
