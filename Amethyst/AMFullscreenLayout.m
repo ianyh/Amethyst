@@ -12,6 +12,10 @@
 
 @implementation AMFullscreenLayout
 
++ (NSString *)layoutName {
+    return @"Fullscreen";
+}
+
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     CGRect screenFrame = screen.frameWithoutDockOrMenu;
 

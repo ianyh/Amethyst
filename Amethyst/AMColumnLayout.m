@@ -12,6 +12,10 @@
 
 #pragma mark AMLayout
 
++ (NSString *)layoutName {
+    return @"Columns";
+}
+
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
 
