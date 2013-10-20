@@ -9,6 +9,7 @@
 #import "AMTallLayout.h"
 
 #import "AMWindowManager.h"
+#import "AMConfiguration.h"
 
 @interface AMTallLayout ()
 // Ratio of screen width taken up by main pane
@@ -23,15 +24,10 @@
 #pragma mark Lifecycle
 
 - (id)init {
-  return [self init: false];
-}
-
-- (id)init: (BOOL) ignoreMenu {
     self = [super init];
     if (self) {
         self.mainPaneCount = 1;
         self.mainPaneRatio = 0.5;
-        self.ignoreMenu = ignoreMenu;
     }
     return self;
 }
@@ -46,7 +42,7 @@
     NSInteger secondaryPaneCount = windows.count - mainPaneCount;
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
 
-    CGRect screenFrame = self.ignoreMenu ? screen.frame : screen.frameWithoutDockOrMenu;
+    CGRect screenFrame = [self adjustedFrameForLayout: screen];
 
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height / mainPaneCount);
     CGFloat secondaryPaneWindowHeight = (hasSecondaryPane ? round(screenFrame.size.height / secondaryPaneCount) : 0.0);

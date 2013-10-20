@@ -7,6 +7,7 @@
 //
 
 #import "AMColumnLayout.h"
+#import "AMConfiguration.h"
 
 @interface AMColumnLayout ()
 @property (nonatomic, assign) BOOL ignoreMenu;
@@ -16,25 +17,12 @@
 
 @implementation AMColumnLayout
 
-#pragma mark Lifecycle
-- (id)init {
-  return [self init: false];
-}
-
-- (id)init: (BOOL) ignoreMenu {
-    self = [super init];
-    if (self) {
-        self.ignoreMenu = ignoreMenu;
-    }
-    return self;
-}
-
 #pragma mark AMLayout
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
 
-    CGRect screenFrame = self.ignoreMenu ? screen.frame : screen.frameWithoutDockOrMenu;
+    CGRect screenFrame = [self adjustedFrameForLayout: screen];
     CGFloat windowWidth = screenFrame.size.width / windows.count;
 
     SIWindow *focusedWindow = [SIWindow focusedWindow];

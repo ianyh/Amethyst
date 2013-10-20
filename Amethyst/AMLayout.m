@@ -7,6 +7,7 @@
 //
 
 #import "AMLayout.h"
+#import "AMConfiguration.h"
 
 @implementation AMLayout
 
@@ -19,5 +20,9 @@
 
 - (void)increaseMainPaneCount {}
 - (void)decreaseMainPaneCount {}
+
+- (CGRect)adjustedFrameForLayout:(NSScreen *)screen {
+  return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frame : screen.frameWithoutDockOrMenu;
+}
 
 @end

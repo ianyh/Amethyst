@@ -24,7 +24,6 @@
 // contained there can be increased and decreased.
 @interface AMLayout : NSObject
 
-- (id)init: (BOOL) ignoreMenu;
 // Organizes the windows within a screen's frame.
 //
 // screen  - The screen on which windows will be laid out.
@@ -49,5 +48,7 @@
 // Decrease the number of windows in the main pane of content.
 // Subclasses can optionally implement this method.
 - (void)decreaseMainPaneCount;
+
+- (CGRect)adjustedFrameForLayout:(NSScreen *)screen;
 
 @end

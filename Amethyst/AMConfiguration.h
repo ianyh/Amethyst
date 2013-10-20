@@ -34,5 +34,5 @@
 
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication;
 
-- (BOOL)ignoreMenu;
+- (BOOL)ignoreMenuBar;
 @end

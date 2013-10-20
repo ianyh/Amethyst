@@ -9,29 +9,17 @@
 #import "AMFullscreenLayout.h"
 
 #import "AMWindowManager.h"
+#import "AMConfiguration.h"
 
 @interface AMFullscreenLayout ()
-@property (nonatomic, assign) BOOL ignoreMenu;
 @end
 
 @implementation AMFullscreenLayout
-#pragma mark Lifecycle
-- (id)init {
-  return [self init: false];
-}
-
-- (id)init: (BOOL) ignoreMenu {
-    self = [super init];
-    if (self) {
-        self.ignoreMenu = ignoreMenu;
-    }
-    return self;
-}
 
 #pragma mark AMLayout
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-    CGRect screenFrame = self.ignoreMenu ? screen.frame : screen.frameWithoutDockOrMenu;
+    CGRect screenFrame = [self adjustedFrameForLayout: screen];
 
     for (SIWindow *window in windows) {
         window.frame = screenFrame;
