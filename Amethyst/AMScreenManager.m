@@ -64,7 +64,18 @@
         [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
             @strongify(self);
 
+            CGRect screenFrame = self.screen.frameIncludingDockAndMenu;
+            CGPoint screenCenter = (CGPoint){
+                .x = CGRectGetMidX(screenFrame),
+                .y = CGRectGetMidY(screenFrame)
+            };
+            CGPoint windowOrigin = (CGPoint){
+                .x = screenCenter.x - self.layoutNameWindow.frame.size.width / 2.0,
+                .y = screenCenter.y - self.layoutNameWindow.frame.size.height / 2.0,
+            };
+
             self.layoutNameWindow.layoutNameField.stringValue = [self.currentLayout.class layoutName];
+            [self.layoutNameWindow setFrameOrigin:NSPointFromCGPoint(windowOrigin)];
             [self.layoutNameWindow makeKeyAndOrderFront:NSApp];
         }];
     }

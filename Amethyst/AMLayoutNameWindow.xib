@@ -34,6 +34,7 @@
                 </constraints>
             </view>
             <connections>
+                <outlet property="containerView" destination="2" id="ZO9-Uz-ux8"/>
                 <outlet property="layoutNameField" destination="YXF-Df-V9n" id="KfT-Yb-Yh3"/>
             </connections>
         </window>
