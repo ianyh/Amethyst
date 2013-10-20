@@ -22,7 +22,7 @@
 - (void)decreaseMainPaneCount {}
 
 - (CGRect)adjustedFrameForLayout:(NSScreen *)screen {
-  return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameWithDockAndMenu : screen.frameWithoutDockOrMenu;
+   return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameWithDockAndMenu : screen.frameWithoutDockOrMenu;
 }
 
 @end
