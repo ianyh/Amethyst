@@ -9,7 +9,6 @@
 #import "AMFullscreenLayout.h"
 
 #import "AMWindowManager.h"
-#import "AMConfiguration.h"
 
 @interface AMFullscreenLayout ()
 @end

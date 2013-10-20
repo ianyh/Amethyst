@@ -7,7 +7,6 @@
 //
 
 #import "AMColumnLayout.h"
-#import "AMConfiguration.h"
 
 @interface AMColumnLayout ()
 @property (nonatomic, assign) BOOL ignoreMenu;

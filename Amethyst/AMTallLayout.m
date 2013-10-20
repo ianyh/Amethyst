@@ -9,7 +9,6 @@
 #import "AMTallLayout.h"
 
 #import "AMWindowManager.h"
-#import "AMConfiguration.h"
 
 @interface AMTallLayout ()
 // Ratio of screen width taken up by main pane

@@ -9,7 +9,6 @@
 #import "AMWideLayout.h"
 
 #import "AMWindowManager.h"
-#import "AMConfiguration.h"
 
 @interface AMWideLayout ()
 // Ratio of screen height taken up by main pane.
