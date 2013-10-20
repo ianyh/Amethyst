@@ -44,6 +44,10 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 // flags. The behavior in that case is not well defined. We may want this to
 // be an assertion error.
 static NSString *const AMConfigurationCommandCycleLayoutKey = @"cycle-layout";
+static NSString *const AMConfigurationCommandFullScreenLayout = @"fullscren-layout";
+static NSString *const AMConfigurationCommandTallLayout = @"tall-layout";
+static NSString *const AMConfigurationCommandWideLayout = @"wide-layout";
+static NSString *const AMConfigurationCommandColumnLayout = @"column-layout";
 static NSString *const AMConfigurationCommandShrinkMainKey = @"shrink-main";
 static NSString *const AMConfigurationCommandExpandMainKey = @"expand-main";
 static NSString *const AMConfigurationCommandIncreaseMainKey = @"increase-main";
@@ -240,6 +244,10 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandToggleFloatKey handler:^{
         [windowManager toggleFloatForFocusedWindow];
+    }];
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandFullScreenLayout handler:^{
+        [windowManager 3];
     }];
 }
 

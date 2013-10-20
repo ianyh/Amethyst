@@ -98,6 +98,11 @@
     [self setNeedsReflow];
 }
 
+- (void)selectLayout: NSUInteger layoutIndex {
+    self.currentLayoutIndex = layoutIndex;
+    [self setNeedsReflow];
+}
+
 - (void)shrinkMainPane {
     [self.currentLayout shrinkMainPane];
     [self setNeedsReflow];
