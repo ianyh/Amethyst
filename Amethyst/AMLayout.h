@@ -24,6 +24,7 @@
 // contained there can be increased and decreased.
 @interface AMLayout : NSObject
 
+- (id)init: (BOOL) ignoreMenu;
 // Organizes the windows within a screen's frame.
 //
 // screen  - The screen on which windows will be laid out.
