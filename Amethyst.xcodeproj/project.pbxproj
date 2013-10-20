@@ -49,6 +49,10 @@
 		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
 		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
 		40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337FA174993D40001D8FC /* AMScreenManager.m */; };
+		40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
+		40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
+		40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
+		40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
 		40CD2F94176D0E7B00251338 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40CD2F8B176D0E5E00251338 /* Sparkle.framework */; };
 		40CD2F96176D0F5900251338 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40CD2F8B176D0E5E00251338 /* Sparkle.framework */; };
 		40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
@@ -170,6 +174,9 @@
 		40B337F717495D7D0001D8FC /* AMConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfiguration.m; sourceTree = "<group>"; };
 		40B337F9174993D40001D8FC /* AMScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMScreenManager.h; sourceTree = "<group>"; };
 		40B337FA174993D40001D8FC /* AMScreenManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMScreenManager.m; sourceTree = "<group>"; };
+		40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMLayoutNameWindow.xib; sourceTree = "<group>"; };
+		40B39284181497C0009A296B /* AMLayoutNameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayoutNameWindow.h; sourceTree = "<group>"; };
+		40B39285181497C0009A296B /* AMLayoutNameWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayoutNameWindow.m; sourceTree = "<group>"; };
 		40C90FE417A330E900CE174B /* AMPrefixImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMPrefixImport.h; sourceTree = "<group>"; };
 		40CD2F82176D0E5E00251338 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMColumnLayout.h; sourceTree = "<group>"; };
@@ -280,6 +287,7 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				40B392831814977D009A296B /* View */,
 				40B337EF174935ED0001D8FC /* Event Handling */,
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
@@ -352,6 +360,16 @@
 				40B337ED1746D8540001D8FC /* AMHotKeyManager.m */,
 			);
 			name = "Event Handling";
+			sourceTree = "<group>";
+		};
+		40B392831814977D009A296B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */,
+				40B39284181497C0009A296B /* AMLayoutNameWindow.h */,
+				40B39285181497C0009A296B /* AMLayoutNameWindow.m */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		40CD2F81176D0E5800251338 /* Sparkle */ = {
@@ -496,6 +514,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
 				400299EB176393F10049001F /* InfoPlist.strings in Resources */,
 				400299FE17639AF70049001F /* MainMenu.xib in Resources */,
 				40E705D9176EAD7800850DA6 /* default.amethyst in Resources */,
@@ -510,6 +529,7 @@
 				402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */,
 				402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */,
 				4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */,
+				40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
 				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
 				4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */,
 				40E705D8176EAD7800850DA6 /* default.amethyst in Resources */,
@@ -614,6 +634,7 @@
 				400299FA17639AF20049001F /* AMAppDelegate.m in Sources */,
 				401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
 				400299FB17639AF20049001F /* AMWindowManager.m in Sources */,
+				40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
 				400299FC17639AF20049001F /* AMScreenManager.m in Sources */,
 				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
 				40029A0017639B050049001F /* AMLayout.m in Sources */,
@@ -635,6 +656,7 @@
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
 				402DB6F51742E41A00D1C936 /* AMAppDelegate.m in Sources */,
 				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
+				40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
 				40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */,
 				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
 				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
