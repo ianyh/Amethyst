@@ -10,6 +10,7 @@
 
 #import "AMConfiguration.h"
 #import "AMLayout.h"
+#import "AMLayoutNameWindow.h"
 #import "AMWindowManager.h"
 
 @interface AMScreenManager ()
@@ -22,6 +23,8 @@
 @property (nonatomic, strong) NSMutableDictionary *layoutsBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
+
+@property (nonatomic, strong) AMLayoutNameWindow *layoutNameWindow;
 @end
 
 @implementation AMScreenManager
@@ -45,6 +48,25 @@
         self.currentLayoutIndexBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.layoutsBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.currentLayoutIndex = 0;
+
+        NSNib *nib = [[NSNib alloc] initWithNibNamed:@"AMLayoutNameWindow" bundle:nil];
+        NSArray *objects;
+
+        [nib instantiateWithOwner:nil topLevelObjects:&objects];
+
+        for (id object in objects) {
+            if ([object isKindOfClass:AMLayoutNameWindow.class]) {
+                self.layoutNameWindow = object;
+            }
+        }
+
+        @weakify(self);
+        [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
+            @strongify(self);
+
+            self.layoutNameWindow.layoutNameField.stringValue = [self.currentLayout.class layoutName];
+            [self.layoutNameWindow makeKeyAndOrderFront:NSApp];
+        }];
     }
     return self;
 }
