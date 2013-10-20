@@ -8,12 +8,6 @@
 
 #import "AMColumnLayout.h"
 
-@interface AMColumnLayout ()
-@property (nonatomic, assign) BOOL ignoreMenu;
-@end
-
-
-
 @implementation AMColumnLayout
 
 #pragma mark AMLayout
@@ -21,7 +15,7 @@
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
 
-    CGRect screenFrame = [self adjustedFrameForLayout: screen];
+    CGRect screenFrame = [self adjustedFrameForLayout:screen];
     CGFloat windowWidth = screenFrame.size.width / windows.count;
 
     SIWindow *focusedWindow = [SIWindow focusedWindow];

@@ -10,15 +10,12 @@
 
 #import "AMWindowManager.h"
 
-@interface AMFullscreenLayout ()
-@end
-
 @implementation AMFullscreenLayout
 
 #pragma mark AMLayout
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-    CGRect screenFrame = [self adjustedFrameForLayout: screen];
+    CGRect screenFrame = [self adjustedFrameForLayout:screen];
 
     for (SIWindow *window in windows) {
         window.frame = screenFrame;

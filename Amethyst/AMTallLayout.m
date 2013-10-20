@@ -15,7 +15,6 @@
 @property (nonatomic, assign) CGFloat mainPaneRatio;
 // The number of windows that should be displayed in the main pane.
 @property (nonatomic, assign) NSInteger mainPaneCount;
-@property (nonatomic, assign) BOOL ignoreMenu;
 @end
 
 @implementation AMTallLayout
@@ -41,7 +40,7 @@
     NSInteger secondaryPaneCount = windows.count - mainPaneCount;
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
 
-    CGRect screenFrame = [self adjustedFrameForLayout: screen];
+    CGRect screenFrame = [self adjustedFrameForLayout:screen];
 
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height / mainPaneCount);
     CGFloat secondaryPaneWindowHeight = (hasSecondaryPane ? round(screenFrame.size.height / secondaryPaneCount) : 0.0);

@@ -39,7 +39,7 @@
 
         NSMutableArray *layouts = [NSMutableArray array];
         for (Class layoutClass in [[AMConfiguration sharedConfiguration] layouts]) {
-          [layouts addObject:[[layoutClass alloc] init]];
+            [layouts addObject:[[layoutClass alloc] init]];
         }
         self.layouts = layouts;
         self.currentLayoutIndexBySpaceIdentifier = [NSMutableDictionary dictionary];
@@ -65,7 +65,7 @@
         } else {
             NSMutableArray *layouts = [NSMutableArray array];
             for (Class layoutClass in [[AMConfiguration sharedConfiguration] layouts]) {
-              [layouts addObject:[[layoutClass alloc] init]];
+                [layouts addObject:[[layoutClass alloc] init]];
             }
             self.layouts = layouts;
             self.layoutsBySpaceIdentifier[_currentSpaceIdentifier] = layouts;

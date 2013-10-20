@@ -41,7 +41,7 @@
     NSInteger secondaryPaneCount = windows.count - mainPaneCount;
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
     
-    CGRect screenFrame = [self adjustedFrameForLayout: screen];
+    CGRect screenFrame = [self adjustedFrameForLayout:screen];
     
     CGFloat mainPaneWindowWidth = round(screenFrame.size.width / mainPaneCount);
     CGFloat secondaryPaneWindowWidth = (hasSecondaryPane ? round(screenFrame.size.width / secondaryPaneCount) : 0.0);
