@@ -61,6 +61,7 @@ static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
 // Key to reference an array of application bundle identifiers whose windows
 // should always be floating by default.
 static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
+static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -262,6 +263,10 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication {
     return [self.configuration[AMConfigurationFloatingBundleIdentifiers] containsObject:runningApplication.bundleIdentifier];
+}
+
+- (BOOL)ignoreMenuBar {
+    return [self.configuration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true" ];
 }
 
 @end
