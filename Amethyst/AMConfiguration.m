@@ -44,10 +44,10 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 // flags. The behavior in that case is not well defined. We may want this to
 // be an assertion error.
 static NSString *const AMConfigurationCommandCycleLayoutKey = @"cycle-layout";
-static NSString *const AMConfigurationCommandTallLayout = @"tall-layout";
-static NSString *const AMConfigurationCommandWideLayout = @"wide-layout";
-static NSString *const AMConfigurationCommandFullScreenLayout = @"fullscreen-layout";
-static NSString *const AMConfigurationCommandColumnLayout = @"column-layout";
+static NSString *const AMConfigurationCommandTallLayoutKey = @"tall-layout";
+static NSString *const AMConfigurationCommandWideLayoutKey = @"wide-layout";
+static NSString *const AMConfigurationCommandFullScreenLayoutKey = @"fullscreen-layout";
+static NSString *const AMConfigurationCommandColumnLayoutKey = @"column-layout";
 static NSString *const AMConfigurationCommandShrinkMainKey = @"shrink-main";
 static NSString *const AMConfigurationCommandExpandMainKey = @"expand-main";
 static NSString *const AMConfigurationCommandIncreaseMainKey = @"increase-main";
@@ -246,19 +246,19 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
         [windowManager toggleFloatForFocusedWindow];
     }];
 
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandTallLayout handler:^{
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandTallLayoutKey handler:^{
         [[windowManager focusedScreenManager] selectLayout:0];
     }];
 
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandWideLayout handler:^{
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandWideLayoutKey handler:^{
         [[windowManager focusedScreenManager] selectLayout:1];
     }];
 
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandFullScreenLayout handler:^{
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandFullScreenLayoutKey handler:^{
         [[windowManager focusedScreenManager] selectLayout:2];
     }];
 
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandColumnLayout handler:^{
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandColumnLayoutKey handler:^{
         [[windowManager focusedScreenManager] selectLayout:3];
     }];
 
