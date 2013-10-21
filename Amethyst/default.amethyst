@@ -177,5 +177,6 @@
     },
 
     "MISC": "----------------------",
-    "floating": []
+    "floating": [],
+    "ignore-menu-bar": "false"
 }
