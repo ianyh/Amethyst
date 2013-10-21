@@ -59,6 +59,22 @@
         "mod": "mod1",
         "key": "space"
     },
+    "tall-layout": {
+        "mod": "mod1",
+        "key": "1"
+    },
+    "wide-layout": {
+        "mod": "mod1",
+        "key": "2"
+    },
+    "fullscreen-layout": {
+        "mod": "mod1",
+        "key": "3"
+    },
+    "column-layout": {
+        "mod": "mod1",
+        "key": "4"
+    },
     "focus-screen-1": {
         "mod": "mod1",
         "key": "w"
