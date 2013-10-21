@@ -19,6 +19,7 @@
 
 // The layouts key should be a list of string identifying layout algorithms.
 static NSString *const AMConfigurationLayoutsKey = @"layouts";
+static NSString *const AMConfigurationLayoutsNameKey = @"name";
 
 // The key to reference the modifier flags intended to be used for a specific
 // command. This key is optionally present. If ommitted the default value is
@@ -144,6 +145,11 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
     self.modifier2 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod2String] ?: self.defaultConfiguration[AMConfigurationMod2String]];
 }
 
+- (NSString *)constructLayoutKeyString:(NSString *)layoutString {
+     return [NSString stringWithFormat: @"select-%@-layout", layoutString];
+}
+
+
 #pragma mark Hot Key Mapping
 
 - (AMModifierFlags)modifierFlagsForModifierString:(NSString *)modifierString {
@@ -246,22 +252,17 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
         [windowManager toggleFloatForFocusedWindow];
     }];
 
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandTallLayoutKey handler:^{
-        [[windowManager focusedScreenManager] selectLayout:0];
-    }];
-
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandWideLayoutKey handler:^{
-        [[windowManager focusedScreenManager] selectLayout:1];
-    }];
-
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandFullScreenLayoutKey handler:^{
-        [[windowManager focusedScreenManager] selectLayout:2];
-    }];
-
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandColumnLayoutKey handler:^{
-        [[windowManager focusedScreenManager] selectLayout:3];
-    }];
-
+    NSArray *layoutStrings = self.configuration[AMConfigurationLayoutsKey] ?: self.defaultConfiguration[AMConfigurationLayoutsKey];
+    for (NSString *layoutString in layoutStrings) {
+        Class layoutClass = [self.class layoutClassForString:layoutString];
+        if (!layoutClass) {
+            DDLogError(@"Unrecognized layout string: %@", layoutString);
+            continue;
+        }
+        [self constructCommandWithHotKeyManager:hotKeyManager commandKey:[self constructLayoutKeyString:layoutString] handler:^{
+            [[windowManager focusedScreenManager] selectLayout:layoutClass];
+        }];
+    }
 }
 
 #pragma mark Public Methods

@@ -59,19 +59,19 @@
         "mod": "mod1",
         "key": "space"
     },
-    "tall-layout": {
+    "select-tall-layout": {
         "mod": "mod1",
         "key": "1"
     },
-    "wide-layout": {
+    "select-wide-layout": {
         "mod": "mod1",
         "key": "2"
     },
-    "fullscreen-layout": {
+    "select-fullscreen-layout": {
         "mod": "mod1",
         "key": "3"
     },
-    "column-layout": {
+    "select-column-layout": {
         "mod": "mod1",
         "key": "4"
     },

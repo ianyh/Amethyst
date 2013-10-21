@@ -69,7 +69,7 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 
 // Changes the layout to a specific layout
 //
-// layoutIndex - The index of the desired layout. Should not be nil.
-- (void)selectLayout: (NSUInteger) layoutIndex;
+// layoutClass - The class of the desired layout. Should not be nil.
+- (void)selectLayout:(Class)layoutClass;
 
 @end

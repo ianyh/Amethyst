@@ -98,8 +98,10 @@
     [self setNeedsReflow];
 }
 
-- (void)selectLayout: (NSUInteger) layoutIndex {
-    self.currentLayoutIndex = layoutIndex;
+- (void)selectLayout:(Class)layoutClass {
+    self.currentLayoutIndex = [self.layouts indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+        return [obj isKindOfClass:layoutClass];
+    }];
     [self setNeedsReflow];
 }
 
