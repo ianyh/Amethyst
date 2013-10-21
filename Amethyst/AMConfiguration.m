@@ -19,7 +19,6 @@
 
 // The layouts key should be a list of string identifying layout algorithms.
 static NSString *const AMConfigurationLayoutsKey = @"layouts";
-static NSString *const AMConfigurationLayoutsNameKey = @"name";
 
 // The key to reference the modifier flags intended to be used for a specific
 // command. This key is optionally present. If ommitted the default value is
