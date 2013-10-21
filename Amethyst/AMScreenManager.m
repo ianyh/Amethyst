@@ -98,7 +98,7 @@
     [self setNeedsReflow];
 }
 
-- (void)selectLayout: NSUInteger layoutIndex {
+- (void)selectLayout: (NSUInteger) layoutIndex {
     self.currentLayoutIndex = layoutIndex;
     [self setNeedsReflow];
 }
