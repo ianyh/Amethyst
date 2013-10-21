@@ -258,7 +258,7 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
         [[windowManager focusedScreenManager] selectLayout:2];
     }];
 
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandWideLayout handler:^{
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandColumnLayout handler:^{
         [[windowManager focusedScreenManager] selectLayout:3];
     }];
 
