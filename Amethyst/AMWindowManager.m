@@ -101,7 +101,7 @@
     [[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.apple.spaces"];
     [[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.apple.spaces"];
 
-    NSArray *spaceProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesConfiguration"][@"Space Properties"];
+    NSArray *spaceProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesDisplayConfiguration"][@"Space Properties"];
     NSMutableDictionary *spaceIdentifiersByWindowNumber = [NSMutableDictionary dictionary];
     for (NSDictionary *spaceDictionary in spaceProperties) {
         NSArray *windows = spaceDictionary[@"windows"];
