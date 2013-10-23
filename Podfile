@@ -4,7 +4,7 @@ pod 'ReactiveCocoa'
 pod 'libextobjc'
 pod 'IYLoginItem'
 pod 'CocoaLumberjack'
-pod 'Silica'
+pod 'Silica', :git => 'https://github.com/SiO2/Silica'
 
 target :AmethystTests do
   pod 'Kiwi'
