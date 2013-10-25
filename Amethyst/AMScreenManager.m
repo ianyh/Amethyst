@@ -103,7 +103,7 @@
         return [obj isKindOfClass:layoutClass];
     }];
     if (layoutIndex != NSNotFound) {
-      selt.currentLayoutIndex = layoutIndex
+      self.currentLayoutIndex = layoutIndex;
       [self setNeedsReflow];
     }
 }
