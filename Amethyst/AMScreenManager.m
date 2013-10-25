@@ -102,10 +102,10 @@
     NSInteger layoutIndex = [self.layouts indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
         return [obj isKindOfClass:layoutClass];
     }];
-    if (layoutIndex != NSNotFound) {
-      self.currentLayoutIndex = layoutIndex;
-      [self setNeedsReflow];
-    }
+    if (layoutIndex == NSNotFound) return;
+
+    self.currentLayoutIndex = layoutIndex;
+    [self setNeedsReflow];
 }
 
 - (void)shrinkMainPane {
