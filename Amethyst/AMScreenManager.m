@@ -98,6 +98,16 @@
     [self setNeedsReflow];
 }
 
+- (void)selectLayout:(Class)layoutClass {
+    NSInteger layoutIndex = [self.layouts indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+        return [obj isKindOfClass:layoutClass];
+    }];
+    if (layoutIndex == NSNotFound) return;
+
+    self.currentLayoutIndex = layoutIndex;
+    [self setNeedsReflow];
+}
+
 - (void)shrinkMainPane {
     [self.currentLayout shrinkMainPane];
     [self setNeedsReflow];

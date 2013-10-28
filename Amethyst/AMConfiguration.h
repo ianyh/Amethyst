@@ -21,6 +21,15 @@
 // Loads configuration.
 - (void)loadConfiguration;
 
+// Contructs the string corresponding to the keybinding entry in the
+// configuration file for a specific layout.
+//
+// layoutString - The name of the layout for which to construct the
+//                corresponding string.
+// 
+// Returns "select-" + layoutString + "-layout".
+- (NSString *)constructLayoutKeyString:(NSString *)layoutString;
+
 // Establish a hot key to management operation mapping.
 //
 // hotKeyManager - The AMHotKeyManager responsible for maintaining hot key

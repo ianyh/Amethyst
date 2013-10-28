@@ -141,6 +141,11 @@ static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
     self.modifier2 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod2String] ?: self.defaultConfiguration[AMConfigurationMod2String]];
 }
 
+- (NSString *)constructLayoutKeyString:(NSString *)layoutString {
+     return [NSString stringWithFormat: @"select-%@-layout", layoutString];
+}
+
+
 #pragma mark Hot Key Mapping
 
 - (AMModifierFlags)modifierFlagsForModifierString:(NSString *)modifierString {
@@ -242,6 +247,18 @@ static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandToggleFloatKey handler:^{
         [windowManager toggleFloatForFocusedWindow];
     }];
+
+    NSArray *layoutStrings = self.configuration[AMConfigurationLayoutsKey] ?: self.defaultConfiguration[AMConfigurationLayoutsKey];
+    for (NSString *layoutString in layoutStrings) {
+        Class layoutClass = [self.class layoutClassForString:layoutString];
+        if (!layoutClass) {
+            DDLogError(@"Unrecognized layout string: %@", layoutString);
+            continue;
+        }
+        [self constructCommandWithHotKeyManager:hotKeyManager commandKey:[self constructLayoutKeyString:layoutString] handler:^{
+            [[windowManager focusedScreenManager] selectLayout:layoutClass];
+        }];
+    }
 }
 
 #pragma mark Public Methods
