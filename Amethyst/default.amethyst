@@ -61,19 +61,19 @@
     },
     "select-tall-layout": {
         "mod": "mod1",
-        "key": "1"
+        "key": "a"
     },
     "select-wide-layout": {
         "mod": "mod1",
-        "key": "2"
+        "key": "s"
     },
     "select-fullscreen-layout": {
         "mod": "mod1",
-        "key": "3"
+        "key": "d"
     },
     "select-column-layout": {
         "mod": "mod1",
-        "key": "4"
+        "key": "f"
     },
     "focus-screen-1": {
         "mod": "mod1",

@@ -19,7 +19,6 @@
 
 // The layouts key should be a list of string identifying layout algorithms.
 static NSString *const AMConfigurationLayoutsKey = @"layouts";
-static NSString *const AMConfigurationLayoutsNameKey = @"name";
 
 // The key to reference the modifier flags intended to be used for a specific
 // command. This key is optionally present. If ommitted the default value is
@@ -45,10 +44,6 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 // flags. The behavior in that case is not well defined. We may want this to
 // be an assertion error.
 static NSString *const AMConfigurationCommandCycleLayoutKey = @"cycle-layout";
-static NSString *const AMConfigurationCommandTallLayoutKey = @"tall-layout";
-static NSString *const AMConfigurationCommandWideLayoutKey = @"wide-layout";
-static NSString *const AMConfigurationCommandFullScreenLayoutKey = @"fullscreen-layout";
-static NSString *const AMConfigurationCommandColumnLayoutKey = @"column-layout";
 static NSString *const AMConfigurationCommandShrinkMainKey = @"shrink-main";
 static NSString *const AMConfigurationCommandExpandMainKey = @"expand-main";
 static NSString *const AMConfigurationCommandIncreaseMainKey = @"increase-main";
