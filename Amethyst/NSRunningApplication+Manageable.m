@@ -11,7 +11,7 @@
 @implementation NSRunningApplication (Manageable)
 
 - (BOOL)isManageable {
-    if ([self.bundleIdentifier hasPrefix:@"com.apple.dashboard"]) return NO;
+    if ([self.bundleIdentifier hasPrefix:@"com.apple.dashboardlauncher"]) return NO;
     if ([self.bundleIdentifier hasPrefix:@"com.apple.loginwindow"]) return NO;
     if (self.isAgent) return NO;
 
