@@ -47,7 +47,7 @@
     CGFloat secondaryPaneWindowWidth = (hasSecondaryPane ? round(screenFrame.size.width / secondaryPaneCount) : 0.0);
 
     CGFloat mainPaneWindowHeight = round(screenFrame.size.height * (hasSecondaryPane ? self.mainPaneRatio : 1));
-    CGFloat secondaryPaneWindowHeight = screenFrame.size.width - mainPaneWindowHeight;
+    CGFloat secondaryPaneWindowHeight = screenFrame.size.height - mainPaneWindowHeight;
     
     SIWindow *focusedWindow = [SIWindow focusedWindow];
 
