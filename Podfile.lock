@@ -116,7 +116,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/SiO2/Silica
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
+  CocoaLumberjack: 2619775f386bbec1e870eddb5040f870c68726b1
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
   Kiwi: 03539aeb004ccd42bdbc31253617b26364315df4
   libextobjc: 820a79dbbbc498611e04fffd07d2d52a5588e7ac
@@ -125,4 +125,4 @@ SPEC CHECKSUMS:
   ReactiveCocoa: b686fa735c28c2dc7311fbd2f0895b4d4ae07360
   Silica: 96dbb288e32640109d9d42cd6131f4d2bab8e471
 
-COCOAPODS: 0.26.2
+COCOAPODS: 0.27.1
