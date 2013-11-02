@@ -231,8 +231,14 @@
 
     NSScreen *screen = focusedWindow.screen;
     NSArray *windows = [self activeWindowsForScreen:screen];
-    NSUInteger focusedWindowIndex = [self.windows indexOfObject:focusedWindow];
+
+    if (windows.count == 0) return;
+
     NSUInteger mainWindowIndex = [self.windows indexOfObject:windows[0]];
+    NSUInteger focusedWindowIndex = [self.windows indexOfObject:focusedWindow];
+    if (focusedWindowIndex == NSNotFound) {
+        return;
+    }
 
     [self.windows exchangeObjectAtIndex:focusedWindowIndex withObjectAtIndex:mainWindowIndex];
     [self markScreenForReflow:focusedWindow.screen];
