@@ -217,7 +217,7 @@
 
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
     if (windowIndex == NSNotFound) {
-        windowIndex = 0;
+        windowIndex = windows.count - 1;
     }
 
     SIWindow *windowToFocus = windows[(windowIndex + 1) % windows.count];
