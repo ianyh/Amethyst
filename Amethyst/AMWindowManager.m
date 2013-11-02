@@ -192,6 +192,10 @@
     if (windows.count == 0) return;
 
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
+    if (windowIndex == NSNotFound) {
+        windowIndex = 0;
+    }
+
     NSUInteger windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1);
     SIWindow *windowToFocus = windows[windowToFocusIndex];
 
@@ -212,6 +216,10 @@
     if (windows.count == 0) return;
 
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
+    if (windowIndex == NSNotFound) {
+        windowIndex = 0;
+    }
+
     SIWindow *windowToFocus = windows[(windowIndex + 1) % windows.count];
     
     [windowToFocus focusWindow];
