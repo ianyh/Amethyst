@@ -45,10 +45,9 @@ Building
 Using Amethyst
 ==============
 
-The `Enable access for assistive devices` option on the Accessibility
-preferences pane must be enabled for Amethyst to function.
+Amethyst must be given permissions to use the accessibility APIs under the Privacy tab of the Security & Privacy preferences pane as shown below.
 
-![Enable access for assistive devices](http://ianyh.com/amethyst/images/accessibility-window.png)
+![Accessibility permissions](http://ianyh.com/amethyst/images/accessibility-window.png)
 
 Keyboard Shortcuts
 ------------------
