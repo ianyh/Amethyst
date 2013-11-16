@@ -62,6 +62,7 @@ static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
 // should always be floating by default.
 static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
+static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -283,7 +284,19 @@ static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 }
 
 - (BOOL)ignoreMenuBar {
-    return [self.configuration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true" ];
+    if (self.configuration[AMConfigurationIgnoreMenuBar]) {
+        return [self.configuration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true"];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true"];
+}
+
+- (BOOL)floatSmallWindows {
+    if (self.configuration[AMConfigurationFloatSmallWindows]) {
+        return [self.configuration[AMConfigurationFloatSmallWindows] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationFloatSmallWindows] boolValue];
 }
 
 @end
