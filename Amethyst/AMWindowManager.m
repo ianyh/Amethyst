@@ -436,6 +436,9 @@
     SIApplication *application = [self applicationWithProcessIdentifier:window.processIdentifier];
 
     window.floating = application.floating;
+    if (window.frame.size.width < 500 && window.frame.size.height < 500) {
+        window.floating = YES;
+    }
 
     [application observeNotification:kAXUIElementDestroyedNotification
                          withElement:window
