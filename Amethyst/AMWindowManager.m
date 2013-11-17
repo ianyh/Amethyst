@@ -8,9 +8,8 @@
 
 #import "AMWindowManager.h"
 
-#import "AMFullscreenLayout.h"
+#import "AMConfiguration.h"
 #import "AMScreenManager.h"
-#import "AMTallLayout.h"
 #import "NSRunningApplication+Manageable.h"
 
 @interface AMWindowManager () <AMScreenManagerDelegate>
@@ -436,6 +435,9 @@
     SIApplication *application = [self applicationWithProcessIdentifier:window.processIdentifier];
 
     window.floating = application.floating;
+    if (AMConfiguration.sharedConfiguration.floatSmallWindows && window.frame.size.width < 500 && window.frame.size.height < 500) {
+        window.floating = YES;
+    }
 
     [application observeNotification:kAXUIElementDestroyedNotification
                          withElement:window
