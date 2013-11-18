@@ -110,7 +110,7 @@
     [self.layoutNameWindow makeKeyAndOrderFront:NSApp];
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, hideLayoutHUD:) object:nil];
-    [self performSelector:@checkselector(self, hideLayoutHUD:) withObject:nil afterDelay:2];
+    [self performSelector:@checkselector(self, hideLayoutHUD:) withObject:nil afterDelay:0.6];
 }
 
 - (void)hideLayoutHUD:(id)sender {
