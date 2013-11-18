@@ -5,11 +5,13 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>21724DEA-2765-4526-B612-377E2C5B4DDC</string>
+	<string>3CE3A9A3-459F-4EC2-9AD6-9903C530501C</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Amethyst</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>590B2BCF-8473-4D6B-8C34-3C316C5B862F</key>
+		<string>https://github.com/SiO2/Silica.git</string>
 		<key>863ECECC-D03A-4251-AD78-63426D1F5177</key>
 		<string>https://github.com/ianyh/Amethyst.git</string>
 		<key>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</key>
@@ -19,6 +21,8 @@
 	<string>Amethyst.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>590B2BCF-8473-4D6B-8C34-3C316C5B862F</key>
+		<string>../../Silica</string>
 		<key>863ECECC-D03A-4251-AD78-63426D1F5177</key>
 		<string>..</string>
 		<key>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</key>
@@ -39,6 +43,14 @@
 			<string>863ECECC-D03A-4251-AD78-63426D1F5177</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Amethyst</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>590B2BCF-8473-4D6B-8C34-3C316C5B862F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Silica</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

@@ -61,6 +61,8 @@ static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
 // Key to reference an array of application bundle identifiers whose windows
 // should always be floating by default.
 static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
+static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
+static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -139,6 +141,11 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
     self.modifier1 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod1String] ?: self.defaultConfiguration[AMConfigurationMod1String]];
     self.modifier2 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod2String] ?: self.defaultConfiguration[AMConfigurationMod2String]];
 }
+
+- (NSString *)constructLayoutKeyString:(NSString *)layoutString {
+     return [NSString stringWithFormat: @"select-%@-layout", layoutString];
+}
+
 
 #pragma mark Hot Key Mapping
 
@@ -241,6 +248,18 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandToggleFloatKey handler:^{
         [windowManager toggleFloatForFocusedWindow];
     }];
+
+    NSArray *layoutStrings = self.configuration[AMConfigurationLayoutsKey] ?: self.defaultConfiguration[AMConfigurationLayoutsKey];
+    for (NSString *layoutString in layoutStrings) {
+        Class layoutClass = [self.class layoutClassForString:layoutString];
+        if (!layoutClass) {
+            DDLogError(@"Unrecognized layout string: %@", layoutString);
+            continue;
+        }
+        [self constructCommandWithHotKeyManager:hotKeyManager commandKey:[self constructLayoutKeyString:layoutString] handler:^{
+            [[windowManager focusedScreenManager] selectLayout:layoutClass];
+        }];
+    }
 }
 
 #pragma mark Public Methods
@@ -262,6 +281,22 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication {
     return [self.configuration[AMConfigurationFloatingBundleIdentifiers] containsObject:runningApplication.bundleIdentifier];
+}
+
+- (BOOL)ignoreMenuBar {
+    if (self.configuration[AMConfigurationIgnoreMenuBar]) {
+        return [self.configuration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true"];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true"];
+}
+
+- (BOOL)floatSmallWindows {
+    if (self.configuration[AMConfigurationFloatSmallWindows]) {
+        return [self.configuration[AMConfigurationFloatSmallWindows] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationFloatSmallWindows] boolValue];
 }
 
 @end

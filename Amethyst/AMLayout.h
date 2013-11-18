@@ -51,4 +51,10 @@
 // Subclasses can optionally implement this method.
 - (void)decreaseMainPaneCount;
 
+// Returns the desired frame for the current  layout based on the user's
+// configuration.
+//
+// screen - The screen from which the proper frame is desired.
+- (CGRect)adjustedFrameForLayout:(NSScreen *)screen;
+
 @end

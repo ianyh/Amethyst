@@ -15,6 +15,10 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
 @implementation SIWindow (Amethyst)
 
 - (BOOL)shouldBeManaged {
+    if (!self.isResizable && !self.isMovable) {
+        return NO;
+    }
+
     NSString *subrole = [self stringForKey:kAXSubroleAttribute];
 
     if (!subrole) return YES;

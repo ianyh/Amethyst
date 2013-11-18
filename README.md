@@ -20,11 +20,13 @@ logic and structure.
 Getting Amethyst
 ================
 
-Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.3.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
 
 ```
 brew cask install amethyst
 ```
+
+Note: that Amethyst now is only supported on OS X 10.9. The last version that supports 10.8 can be found [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip).
 
 Building
 --------
@@ -43,10 +45,9 @@ Building
 Using Amethyst
 ==============
 
-The `Enable access for assistive devices` option on the Accessibility
-preferences pane must be enabled for Amethyst to function.
+Amethyst must be given permissions to use the accessibility APIs under the Privacy tab of the Security & Privacy preferences pane as shown below.
 
-![Enable access for assistive devices](http://ianyh.com/amethyst/images/accessibility-window.png)
+![Accessibility permissions](http://ianyh.com/amethyst/images/accessibility-window.png)
 
 Keyboard Shortcuts
 ------------------
@@ -92,4 +93,21 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 Customization
 -------------
 
-Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in `Amethyst/default.amethyst`.
+Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in [default.amethyst](Amethyst/default.amethyst).
+
+### Layouts
+
+You can set the layouts you want to use by supplying a list of layout names under the "layouts" key. For example,
+
+```js
+"layouts": [
+    "tall",
+    "fullscreen",
+],
+```
+will restrict your layouts to the tall and fullscreen layouts. The available layouts are as follows:
+
+* **Tall** ("tall"): Defines a main area on the left and a secondary area on the right.
+* **Wide** ("wide"): Defines a main area on the top and a secondary column on the right.
+* **Fullscreen** ("fullscreen"): All windows are sized to fill the screen.
+* **Column** ("column"): All windows are distributed in evenly sized in columns from left to right.

@@ -113,6 +113,7 @@
 
 - (void)reflow:(NSTimer *)timer {
     if (!self.currentSpaceIdentifier) return;
+    if (self.currentLayoutIndex >= self.layouts.count) return;
 
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }
@@ -128,6 +129,16 @@
 
 - (void)cycleLayout {
     self.currentLayoutIndex = (self.currentLayoutIndex + 1) % self.layouts.count;
+    [self setNeedsReflow];
+}
+
+- (void)selectLayout:(Class)layoutClass {
+    NSInteger layoutIndex = [self.layouts indexOfObjectPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+        return [obj isKindOfClass:layoutClass];
+    }];
+    if (layoutIndex == NSNotFound) return;
+
+    self.currentLayoutIndex = layoutIndex;
     [self setNeedsReflow];
 }
 

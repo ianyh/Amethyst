@@ -67,4 +67,9 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 // Changes the layout to the next layout in the chain.
 - (void)cycleLayout;
 
+// Changes the layout to a specific layout
+//
+// layoutClass - The class of the desired layout. Should not be nil.
+- (void)selectLayout:(Class)layoutClass;
+
 @end
