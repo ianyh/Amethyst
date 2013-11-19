@@ -80,6 +80,7 @@
 
 - (void)reflow:(NSTimer *)timer {
     if (!self.currentSpaceIdentifier) return;
+    if (self.currentLayoutIndex >= self.layouts.count) return;
 
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }

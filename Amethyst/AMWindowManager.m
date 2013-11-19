@@ -8,9 +8,8 @@
 
 #import "AMWindowManager.h"
 
-#import "AMFullscreenLayout.h"
+#import "AMConfiguration.h"
 #import "AMScreenManager.h"
-#import "AMTallLayout.h"
 #import "NSRunningApplication+Manageable.h"
 
 @interface AMWindowManager () <AMScreenManagerDelegate>
@@ -192,6 +191,10 @@
     if (windows.count == 0) return;
 
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
+    if (windowIndex == NSNotFound) {
+        windowIndex = 0;
+    }
+
     NSUInteger windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1);
     SIWindow *windowToFocus = windows[windowToFocusIndex];
 
@@ -212,6 +215,10 @@
     if (windows.count == 0) return;
 
     NSUInteger windowIndex = [windows indexOfObject:focusedWindow];
+    if (windowIndex == NSNotFound) {
+        windowIndex = windows.count - 1;
+    }
+
     SIWindow *windowToFocus = windows[(windowIndex + 1) % windows.count];
     
     [windowToFocus focusWindow];
@@ -223,8 +230,14 @@
 
     NSScreen *screen = focusedWindow.screen;
     NSArray *windows = [self activeWindowsForScreen:screen];
-    NSUInteger focusedWindowIndex = [self.windows indexOfObject:focusedWindow];
+
+    if (windows.count == 0) return;
+
     NSUInteger mainWindowIndex = [self.windows indexOfObject:windows[0]];
+    NSUInteger focusedWindowIndex = [self.windows indexOfObject:focusedWindow];
+    if (focusedWindowIndex == NSNotFound) {
+        return;
+    }
 
     [self.windows exchangeObjectAtIndex:focusedWindowIndex withObjectAtIndex:mainWindowIndex];
     [self markScreenForReflow:focusedWindow.screen];
@@ -422,6 +435,9 @@
     SIApplication *application = [self applicationWithProcessIdentifier:window.processIdentifier];
 
     window.floating = application.floating;
+    if (AMConfiguration.sharedConfiguration.floatSmallWindows && window.frame.size.width < 500 && window.frame.size.height < 500) {
+        window.floating = YES;
+    }
 
     [application observeNotification:kAXUIElementDestroyedNotification
                          withElement:window

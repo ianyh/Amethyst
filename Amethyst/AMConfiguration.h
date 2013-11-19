@@ -44,4 +44,6 @@
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication;
 
 - (BOOL)ignoreMenuBar;
+
+- (BOOL)floatSmallWindows;
 @end
