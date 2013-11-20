@@ -95,7 +95,7 @@
 }
 
 - (void)displayLayoutHUD {
-    CGRect screenFrame = self.screen.frameIncludingDockAndMenu;
+    CGRect screenFrame = self.screen.frame;
     CGPoint screenCenter = (CGPoint){
         .x = CGRectGetMidX(screenFrame),
         .y = CGRectGetMidY(screenFrame)
