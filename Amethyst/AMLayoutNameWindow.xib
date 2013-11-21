@@ -14,7 +14,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="2">
                 <rect key="frame" x="0.0" y="0.0" width="208" height="64"/>
-                <autoresizingMask key="autoresizingMask"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YXF-Df-V9n">
                         <rect key="frame" x="-2" y="20" width="212" height="24"/>
