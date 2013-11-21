@@ -25,6 +25,11 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rF1-PP-zpf">
+                        <rect key="frame" x="8" y="33" width="17" height="25"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="Amethyst" id="Iyr-W5-Usa"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="YXF-Df-V9n" secondAttribute="trailing" id="T51-1f-4oF"/>
@@ -38,4 +43,7 @@
             </connections>
         </window>
     </objects>
+    <resources>
+        <image name="Amethyst" width="512" height="512"/>
+    </resources>
 </document>
