@@ -2,7 +2,7 @@ language: objective-c
 before_install:
         - brew update
         - brew install xctool || true
-        - brew upgrade xctool
-        - gem install cocoapods
+        - brew upgrade xctool || true
+        - gem install cocoapods || true
         - export LC_ALL="en_US.UTF-8"
 script: rake test

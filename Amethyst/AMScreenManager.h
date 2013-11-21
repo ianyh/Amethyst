@@ -72,4 +72,6 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 // layoutClass - The class of the desired layout. Should not be nil.
 - (void)selectLayout:(Class)layoutClass;
 
+- (void)displayLayoutHUD;
+
 @end

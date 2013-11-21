@@ -33,6 +33,10 @@
 
 #pragma mark AMLayout
 
++ (NSString *)layoutName {
+    return @"Wide";
+}
+
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
 
