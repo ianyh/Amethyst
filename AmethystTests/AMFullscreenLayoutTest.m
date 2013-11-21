@@ -8,7 +8,7 @@
 
 #import "AMFullscreenLayout.h"
 
-#import "NSScreen+FrameAdjustment.h"
+#import "NSScreen+Silica.h"
 
 #import <Kiwi/Kiwi.h>
 #import <OCMock/OCMock.h>
@@ -23,7 +23,7 @@ describe(@"Fullscreen Layout Algorithm", ^{
 
         CGRect screenFrame = { .origin.x = 0, .origin.y = 0, .size.width = 500, .size.height = 500 };
 
-        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] adjustedFrame];
+        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] frameWithoutDockOrMenu];
 
         [[window1 expect] setFrame:screenFrame];
         [[window2 expect] setFrame:screenFrame];

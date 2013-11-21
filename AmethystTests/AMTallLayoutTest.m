@@ -8,7 +8,7 @@
 
 #import "AMTallLayout.h"
 
-#import "NSScreen+FrameAdjustment.h"
+#import "NSScreen+Silica.h"
 
 #import <Kiwi/Kiwi.h>
 #import <OCMock/OCMock.h>
@@ -28,7 +28,7 @@ describe(@"Tall Layout Algorithm", ^{
         id screen = [OCMockObject niceMockForClass:[NSScreen class]];
 
         CGRect screenFrame = { .origin.x = 0, .origin.y = 0, .size.width = 500, .size.height = 500 };
-        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] adjustedFrame];
+        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] frameWithoutDockOrMenu];
         
         // With one window in the main pane there should be one window on the
         // left and one window on the right.
@@ -59,7 +59,7 @@ describe(@"Tall Layout Algorithm", ^{
         id screen = [OCMockObject niceMockForClass:[NSScreen class]];
         
         CGRect screenFrame = { .origin.x = 0, .origin.y = 0, .size.width = 500, .size.height = 500 };
-        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] adjustedFrame];
+        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] frameWithoutDockOrMenu];
         
         // With a 0.5 mainPaneRatio the horizontal space should be evenly
         // distributed.

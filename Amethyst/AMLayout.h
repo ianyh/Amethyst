@@ -24,6 +24,8 @@
 // contained there can be increased and decreased.
 @interface AMLayout : NSObject
 
++ (NSString *)layoutName;
+
 // Organizes the windows within a screen's frame.
 //
 // screen  - The screen on which windows will be laid out.

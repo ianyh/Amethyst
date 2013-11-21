@@ -10,6 +10,7 @@
 
 #import "AMConfiguration.h"
 #import "AMLayout.h"
+#import "AMLayoutNameWindow.h"
 #import "AMWindowManager.h"
 
 @interface AMScreenManager ()
@@ -22,6 +23,8 @@
 @property (nonatomic, strong) NSMutableDictionary *layoutsBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
+
+@property (nonatomic, strong) AMLayoutNameWindow *layoutNameWindow;
 @end
 
 @implementation AMScreenManager
@@ -45,6 +48,24 @@
         self.currentLayoutIndexBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.layoutsBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.currentLayoutIndex = 0;
+
+        NSNib *nib = [[NSNib alloc] initWithNibNamed:@"AMLayoutNameWindow" bundle:nil];
+        NSArray *objects;
+
+        [nib instantiateWithOwner:nil topLevelObjects:&objects];
+
+        for (id object in objects) {
+            if ([object isKindOfClass:AMLayoutNameWindow.class]) {
+                self.layoutNameWindow = object;
+            }
+        }
+
+        @weakify(self);
+        [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
+            @strongify(self);
+
+            [self displayLayoutHUD];
+        }];
     }
     return self;
 }
@@ -73,8 +94,31 @@
     }
 }
 
+- (void)displayLayoutHUD {
+    CGRect screenFrame = self.screen.frame;
+    CGPoint screenCenter = (CGPoint){
+        .x = CGRectGetMidX(screenFrame),
+        .y = CGRectGetMidY(screenFrame)
+    };
+    CGPoint windowOrigin = (CGPoint){
+        .x = screenCenter.x - self.layoutNameWindow.frame.size.width / 2.0,
+        .y = screenCenter.y - self.layoutNameWindow.frame.size.height / 2.0,
+    };
+
+    self.layoutNameWindow.layoutNameField.stringValue = [self.currentLayout.class layoutName];
+    [self.layoutNameWindow setFrameOrigin:NSPointFromCGPoint(windowOrigin)];
+    [self.layoutNameWindow makeKeyAndOrderFront:NSApp];
+
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, hideLayoutHUD:) object:nil];
+    [self performSelector:@checkselector(self, hideLayoutHUD:) withObject:nil afterDelay:0.6];
+}
+
+- (void)hideLayoutHUD:(id)sender {
+    [self.layoutNameWindow close];
+}
+
 - (void)setNeedsReflow {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, reflow:) object:nil];
     [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.2];
 }
 

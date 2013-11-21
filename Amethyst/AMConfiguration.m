@@ -57,6 +57,7 @@ static NSString *const AMConfigurationCommandThrowSpacePrefixKey = @"throw-space
 static NSString *const AMConfigurationCommandFocusScreenPrefixKey = @"focus-screen";
 static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-screen";
 static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
+static NSString *const AMConfigurationCommandDisplayCurrentLayoutKey = @"display-current-layout";
 
 // Key to reference an array of application bundle identifiers whose windows
 // should always be floating by default.
@@ -222,6 +223,10 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandSwapMainKey handler:^{
         [windowManager swapFocusedWindowToMain];
+    }];
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandDisplayCurrentLayoutKey handler:^{
+        [windowManager displayCurrentLayout];
     }];
 
     for (NSUInteger screenNumber = 1; screenNumber <= 3; ++screenNumber) {

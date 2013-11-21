@@ -12,7 +12,9 @@
 
 @implementation AMFullscreenLayout
 
-#pragma mark AMLayout
++ (NSString *)layoutName {
+    return @"Fullscreen";
+}
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     CGRect screenFrame = [self adjustedFrameForLayout:screen];

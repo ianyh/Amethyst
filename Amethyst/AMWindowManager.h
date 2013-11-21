@@ -78,4 +78,6 @@
 
 - (void)toggleFloatForFocusedWindow;
 
+- (void)displayCurrentLayout;
+
 @end

@@ -553,6 +553,12 @@
     }
 }
 
+- (void)displayCurrentLayout {
+    for (AMScreenManager *screenManager in self.screenManagers) {
+        [screenManager displayLayoutHUD];
+    }
+}
+
 #pragma mark AMScreenManagerDelegate
 
 - (NSArray *)activeWindowsForScreenManager:(AMScreenManager *)screenManager {

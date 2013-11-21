@@ -10,6 +10,7 @@
 #define Amethyst_AMPrefixImport_h
 
 #import <libextobjc/EXTSelectorChecking.h>
+#import <libextobjc/EXTScope.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <CocoaLumberjack/DDLog.h>
 #import <Silica/Silica.h>
