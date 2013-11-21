@@ -8,7 +8,7 @@
 
 #import "AMColumnLayout.h"
 
-#import "NSScreen+FrameAdjustment.h"
+#import "NSScreen+Silica.h"
 
 #import <Kiwi/Kiwi.h>
 #import <OCMock/OCMock.h>
@@ -24,7 +24,7 @@ describe(@"Column Layout Algorithm", ^{
 
         CGRect screenFrame = { .origin.x = 0, .origin.y = 0, .size.width = 600, .size.height = 500 };
 
-        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] adjustedFrame];
+        [[[screen stub] andReturnValue:OCMOCK_VALUE(screenFrame)] frameWithoutDockOrMenu];
         
         [[window1 expect] setFrame:(CGRect){ .origin.x = 0, .origin.y = 0, .size.width = 200, .size.height = 500 }];
         [[window2 expect] setFrame:(CGRect){ .origin.x = 200, .origin.y = 0, .size.width = 200, .size.height = 500 }];
