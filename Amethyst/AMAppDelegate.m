@@ -65,8 +65,7 @@
 
 - (IBAction)relaunch:(id)sender {
     int processIdentifier = [[NSProcessInfo processInfo] processIdentifier];
-    NSString *myPath = [NSString stringWithFormat:@"%s",
-    [[[NSBundle mainBundle] executablePath] fileSystemRepresentation]];
+    NSString *myPath = [NSString stringWithFormat:@"%s", [[[NSBundle mainBundle] executablePath] fileSystemRepresentation]];
     [NSTask launchedTaskWithLaunchPath:myPath arguments:[NSArray arrayWithObject:[NSString stringWithFormat:@"%d", processIdentifier]]];
     [NSApp terminate:self];
 }
