@@ -11,7 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface AMLayoutNameWindow ()
-@property (nonatomic, weak) IBOutlet NSView *containerView;
 @property (nonatomic, weak) IBOutlet NSTextField *layoutNameField;
 @end
 
