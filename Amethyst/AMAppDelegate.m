@@ -26,6 +26,7 @@
 @property (nonatomic, strong) IBOutlet NSMenuItem *startAtLoginMenuItem;
 
 - (IBAction)toggleStartAtLogin:(id)sender;
+- (IBAction)relaunch:(id)sender;
 @end
 
 @implementation AMAppDelegate
@@ -60,6 +61,12 @@
         [NSBundle.mainBundle removeFromLoginItems];
     }
     self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
+}
+
+- (IBAction)relaunch:(id)sender {
+    NSString *myPath = [NSString stringWithFormat:@"%s", [[[NSBundle mainBundle] executablePath] fileSystemRepresentation]];
+    [NSTask launchedTaskWithLaunchPath:myPath arguments:@[]];
+    [NSApp terminate:self];
 }
 
 @end
