@@ -74,4 +74,6 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 
 - (void)displayLayoutHUD;
 
+- (void)updateLayoutInStatus;
+
 @end

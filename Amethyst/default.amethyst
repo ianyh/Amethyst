@@ -184,4 +184,5 @@
     "floating": [],
     "ignore-menu-bar": "false",
     "float-small-windows": true,
+    "display-layout-in-menubar": true,
 }

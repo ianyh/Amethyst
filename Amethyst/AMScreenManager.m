@@ -12,6 +12,7 @@
 #import "AMLayout.h"
 #import "AMLayoutNameWindow.h"
 #import "AMWindowManager.h"
+#import "AMAppDelegate.h"
 
 @interface AMScreenManager ()
 @property (nonatomic, strong) NSScreen *screen;
@@ -65,6 +66,10 @@
             @strongify(self);
 
             [self displayLayoutHUD];
+
+            if ([AMConfiguration.sharedConfiguration displayLayoutInMenubar]) {
+              [self updateLayoutInStatus];
+            }
         }];
     }
     return self;
@@ -92,6 +97,11 @@
             self.layoutsBySpaceIdentifier[_currentSpaceIdentifier] = layouts;
         }
     }
+}
+
+- (void)updateLayoutInStatus {
+    AMAppDelegate *appDelegate = (AMAppDelegate *) [[NSApplication sharedApplication] delegate]; 
+    [appDelegate setCurrentLayoutInStatus:[self.currentLayout.class layoutName]];
 }
 
 - (void)displayLayoutHUD {
