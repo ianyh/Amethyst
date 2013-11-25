@@ -80,4 +80,6 @@
 
 - (void)displayCurrentLayout;
 
+- (void)markAllScreensForReflow;
+
 @end

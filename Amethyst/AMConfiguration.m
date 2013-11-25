@@ -58,6 +58,7 @@ static NSString *const AMConfigurationCommandFocusScreenPrefixKey = @"focus-scre
 static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-screen";
 static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
 static NSString *const AMConfigurationCommandDisplayCurrentLayoutKey = @"display-current-layout";
+static NSString *const AMConfigurationCommandToggleTilingKey = @"toggle-tiling";
 
 // Key to reference an array of application bundle identifiers whose windows
 // should always be floating by default.
@@ -83,6 +84,14 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
         if (!sharedConfiguration) sharedConfiguration = [[AMConfiguration alloc] init];
         return sharedConfiguration;
     }
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.tilingEnabled = YES;
+    }
+    return self;
 }
 
 #pragma mark Configuration Loading
@@ -146,7 +155,6 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
 - (NSString *)constructLayoutKeyString:(NSString *)layoutString {
      return [NSString stringWithFormat: @"select-%@-layout", layoutString];
 }
-
 
 #pragma mark Hot Key Mapping
 
@@ -252,6 +260,11 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandToggleFloatKey handler:^{
         [windowManager toggleFloatForFocusedWindow];
+    }];
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandToggleTilingKey handler:^{
+        [AMConfiguration sharedConfiguration].tilingEnabled = ![AMConfiguration sharedConfiguration].tilingEnabled;
+        [windowManager markAllScreensForReflow];
     }];
 
     NSArray *layoutStrings = self.configuration[AMConfigurationLayoutsKey] ?: self.defaultConfiguration[AMConfigurationLayoutsKey];

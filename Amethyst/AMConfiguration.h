@@ -46,4 +46,6 @@
 - (BOOL)ignoreMenuBar;
 
 - (BOOL)floatSmallWindows;
+
+@property (nonatomic, assign) BOOL tilingEnabled;
 @end
