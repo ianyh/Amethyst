@@ -486,11 +486,14 @@
 
     for (SIWindow *window in self.windows) {
         if ([window isEqual:focusedWindow]) {
-            focusedWindow = window;
+            window.floating = !window.floating;
+            [self markScreenForReflow:window.screen];
+            return;
         }
     }
 
-    focusedWindow.floating = !focusedWindow.floating;
+    [self addWindow:focusedWindow];
+    focusedWindow.floating = NO;
     [self markScreenForReflow:focusedWindow.screen];
 }
 
