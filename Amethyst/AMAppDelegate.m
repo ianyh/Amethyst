@@ -62,4 +62,8 @@
     self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
 }
 
+- (void)setCurrentLayoutInStatus:(NSString *)layout {
+    self.statusItem.title = layout;
+}
+
 @end

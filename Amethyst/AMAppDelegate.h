@@ -12,4 +12,6 @@
 
 @property (assign) IBOutlet NSWindow *window;
 
+- (void)setCurrentLayoutInStatus:(NSString *)layout;
+
 @end

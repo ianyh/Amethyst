@@ -46,4 +46,6 @@
 - (BOOL)ignoreMenuBar;
 
 - (BOOL)floatSmallWindows;
+
+- (BOOL)displayLayoutInMenubar;
 @end

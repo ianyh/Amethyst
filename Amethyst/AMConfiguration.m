@@ -64,6 +64,7 @@ static NSString *const AMConfigurationCommandDisplayCurrentLayoutKey = @"display
 static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
+static NSString *const AMConfigurationDisplayLayoutInMenubar = @"display-layout-in-menubar";
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -302,6 +303,14 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
     }
 
     return [self.defaultConfiguration[AMConfigurationFloatSmallWindows] boolValue];
+}
+
+- (BOOL)displayLayoutInMenubar {
+    if (self.configuration[AMConfigurationDisplayLayoutInMenubar]) {
+        return [self.configuration[AMConfigurationDisplayLayoutInMenubar] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationDisplayLayoutInMenubar] boolValue];
 }
 
 @end
