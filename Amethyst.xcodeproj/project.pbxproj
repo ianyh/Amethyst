@@ -41,6 +41,10 @@
 		402DB6F51742E41A00D1C936 /* AMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6F41742E41A00D1C936 /* AMAppDelegate.m */; };
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
+		404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
+		404A5FAF18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
+		404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
+		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
@@ -160,6 +164,8 @@
 		402DB6F41742E41A00D1C936 /* AMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AMAppDelegate.m; sourceTree = "<group>"; };
 		402DB6F71742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled.png"; sourceTree = "<group>"; };
+		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
 		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
 		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
 		40B337DE1745CE2B0001D8FC /* AMLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayout.h; sourceTree = "<group>"; };
@@ -310,6 +316,8 @@
 		402DB6E81742E41A00D1C936 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */,
+				404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */,
 				4015D9B317517CE100548DBE /* icon-statusitem.png */,
 				4015D9B417517CE100548DBE /* icon-statusitem@2x.png */,
 				4015D9B1175146CC00548DBE /* Amethyst.iconset */,
@@ -516,8 +524,10 @@
 			files = (
 				40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
 				400299EB176393F10049001F /* InfoPlist.strings in Resources */,
+				404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
 				400299FE17639AF70049001F /* MainMenu.xib in Resources */,
 				40E705D9176EAD7800850DA6 /* default.amethyst in Resources */,
+				404A5FAF18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +538,8 @@
 				402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */,
 				402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */,
 				402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */,
+				404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */,
+				404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
 				4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */,
 				40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
 				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
