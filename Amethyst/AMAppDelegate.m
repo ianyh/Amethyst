@@ -37,6 +37,13 @@
 
     [AMConfiguration.sharedConfiguration loadConfiguration];
 
+    RAC(self, statusItem.image) = [RACObserve(AMConfiguration.sharedConfiguration, tilingEnabled) map:^id(NSNumber *tilingEnabled) {
+        if (tilingEnabled.boolValue) {
+            return [NSImage imageNamed:@"icon-statusitem"];
+        }
+        return [NSImage imageNamed:@"icon-statusitem-disabled"];
+    }];
+
     self.windowManager = [[AMWindowManager alloc] init];
     self.hotKeyManager = [[AMHotKeyManager alloc] init];
 

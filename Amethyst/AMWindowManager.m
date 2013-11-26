@@ -36,7 +36,6 @@
 - (void)removeWindow:(SIWindow *)window;
 
 - (void)updateScreenManagers;
-- (void)markAllScreensForReflow;
 - (void)markScreenForReflow:(NSScreen *)screen;
 @end
 

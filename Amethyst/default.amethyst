@@ -175,6 +175,10 @@
         "mod": "mod1",
         "key": "t"
     },
+    "toggle-tiling": {
+        "mod": "mod2",
+        "key": "t"
+    },
     "display-current-layout": {
         "mod": "mod1",
         "key": "i"
