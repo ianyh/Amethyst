@@ -4,8 +4,7 @@
         "tall",
         "wide",
         "fullscreen",
-        "column",
-        "floating"
+        "column"
     ],
 
     "MODIFIERS": "----------------------",
