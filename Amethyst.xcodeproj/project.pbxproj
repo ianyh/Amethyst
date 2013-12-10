@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0530B06777D42039F419322 /* libPods.a */; };
+		023D3F231856828C00391BEC /* AMFloatingLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 023D3F221856828C00391BEC /* AMFloatingLayout.m */; };
 		400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400299E3176393F10049001F /* SenTestingKit.framework */; };
 		400299E5176393F10049001F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		400299EB176393F10049001F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 400299E9176393F10049001F /* InfoPlist.strings */; };
@@ -131,6 +132,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		023D3F211856828C00391BEC /* AMFloatingLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFloatingLayout.h; sourceTree = "<group>"; };
+		023D3F221856828C00391BEC /* AMFloatingLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFloatingLayout.m; sourceTree = "<group>"; };
 		3500E790DD334ACB848077E1 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		400299E2176393F10049001F /* AmethystTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		400299E3176393F10049001F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -334,6 +337,8 @@
 		40B337E11745CE340001D8FC /* Layout */ = {
 			isa = PBXGroup;
 			children = (
+				023D3F211856828C00391BEC /* AMFloatingLayout.h */,
+				023D3F221856828C00391BEC /* AMFloatingLayout.m */,
 				40B337DE1745CE2B0001D8FC /* AMLayout.h */,
 				40B337DF1745CE2B0001D8FC /* AMLayout.m */,
 				40B337E21745D0620001D8FC /* AMFullscreenLayout.h */,
@@ -678,6 +683,7 @@
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
 				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
+				023D3F231856828C00391BEC /* AMFloatingLayout.m in Sources */,
 				40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
 				40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 			);
