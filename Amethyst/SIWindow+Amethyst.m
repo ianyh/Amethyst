@@ -37,23 +37,8 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
     objc_setAssociatedObject(self, SIWindowFloatingKey, @(floating), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)focusWindow {
-    NSRunningApplication *runningApplication = [NSRunningApplication runningApplicationWithProcessIdentifier:self.processIdentifier];
-    BOOL success = [runningApplication activateWithOptions:NSApplicationActivateAllWindows | NSApplicationActivateIgnoringOtherApps];
-    if (!success) {
-        return NO;
-    }
-
-    AXError error;
-    error = AXUIElementPerformAction(self.axElementRef, kAXRaiseAction);
-    if (error != kAXErrorSuccess) {
-        return NO;
-    }
-
-    error = AXUIElementSetAttributeValue(self.axElementRef, (CFStringRef)NSAccessibilityMainAttribute, kCFBooleanTrue);
-    if (error != kAXErrorSuccess) {
-        return NO;
-    }
+- (BOOL)AMFocusWindow {
+    if ([self focusWindow] == NO) return NO;
 
     if ([[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
         NSPoint mouseCursorPoint = midpoint([self frame]);
