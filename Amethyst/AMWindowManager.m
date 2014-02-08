@@ -173,7 +173,7 @@
 
     if (windows.count == 0) return;
 
-    [windows[0] AMFocusWindow];
+    [windows[0] am_focusWindow];
 }
 
 - (void)moveFocusCounterClockwise {
@@ -197,7 +197,7 @@
     NSUInteger windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1);
     SIWindow *windowToFocus = windows[windowToFocusIndex];
 
-    [windowToFocus AMFocusWindow];
+    [windowToFocus am_focusWindow];
 }
 
 - (void)moveFocusClockwise {
@@ -220,7 +220,7 @@
 
     SIWindow *windowToFocus = windows[(windowIndex + 1) % windows.count];
 
-    [windowToFocus AMFocusWindow];
+    [windowToFocus am_focusWindow];
 }
 
 - (void)swapFocusedWindowToMain {

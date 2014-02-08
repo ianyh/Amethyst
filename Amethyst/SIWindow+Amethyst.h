@@ -25,6 +25,6 @@
 // focus.  Calls the original focusWindow function implemented in SIWindow.
 // Then checks the user or default configuration as to whether or not to move
 // the mouse cursor with changes in focus.
-- (BOOL)AMFocusWindow;
+- (BOOL)am_focusWindow;
 
 @end

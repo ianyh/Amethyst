@@ -37,11 +37,12 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
     objc_setAssociatedObject(self, SIWindowFloatingKey, @(floating), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)AMFocusWindow {
-    if ([self focusWindow] == NO) return NO;
+- (BOOL)am_focusWindow {
+    if (![self focusWindow]) return NO;
 
     if ([[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
-        NSPoint mouseCursorPoint = midpoint([self frame]);
+        NSRect windowFrame = [self frame];
+        NSPoint mouseCursorPoint = NSMakePoint(NSMidX(windowFrame), NSMidY(windowFrame));
         CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
         CGEventSetFlags(mouseMoveEvent, 0);
         CGEventPost(kCGHIDEventTap, mouseMoveEvent);
@@ -49,10 +50,6 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
     }
 
     return YES;
-}
-
-NSPoint midpoint(NSRect r) {
-    return NSMakePoint(NSMidX(r), NSMidY(r));
 }
 
 @end
