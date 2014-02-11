@@ -7,8 +7,10 @@
 //
 
 #import "SIWindow+Amethyst.h"
+#import "AMConfiguration.h"
 
 #import <objc/runtime.h>
+#include <ApplicationServices/ApplicationServices.h>
 
 static void *SIWindowFloatingKey = &SIWindowFloatingKey;
 
@@ -33,6 +35,21 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
 
 - (void)setFloating:(BOOL)floating {
     objc_setAssociatedObject(self, SIWindowFloatingKey, @(floating), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)am_focusWindow {
+    if (![self focusWindow]) return NO;
+
+    if ([[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
+        NSRect windowFrame = [self frame];
+        NSPoint mouseCursorPoint = NSMakePoint(NSMidX(windowFrame), NSMidY(windowFrame));
+        CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
+        CGEventSetFlags(mouseMoveEvent, 0);
+        CGEventPost(kCGHIDEventTap, mouseMoveEvent);
+        CFRelease(mouseMoveEvent);
+    }
+
+    return YES;
 }
 
 @end

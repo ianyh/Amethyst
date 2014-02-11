@@ -66,6 +66,8 @@ static NSString *const AMConfigurationCommandToggleTilingKey = @"toggle-tiling";
 static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
+static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
+
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -305,10 +307,10 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
 
 - (BOOL)ignoreMenuBar {
     if (self.configuration[AMConfigurationIgnoreMenuBar]) {
-        return [self.configuration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true"];
+        return [self.configuration[AMConfigurationIgnoreMenuBar] boolValue];
     }
 
-    return [self.defaultConfiguration[AMConfigurationIgnoreMenuBar] isEqualToString:@"true"];
+    return [self.defaultConfiguration[AMConfigurationIgnoreMenuBar] boolValue];
 }
 
 - (BOOL)floatSmallWindows {
@@ -317,6 +319,14 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
     }
 
     return [self.defaultConfiguration[AMConfigurationFloatSmallWindows] boolValue];
+}
+
+- (BOOL)mouseFollowsFocus {
+    if (self.configuration[AMConfigurationMouseFollowsFocus]) {
+        return [self.configuration[AMConfigurationMouseFollowsFocus] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationMouseFollowsFocus] boolValue];
 }
 
 @end

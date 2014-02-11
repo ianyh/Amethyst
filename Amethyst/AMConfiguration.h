@@ -26,7 +26,7 @@
 //
 // layoutString - The name of the layout for which to construct the
 //                corresponding string.
-// 
+//
 // Returns "select-" + layoutString + "-layout".
 - (NSString *)constructLayoutKeyString:(NSString *)layoutString;
 
@@ -46,6 +46,8 @@
 - (BOOL)ignoreMenuBar;
 
 - (BOOL)floatSmallWindows;
+
+- (BOOL)mouseFollowsFocus;
 
 @property (nonatomic, assign) BOOL tilingEnabled;
 @end

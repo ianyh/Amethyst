@@ -21,4 +21,10 @@
 // loop.
 @property (nonatomic, assign) BOOL floating;
 
+// Custom focusWindow function that allows Amethyst to implement mouse follows
+// focus.  Calls the original focusWindow function implemented in SIWindow.
+// Then checks the user or default configuration as to whether or not to move
+// the mouse cursor with changes in focus.
+- (BOOL)am_focusWindow;
+
 @end

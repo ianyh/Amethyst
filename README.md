@@ -34,7 +34,7 @@ Building
 0. Install the latest version of XCode
 1. Clone the project, then `cd` to the Amethyst directory.
 2. Install xctool
-    - `brew update && brew install xctool` 
+    - `brew update && brew install xctool`
     - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license`
 3. Install cocoapods
     - `gem install cocoapods`
@@ -113,3 +113,22 @@ will restrict your layouts to the tall and fullscreen layouts. The available lay
 * **Fullscreen** ("fullscreen"): All windows are sized to fill the screen.
 * **Column** ("column"): All windows are distributed in evenly sized in columns from left to right.
 * **Floating** ("floating"): All windows are floating. (Useful if you want a space dedicated to floating windows.)
+
+### Mouse Follows Focus
+
+This setting can be enabled by changing the following line
+
+```json
+"mouse-follows-focus": false,
+```
+
+to
+
+```json
+"mouse-follows-focus": true,
+```
+
+in your `.amethyst` file.
+
+
+
