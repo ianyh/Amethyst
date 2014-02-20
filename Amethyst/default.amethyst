@@ -186,7 +186,6 @@
 
     "MISC": "----------------------",
     "floating": [],
-    "ignore-menu-bar": false,
     "float-small-windows": true,
-    "mouse-follows-focus": false,
+    "mouse-follows-focus": false
 }
