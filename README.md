@@ -133,7 +133,7 @@ in your `.amethyst` file.
 
 ### Always float an app
 
-You can set specific apps to float all the time.
+You can set specific application to float by default, this can still be toggled by `mod1-t`
 
 ```js
 "floating": [
