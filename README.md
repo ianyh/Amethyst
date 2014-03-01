@@ -131,4 +131,17 @@ to
 in your `.amethyst` file.
 
 
+### Always float an app
+
+You can set specific apps to float all the time.
+
+```js
+"floating": [
+    "com.apple.systempreferences"
+],
+```
+
+Get the required string for the app `osascript -e 'id of app "Finder"'`. Just replace `Finder` with the name of your app
+
+
 
