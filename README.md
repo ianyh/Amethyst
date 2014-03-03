@@ -112,6 +112,7 @@ will restrict your layouts to the tall and fullscreen layouts. The available lay
 * **Wide** ("wide"): Defines a main area on the top and a secondary column on the right.
 * **Fullscreen** ("fullscreen"): All windows are sized to fill the screen.
 * **Column** ("column"): All windows are distributed in evenly sized in columns from left to right.
+* **Row** ("row"): All windows are distributed in evenly sized rows from top to bottom.
 * **Floating** ("floating"): All windows are floating. (Useful if you want a space dedicated to floating windows.)
 
 ### Mouse Follows Focus
