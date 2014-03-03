@@ -67,6 +67,8 @@
 		40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40E705D9176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
+		5C09C2AB18C1400F00CF5E6A /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
+		5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */; };
 		6718BDA0D79F4A19BED950F4 /* libPods-AmethystTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +196,9 @@
 		40D82F06176A22A800DE1A40 /* AMWideLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWideLayout.h; sourceTree = "<group>"; };
 		40D82F07176A22A900DE1A40 /* AMWideLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWideLayout.m; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
+		5C09C2A918C1400F00CF5E6A /* AMRowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMRowLayout.h; sourceTree = "<group>"; };
+		5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRowLayout.m; sourceTree = "<group>"; };
+		5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRowLayoutTest.m; sourceTree = "<group>"; };
 		B0530B06777D42039F419322 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6950BE9E95C4952BCA05552 /* Pods-AmethystTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.xcconfig"; path = "Pods/Pods-AmethystTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AmethystTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +239,7 @@
 				40029A081763A06A0049001F /* AMTallLayoutTest.m */,
 				40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */,
 				4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */,
+				5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */,
 			);
 			path = AmethystTests;
 			sourceTree = "<group>";
@@ -349,6 +355,8 @@
 				40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */,
 				40D82F06176A22A800DE1A40 /* AMWideLayout.h */,
 				40D82F07176A22A900DE1A40 /* AMWideLayout.m */,
+				5C09C2A918C1400F00CF5E6A /* AMRowLayout.h */,
+				5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -655,6 +663,7 @@
 				400299FC17639AF20049001F /* AMScreenManager.m in Sources */,
 				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
 				40029A0017639B050049001F /* AMLayout.m in Sources */,
+				5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */,
 				40029A0117639B050049001F /* AMFullscreenLayout.m in Sources */,
 				40029A0217639B050049001F /* AMTallLayout.m in Sources */,
 				404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
@@ -685,6 +694,7 @@
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
 				023D3F231856828C00391BEC /* AMFloatingLayout.m in Sources */,
 				40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
+				5C09C2AB18C1400F00CF5E6A /* AMRowLayout.m in Sources */,
 				40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

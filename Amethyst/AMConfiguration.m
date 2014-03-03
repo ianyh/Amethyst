@@ -13,6 +13,7 @@
 #import "AMTallLayout.h"
 #import "AMFullscreenLayout.h"
 #import "AMColumnLayout.h"
+#import "AMRowLayout.h"
 #import "AMFloatingLayout.h"
 #import "AMLayout.h"
 #import "AMScreenManager.h"
@@ -116,6 +117,7 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
     if ([layoutString isEqualToString:@"wide"]) return [AMWideLayout class];
     if ([layoutString isEqualToString:@"fullscreen"]) return [AMFullscreenLayout class];
     if ([layoutString isEqualToString:@"column"]) return [AMColumnLayout class];
+    if ([layoutString isEqualToString:@"row"]) return [AMRowLayout class];
     if ([layoutString isEqualToString:@"floating"]) return [AMFloatingLayout class];
     return nil;
 }
