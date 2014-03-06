@@ -68,7 +68,7 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
-
+static NSString *const AMConfigurationShowHUDOnSpaceChange = @"show-layout-HUD-on-space-change";
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -329,6 +329,14 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
     }
 
     return [self.defaultConfiguration[AMConfigurationMouseFollowsFocus] boolValue];
+}
+
+- (BOOL)showLayoutHUDOnSpaceChange {
+    if (self.configuration[AMConfigurationShowHUDOnSpaceChange]) {
+        return [self.configuration[AMConfigurationShowHUDOnSpaceChange] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationShowHUDOnSpaceChange] boolValue];
 }
 
 @end
