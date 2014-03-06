@@ -60,12 +60,16 @@
             }
         }
 
-        @weakify(self);
-        [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
-            @strongify(self);
+        if ([[AMConfiguration sharedConfiguration] showLayoutHUDOnSpaceChange]) {
+            @weakify(self);
+            [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
+                @strongify(self);
 
-            [self displayLayoutHUD];
-        }];
+                [self displayLayoutHUD];
+            }];
+        } else {
+            [self hideLayoutHUD:self];
+        }
     }
     return self;
 }
