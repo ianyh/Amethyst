@@ -119,13 +119,13 @@ will restrict your layouts to the tall and fullscreen layouts. The available lay
 
 This setting can be enabled by changing the following line
 
-```json
+```js
 "mouse-follows-focus": false,
 ```
 
 to
 
-```json
+```js
 "mouse-follows-focus": true,
 ```
 
