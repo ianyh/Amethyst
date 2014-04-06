@@ -134,21 +134,26 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
     NSError *error;
     NSDictionary *configuration;
 
-    data = [NSData dataWithContentsOfFile:amethystConfigPath];
-    if (data) {
-        configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        if (error) {
-            DDLogError(@"error loading configuration: %@", error);
-            return;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:amethystConfigPath isDirectory:NO]) {
+        data = [NSData dataWithContentsOfFile:amethystConfigPath];
+        if (data) {
+            configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            if (error) {
+                DDLogError(@"error loading configuration: %@", error);
+                NSString *message = [NSString stringWithFormat:@"There was an error trying to load your .amethyst configuration. Going to use default configuration. %@", error.localizedDescription];
+                NSRunAlertPanel(@"Error loading configuration", message, @"OK", nil, nil);
+            } else {
+                self.configuration = configuration;
+            }
         }
-
-        self.configuration = configuration;
     }
 
+    error = nil;
     data = [NSData dataWithContentsOfFile:defaultAmethystConfigPath];
     configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     if (error) {
         DDLogError(@"error loading default configuration: %@", error);
+        NSRunAlertPanel(@"Error loading default configuration", @"There was an error when trying to load the default configuration. Amethyst may not function correctly.", @"OK", nil, nil);
         return;
     }
 
