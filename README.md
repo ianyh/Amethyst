@@ -31,7 +31,7 @@ Note: that Amethyst now is only supported on OS X 10.9. The last version that su
 Building
 --------
 
-0. Install the latest version of XCode
+0. Install the latest version of Xcode
 1. Clone the project, then `cd` to the Amethyst directory.
 2. Install xctool
     - `brew update && brew install xctool`
