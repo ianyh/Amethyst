@@ -178,6 +178,7 @@
     [self markScreenForReflow:focusedWindow.screen];
     [focusedWindow moveToScreen:screenManager.screen];
     [self markScreenForReflow:screenManager.screen];
+    [focusedWindow am_focusWindow];
 }
 
 - (void)focusScreenAtIndex:(NSUInteger)screenIndex {
@@ -257,6 +258,7 @@
 
     [self.windows exchangeObjectAtIndex:focusedWindowIndex withObjectAtIndex:mainWindowIndex];
     [self markScreenForReflow:focusedWindow.screen];
+    [focusedWindow am_focusWindow];
 }
 
 - (void)swapFocusedWindowCounterClockwise {
@@ -279,6 +281,7 @@
 
     [self.windows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
     [self markScreenForReflow:focusedWindow.screen];
+    [focusedWindow am_focusWindow];
 }
 
 - (void)swapFocusedWindowClockwise {
@@ -301,6 +304,7 @@
 
     [self.windows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
     [self markScreenForReflow:focusedWindow.screen];
+    [focusedWindow am_focusWindow];
 }
 
 - (void)pushFocusedWindowToSpace:(NSUInteger)space {
@@ -308,6 +312,7 @@
     if (!focusedWindow) return;
 
     [focusedWindow moveToSpace:space];
+    [focusedWindow am_focusWindow];
 }
 
 #pragma mark Notification Handlers
