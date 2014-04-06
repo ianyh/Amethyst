@@ -118,11 +118,12 @@
 }
 
 - (void)setNeedsReflow {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, reflow:) object:nil];
-    [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.2];
+    [self reflow:nil];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, reflow:) object:nil];
+//    [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.2];
 }
 
-- (void)reflow:(NSTimer *)timer {
+- (void)reflow:(id)sender {
     if (!self.currentSpaceIdentifier) return;
     if (self.currentLayoutIndex >= self.layouts.count) return;
     if (![AMConfiguration sharedConfiguration].tilingEnabled) return;
