@@ -80,7 +80,7 @@
             }
         }
 
-        window.frame = windowFrame.origin;
+        window.frame = windowFrame;
     }
 }
 
