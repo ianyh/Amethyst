@@ -17,6 +17,7 @@
 #import "AMFloatingLayout.h"
 #import "AMLayout.h"
 #import "AMScreenManager.h"
+#import "AMWidescreenTallLayout.h"
 #import "AMWindowManager.h"
 
 // The layouts key should be a list of string identifying layout algorithms.
@@ -120,6 +121,7 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
     if ([layoutString isEqualToString:@"column"]) return [AMColumnLayout class];
     if ([layoutString isEqualToString:@"row"]) return [AMRowLayout class];
     if ([layoutString isEqualToString:@"floating"]) return [AMFloatingLayout class];
+    if ([layoutString isEqualToString:@"widescreen-tall"]) return [AMWidescreenTallLayout class];
     return nil;
 }
 
@@ -287,7 +289,6 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
     for (NSString *layoutString in layoutStrings) {
         Class layoutClass = [self.class layoutClassForString:layoutString];
         if (!layoutClass) {
-            DDLogError(@"Unrecognized layout string: %@", layoutString);
             continue;
         }
         [self constructCommandWithHotKeyManager:hotKeyManager commandKey:[self constructLayoutKeyString:layoutString] handler:^{
