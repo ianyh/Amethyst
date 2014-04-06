@@ -81,7 +81,7 @@
             }
         }
 
-        window.position = windowFrame.origin;
+        window.frame = windowFrame.origin;
     }
 }
 
