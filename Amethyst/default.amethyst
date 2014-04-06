@@ -27,7 +27,7 @@
 
     "COMMANDS": "----------------------",
     "Commands are": {
-        "cycle-layout-forward": "Cycle layout to the next layout",
+        "cycle-layout": "Cycle layout to the next layout",
         "cycle-layout-backward": "Cycle layout to the previous layout",
         "focus-screen-1": "Focus the main window on the first screen",
         "focus-screen-2": "Focus the main window on the second screen",
@@ -56,7 +56,7 @@
         "toggle-float": "Toggle the focused window between being floating and tiled"
     },
 
-    "cycle-layout-forward": {
+    "cycle-layout": {
         "mod": "mod1",
         "key": "space"
     },
@@ -193,5 +193,6 @@
     "floating": [],
     "float-small-windows": true,
     "mouse-follows-focus": false,
+    "enables-layout-hud": true,
     "display-HUD-on-space-change": true
 }

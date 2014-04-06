@@ -48,6 +48,9 @@
 		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
+		40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
+		40A0A1FA18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */; };
+		40A0A1FB18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */; };
 		40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
 		40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
 		40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
@@ -173,6 +176,8 @@
 		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
 		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
 		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
+		40A0A1F818F1B400000B7614 /* AMWidescreenTallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWidescreenTallLayout.h; sourceTree = "<group>"; };
+		40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWidescreenTallLayout.m; sourceTree = "<group>"; };
 		40B337DE1745CE2B0001D8FC /* AMLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayout.h; sourceTree = "<group>"; };
 		40B337DF1745CE2B0001D8FC /* AMLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayout.m; sourceTree = "<group>"; };
 		40B337E21745D0620001D8FC /* AMFullscreenLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFullscreenLayout.h; sourceTree = "<group>"; };
@@ -357,6 +362,8 @@
 				40D82F07176A22A900DE1A40 /* AMWideLayout.m */,
 				5C09C2A918C1400F00CF5E6A /* AMRowLayout.h */,
 				5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */,
+				40A0A1F818F1B400000B7614 /* AMWidescreenTallLayout.h */,
+				40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -665,10 +672,12 @@
 				40029A0017639B050049001F /* AMLayout.m in Sources */,
 				5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */,
 				40029A0117639B050049001F /* AMFullscreenLayout.m in Sources */,
+				40A0A1FB18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */,
 				40029A0217639B050049001F /* AMTallLayout.m in Sources */,
 				404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
 				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
 				40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
+				40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */,
 				40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */,
 				40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 				4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */,
@@ -694,6 +703,7 @@
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
 				023D3F231856828C00391BEC /* AMFloatingLayout.m in Sources */,
 				40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
+				40A0A1FA18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */,
 				5C09C2AB18C1400F00CF5E6A /* AMRowLayout.m in Sources */,
 				40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 			);

@@ -17,6 +17,7 @@
 #import "AMFloatingLayout.h"
 #import "AMLayout.h"
 #import "AMScreenManager.h"
+#import "AMWidescreenTallLayout.h"
 #import "AMWindowManager.h"
 
 // The layouts key should be a list of string identifying layout algorithms.
@@ -45,7 +46,7 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 // Note: This technically allows for commands having the same key code and
 // flags. The behavior in that case is not well defined. We may want this to
 // be an assertion error.
-static NSString *const AMConfigurationCommandCycleLayoutForwardKey = @"cycle-layout-forward";
+static NSString *const AMConfigurationCommandCycleLayoutForwardKey = @"cycle-layout";
 static NSString *const AMConfigurationCommandCycleLayoutBackwardKey = @"cycle-layout-backward";
 static NSString *const AMConfigurationCommandShrinkMainKey = @"shrink-main";
 static NSString *const AMConfigurationCommandExpandMainKey = @"expand-main";
@@ -69,6 +70,7 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
+static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on-space-change";
 
 
@@ -121,6 +123,7 @@ static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on
     if ([layoutString isEqualToString:@"column"]) return [AMColumnLayout class];
     if ([layoutString isEqualToString:@"row"]) return [AMRowLayout class];
     if ([layoutString isEqualToString:@"floating"]) return [AMFloatingLayout class];
+    if ([layoutString isEqualToString:@"widescreen-tall"]) return [AMWidescreenTallLayout class];
     return nil;
 }
 
@@ -136,21 +139,26 @@ static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on
     NSError *error;
     NSDictionary *configuration;
 
-    data = [NSData dataWithContentsOfFile:amethystConfigPath];
-    if (data) {
-        configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        if (error) {
-            DDLogError(@"error loading configuration: %@", error);
-            return;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:amethystConfigPath isDirectory:NO]) {
+        data = [NSData dataWithContentsOfFile:amethystConfigPath];
+        if (data) {
+            configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+            if (error) {
+                DDLogError(@"error loading configuration: %@", error);
+                NSString *message = [NSString stringWithFormat:@"There was an error trying to load your .amethyst configuration. Going to use default configuration. %@", error.localizedDescription];
+                NSRunAlertPanel(@"Error loading configuration", message, @"OK", nil, nil);
+            } else {
+                self.configuration = configuration;
+            }
         }
-
-        self.configuration = configuration;
     }
 
+    error = nil;
     data = [NSData dataWithContentsOfFile:defaultAmethystConfigPath];
     configuration = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
     if (error) {
         DDLogError(@"error loading default configuration: %@", error);
+        NSRunAlertPanel(@"Error loading default configuration", @"There was an error when trying to load the default configuration. Amethyst may not function correctly.", @"OK", nil, nil);
         return;
     }
 
@@ -283,7 +291,6 @@ static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on
     for (NSString *layoutString in layoutStrings) {
         Class layoutClass = [self.class layoutClassForString:layoutString];
         if (!layoutClass) {
-            DDLogError(@"Unrecognized layout string: %@", layoutString);
             continue;
         }
         [self constructCommandWithHotKeyManager:hotKeyManager commandKey:[self constructLayoutKeyString:layoutString] handler:^{
@@ -335,6 +342,14 @@ static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on
     }
 
     return [self.defaultConfiguration[AMConfigurationMouseFollowsFocus] boolValue];
+}
+
+- (BOOL)enablesLayoutHUD {
+    if (self.configuration[AMConfigurationEnablesLayoutHUD]) {
+        return [self.configuration[AMConfigurationEnablesLayoutHUD] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUD] boolValue];
 }
 
 - (BOOL)displayHUDOnSpaceChange {

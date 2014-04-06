@@ -59,7 +59,8 @@ Amethyst uses two modifier combinations.
 
 And defines the following commands, mostly a mapping to xmonad key combinations.
 
-* `mod1 + space` — change layout
+* `mod1 + space` — cycle to next layout
+* `mod2 + space` - cycle to previous layout
 * `mod1 + w` - focus 1st screen
 * `mod1 + e` - focus 2nd screen
 * `mod1 + r` - focus 3rd screen
@@ -144,5 +145,10 @@ You can set specific application to float by default, this can still be toggled 
 
 Get the required string for the app `osascript -e 'id of app "Finder"'`. Just replace `Finder` with the name of your app
 
+### Layout HUD
 
+By default Amethyst pops up a HUD telling you the layout whenever the layout changes. You can disable it in your `.amethyst` file using the `enables-layout-hud` key. i.e.,
 
+```js
+"enables-layout-hud": false
+```

@@ -60,6 +60,8 @@
             }
         }
 
+        [self hideLayoutHUD:nil];
+
         @weakify(self);
         [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
             @strongify(self);
@@ -99,6 +101,10 @@
 }
 
 - (void)displayLayoutHUD {
+    if (![[AMConfiguration sharedConfiguration] enablesLayoutHUD]) {
+        return;
+    }
+
     CGRect screenFrame = self.screen.frame;
     CGPoint screenCenter = (CGPoint){
         .x = CGRectGetMidX(screenFrame),

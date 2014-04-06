@@ -1,26 +1,21 @@
 //
-//  AMWideLayout.m
+//  AMWidescreenTallLayout.m
 //  Amethyst
 //
-//  Created by Ian Ynda-Hummel on 6/13/13.
-//  Copyright (c) 2013 Ian Ynda-Hummel. All rights reserved.
+//  Created by Ian Ynda-Hummel on 4/6/14.
+//  Copyright (c) 2014 Ian Ynda-Hummel. All rights reserved.
 //
 
-#import "AMWideLayout.h"
+#import "AMWidescreenTallLayout.h"
 
-#import "AMWindowManager.h"
-
-@interface AMWideLayout ()
-// Ratio of screen height taken up by main pane.
+@interface AMWidescreenTallLayout ()
+// Ratio of screen width taken up by main pane
 @property (nonatomic, assign) CGFloat mainPaneRatio;
 // The number of windows that should be displayed in the main pane.
 @property (nonatomic, assign) NSInteger mainPaneCount;
-
 @end
 
-@implementation AMWideLayout
-
-#pragma mark Lifecycle
+@implementation AMWidescreenTallLayout
 
 - (id)init {
     self = [super init];
@@ -34,25 +29,25 @@
 #pragma mark AMLayout
 
 + (NSString *)layoutName {
-    return @"Wide";
+    return @"Widescreen Tall";
 }
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     if (windows.count == 0) return;
 
     NSUInteger mainPaneCount = MIN(windows.count, self.mainPaneCount);
-    
+
     NSInteger secondaryPaneCount = windows.count - mainPaneCount;
     BOOL hasSecondaryPane = (secondaryPaneCount > 0);
-    
-    CGRect screenFrame = [self adjustedFrameForLayout:screen];
-    
-    CGFloat mainPaneWindowWidth = round(screenFrame.size.width / mainPaneCount);
-    CGFloat secondaryPaneWindowWidth = (hasSecondaryPane ? round(screenFrame.size.width / secondaryPaneCount) : 0.0);
 
-    CGFloat mainPaneWindowHeight = round(screenFrame.size.height * (hasSecondaryPane ? self.mainPaneRatio : 1));
-    CGFloat secondaryPaneWindowHeight = screenFrame.size.height - mainPaneWindowHeight;
-    
+    CGRect screenFrame = [self adjustedFrameForLayout:screen];
+
+    CGFloat mainPaneWindowHeight = screenFrame.size.height;
+    CGFloat secondaryPaneWindowHeight = (hasSecondaryPane ? round(screenFrame.size.height / secondaryPaneCount) : 0.0);
+
+    CGFloat mainPaneWindowWidth = round((screenFrame.size.width * (hasSecondaryPane ? self.mainPaneRatio : 1)) / mainPaneCount);
+    CGFloat secondaryPaneWindowWidth = screenFrame.size.width - mainPaneWindowWidth * mainPaneCount;
+
     SIWindow *focusedWindow = [SIWindow focusedWindow];
 
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
@@ -60,13 +55,13 @@
         CGRect windowFrame;
 
         if (windowIndex < mainPaneCount) {
-            windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * windowIndex);
+            windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * windowIndex;
             windowFrame.origin.y = screenFrame.origin.y;
             windowFrame.size.width = mainPaneWindowWidth;
             windowFrame.size.height = mainPaneWindowHeight;
         } else {
-            windowFrame.origin.x = screenFrame.origin.x + (secondaryPaneWindowWidth * (windowIndex - mainPaneCount));
-            windowFrame.origin.y = screenFrame.origin.y + mainPaneWindowHeight;
+            windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * mainPaneCount;
+            windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * (windowIndex - mainPaneCount));
             windowFrame.size.width = secondaryPaneWindowWidth;
             windowFrame.size.height = secondaryPaneWindowHeight;
         }
