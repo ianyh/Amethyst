@@ -70,6 +70,7 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
+static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 
 
 @interface AMConfiguration ()
@@ -340,6 +341,14 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
     }
 
     return [self.defaultConfiguration[AMConfigurationMouseFollowsFocus] boolValue];
+}
+
+- (BOOL)enablesLayoutHUD {
+    if (self.configuration[AMConfigurationEnablesLayoutHUD]) {
+        return [self.configuration[AMConfigurationEnablesLayoutHUD] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUD] boolValue];
 }
 
 @end

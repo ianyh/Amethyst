@@ -192,5 +192,6 @@
     "MISC": "----------------------",
     "floating": [],
     "float-small-windows": true,
-    "mouse-follows-focus": false
+    "mouse-follows-focus": false,
+    "enables-layout-hud": true
 }
