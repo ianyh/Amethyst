@@ -146,6 +146,10 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     // are not generated from the keyboard layout data.
     stringToKeyCodes[@"space"] = @[ @(kVK_Space) ];
     stringToKeyCodes[@"enter"] = @[ @(kVK_Return) ];
+    stringToKeyCodes[@"up"] = @[ @(kVK_UpArrow) ];
+    stringToKeyCodes[@"right"] = @[ @(kVK_RightArrow) ];
+    stringToKeyCodes[@"down"] = @[ @(kVK_DownArrow) ];
+    stringToKeyCodes[@"left"] = @[ @(kVK_LeftArrow) ];
 
     self.stringToKeyCodes = stringToKeyCodes;
 }
