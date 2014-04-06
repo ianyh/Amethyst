@@ -48,6 +48,7 @@
 		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
+		40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
 		40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
 		40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
 		40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
@@ -669,6 +670,7 @@
 				404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
 				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
 				40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
+				40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */,
 				40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */,
 				40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 				4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */,
