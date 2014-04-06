@@ -140,8 +140,13 @@
     return self.layouts[self.currentLayoutIndex];
 }
 
-- (void)cycleLayout {
+- (void)cycleLayoutForward {
     self.currentLayoutIndex = (self.currentLayoutIndex + 1) % self.layouts.count;
+    [self setNeedsReflow];
+}
+
+- (void)cycleLayoutBackward {
+    self.currentLayoutIndex = (self.currentLayoutIndex == 0 ? self.layouts.count : self.currentLayoutIndex) - 1;
     [self setNeedsReflow];
 }
 

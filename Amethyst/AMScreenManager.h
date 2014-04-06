@@ -65,7 +65,10 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 - (void)updateCurrentLayout:(AMScreenManagerLayoutUpdater)updater;
 
 // Changes the layout to the next layout in the chain.
-- (void)cycleLayout;
+- (void)cycleLayoutForward;
+
+// Changes the layout to the previous layout in the chain.
+- (void)cycleLayoutBackward;
 
 // Changes the layout to a specific layout
 //
