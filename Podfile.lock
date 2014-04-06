@@ -54,7 +54,7 @@ PODS:
   - ReactiveCocoa/Core (2.3):
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/no-arc (2.3)
-  - Silica (0.1.2)
+  - Silica (0.1.3)
 
 DEPENDENCIES:
   - CocoaLumberjack
@@ -76,6 +76,6 @@ SPEC CHECKSUMS:
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
   OCMock: 74e4ddbcef134170dcc844f91c691f13868075d7
   ReactiveCocoa: 1f6265f9d521923d3efcc37b00722cefc16df269
-  Silica: d860ca16b8e6610b0b938b3f9f0f1df20e7780b7
+  Silica: c6c65ecda1bd5a063eed4c140882197e3b78662e
 
 COCOAPODS: 0.31.1
