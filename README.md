@@ -145,5 +145,10 @@ You can set specific application to float by default, this can still be toggled 
 
 Get the required string for the app `osascript -e 'id of app "Finder"'`. Just replace `Finder` with the name of your app
 
+### Layout HUD
 
+By default Amethyst pops up a HUD telling you the layout whenever the layout changes. You can disable it in your `.amethyst` file using the `enables-layout-hud` key. i.e.,
 
+```js
+"enables-layout-hud": false
+```
