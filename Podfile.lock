@@ -1,106 +1,60 @@
 PODS:
-  - CocoaLumberjack (1.6.2)
+  - CocoaLumberjack (1.8.1):
+    - CocoaLumberjack/Extensions
+  - CocoaLumberjack/Core (1.8.1)
+  - CocoaLumberjack/Extensions (1.8.1):
+    - CocoaLumberjack/Core
   - IYLoginItem (0.1)
-  - Kiwi (2.2.2):
+  - Kiwi (2.2.4):
     - Kiwi/SenTestingKit
-  - Kiwi/ARC (2.2.2)
-  - Kiwi/NonARC (2.2.2)
-  - Kiwi/SenTestingKit (2.2.2):
+  - Kiwi/ARC (2.2.4)
+  - Kiwi/NonARC (2.2.4)
+  - Kiwi/SenTestingKit (2.2.4):
     - Kiwi/ARC
     - Kiwi/NonARC
-  - libextobjc (0.3):
+  - libextobjc (0.4):
     - libextobjc/EXTADT
-    - libextobjc/EXTAnnotation
-    - libextobjc/EXTAspect
-    - libextobjc/EXTBlockMethod
-    - libextobjc/EXTBlockTarget
     - libextobjc/EXTConcreteProtocol
-    - libextobjc/EXTDispatchObject
-    - libextobjc/EXTFinalMethod
     - libextobjc/EXTKeyPathCoding
-    - libextobjc/EXTMaybe
-    - libextobjc/EXTMixin
-    - libextobjc/EXTMultimethod
-    - libextobjc/EXTMultiObject
     - libextobjc/EXTNil
-    - libextobjc/EXTPassthrough
-    - libextobjc/EXTPrivateMethod
-    - libextobjc/EXTProtocolCategory
     - libextobjc/EXTSafeCategory
     - libextobjc/EXTScope
     - libextobjc/EXTSelectorChecking
-    - libextobjc/EXTSwizzle
     - libextobjc/EXTSynthesize
-    - libextobjc/EXTTuple
-    - libextobjc/EXTVarargs
     - libextobjc/NSInvocation+EXT
     - libextobjc/NSMethodSignature+EXT
     - libextobjc/RuntimeExtensions
     - libextobjc/UmbrellaHeader
-  - libextobjc/EXTADT (0.3):
+  - libextobjc/EXTADT (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTAnnotation (0.3):
+  - libextobjc/EXTConcreteProtocol (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTAspect (0.3):
+  - libextobjc/EXTKeyPathCoding (0.4):
     - libextobjc/RuntimeExtensions
-    - libffi
-  - libextobjc/EXTBlockMethod (0.3):
+  - libextobjc/EXTNil (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTBlockTarget (0.3):
+  - libextobjc/EXTSafeCategory (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTConcreteProtocol (0.3):
+  - libextobjc/EXTScope (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTDispatchObject (0.3):
+  - libextobjc/EXTSelectorChecking (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTFinalMethod (0.3):
+  - libextobjc/EXTSynthesize (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTKeyPathCoding (0.3):
+  - libextobjc/NSInvocation+EXT (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMaybe (0.3):
+  - libextobjc/NSMethodSignature+EXT (0.4):
     - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMixin (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMultimethod (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTMultiObject (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTNil (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTPassthrough (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTPrivateMethod (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTProtocolCategory (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSafeCategory (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTScope (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSelectorChecking (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSwizzle (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTSynthesize (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTTuple (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/EXTVarargs (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/NSInvocation+EXT (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/NSMethodSignature+EXT (0.3):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/RuntimeExtensions (0.3)
-  - libextobjc/UmbrellaHeader (0.3)
-  - libffi (3.0.13)
-  - OCMock (2.2.1)
-  - ReactiveCocoa (2.1):
+  - libextobjc/RuntimeExtensions (0.4)
+  - libextobjc/UmbrellaHeader (0.4)
+  - OCMock (2.2.3)
+  - ReactiveCocoa (2.3):
     - ReactiveCocoa/Core
     - ReactiveCocoa/no-arc
-  - ReactiveCocoa/Core (2.1):
+  - ReactiveCocoa/Core (2.3):
     - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.1)
-  - Silica (0.1.1)
+  - ReactiveCocoa/no-arc (2.3)
+  - Silica (0.1.2)
 
 DEPENDENCIES:
   - CocoaLumberjack
@@ -116,13 +70,12 @@ EXTERNAL SOURCES:
     :git: https://github.com/SiO2/Silica
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: 19dceba2d0360ed383cba983bc3ef0dd089c42a1
+  CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
-  Kiwi: 03539aeb004ccd42bdbc31253617b26364315df4
-  libextobjc: 820a79dbbbc498611e04fffd07d2d52a5588e7ac
-  libffi: 64ef39353e747bb2b25e1026afd96a157bf9231c
-  OCMock: 80e4cfbc71a0e1bd28caf10a9fda27da7c4c8402
-  ReactiveCocoa: b686fa735c28c2dc7311fbd2f0895b4d4ae07360
-  Silica: 96dbb288e32640109d9d42cd6131f4d2bab8e471
+  Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
+  libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
+  OCMock: 74e4ddbcef134170dcc844f91c691f13868075d7
+  ReactiveCocoa: 1f6265f9d521923d3efcc37b00722cefc16df269
+  Silica: d860ca16b8e6610b0b938b3f9f0f1df20e7780b7
 
-COCOAPODS: 0.29.0
+COCOAPODS: 0.31.1
