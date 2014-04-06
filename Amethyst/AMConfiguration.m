@@ -45,7 +45,7 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 // Note: This technically allows for commands having the same key code and
 // flags. The behavior in that case is not well defined. We may want this to
 // be an assertion error.
-static NSString *const AMConfigurationCommandCycleLayoutForwardKey = @"cycle-layout-forward";
+static NSString *const AMConfigurationCommandCycleLayoutForwardKey = @"cycle-layout";
 static NSString *const AMConfigurationCommandCycleLayoutBackwardKey = @"cycle-layout-backward";
 static NSString *const AMConfigurationCommandShrinkMainKey = @"shrink-main";
 static NSString *const AMConfigurationCommandExpandMainKey = @"expand-main";

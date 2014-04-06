@@ -27,7 +27,7 @@
 
     "COMMANDS": "----------------------",
     "Commands are": {
-        "cycle-layout-forward": "Cycle layout to the next layout",
+        "cycle-layout": "Cycle layout to the next layout",
         "cycle-layout-backward": "Cycle layout to the previous layout",
         "focus-screen-1": "Focus the main window on the first screen",
         "focus-screen-2": "Focus the main window on the second screen",
