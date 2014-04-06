@@ -45,7 +45,8 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 // Note: This technically allows for commands having the same key code and
 // flags. The behavior in that case is not well defined. We may want this to
 // be an assertion error.
-static NSString *const AMConfigurationCommandCycleLayoutKey = @"cycle-layout";
+static NSString *const AMConfigurationCommandCycleLayoutForwardKey = @"cycle-layout-forward";
+static NSString *const AMConfigurationCommandCycleLayoutBackwardKey = @"cycle-layout-backward";
 static NSString *const AMConfigurationCommandShrinkMainKey = @"shrink-main";
 static NSString *const AMConfigurationCommandExpandMainKey = @"expand-main";
 static NSString *const AMConfigurationCommandIncreaseMainKey = @"increase-main";
@@ -68,6 +69,7 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
+static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on-space-change";
 
 
 @interface AMConfiguration ()
@@ -191,8 +193,12 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
 }
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
-    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandCycleLayoutKey handler:^{
-        [windowManager.focusedScreenManager cycleLayout];
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandCycleLayoutForwardKey handler:^{
+        [windowManager.focusedScreenManager cycleLayoutForward];
+    }];
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandCycleLayoutBackwardKey handler:^{
+        [windowManager.focusedScreenManager cycleLayoutBackward];
     }];
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandShrinkMainKey handler:^{
@@ -329,6 +335,14 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
     }
 
     return [self.defaultConfiguration[AMConfigurationMouseFollowsFocus] boolValue];
+}
+
+- (BOOL)displayHUDOnSpaceChange {
+    if (self.configuration[AMConfigurationDisplayHUDOnSpaceChange]) {
+        return [self.configuration[AMConfigurationDisplayHUDOnSpaceChange] boolValue];
+    }
+
+    return [self.defaultConfiguration[AMConfigurationDisplayHUDOnSpaceChange] boolValue];
 }
 
 @end

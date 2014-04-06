@@ -64,7 +64,10 @@
         [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
             @strongify(self);
 
-            [self displayLayoutHUD];
+            if (!self.changingSpace || [[AMConfiguration sharedConfiguration] displayHUDOnSpaceChange]) {
+                [self displayLayoutHUD];
+            }
+            self.changingSpace = false;
         }];
     }
     return self;
@@ -80,6 +83,7 @@
     _currentSpaceIdentifier = currentSpaceIdentifier;
 
     if (_currentSpaceIdentifier) {
+        self.changingSpace = true;
         self.currentLayoutIndex = [self.currentLayoutIndexBySpaceIdentifier[_currentSpaceIdentifier] integerValue];
         if (self.layoutsBySpaceIdentifier[_currentSpaceIdentifier]) {
             self.layouts = self.layoutsBySpaceIdentifier[_currentSpaceIdentifier];
@@ -140,8 +144,13 @@
     return self.layouts[self.currentLayoutIndex];
 }
 
-- (void)cycleLayout {
+- (void)cycleLayoutForward {
     self.currentLayoutIndex = (self.currentLayoutIndex + 1) % self.layouts.count;
+    [self setNeedsReflow];
+}
+
+- (void)cycleLayoutBackward {
+    self.currentLayoutIndex = (self.currentLayoutIndex == 0 ? self.layouts.count : self.currentLayoutIndex) - 1;
     [self setNeedsReflow];
 }
 

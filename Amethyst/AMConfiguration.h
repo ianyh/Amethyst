@@ -49,5 +49,7 @@
 
 - (BOOL)mouseFollowsFocus;
 
+- (BOOL)displayHUDOnSpaceChange;
+
 @property (nonatomic, assign) BOOL tilingEnabled;
 @end
