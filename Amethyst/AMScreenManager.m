@@ -69,7 +69,7 @@
             if (!self.changingSpace || [[AMConfiguration sharedConfiguration] enablesLayoutHUDOnSpaceChange]) {
                 [self displayLayoutHUD];
             }
-            self.changingSpace = false;
+            self.changingSpace = NO;
         }];
     }
     return self;
@@ -85,7 +85,7 @@
     _currentSpaceIdentifier = currentSpaceIdentifier;
 
     if (_currentSpaceIdentifier) {
-        self.changingSpace = true;
+        self.changingSpace = YES;
         self.currentLayoutIndex = [self.currentLayoutIndexBySpaceIdentifier[_currentSpaceIdentifier] integerValue];
         if (self.layoutsBySpaceIdentifier[_currentSpaceIdentifier]) {
             self.layouts = self.layoutsBySpaceIdentifier[_currentSpaceIdentifier];
