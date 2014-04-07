@@ -128,6 +128,14 @@
         "mod": "mod1",
         "key": "k"
     },
+    "swap-screen-ccw": {
+        "mod": "mod2",
+        "key": "h"
+    },
+    "swap-screen-cw": {
+        "mod": "mod2",
+        "key": "l"
+    },
     "swap-ccw": {
         "mod": "mod2",
         "key": "j"

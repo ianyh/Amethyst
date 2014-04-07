@@ -54,6 +54,8 @@ static NSString *const AMConfigurationCommandIncreaseMainKey = @"increase-main";
 static NSString *const AMConfigurationCommandDecreaseMainKey = @"decrease-main";
 static NSString *const AMConfigurationCommandFocusCCWKey = @"focus-ccw";
 static NSString *const AMConfigurationCommandFocusCWKey = @"focus-cw";
+static NSString *const AMConfigurationCommandSwapScreenCCWKey = @"swap-screen-ccw";
+static NSString *const AMConfigurationCommandSwapScreenCWKey = @"swap-screen-cw";
 static NSString *const AMConfigurationCommandSwapCCWKey = @"swap-ccw";
 static NSString *const AMConfigurationCommandSwapCWKey = @"swap-cw";
 static NSString *const AMConfigurationCommandSwapMainKey = @"swap-main";
@@ -238,6 +240,14 @@ static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandFocusCWKey handler:^{
         [windowManager moveFocusClockwise];
+    }];
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandSwapScreenCCWKey handler:^{
+        [windowManager swapFocusedWindowScreenCounterClockwise];
+    }];
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandSwapScreenCWKey handler:^{
+        [windowManager swapFocusedWindowScreenClockwise];
     }];
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandSwapCCWKey handler:^{
