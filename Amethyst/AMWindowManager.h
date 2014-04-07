@@ -68,6 +68,16 @@
 // This method is a no-op if there is no focused window.
 - (void)swapFocusedWindowClockwise;
 
+// Swaps the focused window with its adjacent screen going clockwise.
+//
+// This method is a no-op if there is no focused window.
+- (void)swapFocusedWindowScreenClockwise;
+
+// Swap the focused window with its adjacent screen going counter-clockwise.
+//
+// This method is a no-op if there is no focused window.
+- (void)swapFocusedWindowScreenCounterClockwise;
+
 // Moves the focused window to the supplied space.
 //
 // space - The space to move the window to. Should be a number in [1, 10], 1

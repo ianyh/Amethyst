@@ -307,6 +307,48 @@
     [focusedWindow am_focusWindow];
 }
 
+- (void)swapFocusedWindowScreenClockwise {
+    SIWindow *focusedWindow = [SIWindow focusedWindow];
+    if (!focusedWindow || focusedWindow.floating) {
+        [self focusScreenAtIndex:1];
+        return;
+    }
+
+    NSScreen *screen = focusedWindow.screen;
+    NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(AMScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
+        if ([screenManager.screen isEqual:screen]) {
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+
+    screenIndex = screenIndex + 1 % self.screenManagers.count;
+
+    [focusedWindow moveToScreen:[self.screenManagers[screenIndex] screen]];
+}
+
+- (void)swapFocusedWindowScreenCounterClockwise {
+    SIWindow *focusedWindow = [SIWindow focusedWindow];
+    if (!focusedWindow || focusedWindow.floating) {
+        [self focusScreenAtIndex:1];
+        return;
+    }
+
+    NSScreen *screen = focusedWindow.screen;
+    NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(AMScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
+        if ([screenManager.screen isEqual:screen]) {
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+
+    screenIndex = (screenIndex == 0 ? self.screenManagers.count - 1 : screenIndex - 1);
+
+    [focusedWindow moveToScreen:[self.screenManagers[screenIndex] screen]];
+}
+
 - (void)pushFocusedWindowToSpace:(NSUInteger)space {
     SIWindow *focusedWindow = [SIWindow focusedWindow];
     if (!focusedWindow) return;
