@@ -43,8 +43,6 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 // The identifier of the currently active space.
 @property (nonatomic, copy) NSString *currentSpaceIdentifier;
 
-@property BOOL changingSpace;
-
 // Default init is deprecated for compile-time checking.
 - (id)init DEPRECATED_ATTRIBUTE;
 

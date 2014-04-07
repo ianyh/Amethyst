@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSMutableDictionary *layoutsBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
+@property BOOL changingSpace;
 
 @property (nonatomic, strong) AMLayoutNameWindow *layoutNameWindow;
 @end
