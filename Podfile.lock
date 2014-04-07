@@ -63,11 +63,11 @@ DEPENDENCIES:
   - libextobjc
   - OCMock
   - ReactiveCocoa
-  - Silica (from `https://github.com/SiO2/Silica`)
+  - Silica (from `https://github.com/ianyh/Silica`)
 
 EXTERNAL SOURCES:
   Silica:
-    :git: https://github.com/SiO2/Silica
+    :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
