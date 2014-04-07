@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSMutableDictionary *layoutsBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
+@property BOOL changingSpace;
 
 @property (nonatomic, strong) AMLayoutNameWindow *layoutNameWindow;
 @end
@@ -66,7 +67,10 @@
         [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
             @strongify(self);
 
-            [self displayLayoutHUD];
+            if (!self.changingSpace || [[AMConfiguration sharedConfiguration] enablesLayoutHUDOnSpaceChange]) {
+                [self displayLayoutHUD];
+            }
+            self.changingSpace = NO;
         }];
     }
     return self;
@@ -82,6 +86,7 @@
     _currentSpaceIdentifier = currentSpaceIdentifier;
 
     if (_currentSpaceIdentifier) {
+        self.changingSpace = YES;
         self.currentLayoutIndex = [self.currentLayoutIndexBySpaceIdentifier[_currentSpaceIdentifier] integerValue];
         if (self.layoutsBySpaceIdentifier[_currentSpaceIdentifier]) {
             self.layouts = self.layoutsBySpaceIdentifier[_currentSpaceIdentifier];

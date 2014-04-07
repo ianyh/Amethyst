@@ -201,5 +201,6 @@
     "floating": [],
     "float-small-windows": true,
     "mouse-follows-focus": false,
-    "enables-layout-hud": true
+    "enables-layout-hud": true,
+    "enables-layout-hud-on-space-change": true
 }
