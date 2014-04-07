@@ -51,7 +51,7 @@
 
 - (BOOL)enablesLayoutHUD;
 
-- (BOOL)displayHUDOnSpaceChange;
+- (BOOL)enablesLayoutHUDOnSpaceChange;
 
 @property (nonatomic, assign) BOOL tilingEnabled;
 @end

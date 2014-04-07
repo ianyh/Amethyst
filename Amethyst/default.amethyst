@@ -194,5 +194,5 @@
     "float-small-windows": true,
     "mouse-follows-focus": false,
     "enables-layout-hud": true,
-    "display-HUD-on-space-change": true
+    "enables-layout-hud-on-space-change": true
 }

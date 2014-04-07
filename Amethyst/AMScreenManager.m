@@ -66,7 +66,7 @@
         [RACObserve(self, currentLayoutIndex) subscribeNext:^(NSNumber *currentLayoutIndex) {
             @strongify(self);
 
-            if (!self.changingSpace || [[AMConfiguration sharedConfiguration] displayHUDOnSpaceChange]) {
+            if (!self.changingSpace || [[AMConfiguration sharedConfiguration] enablesLayoutHUDOnSpaceChange]) {
                 [self displayLayoutHUD];
             }
             self.changingSpace = false;

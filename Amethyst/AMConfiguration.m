@@ -71,7 +71,7 @@ static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
 static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
-static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on-space-change";
+static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-layout-hud-on-space-change";
 
 
 @interface AMConfiguration ()
@@ -352,12 +352,12 @@ static NSString *const AMConfigurationDisplayHUDOnSpaceChange = @"display-HUD-on
     return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUD] boolValue];
 }
 
-- (BOOL)displayHUDOnSpaceChange {
-    if (self.configuration[AMConfigurationDisplayHUDOnSpaceChange]) {
-        return [self.configuration[AMConfigurationDisplayHUDOnSpaceChange] boolValue];
+- (BOOL)enablesLayoutHUDOnSpaceChange {
+    if (self.configuration[AMConfigurationEnablesLayoutHUDOnSpaceChange]) {
+        return [self.configuration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
     }
 
-    return [self.defaultConfiguration[AMConfigurationDisplayHUDOnSpaceChange] boolValue];
+    return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
 }
 
 @end
