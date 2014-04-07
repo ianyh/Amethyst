@@ -152,3 +152,9 @@ By default Amethyst pops up a HUD telling you the layout whenever the layout cha
 ```js
 "enables-layout-hud": false
 ```
+
+By default the HUD will show when changing to a different space. You can disable the HUD during space changes, while still having it enabled when cycling or selecting a different layout, by using the `enables-layout-hud-on-space-change` key. i.e.,
+
+```js
+"enables-layout-hud-on-space-change": false
+```
