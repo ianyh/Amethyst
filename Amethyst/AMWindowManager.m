@@ -325,7 +325,11 @@
 
     screenIndex = screenIndex + 1 % self.screenManagers.count;
 
-    [focusedWindow moveToScreen:[self.screenManagers[screenIndex] screen]];
+    NSScreen *screenToMoveTo = [self.screenManagers[screenIndex] screen];
+    [focusedWindow moveToScreen:screenToMoveTo];
+
+    [self markScreenForReflow:screen];
+    [self markScreenForReflow:screenToMoveTo];
 }
 
 - (void)swapFocusedWindowScreenCounterClockwise {
@@ -346,7 +350,11 @@
 
     screenIndex = (screenIndex == 0 ? self.screenManagers.count - 1 : screenIndex - 1);
 
-    [focusedWindow moveToScreen:[self.screenManagers[screenIndex] screen]];
+    NSScreen *screenToMoveTo = [self.screenManagers[screenIndex] screen];
+    [focusedWindow moveToScreen:screenToMoveTo];
+
+    [self markScreenForReflow:screen];
+    [self markScreenForReflow:screenToMoveTo];
 }
 
 - (void)pushFocusedWindowToSpace:(NSUInteger)space {
