@@ -1,7 +1,8 @@
 platform :osx, '10.9'
 
+pod 'libextobjc/EXTScope'
+pod 'libextobjc/EXTSelectorChecking'
 pod 'ReactiveCocoa'
-pod 'libextobjc'
 pod 'IYLoginItem'
 pod 'CocoaLumberjack'
 pod 'Silica', :git => 'https://github.com/ianyh/Silica'
