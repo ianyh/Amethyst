@@ -7,6 +7,7 @@
 //
 
 #import "AMLayout.h"
+
 #import "AMConfiguration.h"
 
 @implementation AMLayout
@@ -25,6 +26,26 @@
 
 - (CGRect)adjustedFrameForLayout:(NSScreen *)screen {
    return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
+}
+
+- (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
+    CGPoint finalPosition = finalFrame.origin;
+
+    // Just resize the window
+    finalFrame.origin = window.frame.origin;
+    window.frame = finalFrame;
+
+    if (focused) {
+        finalFrame.size = window.frame.size;
+        if (!CGRectContainsRect(screenFrame, finalFrame)) {
+            finalPosition.x = MIN(finalPosition.x, CGRectGetMaxX(screenFrame) - CGRectGetWidth(finalFrame));
+            finalPosition.y = MIN(finalPosition.y, CGRectGetMaxY(screenFrame) - CGRectGetHeight(finalFrame));
+        }
+    }
+
+    // Move the window to its final frame
+    finalFrame.origin = finalPosition;
+    window.frame = finalFrame;
 }
 
 @end

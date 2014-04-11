@@ -30,20 +30,8 @@
             .size.width = screenFrame.size.width,
             .size.height = windowHeight
         };
-        
-        window.size = windowFrame.size;
-        
-        if ([window isEqual:focusedWindow]) {
-            windowFrame.size = window.frame.size;
-            if (!CGRectContainsRect(screenFrame, windowFrame)) {
-                windowFrame.origin.x = MIN(windowFrame.origin.x, CGRectGetMaxX(screenFrame) - CGRectGetWidth(windowFrame));
-                windowFrame.origin.y = MIN(windowFrame.origin.y, CGRectGetMaxY(screenFrame) - CGRectGetHeight(windowFrame));
-                
-                window.position = windowFrame.origin;
-            }
-        }
 
-        window.frame = windowFrame;
+        [self assignFrame:windowFrame toWindow:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];
     }
 }
 
