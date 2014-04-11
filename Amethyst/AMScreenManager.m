@@ -129,7 +129,9 @@
 }
 
 - (void)setNeedsReflow {
-    [self reflow:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self reflow:nil];
+    });
 //    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, reflow:) object:nil];
 //    [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.2];
 }
