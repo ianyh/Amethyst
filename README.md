@@ -115,6 +115,7 @@ will restrict your layouts to the tall and fullscreen layouts. The available lay
 * **Column** ("column"): All windows are distributed in evenly sized in columns from left to right.
 * **Row** ("row"): All windows are distributed in evenly sized rows from top to bottom.
 * **Floating** ("floating"): All windows are floating. (Useful if you want a space dedicated to floating windows.)
+* **Widescreen Tall** ("widescreen-tall"): Like Tall, but the main area uses columns and the secondary area uses rows.
 
 ### Mouse Follows Focus
 
