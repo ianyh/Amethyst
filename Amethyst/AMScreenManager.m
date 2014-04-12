@@ -99,6 +99,8 @@
             self.layoutsBySpaceIdentifier[_currentSpaceIdentifier] = layouts;
         }
     }
+
+    [self setNeedsReflow];
 }
 
 - (void)displayLayoutHUD {
