@@ -12,8 +12,6 @@ PODS:
   - Kiwi/SenTestingKit (2.2.4):
     - Kiwi/ARC
     - Kiwi/NonARC
-  - libextobjc/EXTScope (0.4):
-    - libextobjc/RuntimeExtensions
   - libextobjc/EXTSelectorChecking (0.4):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
@@ -30,7 +28,6 @@ DEPENDENCIES:
   - CocoaLumberjack
   - IYLoginItem
   - Kiwi
-  - libextobjc/EXTScope
   - libextobjc/EXTSelectorChecking
   - OCMock
   - ReactiveCocoa
