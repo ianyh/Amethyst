@@ -17,14 +17,14 @@ PODS:
   - libextobjc/EXTSelectorChecking (0.4):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
-  - OCMock (2.2.3)
+  - OCMock (2.2.4)
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/Core
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/Core (2.3):
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/no-arc (2.3)
-  - Silica (0.1.3)
+  - Silica (0.1.4)
 
 DEPENDENCIES:
   - CocoaLumberjack
@@ -45,8 +45,8 @@ SPEC CHECKSUMS:
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
   Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
-  OCMock: ea7fe30ee99e4e3186ad47d032a301fa7e8793ec
+  OCMock: 5008fae4b4789b8fc3e48cd7660f2eb5ef8ce89e
   ReactiveCocoa: 1f6265f9d521923d3efcc37b00722cefc16df269
-  Silica: c6c65ecda1bd5a063eed4c140882197e3b78662e
+  Silica: 6f6d4065325c5fdeaec39a19e0d756e30ac46c24
 
 COCOAPODS: 0.31.1

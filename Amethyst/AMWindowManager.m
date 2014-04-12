@@ -394,8 +394,6 @@
 - (void)activeSpaceDidChange:(NSNotification *)notification {
     [self assignCurrentSpaceIdentifiers];
 
-    [self markAllScreensForReflow];
-
     for (NSRunningApplication *runningApplication in [[NSWorkspace sharedWorkspace] runningApplications]) {
         if (!runningApplication.isManageable) continue;
 
@@ -409,6 +407,21 @@
             }
         }
     }
+
+    for (AMScreenManager *screenManager in self.screenManagers) {
+        NSArray *windows = [self activeWindowsForScreenManager:screenManager];
+        __block BOOL isFullScreen = NO;
+        [windows enumerateObjectsUsingBlock:^(SIWindow *window, NSUInteger idx, BOOL *stop) {
+            if (window.isFullScreen) {
+                isFullScreen = YES;
+                *stop = YES;
+            }
+        }];
+
+        screenManager.isFullScreen = isFullScreen;
+    }
+
+    [self markAllScreensForReflow];
 }
 
 - (void)screenParametersDidChange:(NSNotification *)notification {
@@ -464,7 +477,9 @@
 
 - (void)applicationActivated:(id)sender {
     SIWindow *focusedWindow = [SIWindow focusedWindow];
-    [self markScreenForReflow:focusedWindow.screen];
+    if (!focusedWindow.isFullScreen) {
+        [self markScreenForReflow:focusedWindow.screen];
+    }
 }
 
 - (void)removeApplication:(SIApplication *)application {

@@ -23,9 +23,10 @@
 @property (nonatomic, strong) NSMutableDictionary *layoutsBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
 - (AMLayout *)currentLayout;
-@property BOOL changingSpace;
 
 @property (nonatomic, strong) AMLayoutNameWindow *layoutNameWindow;
+
+@property (nonatomic, assign) BOOL changingSpace;
 @end
 
 @implementation AMScreenManager
@@ -142,6 +143,7 @@
     if (!self.currentSpaceIdentifier) return;
     if (self.currentLayoutIndex >= self.layouts.count) return;
     if (![AMConfiguration sharedConfiguration].tilingEnabled) return;
+    if (self.isFullScreen) return;
 
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }
