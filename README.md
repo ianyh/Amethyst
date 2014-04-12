@@ -11,6 +11,8 @@ reliant on fragile private APIs.
 
 ![Screenshot](http://ianyh.com/amethyst/images/screenshot-small.png)
 
+A quick screencast of basic functionality can be found [here](http://youtu.be/9ayUdV1sfjA). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
+
 Credits
 -------
 
