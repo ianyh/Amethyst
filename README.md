@@ -42,6 +42,11 @@ Building
 7. `rake install`
 8. `cp Amethyst/default.amethyst ~/.amethyst`
 
+Contributing
+============
+
+If you'd like to contribute please branch off of the `development` branch. Otherwise just try to stick to the general style of the code.
+
 Using Amethyst
 ==============
 
