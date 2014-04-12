@@ -20,7 +20,7 @@ logic and structure.
 Getting Amethyst
 ================
 
-Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.4.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.5.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
 
 ```
 brew cask install amethyst
