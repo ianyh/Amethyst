@@ -49,6 +49,11 @@ Contributing
 
 If you'd like to contribute please branch off of the `development` branch. Otherwise just try to stick to the general style of the code.
 
+Contact
+=======
+
+If you have questions or feedback you can [email me](mailto:ianynda@gmail.com) or [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst).
+
 Using Amethyst
 ==============
 
