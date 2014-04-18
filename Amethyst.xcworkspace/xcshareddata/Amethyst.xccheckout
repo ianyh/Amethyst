@@ -5,42 +5,42 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>A53E2360-08ED-4758-94BF-7A39C315C1E7</string>
+	<string>6B93E09E-0343-4EE5-AA4E-830E59515E13</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Amethyst</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>1A991563-CCF2-46A5-9335-8CE9AAC1E4FC</key>
-		<string>ssh://github.com/ianyh/Silica.git</string>
-		<key>286B3DDB-4B00-4C8C-A727-BA1D95A1A594</key>
-		<string>ssh://github.com/ianyh/Amethyst.git</string>
-		<key>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</key>
+		<key>19DDD187-3BAE-4832-B267-9DEA8188D992</key>
+		<string>ssh://github.com/leonardt/Amethyst.git</string>
+		<key>23291FB0-00A6-44F9-B61D-532AA525A68D</key>
+		<string>https://github.com/leonardt/Silica</string>
+		<key>321115CD-63B8-4784-9949-18E4A0385F77</key>
 		<string>https://github.com/ianyh/Sparkle.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Amethyst.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>1A991563-CCF2-46A5-9335-8CE9AAC1E4FC</key>
-		<string>../../Silica</string>
-		<key>286B3DDB-4B00-4C8C-A727-BA1D95A1A594</key>
+		<key>19DDD187-3BAE-4832-B267-9DEA8188D992</key>
 		<string>..</string>
-		<key>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</key>
+		<key>23291FB0-00A6-44F9-B61D-532AA525A68D</key>
+		<string>../../Silica</string>
+		<key>321115CD-63B8-4784-9949-18E4A0385F77</key>
 		<string>../Sparkle</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/ianyh/Amethyst.git</string>
+	<string>ssh://github.com/leonardt/Amethyst.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>286B3DDB-4B00-4C8C-A727-BA1D95A1A594</string>
+	<string>19DDD187-3BAE-4832-B267-9DEA8188D992</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>286B3DDB-4B00-4C8C-A727-BA1D95A1A594</string>
+			<string>19DDD187-3BAE-4832-B267-9DEA8188D992</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Amethyst</string>
 		</dict>
@@ -48,7 +48,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>1A991563-CCF2-46A5-9335-8CE9AAC1E4FC</string>
+			<string>23291FB0-00A6-44F9-B61D-532AA525A68D</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Silica</string>
 		</dict>
@@ -56,7 +56,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>A4F4D2CB-8F10-46DE-92CA-6AF830A3DF74</string>
+			<string>321115CD-63B8-4784-9949-18E4A0385F77</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Sparkle</string>
 		</dict>
