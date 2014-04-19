@@ -74,6 +74,7 @@ static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows"
 static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
 static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-layout-hud-on-space-change";
+static NSString *const AMConfigurationWindowPadding = @"window-padding";
 
 
 @interface AMConfiguration ()
@@ -368,6 +369,14 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     }
 
     return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
+}
+
+- (NSUInteger)windowPadding {
+    if (self.configuration[AMConfigurationWindowPadding]) {
+        return [self.configuration[AMConfigurationWindowPadding] intValue];
+    }
+    
+    return [self.defaultConfiguration[AMConfigurationWindowPadding] intValue];
 }
 
 @end
