@@ -171,3 +171,11 @@ By default the HUD will show when changing to a different space. You can disable
 ```js
 "enables-layout-hud-on-space-change": false
 ```
+
+### Window Padding
+
+By default Amethyst has no padding between windows inside layouts.  To turn on padding for all layouts, use the `window-padding` key in your `.amethyst` file. i.e.,
+
+```js
+"window-padding": 10
+```

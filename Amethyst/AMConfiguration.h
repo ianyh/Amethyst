@@ -53,5 +53,7 @@
 
 - (BOOL)enablesLayoutHUDOnSpaceChange;
 
+- (NSUInteger)windowPadding;
+
 @property (nonatomic, assign) BOOL tilingEnabled;
 @end
