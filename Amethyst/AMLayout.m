@@ -30,21 +30,22 @@
 
 - (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
     CGPoint finalPosition = finalFrame.origin;
+    
     if (finalPosition.x < [self windowPadding] || finalPosition.y < [self windowPadding]) {
         finalFrame.size.height -= [self windowPadding];
         finalFrame.size.width -= [self windowPadding];
     } else {
         finalFrame.size.height -= 2 * [self windowPadding];
         finalFrame.size.width -= 2 * [self windowPadding];
-        
     }
+    
     finalPosition.x += [self windowPadding];
     finalPosition.y += [self windowPadding];
     
     // Just resize the window
     finalFrame.origin = window.frame.origin;
     window.frame = finalFrame;
-    
+
     if (focused) {
         finalFrame.size = window.frame.size;
         if (!CGRectContainsRect(screenFrame, finalFrame)) {
@@ -52,7 +53,7 @@
             finalPosition.y = MIN(finalPosition.y, CGRectGetMaxY(screenFrame) - CGRectGetHeight(finalFrame));
         }
     }
-    
+
     // Move the window to its final frame
     finalFrame.origin = finalPosition;
     window.frame = finalFrame;
