@@ -111,6 +111,9 @@
     CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
 
     for (NSDictionary *description in (__bridge NSArray *)windowDescriptions) {
+        if ([description[(__bridge NSString *)kCGWindowOwnerName] isEqualToString:@"Dock"]) {
+            continue;
+        }
         NSNumber *windowNumber = description[(__bridge NSString *)kCGWindowNumber];
         NSArray *spaceIdentifiers = spaceIdentifiersByWindowNumber[windowNumber];
 
