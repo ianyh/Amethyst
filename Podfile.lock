@@ -15,6 +15,7 @@ PODS:
   - libextobjc/EXTSelectorChecking (0.4):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
+  - MASPreferences (1.1)
   - MASShortcut (1.2.3)
   - OCMock (2.2.4)
   - ReactiveCocoa (2.3):
@@ -30,6 +31,7 @@ DEPENDENCIES:
   - IYLoginItem
   - Kiwi
   - libextobjc/EXTSelectorChecking
+  - MASPreferences
   - MASShortcut
   - OCMock
   - ReactiveCocoa
@@ -44,6 +46,7 @@ SPEC CHECKSUMS:
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
   Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
+  MASPreferences: 2c2f30b38c3dfceb0d3b29132a13417706a5adac
   MASShortcut: 6abaedac53a0542f4856f35be4f1f970b652a51e
   OCMock: 5008fae4b4789b8fc3e48cd7660f2eb5ef8ce89e
   ReactiveCocoa: 1f6265f9d521923d3efcc37b00722cefc16df269
