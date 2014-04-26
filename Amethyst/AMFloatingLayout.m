@@ -14,7 +14,7 @@
 }
 
 - (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-  // noop
+    // noop
 }
 
 @end

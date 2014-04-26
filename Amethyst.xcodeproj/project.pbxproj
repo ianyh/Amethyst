@@ -25,6 +25,7 @@
 		40029A0217639B050049001F /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
 		40029A0717639BDA0049001F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40029A081763A06A0049001F /* AMTallLayoutTest.m */; };
+		4008E71C190C1A900049E2F6 /* AMFloatingLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 023D3F221856828C00391BEC /* AMFloatingLayout.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
 		4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
@@ -671,6 +672,7 @@
 				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
 				40029A0017639B050049001F /* AMLayout.m in Sources */,
 				5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */,
+				4008E71C190C1A900049E2F6 /* AMFloatingLayout.m in Sources */,
 				40029A0117639B050049001F /* AMFullscreenLayout.m in Sources */,
 				40A0A1FB18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */,
 				40029A0217639B050049001F /* AMTallLayout.m in Sources */,
