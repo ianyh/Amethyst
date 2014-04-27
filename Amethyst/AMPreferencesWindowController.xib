@@ -34,6 +34,9 @@
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="value" keyPath="values.float-small-windows" id="ahP-PY-5hW"/>
+                    </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jbq-77-1YW">
                     <rect key="frame" x="120" y="38" width="142" height="18"/>
@@ -42,6 +45,9 @@
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="value" keyPath="values.enables-layout-hud" id="fVj-ab-n2P"/>
+                    </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ej5-FV-H6Q">
                     <rect key="frame" x="120" y="18" width="255" height="18"/>
@@ -50,6 +56,9 @@
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="value" keyPath="values.enables-layout-hud-on-space-change" id="1rV-d7-6jx"/>
+                    </connections>
                 </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wg4-Ew-VOi">
                     <rect key="frame" x="57" y="71" width="59" height="17"/>
@@ -138,5 +147,6 @@
                 </scrollView>
             </subviews>
         </customView>
+        <userDefaultsController id="XhK-Tn-zrU"/>
     </objects>
 </document>

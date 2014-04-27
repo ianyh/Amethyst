@@ -75,8 +75,6 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
 static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-layout-hud-on-space-change";
 
-static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurationMigratedToUserDefaultsKey";
-
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -133,6 +131,20 @@ static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurat
 
 - (void)loadConfiguration {
     [self loadConfigurationFile];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    for (NSString *defaultsKey in @[ AMConfigurationFloatingBundleIdentifiers,
+                                     AMConfigurationIgnoreMenuBar,
+                                     AMConfigurationFloatSmallWindows,
+                                     AMConfigurationMouseFollowsFocus,
+                                     AMConfigurationEnablesLayoutHUD,
+                                     AMConfigurationEnablesLayoutHUDOnSpaceChange]) {
+        id value = self.configuration[defaultsKey];
+        id defaultValue = self.defaultConfiguration[defaultsKey];
+        if (value || (defaultValue && ![userDefaults objectForKey:defaultsKey])) {
+            [userDefaults setObject:value ?: defaultValue forKey:defaultsKey];
+        }
+    }
 }
 
 - (void)loadConfigurationFile {
@@ -173,7 +185,7 @@ static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurat
 }
 
 - (NSString *)constructLayoutKeyString:(NSString *)layoutString {
-     return [NSString stringWithFormat: @"select-%@-layout", layoutString];
+     return [NSString stringWithFormat:@"select-%@-layout", layoutString];
 }
 
 #pragma mark Hot Key Mapping
@@ -336,47 +348,39 @@ static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurat
 }
 
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication {
-    return [self.configuration[AMConfigurationFloatingBundleIdentifiers] containsObject:runningApplication.bundleIdentifier];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *floatingBundleIdentifiers = [userDefaults arrayForKey:AMConfigurationFloatingBundleIdentifiers];
+
+    if (!floatingBundleIdentifiers) {
+        return NO;
+    }
+
+    return [floatingBundleIdentifiers containsObject:runningApplication.bundleIdentifier];
 }
 
 - (BOOL)ignoreMenuBar {
-    if (self.configuration[AMConfigurationIgnoreMenuBar]) {
-        return [self.configuration[AMConfigurationIgnoreMenuBar] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationIgnoreMenuBar] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationIgnoreMenuBar];
 }
 
 - (BOOL)floatSmallWindows {
-    if (self.configuration[AMConfigurationFloatSmallWindows]) {
-        return [self.configuration[AMConfigurationFloatSmallWindows] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationFloatSmallWindows] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationFloatSmallWindows];
 }
 
 - (BOOL)mouseFollowsFocus {
-    if (self.configuration[AMConfigurationMouseFollowsFocus]) {
-        return [self.configuration[AMConfigurationMouseFollowsFocus] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationMouseFollowsFocus] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationMouseFollowsFocus];
 }
 
 - (BOOL)enablesLayoutHUD {
-    if (self.configuration[AMConfigurationEnablesLayoutHUD]) {
-        return [self.configuration[AMConfigurationEnablesLayoutHUD] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUD] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationEnablesLayoutHUD];
 }
 
 - (BOOL)enablesLayoutHUDOnSpaceChange {
-    if (self.configuration[AMConfigurationEnablesLayoutHUDOnSpaceChange]) {
-        return [self.configuration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationEnablesLayoutHUDOnSpaceChange];
 }
 
 - (BOOL)hasConfigFile {
