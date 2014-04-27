@@ -11,6 +11,8 @@
 #import "AMGeneralPreferencesViewController.h"
 #import "AMShortcutsPreferencesViewController.h"
 
+#import "AMConfiguration.h"
+
 @interface AMPreferencesWindowController ()
 @property (nonatomic, assign) IBOutlet AMGeneralPreferencesViewController *generalController;
 @property (nonatomic, assign) IBOutlet AMShortcutsPreferencesViewController *shortcutsController;

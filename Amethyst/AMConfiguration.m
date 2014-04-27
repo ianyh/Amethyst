@@ -188,8 +188,15 @@ static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurat
 }
 
 - (void)constructCommandWithHotKeyManager:(AMHotKeyManager *)hotKeyManager commandKey:(NSString *)commandKey handler:(AMHotKeyHandler)handler {
-    NSString *commandKeyString = self.configuration[commandKey][AMConfigurationCommandKeyKey] ?: self.defaultConfiguration[commandKey][AMConfigurationCommandKeyKey];
-    NSString *commandModifierString = self.configuration[commandKey][AMConfigurationCommandModKey] ?: self.defaultConfiguration[commandKey][AMConfigurationCommandModKey];
+    BOOL override = NO;
+    NSDictionary *command = self.configuration[commandKey];
+    if (command) {
+        override = YES;
+    } else {
+        command = self.defaultConfiguration[commandKey];
+    }
+    NSString *commandKeyString = command[AMConfigurationCommandKeyKey];
+    NSString *commandModifierString = command[AMConfigurationCommandModKey];
 
     AMModifierFlags commandFlags;
     if ([commandModifierString isEqualToString:@"mod1"]) {
@@ -201,13 +208,10 @@ static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurat
         return;
     }
 
-    [hotKeyManager registerHotKeyWithKeyString:commandKeyString modifiers:commandFlags handler:handler defaultsKey:commandKey];
+    [hotKeyManager registerHotKeyWithKeyString:commandKeyString modifiers:commandFlags handler:handler defaultsKey:commandKey override:override];
 }
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL shouldWriteDefaults = ![userDefaults boolForKey:AMConfigurationMigratedToUserDefaultsKey];
-
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandCycleLayoutForwardKey handler:^{
         [windowManager.focusedScreenManager cycleLayoutForward];
     }];
@@ -373,6 +377,10 @@ static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurat
     }
 
     return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
+}
+
+- (BOOL)hasConfigFile {
+    return !!self.configuration;
 }
 
 - (NSArray *)hotKeyNameToDefaultsKey {

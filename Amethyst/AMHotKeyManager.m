@@ -164,13 +164,15 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     return carbonModifiers;
 }
 
-- (void)registerHotKeyWithKeyCode:(UInt16)keyCode modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler defaultsKey:(NSString *)defaultsKey {
-    MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:keyCode modifierFlags:modifiers];
-    [MASShortcut setGlobalShortcut:shortcut forUserDefaultsKey:defaultsKey];
+- (void)registerHotKeyWithKeyCode:(UInt16)keyCode modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler defaultsKey:(NSString *)defaultsKey override:(BOOL)override {
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey] || override) {
+        MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:keyCode modifierFlags:modifiers];
+        [MASShortcut setGlobalShortcut:shortcut forUserDefaultsKey:defaultsKey];
+    }
     [MASShortcut registerGlobalShortcutWithUserDefaultsKey:defaultsKey handler:handler];
 }
 
-- (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler  defaultsKey:(NSString *)defaultsKey {
+- (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler  defaultsKey:(NSString *)defaultsKey override:(BOOL)override {
     NSArray *keyCodes = self.stringToKeyCodes[string.lowercaseString];
 
     if (keyCodes.count == 0) {
@@ -179,7 +181,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     }
 
     for (NSNumber *keyCode in keyCodes) {
-        [self registerHotKeyWithKeyCode:keyCode.unsignedShortValue modifiers:modifiers handler:handler defaultsKey:defaultsKey];
+        [self registerHotKeyWithKeyCode:keyCode.unsignedShortValue modifiers:modifiers handler:handler defaultsKey:defaultsKey override:override];
     }
 }
 
