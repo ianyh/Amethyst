@@ -54,4 +54,7 @@
 - (BOOL)enablesLayoutHUDOnSpaceChange;
 
 @property (nonatomic, assign) BOOL tilingEnabled;
+
+- (NSArray *)hotKeyNameToDefaultsKey;
+
 @end

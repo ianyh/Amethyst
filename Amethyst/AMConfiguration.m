@@ -370,4 +370,43 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
 }
 
+- (NSArray *)hotKeyNameToDefaultsKey {
+    NSMutableArray *hotKeyNameToDefaultsKey = [NSMutableArray arrayWithCapacity:30];
+
+    [hotKeyNameToDefaultsKey addObject:@[@"Cycle layout forward", AMConfigurationCommandCycleLayoutForwardKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Cycle layout backwards", AMConfigurationCommandCycleLayoutBackwardKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Shrink main pane", AMConfigurationCommandShrinkMainKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Expand main pane", AMConfigurationCommandExpandMainKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Increase main pane count", AMConfigurationCommandIncreaseMainKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Decrease main pane count", AMConfigurationCommandCycleLayoutForwardKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Move focus counter clockwise", AMConfigurationCommandFocusCCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Move focus clockwise", AMConfigurationCommandFocusCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window to counter clockwise screen", AMConfigurationCommandSwapScreenCCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window to clockwise screen", AMConfigurationCommandSwapScreenCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window counter clockwise", AMConfigurationCommandSwapCCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window clockwise", AMConfigurationCommandSwapCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window with main window", AMConfigurationCommandSwapMainKey]];
+
+    for (NSUInteger spaceNumber = 1; spaceNumber < 10; ++spaceNumber) {
+        NSString *name = [NSString stringWithFormat:@"Throw focused window to screen %@", @(spaceNumber)];
+        [hotKeyNameToDefaultsKey addObject:@[name, [AMConfigurationCommandThrowSpacePrefixKey stringByAppendingFormat:@"-%@", @(spaceNumber)]]];
+    }
+
+    for (NSUInteger screenNumber = 1; screenNumber <= 3; ++screenNumber) {
+        NSString *focusCommandName = [NSString stringWithFormat:@"Focus screen %@", @(screenNumber)];
+        NSString *throwCommandName = [NSString stringWithFormat:@"Throw focused window to screen %@", @(screenNumber)];
+        NSString *focusCommandKey = [AMConfigurationCommandFocusScreenPrefixKey stringByAppendingFormat:@"-%@", @(screenNumber)];
+        NSString *throwCommandKey = [AMConfigurationCommandThrowScreenPrefixKey stringByAppendingFormat:@"-%@", @(screenNumber)];
+
+        [hotKeyNameToDefaultsKey addObject:@[focusCommandName, focusCommandKey]];
+        [hotKeyNameToDefaultsKey addObject:@[throwCommandName, throwCommandKey]];
+    }
+
+    [hotKeyNameToDefaultsKey addObject:@[@"Toggle float for focused window", AMConfigurationCommandToggleFloatKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Display current layout", AMConfigurationCommandDisplayCurrentLayoutKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Toggle global tiling", AMConfigurationCommandToggleTilingKey]];
+
+    return hotKeyNameToDefaultsKey;
+}
+
 @end

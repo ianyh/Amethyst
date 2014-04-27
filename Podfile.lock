@@ -5,7 +5,6 @@ PODS:
   - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
   - IYLoginItem (0.1)
-  - JAListView (0.0.1)
   - Kiwi (2.2.4):
     - Kiwi/SenTestingKit
   - Kiwi/ARC (2.2.4)
@@ -16,6 +15,7 @@ PODS:
   - libextobjc/EXTSelectorChecking (0.4):
     - libextobjc/RuntimeExtensions
   - libextobjc/RuntimeExtensions (0.4)
+  - Masonry (0.4.0)
   - MASPreferences (1.1)
   - MASShortcut (1.2.3)
   - OCMock (2.2.4)
@@ -30,9 +30,9 @@ PODS:
 DEPENDENCIES:
   - CocoaLumberjack
   - IYLoginItem
-  - JAListView
   - Kiwi
   - libextobjc/EXTSelectorChecking
+  - Masonry
   - MASPreferences
   - MASShortcut
   - OCMock
@@ -46,9 +46,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
-  JAListView: 39d9d65becaada301a87cad37f5f5e3e8255503c
   Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
+  Masonry: d673617c9cbc24aaea90fba20b10e47fd9970a39
   MASPreferences: 2c2f30b38c3dfceb0d3b29132a13417706a5adac
   MASShortcut: 6abaedac53a0542f4856f35be4f1f970b652a51e
   OCMock: 5008fae4b4789b8fc3e48cd7660f2eb5ef8ce89e

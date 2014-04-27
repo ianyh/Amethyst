@@ -34,6 +34,8 @@
 		4008E735190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
 		4008E737190C4F650049E2F6 /* AMPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4008E736190C4F650049E2F6 /* AMPreferencesWindowController.xib */; };
 		4008E738190C4F650049E2F6 /* AMPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4008E736190C4F650049E2F6 /* AMPreferencesWindowController.xib */; };
+		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
+		4008E73F190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
 		4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
@@ -163,6 +165,8 @@
 		4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesViewController.h; sourceTree = "<group>"; };
 		4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesViewController.m; sourceTree = "<group>"; };
 		4008E736190C4F650049E2F6 /* AMPreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMPreferencesWindowController.xib; sourceTree = "<group>"; };
+		4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesListItemView.h; sourceTree = "<group>"; };
+		4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesListItemView.m; sourceTree = "<group>"; };
 		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
 		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
 		4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRunningApplication+Manageable.h"; sourceTree = "<group>"; };
@@ -280,11 +284,13 @@
 			children = (
 				4008E72A190C4DB90049E2F6 /* AMPreferencesWindowController.h */,
 				4008E72B190C4DB90049E2F6 /* AMPreferencesWindowController.m */,
+				4008E736190C4F650049E2F6 /* AMPreferencesWindowController.xib */,
 				4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */,
 				4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */,
 				4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */,
 				4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */,
-				4008E736190C4F650049E2F6 /* AMPreferencesWindowController.xib */,
+				4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */,
+				4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -697,6 +703,7 @@
 				400299F717639AE40049001F /* AMHotKeyManager.m in Sources */,
 				400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */,
 				400299FA17639AF20049001F /* AMAppDelegate.m in Sources */,
+				4008E73F190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
 				4008E735190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
 				4008E731190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
 				401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
@@ -731,6 +738,7 @@
 				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
 				4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
 				40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
+				4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
 				40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */,
 				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
 				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,

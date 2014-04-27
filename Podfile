@@ -6,7 +6,7 @@ pod 'IYLoginItem'
 pod 'CocoaLumberjack'
 pod 'MASShortcut'
 pod 'MASPreferences'
-pod 'JAListView'
+pod 'Masonry'
 pod 'Silica', :git => 'https://github.com/ianyh/Silica'
 
 target :AmethystTests do
