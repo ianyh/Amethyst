@@ -10,4 +10,16 @@
 
 @implementation AMGeneralPreferencesViewController
 
+- (NSString *)identifier {
+    return NSStringFromClass(self.class);
+}
+
+- (NSImage *)toolbarItemImage {
+    return [NSImage imageNamed:NSImageNamePreferencesGeneral];
+}
+
+- (NSString *)toolbarItemLabel {
+    return @"General";
+}
+
 @end

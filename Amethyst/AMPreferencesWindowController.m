@@ -21,7 +21,7 @@
 - (id)init {
     self = [super initWithViewControllers:[NSMutableArray array] title:@"Preferences"];
     if (self) {
-        [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self topLevelObjects:nil];
+        [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self.class) owner:self topLevelObjects:nil];
         [self loadControllers];
     }
     return self;
@@ -31,6 +31,11 @@
     [self addViewController:self.generalController];
     [self addViewController:self.shortcutsController];
     [self selectControllerAtIndex:0];
+}
+
+- (IBAction)showWindow:(id)sender {
+    [NSApp activateIgnoringOtherApps:YES];
+    [super showWindow:sender];
 }
 
 @end
