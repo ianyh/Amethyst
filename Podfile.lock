@@ -5,6 +5,7 @@ PODS:
   - CocoaLumberjack/Extensions (1.8.1):
     - CocoaLumberjack/Core
   - IYLoginItem (0.1)
+  - JAListView (0.0.1)
   - Kiwi (2.2.4):
     - Kiwi/SenTestingKit
   - Kiwi/ARC (2.2.4)
@@ -29,6 +30,7 @@ PODS:
 DEPENDENCIES:
   - CocoaLumberjack
   - IYLoginItem
+  - JAListView
   - Kiwi
   - libextobjc/EXTSelectorChecking
   - MASPreferences
@@ -44,6 +46,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
   IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
+  JAListView: 39d9d65becaada301a87cad37f5f5e3e8255503c
   Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
   MASPreferences: 2c2f30b38c3dfceb0d3b29132a13417706a5adac
