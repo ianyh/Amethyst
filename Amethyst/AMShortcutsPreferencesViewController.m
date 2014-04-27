@@ -10,7 +10,6 @@
 
 #import "AMConfiguration.h"
 #import "AMShortcutsPreferencesListItemView.h"
-#import <JAListView/JAObjectListView.h>
 
 @interface AMShortcutsPreferencesViewController () <NSTableViewDataSource, NSTableViewDelegate>
 @property (nonatomic, strong) NSArray *hotKeyNameToDefaultsKey;
@@ -29,8 +28,6 @@
 
 - (void)viewWillAppear {
     self.hotKeyNameToDefaultsKey = [[AMConfiguration sharedConfiguration] hotKeyNameToDefaultsKey];
-    [[[AMConfiguration sharedConfiguration] hotKeyNameToDefaultsKey] enumerateObjectsUsingBlock:^(NSArray *hotKeyNameAndKey, NSUInteger idx, BOOL *stop) {
-    }];
 }
 
 #pragma mark MASPreferencesViewController

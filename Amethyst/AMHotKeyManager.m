@@ -8,6 +8,9 @@
 
 #import "AMHotKeyManager.h"
 
+#import <MASShortcut/MASShortcut.h>
+#import <MASShortcut/MASShortcut+UserDefaults.h>
+
 AMKeyCode AMKeyCodeInvalid = 0xFF;
 
 @interface AMHotKey : NSObject
@@ -35,10 +38,6 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
 
 @interface AMHotKeyManager ()
 @property (nonatomic, copy) NSDictionary *stringToKeyCodes;
-
-@property (nonatomic, assign) EventHandlerRef eventHandlerRef;
-
-@property (nonatomic, strong) NSMutableArray *hotKeys;
 @end
 
 @implementation AMHotKeyManager
@@ -48,22 +47,9 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
 - (id)init {
     self = [super init];
     if (self) {
-        self.hotKeys = [NSMutableArray array];
-
         [self constructKeyCodeMap];
-        [self installEventHandler];
     }
     return self;
-}
-
-- (void)dealloc {
-    for (AMHotKey *hotKey in self.hotKeys) {
-        UnregisterEventHotKey(hotKey.hotKeyRef);
-    }
-
-    if (_eventHandlerRef) {
-        RemoveEventHandler(_eventHandlerRef);
-    }
 }
 
 #pragma mark Public Methods
@@ -154,41 +140,6 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     self.stringToKeyCodes = stringToKeyCodes;
 }
 
-#pragma mark Event Handling
-
-OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData) {
-    EventHotKeyID hotKeyIdentifier;
-    AMHotKey *hotKey;
-    OSStatus error;
-    AMHotKeyManager *hotKeyManager = (__bridge AMHotKeyManager *)inUserData;
-
-    error = GetEventParameter(inEvent, kEventParamDirectObject, typeEventHotKeyID, NULL, sizeof(hotKeyIdentifier), NULL, &hotKeyIdentifier);
-
-    if (error != noErr) return error;
-
-    hotKey = hotKeyManager.hotKeys[hotKeyIdentifier.id];
-    if (hotKey) {
-        hotKey.handler();
-    }
-
-    return noErr;
-}
-
-- (void)installEventHandler {
-    EventTypeSpec eventTypeSpec = { .eventClass = kEventClassKeyboard, .eventKind = kEventHotKeyReleased };
-    EventHandlerRef eventHandlerRef;
-    OSStatus error;
-
-    error = InstallEventHandler(GetApplicationEventTarget(), &eventHandlerCallback, 1, &eventTypeSpec, (__bridge void *)self, &eventHandlerRef);
-
-    if (error != noErr) {
-        DDLogError(@"Error installing event handler");
-        return;
-    }
-
-    self.eventHandlerRef = eventHandlerRef;
-}
-
 #pragma mark Hot Key Management
 
 - (UInt32)carbonModifiersFromModifiers:(NSUInteger)modifiers {
@@ -213,22 +164,13 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
     return carbonModifiers;
 }
 
-- (void)registerHotKeyWithKeyCode:(UInt16)keyCode modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler {
-    UInt32 carbonModifiers = [self carbonModifiersFromModifiers:modifiers];
-    EventHotKeyID eventHotKeyID = { .signature = 'amyt', .id = (UInt32)[self.hotKeys count] };
-    EventHotKeyRef hotKeyRef;
-
-    OSStatus error = RegisterEventHotKey(keyCode, carbonModifiers, eventHotKeyID, GetEventDispatcherTarget(), kEventHotKeyNoOptions, &hotKeyRef);
-
-    if (error != noErr) {
-        DDLogError(@"Error encountered when registering hotkey with keyCode %d and mods %lu: %d", keyCode, (unsigned long)modifiers, error);
-        return;
-    }
-
-    [self.hotKeys addObject:[[AMHotKey alloc] initWithHotKeyRef:hotKeyRef handler:handler]];
+- (void)registerHotKeyWithKeyCode:(UInt16)keyCode modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler defaultsKey:(NSString *)defaultsKey {
+    MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:keyCode modifierFlags:modifiers];
+    [MASShortcut setGlobalShortcut:shortcut forUserDefaultsKey:defaultsKey];
+    [MASShortcut registerGlobalShortcutWithUserDefaultsKey:defaultsKey handler:handler];
 }
 
-- (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler {
+- (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler  defaultsKey:(NSString *)defaultsKey {
     NSArray *keyCodes = self.stringToKeyCodes[string.lowercaseString];
 
     if (keyCodes.count == 0) {
@@ -237,7 +179,7 @@ OSStatus eventHandlerCallback(EventHandlerCallRef inHandlerCallRef, EventRef inE
     }
 
     for (NSNumber *keyCode in keyCodes) {
-        [self registerHotKeyWithKeyCode:keyCode.unsignedShortValue modifiers:modifiers handler:handler];
+        [self registerHotKeyWithKeyCode:keyCode.unsignedShortValue modifiers:modifiers handler:handler defaultsKey:defaultsKey];
     }
 }
 

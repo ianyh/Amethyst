@@ -75,6 +75,8 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
 static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-layout-hud-on-space-change";
 
+static NSString *const AMConfigurationMigratedToUserDefaultsKey = @"AMConfigurationMigratedToUserDefaultsKey";
+
 
 @interface AMConfiguration ()
 @property (nonatomic, copy) NSDictionary *configuration;
@@ -199,10 +201,13 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
         return;
     }
 
-    [hotKeyManager registerHotKeyWithKeyString:commandKeyString modifiers:commandFlags handler:handler];
+    [hotKeyManager registerHotKeyWithKeyString:commandKeyString modifiers:commandFlags handler:handler defaultsKey:commandKey];
 }
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL shouldWriteDefaults = ![userDefaults boolForKey:AMConfigurationMigratedToUserDefaultsKey];
+
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandCycleLayoutForwardKey handler:^{
         [windowManager.focusedScreenManager cycleLayoutForward];
     }];
