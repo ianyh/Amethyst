@@ -41,6 +41,10 @@
 // Returns an array of AMLayout Class objects to generate layouts from.
 - (NSArray *)layouts;
 
+- (NSArray *)layoutStrings;
+- (void)setLayoutStrings:(NSArray *)layoutStrings;
+- (NSArray *)availableLayoutStrings;
+
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication;
 
 - (BOOL)ignoreMenuBar;

@@ -129,16 +129,29 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     return nil;
 }
 
++ (NSString *)stringForLayoutClass:(Class)layoutClass {
+    if (layoutClass == [AMTallLayout class]) return @"tall";
+    if (layoutClass == [AMWideLayout class]) return @"wide";
+    if (layoutClass == [AMFullscreenLayout class]) return @"fullscreen";
+    if (layoutClass == [AMColumnLayout class]) return @"column";
+    if (layoutClass == [AMRowLayout class]) return @"row";
+    if (layoutClass == [AMFloatingLayout class]) return @"floating";
+    if (layoutClass == [AMWidescreenTallLayout class]) return @"widescreen-tall";
+    return nil;
+}
+
 - (void)loadConfiguration {
     [self loadConfigurationFile];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    for (NSString *defaultsKey in @[ AMConfigurationFloatingBundleIdentifiers,
+
+    for (NSString *defaultsKey in @[ AMConfigurationLayoutsKey,
+                                     AMConfigurationFloatingBundleIdentifiers,
                                      AMConfigurationIgnoreMenuBar,
                                      AMConfigurationFloatSmallWindows,
                                      AMConfigurationMouseFollowsFocus,
                                      AMConfigurationEnablesLayoutHUD,
-                                     AMConfigurationEnablesLayoutHUDOnSpaceChange]) {
+                                     AMConfigurationEnablesLayoutHUDOnSpaceChange ]) {
         id value = self.configuration[defaultsKey];
         id defaultValue = self.defaultConfiguration[defaultsKey];
         if (value || (defaultValue && ![userDefaults objectForKey:defaultsKey])) {
@@ -333,7 +346,8 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 #pragma mark Public Methods
 
 - (NSArray *)layouts {
-    NSArray *layoutStrings = self.configuration[AMConfigurationLayoutsKey] ?: self.defaultConfiguration[AMConfigurationLayoutsKey];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *layoutStrings = [userDefaults arrayForKey:AMConfigurationLayoutsKey];
     NSMutableArray *layouts = [NSMutableArray array];
     for (NSString *layoutString in layoutStrings) {
         Class layoutClass = [self.class layoutClassForString:layoutString];
@@ -345,6 +359,28 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
         [layouts addObject:layoutClass];
     }
     return layouts;
+}
+
+- (NSArray *)layoutStrings {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults arrayForKey:AMConfigurationLayoutsKey] ?: @[];
+}
+
+- (void)setLayoutStrings:(NSArray *)layoutStrings {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:layoutStrings forKey:AMConfigurationLayoutsKey];
+}
+
+- (NSArray *)availableLayoutStrings {
+    return [[[@[ [AMTallLayout class],
+                [AMWideLayout class],
+                [AMFullscreenLayout class],
+                [AMColumnLayout class],
+                [AMRowLayout class],
+                [AMFloatingLayout class],
+                [AMWidescreenTallLayout class] ] rac_sequence] map:^ NSString * (Class layoutClass) {
+        return [self.class stringForLayoutClass:layoutClass];
+    }] array];
 }
 
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication {

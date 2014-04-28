@@ -11,10 +11,14 @@
 #import "AMConfiguration.h"
 
 @interface AMGeneralPreferencesViewController () <NSTableViewDataSource, NSTableViewDelegate>
+@property (nonatomic, copy) NSArray *layouts;
 @property (nonatomic, copy) NSArray *floatingBundleIdentifiers;
 
-@property (nonatomic, weak) IBOutlet NSTableView *tableView;
+@property (nonatomic, weak) IBOutlet NSTableView *layoutsTableView;
+@property (nonatomic, weak) IBOutlet NSTableView *floatingTableView;
 
+- (IBAction)addLayout:(id)sender;
+- (IBAction)removeLayout:(id)sender;
 - (IBAction)addFloatingApplication:(id)sender;
 - (IBAction)removeFloatingApplication:(id)sender;
 @end
@@ -24,16 +28,30 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
+    self.layoutsTableView.dataSource = self;
+    self.layoutsTableView.delegate = self;
+
+    self.floatingTableView.dataSource = self;
+    self.floatingTableView.delegate = self;
 }
 
 - (void)viewWillAppear {
+    self.layouts = [[AMConfiguration sharedConfiguration] layoutStrings];
     self.floatingBundleIdentifiers = [[AMConfiguration sharedConfiguration] floatingBundleIdentifiers];
-    [self.tableView reloadData];
+
+    [self.layoutsTableView reloadData];
+    [self.floatingTableView reloadData];
 }
 
 #pragma mark IBAction
+
+- (IBAction)addLayout:(id)sender {
+
+}
+
+- (IBAction)removeLayout:(id)sender {
+
+}
 
 - (IBAction)addFloatingApplication:(id)sender {
     NSOpenPanel *openPanel = [NSOpenPanel openPanel];
@@ -59,21 +77,21 @@
 
     [[AMConfiguration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
 
-    [self.tableView reloadData];
+    [self.floatingTableView reloadData];
 }
 
 - (IBAction)removeFloatingApplication:(id)sender {
-    if (self.tableView.selectedRow >= self.floatingBundleIdentifiers.count) {
+    if (self.floatingTableView.selectedRow >= self.floatingBundleIdentifiers.count) {
         return;
     }
 
     NSMutableArray *floatingBundleIdentifiers = [self.floatingBundleIdentifiers mutableCopy];
-    [floatingBundleIdentifiers removeObjectAtIndex:self.tableView.selectedRow];
+    [floatingBundleIdentifiers removeObjectAtIndex:self.floatingTableView.selectedRow];
     self.floatingBundleIdentifiers = floatingBundleIdentifiers;
 
     [[AMConfiguration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
 
-    [self.tableView reloadData];
+    [self.floatingTableView reloadData];
 }
 
 #pragma mark MASPreferencesViewController
@@ -93,10 +111,18 @@
 #pragma mark NSTableViewDataSource
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    if (tableView == self.layoutsTableView) {
+        return self.layouts.count;
+    }
+
     return self.floatingBundleIdentifiers.count;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+    if (tableView == self.layoutsTableView) {
+        return self.layouts[row];
+    }
+
     return self.floatingBundleIdentifiers[row];
 }
 
