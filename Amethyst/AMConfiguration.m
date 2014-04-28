@@ -383,8 +383,9 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     return [userDefaults boolForKey:AMConfigurationEnablesLayoutHUDOnSpaceChange];
 }
 
-- (BOOL)hasConfigFile {
-    return !!self.configuration;
+- (NSArray *)floatingBundleIdentifiers {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults arrayForKey:AMConfigurationFloatingBundleIdentifiers] ?: @[];
 }
 
 - (NSArray *)hotKeyNameToDefaultsKey {

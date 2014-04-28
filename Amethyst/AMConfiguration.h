@@ -55,8 +55,7 @@
 
 @property (nonatomic, assign) BOOL tilingEnabled;
 
-- (BOOL)hasConfigFile;
-
+- (NSArray *)floatingBundleIdentifiers;
 - (NSArray *)hotKeyNameToDefaultsKey;
 
 @end
