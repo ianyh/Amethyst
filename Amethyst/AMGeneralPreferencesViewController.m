@@ -36,7 +36,30 @@
 #pragma mark IBAction
 
 - (IBAction)addFloatingApplication:(id)sender {
-    
+    NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+    NSArray *applicationDirectories = [[NSFileManager defaultManager] URLsForDirectory:NSApplicationDirectory inDomains:NSLocalDomainMask];
+
+    openPanel.canChooseFiles = YES;
+    openPanel.canChooseDirectories = NO;
+    openPanel.allowsMultipleSelection = YES;
+    openPanel.allowedFileTypes = @[ @"app" ];
+    openPanel.prompt = @"Select";
+    openPanel.directoryURL = applicationDirectories.firstObject;
+
+    if ([openPanel runModal] == NSFileHandlingPanelCancelButton) {
+        return;
+    }
+
+    NSMutableArray *floatingBundleIdentifiers = [self.floatingBundleIdentifiers mutableCopy];
+    for (NSURL *applicationURL in openPanel.URLs) {
+        NSBundle *applicationBundle = [NSBundle bundleWithURL:applicationURL];
+        [floatingBundleIdentifiers addObject:applicationBundle.bundleIdentifier];
+    }
+    self.floatingBundleIdentifiers = floatingBundleIdentifiers;
+
+    [[AMConfiguration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
+
+    [self.tableView reloadData];
 }
 
 - (IBAction)removeFloatingApplication:(id)sender {
