@@ -46,11 +46,21 @@
 #pragma mark IBAction
 
 - (IBAction)addLayout:(id)sender {
-
+    
 }
 
 - (IBAction)removeLayout:(id)sender {
+    if (self.layoutsTableView.selectedRow >= self.layouts.count) {
+        return;
+    }
 
+    NSMutableArray *layouts = [self.layouts mutableCopy];
+    [layouts removeObjectAtIndex:self.layoutsTableView.selectedRow];
+    self.layouts = layouts;
+
+    [[AMConfiguration sharedConfiguration] setLayoutStrings:self.layouts];
+
+    [self.layoutsTableView reloadData];
 }
 
 - (IBAction)addFloatingApplication:(id)sender {
