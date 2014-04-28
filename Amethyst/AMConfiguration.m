@@ -411,7 +411,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window with main window", AMConfigurationCommandSwapMainKey]];
 
     for (NSUInteger spaceNumber = 1; spaceNumber < 10; ++spaceNumber) {
-        NSString *name = [NSString stringWithFormat:@"Throw focused window to screen %@", @(spaceNumber)];
+        NSString *name = [NSString stringWithFormat:@"Throw focused window to space %@", @(spaceNumber)];
         [hotKeyNameToDefaultsKey addObject:@[name, [AMConfigurationCommandThrowSpacePrefixKey stringByAppendingFormat:@"-%@", @(spaceNumber)]]];
     }
 
