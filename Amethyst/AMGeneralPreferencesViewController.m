@@ -11,7 +11,7 @@
 #import "AMConfiguration.h"
 
 @interface AMGeneralPreferencesViewController () <NSTableViewDataSource, NSTableViewDelegate>
-@property (nonatomic, strong) NSArray *floatingBundleIdentifiers;
+@property (nonatomic, copy) NSArray *floatingBundleIdentifiers;
 
 @property (nonatomic, weak) IBOutlet NSTableView *tableView;
 
@@ -40,7 +40,17 @@
 }
 
 - (IBAction)removeFloatingApplication:(id)sender {
+    if (self.tableView.selectedRow >= self.floatingBundleIdentifiers.count) {
+        return;
+    }
 
+    NSMutableArray *floatingBundleIdentifiers = [self.floatingBundleIdentifiers mutableCopy];
+    [floatingBundleIdentifiers removeObjectAtIndex:self.tableView.selectedRow];
+    self.floatingBundleIdentifiers = floatingBundleIdentifiers;
+
+    [[AMConfiguration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
+
+    [self.tableView reloadData];
 }
 
 #pragma mark MASPreferencesViewController

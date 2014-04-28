@@ -388,6 +388,11 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     return [userDefaults arrayForKey:AMConfigurationFloatingBundleIdentifiers] ?: @[];
 }
 
+- (void)setFloatingBundleIdentifiers:(NSArray *)floatingBundleIdentifiers {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:floatingBundleIdentifiers ?: @[] forKey:AMConfigurationFloatingBundleIdentifiers];
+}
+
 - (NSArray *)hotKeyNameToDefaultsKey {
     NSMutableArray *hotKeyNameToDefaultsKey = [NSMutableArray arrayWithCapacity:30];
 
