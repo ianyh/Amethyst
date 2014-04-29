@@ -36,7 +36,7 @@
     window.frame = finalFrame;
 
     if (focused) {
-        finalFrame.size = window.frame.size;
+        finalFrame.size = CGSizeMake(MAX(window.frame.size.width, finalFrame.size.width), MAX(window.frame.size.height, finalFrame.size.height));
         if (!CGRectContainsRect(screenFrame, finalFrame)) {
             finalPosition.x = MIN(finalPosition.x, CGRectGetMaxX(screenFrame) - CGRectGetWidth(finalFrame));
             finalPosition.y = MIN(finalPosition.y, CGRectGetMaxY(screenFrame) - CGRectGetHeight(finalFrame));
