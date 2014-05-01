@@ -437,7 +437,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     [hotKeyNameToDefaultsKey addObject:@[@"Shrink main pane", AMConfigurationCommandShrinkMainKey]];
     [hotKeyNameToDefaultsKey addObject:@[@"Expand main pane", AMConfigurationCommandExpandMainKey]];
     [hotKeyNameToDefaultsKey addObject:@[@"Increase main pane count", AMConfigurationCommandIncreaseMainKey]];
-    [hotKeyNameToDefaultsKey addObject:@[@"Decrease main pane count", AMConfigurationCommandCycleLayoutForwardKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Decrease main pane count", AMConfigurationCommandDecreaseMainKey]];
     [hotKeyNameToDefaultsKey addObject:@[@"Move focus counter clockwise", AMConfigurationCommandFocusCCWKey]];
     [hotKeyNameToDefaultsKey addObject:@[@"Move focus clockwise", AMConfigurationCommandFocusCWKey]];
     [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window to counter clockwise screen", AMConfigurationCommandSwapScreenCCWKey]];
