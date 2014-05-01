@@ -109,20 +109,46 @@
     }
 
     CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    NSMutableDictionary *spaceIdentifiersByScreen = [NSMutableDictionary dictionary];
 
     for (NSDictionary *description in (__bridge NSArray *)windowDescriptions) {
-        if ([description[(__bridge NSString *)kCGWindowOwnerName] isEqualToString:@"Dock"]) {
-            continue;
-        }
         NSNumber *windowNumber = description[(__bridge NSString *)kCGWindowNumber];
         NSArray *spaceIdentifiers = spaceIdentifiersByWindowNumber[windowNumber];
 
         if (spaceIdentifiers.count == 1) {
             AMScreenManager *screenManager = [self screenManagerForCGWindowDescription:description];
             if (screenManager) {
-                screenManager.currentSpaceIdentifier = spaceIdentifiers[0];
+                NSString *screenIdentifier = [screenManager.screen.deviceDescription[@"NSScreenNumber"] stringValue];
+                if (spaceIdentifiersByScreen[screenIdentifier]) {
+                    spaceIdentifiersByScreen[screenIdentifier] = [spaceIdentifiersByScreen[screenIdentifier] arrayByAddingObject:spaceIdentifiers[0]];
+                } else {
+                    spaceIdentifiersByScreen[screenIdentifier] = @[ spaceIdentifiers[0] ];
+                }
             }
         }
+    }
+
+    for (AMScreenManager *screenManager in self.screenManagers) {
+        NSMutableDictionary *spaceIdentifierCounts = [NSMutableDictionary dictionary];
+        NSString *screenIdentifier = [screenManager.screen.deviceDescription[@"NSScreenNumber"] stringValue];
+
+        NSUInteger maxCount = 0;
+        NSString *maxSpaceIdentifier = nil;
+        for (NSString *spaceIdentifier in spaceIdentifiersByScreen[screenIdentifier]) {
+            if (spaceIdentifierCounts[spaceIdentifier]) {
+                spaceIdentifierCounts[spaceIdentifier] = @( [spaceIdentifierCounts[spaceIdentifier] unsignedIntegerValue] + 1 );
+            } else {
+                spaceIdentifierCounts[spaceIdentifier] = @1;
+            }
+
+            NSUInteger count = [spaceIdentifierCounts[spaceIdentifier] unsignedIntegerValue];
+            if (count > maxCount) {
+                count = maxCount;
+                maxSpaceIdentifier = spaceIdentifier;
+            }
+        }
+
+        screenManager.currentSpaceIdentifier = maxSpaceIdentifier;
     }
 
     CFRelease(windowDescriptions);
