@@ -99,6 +99,14 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     // representation "1").
     TISInputSourceRef currentKeyboard = TISCopyCurrentKeyboardInputSource();
     CFDataRef layoutData = TISGetInputSourceProperty(currentKeyboard, kTISPropertyUnicodeKeyLayoutData);
+    
+    // For non-unicode layouts
+    if (!layoutData) {
+        CFRelease(currentKeyboard);
+        
+        currentKeyboard = TISCopyCurrentASCIICapableKeyboardLayoutInputSource();
+        layoutData = TISGetInputSourceProperty(currentKeyboard, kTISPropertyUnicodeKeyLayoutData);
+    }
     const UCKeyboardLayout *keyboardLayout = (const UCKeyboardLayout *)CFDataGetBytePtr(layoutData);
 
     UInt32 keysDown = 0;
