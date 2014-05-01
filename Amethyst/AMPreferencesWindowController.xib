@@ -274,18 +274,18 @@
             </subviews>
         </customView>
         <customView id="21f-NX-Gwr" userLabel="Shortcut Preferences">
-            <rect key="frame" x="0.0" y="0.0" width="548" height="293"/>
+            <rect key="frame" x="0.0" y="0.0" width="548" height="388"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZI-RC-j8b">
-                    <rect key="frame" x="0.0" y="0.0" width="548" height="293"/>
+                    <rect key="frame" x="0.0" y="2" width="548" height="386"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <clipView key="contentView" ambiguous="YES" misplaced="YES" id="AZ8-is-g0G">
-                        <rect key="frame" x="1" y="1" width="546" height="291"/>
+                        <rect key="frame" x="1" y="1" width="546" height="384"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" columnReordering="NO" columnSelection="YES" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="30" viewBased="YES" id="N3x-ad-oc8">
-                                <rect key="frame" x="0.0" y="0.0" width="546" height="291"/>
+                                <rect key="frame" x="0.0" y="0.0" width="546" height="384"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
