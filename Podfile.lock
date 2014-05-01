@@ -17,7 +17,7 @@ PODS:
   - libextobjc/RuntimeExtensions (0.4)
   - Masonry (0.4.0)
   - MASPreferences (1.1)
-  - MASShortcut (1.2.3)
+  - MASShortcut (1.2.4)
   - OCMock (2.2.4)
   - ReactiveCocoa (2.3):
     - ReactiveCocoa/Core
@@ -34,12 +34,14 @@ DEPENDENCIES:
   - libextobjc/EXTSelectorChecking
   - Masonry
   - MASPreferences
-  - MASShortcut
+  - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
   - OCMock
   - ReactiveCocoa
   - Silica (from `https://github.com/ianyh/Silica`)
 
 EXTERNAL SOURCES:
+  MASShortcut:
+    :git: https://github.com/ianyh/MASShortcut
   Silica:
     :git: https://github.com/ianyh/Silica
 
@@ -50,7 +52,7 @@ SPEC CHECKSUMS:
   libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
   Masonry: d673617c9cbc24aaea90fba20b10e47fd9970a39
   MASPreferences: 2c2f30b38c3dfceb0d3b29132a13417706a5adac
-  MASShortcut: 6abaedac53a0542f4856f35be4f1f970b652a51e
+  MASShortcut: 93f65e779180239a18ff4173a29469959495c0fa
   OCMock: 5008fae4b4789b8fc3e48cd7660f2eb5ef8ce89e
   ReactiveCocoa: 1f6265f9d521923d3efcc37b00722cefc16df269
   Silica: 6f6d4065325c5fdeaec39a19e0d756e30ac46c24

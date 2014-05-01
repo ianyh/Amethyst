@@ -48,6 +48,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     self = [super init];
     if (self) {
         [self constructKeyCodeMap];
+        [MASShortcut setAllowsAnyHotkeyWithOptionModifier:YES];
     }
     return self;
 }
@@ -114,6 +115,22 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     UniCharCount realLength;
 
     for (AMKeyCode keyCode = 0; keyCode < AMKeyCodeInvalid; ++keyCode) {
+        switch (keyCode) {
+            case kVK_ANSI_Keypad0:
+            case kVK_ANSI_Keypad1:
+            case kVK_ANSI_Keypad2:
+            case kVK_ANSI_Keypad3:
+            case kVK_ANSI_Keypad4:
+            case kVK_ANSI_Keypad5:
+            case kVK_ANSI_Keypad6:
+            case kVK_ANSI_Keypad7:
+            case kVK_ANSI_Keypad8:
+            case kVK_ANSI_Keypad9:
+                continue;
+            default:
+                break;
+        }
+
         UCKeyTranslate(keyboardLayout,
                        keyCode,
                        kUCKeyActionDisplay,
@@ -188,9 +205,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
         return;
     }
 
-    for (NSNumber *keyCode in keyCodes) {
-        [self registerHotKeyWithKeyCode:keyCode.unsignedShortValue modifiers:modifiers handler:handler defaultsKey:defaultsKey override:override];
-    }
+    [self registerHotKeyWithKeyCode:[keyCodes[0] unsignedShortValue] modifiers:modifiers handler:handler defaultsKey:defaultsKey override:override];
 }
 
 @end
