@@ -17,7 +17,8 @@
 @property (nonatomic, weak) IBOutlet NSTableView *layoutsTableView;
 @property (nonatomic, weak) IBOutlet NSTableView *floatingTableView;
 
-- (IBAction)addLayout:(id)sender;
+- (IBAction)addLayout:(NSButton *)sender;
+- (IBAction)addLayoutString:(NSMenuItem *)sender;
 - (IBAction)removeLayout:(id)sender;
 - (IBAction)addFloatingApplication:(id)sender;
 - (IBAction)removeFloatingApplication:(id)sender;
@@ -45,8 +46,44 @@
 
 #pragma mark IBAction
 
-- (IBAction)addLayout:(id)sender {
-    
+- (IBAction)addLayout:(NSButton *)sender {
+    NSMenu *layoutMenu = [[NSMenu alloc] initWithTitle:@""];
+
+    for (NSString *layoutString in [[AMConfiguration sharedConfiguration] availableLayoutStrings]) {
+        NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:layoutString
+                                                          action:@checkselector(self, addLayoutString:)
+                                                   keyEquivalent:@""];
+        menuItem.target = self;
+        menuItem.action = @checkselector(self, addLayoutString:);
+
+        [layoutMenu addItem:menuItem];
+    }
+
+    NSRect frame = [sender frame];
+    NSPoint menuOrigin = [[sender superview] convertPoint:NSMakePoint(frame.origin.x, frame.origin.y + frame.size.height + 40)
+                                                   toView:nil];
+
+    NSEvent *event =  [NSEvent mouseEventWithType:NSLeftMouseDown
+                                         location:menuOrigin
+                                    modifierFlags:NSLeftMouseDownMask
+                                        timestamp:0
+                                     windowNumber:[[sender window] windowNumber]
+                                          context:[[sender window] graphicsContext]
+                                      eventNumber:0
+                                       clickCount:1
+                                         pressure:1];
+
+    [NSMenu popUpContextMenu:layoutMenu withEvent:event forView:sender];
+}
+
+- (IBAction)addLayoutString:(NSMenuItem *)sender {
+    NSMutableArray *layouts = [self.layouts mutableCopy];
+    [layouts addObject:sender.title];
+    self.layouts = layouts;
+
+    [[AMConfiguration sharedConfiguration] setLayoutStrings:self.layouts];
+
+    [self.layoutsTableView reloadData];
 }
 
 - (IBAction)removeLayout:(id)sender {
