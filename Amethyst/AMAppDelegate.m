@@ -10,6 +10,7 @@
 
 #import "AMConfiguration.h"
 #import "AMHotKeyManager.h"
+#import "AMPreferencesWindowController.h"
 #import "AMWindowManager.h"
 
 #import <CocoaLumberjack/DDASLLogger.h>
@@ -18,6 +19,8 @@
 #import <IYLoginItem/NSBundle+LoginItem.h>
 
 @interface AMAppDelegate ()
+@property (nonatomic, assign) IBOutlet AMPreferencesWindowController *preferencesWindowController;
+
 @property (nonatomic, strong) AMWindowManager *windowManager;
 @property (nonatomic, strong) AMHotKeyManager *hotKeyManager;
 

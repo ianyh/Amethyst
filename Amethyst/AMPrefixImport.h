@@ -14,6 +14,7 @@
 #import <libextobjc/EXTSelectorChecking.h>
 #import <CocoaLumberjack/DDLog.h>
 #import <Silica/Silica.h>
+#import <Masonry/Masonry.h>
 #import "SIWindow+Amethyst.h"
 #import "SIApplication+Amethyst.h"
 

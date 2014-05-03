@@ -46,6 +46,8 @@ extern AMKeyCode AMKeyCodeInvalid;
 //       to the handler.
 - (void)registerHotKeyWithKeyString:(NSString *)keyString
                           modifiers:(AMModifierFlags)modifiers
-                            handler:(AMHotKeyHandler)handler;
+                            handler:(AMHotKeyHandler)handler
+                        defaultsKey:(NSString *)defaultsKey
+                           override:(BOOL)override;
 
 @end

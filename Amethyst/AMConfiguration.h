@@ -41,6 +41,10 @@
 // Returns an array of AMLayout Class objects to generate layouts from.
 - (NSArray *)layouts;
 
+- (NSArray *)layoutStrings;
+- (void)setLayoutStrings:(NSArray *)layoutStrings;
+- (NSArray *)availableLayoutStrings;
+
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication;
 
 - (BOOL)ignoreMenuBar;
@@ -54,4 +58,10 @@
 - (BOOL)enablesLayoutHUDOnSpaceChange;
 
 @property (nonatomic, assign) BOOL tilingEnabled;
+
+- (NSArray *)floatingBundleIdentifiers;
+- (void)setFloatingBundleIdentifiers:(NSArray *)floatingBundleIdentifiers;
+
+- (NSArray *)hotKeyNameToDefaultsKey;
+
 @end

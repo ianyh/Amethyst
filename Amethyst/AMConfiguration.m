@@ -129,8 +129,35 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     return nil;
 }
 
++ (NSString *)stringForLayoutClass:(Class)layoutClass {
+    if (layoutClass == [AMTallLayout class]) return @"tall";
+    if (layoutClass == [AMWideLayout class]) return @"wide";
+    if (layoutClass == [AMFullscreenLayout class]) return @"fullscreen";
+    if (layoutClass == [AMColumnLayout class]) return @"column";
+    if (layoutClass == [AMRowLayout class]) return @"row";
+    if (layoutClass == [AMFloatingLayout class]) return @"floating";
+    if (layoutClass == [AMWidescreenTallLayout class]) return @"widescreen-tall";
+    return nil;
+}
+
 - (void)loadConfiguration {
     [self loadConfigurationFile];
+
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+
+    for (NSString *defaultsKey in @[ AMConfigurationLayoutsKey,
+                                     AMConfigurationFloatingBundleIdentifiers,
+                                     AMConfigurationIgnoreMenuBar,
+                                     AMConfigurationFloatSmallWindows,
+                                     AMConfigurationMouseFollowsFocus,
+                                     AMConfigurationEnablesLayoutHUD,
+                                     AMConfigurationEnablesLayoutHUDOnSpaceChange ]) {
+        id value = self.configuration[defaultsKey];
+        id defaultValue = self.defaultConfiguration[defaultsKey];
+        if (value || (defaultValue && ![userDefaults objectForKey:defaultsKey])) {
+            [userDefaults setObject:value ?: defaultValue forKey:defaultsKey];
+        }
+    }
 }
 
 - (void)loadConfigurationFile {
@@ -171,7 +198,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 }
 
 - (NSString *)constructLayoutKeyString:(NSString *)layoutString {
-     return [NSString stringWithFormat: @"select-%@-layout", layoutString];
+     return [NSString stringWithFormat:@"select-%@-layout", layoutString];
 }
 
 #pragma mark Hot Key Mapping
@@ -186,8 +213,15 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 }
 
 - (void)constructCommandWithHotKeyManager:(AMHotKeyManager *)hotKeyManager commandKey:(NSString *)commandKey handler:(AMHotKeyHandler)handler {
-    NSString *commandKeyString = self.configuration[commandKey][AMConfigurationCommandKeyKey] ?: self.defaultConfiguration[commandKey][AMConfigurationCommandKeyKey];
-    NSString *commandModifierString = self.configuration[commandKey][AMConfigurationCommandModKey] ?: self.defaultConfiguration[commandKey][AMConfigurationCommandModKey];
+    BOOL override = NO;
+    NSDictionary *command = self.configuration[commandKey];
+    if (command) {
+        override = YES;
+    } else {
+        command = self.defaultConfiguration[commandKey];
+    }
+    NSString *commandKeyString = command[AMConfigurationCommandKeyKey];
+    NSString *commandModifierString = command[AMConfigurationCommandModKey];
 
     AMModifierFlags commandFlags;
     if ([commandModifierString isEqualToString:@"mod1"]) {
@@ -199,7 +233,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
         return;
     }
 
-    [hotKeyManager registerHotKeyWithKeyString:commandKeyString modifiers:commandFlags handler:handler];
+    [hotKeyManager registerHotKeyWithKeyString:commandKeyString modifiers:commandFlags handler:handler defaultsKey:commandKey override:override];
 }
 
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager {
@@ -312,7 +346,8 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 #pragma mark Public Methods
 
 - (NSArray *)layouts {
-    NSArray *layoutStrings = self.configuration[AMConfigurationLayoutsKey] ?: self.defaultConfiguration[AMConfigurationLayoutsKey];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *layoutStrings = [userDefaults arrayForKey:AMConfigurationLayoutsKey];
     NSMutableArray *layouts = [NSMutableArray array];
     for (NSString *layoutString in layoutStrings) {
         Class layoutClass = [self.class layoutClassForString:layoutString];
@@ -326,48 +361,111 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     return layouts;
 }
 
+- (NSArray *)layoutStrings {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults arrayForKey:AMConfigurationLayoutsKey] ?: @[];
+}
+
+- (void)setLayoutStrings:(NSArray *)layoutStrings {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:layoutStrings forKey:AMConfigurationLayoutsKey];
+}
+
+- (NSArray *)availableLayoutStrings {
+    return [[[@[ [AMTallLayout class],
+                [AMWideLayout class],
+                [AMFullscreenLayout class],
+                [AMColumnLayout class],
+                [AMRowLayout class],
+                [AMFloatingLayout class],
+                [AMWidescreenTallLayout class] ] rac_sequence] map:^ NSString * (Class layoutClass) {
+        return [self.class stringForLayoutClass:layoutClass];
+    }] array];
+}
+
 - (BOOL)runningApplicationShouldFloat:(NSRunningApplication *)runningApplication {
-    return [self.configuration[AMConfigurationFloatingBundleIdentifiers] containsObject:runningApplication.bundleIdentifier];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *floatingBundleIdentifiers = [userDefaults arrayForKey:AMConfigurationFloatingBundleIdentifiers];
+
+    if (!floatingBundleIdentifiers) {
+        return NO;
+    }
+
+    return [floatingBundleIdentifiers containsObject:runningApplication.bundleIdentifier];
 }
 
 - (BOOL)ignoreMenuBar {
-    if (self.configuration[AMConfigurationIgnoreMenuBar]) {
-        return [self.configuration[AMConfigurationIgnoreMenuBar] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationIgnoreMenuBar] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationIgnoreMenuBar];
 }
 
 - (BOOL)floatSmallWindows {
-    if (self.configuration[AMConfigurationFloatSmallWindows]) {
-        return [self.configuration[AMConfigurationFloatSmallWindows] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationFloatSmallWindows] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationFloatSmallWindows];
 }
 
 - (BOOL)mouseFollowsFocus {
-    if (self.configuration[AMConfigurationMouseFollowsFocus]) {
-        return [self.configuration[AMConfigurationMouseFollowsFocus] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationMouseFollowsFocus] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationMouseFollowsFocus];
 }
 
 - (BOOL)enablesLayoutHUD {
-    if (self.configuration[AMConfigurationEnablesLayoutHUD]) {
-        return [self.configuration[AMConfigurationEnablesLayoutHUD] boolValue];
-    }
-
-    return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUD] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationEnablesLayoutHUD];
 }
 
 - (BOOL)enablesLayoutHUDOnSpaceChange {
-    if (self.configuration[AMConfigurationEnablesLayoutHUDOnSpaceChange]) {
-        return [self.configuration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationEnablesLayoutHUDOnSpaceChange];
+}
+
+- (NSArray *)floatingBundleIdentifiers {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults arrayForKey:AMConfigurationFloatingBundleIdentifiers] ?: @[];
+}
+
+- (void)setFloatingBundleIdentifiers:(NSArray *)floatingBundleIdentifiers {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:floatingBundleIdentifiers ?: @[] forKey:AMConfigurationFloatingBundleIdentifiers];
+}
+
+- (NSArray *)hotKeyNameToDefaultsKey {
+    NSMutableArray *hotKeyNameToDefaultsKey = [NSMutableArray arrayWithCapacity:30];
+
+    [hotKeyNameToDefaultsKey addObject:@[@"Cycle layout forward", AMConfigurationCommandCycleLayoutForwardKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Cycle layout backwards", AMConfigurationCommandCycleLayoutBackwardKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Shrink main pane", AMConfigurationCommandShrinkMainKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Expand main pane", AMConfigurationCommandExpandMainKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Increase main pane count", AMConfigurationCommandIncreaseMainKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Decrease main pane count", AMConfigurationCommandDecreaseMainKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Move focus counter clockwise", AMConfigurationCommandFocusCCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Move focus clockwise", AMConfigurationCommandFocusCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window to counter clockwise screen", AMConfigurationCommandSwapScreenCCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window to clockwise screen", AMConfigurationCommandSwapScreenCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window counter clockwise", AMConfigurationCommandSwapCCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window clockwise", AMConfigurationCommandSwapCWKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Swap focused window with main window", AMConfigurationCommandSwapMainKey]];
+
+    for (NSUInteger spaceNumber = 1; spaceNumber < 10; ++spaceNumber) {
+        NSString *name = [NSString stringWithFormat:@"Throw focused window to space %@", @(spaceNumber)];
+        [hotKeyNameToDefaultsKey addObject:@[name, [AMConfigurationCommandThrowSpacePrefixKey stringByAppendingFormat:@"-%@", @(spaceNumber)]]];
     }
 
-    return [self.defaultConfiguration[AMConfigurationEnablesLayoutHUDOnSpaceChange] boolValue];
+    for (NSUInteger screenNumber = 1; screenNumber <= 3; ++screenNumber) {
+        NSString *focusCommandName = [NSString stringWithFormat:@"Focus screen %@", @(screenNumber)];
+        NSString *throwCommandName = [NSString stringWithFormat:@"Throw focused window to screen %@", @(screenNumber)];
+        NSString *focusCommandKey = [AMConfigurationCommandFocusScreenPrefixKey stringByAppendingFormat:@"-%@", @(screenNumber)];
+        NSString *throwCommandKey = [AMConfigurationCommandThrowScreenPrefixKey stringByAppendingFormat:@"-%@", @(screenNumber)];
+
+        [hotKeyNameToDefaultsKey addObject:@[focusCommandName, focusCommandKey]];
+        [hotKeyNameToDefaultsKey addObject:@[throwCommandName, throwCommandKey]];
+    }
+
+    [hotKeyNameToDefaultsKey addObject:@[@"Toggle float for focused window", AMConfigurationCommandToggleFloatKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Display current layout", AMConfigurationCommandDisplayCurrentLayoutKey]];
+    [hotKeyNameToDefaultsKey addObject:@[@"Toggle global tiling", AMConfigurationCommandToggleTilingKey]];
+
+    return hotKeyNameToDefaultsKey;
 }
 
 @end
