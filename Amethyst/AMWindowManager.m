@@ -698,6 +698,10 @@
 #pragma mark Private
 
 - (void)focusWindowWithMouseMovedEvent:(NSEvent *)event {
+    if (![[AMConfiguration sharedConfiguration] focusFollowsMouse]) {
+        return;
+    }
+
     CGPoint mousePoint = NSPointToCGPoint([event locationInWindow]);
     SIWindow *window = [SIWindow focusedWindow];
 

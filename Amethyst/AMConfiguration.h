@@ -52,6 +52,7 @@
 - (BOOL)floatSmallWindows;
 
 - (BOOL)mouseFollowsFocus;
+- (BOOL)focusFollowsMouse;
 
 - (BOOL)enablesLayoutHUD;
 

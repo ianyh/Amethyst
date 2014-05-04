@@ -72,6 +72,7 @@ static NSString *const AMConfigurationFloatingBundleIdentifiers = @"floating";
 static NSString *const AMConfigurationIgnoreMenuBar = @"ignore-menu-bar";
 static NSString *const AMConfigurationFloatSmallWindows = @"float-small-windows";
 static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus";
+static NSString *const AMConfigurationFocusFollowsMouse = @"focus-follows-mouse";
 static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-layout-hud-on-space-change";
 
@@ -150,6 +151,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
                                      AMConfigurationIgnoreMenuBar,
                                      AMConfigurationFloatSmallWindows,
                                      AMConfigurationMouseFollowsFocus,
+                                     AMConfigurationFocusFollowsMouse,
                                      AMConfigurationEnablesLayoutHUD,
                                      AMConfigurationEnablesLayoutHUDOnSpaceChange ]) {
         id value = self.configuration[defaultsKey];
@@ -407,6 +409,11 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 - (BOOL)mouseFollowsFocus {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return [userDefaults boolForKey:AMConfigurationMouseFollowsFocus];
+}
+
+- (BOOL)focusFollowsMouse {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationFocusFollowsMouse];
 }
 
 - (BOOL)enablesLayoutHUD {
