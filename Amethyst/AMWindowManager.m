@@ -703,18 +703,19 @@
 
     // If the point is already in the frame of the focused window do nothing.
     if (CGRectContainsPoint(window.frame, mousePoint)) {
-        return;git
-    }
-
-    NSArray *windowDescriptions = (__bridge NSArray *)CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
-
-    // If there are no windows on screen do nothing
-    if (windowDescriptions.count == 0) {
         return;
     }
 
-    NSMutableArray *windowsAtPoint = [NSMutableArray arrayWithCapacity:windowDescriptions.count];
-    for (NSDictionary *windowDescription in windowDescriptions) {
+    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    CFIndex windowDescriptionsCount = CFArrayGetCount(windowDescriptions);
+
+    // If there are no windows on screen do nothing
+    if (windowDescriptionsCount == 0) {
+        return;
+    }
+
+    NSMutableArray *windowsAtPoint = [NSMutableArray arrayWithCapacity:CFArrayGetCount(windowDescriptions)];
+    for (NSDictionary *windowDescription in (__bridge NSArray *)windowDescriptions) {
         CGRect windowFrame;
         CFDictionaryRef windowFrameDictionary = (__bridge CFDictionaryRef)windowDescription[(__bridge NSString *)kCGWindowBounds];
         CGRectMakeWithDictionaryRepresentation(windowFrameDictionary, &windowFrame);
@@ -723,6 +724,8 @@
             [windowsAtPoint addObject:windowDescription];
         }
     }
+
+    CFRelease(windowDescriptions);
 
     // If there no windows under the mouse cursor do nothing
     if (windowsAtPoint.count == 0) {
@@ -738,17 +741,20 @@
 
     // Otherwise find the window that's actually on top
     NSDictionary *windowToFocus = nil;
-    NSUInteger minCount = windowDescriptions.count;
+    NSUInteger minCount = windowDescriptionsCount;
     for (NSDictionary *windowDescription in windowsAtPoint) {
         CGWindowID windowID;
         CFNumberRef windowNumber = (__bridge CFNumberRef)windowDescription[(__bridge NSNumber *)kCGWindowNumber];
         CFNumberGetValue(windowNumber, kCGWindowIDCFNumberType, &windowID);
 
-        NSArray *windowsAboveWindow = (__bridge NSArray *)CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenAboveWindow, windowID);
-        if (windowsAboveWindow.count < minCount) {
+        CFArrayRef windowsAboveWindow = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenAboveWindow, windowID);
+
+        if (CFArrayGetCount(windowsAboveWindow) < minCount) {
             windowToFocus = windowDescription;
-            minCount = windowsAboveWindow.count;
+            minCount = CFArrayGetCount(windowsAboveWindow);
         }
+
+        CFRelease(windowsAboveWindow);
     }
 
     window = [self windowForCGWindowDescription:windowToFocus];
