@@ -18,6 +18,8 @@
 
 @property (nonatomic, strong) NSArray *screenManagers;
 
+@property (nonatomic, strong) id mouseMovedEventHandler;
+
 - (void)applicationDidLaunch:(NSNotification *)notification;
 - (void)applicationDidTerminate:(NSNotification *)notification;
 - (void)applicationDidHide:(NSNotification *)notification;
@@ -36,6 +38,8 @@
 
 - (void)updateScreenManagers;
 - (void)markScreenForReflow:(NSScreen *)screen;
+
+- (void)focusWindowWithMouseMovedEvent:(NSEvent *)event;
 @end
 
 @implementation AMWindowManager
@@ -78,6 +82,10 @@
                                                  selector:@checkselector(self, screenParametersDidChange:)
                                                      name:NSApplicationDidChangeScreenParametersNotification
                                                    object:nil];
+
+        self.mouseMovedEventHandler = [NSEvent addGlobalMonitorForEventsMatchingMask:NSMouseMovedMask handler:^(NSEvent *event) {
+            [self focusWindowWithMouseMovedEvent:event];
+        }];
 
         [self updateScreenManagers];
     }
@@ -685,6 +693,95 @@
 
 - (NSArray *)activeWindowsForScreenManager:(AMScreenManager *)screenManager {
     return [self activeWindowsForScreen:screenManager.screen];
+}
+
+#pragma mark Private
+
+- (void)focusWindowWithMouseMovedEvent:(NSEvent *)event {
+    if (![[AMConfiguration sharedConfiguration] focusFollowsMouse]) {
+        return;
+    }
+
+    CGPoint mousePoint = NSPointToCGPoint([event locationInWindow]);
+    SIWindow *window = [SIWindow focusedWindow];
+
+    // If the point is already in the frame of the focused window do nothing.
+    if (CGRectContainsPoint(window.frame, mousePoint)) {
+        return;
+    }
+
+    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    CFIndex windowDescriptionsCount = CFArrayGetCount(windowDescriptions);
+
+    // If there are no windows on screen do nothing
+    if (windowDescriptionsCount == 0) {
+        return;
+    }
+
+    NSMutableArray *windowsAtPoint = [NSMutableArray arrayWithCapacity:CFArrayGetCount(windowDescriptions)];
+    for (NSDictionary *windowDescription in (__bridge NSArray *)windowDescriptions) {
+        CGRect windowFrame;
+        CFDictionaryRef windowFrameDictionary = (__bridge CFDictionaryRef)windowDescription[(__bridge NSString *)kCGWindowBounds];
+        CGRectMakeWithDictionaryRepresentation(windowFrameDictionary, &windowFrame);
+
+        if (CGRectContainsPoint(windowFrame, mousePoint)) {
+            [windowsAtPoint addObject:windowDescription];
+        }
+    }
+
+    CFRelease(windowDescriptions);
+
+    // If there no windows under the mouse cursor do nothing
+    if (windowsAtPoint.count == 0) {
+        return;
+    }
+
+    // If there is only one window at that point focus it
+    if (windowsAtPoint.count == 1) {
+        window = [self windowForCGWindowDescription:windowsAtPoint[0]];
+        [window focusWindow];
+        return;
+    }
+
+    // Otherwise find the window that's actually on top
+    NSDictionary *windowToFocus = nil;
+    NSUInteger minCount = windowDescriptionsCount;
+    for (NSDictionary *windowDescription in windowsAtPoint) {
+        CGWindowID windowID;
+        CFNumberRef windowNumber = (__bridge CFNumberRef)windowDescription[(__bridge NSNumber *)kCGWindowNumber];
+        CFNumberGetValue(windowNumber, kCGWindowIDCFNumberType, &windowID);
+
+        CFArrayRef windowsAboveWindow = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenAboveWindow, windowID);
+
+        if (CFArrayGetCount(windowsAboveWindow) < minCount) {
+            windowToFocus = windowDescription;
+            minCount = CFArrayGetCount(windowsAboveWindow);
+        }
+
+        CFRelease(windowsAboveWindow);
+    }
+
+    window = [self windowForCGWindowDescription:windowToFocus];
+    [window focusWindow];
+}
+
+- (SIWindow *)windowForCGWindowDescription:(NSDictionary *)windowDescription {
+    for (SIWindow *window in self.windows) {
+        pid_t windowOwnerProcessIdentifier = [windowDescription[(__bridge NSString *)kCGWindowOwnerPID] intValue];
+        if (windowOwnerProcessIdentifier != window.processIdentifier) continue;
+
+        CGRect windowFrame;
+        NSDictionary *boundsDictionary = windowDescription[(__bridge NSString *)kCGWindowBounds];
+        CGRectMakeWithDictionaryRepresentation((__bridge CFDictionaryRef)boundsDictionary, &windowFrame);
+        if (!CGRectEqualToRect(windowFrame, window.frame)) continue;
+
+        NSString *windowTitle = windowDescription[(__bridge NSString *)kCGWindowName];
+        if (![windowTitle isEqualToString:[window stringForKey:kAXTitleAttribute]]) continue;
+
+        return window;
+    }
+
+    return nil;
 }
 
 @end
