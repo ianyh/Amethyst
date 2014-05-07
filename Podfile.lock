@@ -20,11 +20,12 @@ PODS:
   - MASShortcut (1.2.4)
   - OCMock (2.2.4)
   - ReactiveCocoa (2.3):
-    - ReactiveCocoa/Core
-    - ReactiveCocoa/no-arc
+    - ReactiveCocoa/UI
   - ReactiveCocoa/Core (2.3):
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/no-arc (2.3)
+  - ReactiveCocoa/UI (2.3):
+    - ReactiveCocoa/Core
   - Silica (0.1.4)
 
 DEPENDENCIES:
@@ -54,7 +55,7 @@ SPEC CHECKSUMS:
   MASPreferences: 2c2f30b38c3dfceb0d3b29132a13417706a5adac
   MASShortcut: 93f65e779180239a18ff4173a29469959495c0fa
   OCMock: 5008fae4b4789b8fc3e48cd7660f2eb5ef8ce89e
-  ReactiveCocoa: 1f6265f9d521923d3efcc37b00722cefc16df269
+  ReactiveCocoa: dde7b11a14954edf789e7343b2c32e595caabd01
   Silica: 6f6d4065325c5fdeaec39a19e0d756e30ac46c24
 
 COCOAPODS: 0.32.1
