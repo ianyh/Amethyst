@@ -56,6 +56,8 @@
         "toggle-float": "Toggle the focused window between being floating and tiled"
     },
 
+    "screens": "4",
+
     "cycle-layout": {
         "mod": "mod1",
         "key": "space"
