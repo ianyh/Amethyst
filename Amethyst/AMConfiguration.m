@@ -200,7 +200,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 
     self.modifier1 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod1String] ?: self.defaultConfiguration[AMConfigurationMod1String]];
     self.modifier2 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod2String] ?: self.defaultConfiguration[AMConfigurationMod2String]];
-    self.screens = [self.configuration[AMConfigurationScreens] intValue] ?: [self.defaultConfiguration[AMConfigurationScreens] intValue];
+    self.screens = [(self.configuration[AMConfigurationScreens] ?: self.defaultConfiguration[AMConfigurationScreens]) integerValue];
 }
 
 - (NSString *)constructLayoutKeyString:(NSString *)layoutString {
