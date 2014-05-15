@@ -85,7 +85,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 
 @property (nonatomic, assign) AMModifierFlags modifier1;
 @property (nonatomic, assign) AMModifierFlags modifier2;
-@property (nonatomic, assign) int screens;
+@property (nonatomic, assign) NSInteger screens;
 @end
 
 @implementation AMConfiguration
