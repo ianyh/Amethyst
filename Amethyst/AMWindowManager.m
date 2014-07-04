@@ -95,7 +95,9 @@
     [[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.apple.spaces"];
     [[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.apple.spaces"];
 
-    NSArray *spaceProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesDisplayConfiguration"][@"Space Properties"];
+    NSMutableArray *spaceProperties = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesConfiguration"][@"Space Properties"] mutableCopy];
+    [spaceProperties addObjectsFromArray:[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesDisplayConfiguration"][@"Space Properties"]];
+
     NSMutableDictionary *spaceIdentifiersByWindowNumber = [NSMutableDictionary dictionary];
     for (NSDictionary *spaceDictionary in spaceProperties) {
         NSArray *windows = spaceDictionary[@"windows"];
@@ -108,7 +110,7 @@
         }
     }
 
-    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListExcludeDesktopElements, kCGNullWindowID);
     NSMutableDictionary *spaceIdentifiersByScreen = [NSMutableDictionary dictionary];
 
     for (NSDictionary *description in (__bridge NSArray *)windowDescriptions) {
