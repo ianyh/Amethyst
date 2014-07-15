@@ -703,6 +703,8 @@
     }
 
     CGPoint mousePoint = NSPointToCGPoint([event locationInWindow]);
+    mousePoint.y = NSScreen.mainScreen.frame.size.height - mousePoint.y;
+
     SIWindow *window = [SIWindow focusedWindow];
 
     // If the point is already in the frame of the focused window do nothing.
