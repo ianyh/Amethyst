@@ -39,6 +39,8 @@ static NSString *const AMConfigurationCommandKeyKey = @"key";
 static NSString *const AMConfigurationMod1String = @"mod1";
 static NSString *const AMConfigurationMod2String = @"mod2";
 
+static NSString *const AMConfigurationScreens = @"screens";
+
 // Command strings that reference possible window management commands. They are
 // optionally present in the configuration file. If any is ommitted the default
 // is used.
@@ -83,6 +85,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 
 @property (nonatomic, assign) AMModifierFlags modifier1;
 @property (nonatomic, assign) AMModifierFlags modifier2;
+@property (nonatomic, assign) NSInteger screens;
 @end
 
 @implementation AMConfiguration
@@ -197,6 +200,7 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 
     self.modifier1 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod1String] ?: self.defaultConfiguration[AMConfigurationMod1String]];
     self.modifier2 = [self modifierFlagsForStrings:self.configuration[AMConfigurationMod2String] ?: self.defaultConfiguration[AMConfigurationMod2String]];
+    self.screens = [(self.configuration[AMConfigurationScreens] ?: self.defaultConfiguration[AMConfigurationScreens]) integerValue];
 }
 
 - (NSString *)constructLayoutKeyString:(NSString *)layoutString {
@@ -302,8 +306,8 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandDisplayCurrentLayoutKey handler:^{
         [windowManager displayCurrentLayout];
     }];
-
-    for (NSUInteger screenNumber = 1; screenNumber <= 3; ++screenNumber) {
+    
+    for (NSUInteger screenNumber = 1; screenNumber <= self.screens; ++screenNumber) {
         NSString *focusCommandKey = [AMConfigurationCommandFocusScreenPrefixKey stringByAppendingFormat:@"-%d", (unsigned int)screenNumber];
         NSString *throwCommandKey = [AMConfigurationCommandThrowScreenPrefixKey stringByAppendingFormat:@"-%d", (unsigned int)screenNumber];
 

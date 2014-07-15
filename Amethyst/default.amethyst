@@ -32,9 +32,11 @@
         "focus-screen-1": "Focus the main window on the first screen",
         "focus-screen-2": "Focus the main window on the second screen",
         "focus-screen-3": "Focus the main window on the third screen",
+        "focus-screen-4": "Focus the main window on the fourth screen",
         "throw-screen-1": "Throw the focused window to the first screen",
         "throw-screen-2": "Throw the focused window to the second screen",
         "throw-screen-3": "Throw the focused window to the third screen",
+        "throw-screen-4": "Throw the focused window to the fourth screen",
         "shrink-main": "Shrink the main pane of the current layout",
         "expand-main": "Expand the main pane of the current layout",
         "increase-main": "Increase the number of windows in the main pane",
@@ -55,6 +57,8 @@
         "throw-space-9": "Throw the focused window to the ninth space",
         "toggle-float": "Toggle the focused window between being floating and tiled"
     },
+
+    "screens": "4",
 
     "cycle-layout": {
         "mod": "mod1",
@@ -92,6 +96,10 @@
         "mod": "mod1",
         "key": "r"
     },
+    "focus-screen-4": {
+        "mod": "mod1",
+        "key": "q"
+    },
     "throw-screen-1": {
         "mod": "mod2",
         "key": "w"
@@ -103,6 +111,10 @@
     "throw-screen-3": {
         "mod": "mod2",
         "key": "r"
+    },
+    "throw-screen-4": {
+        "mod": "mod2",
+        "key": "q"
     },
     "shrink-main": {
         "mod": "mod1",
