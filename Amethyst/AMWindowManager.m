@@ -100,66 +100,23 @@
 #pragma mark Public Methods
 
 - (void)assignCurrentSpaceIdentifiers {
-    [[NSUserDefaults standardUserDefaults] removeSuiteNamed:@"com.apple.spaces"];
-    [[NSUserDefaults standardUserDefaults] addSuiteNamed:@"com.apple.spaces"];
-
-    NSArray *spaceProperties = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"SpacesDisplayConfiguration"][@"Space Properties"];
-    NSMutableDictionary *spaceIdentifiersByWindowNumber = [NSMutableDictionary dictionary];
-    for (NSDictionary *spaceDictionary in spaceProperties) {
-        NSArray *windows = spaceDictionary[@"windows"];
-        for (NSNumber *window in windows) {
-            if (spaceIdentifiersByWindowNumber[window]) {
-                spaceIdentifiersByWindowNumber[window] = [spaceIdentifiersByWindowNumber[window] arrayByAddingObject:spaceDictionary[@"name"]];
-            } else {
-                spaceIdentifiersByWindowNumber[window] = @[ spaceDictionary[@"name"] ];
+    CFArrayRef screenDictionaries = CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
+    for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
+        NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
+        AMScreenManager *screenManager = nil;
+        for (AMScreenManager *manager in self.screenManagers) {
+            CGSManagedDisplay display = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, NSRectToCGRect(manager.screen.frame));
+            if ([screenIdentifier isEqualToString:(__bridge NSString *)display]) {
+                screenManager = manager;
+                CFRelease(display);
+                break;
             }
+            CFRelease(display);
         }
+        
+        screenManager.currentSpaceIdentifier = screenDictionary[@"Current Space"][@"uuid"];
     }
-
-    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
-    NSMutableDictionary *spaceIdentifiersByScreen = [NSMutableDictionary dictionary];
-
-    for (NSDictionary *description in (__bridge NSArray *)windowDescriptions) {
-        NSNumber *windowNumber = description[(__bridge NSString *)kCGWindowNumber];
-        NSArray *spaceIdentifiers = spaceIdentifiersByWindowNumber[windowNumber];
-
-        if (spaceIdentifiers.count == 1) {
-            AMScreenManager *screenManager = [self screenManagerForCGWindowDescription:description];
-            if (screenManager) {
-                NSString *screenIdentifier = [screenManager.screen.deviceDescription[@"NSScreenNumber"] stringValue];
-                if (spaceIdentifiersByScreen[screenIdentifier]) {
-                    spaceIdentifiersByScreen[screenIdentifier] = [spaceIdentifiersByScreen[screenIdentifier] arrayByAddingObject:spaceIdentifiers[0]];
-                } else {
-                    spaceIdentifiersByScreen[screenIdentifier] = @[ spaceIdentifiers[0] ];
-                }
-            }
-        }
-    }
-
-    for (AMScreenManager *screenManager in self.screenManagers) {
-        NSMutableDictionary *spaceIdentifierCounts = [NSMutableDictionary dictionary];
-        NSString *screenIdentifier = [screenManager.screen.deviceDescription[@"NSScreenNumber"] stringValue];
-
-        NSUInteger maxCount = 0;
-        NSString *maxSpaceIdentifier = nil;
-        for (NSString *spaceIdentifier in spaceIdentifiersByScreen[screenIdentifier]) {
-            if (spaceIdentifierCounts[spaceIdentifier]) {
-                spaceIdentifierCounts[spaceIdentifier] = @( [spaceIdentifierCounts[spaceIdentifier] unsignedIntegerValue] + 1 );
-            } else {
-                spaceIdentifierCounts[spaceIdentifier] = @1;
-            }
-
-            NSUInteger count = [spaceIdentifierCounts[spaceIdentifier] unsignedIntegerValue];
-            if (count > maxCount) {
-                count = maxCount;
-                maxSpaceIdentifier = spaceIdentifier;
-            }
-        }
-
-        screenManager.currentSpaceIdentifier = maxSpaceIdentifier;
-    }
-
-    CFRelease(windowDescriptions);
+    CFRelease(screenDictionaries);
 }
 
 - (AMScreenManager *)screenManagerForCGWindowDescription:(NSDictionary *)description {
