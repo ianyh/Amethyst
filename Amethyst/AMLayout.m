@@ -25,12 +25,18 @@
 - (void)decreaseMainPaneCount {}
 
 - (CGRect)adjustedFrameForLayout:(NSScreen *)screen {
-   return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
+    return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
 }
 
 - (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
     CGPoint finalPosition = finalFrame.origin;
-
+    
+    finalFrame.size.height -= 2 * [self windowPadding];
+    finalFrame.size.width -= 2 * [self windowPadding];
+    
+    finalPosition.x += [self windowPadding];
+    finalPosition.y += [self windowPadding];
+    
     // Just resize the window
     finalFrame.origin = window.frame.origin;
     window.frame = finalFrame;
@@ -46,6 +52,10 @@
     // Move the window to its final frame
     finalFrame.origin = finalPosition;
     window.frame = finalFrame;
+}
+
+- (NSUInteger)windowPadding{
+    return [[AMConfiguration sharedConfiguration] windowPadding];
 }
 
 @end

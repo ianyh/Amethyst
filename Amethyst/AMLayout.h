@@ -64,4 +64,6 @@
 // focused  - YES if the window is the currently focused window.
 - (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame;
 
+- (NSUInteger)windowPadding;
+
 @end

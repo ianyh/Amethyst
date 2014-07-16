@@ -77,6 +77,7 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
 static NSString *const AMConfigurationFocusFollowsMouse = @"focus-follows-mouse";
 static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-layout-hud-on-space-change";
+static NSString *const AMConfigurationWindowPadding = @"window-padding";
 
 
 @interface AMConfiguration ()
@@ -477,6 +478,14 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
     [hotKeyNameToDefaultsKey addObject:@[@"Toggle global tiling", AMConfigurationCommandToggleTilingKey]];
 
     return hotKeyNameToDefaultsKey;
+}
+
+- (NSUInteger)windowPadding {
+    if (self.configuration[AMConfigurationWindowPadding]) {
+        return [self.configuration[AMConfigurationWindowPadding] intValue];
+    }
+    
+    return [self.defaultConfiguration[AMConfigurationWindowPadding] intValue];
 }
 
 @end
