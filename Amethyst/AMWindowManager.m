@@ -402,17 +402,24 @@
         }
     }
 
-    for (AMScreenManager *screenManager in self.screenManagers) {
-        NSArray *windows = [self activeWindowsForScreenManager:screenManager];
-        __block BOOL isFullScreen = NO;
-        [windows enumerateObjectsUsingBlock:^(SIWindow *window, NSUInteger idx, BOOL *stop) {
-            if (window.isFullScreen) {
-                isFullScreen = YES;
-                *stop = YES;
+    CFArrayRef screenDictionaries = CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
+    for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
+        NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
+        AMScreenManager *screenManager = nil;
+        for (AMScreenManager *manager in self.screenManagers) {
+            CGSManagedDisplay display = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, NSRectToCGRect(manager.screen.frame));
+            if ([screenIdentifier isEqualToString:(__bridge NSString *)display]) {
+                screenManager = manager;
+                CFRelease(display);
+                break;
             }
-        }];
-
-        screenManager.isFullScreen = isFullScreen;
+            CFRelease(display);
+        }
+        
+        CGSSpace currentSpace = [screenDictionary[@"Current Space"][@"id64"] intValue];
+        CGSSpaceType currentSpaceType = CGSSpaceGetType(CGSDefaultConnection, currentSpace);
+        
+        screenManager.isFullScreen = (currentSpaceType == kCGSSpaceFullscreen);
     }
 
     [self markAllScreensForReflow];
