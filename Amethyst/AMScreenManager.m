@@ -145,6 +145,14 @@
     if (![AMConfiguration sharedConfiguration].tilingEnabled) return;
     if (self.isFullScreen) return;
 
+    CGSManagedDisplay managedDisplay = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, self.screen.frame);
+    if (CGSManagedDisplayIsAnimating(CGSDefaultConnection, managedDisplay)) {
+        CFRelease(managedDisplay);
+        return;
+    }
+
+    CFRelease(managedDisplay);
+
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }
 
