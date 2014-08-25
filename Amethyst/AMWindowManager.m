@@ -415,7 +415,7 @@
             }
             CFRelease(display);
         }
-        
+
         CGSSpace currentSpace = [screenDictionary[@"Current Space"][@"id64"] intValue];
         CGSSpaceType currentSpaceType = CGSSpaceGetType(CGSDefaultConnection, currentSpace);
         
@@ -596,11 +596,15 @@
     for (NSScreen *screen in NSScreen.screens) {
         AMScreenManager *screenManager;
 
+        CGSManagedDisplay managedDisplay = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, screen.frame);
         for (AMScreenManager *oldScreenManager in self.screenManagers) {
-            if ([oldScreenManager.screen isEqual:screen]) {
+            CGSManagedDisplay oldManagedDisplay = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, oldScreenManager.screen.frame);
+            if ([(__bridge NSString *)managedDisplay isEqual:(__bridge NSString *)oldManagedDisplay]) {
                 screenManager = oldScreenManager;
+                CFRelease(oldManagedDisplay);
                 break;
             }
+            CFRelease(oldManagedDisplay);
         }
 
         if (!screenManager) {
@@ -608,6 +612,8 @@
         }
 
         [screenManagers addObject:screenManager];
+
+        CFRelease(managedDisplay);
     }
 
     // Window managers are sorted by screen position along the x-axis.
