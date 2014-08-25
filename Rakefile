@@ -8,7 +8,7 @@ task :test => :setup do
 end
 
 task :install => :setup do
-  system 'xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean install'
+  system 'xctool clean install'
 end
 
 task :default => :test
