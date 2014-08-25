@@ -58,6 +58,8 @@
 
 - (BOOL)enablesLayoutHUDOnSpaceChange;
 
+- (BOOL)useCanaryBuild;
+
 @property (nonatomic, assign) BOOL tilingEnabled;
 
 - (NSArray *)floatingBundleIdentifiers;

@@ -17,6 +17,7 @@
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
 #import <IYLoginItem/NSBundle+LoginItem.h>
+#import <Sparkle/SUUpdater.h>
 
 @interface AMAppDelegate ()
 @property (nonatomic, assign) IBOutlet AMPreferencesWindowController *preferencesWindowController;
@@ -39,6 +40,11 @@
     [DDLog addLogger:DDTTYLogger.sharedInstance];
 
     [AMConfiguration.sharedConfiguration loadConfiguration];
+
+    if ([[AMConfiguration sharedConfiguration] useCanaryBuild]) {
+        NSString *canaryAppcastURLString = [[NSBundle mainBundle] infoDictionary][@"SUCanaryFeedURL"];
+        [[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:canaryAppcastURLString]];
+    }
 
     RAC(self, statusItem.image) = [RACObserve(AMConfiguration.sharedConfiguration, tilingEnabled) map:^id(NSNumber *tilingEnabled) {
         if (tilingEnabled.boolValue) {

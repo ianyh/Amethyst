@@ -32,7 +32,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUCanaryFeedURL</key>
+	<string>http://ianyh.com/amethyst/canary-appcast.xml</string>
 	<key>SUFeedURL</key>
-	<string>http://ianyh.github.io/Amethyst/appcast.xml</string>
+	<string>http://ianyh.com/amethyst/appcast.xml</string>
 </dict>
 </plist>

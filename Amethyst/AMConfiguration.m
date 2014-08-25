@@ -77,6 +77,7 @@ static NSString *const AMConfigurationMouseFollowsFocus = @"mouse-follows-focus"
 static NSString *const AMConfigurationFocusFollowsMouse = @"focus-follows-mouse";
 static NSString *const AMConfigurationEnablesLayoutHUD = @"enables-layout-hud";
 static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-layout-hud-on-space-change";
+static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 
 
 @interface AMConfiguration ()
@@ -156,7 +157,8 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
                                      AMConfigurationMouseFollowsFocus,
                                      AMConfigurationFocusFollowsMouse,
                                      AMConfigurationEnablesLayoutHUD,
-                                     AMConfigurationEnablesLayoutHUDOnSpaceChange ]) {
+                                     AMConfigurationEnablesLayoutHUDOnSpaceChange,
+                                     AMConfigurationUseCanaryBuild ]) {
         id value = self.configuration[defaultsKey];
         id defaultValue = self.defaultConfiguration[defaultsKey];
         if (value || (defaultValue && ![userDefaults objectForKey:defaultsKey])) {
@@ -428,6 +430,11 @@ static NSString *const AMConfigurationEnablesLayoutHUDOnSpaceChange = @"enables-
 - (BOOL)enablesLayoutHUDOnSpaceChange {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return [userDefaults boolForKey:AMConfigurationEnablesLayoutHUDOnSpaceChange];
+}
+
+- (BOOL)useCanaryBuild {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationUseCanaryBuild];
 }
 
 - (NSArray *)floatingBundleIdentifiers {
