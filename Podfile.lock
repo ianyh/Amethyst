@@ -47,15 +47,15 @@ EXTERNAL SOURCES:
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: 020378ec400d658923bf5887178394f65f052c90
-  IYLoginItem: d60d379f44e968f861fa9c1a0e3591d3e637a6e5
-  Kiwi: d60d7498b640a16f58b01925fc3c8d7c4d809f66
-  libextobjc: 2c9fc8226f0f38e562587f65172f93f0c9b4a47a
-  Masonry: d673617c9cbc24aaea90fba20b10e47fd9970a39
-  MASPreferences: 2c2f30b38c3dfceb0d3b29132a13417706a5adac
+  CocoaLumberjack: 9d198d6e19909b3b113a38c5f06f7bb8eedd0427
+  IYLoginItem: dbdbc4636da5087b200f68456aa4367a1af35c1d
+  Kiwi: c73667f2b84cbf36f1a3830267c5a4ae8dcbd8ba
+  libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
+  Masonry: 392466f4090cb28cc5349adec067453463e2ecd9
+  MASPreferences: 971d03da4b3818f8ea0d0ef10b86b02b2c052d17
   MASShortcut: 93f65e779180239a18ff4173a29469959495c0fa
-  OCMock: 5008fae4b4789b8fc3e48cd7660f2eb5ef8ce89e
-  ReactiveCocoa: dde7b11a14954edf789e7343b2c32e595caabd01
+  OCMock: 6db79185520e24f9f299548f2b8b07e41d881bd5
+  ReactiveCocoa: 2066583826c17dde8e90c41e489f682048cc57c9
   Silica: 6f6d4065325c5fdeaec39a19e0d756e30ac46c24
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.33.1
