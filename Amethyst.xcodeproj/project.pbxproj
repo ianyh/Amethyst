@@ -169,7 +169,6 @@
 		4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesListItemView.m; sourceTree = "<group>"; };
 		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
 		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
-		401124001975B43200085A72 /* CGSSpaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSSpaces.h; sourceTree = "<group>"; };
 		4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRunningApplication+Manageable.h"; sourceTree = "<group>"; };
 		4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRunningApplication+Manageable.m"; sourceTree = "<group>"; };
 		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
@@ -344,7 +343,6 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
-				401124001975B43200085A72 /* CGSSpaces.h */,
 				4008E724190C4D9D0049E2F6 /* Preferences */,
 				40B392831814977D009A296B /* View */,
 				40B337EF174935ED0001D8FC /* Event Handling */,
@@ -452,9 +450,9 @@
 			children = (
 				40CD2F8B176D0E5E00251338 /* Sparkle.framework */,
 				40CD2F8D176D0E5E00251338 /* Sparkle Test App.app */,
-				40CD2F8F176D0E5E00251338 /* Sparkle Unit Tests.octest */,
+				40CD2F8F176D0E5E00251338 /* Sparkle Unit Tests.xctest */,
 				40CD2F91176D0E5E00251338 /* BinaryDelta */,
-				40CD2F93176D0E5E00251338 /* finish_installation.app */,
+				40CD2F93176D0E5E00251338 /* Autoupdate.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -511,7 +509,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AM;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
 			};
 			buildConfigurationList = 402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */;
@@ -553,7 +551,7 @@
 			remoteRef = 40CD2F8C176D0E5E00251338 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		40CD2F8F176D0E5E00251338 /* Sparkle Unit Tests.octest */ = {
+		40CD2F8F176D0E5E00251338 /* Sparkle Unit Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Sparkle Unit Tests.xctest";
@@ -567,7 +565,7 @@
 			remoteRef = 40CD2F90176D0E5E00251338 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		40CD2F93176D0E5E00251338 /* finish_installation.app */ = {
+		40CD2F93176D0E5E00251338 /* Autoupdate.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = Autoupdate.app;
@@ -835,7 +833,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -868,7 +865,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -894,6 +890,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
@@ -909,6 +906,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
