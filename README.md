@@ -104,7 +104,7 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 Customization
 -------------
 
-Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in [default.amethyst](https://github.com/ianyh/Amethyst/blob/master/Amethyst/default.amethyst).
+Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in [default.amethyst](https://raw.githubusercontent.com/ianyh/Amethyst/master/Amethyst/default.amethyst).
 
 ### Layouts
 
