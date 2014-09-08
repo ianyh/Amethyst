@@ -13,7 +13,9 @@
 #import <ReactiveCocoa/RACEXTScope.h>
 #import <libextobjc/EXTSelectorChecking.h>
 #import <CocoaLumberjack/DDLog.h>
+#import <CocoaLumberjack/DDLogMacros.h>
 #import <Silica/Silica.h>
+#import <Sparkle/Sparkle.h>
 #import <Masonry/Masonry.h>
 #import "SIWindow+Amethyst.h"
 #import "SIApplication+Amethyst.h"

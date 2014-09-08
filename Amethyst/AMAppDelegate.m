@@ -17,7 +17,6 @@
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
 #import <IYLoginItem/NSBundle+LoginItem.h>
-#import <Sparkle/SUUpdater.h>
 
 @interface AMAppDelegate ()
 @property (nonatomic, assign) IBOutlet AMPreferencesWindowController *preferencesWindowController;
