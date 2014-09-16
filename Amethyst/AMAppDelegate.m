@@ -16,6 +16,7 @@
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
+#import <Crashlytics/Crashlytics.h>
 #import <IYLoginItem/NSBundle+LoginItem.h>
 
 @interface AMAppDelegate ()
@@ -51,6 +52,11 @@
         }
         return [NSImage imageNamed:@"icon-statusitem-disabled"];
     }];
+
+    NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"HBCrashlyticsAPIKey"];
+    if (crashlyticsAPIKey) {
+        [Crashlytics startWithAPIKey:crashlyticsAPIKey];
+    }
 
     self.windowManager = [[AMWindowManager alloc] init];
     self.hotKeyManager = [[AMHotKeyManager alloc] init];

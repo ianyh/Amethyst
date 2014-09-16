@@ -59,7 +59,8 @@
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		4065191219BDEA0E00255E0A /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4065191119BDEA0E00255E0A /* Sparkle.framework */; };
-		408D394719C7C7700001981F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 408D394619C7C7700001981F /* Crashlytics.framework */; };
+		408D394819C7CB760001981F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 408D394619C7C7700001981F /* Crashlytics.framework */; };
+		408D394919C7CB760001981F /* Crashlytics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 408D394619C7C7700001981F /* Crashlytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
 		40A0A1FA18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */; };
 		40A0A1FB18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */; };
@@ -101,6 +102,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				408D394919C7CB760001981F /* Crashlytics.framework in CopyFiles */,
 				4028709019BDECCB00C02061 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,9 +209,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				4065191219BDEA0E00255E0A /* Sparkle.framework in Frameworks */,
-				408D394719C7C7700001981F /* Crashlytics.framework in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
+				408D394819C7CB760001981F /* Crashlytics.framework in Frameworks */,
 				00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -455,6 +457,11 @@
 				CLASSPREFIX = AM;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
+				TargetAttributes = {
+					402DB6DD1742E41A00D1C936 = {
+						DevelopmentTeam = 82P2XLB4UH;
+					};
+				};
 			};
 			buildConfigurationList = 402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -817,6 +824,7 @@
 			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -826,10 +834,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -839,6 +848,7 @@
 			baseConfigurationReference = 3500E790DD334ACB848077E1 /* Pods.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -848,10 +858,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
