@@ -473,9 +473,7 @@
 
 - (void)applicationActivated:(id)sender {
     SIWindow *focusedWindow = [SIWindow focusedWindow];
-    if (!focusedWindow.isFullScreen) {
-        [self markScreenForReflow:focusedWindow.screen];
-    }
+    [self markScreenForReflow:focusedWindow.screen];
 }
 
 - (void)removeApplication:(SIApplication *)application {

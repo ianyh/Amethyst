@@ -36,6 +36,9 @@
 		4008E738190C4F650049E2F6 /* AMPreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4008E736190C4F650049E2F6 /* AMPreferencesWindowController.xib */; };
 		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
 		4008E73F190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
+		400A159319D9F3BE00F2708E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400A159219D9F3BE00F2708E /* Sparkle.framework */; };
+		400A159419D9F3CB00F2708E /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400A159219D9F3BE00F2708E /* Sparkle.framework */; };
+		400A159519D9F3CB00F2708E /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 400A159219D9F3BE00F2708E /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
 		4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
@@ -44,7 +47,6 @@
 		401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
 		401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
 		4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */; };
-		4028709019BDECCB00C02061 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4065191119BDEA0E00255E0A /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
 		402DB6EE1742E41A00D1C936 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6ED1742E41A00D1C936 /* main.m */; };
@@ -58,7 +60,6 @@
 		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
-		4065191219BDEA0E00255E0A /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4065191119BDEA0E00255E0A /* Sparkle.framework */; };
 		408D394819C7CB760001981F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 408D394619C7C7700001981F /* Crashlytics.framework */; };
 		408D394919C7CB760001981F /* Crashlytics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 408D394619C7C7700001981F /* Crashlytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
@@ -104,7 +105,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				408D394919C7CB760001981F /* Crashlytics.framework in CopyFiles */,
-				4028709019BDECCB00C02061 /* Sparkle.framework in CopyFiles */,
+				400A159519D9F3CB00F2708E /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +131,7 @@
 		4008E736190C4F650049E2F6 /* AMPreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMPreferencesWindowController.xib; sourceTree = "<group>"; };
 		4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesListItemView.h; sourceTree = "<group>"; };
 		4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesListItemView.m; sourceTree = "<group>"; };
+		400A159219D9F3BE00F2708E /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
 		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
 		4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRunningApplication+Manageable.h"; sourceTree = "<group>"; };
@@ -159,7 +161,6 @@
 		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
 		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
 		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
-		4065191119BDEA0E00255E0A /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = "../../Library/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug/Sparkle.framework"; sourceTree = "<group>"; };
 		408D394619C7C7700001981F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40A0A1F818F1B400000B7614 /* AMWidescreenTallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWidescreenTallLayout.h; sourceTree = "<group>"; };
 		40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWidescreenTallLayout.m; sourceTree = "<group>"; };
@@ -213,9 +214,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4065191219BDEA0E00255E0A /* Sparkle.framework in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
+				400A159419D9F3CB00F2708E /* Sparkle.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
+				400A159319D9F3BE00F2708E /* Sparkle.framework in Frameworks */,
 				408D394819C7CB760001981F /* Crashlytics.framework in Frameworks */,
 				00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */,
 			);
@@ -297,8 +299,8 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				400A159219D9F3BE00F2708E /* Sparkle.framework */,
 				408D394619C7C7700001981F /* Crashlytics.framework */,
-				4065191119BDEA0E00255E0A /* Sparkle.framework */,
 				402DB6FE1742E44E00D1C936 /* Carbon.framework */,
 				402DB6E11742E41A00D1C936 /* Cocoa.framework */,
 				400299E3176393F10049001F /* SenTestingKit.framework */,
@@ -842,7 +844,7 @@
 			baseConfigurationReference = 7BAAAA0E192A8194B5327A37 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
