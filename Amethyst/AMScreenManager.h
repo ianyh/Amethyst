@@ -36,6 +36,7 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 //
 // This property must never be nil.
 @property (nonatomic, strong, readonly) NSScreen *screen;
+@property (nonatomic, strong, readonly) NSString *screenIdentifier;
 
 // Delegate for obtaining windows on a screen.
 @property (nonatomic, assign) id<AMScreenManagerDelegate> delegate;
@@ -52,7 +53,7 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 //
 // screen   - The screen to be managed. Should not be nil.
 // delegate - The delegate to be used for obtaining windows. Should not be nil.
-- (id)initWithScreen:(NSScreen *)screen delegate:(id<AMScreenManagerDelegate>)delegate;
+- (id)initWithScreen:(NSScreen *)screen managedDisplay:(NSString *)screenIdentifier delegate:(id<AMScreenManagerDelegate>)delegate;
 
 // Marks the screen as needing reflowing.
 //

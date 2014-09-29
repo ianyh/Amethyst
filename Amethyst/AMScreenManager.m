@@ -15,6 +15,7 @@
 
 @interface AMScreenManager ()
 @property (nonatomic, strong) NSScreen *screen;
+@property (nonatomic, strong) NSString *screenIdentifier;
 
 @property (nonatomic, strong) NSTimer *reflowTimer;
 
@@ -35,12 +36,13 @@
 
 - (id)init { return nil; }
 
-- (id)initWithScreen:(NSScreen *)screen delegate:(id<AMScreenManagerDelegate>)delegate {
+- (id)initWithScreen:(NSScreen *)screen managedDisplay:(NSString *)screenIdentifier delegate:(id<AMScreenManagerDelegate>)delegate {
     self = [super init];
     if (self) {
         self.delegate = delegate;
 
         self.screen = screen;
+        self.screenIdentifier = screenIdentifier;
 
         NSMutableArray *layouts = [NSMutableArray array];
         for (Class layoutClass in [[AMConfiguration sharedConfiguration] layouts]) {
@@ -144,14 +146,7 @@
     if (self.currentLayoutIndex >= self.layouts.count) return;
     if (![AMConfiguration sharedConfiguration].tilingEnabled) return;
     if (self.isFullScreen) return;
-
-    CGSManagedDisplay managedDisplay = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, self.screen.frame);
-    if (CGSManagedDisplayIsAnimating(CGSDefaultConnection, managedDisplay)) {
-        CFRelease(managedDisplay);
-        return;
-    }
-
-    CFRelease(managedDisplay);
+    if (CGSManagedDisplayIsAnimating(CGSDefaultConnection, (__bridge CGSManagedDisplay)self.screenIdentifier)) return;
 
     [self.layouts[self.currentLayoutIndex] reflowScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
 }

@@ -17,6 +17,7 @@
 #import <Silica/Silica.h>
 #import <Sparkle/Sparkle.h>
 #import <Masonry/Masonry.h>
+#import "NSScreen+Amethyst.h"
 #import "SIWindow+Amethyst.h"
 #import "SIApplication+Amethyst.h"
 
