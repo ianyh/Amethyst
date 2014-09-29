@@ -53,7 +53,7 @@
         return [NSImage imageNamed:@"icon-statusitem-disabled"];
     }];
 
-    NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"HBCrashlyticsAPIKey"];
+    NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AMCrashlyticsAPIKey"];
     if (crashlyticsAPIKey) {
         [Crashlytics startWithAPIKey:crashlyticsAPIKey];
     }
