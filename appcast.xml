@@ -135,5 +135,20 @@
                  type="application/octet-stream"
                  />
     </item>
+    <item>
+      <title>Version 0.9</title>
+      <description>
+        
+      </description>
+      <pubDate>Mon, 15 Sep 2014 10:00:00 +0000</pubDate>
+      <sparkle:minimumSystemVersion>10.9.0</sparkle:minimumSystemVersion>
+      <sparkle:releaseNotesLink>http://ianyh.com/amethyst/versions/Amethyst-0.9.html</sparkle:releaseNotesLink>
+      <enclosure url="http://ianyh.com/amethyst/versions/Amethyst-0.9.zip"
+                 sparkle:version="11"
+                 sparkle:shortVersionString="0.9"
+                 length="2148692"
+                 type="application/octet-stream"
+                 />
+    </item>
   </channel>
 </rss>
