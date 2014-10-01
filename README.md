@@ -26,6 +26,19 @@ brew cask install amethyst
 
 Note: that Amethyst now is only supported on OS X 10.9. The last version that supports 10.8 can be found [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip).
 
+Troubleshooting
+===============
+
+*I can't update to 0.9.*
+
+There seems to be a issue with how 0.9 was signed. You may need to download it directly and install it that way.
+
+*Amethyst stopped working.*
+
+Try disabling and reenabling Accessibility permissions for Amethyst. I know, it's arcane and weird but frequently fixes issues arrising from code signature issues, which may be the cause here. 
+
+For anything else open an issue or email me. 
+
 Contributing
 ============
 
