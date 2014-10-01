@@ -18,27 +18,13 @@ logic and structure.
 Getting Amethyst
 ================
 
-Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.6.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.9.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
 
 ```
 brew cask install amethyst
 ```
 
 Note: that Amethyst now is only supported on OS X 10.9. The last version that supports 10.8 can be found [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip).
-
-Building
---------
-
-0. Install the latest version of Xcode
-1. Clone the project, then `cd` to the Amethyst directory.
-2. Install xctool
-    - `brew update && brew install xctool`
-    - you may need to accept all XCode licenses, e.g. `sudo xcodebuild -license`
-3. Install cocoapods
-    - `gem install cocoapods`
-    - you may need to `exec zsh` or similar for this command to be found, if using rbenv.
-7. `rake install`
-8. `cp Amethyst/default.amethyst ~/.amethyst`
 
 Contributing
 ============
