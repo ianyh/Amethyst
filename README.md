@@ -35,7 +35,7 @@ There seems to be a issue with how 0.9 was signed. You may need to download it d
 
 *Amethyst stopped working.*
 
-Try disabling and reenabling Accessibility permissions for Amethyst. I know, it's arcane and weird but frequently fixes issues arrising from code signature issues, which may be the cause here. 
+Try disabling and reenabling Accessibility permissions for Amethyst and then relaunch it. I know, it's arcane and weird but frequently fixes issues arrising from code signature issues, which may be the cause here.
 
 For anything else open an issue or email me. 
 
