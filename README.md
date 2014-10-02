@@ -37,7 +37,9 @@ There seems to be a issue with how 0.9 was signed. You may need to download it d
 
 Try disabling and reenabling Accessibility permissions for Amethyst and then relaunch it. I know, it's arcane and weird but frequently fixes issues arrising from code signature issues, which may be the cause here.
 
-For anything else open an issue or email me. 
+*I tried that and 0.9.1 is still broken.*
+
+It seems like I regressed a lot of behavor in 0.9.1. Version 0.8.6 can be downloaded [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.6.zip) if you want to downgrade. Otherwise feel free to open an issue or email me.
 
 Contributing
 ============
