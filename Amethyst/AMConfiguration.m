@@ -483,6 +483,12 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     [hotKeyNameToDefaultsKey addObject:@[@"Display current layout", AMConfigurationCommandDisplayCurrentLayoutKey]];
     [hotKeyNameToDefaultsKey addObject:@[@"Toggle global tiling", AMConfigurationCommandToggleTilingKey]];
 
+    for (NSString *layoutString in self.availableLayoutStrings) {
+        NSString *commandName = [NSString stringWithFormat:@"Select %@ layout", layoutString];
+        NSString *commandKey = [NSString stringWithFormat:@"select-%@-layout", layoutString];
+        [hotKeyNameToDefaultsKey addObject:@[commandName, commandKey]];
+    }
+
     return hotKeyNameToDefaultsKey;
 }
 

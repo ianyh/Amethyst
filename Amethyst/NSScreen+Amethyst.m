@@ -11,7 +11,7 @@
 @implementation NSScreen (Amethyst)
 
 - (NSString *)am_screenIdentifier {
-    CGSManagedDisplay managedDisplay = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, self.frame);
+    CGSManagedDisplay managedDisplay = CGSCopyBestManagedDisplayForRect(CGSDefaultConnection, self.frameIncludingDockAndMenu);
     return (NSString *)CFBridgingRelease(managedDisplay);
 }
 
