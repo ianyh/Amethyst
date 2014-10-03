@@ -18,7 +18,7 @@ logic and structure.
 Getting Amethyst
 ================
 
-Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.9.1.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.9.2.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
 
 ```
 brew cask install amethyst
@@ -29,17 +29,17 @@ Note: that Amethyst now is only supported on OS X 10.9. The last version that su
 Troubleshooting
 ===============
 
-*I can't update to 0.9.*
+*I can't update to 0.9.2.*
 
-There seems to be a issue with how 0.9 was signed. You may need to download it directly and install it that way.
+There seems to be a issue with how 0.9+ was signed. You may need to download it directly and install it that way.
 
 *Amethyst stopped working.*
 
 Try disabling and reenabling Accessibility permissions for Amethyst and then relaunch it. I know, it's arcane and weird but frequently fixes issues arrising from code signature issues, which may be the cause here.
 
-*I tried that and 0.9.1 is still broken.*
+*I tried that and 0.9.2 is still broken.*
 
-It seems like I regressed a lot of behavor in 0.9.1. Version 0.8.6 can be downloaded [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.6.zip) if you want to downgrade. Otherwise feel free to open an issue or email me.
+If you need to downgrade version 0.8.6 can be downloaded [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.6.zip). Otherwise feel free to open an issue or email me.
 
 Contributing
 ============
