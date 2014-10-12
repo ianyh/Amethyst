@@ -104,15 +104,21 @@
 
 - (void)assignCurrentSpaceIdentifiers {
     CFArrayRef screenDictionaries = CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
-    for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
-        NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
-        AMScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
-
-        if (!screenManager) {
-            return;
+    if (NSScreen.screensHaveSeparateSpaces) {
+        for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
+            NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
+            AMScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
+            
+            if (!screenManager) {
+                return;
+            }
+            
+            screenManager.currentSpaceIdentifier = screenDictionary[@"Current Space"][@"uuid"];
         }
-        
-        screenManager.currentSpaceIdentifier = screenDictionary[@"Current Space"][@"uuid"];
+    } else {
+        for (AMScreenManager *screenManager in self.screenManagers) {
+            screenManager.currentSpaceIdentifier = ((NSDictionary *)[(__bridge NSArray *)screenDictionaries objectAtIndex:0])[@"Current Space"][@"uuid"];
+        }
     }
     CFRelease(screenDictionaries);
 }
