@@ -108,11 +108,11 @@
         for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
             NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
             AMScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
-            
+
             if (!screenManager) {
                 return;
             }
-            
+
             screenManager.currentSpaceIdentifier = screenDictionary[@"Current Space"][@"uuid"];
         }
     } else {
@@ -600,6 +600,8 @@
             screenManager = [[AMScreenManager alloc] initWithScreen:screen managedDisplay:screenIdentifier delegate:self];
             [self.screenManagersCache setObject:screenManager forKey:screenIdentifier];
         }
+
+        screenManager.screen = screen;
 
         [screenManagers addObject:screenManager];
     }

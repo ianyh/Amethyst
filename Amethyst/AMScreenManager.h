@@ -35,7 +35,7 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 // The screen being managed.
 //
 // This property must never be nil.
-@property (nonatomic, strong, readonly) NSScreen *screen;
+@property (nonatomic, strong) NSScreen *screen;
 @property (nonatomic, strong, readonly) NSString *screenIdentifier;
 
 // Delegate for obtaining windows on a screen.

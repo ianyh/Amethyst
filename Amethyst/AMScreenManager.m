@@ -14,7 +14,6 @@
 #import "AMWindowManager.h"
 
 @interface AMScreenManager ()
-@property (nonatomic, strong) NSScreen *screen;
 @property (nonatomic, strong) NSString *screenIdentifier;
 
 @property (nonatomic, strong) NSTimer *reflowTimer;
