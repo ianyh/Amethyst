@@ -47,10 +47,14 @@
     }
 
     RAC(self, statusItem.image) = [RACObserve(AMConfiguration.sharedConfiguration, tilingEnabled) map:^id(NSNumber *tilingEnabled) {
+        NSImage *statusImage;
         if (tilingEnabled.boolValue) {
-            return [NSImage imageNamed:@"icon-statusitem"];
+            statusImage = [NSImage imageNamed:@"icon-statusitem"];
+        } else {
+            statusImage = [NSImage imageNamed:@"icon-statusitem-disabled"];
         }
-        return [NSImage imageNamed:@"icon-statusitem-disabled"];
+        [statusImage setTemplate:YES];
+        return statusImage;
     }];
 
 //    NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AMCrashlyticsAPIKey"];
