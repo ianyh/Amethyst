@@ -12,13 +12,13 @@ A quick screencast of basic functionality can be found [here](http://youtu.be/9a
 Credits
 -------
 
-Credit goes to [fjolnir](https://github.com/fjolnir) for the bulk of the initial
+Credit goes to [fjolnir](https://github.com/fjolnir) for much of the initial
 logic and structure.
 
 Getting Amethyst
 ================
 
-Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-0.9.4.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-latest.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
 
 ```
 brew cask install amethyst
@@ -52,6 +52,32 @@ Contact
 =======
 
 If you have questions or feedback you can [email me](mailto:ianynda@gmail.com) or [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst).
+
+Donating
+========
+
+Amethyst is free and always will be. That said, a couple of people have expressed their desire to donate money in appreciation. If you are so inclined I've set up two options:
+
+* You can find a Patreon page [here](http://www.patreon.com/ianyh) if you would like to pledge money regularly for releases.
+* If you would like to do a one-time donation there's a PayPal button below. If there's some other method of donating that you would prefer open an issue and I'll try to add it!
+
+[![PayPal Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ianynda%40gmail%2ecom&lc=US&item_name=Ian%20Ynda%2dHummel&item_number=Amethyst&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)]
+
+If you are considering donating to me, you are more than welcome to. You should also consider donating that money to a charity in addition to or instead. Here's a very incomplete list of things that you might want to throw money at:
+
+* [Freedom to Marry](https://secure.freedomtomarry.org/pages/donatetowin?source=BSDAds_GoogleGrant_EOY2013_Freedom%20to%20Marry-GG_Freedom%20to%20Marry_freedomtomarry&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAsmb9ggRZp1ukDdxwvn7Y-1AN7mhTPZxcpC3dNokzY8aAmcl8P8HAQ)
+* [Doctors Without Borders](https://donate.doctorswithoutborders.org/monthly.cfm?source=AZD140001D51&utm_source=google&utm_medium=ppc&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAt-jLIelzmFWTo9t3xnrXGnyjffRnHQ_Ug2o6C1PdvkaAqQt8P8HAQ)
+* [American Civil Liberties Union](https://www.aclu.org/secure/our-civil-liberties-are-under-attack-3?s_src=UNW140001SEM&ms=gad_SEM_Google_Search-Evergreen-ACLU%20Brand_ACLU%20Name%20Terms_DD_B2_aclu_e_53001180982)
+* [Heifer International](http://www.heifer.org/what-you-can-do/index.html)
+
+And a bunch of technology-oriented ones:
+
+* [Ada Initiative](https://adainitiative.org/donate/)
+* [National Center for Women & Information Technology](http://www.ncwit.org/donate)
+* [girls who code](http://girlswhocode.com/get-involved/)
+* [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
+* [Trans*H4CK](http://www.transhack.org/support/)
+* [Black Girls CODE](http://www.blackgirlscode.com/)
 
 Using Amethyst
 ==============
