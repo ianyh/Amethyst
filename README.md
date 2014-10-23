@@ -9,12 +9,6 @@ Tiling window manager for OS X similar to xmonad, written in pure Objective-C.
 
 A quick screencast of basic functionality can be found [here](http://youtu.be/9ayUdV1sfjA). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
 
-Credits
--------
-
-Credit goes to [fjolnir](https://github.com/fjolnir) for much of the initial
-logic and structure.
-
 Getting Amethyst
 ================
 
@@ -29,55 +23,25 @@ Note: that Amethyst now is only supported on OS X 10.9+. The last version that s
 Troubleshooting
 ===============
 
-*I can't update to 0.9.4.*
+I can't update to 0.9.4.
+---
 
-There seems to be a issue with how 0.9+ was signed. You may need to download it directly and install it that way.
+There seems to be a issue with how 0.9+ was signed. You may need to download it
+directly and install it that way.
 
-*Amethyst stopped working.*
+Amethyst stopped working.
+---
 
-Try disabling and reenabling Accessibility permissions for Amethyst and then relaunch it. I know, it's arcane and weird but frequently fixes issues arrising from code signature issues, which may be the cause here.
+Try disabling and reenabling Accessibility permissions for Amethyst and then
+relaunch it. I know, it's arcane and weird but frequently fixes issues arrising
+from code signature issues, which may be the cause here.
 
-*I tried that and 0.9.4 is still broken.*
+I tried that and 0.9.4 is still broken.
+---
 
-If you need to downgrade version 0.8.6 can be downloaded [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.6.zip). Otherwise feel free to open an issue or email me.
-
-Contributing
-============
-
-If you would like to see features or particular bugs fixed check out the Trello board [here](https://trello.com/b/cCg3xhlb/amethyst) and vote on things. It'll give me a better sense of what people want so I can prioritize.
-
-I love pull requests. If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than master. Otherwise just try to stick to the general style of the code.
-
-Contact
-=======
-
-If you have questions or feedback you can [email me](mailto:ianynda@gmail.com) or [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst).
-
-Donating
-========
-
-Amethyst is free and always will be. That said, a couple of people have expressed their desire to donate money in appreciation. If you are so inclined I've set up two options:
-
-* You can find a Patreon page [here](http://www.patreon.com/ianyh) if you would like to pledge money regularly for releases.
-* If you would like to do a one-time donation there's a PayPal button below. If there's some other method of donating that you would prefer open an issue and I'll try to add it!
-
-[![PayPal Donate](http://img.shields.io/paypal/donate.png?color=blue)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ianynda%40gmail%2ecom&lc=US&item_name=Ian%20Ynda%2dHummel&item_number=Amethyst&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
-
-If you are considering donating to me, you are more than welcome to. You should also consider donating that money to a charity in addition to or instead. Here's a very incomplete list of things that you might want to throw money at:
-
-* [Freedom to Marry](https://secure.freedomtomarry.org/pages/donatetowin?source=BSDAds_GoogleGrant_EOY2013_Freedom%20to%20Marry-GG_Freedom%20to%20Marry_freedomtomarry&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAsmb9ggRZp1ukDdxwvn7Y-1AN7mhTPZxcpC3dNokzY8aAmcl8P8HAQ)
-* [Doctors Without Borders](https://donate.doctorswithoutborders.org/monthly.cfm?source=AZD140001D51&utm_source=google&utm_medium=ppc&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAt-jLIelzmFWTo9t3xnrXGnyjffRnHQ_Ug2o6C1PdvkaAqQt8P8HAQ)
-* [American Civil Liberties Union](https://www.aclu.org/secure/our-civil-liberties-are-under-attack-3?s_src=UNW140001SEM&ms=gad_SEM_Google_Search-Evergreen-ACLU%20Brand_ACLU%20Name%20Terms_DD_B2_aclu_e_53001180982)
-* [Heifer International](http://www.heifer.org/what-you-can-do/index.html)
-
-And a bunch of technology-oriented ones:
-
-* [Ada Initiative](https://adainitiative.org/donate/)
-* [National Center for Women & Information Technology](http://www.ncwit.org/donate)
-* [girls who code](http://girlswhocode.com/get-involved/)
-* [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
-* [Trans*H4CK](http://www.transhack.org/support/)
-* [Black Girls CODE](http://www.blackgirlscode.com/)
+If you need to downgrade version 0.8.6 can be downloaded
+[here](http://ianyh.com/amethyst/versions/Amethyst-0.8.6.zip). Otherwise feel
+free to open an issue or email me.
 
 Using Amethyst
 ==============
@@ -197,3 +161,41 @@ By default the HUD will show when changing to a different space. You can disable
 ```js
 "enables-layout-hud-on-space-change": false
 ```
+
+Contributing
+============
+
+If you would like to see features or particular bugs fixed check out the Trello board [here](https://trello.com/b/cCg3xhlb/amethyst) and vote on things. It'll give me a better sense of what people want so I can prioritize.
+
+I love pull requests. If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than master. Otherwise just try to stick to the general style of the code.
+
+Contact
+=======
+
+If you have questions or feedback you can [email me](mailto:ianynda@gmail.com) or [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst).
+
+Donating
+========
+
+Amethyst is free and always will be. That said, a couple of people have expressed their desire to donate money in appreciation. If you are so inclined I've set up two options:
+
+* You can find a Patreon page [here](http://www.patreon.com/ianyh) if you would like to pledge money regularly for releases.
+* If you would like to do a one-time donation there's a PayPal button below. If there's some other method of donating that you would prefer open an issue and I'll try to add it!
+
+[![PayPal Donate](http://img.shields.io/paypal/donate.png?color=blue)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ianynda%40gmail%2ecom&lc=US&item_name=Ian%20Ynda%2dHummel&item_number=Amethyst&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
+
+If you are considering donating to me, you are more than welcome to. You should also consider donating that money to a charity in addition to or instead. Here's a very incomplete list of things that you might want to throw money at:
+
+* [Freedom to Marry](https://secure.freedomtomarry.org/pages/donatetowin?source=BSDAds_GoogleGrant_EOY2013_Freedom%20to%20Marry-GG_Freedom%20to%20Marry_freedomtomarry&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAsmb9ggRZp1ukDdxwvn7Y-1AN7mhTPZxcpC3dNokzY8aAmcl8P8HAQ)
+* [Doctors Without Borders](https://donate.doctorswithoutborders.org/monthly.cfm?source=AZD140001D51&utm_source=google&utm_medium=ppc&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAt-jLIelzmFWTo9t3xnrXGnyjffRnHQ_Ug2o6C1PdvkaAqQt8P8HAQ)
+* [American Civil Liberties Union](https://www.aclu.org/secure/our-civil-liberties-are-under-attack-3?s_src=UNW140001SEM&ms=gad_SEM_Google_Search-Evergreen-ACLU%20Brand_ACLU%20Name%20Terms_DD_B2_aclu_e_53001180982)
+* [Heifer International](http://www.heifer.org/what-you-can-do/index.html)
+
+And a bunch of technology-oriented ones:
+
+* [Ada Initiative](https://adainitiative.org/donate/)
+* [National Center for Women & Information Technology](http://www.ncwit.org/donate)
+* [girls who code](http://girlswhocode.com/get-involved/)
+* [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
+* [Trans*H4CK](http://www.transhack.org/support/)
+* [Black Girls CODE](http://www.blackgirlscode.com/)
