@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AMConfiguration.h"
 
 @class AMLayout;
 

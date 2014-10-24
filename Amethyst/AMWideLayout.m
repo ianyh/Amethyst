@@ -47,6 +47,9 @@
     
     CGRect screenFrame = [self adjustedFrameForLayout:screen];
     
+    CGFloat padding = [[AMConfiguration sharedConfiguration] windowPadding];
+    CGFloat positionOffset = round(padding / 2);
+    
     CGFloat mainPaneWindowWidth = round(screenFrame.size.width / mainPaneCount);
     CGFloat secondaryPaneWindowWidth = (hasSecondaryPane ? round(screenFrame.size.width / secondaryPaneCount) : 0.0);
 
@@ -60,15 +63,15 @@
         CGRect windowFrame;
 
         if (windowIndex < mainPaneCount) {
-            windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * windowIndex);
-            windowFrame.origin.y = screenFrame.origin.y;
-            windowFrame.size.width = mainPaneWindowWidth;
-            windowFrame.size.height = mainPaneWindowHeight;
+            windowFrame.origin.x = screenFrame.origin.x + positionOffset + (mainPaneWindowWidth * windowIndex);
+            windowFrame.origin.y = screenFrame.origin.y + positionOffset;
+            windowFrame.size.width = mainPaneWindowWidth - padding;
+            windowFrame.size.height = mainPaneWindowHeight - padding;
         } else {
-            windowFrame.origin.x = screenFrame.origin.x + (secondaryPaneWindowWidth * (windowIndex - mainPaneCount));
-            windowFrame.origin.y = screenFrame.origin.y + mainPaneWindowHeight;
-            windowFrame.size.width = secondaryPaneWindowWidth;
-            windowFrame.size.height = secondaryPaneWindowHeight;
+            windowFrame.origin.x = screenFrame.origin.x + positionOffset + (secondaryPaneWindowWidth * (windowIndex - mainPaneCount));
+            windowFrame.origin.y = screenFrame.origin.y + positionOffset + mainPaneWindowHeight;
+            windowFrame.size.width = secondaryPaneWindowWidth - padding;
+            windowFrame.size.height = secondaryPaneWindowHeight - padding;
         }
 
         [self assignFrame:windowFrame toWindow:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];
