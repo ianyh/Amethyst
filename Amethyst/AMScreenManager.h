@@ -59,7 +59,7 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 //
 // Does not immediately reflow. Reflow is delayed such that multiple calls to
 // this method do not cause extraneous reflows.
-- (void)setNeedsReflow;
+- (void)setNeedsReflow:(BOOL)focusWindow;
 
 // Updates the current layout and then marks the screen as needing reflow.
 //
