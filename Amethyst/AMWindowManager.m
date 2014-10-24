@@ -175,8 +175,7 @@
 
     [self markScreenForReflow:focusedWindow.screen focusWindow:NO];
     [focusedWindow moveToScreen:screenManager.screen];
-    [self markScreenForReflow:screenManager.screen focusWindow:NO];
-    [focusedWindow am_focusWindow];
+    [self markScreenForReflow:screenManager.screen focusWindow:YES];
 }
 
 - (void)focusScreenAtIndex:(NSUInteger)screenIndex {
