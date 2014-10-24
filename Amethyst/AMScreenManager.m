@@ -102,7 +102,7 @@
         }
     }
 
-    [self setNeedsReflow];
+    [self setNeedsReflow:NO];
 }
 
 - (void)displayLayoutHUD {
@@ -132,9 +132,13 @@
     [self.layoutNameWindow close];
 }
 
-- (void)setNeedsReflow {
+- (void)setNeedsReflow:(BOOL)focusWindow {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self reflow:nil];
+        if (focusWindow) {
+            SIWindow *focusedWindow = [SIWindow focusedWindow];
+            [focusedWindow am_focusWindow];
+        }
     });
 //    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, reflow:) object:nil];
 //    [self performSelector:@checkselector(self, reflow:) withObject:nil afterDelay:0.2];
@@ -152,7 +156,7 @@
 
 - (void)updateCurrentLayout:(AMScreenManagerLayoutUpdater)updater {
     updater(self.currentLayout);
-    [self setNeedsReflow];
+    [self setNeedsReflow:NO];
 }
 
 - (AMLayout *)currentLayout {
@@ -161,12 +165,12 @@
 
 - (void)cycleLayoutForward {
     self.currentLayoutIndex = (self.currentLayoutIndex + 1) % self.layouts.count;
-    [self setNeedsReflow];
+    [self setNeedsReflow:NO];
 }
 
 - (void)cycleLayoutBackward {
     self.currentLayoutIndex = (self.currentLayoutIndex == 0 ? self.layouts.count : self.currentLayoutIndex) - 1;
-    [self setNeedsReflow];
+    [self setNeedsReflow:NO];
 }
 
 - (void)selectLayout:(Class)layoutClass {
@@ -176,17 +180,17 @@
     if (layoutIndex == NSNotFound) return;
 
     self.currentLayoutIndex = layoutIndex;
-    [self setNeedsReflow];
+    [self setNeedsReflow:NO];
 }
 
 - (void)shrinkMainPane {
     [self.currentLayout shrinkMainPane];
-    [self setNeedsReflow];
+    [self setNeedsReflow:NO];
 }
 
 - (void)expandMainPane {
     [self.currentLayout expandMainPane];
-    [self setNeedsReflow];
+    [self setNeedsReflow:NO];
 }
 
 @end
