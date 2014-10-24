@@ -21,19 +21,16 @@
 
     CGRect screenFrame = [self adjustedFrameForLayout:screen];
     CGFloat windowWidth = screenFrame.size.width / windows.count;
-    
-    CGFloat padding = [[AMConfiguration sharedConfiguration] windowPadding];
-    CGFloat positionOffset = round(padding / 2);
 
     SIWindow *focusedWindow = [SIWindow focusedWindow];
 
     for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
         SIWindow *window = windows[windowIndex];
         CGRect windowFrame = {
-            .origin.x = screen.frameWithoutDockOrMenu.origin.x + positionOffset + windowIndex * windowWidth,
-            .origin.y = screen.frameWithoutDockOrMenu.origin.y + positionOffset,
-            .size.width = windowWidth - padding,
-            .size.height = screenFrame.size.height - padding
+            .origin.x = screen.frameWithoutDockOrMenu.origin.x + windowIndex * windowWidth,
+            .origin.y = screen.frameWithoutDockOrMenu.origin.y,
+            .size.width = windowWidth,
+            .size.height = screenFrame.size.height
         };
 
         [self assignFrame:windowFrame toWindow:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];

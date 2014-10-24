@@ -8,6 +8,7 @@
 
 #import "AMLayout.h"
 
+#import "AMConfiguration.h"
 
 @implementation AMLayout
 

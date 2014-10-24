@@ -437,10 +437,6 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     return [userDefaults boolForKey:AMConfigurationUseCanaryBuild];
 }
 
-- (CGFloat)windowPadding {
-    return 10;
-}
-
 - (NSArray *)floatingBundleIdentifiers {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return [userDefaults arrayForKey:AMConfigurationFloatingBundleIdentifiers] ?: @[];
