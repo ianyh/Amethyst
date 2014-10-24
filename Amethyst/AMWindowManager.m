@@ -277,8 +277,7 @@
     NSUInteger windowToSwapWithActiveIndex = [self.windows indexOfObject:windowToSwapWith];
 
     [self.windows exchangeObjectAtIndex:focusedWindowActiveIndex withObjectAtIndex:windowToSwapWithActiveIndex];
-    [self markScreenForReflow:focusedWindow.screen 
-focusWindow:YES];
+    [self markScreenForReflow:focusedWindow.screen focusWindow:YES];
 }
 
 - (void)swapFocusedWindowClockwise {
