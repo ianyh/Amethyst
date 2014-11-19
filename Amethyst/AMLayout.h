@@ -26,14 +26,7 @@
 
 + (NSString *)layoutName;
 
-// Organizes the windows within a screen's frame.
-//
-// screen  - The screen on which windows will be laid out.
-// windows - The windows to be laid out on the screen.
-//
-// Subclasses MUST override this method to layout windows according to their specific algorithm.
-// Subclasses MUST NOT call super's implementation.
-- (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows;
+- (NSOperation *)reflowOperationForScreen:(NSScreen *)screen withWindows:(NSArray *)windows;
 
 // Shrink the size of the main pane of content.
 // Subclasses can optionally implement this method.
@@ -50,18 +43,5 @@
 // Decrease the number of windows in the main pane of content.
 // Subclasses can optionally implement this method.
 - (void)decreaseMainPaneCount;
-
-// Returns the desired frame for the current layout based on the user's
-// configuration.
-//
-// screen - The screen from which the proper frame is desired.
-- (CGRect)adjustedFrameForLayout:(NSScreen *)screen;
-
-// Assigns the desired frame to the window taking into account whether or not the window is focused.
-//
-// frame    - The frame to set the window to. Frame origin may not be respected if window is focused.
-// window   - The window to set frame for.
-// focused  - YES if the window is the currently focused window.
-- (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame;
 
 @end

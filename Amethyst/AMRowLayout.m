@@ -8,25 +8,41 @@
 
 #import "AMRowLayout.h"
 
+#import "AMReflowOperation.h"
+
+@interface AMRowReflowOperation : AMReflowOperation
+@end
+
 @implementation AMRowLayout
 
 + (NSString *)layoutName {
     return @"Rows";
 }
 
-- (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-    if (windows.count == 0) return;
+- (NSOperation *)reflowOperationForScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
+    return [[AMRowReflowOperation alloc] initWithScreen:screen windows:windows];
+}
+
+@end
+
+@implementation AMRowReflowOperation
+
+- (void)main {
+    if (self.windows.count == 0) return;
     
-    CGRect screenFrame = [self adjustedFrameForLayout:screen];
-    CGFloat windowHeight = screenFrame.size.height / windows.count;
+    CGRect screenFrame = [self adjustedFrameForLayout:self.screen];
+    CGFloat windowHeight = screenFrame.size.height / self.windows.count;
     
     SIWindow *focusedWindow = [SIWindow focusedWindow];
     
-    for (NSUInteger windowIndex = 0; windowIndex < windows.count; ++windowIndex) {
-        SIWindow *window = windows[windowIndex];
+    for (NSUInteger windowIndex = 0; windowIndex < self.windows.count; ++windowIndex) {
+        if (self.cancelled) {
+            return;
+        }
+        SIWindow *window = self.windows[windowIndex];
         CGRect windowFrame = {
-            .origin.x = screen.frameWithoutDockOrMenu.origin.x,
-            .origin.y = screen.frameWithoutDockOrMenu.origin.y + windowIndex * windowHeight,
+            .origin.x = self.screen.frameWithoutDockOrMenu.origin.x,
+            .origin.y = self.screen.frameWithoutDockOrMenu.origin.y + windowIndex * windowHeight,
             .size.width = screenFrame.size.width,
             .size.height = windowHeight
         };
