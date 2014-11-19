@@ -20,6 +20,7 @@
 #import "NSScreen+Amethyst.h"
 #import "SIWindow+Amethyst.h"
 #import "SIApplication+Amethyst.h"
+//#import "_CGSSpace.h"
 
 #ifdef DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
