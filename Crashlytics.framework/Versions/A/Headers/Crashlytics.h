@@ -38,6 +38,7 @@
  *
  **/
 OBJC_EXTERN void CLSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);
+OBJC_EXTERN void CLSLogv(NSString *format, va_list args) NS_FORMAT_FUNCTION(1,0);
 
 /**
  *
@@ -46,6 +47,8 @@ OBJC_EXTERN void CLSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);
  *
  **/
 OBJC_EXTERN void CLSNSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);
+OBJC_EXTERN void CLSNSLogv(NSString *format, va_list args) NS_FORMAT_FUNCTION(1,0);
+
 
 @protocol CrashlyticsDelegate;
 
