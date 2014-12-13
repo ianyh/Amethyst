@@ -11,5 +11,6 @@
 @interface NSScreen (Amethyst)
 
 - (NSString *)am_screenIdentifier;
+- (BOOL)am_isFullscreen;
 
 @end

@@ -406,21 +406,8 @@
         }
     }
 
-    CFArrayRef screenDictionaries = CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
-    for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
-        NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
-        AMScreenManager *screenManager = nil;
-        for (AMScreenManager *manager in self.screenManagers) {
-            if ([screenIdentifier isEqualToString:[manager.screen am_screenIdentifier]]) {
-                screenManager = manager;
-                break;
-            }
-        }
-
-        CGSSpace currentSpace = [screenDictionary[@"Current Space"][@"id64"] intValue];
-        CGSSpaceType currentSpaceType = CGSSpaceGetType(CGSDefaultConnection, currentSpace);
-        
-        screenManager.isFullScreen = (currentSpaceType == kCGSSpaceFullscreen);
+    for (AMScreenManager *manager in self.screenManagers) {
+        manager.isFullScreen = [manager.screen am_isFullscreen];
     }
 
     [self markAllScreensForReflow];
