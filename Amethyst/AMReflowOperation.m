@@ -10,6 +10,28 @@
 
 #import "AMConfiguration.h"
 
+@interface AMFrameAssignment ()
+@property (nonatomic, assign) CGRect finalFrame;
+@property (nonatomic, strong) SIWindow *window;
+@property (nonatomic, assign) BOOL focused;
+@property (nonatomic, assign) CGRect screenFrame;
+@end
+
+@implementation AMFrameAssignment
+
+- (instancetype)initWithFrame:(CGRect)finalFrame window:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
+    self = [super init];
+    if (self) {
+        self.finalFrame = finalFrame;
+        self.window = window;
+        self.focused = focused;
+        self.screenFrame = screenFrame;
+    }
+    return self;
+}
+
+@end
+
 @interface AMReflowOperation ()
 @property (nonatomic, strong) NSScreen *screen;
 @property (nonatomic, strong) NSArray *windows;
@@ -30,7 +52,7 @@
     return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
 }
 
-- (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
+- (void)performFrameAssignments:(NSArray *)frameAssignments {
     if (self.cancelled) {
         return;
     }
@@ -39,6 +61,12 @@
         return;
     }
 
+    for (AMFrameAssignment *frameAssignment in frameAssignments) {
+        [self assignFrame:frameAssignment.finalFrame toWindow:frameAssignment.window focused:frameAssignment.focused screenFrame:frameAssignment.screenFrame];
+    }
+}
+
+- (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
     CGPoint finalPosition = finalFrame.origin;
     
     // Just resize the window

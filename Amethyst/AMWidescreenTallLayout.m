@@ -73,7 +73,8 @@
 
 - (void)main {
     if (self.windows.count == 0) return;
-    
+
+    NSMutableArray *frameAssignments = [NSMutableArray array];
     NSUInteger mainPaneCount = MIN(self.windows.count, self.layout.mainPaneCount);
     
     NSInteger secondaryPaneCount = self.windows.count - mainPaneCount;
@@ -105,8 +106,11 @@
             windowFrame.size.height = secondaryPaneWindowHeight;
         }
         
-        [self assignFrame:windowFrame toWindow:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];
+        AMFrameAssignment *frameAssignment = [[AMFrameAssignment alloc] initWithFrame:windowFrame window:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];
+        [frameAssignments addObject:frameAssignment];
     }
+
+    [self performFrameAssignments:frameAssignments];
 }
 
 @end

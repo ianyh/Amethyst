@@ -18,14 +18,16 @@
 
 - (void)main {
     CGRect screenFrame = [self adjustedFrameForLayout:self.screen];
-    
+    NSMutableArray *frameAssignments = [NSMutableArray array];
     for (SIWindow *window in self.windows) {
         if (self.cancelled) {
             return;
         }
 
-        [self assignFrame:screenFrame toWindow:window focused:NO screenFrame:screenFrame];
+        [frameAssignments addObject:[[AMFrameAssignment alloc] initWithFrame:screenFrame window:window focused:NO screenFrame:screenFrame]];
     }
+
+    [self performFrameAssignments:frameAssignments];
 }
 
 @end

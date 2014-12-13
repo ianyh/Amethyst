@@ -29,7 +29,8 @@
 
 - (void)main {
     if (self.windows.count == 0) return;
-    
+
+    NSMutableArray *frameAssignments = [NSMutableArray array];
     CGRect screenFrame = [self adjustedFrameForLayout:self.screen];
     CGFloat windowHeight = screenFrame.size.height / self.windows.count;
     
@@ -47,8 +48,11 @@
             .size.height = windowHeight
         };
 
-        [self assignFrame:windowFrame toWindow:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];
+        AMFrameAssignment *frameAssignment = [[AMFrameAssignment alloc] initWithFrame:windowFrame window:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];
+        [frameAssignments addObject:frameAssignment];
     }
+
+    [self performFrameAssignments:frameAssignments];
 }
 
 @end

@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+@interface AMFrameAssignment : NSObject
+- (instancetype)initWithFrame:(CGRect)finalFrame window:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame;
+@end
+
 @interface AMReflowOperation : NSOperation
 
 - (instancetype)initWithScreen:(NSScreen *)screen windows:(NSArray *)windows;
@@ -21,11 +25,7 @@
 // screen - The screen from which the proper frame is desired.
 - (CGRect)adjustedFrameForLayout:(NSScreen *)screen;
 
-// Assigns the desired frame to the window taking into account whether or not the window is focused.
-//
-// frame    - The frame to set the window to. Frame origin may not be respected if window is focused.
-// window   - The window to set frame for.
-// focused  - YES if the window is the currently focused window.
-- (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame;
+// Takes instances of AMFrameAssignment and performs the frame assignment.
+- (void)performFrameAssignments:(NSArray *)frameAssignments;
 
 @end
