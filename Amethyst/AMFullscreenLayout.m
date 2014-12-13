@@ -23,7 +23,8 @@
         if (self.cancelled) {
             return;
         }
-        window.frame = screenFrame;
+
+        [self assignFrame:screenFrame toWindow:window focused:NO screenFrame:screenFrame];
     }
 }
 
