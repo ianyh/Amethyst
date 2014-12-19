@@ -3,7 +3,7 @@ Amethyst
 
 [![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=master)](https://travis-ci.org/ianyh/Amethyst)
 
-Tiling window manager for OS X similar to xmonad, written in pure Objective-C.
+Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/).
 
 ![Screenshot](http://ianyh.com/amethyst/images/screenshot-small.png)
 
