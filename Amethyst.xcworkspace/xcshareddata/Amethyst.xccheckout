@@ -10,8 +10,6 @@
 	<string>Amethyst</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>97095EF4BAD9C8BA095B8F3D5815B76960EDFC8C</key>
-		<string>https://github.com/ianyh/wedding.git</string>
 		<key>BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273</key>
 		<string>ssh://github.com/ianyh/Silica.git</string>
 		<key>EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402</key>
@@ -23,8 +21,6 @@
 	<string>Amethyst.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>97095EF4BAD9C8BA095B8F3D5815B76960EDFC8C</key>
-		<string>../../wedding</string>
 		<key>BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273</key>
 		<string>../../Silica</string>
 		<key>EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402</key>
@@ -63,14 +59,6 @@
 			<string>EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Sparkle</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>97095EF4BAD9C8BA095B8F3D5815B76960EDFC8C</string>
-			<key>IDESourceControlWCCName</key>
-			<string>wedding</string>
 		</dict>
 	</array>
 </dict>
