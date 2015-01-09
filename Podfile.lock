@@ -1,8 +1,8 @@
 PODS:
   - CocoaLumberjack (2.0.0-beta):
-    - CocoaLumberjack/CLI
-    - CocoaLumberjack/Core
-    - CocoaLumberjack/Extensions
+    - CocoaLumberjack/CLI (= 2.0.0-beta)
+    - CocoaLumberjack/Core (= 2.0.0-beta)
+    - CocoaLumberjack/Extensions (= 2.0.0-beta)
   - CocoaLumberjack/CLI (2.0.0-beta):
     - CocoaLumberjack/Core
   - CocoaLumberjack/Core (2.0.0-beta)
@@ -18,7 +18,7 @@ PODS:
   - MASShortcut (1.2.4)
   - OCMock (3.1.1)
   - ReactiveCocoa (2.3.1):
-    - ReactiveCocoa/UI
+    - ReactiveCocoa/UI (= 2.3.1)
   - ReactiveCocoa/Core (2.3.1):
     - ReactiveCocoa/no-arc
   - ReactiveCocoa/no-arc (2.3.1)
@@ -27,7 +27,7 @@ PODS:
   - Silica (0.1.4)
 
 DEPENDENCIES:
-  - CocoaLumberjack
+  - CocoaLumberjack (= 2.0.0-beta)
   - IYLoginItem
   - Kiwi
   - libextobjc/EXTSelectorChecking
@@ -56,4 +56,4 @@ SPEC CHECKSUMS:
   ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
   Silica: 6f6d4065325c5fdeaec39a19e0d756e30ac46c24
 
-COCOAPODS: 0.34.1
+COCOAPODS: 0.35.0
