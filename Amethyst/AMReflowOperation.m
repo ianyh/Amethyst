@@ -66,6 +66,12 @@
     }
 
     for (AMFrameAssignment *frameAssignment in frameAssignments) {
+        if (!frameAssignment.window.isActive) {
+            return;
+        }
+    }
+
+    for (AMFrameAssignment *frameAssignment in frameAssignments) {
         [self assignFrame:frameAssignment.finalFrame toWindow:frameAssignment.window focused:frameAssignment.focused screenFrame:frameAssignment.screenFrame];
     }
 }
