@@ -1,2 +1,2 @@
 github "ReactiveCocoa/ReactiveCocoa" == 2.4.7
-github "jspahrsummers/libextobjc" == 0.4
+github "sparkle-project/Sparkle"
