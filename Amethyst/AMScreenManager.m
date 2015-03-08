@@ -124,8 +124,8 @@
     [self.layoutNameWindow setFrameOrigin:NSPointFromCGPoint(windowOrigin)];
     [self.layoutNameWindow makeKeyAndOrderFront:NSApp];
 
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@checkselector(self, hideLayoutHUD:) object:nil];
-    [self performSelector:@checkselector(self, hideLayoutHUD:) withObject:nil afterDelay:0.6];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hideLayoutHUD:) object:nil];
+    [self performSelector:@selector(hideLayoutHUD:) withObject:nil afterDelay:0.6];
 }
 
 - (void)hideLayoutHUD:(id)sender {

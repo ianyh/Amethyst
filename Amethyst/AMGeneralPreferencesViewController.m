@@ -51,10 +51,10 @@
 
     for (NSString *layoutString in [[AMConfiguration sharedConfiguration] availableLayoutStrings]) {
         NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:layoutString
-                                                          action:@checkselector(self, addLayoutString:)
+                                                          action:@selector(addLayoutString:)
                                                    keyEquivalent:@""];
         menuItem.target = self;
-        menuItem.action = @checkselector(self, addLayoutString:);
+        menuItem.action = @selector(addLayoutString:);
 
         [layoutMenu addItem:menuItem];
     }
