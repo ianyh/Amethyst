@@ -81,6 +81,8 @@
 		40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40E705D9176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
+		40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; };
+		40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
 		5C09C2AB18C1400F00CF5E6A /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
 		5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */; };
@@ -104,6 +106,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				400A159519D9F3CB00F2708E /* Sparkle.framework in CopyFiles */,
+				40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +188,7 @@
 		40D82F06176A22A800DE1A40 /* AMWideLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWideLayout.h; sourceTree = "<group>"; };
 		40D82F07176A22A900DE1A40 /* AMWideLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWideLayout.m; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
+		40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Amethyst.h"; sourceTree = "<group>"; };
 		40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Amethyst.m"; sourceTree = "<group>"; };
 		43BE96256148A252A0EDDBE5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -216,6 +220,7 @@
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
 				400A159419D9F3CB00F2708E /* Sparkle.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
+				40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */,
 				400A159319D9F3BE00F2708E /* Sparkle.framework in Frameworks */,
 				00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */,
 			);
@@ -297,6 +302,7 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */,
 				400A159219D9F3BE00F2708E /* Sparkle.framework */,
 				402DB6FE1742E44E00D1C936 /* Carbon.framework */,
 				402DB6E11742E41A00D1C936 /* Cocoa.framework */,
@@ -836,6 +842,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
@@ -860,6 +867,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
