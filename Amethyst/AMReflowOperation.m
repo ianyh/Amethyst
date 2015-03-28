@@ -9,6 +9,7 @@
 #import "AMReflowOperation.h"
 
 #import "AMConfiguration.h"
+#import <Silica/Silica.h>
 
 @interface AMFrameAssignment ()
 @property (nonatomic, assign) CGRect finalFrame;
@@ -78,6 +79,13 @@
 }
 
 - (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
+    CGFloat padding = [[AMConfiguration sharedConfiguration] windowPadding];
+
+    finalFrame.origin.x += round(padding / 2);
+    finalFrame.origin.y += round(padding / 2);
+    finalFrame.size.width -= padding;
+    finalFrame.size.height -= padding;
+
     CGPoint finalPosition = finalFrame.origin;
     
     // Just resize the window
