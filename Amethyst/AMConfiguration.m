@@ -44,6 +44,7 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 static NSString *const AMConfigurationScreens = @"screens";
 
 static NSString *const AMConfigurationWindowPadding = @"window-padding";
+static NSString *const AMConfigurationWindowPaddingCollapse = @"window-padding-collapse";
 
 // Command strings that reference possible window management commands. They are
 // optionally present in the configuration file. If any is ommitted the default
@@ -167,7 +168,8 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
                                      AMConfigurationEnablesLayoutHUD,
                                      AMConfigurationEnablesLayoutHUDOnSpaceChange,
                                      AMConfigurationUseCanaryBuild,
-                                     AMConfigurationWindowPadding]) {
+                                     AMConfigurationWindowPadding,
+                                     AMConfigurationWindowPaddingCollapse]) {
         id value = self.configuration[defaultsKey];
         id defaultValue = self.defaultConfiguration[defaultsKey];
         if (value || (defaultValue && ![userDefaults objectForKey:defaultsKey])) {
@@ -458,6 +460,11 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 - (CGFloat)windowPadding {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return [userDefaults floatForKey:AMConfigurationWindowPadding];
+}
+
+- (BOOL)windowPaddingCollapse {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AMConfigurationWindowPaddingCollapse];
 }
 
 - (NSArray *)floatingBundleIdentifiers {

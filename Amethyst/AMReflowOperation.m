@@ -79,13 +79,38 @@
 }
 
 - (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
-    CGFloat padding = [[AMConfiguration sharedConfiguration] windowPadding];
-
-    finalFrame.origin.x += round(padding / 2);
-    finalFrame.origin.y += round(padding / 2);
-    finalFrame.size.width -= padding;
-    finalFrame.size.height -= padding;
-
+    CGRect  screenBorder = [self adjustedFrameForLayout:self.screen];
+    CGFloat padding      = [[AMConfiguration sharedConfiguration] windowPadding];
+    
+    if([[AMConfiguration sharedConfiguration] windowPaddingCollapse]) {
+        CGFloat collapsedPadding = floor(padding / 2);
+        
+        if(finalFrame.origin.x + collapsedPadding < screenBorder.origin.x + padding) {
+            finalFrame.origin.x    = screenBorder.origin.x + padding;
+            finalFrame.size.width -= collapsedPadding;
+        }
+        else {
+            finalFrame.origin.x += collapsedPadding;
+        }
+        
+        if(finalFrame.origin.y + collapsedPadding < screenBorder.origin.y + padding) {
+            finalFrame.origin.y     = screenBorder.origin.y + padding;
+            finalFrame.size.height -= collapsedPadding;
+        }
+        else {
+            finalFrame.origin.y += collapsedPadding;
+        }
+    
+        finalFrame.size.width  = MIN(finalFrame.size.width  - padding, screenBorder.size.width  + screenBorder.origin.x - padding - finalFrame.origin.x);
+        finalFrame.size.height = MIN(finalFrame.size.height - padding, screenBorder.size.height + screenBorder.origin.y - padding - finalFrame.origin.y);
+    }
+    else {
+        finalFrame.origin.x    += padding;
+        finalFrame.origin.y    += padding;
+        finalFrame.size.width  -= 2*padding;
+        finalFrame.size.height -= 2*padding;
+    }
+    
     CGPoint finalPosition = finalFrame.origin;
     
     // Just resize the window

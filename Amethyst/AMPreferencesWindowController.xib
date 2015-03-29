@@ -270,7 +270,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="luh-Gm-ZV0">
-                    <rect key="frame" x="57" y="31" width="59" height="17"/>
+                    <rect key="frame" x="57" y="39" width="59" height="17"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Padding:" id="LnD-6G-RSL">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -278,7 +278,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ric-uO-1Cb">
-                    <rect key="frame" x="122" y="29" width="96" height="22"/>
+                    <rect key="frame" x="122" y="37" width="96" height="22"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="Qi6-Bv-Yh1">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="gi8-52-60I"/>
                         <font key="font" metaFont="system"/>
@@ -289,6 +289,16 @@
                         <binding destination="XhK-Tn-zrU" name="value" keyPath="values.window-padding" id="8Bz-5s-TgV"/>
                     </connections>
                 </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tXC-cK-Yql">
+                    <rect key="frame" x="120" y="13" width="76" height="18"/>
+                    <buttonCell key="cell" type="check" title="Collapse" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="59W-1k-G1j">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="g5z-Yz-njI" name="value" keyPath="values.window-padding-collapse" id="JG2-pu-4xU"/>
+                    </connections>
+                </button>
             </subviews>
             <point key="canvasLocation" x="753" y="408.5"/>
         </customView>
@@ -355,6 +365,7 @@
             </subviews>
         </customView>
         <userDefaultsController id="XhK-Tn-zrU"/>
+        <userDefaultsController representsSharedInstance="YES" id="g5z-Yz-njI"/>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
