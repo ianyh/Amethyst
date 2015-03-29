@@ -50,7 +50,19 @@
 }
 
 - (CGRect)adjustedFrameForLayout:(NSScreen *)screen {
-    return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
+    CGRect frame = [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
+    
+    if([[AMConfiguration sharedConfiguration] windowPaddingCollapse]) {
+        /* Inset for producing half of the full padding around screen as collapse only adds half of it to all windows */
+        CGFloat padding = floor([[AMConfiguration sharedConfiguration] windowPadding] / 2);
+    
+        frame.origin.x    += padding;
+        frame.origin.y    += padding;
+        frame.size.width  -= 2*padding;
+        frame.size.height -= 2*padding;
+    }
+    
+    return frame;
 }
 
 - (void)performFrameAssignments:(NSArray *)frameAssignments {
@@ -79,37 +91,17 @@
 }
 
 - (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
-    CGRect  screenBorder = [self adjustedFrameForLayout:self.screen];
-    CGFloat padding      = [[AMConfiguration sharedConfiguration] windowPadding];
+    CGFloat padding = [[AMConfiguration sharedConfiguration] windowPadding];
     
     if([[AMConfiguration sharedConfiguration] windowPaddingCollapse]) {
-        CGFloat collapsedPadding = floor(padding / 2);
-        
-        if(finalFrame.origin.x + collapsedPadding < screenBorder.origin.x + padding) {
-            finalFrame.origin.x    = screenBorder.origin.x + padding;
-            finalFrame.size.width -= collapsedPadding;
-        }
-        else {
-            finalFrame.origin.x += collapsedPadding;
-        }
-        
-        if(finalFrame.origin.y + collapsedPadding < screenBorder.origin.y + padding) {
-            finalFrame.origin.y     = screenBorder.origin.y + padding;
-            finalFrame.size.height -= collapsedPadding;
-        }
-        else {
-            finalFrame.origin.y += collapsedPadding;
-        }
+        /* Only use half padding for padding when collapsing outer edges are added by adjustedFrameForLayout */
+        padding = floor(padding / 2);
+    }
     
-        finalFrame.size.width  = MIN(finalFrame.size.width  - padding, screenBorder.size.width  + screenBorder.origin.x - padding - finalFrame.origin.x);
-        finalFrame.size.height = MIN(finalFrame.size.height - padding, screenBorder.size.height + screenBorder.origin.y - padding - finalFrame.origin.y);
-    }
-    else {
-        finalFrame.origin.x    += padding;
-        finalFrame.origin.y    += padding;
-        finalFrame.size.width  -= 2*padding;
-        finalFrame.size.height -= 2*padding;
-    }
+    finalFrame.origin.x    += padding;
+    finalFrame.origin.y    += padding;
+    finalFrame.size.width  -= 2*padding;
+    finalFrame.size.height -= 2*padding;
     
     CGPoint finalPosition = finalFrame.origin;
     
