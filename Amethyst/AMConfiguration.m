@@ -209,6 +209,10 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
      return [NSString stringWithFormat:@"select-%@-layout", layoutString];
 }
 
+- (BOOL)hasCustomConfiguration {
+    return !!self.configuration;
+}
+
 #pragma mark Hot Key Mapping
 
 - (AMModifierFlags)modifierFlagsForModifierString:(NSString *)modifierString {
