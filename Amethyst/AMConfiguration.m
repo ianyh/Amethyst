@@ -230,6 +230,9 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     if (command) {
         override = YES;
     } else {
+        if (self.configuration[AMConfigurationMod1String] || self.configuration[AMConfigurationMod2String]) {
+            override = YES;
+        }
         command = self.defaultConfiguration[commandKey];
     }
     NSString *commandKeyString = command[AMConfigurationCommandKeyKey];
