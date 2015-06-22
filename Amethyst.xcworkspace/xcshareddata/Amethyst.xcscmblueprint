@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "FC52EF52AFC36B6286669AB0AB665D4AE19A1634",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273" : 0,
+    "FC52EF52AFC36B6286669AB0AB665D4AE19A1634" : 0,
+    "EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A53E2360-08ED-4758-94BF-7A39C315C1E7",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273" : "Silica",
+    "FC52EF52AFC36B6286669AB0AB665D4AE19A1634" : "Amethyst",
+    "EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402" : "Amethyst\/Sparkle"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Amethyst",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 203,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Amethyst.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ssh:\/\/github.com\/ianyh\/Silica.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BE91C9C5ADF3ADEE2969E31AF581A0C779CC0273"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ianyh\/Sparkle.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "EF1CF5E1F342919DE309B5C9DAEDDCF1D12D0402"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ssh:\/\/github.com\/ianyh\/Amethyst.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "FC52EF52AFC36B6286669AB0AB665D4AE19A1634"
+    }
+  ]
+}
