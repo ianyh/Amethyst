@@ -526,11 +526,6 @@
                             handler:^(SIAccessibilityElement *accessibilityElement) {
                                 [self markScreenForReflow:window.screen];
                             }];
-    [application observeNotification:kAXWindowMovedNotification
-                         withElement:window
-                             handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self assignCurrentSpaceIdentifiers];
-                             }];
 }
 
 - (void)removeWindow:(SIWindow *)window {

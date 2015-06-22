@@ -134,16 +134,9 @@
 
 - (void)setNeedsReflow {
     [self.reflowOperation cancel];
-    if (self.changingSpace) {
-        self.changingSpace = NO;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self reflow:nil];
-        });
-    } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reflow:nil];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self reflow:nil];
+    });
 }
 
 - (void)reflow:(id)sender {
@@ -152,8 +145,11 @@
     if (![AMConfiguration sharedConfiguration].tilingEnabled) return;
     if (self.isFullScreen) return;
     if (CGSManagedDisplayIsAnimating(CGSDefaultConnection, (__bridge CGSManagedDisplay)self.screenIdentifier)) return;
+    if (self.changingSpace) {
+        self.changingSpace = NO;
+        return;
+    }
 
-    self.changingSpace = NO;
     self.reflowOperation = [self.layouts[self.currentLayoutIndex] reflowOperationForScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
     [[NSOperationQueue mainQueue] addOperation:self.reflowOperation];
 }
