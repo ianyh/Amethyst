@@ -44,12 +44,13 @@
     CGFloat secondaryPaneWindowHeight = (hasSecondaryPane ? round(screenFrame.size.height / secondaryPaneCount) : 0.0);
     CGFloat tertiaryPaneWindowHeight = (hasTertiaryPane ? round(screenFrame.size.height / tertiaryPaneCount) : 0.0);
     
-    CGFloat secondaryPaneWindowWidth = round(screenFrame.size.width * (self.mainPaneRatio / 2));
-    
     CGFloat mainPaneWindowWidth;
+    CGFloat secondaryPaneWindowWidth = 0;
     if (hasSecondaryPane && hasTertiaryPane) {
         mainPaneWindowWidth = round(screenFrame.size.width * self.mainPaneRatio);
+        secondaryPaneWindowWidth = round((screenFrame.size.width - mainPaneWindowWidth) / 2);
     } else if (hasSecondaryPane) {
+        secondaryPaneWindowWidth = round(screenFrame.size.width * (self.mainPaneRatio / 2));
         mainPaneWindowWidth = screenFrame.size.width - secondaryPaneWindowWidth;
     } else {
         mainPaneWindowWidth = screenFrame.size.width;
