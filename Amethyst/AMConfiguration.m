@@ -11,10 +11,12 @@
 #import "AMHotKeyManager.h"
 #import "AMWideLayout.h"
 #import "AMTallLayout.h"
+#import "AMTallRightLayout.h"
 #import "AMFullscreenLayout.h"
 #import "AMColumnLayout.h"
 #import "AMRowLayout.h"
 #import "AMFloatingLayout.h"
+#import "AMMiddleWideLayout.h"
 #import "AMLayout.h"
 #import "AMScreenManager.h"
 #import "AMWidescreenTallLayout.h"
@@ -125,7 +127,9 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 
 + (Class)layoutClassForString:(NSString *)layoutString {
     if ([layoutString isEqualToString:@"tall"]) return [AMTallLayout class];
+    if ([layoutString isEqualToString:@"tall-right"]) return [AMTallRightLayout class];
     if ([layoutString isEqualToString:@"wide"]) return [AMWideLayout class];
+    if ([layoutString isEqualToString:@"middle-wide"]) return [AMMiddleWideLayout class];
     if ([layoutString isEqualToString:@"fullscreen"]) return [AMFullscreenLayout class];
     if ([layoutString isEqualToString:@"column"]) return [AMColumnLayout class];
     if ([layoutString isEqualToString:@"row"]) return [AMRowLayout class];
@@ -136,7 +140,9 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 
 + (NSString *)stringForLayoutClass:(Class)layoutClass {
     if (layoutClass == [AMTallLayout class]) return @"tall";
+    if (layoutClass == [AMTallRightLayout class]) return @"tall-right";
     if (layoutClass == [AMWideLayout class]) return @"wide";
+    if (layoutClass == [AMMiddleWideLayout class]) return @"middle-wide";
     if (layoutClass == [AMFullscreenLayout class]) return @"fullscreen";
     if (layoutClass == [AMColumnLayout class]) return @"column";
     if (layoutClass == [AMRowLayout class]) return @"row";
@@ -209,6 +215,10 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
      return [NSString stringWithFormat:@"select-%@-layout", layoutString];
 }
 
+- (BOOL)hasCustomConfiguration {
+    return !!self.configuration;
+}
+
 #pragma mark Hot Key Mapping
 
 - (AMModifierFlags)modifierFlagsForModifierString:(NSString *)modifierString {
@@ -226,6 +236,9 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     if (command) {
         override = YES;
     } else {
+        if (self.configuration[AMConfigurationMod1String] || self.configuration[AMConfigurationMod2String]) {
+            override = YES;
+        }
         command = self.defaultConfiguration[commandKey];
     }
     NSString *commandKeyString = command[AMConfigurationCommandKeyKey];
@@ -381,7 +394,9 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 
 - (NSArray *)availableLayoutStrings {
     return [[[@[ [AMTallLayout class],
+                [AMTallRightLayout class],
                 [AMWideLayout class],
+                [AMMiddleWideLayout class],
                 [AMFullscreenLayout class],
                 [AMColumnLayout class],
                 [AMRowLayout class],

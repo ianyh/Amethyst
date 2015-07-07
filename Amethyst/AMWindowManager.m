@@ -61,28 +61,28 @@
         }
 
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@checkselector(self, applicationDidLaunch:)
+                                                               selector:@selector(applicationDidLaunch:)
                                                                    name:NSWorkspaceDidLaunchApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@checkselector(self, applicationDidTerminate:)
+                                                               selector:@selector(applicationDidTerminate:)
                                                                    name:NSWorkspaceDidTerminateApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@checkselector(self, applicationDidHide:)
+                                                               selector:@selector(applicationDidHide:)
                                                                    name:NSWorkspaceDidHideApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@checkselector(self, applicationDidUnhide:)
+                                                               selector:@selector(applicationDidUnhide:)
                                                                    name:NSWorkspaceDidUnhideApplicationNotification
                                                                  object:nil];
         [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
-                                                               selector:@checkselector(self, activeSpaceDidChange:)
+                                                               selector:@selector(activeSpaceDidChange:)
                                                                    name:NSWorkspaceActiveSpaceDidChangeNotification
                                                                  object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@checkselector(self, screenParametersDidChange:)
+                                                 selector:@selector(screenParametersDidChange:)
                                                      name:NSApplicationDidChangeScreenParametersNotification
                                                    object:nil];
 
@@ -406,21 +406,8 @@
         }
     }
 
-    CFArrayRef screenDictionaries = CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
-    for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
-        NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
-        AMScreenManager *screenManager = nil;
-        for (AMScreenManager *manager in self.screenManagers) {
-            if ([screenIdentifier isEqualToString:[manager.screen am_screenIdentifier]]) {
-                screenManager = manager;
-                break;
-            }
-        }
-
-        CGSSpace currentSpace = [screenDictionary[@"Current Space"][@"id64"] intValue];
-        CGSSpaceType currentSpaceType = CGSSpaceGetType(CGSDefaultConnection, currentSpace);
-        
-        screenManager.isFullScreen = (currentSpaceType == kCGSSpaceFullscreen);
+    for (AMScreenManager *manager in self.screenManagers) {
+        manager.isFullScreen = [manager.screen am_isFullscreen];
     }
 
     [self markAllScreensForReflow];
@@ -471,9 +458,9 @@
                          withElement:application
                              handler:^(SIAccessibilityElement *accessibilityElement) {
                                  [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                                                          selector:@checkselector(self, applicationActivated:)
+                                                                          selector:@selector(applicationActivated:)
                                                                             object:nil];
-                                 [self performSelector:@checkselector(self, applicationActivated:) withObject:nil afterDelay:0.2];
+                                 [self performSelector:@selector(applicationActivated:) withObject:nil afterDelay:0.2];
                              }];
 }
 
@@ -539,11 +526,6 @@
                             handler:^(SIAccessibilityElement *accessibilityElement) {
                                 [self markScreenForReflow:window.screen];
                             }];
-    [application observeNotification:kAXWindowMovedNotification
-                         withElement:window
-                             handler:^(SIAccessibilityElement *accessibilityElement) {
-                                 [self assignCurrentSpaceIdentifiers];
-                             }];
 }
 
 - (void)removeWindow:(SIWindow *)window {

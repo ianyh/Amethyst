@@ -36,6 +36,9 @@
 }
 
 - (IBAction)showWindow:(id)sender {
+    if ([AMConfiguration sharedConfiguration].hasCustomConfiguration) {
+        NSRunAlertPanel(@"Warning", @"You have a .amethyst file, which can override in-app preferences. You may encounter unexpected behavior.", @"OK", nil, nil);
+    }
     [NSApp activateIgnoringOtherApps:YES];
     [super showWindow:sender];
 }

@@ -21,6 +21,8 @@
 // Loads configuration.
 - (void)loadConfiguration;
 
+- (BOOL)hasCustomConfiguration;
+
 // Contructs the string corresponding to the keybinding entry in the
 // configuration file for a specific layout.
 //

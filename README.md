@@ -112,7 +112,7 @@ You can set the layouts you want to use by supplying a list of layout names unde
 will restrict your layouts to the tall and fullscreen layouts. The available layouts are as follows:
 
 * **Tall** ("tall"): Defines a main area on the left and a secondary area on the right.
-* **Wide** ("wide"): Defines a main area on the top and a secondary column on the right.
+* **Wide** ("wide"): Defines a main area on the top and a secondary area on the bottom.
 * **Fullscreen** ("fullscreen"): All windows are sized to fill the screen.
 * **Column** ("column"): All windows are distributed in evenly sized in columns from left to right.
 * **Row** ("row"): All windows are distributed in evenly sized rows from top to bottom.

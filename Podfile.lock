@@ -1,41 +1,29 @@
 PODS:
   - CocoaLumberjack (2.0.0-beta):
-    - CocoaLumberjack/CLI
-    - CocoaLumberjack/Core
-    - CocoaLumberjack/Extensions
+    - CocoaLumberjack/CLI (= 2.0.0-beta)
+    - CocoaLumberjack/Core (= 2.0.0-beta)
+    - CocoaLumberjack/Extensions (= 2.0.0-beta)
   - CocoaLumberjack/CLI (2.0.0-beta):
     - CocoaLumberjack/Core
   - CocoaLumberjack/Core (2.0.0-beta)
   - CocoaLumberjack/Extensions (2.0.0-beta):
     - CocoaLumberjack/Core
   - IYLoginItem (0.1)
-  - Kiwi (2.3.0)
-  - libextobjc/EXTSelectorChecking (0.4):
-    - libextobjc/RuntimeExtensions
-  - libextobjc/RuntimeExtensions (0.4)
-  - Masonry (0.5.3)
-  - MASPreferences (1.1)
+  - Kiwi (2.3.1)
+  - Masonry (0.6.1)
+  - MASPreferences (1.1.2)
   - MASShortcut (1.2.4)
-  - OCMock (3.1.1)
-  - ReactiveCocoa (2.3.1):
-    - ReactiveCocoa/UI
-  - ReactiveCocoa/Core (2.3.1):
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.3.1)
-  - ReactiveCocoa/UI (2.3.1):
-    - ReactiveCocoa/Core
+  - OCMock (3.1.2)
   - Silica (0.1.4)
 
 DEPENDENCIES:
-  - CocoaLumberjack
+  - CocoaLumberjack (= 2.0.0-beta)
   - IYLoginItem
   - Kiwi
-  - libextobjc/EXTSelectorChecking
   - Masonry
   - MASPreferences
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
   - OCMock
-  - ReactiveCocoa
   - Silica (from `https://github.com/ianyh/Silica`)
 
 EXTERNAL SOURCES:
@@ -44,16 +32,22 @@ EXTERNAL SOURCES:
   Silica:
     :git: https://github.com/ianyh/Silica
 
-SPEC CHECKSUMS:
-  CocoaLumberjack: aadc76d7bd6c839ca84b38ed50cbf89d7cf8c693
-  IYLoginItem: dbdbc4636da5087b200f68456aa4367a1af35c1d
-  Kiwi: 54bece5b35564d9b8e03c608d926f1a22fcfc589
-  libextobjc: ba42e4111f433273a886cd54f0ddaddb7f62f82f
-  Masonry: 35368c2ca9577ca87722c12fc52c4bad9b1c1516
-  MASPreferences: 971d03da4b3818f8ea0d0ef10b86b02b2c052d17
-  MASShortcut: 93f65e779180239a18ff4173a29469959495c0fa
-  OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
-  ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
-  Silica: 6f6d4065325c5fdeaec39a19e0d756e30ac46c24
+CHECKOUT OPTIONS:
+  MASShortcut:
+    :commit: 5dea29a0d89374d2d8ebfbf3ee26fdc54c78dc9b
+    :git: https://github.com/ianyh/MASShortcut
+  Silica:
+    :commit: dccc32be785cb65f7f91b00f6b5369699d0efe2f
+    :git: https://github.com/ianyh/Silica
 
-COCOAPODS: 0.34.1
+SPEC CHECKSUMS:
+  CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
+  IYLoginItem: e57a86b39d3b9ab0e2fc033adedae01efafd9adf
+  Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
+  Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
+  MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
+  MASShortcut: e86fe7f04d5c454d43ac766baf5243311cc4d359
+  OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
+  Silica: 08a834a49ae29b72503f3622449e4407ed407222
+
+COCOAPODS: 0.37.2

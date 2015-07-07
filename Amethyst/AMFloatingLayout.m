@@ -13,8 +13,9 @@
     return @"Floating";
 }
 
-- (void)reflowScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
+- (NSOperation *)reflowOperationForScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
     // noop
+    return [[NSOperation alloc] init];
 }
 
 @end
