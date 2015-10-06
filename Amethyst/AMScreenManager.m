@@ -150,6 +150,7 @@
         return;
     }
 
+    NSLog(@"%@", self.layouts[self.currentLayoutIndex]);
     self.reflowOperation = [self.layouts[self.currentLayoutIndex] reflowOperationForScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
     [[NSOperationQueue mainQueue] addOperation:self.reflowOperation];
 }
