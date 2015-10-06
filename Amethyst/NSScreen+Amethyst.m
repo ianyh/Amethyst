@@ -24,7 +24,7 @@
             CGSSpace currentSpace = [screenDictionary[@"Current Space"][@"id64"] intValue];
             CGSSpaceType currentSpaceType = CGSSpaceGetType(CGSDefaultConnection, currentSpace);
 
-            isFullscreen = (currentSpaceType == kCGSSpaceFullscreen);
+            isFullscreen = (currentSpaceType != kCGSSpaceUser);
             break;
         }
     }
