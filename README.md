@@ -1,6 +1,8 @@
 Amethyst
 ========
 
+[![Join the chat at https://gitter.im/ianyh/Amethyst](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ianyh/Amethyst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/ianyh/Amethyst.png?branch=master)](https://travis-ci.org/ianyh/Amethyst)
 
 Tiling window manager for OS X similar to xmonad, written in pure Objective-C.
