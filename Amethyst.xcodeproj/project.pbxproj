@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0530B06777D42039F419322 /* libPods.a */; };
 		023D3F231856828C00391BEC /* AMFloatingLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 023D3F221856828C00391BEC /* AMFloatingLayout.m */; };
+		1C4B44C71B4B0927000FA2BF /* AMMiddleWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B44C61B4B0927000FA2BF /* AMMiddleWideLayout.m */; };
+		1CFC921E1B4B2EA400FBF00A /* AMTallRightLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC921D1B4B2EA400FBF00A /* AMTallRightLayout.m */; };
 		400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400299E3176393F10049001F /* SenTestingKit.framework */; };
 		400299E5176393F10049001F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		400299EB176393F10049001F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 400299E9176393F10049001F /* InfoPlist.strings */; };
@@ -114,6 +116,10 @@
 /* Begin PBXFileReference section */
 		023D3F211856828C00391BEC /* AMFloatingLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFloatingLayout.h; sourceTree = "<group>"; };
 		023D3F221856828C00391BEC /* AMFloatingLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFloatingLayout.m; sourceTree = "<group>"; };
+		1C4B44C51B4B0927000FA2BF /* AMMiddleWideLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMMiddleWideLayout.h; sourceTree = "<group>"; };
+		1C4B44C61B4B0927000FA2BF /* AMMiddleWideLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMMiddleWideLayout.m; sourceTree = "<group>"; };
+		1CFC921C1B4B2EA400FBF00A /* AMTallRightLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTallRightLayout.h; sourceTree = "<group>"; };
+		1CFC921D1B4B2EA400FBF00A /* AMTallRightLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallRightLayout.m; sourceTree = "<group>"; };
 		29C5F9A311406C7D459BABEC /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
 		400299E2176393F10049001F /* AmethystTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		400299E3176393F10049001F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -375,10 +381,14 @@
 				40B337E31745D0620001D8FC /* AMFullscreenLayout.m */,
 				40B337E917465ADF0001D8FC /* AMTallLayout.h */,
 				40B337EA17465AE00001D8FC /* AMTallLayout.m */,
+				1CFC921C1B4B2EA400FBF00A /* AMTallRightLayout.h */,
+				1CFC921D1B4B2EA400FBF00A /* AMTallRightLayout.m */,
 				40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */,
 				40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */,
 				40D82F06176A22A800DE1A40 /* AMWideLayout.h */,
 				40D82F07176A22A900DE1A40 /* AMWideLayout.m */,
+				1C4B44C51B4B0927000FA2BF /* AMMiddleWideLayout.h */,
+				1C4B44C61B4B0927000FA2BF /* AMMiddleWideLayout.m */,
 				5C09C2A918C1400F00CF5E6A /* AMRowLayout.h */,
 				5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */,
 				40A0A1F818F1B400000B7614 /* AMWidescreenTallLayout.h */,
@@ -681,6 +691,7 @@
 				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
 				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
 				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
+				1C4B44C71B4B0927000FA2BF /* AMMiddleWideLayout.m in Sources */,
 				401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
 				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
@@ -691,6 +702,7 @@
 				40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
 				40A0A1FA18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */,
 				5C09C2AB18C1400F00CF5E6A /* AMRowLayout.m in Sources */,
+				1CFC921E1B4B2EA400FBF00A /* AMTallRightLayout.m in Sources */,
 				40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 				40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */,
 			);
