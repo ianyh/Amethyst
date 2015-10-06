@@ -80,7 +80,6 @@
 		40E705D9176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; };
 		40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		40EF05911AABE5D1001FBA5B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; };
 		40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; };
 		40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
@@ -219,7 +218,6 @@
 			files = (
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
 				40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */,
-				40EF05911AABE5D1001FBA5B /* Sparkle.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */,
 				00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */,
@@ -478,13 +476,9 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AM;
-				LastUpgradeCheck = 0510;
+				LastTestingUpgradeCheck = 0700;
+				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
-				TargetAttributes = {
-					402DB6DD1742E41A00D1C936 = {
-						DevelopmentTeam = 82P2XLB4UH;
-					};
-				};
 			};
 			buildConfigurationList = 402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -835,7 +829,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7BAAAA0E192A8194B5327A37 /* Pods.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -849,9 +843,8 @@
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -860,7 +853,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 43BE96256148A252A0EDDBE5 /* Pods.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -874,9 +867,8 @@
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
