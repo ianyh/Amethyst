@@ -692,7 +692,7 @@
     NSUInteger minCount = windowDescriptionsCount;
     for (NSDictionary *windowDescription in windowsAtPoint) {
         CGWindowID windowID;
-        CFNumberRef windowNumber = (__bridge CFNumberRef)windowDescription[(__bridge NSNumber *)kCGWindowNumber];
+        CFNumberRef windowNumber = (__bridge CFNumberRef)windowDescription[(__bridge NSString *)kCGWindowNumber];
         CFNumberGetValue(windowNumber, kCGWindowIDCFNumberType, &windowID);
 
         CFArrayRef windowsAboveWindow = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenAboveWindow, windowID);
