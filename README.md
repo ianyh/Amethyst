@@ -174,7 +174,7 @@ I love pull requests. If you'd like to contribute please branch off of the `deve
 Contact
 =======
 
-If you have questions or feedback you can [email me](mailto:ianynda@gmail.com) or [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst).
+If you have questions or feedback you have a plethora of options. You can [email me](mailto:ianynda@gmail.com), [tweet at me](https://twitter.com/ianyh), or get on [gitter](https://gitter.im/ianyh/Amethyst). That last one is new and kind of experimental. You can [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst), as well, but I am on there fairly infrequently.
 
 Donating
 ========
