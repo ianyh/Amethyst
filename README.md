@@ -1,6 +1,7 @@
 Amethyst
 ========
 
+[![Join the chat at https://gitter.im/ianyh/Amethyst](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ianyh/Amethyst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=master)](https://travis-ci.org/ianyh/Amethyst)
 
 Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/).
@@ -112,7 +113,7 @@ You can set the layouts you want to use by supplying a list of layout names unde
 will restrict your layouts to the tall and fullscreen layouts. The available layouts are as follows:
 
 * **Tall** ("tall"): Defines a main area on the left and a secondary area on the right.
-* **Wide** ("wide"): Defines a main area on the top and a secondary column on the right.
+* **Wide** ("wide"): Defines a main area on the top and a secondary area on the bottom.
 * **Fullscreen** ("fullscreen"): All windows are sized to fill the screen.
 * **Column** ("column"): All windows are distributed in evenly sized in columns from left to right.
 * **Row** ("row"): All windows are distributed in evenly sized rows from top to bottom.
@@ -172,7 +173,7 @@ I love pull requests. If you'd like to contribute please branch off of the `deve
 Contact
 =======
 
-If you have questions or feedback you can [email me](mailto:ianynda@gmail.com) or [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst).
+If you have questions or feedback you have a plethora of options. You can [email me](mailto:ianynda@gmail.com), [tweet at me](https://twitter.com/ianyh), or get on [gitter](https://gitter.im/ianyh/Amethyst). That last one is new and kind of experimental. You can [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst), as well, but I am on there fairly infrequently.
 
 Donating
 ========

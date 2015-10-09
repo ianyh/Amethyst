@@ -1,5 +1,5 @@
 task :setup do
-  system 'git submodule update --init'
+  system 'carthage update'
   system 'pod install'
 end
 

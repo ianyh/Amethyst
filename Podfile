@@ -1,9 +1,7 @@
 platform :osx, '10.9'
 
-pod 'libextobjc/EXTSelectorChecking'
-pod 'ReactiveCocoa'
 pod 'IYLoginItem'
-pod 'CocoaLumberjack'
+pod 'CocoaLumberjack', '=2.0.0-beta'
 pod 'MASShortcut', :git => 'https://github.com/ianyh/MASShortcut'
 pod 'MASPreferences'
 pod 'Masonry'

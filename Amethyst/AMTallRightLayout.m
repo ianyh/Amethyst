@@ -1,30 +1,29 @@
 //
-//  AMWideLayout.m
-//  Amethyst
+//  AMTallRightLayout.m
+//  
 //
-//  Created by Ian Ynda-Hummel on 6/13/13.
-//  Copyright (c) 2013 Ian Ynda-Hummel. All rights reserved.
+//  Created by Shayne Sweeney on 7/6/15.
+//
 //
 
-#import "AMWideLayout.h"
+#import "AMTallRightLayout.h"
 
 #import "AMReflowOperation.h"
 #import "AMWindowManager.h"
 
-@interface AMWideReflowOperation : AMReflowOperation
-- (instancetype)initWithScreen:(NSScreen *)screen windows:(NSArray *)windows layout:(AMWideLayout *)layout;
-@property (nonatomic, strong) AMWideLayout *layout;
+@interface AMTallRightReflowOperation : AMReflowOperation
+- (instancetype)initWithScreen:(NSScreen *)screen windows:(NSArray *)windows layout:(AMTallRightLayout *)layout;
+@property (nonatomic, strong) AMTallRightLayout *layout;
 @end
 
-@interface AMWideLayout ()
-// Ratio of screen height taken up by main pane.
+@interface AMTallRightLayout ()
+// Ratio of screen width taken up by main pane
 @property (nonatomic, assign) CGFloat mainPaneRatio;
 // The number of windows that should be displayed in the main pane.
 @property (nonatomic, assign) NSInteger mainPaneCount;
-
 @end
 
-@implementation AMWideLayout
+@implementation AMTallRightLayout
 
 #pragma mark Lifecycle
 
@@ -40,19 +39,20 @@
 #pragma mark AMLayout
 
 + (NSString *)layoutName {
-    return @"Wide";
+    return @"Tall Right";
 }
 
 - (NSOperation *)reflowOperationForScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-    return [[AMWideReflowOperation alloc] initWithScreen:screen windows:windows layout:self];
+    return [[AMTallRightReflowOperation alloc] initWithScreen:screen windows:windows layout:self];
 }
 
 - (void)expandMainPane {
-    self.mainPaneRatio = MIN(1, self.mainPaneRatio + 0.05);
+    self.mainPaneRatio = MAX(0, self.mainPaneRatio - 0.05);
+
 }
 
 - (void)shrinkMainPane {
-    self.mainPaneRatio = MAX(0, self.mainPaneRatio - 0.05);
+    self.mainPaneRatio = MIN(1, self.mainPaneRatio + 0.05);
 }
 
 - (void)increaseMainPaneCount {
@@ -65,9 +65,9 @@
 
 @end
 
-@implementation AMWideReflowOperation
+@implementation AMTallRightReflowOperation
 
-- (instancetype)initWithScreen:(NSScreen *)screen windows:(NSArray *)windows layout:(AMWideLayout *)layout {
+- (instancetype)initWithScreen:(NSScreen *)screen windows:(NSArray *)windows layout:(AMTallRightLayout *)layout {
     self = [super initWithScreen:screen windows:windows];
     if (self) {
         self.layout = layout;
@@ -86,14 +86,14 @@
     
     CGRect screenFrame = [self adjustedFrameForLayout:self.screen];
     
-    CGFloat mainPaneWindowWidth = round(screenFrame.size.width / mainPaneCount);
-    CGFloat secondaryPaneWindowWidth = (hasSecondaryPane ? round(screenFrame.size.width / secondaryPaneCount) : 0.0);
+    CGFloat mainPaneWindowHeight = round(screenFrame.size.height / mainPaneCount);
+    CGFloat secondaryPaneWindowHeight = (hasSecondaryPane ? round(screenFrame.size.height / secondaryPaneCount) : 0.0);
     
-    CGFloat mainPaneWindowHeight = round(screenFrame.size.height * (hasSecondaryPane ? self.layout.mainPaneRatio : 1));
-    CGFloat secondaryPaneWindowHeight = screenFrame.size.height - mainPaneWindowHeight;
+    CGFloat mainPaneWindowWidth = round(screenFrame.size.width * (hasSecondaryPane ? self.layout.mainPaneRatio : 1));
+    CGFloat secondaryPaneWindowWidth = screenFrame.size.width - mainPaneWindowWidth;
     
     SIWindow *focusedWindow = [SIWindow focusedWindow];
-    
+
     for (NSUInteger windowIndex = 0; windowIndex < self.windows.count; ++windowIndex) {
         if (self.cancelled) {
             return;
@@ -102,17 +102,17 @@
         CGRect windowFrame;
         
         if (windowIndex < mainPaneCount) {
-            windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * windowIndex);
-            windowFrame.origin.y = screenFrame.origin.y;
+            windowFrame.origin.x = screenFrame.origin.x + secondaryPaneWindowWidth;
+            windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * windowIndex);
             windowFrame.size.width = mainPaneWindowWidth;
             windowFrame.size.height = mainPaneWindowHeight;
         } else {
-            windowFrame.origin.x = screenFrame.origin.x + (secondaryPaneWindowWidth * (windowIndex - mainPaneCount));
-            windowFrame.origin.y = screenFrame.origin.y + mainPaneWindowHeight;
+            windowFrame.origin.x = screenFrame.origin.x;
+            windowFrame.origin.y = CGRectGetMaxY(screenFrame) - (secondaryPaneWindowHeight * (windowIndex - mainPaneCount + 1));
             windowFrame.size.width = secondaryPaneWindowWidth;
             windowFrame.size.height = secondaryPaneWindowHeight;
         }
-        
+
         AMFrameAssignment *frameAssignment = [[AMFrameAssignment alloc] initWithFrame:windowFrame window:window focused:[window isEqualTo:focusedWindow] screenFrame:screenFrame];
         [frameAssignments addObject:frameAssignment];
     }

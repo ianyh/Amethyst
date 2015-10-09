@@ -9,12 +9,10 @@
 #ifndef Amethyst_AMPrefixImport_h
 #define Amethyst_AMPrefixImport_h
 
+#import <Silica/Silica.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import <ReactiveCocoa/RACEXTScope.h>
-#import <libextobjc/EXTSelectorChecking.h>
 #import <CocoaLumberjack/DDLog.h>
 #import <CocoaLumberjack/DDLogMacros.h>
-#import <Silica/Silica.h>
 #import <Sparkle/Sparkle.h>
 #import <Masonry/Masonry.h>
 #import "NSScreen+Amethyst.h"

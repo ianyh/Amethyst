@@ -19,3 +19,4 @@ Pods
 build
 crashlytics_api_key
 crashlytics_app_key
+Carthage

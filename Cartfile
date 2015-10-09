@@ -1,0 +1,2 @@
+github "ReactiveCocoa/ReactiveCocoa" == 2.4.7
+github "sparkle-project/Sparkle"
