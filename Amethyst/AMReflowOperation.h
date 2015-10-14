@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong, readonly) NSScreen *screen;
 @property (nonatomic, strong, readonly) NSArray *windows;
+@property (nonatomic, copy) NSDictionary *activeIDCache;
 
 // Returns the desired frame for the current layout based on the user's
 // configuration.

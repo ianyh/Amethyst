@@ -66,7 +66,8 @@
     }
 
     for (AMFrameAssignment *frameAssignment in frameAssignments) {
-        if (!frameAssignment.window.isActive) {
+        SIWindow *window = frameAssignment.window;
+        if (!window.isActive || !self.activeIDCache[@(window.windowID)]) {
             return;
         }
     }

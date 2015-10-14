@@ -21,6 +21,8 @@
 
 @property (nonatomic, strong) id mouseMovedEventHandler;
 
+@property (nonatomic, copy) NSDictionary *activeIDCache;
+
 - (void)applicationDidLaunch:(NSNotification *)notification;
 - (void)applicationDidTerminate:(NSNotification *)notification;
 - (void)applicationDidHide:(NSNotification *)notification;
@@ -50,6 +52,7 @@
     if (self) {
         self.applications = [NSMutableArray array];
         self.windows = [NSMutableArray array];
+        self.activeIDCache = @{};
 
         self.screenManagersCache = [[NSCache alloc] init];
 
@@ -102,7 +105,24 @@
 
 #pragma mark Public Methods
 
+- (void)regenerateActiveIDCache {
+    NSMutableDictionary *activeIDCache = [NSMutableDictionary dictionary];
+    CFArrayRef windowDescriptions = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly, kCGNullWindowID);
+    for (NSDictionary *dictionary in (__bridge NSArray *)windowDescriptions) {
+        CGWindowID windowID = [dictionary[(__bridge NSString *)kCGWindowNumber] intValue];
+        activeIDCache[@(windowID)] = @YES;
+    }
+    CFRelease(windowDescriptions);
+    self.activeIDCache = activeIDCache;
+
+    for (AMScreenManager *screenManager in self.screenManagers) {
+        screenManager.activeIDCache = activeIDCache;
+    }
+}
+
 - (void)assignCurrentSpaceIdentifiers {
+    [self regenerateActiveIDCache];
+
     CFArrayRef screenDictionaries = CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
     if (NSScreen.screensHaveSeparateSpaces) {
         for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
@@ -501,6 +521,8 @@
 
     if (!window.shouldBeManaged) return;
 
+    [self regenerateActiveIDCache];
+
     [self.windows addObject:window];
     [self markScreenForReflow:window.screen];
 
@@ -536,20 +558,21 @@
     [application unobserveNotification:kAXWindowMiniaturizedNotification withElement:window];
     [application unobserveNotification:kAXWindowDeminiaturizedNotification withElement:window];
 
+    [self regenerateActiveIDCache];
     [self.windows removeObject:window];
 }
 
 - (NSArray *)windowsForScreen:(NSScreen *)screen {
     return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         SIWindow *window = (SIWindow *)evaluatedObject;
-        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive;
+        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)];
     }]];
 }
 
 - (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
     return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         SIWindow *window = (SIWindow *)evaluatedObject;
-        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && window.shouldBeManaged && !window.floating;
+        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)] && window.shouldBeManaged && !window.floating;
     }]];
 }
 
