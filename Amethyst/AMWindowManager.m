@@ -563,16 +563,43 @@
 }
 
 - (NSArray *)windowsForScreen:(NSScreen *)screen {
+    NSArray *windows = self.windows;
+    NSString *screenIdentifier = screen.am_screenIdentifier;
+    NSArray *spaces = (__bridge NSArray *)CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
+    
+    CGSSpace currentSpace;
+    BOOL hasCurrentSpace = NO;
+    for (NSDictionary *screenDictionary in spaces) {
+        if ([[screenDictionary objectForKey:@"Display Identifier"] isEqualToString:screenIdentifier]) {
+            currentSpace = [[[screenDictionary objectForKey:@"Current Space"] objectForKey:@"ManagedSpaceID"] integerValue];
+            hasCurrentSpace = YES;
+            break;
+        }
+    }
+    
+    if (!hasCurrentSpace) {
+        return @[];
+    }
+
     return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         SIWindow *window = (SIWindow *)evaluatedObject;
-        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)];
+        NSMutableArray *windowIDs = [NSMutableArray array];
+        
+        for (SIWindow *window in windows) {
+            [windowIDs addObject:@(window.windowID)];
+        }
+
+        NSArray *spaces = (__bridge NSArray *)CGSCopySpacesForWindows(CGSDefaultConnection, 7, (__bridge CFArrayRef)@[@(window.windowID)]);
+        CGSSpace space = [spaces.firstObject integerValue];
+
+        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)] && space == currentSpace;
     }]];
 }
 
 - (NSArray *)activeWindowsForScreen:(NSScreen *)screen {
-    return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+    return [[self windowsForScreen:screen] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         SIWindow *window = (SIWindow *)evaluatedObject;
-        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)] && window.shouldBeManaged && !window.floating;
+        return window.shouldBeManaged && !window.floating;
     }]];
 }
 
