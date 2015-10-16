@@ -41,10 +41,13 @@
 
     [AMConfiguration.sharedConfiguration loadConfiguration];
 
+    NSString *appcastURLString;
     if ([[AMConfiguration sharedConfiguration] useCanaryBuild]) {
-        NSString *canaryAppcastURLString = [[NSBundle mainBundle] infoDictionary][@"SUCanaryFeedURL"];
-        [[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:canaryAppcastURLString]];
+        appcastURLString = [[NSBundle mainBundle] infoDictionary][@"SUCanaryFeedURL"];
+    } else {
+        appcastURLString = [[NSBundle mainBundle] infoDictionary][@"SUFeedURL"];
     }
+    [[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:appcastURLString]];
 
     RAC(self, statusItem.image) = [RACObserve(AMConfiguration.sharedConfiguration, tilingEnabled) map:^id(NSNumber *tilingEnabled) {
         NSImage *statusImage;
