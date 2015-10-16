@@ -1,6 +1,14 @@
 framework module Crashlytics {
-  umbrella header "Crashlytics.h"
+    header "Crashlytics.h"
+    header "Answers.h"
+    header "ANSCompatibility.h"
+    header "CLSLogging.h"
+    header "CLSReport.h"
+    header "CLSStackFrame.h"
+    header "CLSAttributes.h"
 
-  export *
-  module * { export * }
+    export *
+
+    link "z"
+    link "c++"
 }

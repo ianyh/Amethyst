@@ -73,6 +73,12 @@
 		40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
 		40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
 		40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
+		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; settings = {ASSET_TAGS = (); }; };
+		40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */; settings = {ASSET_TAGS = (); }; };
+		40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91C1BD1B22E00F58660 /* Fabric.framework */; settings = {ASSET_TAGS = (); }; };
+		40C3F9211BD1B22E00F58660 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */; settings = {ASSET_TAGS = (); }; };
+		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
+		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
 		40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
 		40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */; };
@@ -185,6 +191,12 @@
 		40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMLayoutNameWindow.xib; sourceTree = "<group>"; };
 		40B39284181497C0009A296B /* AMLayoutNameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayoutNameWindow.h; sourceTree = "<group>"; };
 		40B39285181497C0009A296B /* AMLayoutNameWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayoutNameWindow.m; sourceTree = "<group>"; };
+		40C3F91A1BD1B22E00F58660 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		40C3F91C1BD1B22E00F58660 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
+		40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40C90FE417A330E900CE174B /* AMPrefixImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMPrefixImport.h; sourceTree = "<group>"; };
 		40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMColumnLayout.h; sourceTree = "<group>"; };
 		40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayout.m; sourceTree = "<group>"; };
@@ -222,10 +234,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */,
+				40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
+				40C3F9211BD1B22E00F58660 /* Crashlytics.framework in Frameworks */,
+				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
 				40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */,
+				40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */,
+				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
 				00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -306,6 +324,12 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40C3F9241BD1B36C00F58660 /* libz.tbd */,
+				40C3F9221BD1B35E00F58660 /* libc++.tbd */,
+				40C3F91A1BD1B22E00F58660 /* Security.framework */,
+				40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */,
+				40C3F91C1BD1B22E00F58660 /* Fabric.framework */,
+				40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */,
 				40EF05901AABE5D1001FBA5B /* Sparkle.framework */,
 				40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */,
 				402DB6FE1742E44E00D1C936 /* Carbon.framework */,
@@ -582,7 +606,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add :AMCrashlyticsAPIKey string '$CRASHLYTICS_API_KEY'\" Amethyst/Amethyst-Info.plist\n    /usr/libexec/PlistBuddy -c \"Add :AMCrashlyticsAppKey string '$CRASHLYTICS_APP_KEY'\" Amethyst/Amethyst-Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Amethyst/Amethyst-Info.plist\nfi\n";
 		};
 		408D394519C7C3C40001981F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -595,7 +619,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Crashlytics.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete :AMCrashlyticsAPIKey\" Amethyst/Amethyst-Info.plist\n    /usr/libexec/PlistBuddy -c \"Delete :AMCrashlyticsAppKey\" Amethyst/Amethyst-Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Fabric.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Amethyst/Amethyst-Info.plist\nfi\n";
 		};
 		75325DC6A6114F52971C92AF /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -793,6 +817,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
