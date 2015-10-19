@@ -29,6 +29,7 @@
 
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) IBOutlet NSMenu *statusItemMenu;
+@property (nonatomic, strong) IBOutlet NSMenuItem *versionMenuItem;
 @property (nonatomic, strong) IBOutlet NSMenuItem *startAtLoginMenuItem;
 
 - (IBAction)toggleStartAtLogin:(id)sender;
@@ -76,10 +77,15 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 
+    NSString *version = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
+    NSString *shortVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
+
     self.statusItem = [NSStatusBar.systemStatusBar statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.image = [NSImage imageNamed:@"icon-statusitem"];
     self.statusItem.menu = self.statusItemMenu;
     self.statusItem.highlightMode = YES;
+
+    self.versionMenuItem.title = [NSString stringWithFormat:@"Version %@ (%@)", shortVersion, version];
 
     self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
 }
