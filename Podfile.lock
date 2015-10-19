@@ -37,7 +37,7 @@ CHECKOUT OPTIONS:
     :commit: 5dea29a0d89374d2d8ebfbf3ee26fdc54c78dc9b
     :git: https://github.com/ianyh/MASShortcut
   Silica:
-    :commit: dccc32be785cb65f7f91b00f6b5369699d0efe2f
+    :commit: a73415cd79ccee6e7c3dcb87ecf5d9889a6d85d2
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
@@ -48,6 +48,6 @@ SPEC CHECKSUMS:
   MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
   MASShortcut: e86fe7f04d5c454d43ac766baf5243311cc4d359
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  Silica: 08a834a49ae29b72503f3622449e4407ed407222
+  Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.39.0

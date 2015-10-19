@@ -566,15 +566,20 @@
     NSArray *windows = self.windows;
     NSString *screenIdentifier = screen.am_screenIdentifier;
     NSArray *spaces = (__bridge NSArray *)CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
-    
+
     CGSSpace currentSpace;
     BOOL hasCurrentSpace = NO;
-    for (NSDictionary *screenDictionary in spaces) {
-        if ([[screenDictionary objectForKey:@"Display Identifier"] isEqualToString:screenIdentifier]) {
-            currentSpace = [[[screenDictionary objectForKey:@"Current Space"] objectForKey:@"ManagedSpaceID"] integerValue];
-            hasCurrentSpace = YES;
-            break;
+    if (NSScreen.screensHaveSeparateSpaces) {
+        for (NSDictionary *screenDictionary in spaces) {
+            if ([[screenDictionary objectForKey:@"Display Identifier"] isEqualToString:screenIdentifier]) {
+                currentSpace = [[[screenDictionary objectForKey:@"Current Space"] objectForKey:@"ManagedSpaceID"] integerValue];
+                hasCurrentSpace = YES;
+                break;
+            }
         }
+    } else {
+        currentSpace = [[[[spaces objectAtIndex:0] objectForKey:@"Current Space"] objectForKey:@"ManagedSpaceID"] integerValue];
+        hasCurrentSpace = YES;
     }
     
     if (!hasCurrentSpace) {
