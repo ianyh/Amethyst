@@ -8,6 +8,8 @@
 
 #import "NSScreen+Amethyst.h"
 
+#include <ApplicationServices/ApplicationServices.h>
+
 @implementation NSScreen (Amethyst)
 
 - (NSString *)am_screenIdentifier {
@@ -30,6 +32,15 @@
     }
     CFRelease(screenDictionaries);
     return isFullscreen;
+}
+
+- (void)am_focusScreen {
+    NSRect screenFrame = self.frame;
+    NSPoint mouseCursorPoint = NSMakePoint(NSMidX(screenFrame), NSMidY(screenFrame));
+    CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);
+    CGEventSetFlags(mouseMoveEvent, 0);
+    CGEventPost(kCGHIDEventTap, mouseMoveEvent);
+    CFRelease(mouseMoveEvent);
 }
 
 @end

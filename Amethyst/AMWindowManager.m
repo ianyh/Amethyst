@@ -207,9 +207,11 @@
     AMScreenManager *screenManager = self.screenManagers[screenIndex];
     NSArray *windows = [self windowsForScreen:screenManager.screen];
 
-    if (windows.count == 0) return;
-
-    [windows[0] am_focusWindow];
+    if (windows.count == 0 && [[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
+        [screenManager.screen am_focusScreen];
+    } else {
+        [windows[0] am_focusWindow];
+    }
 }
 
 - (void)moveFocusCounterClockwise {
