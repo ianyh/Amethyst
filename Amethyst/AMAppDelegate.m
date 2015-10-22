@@ -16,6 +16,14 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
+#if RELEASE
+#import "AMKeys.h"
+#endif
+
+#ifdef AMKeys_h
+#import <Mixpanel-OSX-Community/Mixpanel.h>
+#endif
+
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
@@ -63,9 +71,17 @@
         return statusImage;
     }];
 
+#ifdef AMKeys_h
+    [Mixpanel sharedInstanceWithToken:MixpanelAPIToken];
+    [[Mixpanel sharedInstance] track:@"Launch"];
+#endif
+
     NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AMCrashlyticsAPIKey"];
     if (crashlyticsAPIKey) {
         [Fabric with:@[[Crashlytics class]]];
+#if DEBUG
+        [Crashlytics sharedInstance].debugMode = YES;
+#endif
     }
 
     self.windowManager = [[AMWindowManager alloc] init];
