@@ -565,7 +565,6 @@
 }
 
 - (NSArray *)windowsForScreen:(NSScreen *)screen {
-    NSArray *windows = self.windows;
     NSString *screenIdentifier = screen.am_screenIdentifier;
     NSArray *spaces = (__bridge NSArray *)CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
 
@@ -573,33 +572,41 @@
     BOOL hasCurrentSpace = NO;
     if (NSScreen.screensHaveSeparateSpaces) {
         for (NSDictionary *screenDictionary in spaces) {
-            if ([[screenDictionary objectForKey:@"Display Identifier"] isEqualToString:screenIdentifier]) {
-                currentSpace = [[[screenDictionary objectForKey:@"Current Space"] objectForKey:@"ManagedSpaceID"] integerValue];
+            if ([screenDictionary[@"Display Identifier"] isEqualToString:screenIdentifier]) {
+                currentSpace = [screenDictionary[@"Current Space"][@"ManagedSpaceID"] integerValue];
                 hasCurrentSpace = YES;
                 break;
             }
         }
     } else {
-        currentSpace = [[[[spaces objectAtIndex:0] objectForKey:@"Current Space"] objectForKey:@"ManagedSpaceID"] integerValue];
+        currentSpace = [spaces[0][@"Current Space"][@"ManagedSpaceID"] integerValue];
         hasCurrentSpace = YES;
     }
     
     if (!hasCurrentSpace) {
+        DDLogWarn(@"Could not find a space for screen: %@", screenIdentifier);
         return @[];
     }
 
     return [self.windows filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         SIWindow *window = (SIWindow *)evaluatedObject;
-        NSMutableArray *windowIDs = [NSMutableArray array];
-        
-        for (SIWindow *window in windows) {
-            [windowIDs addObject:@(window.windowID)];
+
+        // If we have access to the right APIs do the current space check
+        // Otherwise fall back to the old, potentially inaccurate check
+        if ([NSProcessInfo processInfo].operatingSystemVersion.minorVersion > 10) {
+            NSArray *spaces = (__bridge NSArray *)CGSCopySpacesForWindows(CGSDefaultConnection, 7, (__bridge CFArrayRef)@[@(window.windowID)]);
+            CGSSpace space = [spaces.firstObject integerValue];
+
+            if (space != currentSpace) {
+                return false;
+            }
+        } else {
+            if (!window.isOnScreen) {
+                return false;
+            }
         }
 
-        NSArray *spaces = (__bridge NSArray *)CGSCopySpacesForWindows(CGSDefaultConnection, 7, (__bridge CFArrayRef)@[@(window.windowID)]);
-        CGSSpace space = [spaces.firstObject integerValue];
-
-        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)] && space == currentSpace;
+        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)];
     }]];
 }
 
