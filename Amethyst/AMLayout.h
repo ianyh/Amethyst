@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class AMLayout;
+@class AMReflowOperation;
 
 // Abstract superclass for defining layout behavior of windows on a screen.
 // 
@@ -24,9 +25,11 @@
 // contained there can be increased and decreased.
 @interface AMLayout : NSObject
 
+@property (nonatomic, copy) NSDictionary *activeIDCache;
+
 + (NSString *)layoutName;
 
-- (NSOperation *)reflowOperationForScreen:(NSScreen *)screen withWindows:(NSArray *)windows;
+- (AMReflowOperation *)reflowOperationForScreen:(NSScreen *)screen withWindows:(NSArray *)windows;
 
 // Shrink the size of the main pane of content.
 // Subclasses can optionally implement this method.

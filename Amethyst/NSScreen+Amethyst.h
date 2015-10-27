@@ -12,5 +12,6 @@
 
 - (NSString *)am_screenIdentifier;
 - (BOOL)am_isFullscreen;
+- (void)am_focusScreen;
 
 @end

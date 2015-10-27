@@ -13,10 +13,20 @@
 #import "AMPreferencesWindowController.h"
 #import "AMWindowManager.h"
 
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
+
+#if RELEASE
+#import "AMKeys.h"
+#endif
+
+#ifdef AMKeys_h
+#import <Mixpanel-OSX-Community/Mixpanel.h>
+#endif
+
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
-//#import <Crashlytics/Crashlytics.h>
 #import <IYLoginItem/NSBundle+LoginItem.h>
 
 @interface AMAppDelegate ()
@@ -27,6 +37,7 @@
 
 @property (nonatomic, strong) NSStatusItem *statusItem;
 @property (nonatomic, strong) IBOutlet NSMenu *statusItemMenu;
+@property (nonatomic, strong) IBOutlet NSMenuItem *versionMenuItem;
 @property (nonatomic, strong) IBOutlet NSMenuItem *startAtLoginMenuItem;
 
 - (IBAction)toggleStartAtLogin:(id)sender;
@@ -60,10 +71,18 @@
         return statusImage;
     }];
 
-//    NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AMCrashlyticsAPIKey"];
-//    if (crashlyticsAPIKey) {
-//        [Crashlytics startWithAPIKey:crashlyticsAPIKey];
-//    }
+#ifdef AMKeys_h
+    [Mixpanel sharedInstanceWithToken:MixpanelAPIToken];
+    [[Mixpanel sharedInstance] track:@"Launch"];
+#endif
+
+    NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AMCrashlyticsAPIKey"];
+    if (crashlyticsAPIKey) {
+        [Fabric with:@[[Crashlytics class]]];
+#if DEBUG
+        [Crashlytics sharedInstance].debugMode = YES;
+#endif
+    }
 
     self.windowManager = [[AMWindowManager alloc] init];
     self.hotKeyManager = [[AMHotKeyManager alloc] init];
@@ -74,10 +93,15 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
 
+    NSString *version = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
+    NSString *shortVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"];
+
     self.statusItem = [NSStatusBar.systemStatusBar statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.image = [NSImage imageNamed:@"icon-statusitem"];
     self.statusItem.menu = self.statusItemMenu;
     self.statusItem.highlightMode = YES;
+
+    self.versionMenuItem.title = [NSString stringWithFormat:@"Version %@ (%@)", shortVersion, version];
 
     self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
 }

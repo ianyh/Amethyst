@@ -11,13 +11,14 @@
 #import "AMConfiguration.h"
 #import "AMLayout.h"
 #import "AMLayoutNameWindow.h"
+#import "AMReflowOperation.h"
 #import "AMWindowManager.h"
 
 @interface AMScreenManager ()
 @property (nonatomic, strong) NSString *screenIdentifier;
 
 @property (nonatomic, strong) NSTimer *reflowTimer;
-@property (nonatomic, strong) NSOperation *reflowOperation;
+@property (nonatomic, strong) AMReflowOperation *reflowOperation;
 
 @property (nonatomic, copy) NSArray *layouts;
 @property (nonatomic, strong) NSMutableDictionary *currentLayoutIndexBySpaceIdentifier;
@@ -150,8 +151,8 @@
         return;
     }
 
-    NSLog(@"%@", self.layouts[self.currentLayoutIndex]);
     self.reflowOperation = [self.layouts[self.currentLayoutIndex] reflowOperationForScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
+    self.reflowOperation.activeIDCache = self.activeIDCache;
     [[NSOperationQueue mainQueue] addOperation:self.reflowOperation];
 }
 

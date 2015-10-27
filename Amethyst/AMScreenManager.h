@@ -80,4 +80,6 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 
 - (void)displayLayoutHUD;
 
+@property (nonatomic, copy) NSDictionary *activeIDCache;
+
 @end
