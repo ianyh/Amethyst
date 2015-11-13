@@ -6,6 +6,7 @@
 #import "AMFloatingLayout.h"
 
 #import "AMWindowManager.h"
+#import "AMReflowOperation.h"
 
 @implementation AMFloatingLayout
 
@@ -14,8 +15,7 @@
 }
 
 - (NSOperation *)reflowOperationForScreen:(NSScreen *)screen withWindows:(NSArray *)windows {
-    // noop
-    return [[NSOperation alloc] init];
+    return [[AMReflowOperation alloc] initWithScreen:screen windows:windows];
 }
 
 @end
