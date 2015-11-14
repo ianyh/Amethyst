@@ -9,6 +9,7 @@
 #import "AMReflowOperation.h"
 
 #import "AMConfiguration.h"
+#import <Silica/Silica.h>
 
 @interface AMFrameAssignment ()
 @property (nonatomic, assign) CGRect finalFrame;
@@ -49,7 +50,19 @@
 }
 
 - (CGRect)adjustedFrameForLayout:(NSScreen *)screen {
-    return [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
+    CGRect frame = [[AMConfiguration sharedConfiguration] ignoreMenuBar] ? screen.frameIncludingDockAndMenu : screen.frameWithoutDockOrMenu;
+    
+    if([[AMConfiguration sharedConfiguration] windowPaddingCollapse]) {
+        /* Inset for producing half of the full padding around screen as collapse only adds half of it to all windows */
+        CGFloat padding = floor([[AMConfiguration sharedConfiguration] windowPadding] / 2);
+    
+        frame.origin.x    += padding;
+        frame.origin.y    += padding;
+        frame.size.width  -= 2*padding;
+        frame.size.height -= 2*padding;
+    }
+    
+    return frame;
 }
 
 - (void)performFrameAssignments:(NSArray *)frameAssignments {
@@ -78,6 +91,18 @@
 }
 
 - (void)assignFrame:(CGRect)finalFrame toWindow:(SIWindow *)window focused:(BOOL)focused screenFrame:(CGRect)screenFrame {
+    CGFloat padding = [[AMConfiguration sharedConfiguration] windowPadding];
+    
+    if([[AMConfiguration sharedConfiguration] windowPaddingCollapse]) {
+        /* Only use half padding for padding when collapsing outer edges are added by adjustedFrameForLayout */
+        padding = floor(padding / 2);
+    }
+    
+    finalFrame.origin.x    += padding;
+    finalFrame.origin.y    += padding;
+    finalFrame.size.width  -= 2*padding;
+    finalFrame.size.height -= 2*padding;
+    
     CGPoint finalPosition = finalFrame.origin;
     
     // Just resize the window

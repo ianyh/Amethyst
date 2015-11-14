@@ -62,6 +62,10 @@
 
 - (BOOL)useCanaryBuild;
 
+- (CGFloat)windowPadding;
+
+- (BOOL)windowPaddingCollapse;
+
 @property (nonatomic, assign) BOOL tilingEnabled;
 
 - (NSArray *)floatingBundleIdentifiers;
