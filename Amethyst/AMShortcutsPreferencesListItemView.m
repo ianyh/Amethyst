@@ -8,6 +8,8 @@
 
 #import "AMShortcutsPreferencesListItemView.h"
 
+#import <MASShortcut/MASShortcutView+Bindings.h>
+
 @interface AMShortcutsPreferencesListItemView ()
 @property (nonatomic, strong) NSTextField *nameLabel;
 @property (nonatomic, strong) MASShortcutView *shortcutView;

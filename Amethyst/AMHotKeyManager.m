@@ -8,8 +8,7 @@
 
 #import "AMHotKeyManager.h"
 
-#import <MASShortcut/MASShortcut.h>
-#import <MASShortcut/MASShortcut+UserDefaults.h>
+#import <MASShortcut/Shortcut.h>
 
 AMKeyCode AMKeyCodeInvalid = 0xFF;
 
@@ -48,7 +47,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     self = [super init];
     if (self) {
         [self constructKeyCodeMap];
-        [MASShortcut setAllowsAnyHotkeyWithOptionModifier:YES];
+        [MASShortcutValidator sharedValidator].allowAnyShortcutWithOptionModifier = YES;
     }
     return self;
 }
@@ -189,15 +188,12 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     return carbonModifiers;
 }
 
-- (void)registerHotKeyWithKeyCode:(UInt16)keyCode modifiers:(NSUInteger)modifiers handler:(AMHotKeyHandler)handler defaultsKey:(NSString *)defaultsKey override:(BOOL)override {
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey] || override) {
-        MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:keyCode modifierFlags:modifiers];
-        [MASShortcut setGlobalShortcut:shortcut forUserDefaultsKey:defaultsKey];
-    }
-    [MASShortcut registerGlobalShortcutWithUserDefaultsKey:defaultsKey handler:handler];
-}
-
 - (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler  defaultsKey:(NSString *)defaultsKey override:(BOOL)override {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey] || !override) {
+        [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:defaultsKey toAction:handler];
+        return;
+    }
+
     NSArray *keyCodes = self.stringToKeyCodes[string.lowercaseString];
 
     if (keyCodes.count == 0) {
@@ -205,7 +201,8 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
         return;
     }
 
-    [self registerHotKeyWithKeyCode:[keyCodes[0] unsignedShortValue] modifiers:modifiers handler:handler defaultsKey:defaultsKey override:override];
+    MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:[keyCodes[0] unsignedShortValue] modifierFlags:modifiers];
+    [[MASShortcutBinder sharedBinder] registerDefaultShortcuts:@{ defaultsKey: shortcut }];
 }
 
 @end
