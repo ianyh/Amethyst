@@ -135,9 +135,17 @@
 
 - (void)setNeedsReflow {
     [self.reflowOperation cancel];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self reflow:nil];
-    });
+    if (self.changingSpace) {
+        // The 0.4 is disgustingly tied to the space change animation time.
+        // This should get burned to the ground when space changes don't rely on the mouse click trick.
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self reflow:nil];
+        });
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reflow:nil];
+        });
+    }
 }
 
 - (void)reflow:(id)sender {
@@ -146,11 +154,8 @@
     if (![AMConfiguration sharedConfiguration].tilingEnabled) return;
     if (self.isFullScreen) return;
     if (CGSManagedDisplayIsAnimating(CGSDefaultConnection, (__bridge CGSManagedDisplay)self.screenIdentifier)) return;
-    if (self.changingSpace) {
-        self.changingSpace = NO;
-        return;
-    }
 
+    self.changingSpace = NO;
     self.reflowOperation = [self.layouts[self.currentLayoutIndex] reflowOperationForScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
     self.reflowOperation.activeIDCache = self.activeIDCache;
     [[NSOperationQueue mainQueue] addOperation:self.reflowOperation];
