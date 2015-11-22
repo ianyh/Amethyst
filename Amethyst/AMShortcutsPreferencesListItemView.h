@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 #import <MASShortcut/MASShortcutView.h>
-#import <MASShortcut/MASShortcutView+UserDefaults.h>
 
 @interface AMShortcutsPreferencesListItemView : NSView
 @property (nonatomic, strong, readonly) NSTextField *nameLabel;

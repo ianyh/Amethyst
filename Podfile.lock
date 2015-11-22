@@ -12,7 +12,7 @@ PODS:
   - Kiwi (2.3.1)
   - Masonry (0.6.1)
   - MASPreferences (1.1.2)
-  - MASShortcut (1.2.4)
+  - MASShortcut (2.3.2)
   - Mixpanel-OSX-Community (2.1.0)
   - OCMock (3.1.2)
   - Silica (0.1.4)
@@ -38,7 +38,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MASShortcut:
-    :commit: 5dea29a0d89374d2d8ebfbf3ee26fdc54c78dc9b
+    :commit: d70129eebebb2249a27bfbac8019c8a93a51c08a
     :git: https://github.com/ianyh/MASShortcut
   Mixpanel-OSX-Community:
     :commit: 6dc0e5880d67a09f6ed55131acca2db3057e43d2
@@ -53,7 +53,7 @@ SPEC CHECKSUMS:
   Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
   MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
-  MASShortcut: e86fe7f04d5c454d43ac766baf5243311cc4d359
+  MASShortcut: a816834091659aca3ad6a309f44ae16d25a7fef6
   Mixpanel-OSX-Community: f58bb9cf97ef3b024b6f89d3890668a2c20de5b6
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e

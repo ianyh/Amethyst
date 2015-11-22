@@ -11,6 +11,8 @@
 #import "AMConfiguration.h"
 #import "AMShortcutsPreferencesListItemView.h"
 
+#import <MASShortcut/MASShortcutView+Bindings.h>
+
 @interface AMShortcutsPreferencesViewController () <NSTableViewDataSource, NSTableViewDelegate>
 @property (nonatomic, strong) NSArray *hotKeyNameToDefaultsKey;
 
