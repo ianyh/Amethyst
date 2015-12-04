@@ -189,7 +189,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
 }
 
 - (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler  defaultsKey:(NSString *)defaultsKey override:(BOOL)override {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey] || !override) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey] && !override) {
         [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:defaultsKey toAction:handler];
         return;
     }
