@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B0530B06777D42039F419322 /* libPods.a */; };
-		023D3F231856828C00391BEC /* AMFloatingLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 023D3F221856828C00391BEC /* AMFloatingLayout.m */; };
-		1C4B44C71B4B0927000FA2BF /* AMMiddleWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B44C61B4B0927000FA2BF /* AMMiddleWideLayout.m */; };
-		1CFC921E1B4B2EA400FBF00A /* AMTallRightLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CFC921D1B4B2EA400FBF00A /* AMTallRightLayout.m */; };
 		400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400299E3176393F10049001F /* SenTestingKit.framework */; };
 		400299E5176393F10049001F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		400299EB176393F10049001F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 400299E9176393F10049001F /* InfoPlist.strings */; };
@@ -22,12 +18,8 @@
 		400299FC17639AF20049001F /* AMScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337FA174993D40001D8FC /* AMScreenManager.m */; };
 		400299FD17639AF20049001F /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
 		400299FE17639AF70049001F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
-		40029A0017639B050049001F /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
-		40029A0117639B050049001F /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
-		40029A0217639B050049001F /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
 		40029A0717639BDA0049001F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40029A081763A06A0049001F /* AMTallLayoutTest.m */; };
-		4008E71C190C1A900049E2F6 /* AMFloatingLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 023D3F221856828C00391BEC /* AMFloatingLayout.m */; };
 		4008E72C190C4DB90049E2F6 /* AMPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72B190C4DB90049E2F6 /* AMPreferencesWindowController.m */; };
 		4008E72D190C4DB90049E2F6 /* AMPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72B190C4DB90049E2F6 /* AMPreferencesWindowController.m */; };
 		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
@@ -46,6 +38,8 @@
 		401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
 		401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
 		4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */; };
+		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
+		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
 		402DB6EE1742E41A00D1C936 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6ED1742E41A00D1C936 /* main.m */; };
@@ -59,13 +53,15 @@
 		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
-		40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
-		40A0A1FA18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */; };
-		40A0A1FB18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */; };
-		40AFA5AF1A0D19DF0030BC4B /* AMReflowOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 40AFA5AE1A0D19DF0030BC4B /* AMReflowOperation.m */; };
-		40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337DF1745CE2B0001D8FC /* AMLayout.m */; };
-		40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337E31745D0620001D8FC /* AMFullscreenLayout.m */; };
-		40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337EA17465AE00001D8FC /* AMTallLayout.m */; };
+		4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */; };
+		4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */; };
+		4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */; };
+		4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD301C1FA29600DB612B /* TallRightLayout.swift */; };
+		4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD321C1FA48C00DB612B /* ColumnLayout.swift */; };
+		4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD341C1FA62500DB612B /* WideLayout.swift */; };
+		4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD361C1FA83300DB612B /* RowLayout.swift */; };
+		4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */; };
+		4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */; };
 		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
 		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
 		40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337FA174993D40001D8FC /* AMScreenManager.m */; };
@@ -79,11 +75,7 @@
 		40C3F9211BD1B22E00F58660 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */; };
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
-		40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
-		40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */; };
 		40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */; };
-		40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
-		40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F07176A22A900DE1A40 /* AMWideLayout.m */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40E705D9176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; };
@@ -91,9 +83,9 @@
 		40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; };
 		40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
-		5C09C2AB18C1400F00CF5E6A /* AMRowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */; };
 		5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */; };
-		6718BDA0D79F4A19BED950F4 /* libPods-AmethystTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */; };
+		9CB113BF95779C399B4EBF96 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC6A31D2564700A03F952CC5 /* Pods.framework */; };
+		A7BEC6020340824AB12E05D3 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E8C0455B5911AFE46DC2A54 /* Pods_AmethystTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -120,12 +112,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		023D3F211856828C00391BEC /* AMFloatingLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFloatingLayout.h; sourceTree = "<group>"; };
-		023D3F221856828C00391BEC /* AMFloatingLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFloatingLayout.m; sourceTree = "<group>"; };
-		1C4B44C51B4B0927000FA2BF /* AMMiddleWideLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMMiddleWideLayout.h; sourceTree = "<group>"; };
-		1C4B44C61B4B0927000FA2BF /* AMMiddleWideLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMMiddleWideLayout.m; sourceTree = "<group>"; };
-		1CFC921C1B4B2EA400FBF00A /* AMTallRightLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTallRightLayout.h; sourceTree = "<group>"; };
-		1CFC921D1B4B2EA400FBF00A /* AMTallRightLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallRightLayout.m; sourceTree = "<group>"; };
 		29C5F9A311406C7D459BABEC /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
 		400299E2176393F10049001F /* AmethystTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		400299E3176393F10049001F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -154,6 +140,9 @@
 		401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIApplication+Amethyst.m"; sourceTree = "<group>"; };
 		4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfigurationTest.m; sourceTree = "<group>"; };
 		4026AB411777C017001E3783 /* AMConfiguration+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AMConfiguration+Private.h"; sourceTree = "<group>"; };
+		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
+		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
+		4029C4F21C1124BC001E4788 /* ReflowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -172,16 +161,15 @@
 		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
 		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
 		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
-		40A0A1F818F1B400000B7614 /* AMWidescreenTallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWidescreenTallLayout.h; sourceTree = "<group>"; };
-		40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWidescreenTallLayout.m; sourceTree = "<group>"; };
-		40AFA5AD1A0D19DF0030BC4B /* AMReflowOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMReflowOperation.h; sourceTree = "<group>"; };
-		40AFA5AE1A0D19DF0030BC4B /* AMReflowOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMReflowOperation.m; sourceTree = "<group>"; };
-		40B337DE1745CE2B0001D8FC /* AMLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayout.h; sourceTree = "<group>"; };
-		40B337DF1745CE2B0001D8FC /* AMLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayout.m; sourceTree = "<group>"; };
-		40B337E21745D0620001D8FC /* AMFullscreenLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMFullscreenLayout.h; sourceTree = "<group>"; };
-		40B337E31745D0620001D8FC /* AMFullscreenLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayout.m; sourceTree = "<group>"; };
-		40B337E917465ADF0001D8FC /* AMTallLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMTallLayout.h; sourceTree = "<group>"; };
-		40B337EA17465AE00001D8FC /* AMTallLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallLayout.m; sourceTree = "<group>"; };
+		4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingLayout.swift; sourceTree = "<group>"; };
+		4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenLayout.swift; sourceTree = "<group>"; };
+		4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TallLayout.swift; sourceTree = "<group>"; };
+		4062AD301C1FA29600DB612B /* TallRightLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TallRightLayout.swift; sourceTree = "<group>"; };
+		4062AD321C1FA48C00DB612B /* ColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColumnLayout.swift; sourceTree = "<group>"; };
+		4062AD341C1FA62500DB612B /* WideLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WideLayout.swift; sourceTree = "<group>"; };
+		4062AD361C1FA83300DB612B /* RowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowLayout.swift; sourceTree = "<group>"; };
+		4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiddleWideLayout.swift; sourceTree = "<group>"; };
+		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
 		40B337EC1746D8540001D8FC /* AMHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMHotKeyManager.h; sourceTree = "<group>"; };
 		40B337ED1746D8540001D8FC /* AMHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMHotKeyManager.m; sourceTree = "<group>"; };
 		40B337F617495D7D0001D8FC /* AMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConfiguration.h; sourceTree = "<group>"; };
@@ -198,11 +186,7 @@
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40C90FE417A330E900CE174B /* AMPrefixImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMPrefixImport.h; sourceTree = "<group>"; };
-		40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMColumnLayout.h; sourceTree = "<group>"; };
-		40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayout.m; sourceTree = "<group>"; };
 		40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayoutTest.m; sourceTree = "<group>"; };
-		40D82F06176A22A800DE1A40 /* AMWideLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWideLayout.h; sourceTree = "<group>"; };
-		40D82F07176A22A900DE1A40 /* AMWideLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWideLayout.m; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
 		40E8B2061BD7C5B900AC70AC /* AMKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMKeys.h; sourceTree = "<group>"; };
 		40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = "<group>"; };
@@ -210,12 +194,10 @@
 		40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Amethyst.h"; sourceTree = "<group>"; };
 		40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Amethyst.m"; sourceTree = "<group>"; };
 		43BE96256148A252A0EDDBE5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		5C09C2A918C1400F00CF5E6A /* AMRowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMRowLayout.h; sourceTree = "<group>"; };
-		5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRowLayout.m; sourceTree = "<group>"; };
+		4E8C0455B5911AFE46DC2A54 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRowLayoutTest.m; sourceTree = "<group>"; };
 		7BAAAA0E192A8194B5327A37 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		B0530B06777D42039F419322 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AmethystTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC6A31D2564700A03F952CC5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F849B0C3203E92DF484436DB /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -227,7 +209,7 @@
 				40029A0717639BDA0049001F /* Carbon.framework in Frameworks */,
 				400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */,
 				400299E5176393F10049001F /* Cocoa.framework in Frameworks */,
-				6718BDA0D79F4A19BED950F4 /* libPods-AmethystTests.a in Frameworks */,
+				A7BEC6020340824AB12E05D3 /* Pods_AmethystTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,7 +227,7 @@
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
-				00AFB0374CBA4EBAA0014687 /* libPods.a in Frameworks */,
+				9CB113BF95779C399B4EBF96 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,8 +319,8 @@
 				402DB6E11742E41A00D1C936 /* Cocoa.framework */,
 				400299E3176393F10049001F /* SenTestingKit.framework */,
 				402DB6E31742E41A00D1C936 /* Other Frameworks */,
-				B0530B06777D42039F419322 /* libPods.a */,
-				F3BFE9CAC8A4496793B4217D /* libPods-AmethystTests.a */,
+				BC6A31D2564700A03F952CC5 /* Pods.framework */,
+				4E8C0455B5911AFE46DC2A54 /* Pods_AmethystTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -381,6 +363,7 @@
 		402DB6E81742E41A00D1C936 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */,
 				404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */,
 				404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */,
 				4015D9B317517CE100548DBE /* icon-statusitem.png */,
@@ -399,28 +382,17 @@
 		40B337E11745CE340001D8FC /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				023D3F211856828C00391BEC /* AMFloatingLayout.h */,
-				023D3F221856828C00391BEC /* AMFloatingLayout.m */,
-				40B337DE1745CE2B0001D8FC /* AMLayout.h */,
-				40B337DF1745CE2B0001D8FC /* AMLayout.m */,
-				40B337E21745D0620001D8FC /* AMFullscreenLayout.h */,
-				40B337E31745D0620001D8FC /* AMFullscreenLayout.m */,
-				40B337E917465ADF0001D8FC /* AMTallLayout.h */,
-				40B337EA17465AE00001D8FC /* AMTallLayout.m */,
-				1CFC921C1B4B2EA400FBF00A /* AMTallRightLayout.h */,
-				1CFC921D1B4B2EA400FBF00A /* AMTallRightLayout.m */,
-				40D82EFF17695D8B00DE1A40 /* AMColumnLayout.h */,
-				40D82F0017695D8B00DE1A40 /* AMColumnLayout.m */,
-				40D82F06176A22A800DE1A40 /* AMWideLayout.h */,
-				40D82F07176A22A900DE1A40 /* AMWideLayout.m */,
-				1C4B44C51B4B0927000FA2BF /* AMMiddleWideLayout.h */,
-				1C4B44C61B4B0927000FA2BF /* AMMiddleWideLayout.m */,
-				5C09C2A918C1400F00CF5E6A /* AMRowLayout.h */,
-				5C09C2AA18C1400F00CF5E6A /* AMRowLayout.m */,
-				40A0A1F818F1B400000B7614 /* AMWidescreenTallLayout.h */,
-				40A0A1F918F1B401000B7614 /* AMWidescreenTallLayout.m */,
-				40AFA5AD1A0D19DF0030BC4B /* AMReflowOperation.h */,
-				40AFA5AE1A0D19DF0030BC4B /* AMReflowOperation.m */,
+				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
+				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
+				4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */,
+				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
+				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
+				4062AD341C1FA62500DB612B /* WideLayout.swift */,
+				4062AD361C1FA83300DB612B /* RowLayout.swift */,
+				4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */,
+				4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */,
+				4029C4F01C112478001E4788 /* Layout.swift */,
+				4029C4F21C1124BC001E4788 /* ReflowOperation.swift */,
 			);
 			name = Layout;
 			sourceTree = "<group>";
@@ -487,8 +459,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
-				408D394419C7C2B90001981F /* ShellScript */,
 				C226F91CEBCF40B2B1E905D2 /* Check Pods Manifest.lock */,
+				408D394419C7C2B90001981F /* ShellScript */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
@@ -513,6 +485,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AM;
+				LastSwiftUpdateCheck = 0710;
 				LastTestingUpgradeCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
@@ -700,19 +673,11 @@
 				40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
 				400299FC17639AF20049001F /* AMScreenManager.m in Sources */,
 				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
-				40029A0017639B050049001F /* AMLayout.m in Sources */,
 				5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */,
-				4008E71C190C1A900049E2F6 /* AMFloatingLayout.m in Sources */,
-				40029A0117639B050049001F /* AMFullscreenLayout.m in Sources */,
-				40A0A1FB18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */,
 				4008E72D190C4DB90049E2F6 /* AMPreferencesWindowController.m in Sources */,
-				40029A0217639B050049001F /* AMTallLayout.m in Sources */,
 				404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
 				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
-				40D82F0217695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
-				40A0A1F218F1AB60000B7614 /* AMRowLayout.m in Sources */,
 				40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */,
-				40D82F09176A22A900DE1A40 /* AMWideLayout.m in Sources */,
 				4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -725,27 +690,27 @@
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
 				402DB6F51742E41A00D1C936 /* AMAppDelegate.m in Sources */,
 				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
-				40AFA5AF1A0D19DF0030BC4B /* AMReflowOperation.m in Sources */,
+				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
 				4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
+				4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */,
 				40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
 				4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
-				40B337E01745CE2B0001D8FC /* AMLayout.m in Sources */,
-				40B337E41745D0620001D8FC /* AMFullscreenLayout.m in Sources */,
-				40B337EB17465AE00001D8FC /* AMTallLayout.m in Sources */,
 				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
-				1C4B44C71B4B0927000FA2BF /* AMMiddleWideLayout.m in Sources */,
 				401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
+				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
 				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
 				40B337FB174993D40001D8FC /* AMScreenManager.m in Sources */,
 				4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
 				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
+				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
+				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
-				023D3F231856828C00391BEC /* AMFloatingLayout.m in Sources */,
-				40D82F0117695D8B00DE1A40 /* AMColumnLayout.m in Sources */,
-				40A0A1FA18F1B401000B7614 /* AMWidescreenTallLayout.m in Sources */,
-				5C09C2AB18C1400F00CF5E6A /* AMRowLayout.m in Sources */,
-				1CFC921E1B4B2EA400FBF00A /* AMTallRightLayout.m in Sources */,
-				40D82F08176A22A900DE1A40 /* AMWideLayout.m in Sources */,
+				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
+				4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */,
+				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
+				4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */,
+				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
+				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
 				40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -830,6 +795,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -838,6 +804,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -864,6 +831,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -872,6 +840,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
@@ -888,9 +857,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7BAAAA0E192A8194B5327A37 /* Pods.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
@@ -901,10 +872,12 @@
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -913,9 +886,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 43BE96256148A252A0EDDBE5 /* Pods.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
@@ -926,10 +901,11 @@
 				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CODE_SIGN_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

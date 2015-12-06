@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AppKit/AppKit.h>
 
 @class AMHotKeyManager;
 @class AMWindowManager;
+
+@protocol WindowActivityCache;
 
 // Object for managing the mapping of hot keys (managed by the AMHotKeyManager)
 // to window management operations (exposed by AMWindowManager)
@@ -41,7 +44,7 @@
 - (void)setUpWithHotKeyManager:(AMHotKeyManager *)hotKeyManager windowManager:(AMWindowManager *)windowManager;
 
 // Returns an array of AMLayout Class objects to generate layouts from.
-- (NSArray *)layouts;
+- (NSArray *)layoutsWithWindowActivityCache:(id<WindowActivityCache>)windowActivityCache;
 
 - (NSArray *)layoutStrings;
 - (void)setLayoutStrings:(NSArray *)layoutStrings;

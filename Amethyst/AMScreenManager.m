@@ -8,23 +8,23 @@
 
 #import "AMScreenManager.h"
 
+#import "Amethyst-Swift.h"
+
 #import "AMConfiguration.h"
-#import "AMLayout.h"
 #import "AMLayoutNameWindow.h"
-#import "AMReflowOperation.h"
 #import "AMWindowManager.h"
 
 @interface AMScreenManager ()
 @property (nonatomic, strong) NSString *screenIdentifier;
 
 @property (nonatomic, strong) NSTimer *reflowTimer;
-@property (nonatomic, strong) AMReflowOperation *reflowOperation;
+@property (nonatomic, strong) ReflowOperation *reflowOperation;
 
 @property (nonatomic, copy) NSArray *layouts;
 @property (nonatomic, strong) NSMutableDictionary *currentLayoutIndexBySpaceIdentifier;
 @property (nonatomic, strong) NSMutableDictionary *layoutsBySpaceIdentifier;
 @property (nonatomic, assign) NSUInteger currentLayoutIndex;
-- (AMLayout *)currentLayout;
+- (Layout *)currentLayout;
 
 @property (nonatomic, strong) AMLayoutNameWindow *layoutNameWindow;
 
@@ -45,11 +45,7 @@
         self.screen = screen;
         self.screenIdentifier = screenIdentifier;
 
-        NSMutableArray *layouts = [NSMutableArray array];
-        for (Class layoutClass in [[AMConfiguration sharedConfiguration] layouts]) {
-            [layouts addObject:[[layoutClass alloc] init]];
-        }
-        self.layouts = layouts;
+        self.layouts = [[AMConfiguration sharedConfiguration] layoutsWithWindowActivityCache:self];
         self.currentLayoutIndexBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.layoutsBySpaceIdentifier = [NSMutableDictionary dictionary];
         self.currentLayoutIndex = 0;
@@ -94,12 +90,8 @@
         if (self.layoutsBySpaceIdentifier[_currentSpaceIdentifier]) {
             self.layouts = self.layoutsBySpaceIdentifier[_currentSpaceIdentifier];
         } else {
-            NSMutableArray *layouts = [NSMutableArray array];
-            for (Class layoutClass in [[AMConfiguration sharedConfiguration] layouts]) {
-                [layouts addObject:[[layoutClass alloc] init]];
-            }
-            self.layouts = layouts;
-            self.layoutsBySpaceIdentifier[_currentSpaceIdentifier] = layouts;
+            self.layouts = [[AMConfiguration sharedConfiguration] layoutsWithWindowActivityCache:self];
+            self.layoutsBySpaceIdentifier[_currentSpaceIdentifier] = self.layouts;
         }
     }
 
@@ -157,7 +149,6 @@
 
     self.changingSpace = NO;
     self.reflowOperation = [self.layouts[self.currentLayoutIndex] reflowOperationForScreen:self.screen withWindows:[self.delegate activeWindowsForScreenManager:self]];
-    self.reflowOperation.activeIDCache = self.activeIDCache;
     [[NSOperationQueue mainQueue] addOperation:self.reflowOperation];
 }
 
@@ -166,7 +157,7 @@
     [self setNeedsReflow];
 }
 
-- (AMLayout *)currentLayout {
+- (Layout *)currentLayout {
     return self.layouts[self.currentLayoutIndex];
 }
 
@@ -198,6 +189,13 @@
 - (void)expandMainPane {
     [self.currentLayout expandMainPane];
     [self setNeedsReflow];
+}
+
+- (BOOL)windowIsActive:(SIWindow *)window {
+    if (!window.isActive || !self.activeIDCache[@(window.windowID)]) {
+        return NO;
+    }
+    return YES;
 }
 
 @end
