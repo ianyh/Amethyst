@@ -203,6 +203,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
 
     MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:[keyCodes[0] unsignedShortValue] modifierFlags:modifiers];
     [[MASShortcutBinder sharedBinder] registerDefaultShortcuts:@{ defaultsKey: shortcut }];
+    [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:defaultsKey toAction:handler];
 }
 
 @end
