@@ -4,11 +4,11 @@ Amethyst
 [![Join the chat at https://gitter.im/ianyh/Amethyst](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ianyh/Amethyst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=master)](https://travis-ci.org/ianyh/Amethyst)
 
-Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/).
+Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/) and [i3](https://i3wm.org/).
 
-![Screenshot](http://ianyh.com/amethyst/images/screenshot-small.png)
+![Example 1](http://ianyh.com/amethyst/images/example-1.gif)
 
-A quick screencast of basic functionality can be found [here](http://youtu.be/9ayUdV1sfjA). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
+A quick screencast of basic functionality can be found [here](https://youtu.be/boPilhScpkY). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
 
 Getting Amethyst
 ================
@@ -20,29 +20,6 @@ brew cask install amethyst
 ```
 
 Note: that Amethyst now is only supported on OS X 10.9+. The last version that supports 10.8 can be found [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip).
-
-Troubleshooting
-===============
-
-I can't update to 0.9.4.
----
-
-There seems to be a issue with how 0.9+ was signed. You may need to download it
-directly and install it that way.
-
-Amethyst stopped working.
----
-
-Try disabling and reenabling Accessibility permissions for Amethyst and then
-relaunch it. I know, it's arcane and weird but frequently fixes issues arrising
-from code signature issues, which may be the cause here.
-
-I tried that and 0.9.4 is still broken.
----
-
-If you need to downgrade version 0.8.6 can be downloaded
-[here](http://ianyh.com/amethyst/versions/Amethyst-0.8.6.zip). Otherwise feel
-free to open an issue or email me.
 
 Using Amethyst
 ==============
@@ -94,74 +71,6 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 `ctrl + n` is enabled.
 
 ![Mission Control keyboard shortcuts](http://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
-
-Customization
--------------
-
-Amethyst can be customized by creating a json file called `.amethyst` in your home directory. The structure and valid keys and whatnot are all defined in [default.amethyst](https://raw.githubusercontent.com/ianyh/Amethyst/master/Amethyst/default.amethyst).
-
-### Layouts
-
-You can set the layouts you want to use by supplying a list of layout names under the "layouts" key. For example,
-
-```js
-"layouts": [
-    "tall",
-    "fullscreen",
-],
-```
-will restrict your layouts to the tall and fullscreen layouts. The available layouts are as follows:
-
-* **Tall** ("tall"): Defines a main area on the left and a secondary area on the right.
-* **Wide** ("wide"): Defines a main area on the top and a secondary area on the bottom.
-* **Fullscreen** ("fullscreen"): All windows are sized to fill the screen.
-* **Column** ("column"): All windows are distributed in evenly sized in columns from left to right.
-* **Row** ("row"): All windows are distributed in evenly sized rows from top to bottom.
-* **Floating** ("floating"): All windows are floating. (Useful if you want a space dedicated to floating windows.)
-* **Widescreen Tall** ("widescreen-tall"): Like Tall, but the main area uses columns and the secondary area uses rows.
-
-### Mouse Follows Focus
-
-This setting can be enabled by changing the following line
-
-```js
-"mouse-follows-focus": false,
-```
-
-to
-
-```js
-"mouse-follows-focus": true,
-```
-
-in your `.amethyst` file.
-
-
-### Always float an app
-
-You can set specific application to float by default, this can still be toggled by `mod1-t`
-
-```js
-"floating": [
-    "com.apple.systempreferences"
-],
-```
-
-Get the required string for the app `osascript -e 'id of app "Finder"'`. Just replace `Finder` with the name of your app
-
-### Layout HUD
-
-By default Amethyst pops up a HUD telling you the layout whenever the layout changes. You can disable it in your `.amethyst` file using the `enables-layout-hud` key. i.e.,
-
-```js
-"enables-layout-hud": false
-```
-
-By default the HUD will show when changing to a different space. You can disable the HUD during space changes, while still having it enabled when cycling or selecting a different layout, by using the `enables-layout-hud-on-space-change` key. i.e.,
-
-```js
-"enables-layout-hud-on-space-change": false
-```
 
 Contributing
 ============
