@@ -7,8 +7,6 @@ Amethyst
 Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/) and [i3](https://i3wm.org/).
 
 ![Example 1](http://ianyh.com/amethyst/images/example-1.gif)
-![Example 2](http://ianyh.com/amethyst/images/example-2.gif)
-![Example 3](http://ianyh.com/amethyst/images/example-3.gif)
 
 A quick screencast of basic functionality can be found [here](https://youtu.be/boPilhScpkY). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
 
