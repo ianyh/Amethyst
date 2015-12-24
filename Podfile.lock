@@ -16,6 +16,7 @@ PODS:
   - Mixpanel-OSX-Community (2.1.0)
   - OCMock (3.1.2)
   - Silica (0.1.4)
+  - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
   - CocoaLumberjack (= 2.0.0-beta)
@@ -27,6 +28,7 @@ DEPENDENCIES:
   - Mixpanel-OSX-Community (from `https://github.com/orta/mixpanel-osx-unofficial.git`)
   - OCMock
   - Silica (from `https://github.com/ianyh/Silica`)
+  - SwiftyJSON
 
 EXTERNAL SOURCES:
   MASShortcut:
@@ -57,5 +59,6 @@ SPEC CHECKSUMS:
   Mixpanel-OSX-Community: f58bb9cf97ef3b024b6f89d3890668a2c20de5b6
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
+  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
 COCOAPODS: 0.39.0

@@ -6,20 +6,12 @@
 //  Copyright (c) 2013 Ian Ynda-Hummel. All rights reserved.
 //
 
+#import "Amethyst-Swift.h"
+
 #import "AMConfiguration.h"
 
 #import "AMHotKeyManager.h"
-#import "AMWideLayout.h"
-#import "AMTallLayout.h"
-#import "AMTallRightLayout.h"
-#import "AMFullscreenLayout.h"
-#import "AMColumnLayout.h"
-#import "AMRowLayout.h"
-#import "AMFloatingLayout.h"
-#import "AMMiddleWideLayout.h"
-#import "AMLayout.h"
 #import "AMScreenManager.h"
-#import "AMWidescreenTallLayout.h"
 #import "AMWindowManager.h"
 
 // The layouts key should be a list of string identifying layout algorithms.
@@ -129,28 +121,28 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 }
 
 + (Class)layoutClassForString:(NSString *)layoutString {
-    if ([layoutString isEqualToString:@"tall"]) return [AMTallLayout class];
-    if ([layoutString isEqualToString:@"tall-right"]) return [AMTallRightLayout class];
-    if ([layoutString isEqualToString:@"wide"]) return [AMWideLayout class];
-    if ([layoutString isEqualToString:@"middle-wide"]) return [AMMiddleWideLayout class];
-    if ([layoutString isEqualToString:@"fullscreen"]) return [AMFullscreenLayout class];
-    if ([layoutString isEqualToString:@"column"]) return [AMColumnLayout class];
-    if ([layoutString isEqualToString:@"row"]) return [AMRowLayout class];
-    if ([layoutString isEqualToString:@"floating"]) return [AMFloatingLayout class];
-    if ([layoutString isEqualToString:@"widescreen-tall"]) return [AMWidescreenTallLayout class];
+    if ([layoutString isEqualToString:@"tall"]) return [TallLayout class];
+    if ([layoutString isEqualToString:@"tall-right"]) return [TallRightLayout class];
+    if ([layoutString isEqualToString:@"wide"]) return [WideLayout class];
+    if ([layoutString isEqualToString:@"middle-wide"]) return [MiddleWideLayout class];
+    if ([layoutString isEqualToString:@"fullscreen"]) return [FullscreenLayout class];
+    if ([layoutString isEqualToString:@"column"]) return [ColumnLayout class];
+    if ([layoutString isEqualToString:@"row"]) return [RowLayout class];
+    if ([layoutString isEqualToString:@"floating"]) return [FloatingLayout class];
+    if ([layoutString isEqualToString:@"widescreen-tall"]) return [WidescreenTallLayout class];
     return nil;
 }
 
 + (NSString *)stringForLayoutClass:(Class)layoutClass {
-    if (layoutClass == [AMTallLayout class]) return @"tall";
-    if (layoutClass == [AMTallRightLayout class]) return @"tall-right";
-    if (layoutClass == [AMWideLayout class]) return @"wide";
-    if (layoutClass == [AMMiddleWideLayout class]) return @"middle-wide";
-    if (layoutClass == [AMFullscreenLayout class]) return @"fullscreen";
-    if (layoutClass == [AMColumnLayout class]) return @"column";
-    if (layoutClass == [AMRowLayout class]) return @"row";
-    if (layoutClass == [AMFloatingLayout class]) return @"floating";
-    if (layoutClass == [AMWidescreenTallLayout class]) return @"widescreen-tall";
+    if (layoutClass == [TallLayout class]) return @"tall";
+    if (layoutClass == [TallRightLayout class]) return @"tall-right";
+    if (layoutClass == [WideLayout class]) return @"wide";
+    if (layoutClass == [MiddleWideLayout class]) return @"middle-wide";
+    if (layoutClass == [FullscreenLayout class]) return @"fullscreen";
+    if (layoutClass == [ColumnLayout class]) return @"column";
+    if (layoutClass == [RowLayout class]) return @"row";
+    if (layoutClass == [FloatingLayout class]) return @"floating";
+    if (layoutClass == [WidescreenTallLayout class]) return @"widescreen-tall";
     return nil;
 }
 
@@ -272,25 +264,25 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     }];
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandShrinkMainKey handler:^{
-        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(Layout *layout) {
             [layout shrinkMainPane];
         }];
     }];
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandExpandMainKey handler:^{
-        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(Layout *layout) {
             [layout expandMainPane];
         }];
     }];
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandIncreaseMainKey handler:^{
-        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(Layout *layout) {
             [layout increaseMainPaneCount];
         }];
     }];
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandDecreaseMainKey handler:^{
-        [[windowManager focusedScreenManager] updateCurrentLayout:^(AMLayout *layout) {
+        [[windowManager focusedScreenManager] updateCurrentLayout:^(Layout *layout) {
             [layout decreaseMainPaneCount];
         }];
     }];
@@ -371,18 +363,21 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 
 #pragma mark Public Methods
 
-- (NSArray *)layouts {
+- (NSArray *)layoutsWithWindowActivityCache:(id<WindowActivityCache>)windowActivityCache {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSArray *layoutStrings = [userDefaults arrayForKey:AMConfigurationLayoutsKey];
     NSMutableArray *layouts = [NSMutableArray array];
     for (NSString *layoutString in layoutStrings) {
-        Class layoutClass = [self.class layoutClassForString:layoutString];
-        if (!layoutClass) {
-            DDLogError(@"Unrecognized layout string: %@", layoutString);
-            continue;
-        }
-
-        [layouts addObject:layoutClass];
+        if ([layoutString isEqualToString:@"tall"]) [layouts addObject:[[TallLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"tall-right"]) [layouts addObject:[[TallRightLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"wide"]) [layouts addObject:[[WideLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"middle-wide"]) [layouts addObject:[[MiddleWideLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"fullscreen"]) [layouts addObject:[[FullscreenLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"column"]) [layouts addObject:[[ColumnLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"row"]) [layouts addObject:[[RowLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"floating"]) [layouts addObject:[[FloatingLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else if ([layoutString isEqualToString:@"widescreen-tall"]) [layouts addObject:[[WidescreenTallLayout alloc] initWithWindowActivityCache:windowActivityCache]];
+        else DDLogError(@"Unrecognized layout string: %@", layoutString);
     }
     return layouts;
 }
@@ -398,15 +393,15 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
 }
 
 - (NSArray *)availableLayoutStrings {
-    return [[[@[ [AMTallLayout class],
-                [AMTallRightLayout class],
-                [AMWideLayout class],
-                [AMMiddleWideLayout class],
-                [AMFullscreenLayout class],
-                [AMColumnLayout class],
-                [AMRowLayout class],
-                [AMFloatingLayout class],
-                [AMWidescreenTallLayout class] ] rac_sequence] map:^ NSString * (Class layoutClass) {
+    return [[[@[ [TallLayout class],
+                [TallRightLayout class],
+                [WideLayout class],
+                [MiddleWideLayout class],
+                [FullscreenLayout class],
+                [ColumnLayout class],
+                [RowLayout class],
+                [FloatingLayout class],
+                [WidescreenTallLayout class] ] rac_sequence] map:^ NSString * (Class layoutClass) {
         return [self.class stringForLayoutClass:layoutClass];
     }] array];
 }

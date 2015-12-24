@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class AMLayout;
+@class Layout;
 @class AMScreenManager;
+
+@protocol WindowActivityCache;
 
 // Block for updating the screen manager's current layout.
 //
 // layout - The screen's current layout object.
-typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
+typedef void (^AMScreenManagerLayoutUpdater)(Layout *layout);
 
 // Delegate protocol for the screen manager. Used to determine the screen's
 // contained windows.
@@ -27,10 +29,12 @@ typedef void (^AMScreenManagerLayoutUpdater)(AMLayout *layout);
 //                 windows.
 - (NSArray *)activeWindowsForScreenManager:(AMScreenManager *)screenManager;
 
+- (BOOL)windowIsActive:(SIWindow *)window;
+
 @end
 
 // Object for managing the layout of windows on a screen.
-@interface AMScreenManager : NSObject
+@interface AMScreenManager : NSObject<WindowActivityCache>
 
 // The screen being managed.
 //
