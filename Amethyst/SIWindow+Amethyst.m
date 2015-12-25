@@ -25,6 +25,7 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
 
     if (!subrole) return YES;
     if ([subrole isEqualToString:(__bridge NSString *)kAXStandardWindowSubrole]) return YES;
+    if ([subrole isEqualToString:(__bridge NSString *)kAXDialogSubrole]) return YES;
 
     return NO;
 }
