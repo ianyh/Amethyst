@@ -52,7 +52,7 @@
 		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
-		4058C46F1C4B119500B19D26 /* AMLayoutNameWIndowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* AMLayoutNameWIndowController.swift */; };
+		4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */; };
 		4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */; };
 		4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */; };
 		4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */; };
@@ -161,7 +161,7 @@
 		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
 		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
 		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
-		4058C46E1C4B119500B19D26 /* AMLayoutNameWIndowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMLayoutNameWIndowController.swift; sourceTree = "<group>"; };
+		4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMLayoutNameWindowController.swift; sourceTree = "<group>"; };
 		4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingLayout.swift; sourceTree = "<group>"; };
 		4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenLayout.swift; sourceTree = "<group>"; };
 		4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TallLayout.swift; sourceTree = "<group>"; };
@@ -426,7 +426,7 @@
 				40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */,
 				40B39284181497C0009A296B /* AMLayoutNameWindow.h */,
 				40B39285181497C0009A296B /* AMLayoutNameWindow.m */,
-				4058C46E1C4B119500B19D26 /* AMLayoutNameWIndowController.swift */,
+				4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -459,6 +459,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
+				4058C4701C4C4F9E00B19D26 /* ShellScript */,
 				C226F91CEBCF40B2B1E905D2 /* Check Pods Manifest.lock */,
 				408D394419C7C2B90001981F /* ShellScript */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
@@ -570,6 +571,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		4058C4701C4C4F9E00B19D26 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		408D394419C7C2B90001981F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -702,7 +716,7 @@
 				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
-				4058C46F1C4B119500B19D26 /* AMLayoutNameWIndowController.swift in Sources */,
+				4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */,
 				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
 				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
