@@ -11,7 +11,6 @@
 #import "AMConfiguration.h"
 
 #import "AMHotKeyManager.h"
-#import "AMScreenManager.h"
 #import "AMWindowManager.h"
 
 // The layouts key should be a list of string identifying layout algorithms.

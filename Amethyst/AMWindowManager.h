@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class AMScreenManager;
+@class ScreenManager;
 
 // Object for managing the windows across all screens and spaces.
 @interface AMWindowManager : NSObject
 
 // Returns the screen manager responsible for the screen containing the
 // currently focused window.
-- (AMScreenManager *)focusedScreenManager;
+- (ScreenManager *)focusedScreenManager;
 
 // Move the current focused window to the screen at screenIndex.
 //
