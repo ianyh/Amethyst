@@ -8,11 +8,11 @@
 
 #import "AMWindowManager.h"
 
+#import "Amethyst-Swift.h"
 #import "AMConfiguration.h"
-#import "AMScreenManager.h"
 #import "NSRunningApplication+Manageable.h"
 
-@interface AMWindowManager () <AMScreenManagerDelegate>
+@interface AMWindowManager () <ScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
 @property (nonatomic, strong) NSMutableArray *windows;
 
@@ -114,10 +114,6 @@
     }
     CFRelease(windowDescriptions);
     self.activeIDCache = activeIDCache;
-
-    for (AMScreenManager *screenManager in self.screenManagers) {
-        screenManager.activeIDCache = activeIDCache;
-    }
 }
 
 - (void)assignCurrentSpaceIdentifiers {
@@ -127,7 +123,7 @@
     if (NSScreen.screensHaveSeparateSpaces) {
         for (NSDictionary *screenDictionary in (__bridge NSArray *)screenDictionaries) {
             NSString *screenIdentifier = screenDictionary[@"Display Identifier"];
-            AMScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
+            ScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
 
             if (!screenManager) {
                 return;
@@ -136,22 +132,22 @@
             screenManager.currentSpaceIdentifier = screenDictionary[@"Current Space"][@"uuid"];
         }
     } else {
-        for (AMScreenManager *screenManager in self.screenManagers) {
+        for (ScreenManager *screenManager in self.screenManagers) {
             screenManager.currentSpaceIdentifier = ((NSDictionary *)[(__bridge NSArray *)screenDictionaries objectAtIndex:0])[@"Current Space"][@"uuid"];
         }
     }
     CFRelease(screenDictionaries);
 }
 
-- (AMScreenManager *)screenManagerForCGWindowDescription:(NSDictionary *)description {
+- (ScreenManager *)screenManagerForCGWindowDescription:(NSDictionary *)description {
     CGRect windowFrame;
     CFDictionaryRef windowFrameDict = (__bridge CFDictionaryRef)description[(__bridge NSString *)kCGWindowBounds];
     CGRectMakeWithDictionaryRepresentation(windowFrameDict, &windowFrame);
 
     CGFloat lastVolume = 0;
-    AMScreenManager *lastScreenManager = nil;
+    ScreenManager *lastScreenManager = nil;
 
-    for (AMScreenManager *screenManager in self.screenManagers) {
+    for (ScreenManager *screenManager in self.screenManagers) {
         CGRect screenFrame = [screenManager.screen frameIncludingDockAndMenu];
         CGRect intersection = CGRectIntersection(windowFrame, screenFrame);
         CGFloat volume = intersection.size.width * intersection.size.height;
@@ -165,9 +161,9 @@
     return lastScreenManager;
 }
 
-- (AMScreenManager *)focusedScreenManager {
+- (ScreenManager *)focusedScreenManager {
     SIWindow *focusedWindow = [SIWindow focusedWindow];
-    for (AMScreenManager *screenManager in self.screenManagers) {
+    for (ScreenManager *screenManager in self.screenManagers) {
         if ([screenManager.screen.am_screenIdentifier isEqualToString:focusedWindow.screen.am_screenIdentifier]) {
             return screenManager;
         }
@@ -180,7 +176,7 @@
 
     if (screenIndex >= NSScreen.screens.count) return;
 
-    AMScreenManager *screenManager = self.screenManagers[screenIndex];
+    ScreenManager *screenManager = self.screenManagers[screenIndex];
     SIWindow *focusedWindow = [SIWindow focusedWindow];
 
     // Have to find the managed window object so that we can clear it's screen cache.
@@ -204,7 +200,7 @@
 
     if (screenIndex >= NSScreen.screens.count) return;
 
-    AMScreenManager *screenManager = self.screenManagers[screenIndex];
+    ScreenManager *screenManager = self.screenManagers[screenIndex];
     NSArray *windows = [self windowsForScreen:screenManager.screen];
 
     if (windows.count == 0 && [[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
@@ -335,7 +331,7 @@
     }
 
     NSScreen *screen = focusedWindow.screen;
-    NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(AMScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
+    NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(ScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
         if ([screenManager.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier]) {
             *stop = YES;
             return YES;
@@ -360,7 +356,7 @@
     }
 
     NSScreen *screen = focusedWindow.screen;
-    NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(AMScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
+    NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(ScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
         if ([screenManager.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier]) {
             *stop = YES;
             return YES;
@@ -428,8 +424,8 @@
         }
     }
 
-    for (AMScreenManager *manager in self.screenManagers) {
-        manager.isFullScreen = [manager.screen am_isFullscreen];
+    for (ScreenManager *manager in self.screenManagers) {
+        manager.isFullscreen = [manager.screen am_isFullscreen];
     }
 
     [self markAllScreensForReflow];
@@ -640,10 +636,10 @@
 
     for (NSScreen *screen in NSScreen.screens) {
         NSString *screenIdentifier = [screen am_screenIdentifier];
-        AMScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
+        ScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
 
         if (!screenManager) {
-            screenManager = [[AMScreenManager alloc] initWithScreen:screen managedDisplay:screenIdentifier delegate:self];
+            screenManager = [[ScreenManager alloc] initWithScreen:screen screenIdentifier:screenIdentifier delegate:self];
             [self.screenManagersCache setObject:screenManager forKey:screenIdentifier];
         }
 
@@ -654,8 +650,8 @@
 
     // Window managers are sorted by screen position along the x-axis.
     [screenManagers sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSScreen *screen1 = ((AMScreenManager *)obj1).screen;
-        NSScreen *screen2 = ((AMScreenManager *)obj2).screen;
+        NSScreen *screen1 = ((ScreenManager *)obj1).screen;
+        NSScreen *screen2 = ((ScreenManager *)obj2).screen;
 
         CGFloat x1 = screen1.frameWithoutDockOrMenu.origin.x;
         CGFloat x2 = screen2.frameWithoutDockOrMenu.origin.x;
@@ -676,13 +672,13 @@
 }
 
 - (void)markAllScreensForReflow {
-    for (AMScreenManager *screenManager in self.screenManagers) {
+    for (ScreenManager *screenManager in self.screenManagers) {
         [screenManager setNeedsReflow];
     }
 }
 
 - (void)markScreenForReflow:(NSScreen *)screen {
-    for (AMScreenManager *screenManager in self.screenManagers) {
+    for (ScreenManager *screenManager in self.screenManagers) {
         if ([screenManager.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier]) {
             [screenManager setNeedsReflow];
         }
@@ -690,15 +686,25 @@
 }
 
 - (void)displayCurrentLayout {
-    for (AMScreenManager *screenManager in self.screenManagers) {
+    for (ScreenManager *screenManager in self.screenManagers) {
         [screenManager displayLayoutHUD];
     }
 }
 
-#pragma mark AMScreenManagerDelegate
+#pragma mark ScreenManagerDelegate
 
-- (NSArray *)activeWindowsForScreenManager:(AMScreenManager *)screenManager {
+- (NSArray *)activeWindowsForScreenManager:(ScreenManager *)screenManager {
     return [self activeWindowsForScreen:screenManager.screen];
+}
+
+- (BOOL)windowIsActive:(SIWindow *)window {
+	if (![window isActive]) {
+		return NO;
+	}
+	if (!self.activeIDCache[@(window.windowID)]) {
+		return NO;
+	}
+	return YES;
 }
 
 #pragma mark Private
