@@ -13,7 +13,6 @@ PODS:
   - Masonry (0.6.1)
   - MASPreferences (1.1.2)
   - MASShortcut (2.3.2)
-  - Mixpanel-OSX-Community (2.1.0)
   - OCMock (3.1.2)
   - Silica (0.1.4)
   - SwiftyJSON (2.3.2)
@@ -25,7 +24,6 @@ DEPENDENCIES:
   - Masonry
   - MASPreferences
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
-  - Mixpanel-OSX-Community (from `https://github.com/orta/mixpanel-osx-unofficial.git`)
   - OCMock
   - Silica (from `https://github.com/ianyh/Silica`)
   - SwiftyJSON
@@ -33,8 +31,6 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   MASShortcut:
     :git: https://github.com/ianyh/MASShortcut
-  Mixpanel-OSX-Community:
-    :git: https://github.com/orta/mixpanel-osx-unofficial.git
   Silica:
     :git: https://github.com/ianyh/Silica
 
@@ -42,9 +38,6 @@ CHECKOUT OPTIONS:
   MASShortcut:
     :commit: d70129eebebb2249a27bfbac8019c8a93a51c08a
     :git: https://github.com/ianyh/MASShortcut
-  Mixpanel-OSX-Community:
-    :commit: 6dc0e5880d67a09f6ed55131acca2db3057e43d2
-    :git: https://github.com/orta/mixpanel-osx-unofficial.git
   Silica:
     :commit: a73415cd79ccee6e7c3dcb87ecf5d9889a6d85d2
     :git: https://github.com/ianyh/Silica
@@ -56,7 +49,6 @@ SPEC CHECKSUMS:
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
   MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
   MASShortcut: a816834091659aca3ad6a309f44ae16d25a7fef6
-  Mixpanel-OSX-Community: f58bb9cf97ef3b024b6f89d3890668a2c20de5b6
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
