@@ -216,6 +216,6 @@
     "focus-follows-mouse": false,
     "enables-layout-hud": true,
     "enables-layout-hud-on-space-change": true,
-    "window-padding": 0,
-    "window-padding-collapse": false
+    "window-margin-size": 0,
+    "window-margins": false
 }

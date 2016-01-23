@@ -65,9 +65,9 @@
 
 - (BOOL)useCanaryBuild;
 
-- (CGFloat)windowPadding;
+- (CGFloat)windowMarginSize;
 
-- (BOOL)windowPaddingCollapse;
+- (BOOL)windowMargins;
 
 @property (nonatomic, assign) BOOL tilingEnabled;
 

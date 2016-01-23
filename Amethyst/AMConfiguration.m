@@ -34,8 +34,8 @@ static NSString *const AMConfigurationMod2String = @"mod2";
 
 static NSString *const AMConfigurationScreens = @"screens";
 
-static NSString *const AMConfigurationWindowPadding = @"window-padding";
-static NSString *const AMConfigurationWindowPaddingCollapse = @"window-padding-collapse";
+static NSString *const AMConfigurationWindowMargins = @"window-margins";
+static NSString *const AMConfigurationWindowMarginSize = @"window-margin-size";
 
 // Command strings that reference possible window management commands. They are
 // optionally present in the configuration file. If any is ommitted the default
@@ -159,8 +159,8 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
                                      AMConfigurationEnablesLayoutHUD,
                                      AMConfigurationEnablesLayoutHUDOnSpaceChange,
                                      AMConfigurationUseCanaryBuild,
-                                     AMConfigurationWindowPadding,
-                                     AMConfigurationWindowPaddingCollapse]) {
+                                     AMConfigurationWindowMargins,
+                                     AMConfigurationWindowMarginSize]) {
         id value = self.configuration[defaultsKey];
         id defaultValue = self.defaultConfiguration[defaultsKey];
         if (value || (defaultValue && ![userDefaults objectForKey:defaultsKey])) {
@@ -451,14 +451,14 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     return [userDefaults boolForKey:AMConfigurationUseCanaryBuild];
 }
 
-- (CGFloat)windowPadding {
+- (CGFloat)windowMarginSize {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults floatForKey:AMConfigurationWindowPadding];
+    return [userDefaults floatForKey:AMConfigurationWindowMarginSize];
 }
 
-- (BOOL)windowPaddingCollapse {
+- (BOOL)windowMargins {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults boolForKey:AMConfigurationWindowPaddingCollapse];
+    return [userDefaults boolForKey:AMConfigurationWindowMargins];
 }
 
 - (NSArray *)floatingBundleIdentifiers {
