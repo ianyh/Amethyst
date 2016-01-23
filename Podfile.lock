@@ -1,4 +1,5 @@
 PODS:
+  - CCNPreferencesWindowController (1.3.0)
   - CocoaLumberjack (2.0.0-beta):
     - CocoaLumberjack/CLI (= 2.0.0-beta)
     - CocoaLumberjack/Core (= 2.0.0-beta)
@@ -11,30 +12,34 @@ PODS:
   - IYLoginItem (0.1)
   - Kiwi (2.3.1)
   - Masonry (0.6.1)
-  - MASPreferences (1.1.2)
   - MASShortcut (2.3.2)
   - OCMock (3.1.2)
   - Silica (0.1.4)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
+  - CCNPreferencesWindowController (from `https://github.com/phranck/CCNPreferencesWindowController`)
   - CocoaLumberjack (= 2.0.0-beta)
   - IYLoginItem
   - Kiwi
   - Masonry
-  - MASPreferences
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
   - OCMock
   - Silica (from `https://github.com/ianyh/Silica`)
   - SwiftyJSON
 
 EXTERNAL SOURCES:
+  CCNPreferencesWindowController:
+    :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
     :git: https://github.com/ianyh/MASShortcut
   Silica:
     :git: https://github.com/ianyh/Silica
 
 CHECKOUT OPTIONS:
+  CCNPreferencesWindowController:
+    :commit: bd9d7967772cefefe9154d2b16d93b9a305f1c72
+    :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
     :commit: d70129eebebb2249a27bfbac8019c8a93a51c08a
     :git: https://github.com/ianyh/MASShortcut
@@ -43,11 +48,11 @@ CHECKOUT OPTIONS:
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
+  CCNPreferencesWindowController: 78ed2e3fc54207496c410196cba721f82eea7fc1
   CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
   IYLoginItem: e57a86b39d3b9ab0e2fc033adedae01efafd9adf
   Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
-  MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
   MASShortcut: a816834091659aca3ad6a309f44ae16d25a7fef6
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e

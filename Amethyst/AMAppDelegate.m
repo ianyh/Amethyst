@@ -9,8 +9,9 @@
 #import "AMAppDelegate.h"
 
 #import "AMConfiguration.h"
+#import "AMGeneralPreferencesViewController.h"
 #import "AMHotKeyManager.h"
-#import "AMPreferencesWindowController.h"
+#import "AMShortcutsPreferencesViewController.h"
 #import "AMWindowManager.h"
 
 #import <Fabric/Fabric.h>
@@ -23,13 +24,14 @@
 #ifdef AMKeys_h
 #endif
 
+#import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
 #import <IYLoginItem/NSBundle+LoginItem.h>
 
 @interface AMAppDelegate ()
-@property (nonatomic, assign) IBOutlet AMPreferencesWindowController *preferencesWindowController;
+@property (nonatomic, strong) CCNPreferencesWindowController *preferencesWindowController;
 
 @property (nonatomic, strong) AMWindowManager *windowManager;
 @property (nonatomic, strong) AMHotKeyManager *hotKeyManager;
@@ -41,6 +43,7 @@
 
 - (IBAction)toggleStartAtLogin:(id)sender;
 - (IBAction)relaunch:(id)sender;
+- (IBAction)showPreferencesWindow:(id)sender;
 @end
 
 @implementation AMAppDelegate
@@ -78,6 +81,15 @@
 #endif
     }
 
+    self.preferencesWindowController = [[CCNPreferencesWindowController alloc] init];
+    self.preferencesWindowController.centerToolbarItems = NO;
+    self.preferencesWindowController.allowsVibrancy = YES;
+    NSArray *preferencesViewControllers = @[
+                                            [AMGeneralPreferencesViewController new],
+                                            [AMShortcutsPreferencesViewController new]
+                                            ];
+    [self.preferencesWindowController setPreferencesViewControllers:preferencesViewControllers];
+
     self.windowManager = [[AMWindowManager alloc] init];
     self.hotKeyManager = [[AMHotKeyManager alloc] init];
 
@@ -113,6 +125,14 @@
     NSString *myPath = [NSString stringWithFormat:@"%s", [[[NSBundle mainBundle] executablePath] fileSystemRepresentation]];
     [NSTask launchedTaskWithLaunchPath:myPath arguments:@[]];
     [NSApp terminate:self];
+}
+
+- (IBAction)showPreferencesWindow:(id)sender {
+    if ([AMConfiguration sharedConfiguration].hasCustomConfiguration) {
+        NSRunAlertPanel(@"Warning", @"You have a .amethyst file, which can override in-app preferences. You may encounter unexpected behavior.", @"OK", nil, nil);
+    }
+
+    [self.preferencesWindowController showPreferencesWindow];
 }
 
 @end
