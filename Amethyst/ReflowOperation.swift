@@ -31,9 +31,9 @@ public struct FrameAssignment {
     public func adjustedFrameForLayout(screen: NSScreen) -> CGRect {
         var frame = AMConfiguration.sharedConfiguration().ignoreMenuBar() ? screen.frameIncludingDockAndMenu() : screen.frameWithoutDockOrMenu()
 
-        if AMConfiguration.sharedConfiguration().windowPaddingCollapse() {
+        if AMConfiguration.sharedConfiguration().windowMargins() {
             /* Inset for producing half of the full padding around screen as collapse only adds half of it to all windows */
-            let padding = floor(AMConfiguration.sharedConfiguration().windowPadding() / 2)
+            let padding = floor(AMConfiguration.sharedConfiguration().windowMarginSize() / 2)
 
             frame.origin.x += padding
             frame.origin.y += padding
@@ -65,17 +65,17 @@ public struct FrameAssignment {
     }
 
     private func assignFrame(frame: CGRect, toWindow window: SIWindow, focused: Bool, screenFrame: CGRect) {
-        var padding = AMConfiguration.sharedConfiguration().windowPadding()
+        var padding = AMConfiguration.sharedConfiguration().windowMarginSize()
         var finalFrame = frame
 
-        if AMConfiguration.sharedConfiguration().windowPaddingCollapse() {
+        if AMConfiguration.sharedConfiguration().windowMargins() {
             padding = floor(padding / 2)
-        }
 
-        finalFrame.origin.x += padding
-        finalFrame.origin.y += padding
-        finalFrame.size.width -= 2 * padding
-        finalFrame.size.height -= 2 * padding
+            finalFrame.origin.x += padding
+            finalFrame.origin.y += padding
+            finalFrame.size.width -= 2 * padding
+            finalFrame.size.height -= 2 * padding
+        }
 
         var finalPosition = finalFrame.origin
 
