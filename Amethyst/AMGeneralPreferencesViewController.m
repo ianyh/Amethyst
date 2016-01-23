@@ -9,8 +9,9 @@
 #import "AMGeneralPreferencesViewController.h"
 
 #import "AMConfiguration.h"
+#import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
 
-@interface AMGeneralPreferencesViewController () <NSTableViewDataSource, NSTableViewDelegate>
+@interface AMGeneralPreferencesViewController () <CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate>
 @property (nonatomic, copy) NSArray *layouts;
 @property (nonatomic, copy) NSArray *floatingBundleIdentifiers;
 
@@ -141,17 +142,17 @@
     [self.floatingTableView reloadData];
 }
 
-#pragma mark MASPreferencesViewController
+#pragma mark CCNPreferencesWindowControllerProtocol
 
-- (NSString *)identifier {
+- (NSString *)preferenceIdentifier {
     return NSStringFromClass(self.class);
 }
 
-- (NSImage *)toolbarItemImage {
+- (NSImage *)preferenceIcon {
     return [NSImage imageNamed:NSImageNamePreferencesGeneral];
 }
 
-- (NSString *)toolbarItemLabel {
+- (NSString *)preferenceTitle {
     return @"General";
 }
 

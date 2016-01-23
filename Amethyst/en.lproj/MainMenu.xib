@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -26,7 +26,7 @@
                 <menuItem title="Preferences..." id="utO-om-0eu">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="showWindow:" target="pD7-7q-5fV" id="EYB-9G-cPZ"/>
+                        <action selector="showPreferencesWindow:" target="494" id="DhJ-Jj-71M"/>
                     </connections>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="548"/>
@@ -52,7 +52,6 @@
         </menu>
         <customObject id="494" customClass="AMAppDelegate">
             <connections>
-                <outlet property="preferencesWindowController" destination="pD7-7q-5fV" id="AhD-wm-enG"/>
                 <outlet property="startAtLoginMenuItem" destination="549" id="551"/>
                 <outlet property="statusItemMenu" destination="536" id="547"/>
                 <outlet property="versionMenuItem" destination="bNZ-Ry-Q4Q" id="jXC-pY-N2a"/>
@@ -60,6 +59,5 @@
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <customObject id="552" customClass="SUUpdater"/>
-        <customObject id="pD7-7q-5fV" customClass="AMPreferencesWindowController"/>
     </objects>
 </document>

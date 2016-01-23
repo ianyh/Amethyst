@@ -11,9 +11,10 @@
 #import "AMConfiguration.h"
 #import "AMShortcutsPreferencesListItemView.h"
 
+#import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
 #import <MASShortcut/MASShortcutView+Bindings.h>
 
-@interface AMShortcutsPreferencesViewController () <NSTableViewDataSource, NSTableViewDelegate>
+@interface AMShortcutsPreferencesViewController () <CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate>
 @property (nonatomic, strong) NSArray *hotKeyNameToDefaultsKey;
 
 @property (nonatomic, strong) IBOutlet NSTableView *tableView;
@@ -32,17 +33,17 @@
     self.hotKeyNameToDefaultsKey = [[AMConfiguration sharedConfiguration] hotKeyNameToDefaultsKey];
 }
 
-#pragma mark MASPreferencesViewController
+#pragma mark CCNPreferencesWindowControllerProtocol
 
-- (NSString *)identifier {
+- (NSString *)preferenceIdentifier {
     return NSStringFromClass(self.class);
 }
 
-- (NSImage *)toolbarItemImage {
+- (NSImage *)preferenceIcon {
     return [NSImage imageNamed:NSImageNameAdvanced];
 }
 
-- (NSString *)toolbarItemLabel {
+- (NSString *)preferenceTitle {
     return @"Shortcuts";
 }
 
