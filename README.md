@@ -79,6 +79,10 @@ If you would like to see features or particular bugs fixed check out the Trello 
 
 I love pull requests. If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than master. Otherwise just try to stick to the general style of the code.
 
+In order to build Amethyst locally, you'll need to also perform the following steps after cloning the repo:
+
+- Run `rake setup`, which installs dependencies from Carthage and CocoaPods.
+
 Contact
 =======
 
