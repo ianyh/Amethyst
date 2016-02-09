@@ -317,7 +317,7 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandDisplayCurrentLayoutKey handler:^{
         [windowManager displayCurrentLayout];
     }];
-    
+
     for (NSUInteger screenNumber = 1; screenNumber <= self.screens; ++screenNumber) {
         NSString *focusCommandKey = [AMConfigurationCommandFocusScreenPrefixKey stringByAppendingFormat:@"-%d", (unsigned int)screenNumber];
         NSString *throwCommandKey = [AMConfigurationCommandThrowScreenPrefixKey stringByAppendingFormat:@"-%d", (unsigned int)screenNumber];
@@ -412,8 +412,13 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     if (!floatingBundleIdentifiers) {
         return NO;
     }
+    for (identifier in floatingBundleIdentifiers) {
+      if (runningApplication.bundleIdentifier.hasPrefix([identifier setString: [identifier stringByReplacingOccurrencesOfString:@"*" withString:@""]])) {
+        return true;
+      }
+    }
 
-    return [floatingBundleIdentifiers containsObject:runningApplication.bundleIdentifier];
+    return false;
 }
 
 - (BOOL)ignoreMenuBar {
