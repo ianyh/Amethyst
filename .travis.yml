@@ -11,5 +11,5 @@ before_install:
         - gem install cocoapods --pre || true
         - export LC_ALL="en_US.UTF-8"
 script:
-  - carthage update
+  - carthage update --no-use-binaries
   - xctool clean build test
