@@ -9,4 +9,6 @@ before_install:
         - brew upgrade carthage || true
         - gem install cocoapods --pre || true
         - export LC_ALL="en_US.UTF-8"
-script: rake test
+script: 
+  - carthage update
+  - xctool clean build dest
