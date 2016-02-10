@@ -381,6 +381,30 @@
     [focusedWindow am_focusWindow];
 }
 
+- (void)pushFocusedWindowToSpaceLeft {
+    CGSSpace currentSpace = [self currentFocusedSpace];
+    NSUInteger spaces     = [self spacesForFocusedScreen]
+
+    if (currentSpace == -1 || spaces == -1 ) return;
+    if (currentSpace <= 2 ) return;
+
+    NSUInteger targetSpace = (NSUInteger) (currentSpace - 1);
+
+    [self pushFocusedWindowToSpace:targetSpace];
+}
+
+- (void)pushFocusedWindowToSpaceRight {
+    CGSSpace currentSpace = [self currentFocusedSpace];
+    NSUInteger spaces     = [self spacesForFocusedScreen]
+
+    if (currentSpace == -1 || spaces == -1 ) return;
+    if (currentSpace >= spaces - 1 ) return;
+
+    NSUInteger targetSpace = (NSUInteger) (currentSpace + 1);
+
+    [self pushFocusedWindowToSpace:targetSpace];
+}
+
 #pragma mark Notification Handlers
 
 - (void)applicationDidLaunch:(NSNotification *)notification {
@@ -433,6 +457,72 @@
 
 - (void)screenParametersDidChange:(NSNotification *)notification {
     [self updateScreenManagers];
+}
+
+#pragma mark Spaces Management
+
+- (NSUInteger)spacesForScreen:(NSScreen *)screen {
+    NSString *screenIdentifier = screen.am_screenIdentifier;
+    NSArray *spaces = (__bridge NSArray *)CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
+
+    if (NSScreen.screensHaveSeparateSpaces) {
+        for (NSDictionary *screenDictionary in spaces) {
+            if ([screenDictionary[@"Display Identifier"] isEqualToString:screenIdentifier]) {
+                return [screenDictionary count];
+            }
+        }
+    } else {
+        return [spaces[0] count];
+    }
+
+    return -1;
+}
+
+- (NSUInteger)spacesForFocusedScreen:(NSScreen *)screen {
+    SIWindow *focusedWindow = [SIWindow focusedWindow];
+
+    if (!focusedWindow) return -1;
+
+    NSScreen *screen = focusedWindow.screen;
+
+    return [self spacesForScreen:screen];
+}
+
+- (CGSSpace)currentSpaceForScreen:(NSScreen *)screen {
+    NSString *screenIdentifier = screen.am_screenIdentifier;
+    NSArray *spaces = (__bridge NSArray *)CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
+
+    CGSSpace currentSpace;
+    BOOL hasCurrentSpace = NO;
+    if (NSScreen.screensHaveSeparateSpaces) {
+        for (NSDictionary *screenDictionary in spaces) {
+            if ([screenDictionary[@"Display Identifier"] isEqualToString:screenIdentifier]) {
+                currentSpace = [screenDictionary[@"Current Space"][@"ManagedSpaceID"] integerValue];
+                hasCurrentSpace = YES;
+                break;
+            }
+        }
+    } else {
+        currentSpace = [spaces[0][@"Current Space"][@"ManagedSpaceID"] integerValue];
+        hasCurrentSpace = YES;
+    }
+
+    if (!hasCurrentSpace) {
+        DDLogWarn(@"Could not find a space for screen: %@", screenIdentifier);
+        return -1;
+    }
+
+    return currentSpace;
+}
+
+- (CGSSpace)currentFocusedSpace {
+    SIWindow *focusedWindow = [SIWindow focusedWindow];
+
+    if (!focusedWindow) return -1;
+
+    NSScreen *screen = focusedWindow.screen;
+
+    return [self currentSpaceForScreen:screen];
 }
 
 #pragma mark Applications Management
@@ -578,7 +668,7 @@
         currentSpace = [spaces[0][@"Current Space"][@"ManagedSpaceID"] integerValue];
         hasCurrentSpace = YES;
     }
-    
+
     if (!hasCurrentSpace) {
         DDLogWarn(@"Could not find a space for screen: %@", screenIdentifier);
         return @[];

@@ -55,6 +55,8 @@
         "throw-space-7": "Throw the focused window to the seventh space",
         "throw-space-8": "Throw the focused window to the eighth space",
         "throw-space-9": "Throw the focused window to the ninth space",
+        "throw-space-left": "Throw the focused window left one space",
+        "throw-space-right": "Throw the focused window right one space",
         "toggle-float": "Toggle the focused window between being floating and tiled"
     },
 
@@ -195,6 +197,14 @@
     "throw-space-9": {
         "mod": "mod2",
         "key": "9"
+    },
+    "throw-space-left": {
+        "mod": "mod2",
+        "key": "left"
+    },
+    "throw-space-right": {
+        "mod": "mod2",
+        "key": "right"
     },
     "toggle-float": {
         "mod": "mod1",

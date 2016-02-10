@@ -58,6 +58,8 @@ static NSString *const AMConfigurationCommandSwapCCWKey = @"swap-ccw";
 static NSString *const AMConfigurationCommandSwapCWKey = @"swap-cw";
 static NSString *const AMConfigurationCommandSwapMainKey = @"swap-main";
 static NSString *const AMConfigurationCommandThrowSpacePrefixKey = @"throw-space";
+static NSString *const AMConfigurationCommandThrowSpaceLeftKey = @"throw-space-left";
+static NSString *const AMConfigurationCommandThrowSpaceRightKey = @"throw-space-right";
 static NSString *const AMConfigurationCommandFocusScreenPrefixKey = @"focus-screen";
 static NSString *const AMConfigurationCommandThrowScreenPrefixKey = @"throw-screen";
 static NSString *const AMConfigurationCommandToggleFloatKey = @"toggle-float";
@@ -317,7 +319,7 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandDisplayCurrentLayoutKey handler:^{
         [windowManager displayCurrentLayout];
     }];
-    
+
     for (NSUInteger screenNumber = 1; screenNumber <= self.screens; ++screenNumber) {
         NSString *focusCommandKey = [AMConfigurationCommandFocusScreenPrefixKey stringByAppendingFormat:@"-%d", (unsigned int)screenNumber];
         NSString *throwCommandKey = [AMConfigurationCommandThrowScreenPrefixKey stringByAppendingFormat:@"-%d", (unsigned int)screenNumber];
@@ -338,6 +340,14 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
             [windowManager pushFocusedWindowToSpace:spaceNumber];
         }];
     }
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandThrowSpaceLeftKey handler:^{
+        [windowManager pushFocusedWindowToSpaceLeft];
+    }];
+
+    [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandThrowSpaceRightKey handler:^{
+        [windowManager pushFocusedWindowToSpaceRight];
+    }];
 
     [self constructCommandWithHotKeyManager:hotKeyManager commandKey:AMConfigurationCommandToggleFloatKey handler:^{
         [windowManager toggleFloatForFocusedWindow];

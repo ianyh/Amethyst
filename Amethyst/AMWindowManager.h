@@ -86,6 +86,16 @@
 // This method is a no-op if there is no focused window.
 - (void)pushFocusedWindowToSpace:(NSUInteger)space;
 
+// Moves the focused window left one space.
+//
+// This method is a no-op if there is no focused window.
+- (void)pushFocusedWindowToSpaceLeft;
+
+// Moves the focused window right one space.
+//
+// This method is a no-op if there is no focused window.
+- (void)pushFocusedWindowToSpaceRight;
+
 - (void)toggleFloatForFocusedWindow;
 
 - (void)displayCurrentLayout;
