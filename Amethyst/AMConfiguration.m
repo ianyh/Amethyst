@@ -412,8 +412,8 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
     if (!floatingBundleIdentifiers) {
         return NO;
     }
-    for (identifier in floatingBundleIdentifiers) {
-      if (runningApplication.bundleIdentifier.hasPrefix([identifier setString: [identifier stringByReplacingOccurrencesOfString:@"*" withString:@""]])) {
+    for (floatingBundleIdentifier in floatingBundleIdentifiers) {
+      if ([runningApplication.bundleIdentifier hasPrefix:@[floatingBundleIdentifier setString: [floatingBundleIdentifier stringByReplacingOccurrencesOfString:@"*" withString:@""]]]) {
         return true;
       }
     }
