@@ -1,4 +1,5 @@
 language: objective-c
+osx_image: xcode7.2
 rvm:
   - 2.2.2
 before_install:
@@ -9,6 +10,6 @@ before_install:
         - brew upgrade carthage || true
         - gem install cocoapods --pre || true
         - export LC_ALL="en_US.UTF-8"
-script: 
+script:
   - carthage update
-  - xctool clean build dest
+  - xctool clean build test
