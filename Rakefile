@@ -1,5 +1,5 @@
 task :setup do
-  system 'carthage update'
+  system 'carthage bootstrap --platform OSX'
   system 'pod install'
 end
 
