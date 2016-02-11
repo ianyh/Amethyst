@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <MASPreferences/MASPreferencesViewController.h>
 
 @interface AMShortcutsPreferencesViewController : NSViewController
 
