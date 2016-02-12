@@ -1,4 +1,5 @@
 PODS:
+  - CCNLaunchAtLoginItem (0.1.0)
   - CCNPreferencesWindowController (1.3.0)
   - CocoaLumberjack (2.0.0-beta):
     - CocoaLumberjack/CLI (= 2.0.0-beta)
@@ -9,22 +10,17 @@ PODS:
   - CocoaLumberjack/Core (2.0.0-beta)
   - CocoaLumberjack/Extensions (2.0.0-beta):
     - CocoaLumberjack/Core
-  - IYLoginItem (0.1)
-  - Kiwi (2.3.1)
   - Masonry (0.6.1)
   - MASShortcut (2.3.2)
-  - OCMock (3.1.2)
   - Silica (0.1.4)
   - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
+  - CCNLaunchAtLoginItem (~> 0.1)
   - CCNPreferencesWindowController (from `https://github.com/phranck/CCNPreferencesWindowController`)
   - CocoaLumberjack (= 2.0.0-beta)
-  - IYLoginItem
-  - Kiwi
   - Masonry
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
-  - OCMock
   - Silica (from `https://github.com/ianyh/Silica`)
   - SwiftyJSON
 
@@ -48,16 +44,14 @@ CHECKOUT OPTIONS:
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
+  CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
   CCNPreferencesWindowController: 78ed2e3fc54207496c410196cba721f82eea7fc1
   CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
-  IYLoginItem: e57a86b39d3b9ab0e2fc033adedae01efafd9adf
-  Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
   MASShortcut: a816834091659aca3ad6a309f44ae16d25a7fef6
-  OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-PODFILE CHECKSUM: 8ad782718fbea4eb0672a77a144e130201a7904b
+PODFILE CHECKSUM: cf9bb9de50f320a621ecc7c623fb88b39361149e
 
 COCOAPODS: 1.0.0.beta.3

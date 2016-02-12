@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Ian Ynda-Hummel. All rights reserved.
 //
 
-#import "SIWindow.h"
+#import <Silica/SIWindow.h>
 
 @interface SIWindow (Amethyst)
 
