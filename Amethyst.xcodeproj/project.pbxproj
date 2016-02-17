@@ -7,32 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400299E3176393F10049001F /* SenTestingKit.framework */; };
-		400299E5176393F10049001F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
-		400299EB176393F10049001F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 400299E9176393F10049001F /* InfoPlist.strings */; };
-		400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 400299F5176396D30049001F /* AMFullscreenLayoutTest.m */; };
-		400299F717639AE40049001F /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
-		400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
-		400299FA17639AF20049001F /* AMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6F41742E41A00D1C936 /* AMAppDelegate.m */; };
-		400299FB17639AF20049001F /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
-		400299FD17639AF20049001F /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
-		400299FE17639AF70049001F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
-		40029A0717639BDA0049001F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
-		40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40029A081763A06A0049001F /* AMTallLayoutTest.m */; };
 		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
-		4008E731190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
 		4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
-		4008E735190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
 		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
-		4008E73F190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
 		4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
 		4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B317517CE100548DBE /* icon-statusitem.png */; };
 		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
 		401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
-		401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
-		4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
@@ -43,11 +26,8 @@
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
-		404A5FAF18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
 		404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
-		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
-		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */; };
 		4058C47A1C54113D00B19D26 /* AMGeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* AMGeneralPreferencesViewController.xib */; };
 		4058C47E1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib */; };
@@ -63,9 +43,7 @@
 		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
 		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
 		40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
-		40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
 		40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
-		40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
 		40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */; };
 		40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91C1BD1B22E00F58660 /* Fabric.framework */; };
@@ -73,28 +51,26 @@
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
-		40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
-		40E705D9176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; };
 		40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; };
 		40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
-		5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */; };
-		EEFB3432801D269FE4F30909 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */; };
+		C2F91BD6DF0BD2A6203692B4 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		4017800B176D267900C8216C /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
+/* Begin PBXContainerItemProxy section */
+		40D95B4C1C6E2ED800AAF433 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 402DB6D61742E41A00D1C936 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402DB6DD1742E41A00D1C936;
+			remoteInfo = Amethyst;
 		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
 		40CD2F95176D0F4A00251338 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -112,13 +88,7 @@
 		154FDC8E49877CD859DBF9A6 /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
 		1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3665375156858D662B49C869 /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
-		400299E2176393F10049001F /* AmethystTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		400299E3176393F10049001F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		400299E8176393F10049001F /* AmethystTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AmethystTests-Info.plist"; sourceTree = "<group>"; };
-		400299EA176393F10049001F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		400299EF176393F10049001F /* AmethystTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Prefix.pch"; sourceTree = "<group>"; };
-		400299F5176396D30049001F /* AMFullscreenLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayoutTest.m; sourceTree = "<group>"; };
-		40029A081763A06A0049001F /* AMTallLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallLayoutTest.m; sourceTree = "<group>"; };
 		4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMGeneralPreferencesViewController.h; sourceTree = "<group>"; };
 		4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMGeneralPreferencesViewController.m; sourceTree = "<group>"; };
 		4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesViewController.h; sourceTree = "<group>"; };
@@ -134,7 +104,6 @@
 		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
 		401A406F1801C82B00136DC9 /* SIApplication+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIApplication+Amethyst.h"; sourceTree = "<group>"; };
 		401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIApplication+Amethyst.m"; sourceTree = "<group>"; };
-		4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfigurationTest.m; sourceTree = "<group>"; };
 		4026AB411777C017001E3783 /* AMConfiguration+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AMConfiguration+Private.h"; sourceTree = "<group>"; };
 		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
@@ -184,29 +153,18 @@
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40C90FE417A330E900CE174B /* AMPrefixImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMPrefixImport.h; sourceTree = "<group>"; };
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; };
-		40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayoutTest.m; sourceTree = "<group>"; };
+		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
 		40E8B2061BD7C5B900AC70AC /* AMKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMKeys.h; sourceTree = "<group>"; };
 		40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		40EF05901AABE5D1001FBA5B /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
 		40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Amethyst.h"; sourceTree = "<group>"; };
 		40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Amethyst.m"; sourceTree = "<group>"; };
-		5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRowLayoutTest.m; sourceTree = "<group>"; };
 		BC6A31D2564700A03F952CC5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		400299DE176393F10049001F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				40029A0717639BDA0049001F /* Carbon.framework in Frameworks */,
-				400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */,
-				400299E5176393F10049001F /* Cocoa.framework in Frameworks */,
-				EEFB3432801D269FE4F30909 /* Pods_AmethystTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		402DB6DB1742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +182,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		40D95B441C6E2ED800AAF433 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2F91BD6DF0BD2A6203692B4 /* Pods_AmethystTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -234,29 +200,6 @@
 				154FDC8E49877CD859DBF9A6 /* Pods-AmethystTests.release.xcconfig */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		400299E6176393F10049001F /* AmethystTests */ = {
-			isa = PBXGroup;
-			children = (
-				400299E7176393F10049001F /* Supporting Files */,
-				400299F5176396D30049001F /* AMFullscreenLayoutTest.m */,
-				40029A081763A06A0049001F /* AMTallLayoutTest.m */,
-				40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */,
-				4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */,
-				5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */,
-			);
-			path = AmethystTests;
-			sourceTree = "<group>";
-		};
-		400299E7176393F10049001F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				400299E8176393F10049001F /* AmethystTests-Info.plist */,
-				400299E9176393F10049001F /* InfoPlist.strings */,
-				400299EF176393F10049001F /* AmethystTests-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		4008E724190C4D9D0049E2F6 /* Preferences */ = {
@@ -278,7 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				402DB6E71742E41A00D1C936 /* Amethyst */,
-				400299E6176393F10049001F /* AmethystTests */,
+				40D95B481C6E2ED800AAF433 /* AmethystTests */,
 				402DB6E01742E41A00D1C936 /* Frameworks */,
 				402DB6DF1742E41A00D1C936 /* Products */,
 				1EF9037AB16ED430BCB4E139 /* Pods */,
@@ -289,7 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				402DB6DE1742E41A00D1C936 /* Amethyst.app */,
-				400299E2176393F10049001F /* AmethystTests.octest */,
+				40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -421,30 +364,17 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
+			isa = PBXGroup;
+			children = (
+				40D95B4B1C6E2ED800AAF433 /* Info.plist */,
+			);
+			path = AmethystTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		400299E1176393F10049001F /* AmethystTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 400299F2176393F10049001F /* Build configuration list for PBXNativeTarget "AmethystTests" */;
-			buildPhases = (
-				8F7B5A98B7753A9A8413FBD5 /* Check Pods Manifest.lock */,
-				400299DD176393F10049001F /* Sources */,
-				400299DE176393F10049001F /* Frameworks */,
-				400299DF176393F10049001F /* Resources */,
-				400299E0176393F10049001F /* ShellScript */,
-				4017800B176D267900C8216C /* CopyFiles */,
-				F917DCB34A4C16EC618EB80E /* Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AmethystTests;
-			productName = AmethystTests;
-			productReference = 400299E2176393F10049001F /* AmethystTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
-		};
 		402DB6DD1742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
@@ -466,6 +396,27 @@
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
 			productType = "com.apple.product-type.application";
 		};
+		40D95B461C6E2ED800AAF433 /* AmethystTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */;
+			buildPhases = (
+				D8373E3093477B78CFF173B1 /* Check Pods Manifest.lock */,
+				40D95B431C6E2ED800AAF433 /* Sources */,
+				40D95B441C6E2ED800AAF433 /* Frameworks */,
+				40D95B451C6E2ED800AAF433 /* Resources */,
+				A270E0B138303CE2F25D1DEC /* Embed Pods Frameworks */,
+				3D7F1BC5662575C036671422 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				40D95B4D1C6E2ED800AAF433 /* PBXTargetDependency */,
+			);
+			name = AmethystTests;
+			productName = AmethystTests;
+			productReference = 40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -473,10 +424,16 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AM;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0720;
 				LastTestingUpgradeCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
+				TargetAttributes = {
+					40D95B461C6E2ED800AAF433 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 402DB6DD1742E41A00D1C936;
+					};
+				};
 			};
 			buildConfigurationList = 402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -491,25 +448,12 @@
 			projectRoot = "";
 			targets = (
 				402DB6DD1742E41A00D1C936 /* Amethyst */,
-				400299E1176393F10049001F /* AmethystTests */,
+				40D95B461C6E2ED800AAF433 /* AmethystTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		400299DF176393F10049001F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
-				400299EB176393F10049001F /* InfoPlist.strings in Resources */,
-				404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
-				400299FE17639AF70049001F /* MainMenu.xib in Resources */,
-				40E705D9176EAD7800850DA6 /* default.amethyst in Resources */,
-				404A5FAF18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		402DB6DC1742E41A00D1C936 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -529,21 +473,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		40D95B451C6E2ED800AAF433 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		400299E0176393F10049001F /* ShellScript */ = {
+		3D7F1BC5662575C036671422 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		4058C4701C4C4F9E00B19D26 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -584,7 +537,22 @@
 			shellPath = /bin/sh;
 			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Fabric.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Amethyst/Amethyst-Info.plist\nfi\n";
 		};
-		8F7B5A98B7753A9A8413FBD5 /* Check Pods Manifest.lock */ = {
+		A270E0B138303CE2F25D1DEC /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8373E3093477B78CFF173B1 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -599,47 +567,9 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		F917DCB34A4C16EC618EB80E /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		400299DD176393F10049001F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */,
-				400299F717639AE40049001F /* AMHotKeyManager.m in Sources */,
-				400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */,
-				400299FA17639AF20049001F /* AMAppDelegate.m in Sources */,
-				4008E73F190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
-				4008E735190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
-				4008E731190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
-				401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
-				400299FB17639AF20049001F /* AMWindowManager.m in Sources */,
-				40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
-				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
-				5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */,
-				404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
-				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
-				40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */,
-				4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		402DB6DA1742E41A00D1C936 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -673,17 +603,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		40D95B431C6E2ED800AAF433 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		400299E9176393F10049001F /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				400299EA176393F10049001F /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
+/* Begin PBXTargetDependency section */
+		40D95B4D1C6E2ED800AAF433 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402DB6DD1742E41A00D1C936 /* Amethyst */;
+			targetProxy = 40D95B4C1C6E2ED800AAF433 /* PBXContainerItemProxy */;
 		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
 		402DB6EA1742E41A00D1C936 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -711,42 +648,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		400299F0176393F10049001F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3665375156858D662B49C869 /* Pods-AmethystTests.debug.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AmethystTests/AmethystTests-Prefix.pch";
-				INFOPLIST_FILE = "AmethystTests/AmethystTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		400299F1176393F10049001F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 154FDC8E49877CD859DBF9A6 /* Pods-AmethystTests.release.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AmethystTests/AmethystTests-Prefix.pch";
-				INFOPLIST_FILE = "AmethystTests/AmethystTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 		402DB6F91742E41A00D1C936 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -866,18 +767,67 @@
 			};
 			name = Release;
 		};
+		40D95B4F1C6E2ED800AAF433 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3665375156858D662B49C869 /* Pods-AmethystTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = AmethystTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
+			};
+			name = Debug;
+		};
+		40D95B501C6E2ED800AAF433 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 154FDC8E49877CD859DBF9A6 /* Pods-AmethystTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = AmethystTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		400299F2176393F10049001F /* Build configuration list for PBXNativeTarget "AmethystTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				400299F0176393F10049001F /* Debug */,
-				400299F1176393F10049001F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -892,6 +842,15 @@
 			buildConfigurations = (
 				402DB6FC1742E41A00D1C936 /* Debug */,
 				402DB6FD1742E41A00D1C936 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40D95B4F1C6E2ED800AAF433 /* Debug */,
+				40D95B501C6E2ED800AAF433 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

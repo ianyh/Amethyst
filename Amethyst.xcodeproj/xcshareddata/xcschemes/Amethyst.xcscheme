@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1EC61F8609D3BA01D5A5C4830BCC4D88"
+               BlueprintIdentifier = "6C04C0C95A0379357C972685994914D8"
                BuildableName = "Pods_AmethystTests.framework"
                BlueprintName = "Pods-AmethystTests"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -74,8 +74,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "400299E1176393F10049001F"
-               BuildableName = "AmethystTests.octest"
+               BlueprintIdentifier = "40D95B461C6E2ED800AAF433"
+               BuildableName = "AmethystTests.xctest"
                BlueprintName = "AmethystTests"
                ReferencedContainer = "container:Amethyst.xcodeproj">
             </BuildableReference>

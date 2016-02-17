@@ -1,4 +1,7 @@
 language: objective-c
+osx_image: xcode7.2
+rvm:
+  - 2.2.2
 before_install:
         - brew update
         - brew install xctool || true
@@ -7,4 +10,6 @@ before_install:
         - brew upgrade carthage || true
         - gem install cocoapods --pre || true
         - export LC_ALL="en_US.UTF-8"
-script: rake test
+script:
+  - carthage bootstrap --platform OSX --no-use-binaries
+  - xctool clean build test

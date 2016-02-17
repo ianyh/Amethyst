@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Ian Ynda-Hummel. All rights reserved.
 //
 
-#import "SIApplication.h"
+#import <Silica/SIApplication.h>
 
 @interface SIApplication (Amethyst)
 

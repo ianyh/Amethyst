@@ -24,13 +24,15 @@
 #ifdef AMKeys_h
 #endif
 
+#import <CCNLaunchAtLoginItem/CCNLaunchAtLoginItem.h>
 #import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
-#import <IYLoginItem/NSBundle+LoginItem.h>
+//#import <IYLoginItem/NSBundle+LoginItem.h>
 
 @interface AMAppDelegate ()
+@property (nonatomic, strong) CCNLaunchAtLoginItem *loginItem;
 @property (nonatomic, strong) CCNPreferencesWindowController *preferencesWindowController;
 
 @property (nonatomic, strong) AMWindowManager *windowManager;
@@ -109,16 +111,17 @@
 
     self.versionMenuItem.title = [NSString stringWithFormat:@"Version %@ (%@)", shortVersion, version];
 
-    self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
+    self.loginItem = [CCNLaunchAtLoginItem itemForBundle:NSBundle.mainBundle];
+    self.startAtLoginMenuItem.state = (self.loginItem.isActive ? NSOnState : NSOffState);
 }
 
 - (IBAction)toggleStartAtLogin:(id)sender {
     if (self.startAtLoginMenuItem.state == NSOffState) {
-        [NSBundle.mainBundle addToLoginItems];
+        [self.loginItem activate];
     } else {
-        [NSBundle.mainBundle removeFromLoginItems];
+        [self.loginItem deActivate];
     }
-    self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
+    self.startAtLoginMenuItem.state = (self.loginItem.isActive ? NSOnState : NSOffState);
 }
 
 - (IBAction)relaunch:(id)sender {
