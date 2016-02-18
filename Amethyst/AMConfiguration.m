@@ -413,19 +413,19 @@ static NSString *const AMConfigurationUseCanaryBuild = @"use-canary-build";
         return NO;
     }
     for (NSString *floatingBundleIdentifier in floatingBundleIdentifiers) {
-      if ([floatingBundleIdentifier containsString:@"*"]) {
-        NSString *sanitizedIdentifier = [floatingBundleIdentifier stringByReplacingOccurrencesOfString:@"*" withString:@""];
-        if ([runningApplication.bundleIdentifier hasPrefix:sanitizedIdentifier]) {
-          return true;
+        if ([floatingBundleIdentifier containsString:@"*"]) {
+            NSString *sanitizedIdentifier = [floatingBundleIdentifier stringByReplacingOccurrencesOfString:@"*" withString:@""];
+            if ([runningApplication.bundleIdentifier hasPrefix:sanitizedIdentifier]) {
+                return YES;
+            }
+        } else {
+            if ([floatingBundleIdentifier isEqualToString:runningApplication.bundleIdentifier]) {
+                return YES;
+            }
         }
-      } else {
-        if ([floatingBundleIdentifier isEqualToString:runningApplication.bundleIdentifier]) {
-          return true;
-        }
-      }
     }
 
-    return false;
+    return NO;
 }
 
 - (BOOL)ignoreMenuBar {
