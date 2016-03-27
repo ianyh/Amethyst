@@ -11,7 +11,7 @@ PODS:
   - CocoaLumberjack/Extensions (2.0.0-beta):
     - CocoaLumberjack/Core
   - Masonry (0.6.1)
-  - MASShortcut (2.3.2)
+  - MASShortcut (2.3.3)
   - Silica (0.1.4)
   - SwiftyJSON (2.3.2)
 
@@ -37,7 +37,7 @@ CHECKOUT OPTIONS:
     :commit: bd9d7967772cefefe9154d2b16d93b9a305f1c72
     :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
-    :commit: d70129eebebb2249a27bfbac8019c8a93a51c08a
+    :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
     :git: https://github.com/ianyh/MASShortcut
   Silica:
     :commit: a73415cd79ccee6e7c3dcb87ecf5d9889a6d85d2
@@ -48,10 +48,10 @@ SPEC CHECKSUMS:
   CCNPreferencesWindowController: 78ed2e3fc54207496c410196cba721f82eea7fc1
   CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
-  MASShortcut: a816834091659aca3ad6a309f44ae16d25a7fef6
+  MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-PODFILE CHECKSUM: cf9bb9de50f320a621ecc7c623fb88b39361149e
+PODFILE CHECKSUM: 8b0ec6b3787c6e2440325ee9a3644196ab8b4b98
 
-COCOAPODS: 1.0.0.beta.3
+COCOAPODS: 1.0.0.beta.5

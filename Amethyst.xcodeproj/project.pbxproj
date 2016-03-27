@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2D18DE0C34F2BE119DAC65D8 /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F823741FAE4FD854B9F9CC5B /* Pods_Amethyst.framework */; };
 		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
 		4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
 		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
@@ -57,7 +58,7 @@
 		40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; };
 		40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
-		C2F91BD6DF0BD2A6203692B4 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */; };
+		BE616DB1987A0B0DA1D33E0D /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,7 +162,11 @@
 		40EF05901AABE5D1001FBA5B /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
 		40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Amethyst.h"; sourceTree = "<group>"; };
 		40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Amethyst.m"; sourceTree = "<group>"; };
+		822B72B694C28A1EF75FB821 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
 		BC6A31D2564700A03F952CC5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C659B4A3A56050DF603E88DB /* Pods_Amethyst_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Amethyst_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7E2E7883BD15C48BBB55EAD /* Pods-Amethyst.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.debug.xcconfig"; sourceTree = "<group>"; };
+		F823741FAE4FD854B9F9CC5B /* Pods_Amethyst.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Amethyst.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +184,7 @@
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
+				2D18DE0C34F2BE119DAC65D8 /* Pods_Amethyst.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,7 +192,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2F91BD6DF0BD2A6203692B4 /* Pods_AmethystTests.framework in Frameworks */,
+				BE616DB1987A0B0DA1D33E0D /* Pods_AmethystTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,6 +204,8 @@
 			children = (
 				3665375156858D662B49C869 /* Pods-AmethystTests.debug.xcconfig */,
 				154FDC8E49877CD859DBF9A6 /* Pods-AmethystTests.release.xcconfig */,
+				F7E2E7883BD15C48BBB55EAD /* Pods-Amethyst.debug.xcconfig */,
+				822B72B694C28A1EF75FB821 /* Pods-Amethyst.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -254,6 +262,8 @@
 				402DB6E31742E41A00D1C936 /* Other Frameworks */,
 				BC6A31D2564700A03F952CC5 /* Pods.framework */,
 				1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */,
+				F823741FAE4FD854B9F9CC5B /* Pods_Amethyst.framework */,
+				C659B4A3A56050DF603E88DB /* Pods_Amethyst_AmethystTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -379,6 +389,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
+				0AB7FE8E894C27F271A37BA3 /* 📦 Check Pods Manifest.lock */,
 				4058C4701C4C4F9E00B19D26 /* ShellScript */,
 				408D394419C7C2B90001981F /* ShellScript */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
@@ -386,6 +397,8 @@
 				402DB6DC1742E41A00D1C936 /* Resources */,
 				40CD2F95176D0F4A00251338 /* CopyFiles */,
 				408D394519C7C3C40001981F /* ShellScript */,
+				9904A011E7DAC210C65AE6D9 /* 📦 Embed Pods Frameworks */,
+				1A5AD7CBB6148D73FFB6D272 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -400,12 +413,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */;
 			buildPhases = (
-				D8373E3093477B78CFF173B1 /* Check Pods Manifest.lock */,
+				D8373E3093477B78CFF173B1 /* 📦 Check Pods Manifest.lock */,
 				40D95B431C6E2ED800AAF433 /* Sources */,
 				40D95B441C6E2ED800AAF433 /* Frameworks */,
 				40D95B451C6E2ED800AAF433 /* Resources */,
-				A270E0B138303CE2F25D1DEC /* Embed Pods Frameworks */,
-				3D7F1BC5662575C036671422 /* Copy Pods Resources */,
+				A270E0B138303CE2F25D1DEC /* 📦 Embed Pods Frameworks */,
+				3D7F1BC5662575C036671422 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -483,14 +496,44 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3D7F1BC5662575C036671422 /* Copy Pods Resources */ = {
+		0AB7FE8E894C27F271A37BA3 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		1A5AD7CBB6148D73FFB6D272 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3D7F1BC5662575C036671422 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -537,14 +580,29 @@
 			shellPath = /bin/sh;
 			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Fabric.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Amethyst/Amethyst-Info.plist\nfi\n";
 		};
-		A270E0B138303CE2F25D1DEC /* Embed Pods Frameworks */ = {
+		9904A011E7DAC210C65AE6D9 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A270E0B138303CE2F25D1DEC /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -552,14 +610,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D8373E3093477B78CFF173B1 /* Check Pods Manifest.lock */ = {
+		D8373E3093477B78CFF173B1 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,6 +772,7 @@
 		};
 		402DB6FC1742E41A00D1C936 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7E2E7883BD15C48BBB55EAD /* Pods-Amethyst.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -742,6 +801,7 @@
 		};
 		402DB6FD1742E41A00D1C936 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 822B72B694C28A1EF75FB821 /* Pods-Amethyst.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
