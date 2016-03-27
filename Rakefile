@@ -1,6 +1,9 @@
 task :setup do
   system 'carthage bootstrap --platform OSX' or exit!(1)
-  system 'pod install' or exit!(1)
+  system 'rbenv install -s' or exit!(1)
+  system 'gem install bundler' or exit!(1)
+  system 'bundle install' or exit!(1)
+  system 'bundle exec pod install' or exit!(1)
 end
 
 task :test => :setup do
