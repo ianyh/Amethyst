@@ -90,6 +90,6 @@ private class WideReflowOperation: ReflowOperation {
     }
 
     override public func decreaseMainPaneCount() {
-        mainPaneCount = max(1, mainPaneCount)
+        mainPaneCount = max(1, mainPaneCount - 1)
     }
 }
