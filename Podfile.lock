@@ -37,7 +37,7 @@ CHECKOUT OPTIONS:
     :commit: bd9d7967772cefefe9154d2b16d93b9a305f1c72
     :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
-    :commit: 19299541f9912aa7bce65e4f851dba1b1acaf7ea
+    :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
     :git: https://github.com/ianyh/MASShortcut
   Silica:
     :commit: a73415cd79ccee6e7c3dcb87ecf5d9889a6d85d2
@@ -48,7 +48,7 @@ SPEC CHECKSUMS:
   CCNPreferencesWindowController: 78ed2e3fc54207496c410196cba721f82eea7fc1
   CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
-  MASShortcut: b00fe4e734d5c965e73c823c8f4630421e46d456
+  MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
