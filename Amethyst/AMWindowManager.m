@@ -205,7 +205,7 @@
 
     if (windows.count == 0 && [[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
         [screenManager.screen am_focusScreen];
-    } else {
+    } else if (windows.count > 0) {
         [windows[0] am_focusWindow];
     }
 }
