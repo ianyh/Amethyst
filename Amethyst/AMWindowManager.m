@@ -129,11 +129,23 @@
                 return;
             }
 
-            screenManager.currentSpaceIdentifier = screenDictionary[@"Current Space"][@"uuid"];
+            NSString *spaceIdentifier = screenDictionary[@"Current Space"][@"uuid"];
+
+            if ([screenManager.currentSpaceIdentifier isEqualToString:spaceIdentifier]) {
+                continue;
+            }
+
+            screenManager.currentSpaceIdentifier = spaceIdentifier;
         }
     } else {
         for (ScreenManager *screenManager in self.screenManagers) {
-            screenManager.currentSpaceIdentifier = ((NSDictionary *)[(__bridge NSArray *)screenDictionaries objectAtIndex:0])[@"Current Space"][@"uuid"];
+            NSString *spaceIdentifier = ((NSDictionary *)[(__bridge NSArray *)screenDictionaries objectAtIndex:0])[@"Current Space"][@"uuid"];
+
+            if ([screenManager.currentSpaceIdentifier isEqualToString:spaceIdentifier]) {
+                continue;
+            }
+
+            screenManager.currentSpaceIdentifier = spaceIdentifier;
         }
     }
     CFRelease(screenDictionaries);
