@@ -81,7 +81,10 @@ I love pull requests. If you'd like to contribute please branch off of the `deve
 
 In order to build Amethyst locally, you'll need to also perform the following steps after cloning the repo:
 
+- Install `carthage` and `rbenv`.
+  - These are not installed via the setup script so as to not casually pollute your global environment.
 - Run `rake setup`, which installs dependencies from Carthage and CocoaPods.
+  - Note that by default CocoaPods will be installed and run via `bundler`. This restricts the version to get around some bugs in the current CocoaPods beta.
 
 Contact
 =======
