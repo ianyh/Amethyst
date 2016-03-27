@@ -13,4 +13,5 @@ before_install:
         - export LC_ALL="en_US.UTF-8"
 script:
   - carthage bootstrap --platform OSX --no-use-binaries
-  - xctool clean build test
+  # - xctool clean build test
+  - xctool clean build

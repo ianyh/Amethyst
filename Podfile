@@ -10,4 +10,7 @@ target 'Amethyst' do
   pod 'Masonry'
   pod 'Silica', :git => 'https://github.com/ianyh/Silica'
   pod 'SwiftyJSON'
+  target 'AmethystTests' do
+      inherit! :search_paths
+  end
 end
