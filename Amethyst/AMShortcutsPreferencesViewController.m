@@ -31,6 +31,8 @@
 
 - (void)viewWillAppear {
     self.hotKeyNameToDefaultsKey = [[AMConfiguration sharedConfiguration] hotKeyNameToDefaultsKey];
+
+    [self.tableView reloadData];
 }
 
 #pragma mark CCNPreferencesWindowControllerProtocol
