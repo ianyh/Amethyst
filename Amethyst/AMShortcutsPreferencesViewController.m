@@ -69,4 +69,8 @@
     return shortcutItemView;
 }
 
+- (BOOL)selectionShouldChangeInTableView:(NSTableView *)tableView {
+    return NO;
+}
+
 @end
