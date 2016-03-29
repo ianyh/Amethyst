@@ -17,13 +17,6 @@
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
-#if RELEASE
-#import "AMKeys.h"
-#endif
-
-#ifdef AMKeys_h
-#endif
-
 #import <CCNLaunchAtLoginItem/CCNLaunchAtLoginItem.h>
 #import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
 #import <CocoaLumberjack/DDASLLogger.h>
