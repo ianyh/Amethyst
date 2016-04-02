@@ -31,6 +31,8 @@
 
 - (void)viewWillAppear {
     self.hotKeyNameToDefaultsKey = [[AMConfiguration sharedConfiguration] hotKeyNameToDefaultsKey];
+
+    [self.tableView reloadData];
 }
 
 #pragma mark CCNPreferencesWindowControllerProtocol
@@ -65,6 +67,10 @@
     shortcutItemView.shortcutView.associatedUserDefaultsKey = key;
 
     return shortcutItemView;
+}
+
+- (BOOL)selectionShouldChangeInTableView:(NSTableView *)tableView {
+    return NO;
 }
 
 @end
