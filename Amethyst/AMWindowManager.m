@@ -351,7 +351,7 @@
         return NO;
     }];
 
-    screenIndex = screenIndex + 1 % self.screenManagers.count;
+    screenIndex = (screenIndex + 1) % self.screenManagers.count;
 
     NSScreen *screenToMoveTo = [self.screenManagers[screenIndex] screen];
     [focusedWindow moveToScreen:screenToMoveTo];
