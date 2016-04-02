@@ -41,6 +41,11 @@
 		4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD361C1FA83300DB612B /* RowLayout.swift */; };
 		4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */; };
 		4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */; };
+		40986B921CAAC38E0030C711 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B901CAAC38E0030C711 /* ReactiveCocoa.framework */; };
+		40986B931CAAC38E0030C711 /* ReactiveCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B901CAAC38E0030C711 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		40986B941CAAC38E0030C711 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B911CAAC38E0030C711 /* Sparkle.framework */; };
+		40986B951CAAC38E0030C711 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B911CAAC38E0030C711 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		40986B981CAAC3BE0030C711 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B971CAAC3BE0030C711 /* Crashlytics.framework */; };
 		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
 		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
 		40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
@@ -48,15 +53,10 @@
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
 		40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */; };
 		40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91C1BD1B22E00F58660 /* Fabric.framework */; };
-		40C3F9211BD1B22E00F58660 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */; };
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
-		40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; };
-		40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; };
-		40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
 		BE616DB1987A0B0DA1D33E0D /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */; };
 /* End PBXBuildFile section */
@@ -72,15 +72,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		40CD2F95176D0F4A00251338 /* CopyFiles */ = {
+		40986B961CAAC38E0030C711 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */,
-				40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */,
+				40986B931CAAC38E0030C711 /* ReactiveCocoa.framework in Embed Frameworks */,
+				40986B951CAAC38E0030C711 /* Sparkle.framework in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -89,7 +90,6 @@
 		154FDC8E49877CD859DBF9A6 /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
 		1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3665375156858D662B49C869 /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
-		400299E3176393F10049001F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMGeneralPreferencesViewController.h; sourceTree = "<group>"; };
 		4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMGeneralPreferencesViewController.m; sourceTree = "<group>"; };
 		4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesViewController.h; sourceTree = "<group>"; };
@@ -139,6 +139,9 @@
 		4062AD361C1FA83300DB612B /* RowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowLayout.swift; sourceTree = "<group>"; };
 		4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiddleWideLayout.swift; sourceTree = "<group>"; };
 		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
+		40986B901CAAC38E0030C711 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		40986B911CAAC38E0030C711 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
+		40986B971CAAC3BE0030C711 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40B337EC1746D8540001D8FC /* AMHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMHotKeyManager.h; sourceTree = "<group>"; };
 		40B337ED1746D8540001D8FC /* AMHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMHotKeyManager.m; sourceTree = "<group>"; };
 		40B337F617495D7D0001D8FC /* AMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConfiguration.h; sourceTree = "<group>"; };
@@ -149,7 +152,6 @@
 		40C3F91A1BD1B22E00F58660 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		40C3F91C1BD1B22E00F58660 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40C90FE417A330E900CE174B /* AMPrefixImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMPrefixImport.h; sourceTree = "<group>"; };
@@ -157,9 +159,6 @@
 		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
-		40E8B2061BD7C5B900AC70AC /* AMKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMKeys.h; sourceTree = "<group>"; };
-		40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = "<group>"; };
-		40EF05901AABE5D1001FBA5B /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
 		40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Amethyst.h"; sourceTree = "<group>"; };
 		40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Amethyst.m"; sourceTree = "<group>"; };
 		822B72B694C28A1EF75FB821 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
@@ -177,13 +176,13 @@
 				40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */,
 				40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
-				40C3F9211BD1B22E00F58660 /* Crashlytics.framework in Frameworks */,
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
-				40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */,
 				40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */,
+				40986B981CAAC3BE0030C711 /* Crashlytics.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
-				40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
+				40986B941CAAC38E0030C711 /* Sparkle.framework in Frameworks */,
+				40986B921CAAC38E0030C711 /* ReactiveCocoa.framework in Frameworks */,
 				2D18DE0C34F2BE119DAC65D8 /* Pods_Amethyst.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -228,6 +227,8 @@
 		402DB6D51742E41A00D1C936 = {
 			isa = PBXGroup;
 			children = (
+				40986B901CAAC38E0030C711 /* ReactiveCocoa.framework */,
+				40986B911CAAC38E0030C711 /* Sparkle.framework */,
 				402DB6E71742E41A00D1C936 /* Amethyst */,
 				40D95B481C6E2ED800AAF433 /* AmethystTests */,
 				402DB6E01742E41A00D1C936 /* Frameworks */,
@@ -248,17 +249,14 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40986B971CAAC3BE0030C711 /* Crashlytics.framework */,
 				40C3F9241BD1B36C00F58660 /* libz.tbd */,
 				40C3F9221BD1B35E00F58660 /* libc++.tbd */,
 				40C3F91A1BD1B22E00F58660 /* Security.framework */,
 				40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */,
 				40C3F91C1BD1B22E00F58660 /* Fabric.framework */,
-				40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */,
-				40EF05901AABE5D1001FBA5B /* Sparkle.framework */,
-				40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */,
 				402DB6FE1742E44E00D1C936 /* Carbon.framework */,
 				402DB6E11742E41A00D1C936 /* Cocoa.framework */,
-				400299E3176393F10049001F /* SenTestingKit.framework */,
 				402DB6E31742E41A00D1C936 /* Other Frameworks */,
 				BC6A31D2564700A03F952CC5 /* Pods.framework */,
 				1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */,
@@ -297,7 +295,6 @@
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
 				402DB6E81742E41A00D1C936 /* Supporting Files */,
 				40C90FE417A330E900CE174B /* AMPrefixImport.h */,
-				40E8B2061BD7C5B900AC70AC /* AMKeys.h */,
 			);
 			path = Amethyst;
 			sourceTree = "<group>";
@@ -395,10 +392,10 @@
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
-				40CD2F95176D0F4A00251338 /* CopyFiles */,
 				408D394519C7C3C40001981F /* ShellScript */,
 				9904A011E7DAC210C65AE6D9 /* 📦 Embed Pods Frameworks */,
 				1A5AD7CBB6148D73FFB6D272 /* 📦 Copy Pods Resources */,
+				40986B961CAAC38E0030C711 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
