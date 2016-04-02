@@ -188,7 +188,7 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     return carbonModifiers;
 }
 
-- (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler  defaultsKey:(NSString *)defaultsKey override:(BOOL)override {
+- (void)registerHotKeyWithKeyString:(NSString *)string modifiers:(AMModifierFlags)modifiers handler:(AMHotKeyHandler)handler defaultsKey:(NSString *)defaultsKey override:(BOOL)override {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey] && !override) {
         [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:defaultsKey toAction:handler];
         return;
@@ -204,6 +204,9 @@ AMKeyCode AMKeyCodeInvalid = 0xFF;
     MASShortcut *shortcut = [MASShortcut shortcutWithKeyCode:[keyCodes[0] unsignedShortValue] modifierFlags:modifiers];
     [[MASShortcutBinder sharedBinder] registerDefaultShortcuts:@{ defaultsKey: shortcut }];
     [[MASShortcutBinder sharedBinder] bindShortcutWithDefaultsKey:defaultsKey toAction:handler];
+
+    // Note that the shortcut binder above only sets the default value, not the stored value, so we explicitly store it here.
+    [[NSUserDefaults standardUserDefaults] setObject:[[NSUserDefaults standardUserDefaults] objectForKey:defaultsKey] forKey:defaultsKey];
 }
 
 @end
