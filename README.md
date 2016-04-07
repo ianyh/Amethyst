@@ -13,7 +13,7 @@ A quick screencast of basic functionality can be found [here](https://youtu.be/b
 Getting Amethyst
 ================
 
-Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-latest.zip) or using [homebrew cask](https://github.com/phinze/homebrew-cask).
+Amethyst is available for direct download [here](http://ianyh.com/amethyst/versions/Amethyst-latest.zip) or using [homebrew cask](https://github.com/caskroom/homebrew-cask).
 
 ```
 brew cask install amethyst
@@ -79,6 +79,13 @@ If you would like to see features or particular bugs fixed check out the Trello 
 
 I love pull requests. If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than master. Otherwise just try to stick to the general style of the code.
 
+In order to build Amethyst locally, you'll need to also perform the following steps after cloning the repo:
+
+- Install `carthage` and `rbenv`.
+  - These are not installed via the setup script so as to not casually pollute your global environment.
+- Run `rake setup`, which installs dependencies from Carthage and CocoaPods.
+  - Note that by default CocoaPods will be installed and run via `bundler`. This restricts the version to get around some bugs in the current CocoaPods beta.
+
 Contact
 =======
 
@@ -92,7 +99,7 @@ Amethyst is free and always will be. That said, a couple of people have expresse
 * You can find a Patreon page [here](http://www.patreon.com/ianyh) if you would like to pledge money regularly for releases.
 * If you would like to do a one-time donation there's a PayPal button below. If there's some other method of donating that you would prefer open an issue and I'll try to add it!
 
-[![PayPal Donate](http://img.shields.io/badge/paypal-donate-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ianynda%40gmail%2ecom&lc=US&item_name=Ian%20Ynda%2dHummel&item_number=Amethyst&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
+[![PayPal Donate](https://img.shields.io/badge/paypal-donate-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ianynda%40gmail%2ecom&lc=US&item_name=Ian%20Ynda%2dHummel&item_number=Amethyst&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
 
 If you are considering donating to me, you are more than welcome to. You should also consider donating that money to a charity in addition to or instead. Here's a very incomplete list of things that you might want to throw money at:
 
@@ -104,7 +111,7 @@ If you are considering donating to me, you are more than welcome to. You should 
 And a bunch of technology-oriented ones:
 
 * [Ada Initiative](https://adainitiative.org/donate/)
-* [National Center for Women & Information Technology](http://www.ncwit.org/donate)
+* [National Center for Women & Information Technology](https://www.ncwit.org/donate)
 * [girls who code](http://girlswhocode.com/get-involved/)
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
 * [Trans*H4CK](http://www.transhack.org/support/)

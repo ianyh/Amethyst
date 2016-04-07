@@ -9,28 +9,24 @@
 #import "AMAppDelegate.h"
 
 #import "AMConfiguration.h"
+#import "AMGeneralPreferencesViewController.h"
 #import "AMHotKeyManager.h"
-#import "AMPreferencesWindowController.h"
+#import "AMShortcutsPreferencesViewController.h"
 #import "AMWindowManager.h"
 
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
 
-#if RELEASE
-#import "AMKeys.h"
-#endif
-
-#ifdef AMKeys_h
-#import <Mixpanel-OSX-Community/Mixpanel.h>
-#endif
-
+#import <CCNLaunchAtLoginItem/CCNLaunchAtLoginItem.h>
+#import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
 #import <CoreServices/CoreServices.h>
-#import <IYLoginItem/NSBundle+LoginItem.h>
+//#import <IYLoginItem/NSBundle+LoginItem.h>
 
 @interface AMAppDelegate ()
-@property (nonatomic, assign) IBOutlet AMPreferencesWindowController *preferencesWindowController;
+@property (nonatomic, strong) CCNLaunchAtLoginItem *loginItem;
+@property (nonatomic, strong) CCNPreferencesWindowController *preferencesWindowController;
 
 @property (nonatomic, strong) AMWindowManager *windowManager;
 @property (nonatomic, strong) AMHotKeyManager *hotKeyManager;
@@ -42,6 +38,7 @@
 
 - (IBAction)toggleStartAtLogin:(id)sender;
 - (IBAction)relaunch:(id)sender;
+- (IBAction)showPreferencesWindow:(id)sender;
 @end
 
 @implementation AMAppDelegate
@@ -71,11 +68,6 @@
         return statusImage;
     }];
 
-#ifdef AMKeys_h
-    [Mixpanel sharedInstanceWithToken:MixpanelAPIToken];
-    [[Mixpanel sharedInstance] track:@"Launch"];
-#endif
-
     NSString *crashlyticsAPIKey = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AMCrashlyticsAPIKey"];
     if (crashlyticsAPIKey) {
         [Fabric with:@[[Crashlytics class]]];
@@ -83,6 +75,15 @@
         [Crashlytics sharedInstance].debugMode = YES;
 #endif
     }
+
+    self.preferencesWindowController = [[CCNPreferencesWindowController alloc] init];
+    self.preferencesWindowController.centerToolbarItems = NO;
+    self.preferencesWindowController.allowsVibrancy = YES;
+    NSArray *preferencesViewControllers = @[
+                                            [AMGeneralPreferencesViewController new],
+                                            [AMShortcutsPreferencesViewController new]
+                                            ];
+    [self.preferencesWindowController setPreferencesViewControllers:preferencesViewControllers];
 
     self.windowManager = [[AMWindowManager alloc] init];
     self.hotKeyManager = [[AMHotKeyManager alloc] init];
@@ -103,22 +104,31 @@
 
     self.versionMenuItem.title = [NSString stringWithFormat:@"Version %@ (%@)", shortVersion, version];
 
-    self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
+    self.loginItem = [CCNLaunchAtLoginItem itemForBundle:NSBundle.mainBundle];
+    self.startAtLoginMenuItem.state = (self.loginItem.isActive ? NSOnState : NSOffState);
 }
 
 - (IBAction)toggleStartAtLogin:(id)sender {
     if (self.startAtLoginMenuItem.state == NSOffState) {
-        [NSBundle.mainBundle addToLoginItems];
+        [self.loginItem activate];
     } else {
-        [NSBundle.mainBundle removeFromLoginItems];
+        [self.loginItem deActivate];
     }
-    self.startAtLoginMenuItem.state = (NSBundle.mainBundle.isLoginItem ? NSOnState : NSOffState);
+    self.startAtLoginMenuItem.state = (self.loginItem.isActive ? NSOnState : NSOffState);
 }
 
 - (IBAction)relaunch:(id)sender {
     NSString *myPath = [NSString stringWithFormat:@"%s", [[[NSBundle mainBundle] executablePath] fileSystemRepresentation]];
     [NSTask launchedTaskWithLaunchPath:myPath arguments:@[]];
     [NSApp terminate:self];
+}
+
+- (IBAction)showPreferencesWindow:(id)sender {
+    if ([AMConfiguration sharedConfiguration].hasCustomConfiguration) {
+        NSRunAlertPanel(@"Warning", @"You have a .amethyst file, which can override in-app preferences. You may encounter unexpected behavior.", @"OK", nil, nil);
+    }
+
+    [self.preferencesWindowController showPreferencesWindow];
 }
 
 @end

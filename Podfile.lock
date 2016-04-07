@@ -1,4 +1,6 @@
 PODS:
+  - CCNLaunchAtLoginItem (0.1.0)
+  - CCNPreferencesWindowController (1.3.0)
   - CocoaLumberjack (2.0.0-beta):
     - CocoaLumberjack/CLI (= 2.0.0-beta)
     - CocoaLumberjack/Core (= 2.0.0-beta)
@@ -8,54 +10,48 @@ PODS:
   - CocoaLumberjack/Core (2.0.0-beta)
   - CocoaLumberjack/Extensions (2.0.0-beta):
     - CocoaLumberjack/Core
-  - IYLoginItem (0.1)
-  - Kiwi (2.3.1)
   - Masonry (0.6.1)
-  - MASPreferences (1.1.2)
-  - MASShortcut (2.3.2)
-  - Mixpanel-OSX-Community (2.1.0)
-  - OCMock (3.1.2)
+  - MASShortcut (2.3.3)
   - Silica (0.1.4)
+  - SwiftyJSON (2.3.2)
 
 DEPENDENCIES:
+  - CCNLaunchAtLoginItem (~> 0.1)
+  - CCNPreferencesWindowController (from `https://github.com/phranck/CCNPreferencesWindowController`)
   - CocoaLumberjack (= 2.0.0-beta)
-  - IYLoginItem
-  - Kiwi
   - Masonry
-  - MASPreferences
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
-  - Mixpanel-OSX-Community (from `https://github.com/orta/mixpanel-osx-unofficial.git`)
-  - OCMock
   - Silica (from `https://github.com/ianyh/Silica`)
+  - SwiftyJSON
 
 EXTERNAL SOURCES:
+  CCNPreferencesWindowController:
+    :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
     :git: https://github.com/ianyh/MASShortcut
-  Mixpanel-OSX-Community:
-    :git: https://github.com/orta/mixpanel-osx-unofficial.git
   Silica:
     :git: https://github.com/ianyh/Silica
 
 CHECKOUT OPTIONS:
+  CCNPreferencesWindowController:
+    :commit: bd9d7967772cefefe9154d2b16d93b9a305f1c72
+    :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
-    :commit: d70129eebebb2249a27bfbac8019c8a93a51c08a
+    :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
     :git: https://github.com/ianyh/MASShortcut
-  Mixpanel-OSX-Community:
-    :commit: 6dc0e5880d67a09f6ed55131acca2db3057e43d2
-    :git: https://github.com/orta/mixpanel-osx-unofficial.git
   Silica:
     :commit: a73415cd79ccee6e7c3dcb87ecf5d9889a6d85d2
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
+  CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
+  CCNPreferencesWindowController: 78ed2e3fc54207496c410196cba721f82eea7fc1
   CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
-  IYLoginItem: e57a86b39d3b9ab0e2fc033adedae01efafd9adf
-  Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
-  MASPreferences: 32d8a2c5ef1d60b63240f5676b011ff72e194cb1
-  MASShortcut: a816834091659aca3ad6a309f44ae16d25a7fef6
-  Mixpanel-OSX-Community: f58bb9cf97ef3b024b6f89d3890668a2c20de5b6
-  OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
+  MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
+  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 8b0ec6b3787c6e2440325ee9a3644196ab8b4b98
+
+COCOAPODS: 1.0.0.beta.5

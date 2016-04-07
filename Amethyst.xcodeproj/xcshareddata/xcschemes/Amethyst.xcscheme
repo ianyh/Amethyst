@@ -3,7 +3,7 @@
    LastUpgradeVersion = "0700"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
@@ -14,38 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6402CCA94194E0C0786C48968E2017D5"
-               BuildableName = "libPods.a"
-               BlueprintName = "Pods"
+               BlueprintIdentifier = "DD613904C77DB34467C0830F559AC993"
+               BuildableName = "Pods_Amethyst.framework"
+               BlueprintName = "Pods-Amethyst"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F6BA089B7B4AAD7E95BD7016F78779BA"
-               BuildableName = "libPods-AmethystTests.a"
-               BlueprintName = "Pods-AmethystTests"
-               ReferencedContainer = "container:Pods/Pods.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
-               BuildableName = "Sparkle.framework"
-               BlueprintName = "Sparkle"
-               ReferencedContainer = "container:Sparkle/Sparkle.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -74,8 +46,8 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "400299E1176393F10049001F"
-               BuildableName = "AmethystTests.octest"
+               BlueprintIdentifier = "40D95B461C6E2ED800AAF433"
+               BuildableName = "AmethystTests.xctest"
                BlueprintName = "AmethystTests"
                ReferencedContainer = "container:Amethyst.xcodeproj">
             </BuildableReference>

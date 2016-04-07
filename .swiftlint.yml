@@ -1,0 +1,10 @@
+disabled_rules:
+        - function_body_length
+        - closing_brace
+        - statement_position
+        - force_cast
+        - force_try
+        - variable_name_min_length
+included:
+        - Amethyst
+line_length: 200
