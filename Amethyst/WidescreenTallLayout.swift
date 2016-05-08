@@ -31,7 +31,7 @@ private class WidescreenTallReflowOperation: ReflowOperation {
         let mainPaneWindowHeight = screenFrame.height
         let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.height / CGFloat(secondaryPaneCount)) : 0.0
 
-        let mainPaneWindowWidth = round(screenFrame.width * CGFloat(hasSecondaryPane ? layout.mainPaneRatio / Double(secondaryPaneCount) : 0.0))
+        let mainPaneWindowWidth = CGFloat(round(screenFrame.size.width * CGFloat(hasSecondaryPane ? self.layout.mainPaneRatio : 1))) / CGFloat(mainPaneCount)
         let secondaryPaneWindowWidth = screenFrame.width - mainPaneWindowWidth * CGFloat(mainPaneCount)
 
         let focusedWindow = SIWindow.focusedWindow()
