@@ -51,7 +51,7 @@ private class MiddleWideReflowOperation: ReflowOperation {
 
         let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
-            var windowFrame = CGRectZero
+            var windowFrame = CGRect.zero
             let windowIndex = frameAssignments.count
 
             if windowIndex == 0 {

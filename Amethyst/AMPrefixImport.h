@@ -15,9 +15,7 @@
 #import <CocoaLumberjack/DDLogMacros.h>
 #import <Sparkle/Sparkle.h>
 #import <Masonry/Masonry.h>
-#import "NSScreen+Amethyst.h"
 #import "SIWindow+Amethyst.h"
-#import "SIApplication+Amethyst.h"
 
 #ifdef DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;

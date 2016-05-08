@@ -10,7 +10,6 @@
 
 #import "Amethyst-Swift.h"
 #import "AMConfiguration.h"
-#import "NSRunningApplication+Manageable.h"
 
 @interface AMWindowManager () <ScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
@@ -176,7 +175,7 @@
 - (ScreenManager *)focusedScreenManager {
     SIWindow *focusedWindow = [SIWindow focusedWindow];
     for (ScreenManager *screenManager in self.screenManagers) {
-        if ([screenManager.screen.am_screenIdentifier isEqualToString:focusedWindow.screen.am_screenIdentifier]) {
+        if ([[screenManager.screen screenIdentifier] isEqualToString:[focusedWindow.screen screenIdentifier]]) {
             return screenManager;
         }
     }
@@ -199,7 +198,7 @@
     }
 
     // If the window is already on the screen do nothing.
-    if ([focusedWindow.screen.am_screenIdentifier isEqualToString:screenManager.screen.am_screenIdentifier]) return;
+    if ([[focusedWindow.screen screenIdentifier] isEqualToString:[screenManager.screen screenIdentifier]]) return;
 
     [self markScreenForReflow:focusedWindow.screen];
     [focusedWindow moveToScreen:screenManager.screen];
@@ -216,7 +215,7 @@
     NSArray *windows = [self windowsForScreen:screenManager.screen];
 
     if (windows.count == 0 && [[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
-        [screenManager.screen am_focusScreen];
+        [screenManager.screen focusScreen];
     } else if (windows.count > 0) {
         [windows[0] am_focusWindow];
     }
@@ -344,7 +343,7 @@
 
     NSScreen *screen = focusedWindow.screen;
     NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(ScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
-        if ([screenManager.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier]) {
+        if ([[screenManager.screen screenIdentifier] isEqual:[screen screenIdentifier]]) {
             *stop = YES;
             return YES;
         }
@@ -369,7 +368,7 @@
 
     NSScreen *screen = focusedWindow.screen;
     NSUInteger screenIndex = [self.screenManagers indexOfObjectPassingTest:^BOOL(ScreenManager *screenManager, NSUInteger idx, BOOL *stop) {
-        if ([screenManager.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier]) {
+        if ([[screenManager.screen screenIdentifier] isEqual:[screen screenIdentifier]]) {
             *stop = YES;
             return YES;
         }
@@ -434,10 +433,6 @@
                 [self addWindow:window];
             }
         }
-    }
-
-    for (ScreenManager *manager in self.screenManagers) {
-        manager.isFullscreen = [manager.screen am_isFullscreen];
     }
 
     [self markAllScreensForReflow];
@@ -573,7 +568,7 @@
 }
 
 - (NSArray *)windowsForScreen:(NSScreen *)screen {
-    NSString *screenIdentifier = screen.am_screenIdentifier;
+    NSString *screenIdentifier = [screen screenIdentifier];
     NSArray *spaces = (__bridge NSArray *)CGSCopyManagedDisplaySpaces(CGSDefaultConnection);
 
     CGSSpace currentSpace;
@@ -614,7 +609,7 @@
             }
         }
 
-        return [window.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier] && window.isActive && !!self.activeIDCache[@(window.windowID)];
+        return [[window.screen screenIdentifier] isEqual:[screen screenIdentifier]] && window.isActive && !!self.activeIDCache[@(window.windowID)];
     }]];
 }
 
@@ -647,7 +642,7 @@
     NSMutableArray *screenManagers = [NSMutableArray arrayWithCapacity:NSScreen.screens.count];
 
     for (NSScreen *screen in NSScreen.screens) {
-        NSString *screenIdentifier = [screen am_screenIdentifier];
+        NSString *screenIdentifier = [screen screenIdentifier];
         ScreenManager *screenManager = [self.screenManagersCache objectForKey:screenIdentifier];
 
         if (!screenManager) {
@@ -691,7 +686,7 @@
 
 - (void)markScreenForReflow:(NSScreen *)screen {
     for (ScreenManager *screenManager in self.screenManagers) {
-        if ([screenManager.screen.am_screenIdentifier isEqual:screen.am_screenIdentifier]) {
+        if ([[screenManager.screen screenIdentifier] isEqual:[screen screenIdentifier]]) {
             [screenManager setNeedsReflow];
         }
     }

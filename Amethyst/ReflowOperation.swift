@@ -49,10 +49,6 @@ public struct FrameAssignment {
             return
         }
 
-        if self.screen.am_isFullscreen() {
-            return
-        }
-
         for frameAssignment in frameAssignments {
             if !windowActivityCache.windowIsActive(frameAssignment.window) {
                 return

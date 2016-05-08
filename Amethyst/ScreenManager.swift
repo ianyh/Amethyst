@@ -158,8 +158,8 @@ import Silica
 		}
 
 		defer {
-			NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: "hideLayoutHUD:", object: nil)
-			performSelector("hideLayoutHUD:", withObject: nil, afterDelay: 0.6)
+			NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(ScreenManager.hideLayoutHUD(_:)), object: nil)
+			performSelector(#selector(ScreenManager.hideLayoutHUD(_:)), withObject: nil, afterDelay: 0.6)
 		}
 
 		guard let layoutNameWindow = layoutNameWindowController.window as? AMLayoutNameWindow else {

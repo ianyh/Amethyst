@@ -37,7 +37,7 @@ private class TallRightReflowOperation: ReflowOperation {
 
         let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
-            var windowFrame = CGRectZero
+            var windowFrame = CGRect.zero
 
             if frameAssignments.count < mainPaneCount {
                 windowFrame.origin.x = screenFrame.origin.x + secondaryPaneWindowWidth

@@ -8,15 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		2D18DE0C34F2BE119DAC65D8 /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F823741FAE4FD854B9F9CC5B /* Pods_Amethyst.framework */; };
+		4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */; };
+		4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */; };
+		4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */; };
 		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
 		4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
 		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
 		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
-		4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
 		4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B317517CE100548DBE /* icon-statusitem.png */; };
 		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
-		401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
@@ -57,7 +58,6 @@
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
-		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
 		BE616DB1987A0B0DA1D33E0D /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -90,6 +90,9 @@
 		154FDC8E49877CD859DBF9A6 /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
 		1B2CF2F4AD7F7E894A35F891 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3665375156858D662B49C869 /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRunningApplication+Manageable.swift"; sourceTree = "<group>"; };
+		4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIApplication+Amethyst.swift"; sourceTree = "<group>"; };
+		4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSScreen+Amethyst.swift"; sourceTree = "<group>"; };
 		4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMGeneralPreferencesViewController.h; sourceTree = "<group>"; };
 		4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMGeneralPreferencesViewController.m; sourceTree = "<group>"; };
 		4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesViewController.h; sourceTree = "<group>"; };
@@ -98,13 +101,9 @@
 		4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesListItemView.m; sourceTree = "<group>"; };
 		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
 		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
-		4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRunningApplication+Manageable.h"; sourceTree = "<group>"; };
-		4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRunningApplication+Manageable.m"; sourceTree = "<group>"; };
 		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
 		4015D9B317517CE100548DBE /* icon-statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem.png"; sourceTree = "<group>"; };
 		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
-		401A406F1801C82B00136DC9 /* SIApplication+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIApplication+Amethyst.h"; sourceTree = "<group>"; };
-		401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIApplication+Amethyst.m"; sourceTree = "<group>"; };
 		4026AB411777C017001E3783 /* AMConfiguration+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AMConfiguration+Private.h"; sourceTree = "<group>"; };
 		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
@@ -159,8 +158,6 @@
 		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
-		40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Amethyst.h"; sourceTree = "<group>"; };
-		40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Amethyst.m"; sourceTree = "<group>"; };
 		822B72B694C28A1EF75FB821 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
 		BC6A31D2564700A03F952CC5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C659B4A3A56050DF603E88DB /* Pods_Amethyst_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Amethyst_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -339,14 +336,11 @@
 		40B337E51745D1600001D8FC /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */,
-				4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */,
+				4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */,
 				404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */,
 				404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */,
-				401A406F1801C82B00136DC9 /* SIApplication+Amethyst.h */,
-				401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */,
-				40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */,
-				40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */,
+				4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */,
+				4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -631,14 +625,15 @@
 			files = (
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
 				402DB6F51742E41A00D1C936 /* AMAppDelegate.m in Sources */,
+				4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */,
 				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
+				4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */,
 				4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
 				4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */,
 				40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
 				4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
 				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
-				401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
 				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
 				4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
@@ -647,14 +642,13 @@
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
 				4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */,
 				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
-				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
+				4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
 				4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
-				40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
