@@ -12,6 +12,9 @@ PODS:
     - CocoaLumberjack/Core
   - Masonry (0.6.1)
   - MASShortcut (2.3.3)
+  - RxCocoa (2.4):
+    - RxSwift (~> 2.4)
+  - RxSwift (2.4)
   - Silica (0.1.4)
   - SwiftyJSON (2.3.2)
 
@@ -21,6 +24,8 @@ DEPENDENCIES:
   - CocoaLumberjack (= 2.0.0-beta)
   - Masonry
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
+  - RxCocoa
+  - RxSwift
   - Silica (from `https://github.com/ianyh/Silica`)
   - SwiftyJSON
 
@@ -49,9 +54,11 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
   Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
   MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
+  RxCocoa: 7d6cd877de99f5640306b3d6cf87f580c1d91b61
+  RxSwift: 67b9ef4e8b34fb394e200e754c6a09cc16559f94
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-PODFILE CHECKSUM: 8b0ec6b3787c6e2440325ee9a3644196ab8b4b98
+PODFILE CHECKSUM: d6e9a9df7c1f1c9eddaf16fdcfd296c1b95d1743
 
 COCOAPODS: 1.0.0.beta.5
