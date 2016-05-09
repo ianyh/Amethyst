@@ -47,6 +47,8 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 * `mod2 + e` - move focused window to 2nd screen
 * `mod2 + r` - move focused window to 3rd screen
 * `mod2 + [n]` - move focused window to nth space
+* `mod2 + left` - move focused window left one space
+* `mod2 + right` - move focused window right one space
 * `mod1 + h` - shrink the main pane
 * `mod1 + l` - expand the main pane
 * `mod1 + ,` - increase the number of windows in the main pane
