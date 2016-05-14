@@ -7,8 +7,8 @@
 //
 
 #import "SIWindow+Amethyst.h"
-#import "AMConfiguration.h"
 
+#import "Amethyst-Swift.h"
 #import <objc/runtime.h>
 #include <ApplicationServices/ApplicationServices.h>
 
@@ -40,7 +40,7 @@ static void *SIWindowFloatingKey = &SIWindowFloatingKey;
 - (BOOL)am_focusWindow {
     if (![self focusWindow]) return NO;
 
-    if ([[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
+    if ([Configuration.sharedConfiguration mouseFollowsFocus]) {
         NSRect windowFrame = [self frame];
         NSPoint mouseCursorPoint = NSMakePoint(NSMidX(windowFrame), NSMidY(windowFrame));
         CGEventRef mouseMoveEvent = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, mouseCursorPoint, kCGMouseButtonLeft);

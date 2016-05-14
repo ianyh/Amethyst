@@ -8,7 +8,7 @@
 
 #import "AMShortcutsPreferencesViewController.h"
 
-#import "AMConfiguration.h"
+#import "Amethyst-Swift.h"
 #import "AMShortcutsPreferencesListItemView.h"
 
 #import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
@@ -30,7 +30,7 @@
 }
 
 - (void)viewWillAppear {
-    self.hotKeyNameToDefaultsKey = [[AMConfiguration sharedConfiguration] hotKeyNameToDefaultsKey];
+    self.hotKeyNameToDefaultsKey = [Configuration.sharedConfiguration hotKeyNameToDefaultsKey];
 
     [self.tableView reloadData];
 }

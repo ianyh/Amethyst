@@ -9,7 +9,6 @@
 #import "AMWindowManager.h"
 
 #import "Amethyst-Swift.h"
-#import "AMConfiguration.h"
 
 @interface AMWindowManager () <ScreenManagerDelegate>
 @property (nonatomic, strong) NSMutableArray *applications;
@@ -214,7 +213,7 @@
     ScreenManager *screenManager = self.screenManagers[screenIndex];
     NSArray *windows = [self windowsForScreen:screenManager.screen];
 
-    if (windows.count == 0 && [[AMConfiguration sharedConfiguration] mouseFollowsFocus]) {
+    if (windows.count == 0 && [[Configuration sharedConfiguration] mouseFollowsFocus]) {
         [screenManager.screen focusScreen];
     } else if (windows.count > 0) {
         [windows[0] am_focusWindow];
@@ -534,7 +533,7 @@
     SIApplication *application = [self applicationWithProcessIdentifier:window.processIdentifier];
 
     window.floating = application.floating;
-    if (AMConfiguration.sharedConfiguration.floatSmallWindows && window.frame.size.width < 500 && window.frame.size.height < 500) {
+    if (Configuration.sharedConfiguration.floatSmallWindows && window.frame.size.width < 500 && window.frame.size.height < 500) {
         window.floating = YES;
     }
 
@@ -717,7 +716,7 @@
 #pragma mark Private
 
 - (void)focusWindowWithMouseMovedEvent:(NSEvent *)event {
-    if (![[AMConfiguration sharedConfiguration] focusFollowsMouse]) {
+    if (![[Configuration sharedConfiguration] focusFollowsMouse]) {
         return;
     }
 

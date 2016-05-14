@@ -1,4 +1,3 @@
-#import "AMConfiguration.h"
 #import "AMGeneralPreferencesViewController.h"
 #import "AMHotKeyManager.h"
 #import "AMLayoutNameWindow.h"

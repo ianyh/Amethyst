@@ -12,6 +12,7 @@
 		4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */; };
 		4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */; };
 		4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */; };
+		4006CF901CE017BA004CA512 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8F1CE017BA004CA512 /* Configuration.swift */; };
 		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
 		4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
 		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
@@ -48,7 +49,6 @@
 		40986B951CAAC38E0030C711 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B911CAAC38E0030C711 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40986B981CAAC3BE0030C711 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B971CAAC3BE0030C711 /* Crashlytics.framework */; };
 		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
-		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
 		40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
 		40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
@@ -94,6 +94,7 @@
 		4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIApplication+Amethyst.swift"; sourceTree = "<group>"; };
 		4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSScreen+Amethyst.swift"; sourceTree = "<group>"; };
 		4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4006CF8F1CE017BA004CA512 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMGeneralPreferencesViewController.h; sourceTree = "<group>"; };
 		4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMGeneralPreferencesViewController.m; sourceTree = "<group>"; };
 		4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesViewController.h; sourceTree = "<group>"; };
@@ -105,7 +106,6 @@
 		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
 		4015D9B317517CE100548DBE /* icon-statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem.png"; sourceTree = "<group>"; };
 		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
-		4026AB411777C017001E3783 /* AMConfiguration+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AMConfiguration+Private.h"; sourceTree = "<group>"; };
 		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		4029C4F21C1124BC001E4788 /* ReflowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
@@ -142,8 +142,6 @@
 		40986B971CAAC3BE0030C711 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40B337EC1746D8540001D8FC /* AMHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMHotKeyManager.h; sourceTree = "<group>"; };
 		40B337ED1746D8540001D8FC /* AMHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMHotKeyManager.m; sourceTree = "<group>"; };
-		40B337F617495D7D0001D8FC /* AMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConfiguration.h; sourceTree = "<group>"; };
-		40B337F717495D7D0001D8FC /* AMConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfiguration.m; sourceTree = "<group>"; };
 		40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMLayoutNameWindow.xib; sourceTree = "<group>"; };
 		40B39284181497C0009A296B /* AMLayoutNameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayoutNameWindow.h; sourceTree = "<group>"; };
 		40B39285181497C0009A296B /* AMLayoutNameWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayoutNameWindow.m; sourceTree = "<group>"; };
@@ -284,9 +282,7 @@
 				4010E7F0174540220066097B /* AMWindowManager.h */,
 				4010E7F1174540220066097B /* AMWindowManager.m */,
 				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
-				40B337F617495D7D0001D8FC /* AMConfiguration.h */,
-				40B337F717495D7D0001D8FC /* AMConfiguration.m */,
-				4026AB411777C017001E3783 /* AMConfiguration+Private.h */,
+				4006CF8F1CE017BA004CA512 /* Configuration.swift */,
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
 				402DB6E81742E41A00D1C936 /* Supporting Files */,
 				40C90FE417A330E900CE174B /* AMPrefixImport.h */,
@@ -541,7 +537,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		408D394419C7C2B90001981F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -632,7 +628,6 @@
 				4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
 				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
-				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
 				4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
 				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
@@ -642,6 +637,7 @@
 				4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
+				4006CF901CE017BA004CA512 /* Configuration.swift in Sources */,
 				4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
 				4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */,

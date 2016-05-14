@@ -8,7 +8,8 @@
 
 #import "AMGeneralPreferencesViewController.h"
 
-#import "AMConfiguration.h"
+#import "Amethyst-Swift.h"
+
 #import <CCNPreferencesWindowController/CCNPreferencesWindowController.h>
 
 @interface AMGeneralPreferencesViewController () <CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate>
@@ -38,8 +39,8 @@
 }
 
 - (void)viewWillAppear {
-    self.layouts = [[AMConfiguration sharedConfiguration] layoutStrings];
-    self.floatingBundleIdentifiers = [[AMConfiguration sharedConfiguration] floatingBundleIdentifiers];
+    self.layouts = [[Configuration sharedConfiguration] layoutStrings];
+    self.floatingBundleIdentifiers = [[Configuration sharedConfiguration] floatingBundleIdentifiers];
 
     [self.layoutsTableView reloadData];
     [self.floatingTableView reloadData];
@@ -50,7 +51,7 @@
 - (IBAction)addLayout:(NSButton *)sender {
     NSMenu *layoutMenu = [[NSMenu alloc] initWithTitle:@""];
 
-    for (NSString *layoutString in [[AMConfiguration sharedConfiguration] availableLayoutStrings]) {
+    for (NSString *layoutString in [[Configuration sharedConfiguration] availableLayoutStrings]) {
         NSMenuItem *menuItem = [[NSMenuItem alloc] initWithTitle:layoutString
                                                           action:@selector(addLayoutString:)
                                                    keyEquivalent:@""];
@@ -82,7 +83,7 @@
     [layouts addObject:sender.title];
     self.layouts = layouts;
 
-    [[AMConfiguration sharedConfiguration] setLayoutStrings:self.layouts];
+    [[Configuration sharedConfiguration] setLayoutStrings:self.layouts];
 
     [self.layoutsTableView reloadData];
 }
@@ -96,7 +97,7 @@
     [layouts removeObjectAtIndex:self.layoutsTableView.selectedRow];
     self.layouts = layouts;
 
-    [[AMConfiguration sharedConfiguration] setLayoutStrings:self.layouts];
+    [[Configuration sharedConfiguration] setLayoutStrings:self.layouts];
 
     [self.layoutsTableView reloadData];
 }
@@ -123,7 +124,7 @@
     }
     self.floatingBundleIdentifiers = floatingBundleIdentifiers;
 
-    [[AMConfiguration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
+    [[Configuration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
 
     [self.floatingTableView reloadData];
 }
@@ -137,7 +138,7 @@
     [floatingBundleIdentifiers removeObjectAtIndex:self.floatingTableView.selectedRow];
     self.floatingBundleIdentifiers = floatingBundleIdentifiers;
 
-    [[AMConfiguration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
+    [[Configuration sharedConfiguration] setFloatingBundleIdentifiers:self.floatingBundleIdentifiers];
 
     [self.floatingTableView reloadData];
 }
