@@ -10,7 +10,6 @@
 #define Amethyst_AMPrefixImport_h
 
 #import <Silica/Silica.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
 #import <CocoaLumberjack/DDLog.h>
 #import <CocoaLumberjack/DDLogMacros.h>
 #import <Sparkle/Sparkle.h>
