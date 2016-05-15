@@ -22,7 +22,7 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     private var preferencesWindowController: CCNPreferencesWindowController?
 
     private var windowManager: WindowManager?
-    private var hotKeyManager: AMHotKeyManager?
+    private var hotKeyManager: HotKeyManager?
 
     private var statusItem: NSStatusItem?
     @IBOutlet public var statusItemMenu: NSMenu?
@@ -76,7 +76,7 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         preferencesWindowController?.setPreferencesViewControllers(preferencesViewControllers)
 
         windowManager = WindowManager()
-        hotKeyManager = AMHotKeyManager()
+        hotKeyManager = HotKeyManager()
 
         Configuration.sharedConfiguration.setUpWithHotKeyManager(hotKeyManager!, windowManager: windowManager!)
     }

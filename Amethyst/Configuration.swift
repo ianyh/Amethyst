@@ -222,7 +222,7 @@ public class Configuration: NSObject {
         }
     }
 
-    private func constructCommandWithHotKeyManager(hotKeyManager: AMHotKeyManager, commandKey: String, handler: HotKeyHandler) {
+    private func constructCommandWithHotKeyManager(hotKeyManager: HotKeyManager, commandKey: String, handler: HotKeyHandler) {
         var override = false
         var command: [String: String]? = configuration?[commandKey].object as? [String: String]
         if command != nil {
@@ -257,7 +257,7 @@ public class Configuration: NSObject {
         )
     }
 
-    public func setUpWithHotKeyManager(hotKeyManager: AMHotKeyManager, windowManager: WindowManager) {
+    public func setUpWithHotKeyManager(hotKeyManager: HotKeyManager, windowManager: WindowManager) {
         constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.CycleLayoutForward.rawValue) {
             windowManager.focusedScreenManager()?.cycleLayoutForward()
         }
