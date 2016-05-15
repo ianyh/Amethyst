@@ -208,7 +208,7 @@
 				4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */,
 				401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */,
 			);
-			name = Preferences;
+			path = Preferences;
 			sourceTree = "<group>";
 		};
 		401BC8AA1CE8F82700F89B3F /* Managers */ = {
@@ -217,7 +217,7 @@
 				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
 				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
 			);
-			name = Managers;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		401BC8AB1CE8F84500F89B3F /* Configuration */ = {
@@ -287,7 +287,7 @@
 				401BC8AA1CE8F82700F89B3F /* Managers */,
 				4008E724190C4D9D0049E2F6 /* Preferences */,
 				40B392831814977D009A296B /* View */,
-				40B337EF174935ED0001D8FC /* Event Handling */,
+				40B337EF174935ED0001D8FC /* Events */,
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
 				4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */,
@@ -330,7 +330,7 @@
 				4029C4F01C112478001E4788 /* Layout.swift */,
 				4029C4F21C1124BC001E4788 /* ReflowOperation.swift */,
 			);
-			name = Layout;
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		40B337E51745D1600001D8FC /* Categories */ = {
@@ -341,15 +341,15 @@
 				4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */,
 				4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */,
 			);
-			name = Categories;
+			path = Categories;
 			sourceTree = "<group>";
 		};
-		40B337EF174935ED0001D8FC /* Event Handling */ = {
+		40B337EF174935ED0001D8FC /* Events */ = {
 			isa = PBXGroup;
 			children = (
 				401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */,
 			);
-			name = "Event Handling";
+			path = Events;
 			sourceTree = "<group>";
 		};
 		40B392831814977D009A296B /* View */ = {
@@ -359,7 +359,7 @@
 				401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */,
 				4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */,
 			);
-			name = View;
+			path = View;
 			sourceTree = "<group>";
 		};
 		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
