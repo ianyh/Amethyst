@@ -30,8 +30,8 @@ public class GeneralPreferencesViewController: NSViewController, CCNPreferencesW
     public override func viewWillAppear() {
         super.viewWillAppear()
 
-        layouts = Configuration.sharedConfiguration.layoutStrings()
-        floatingBundleIdentifiers = Configuration.sharedConfiguration.floatingBundleIdentifiers()
+        layouts = UserConfiguration.sharedConfiguration.layoutStrings()
+        floatingBundleIdentifiers = UserConfiguration.sharedConfiguration.floatingBundleIdentifiers()
 
         layoutsTableView?.reloadData()
         floatingTableView?.reloadData()
@@ -40,7 +40,7 @@ public class GeneralPreferencesViewController: NSViewController, CCNPreferencesW
     @IBAction public func addLayout(sender: NSButton) {
         let layoutMenu = NSMenu(title: "")
 
-        for layoutString in Configuration.sharedConfiguration.availableLayoutStrings() {
+        for layoutString in UserConfiguration.sharedConfiguration.availableLayoutStrings() {
             let menuItem = NSMenuItem(title: layoutString, action: #selector(addLayoutString(_:)), keyEquivalent: "")
             menuItem.target = self
             menuItem.action = #selector(addLayoutString(_:))
@@ -71,7 +71,7 @@ public class GeneralPreferencesViewController: NSViewController, CCNPreferencesW
         layouts.append(sender.title)
         self.layouts = layouts
 
-        Configuration.sharedConfiguration.setLayoutStrings(self.layouts)
+        UserConfiguration.sharedConfiguration.setLayoutStrings(self.layouts)
 
         layoutsTableView?.reloadData()
     }
@@ -85,7 +85,7 @@ public class GeneralPreferencesViewController: NSViewController, CCNPreferencesW
         layouts.removeAtIndex(layoutsTableView!.selectedRow)
         self.layouts = layouts
 
-        Configuration.sharedConfiguration.setLayoutStrings(self.layouts)
+        UserConfiguration.sharedConfiguration.setLayoutStrings(self.layouts)
 
         layoutsTableView?.reloadData()
     }
@@ -114,7 +114,7 @@ public class GeneralPreferencesViewController: NSViewController, CCNPreferencesW
         }
         self.floatingBundleIdentifiers = floatingBundleIdentifiers
 
-        Configuration.sharedConfiguration.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
+        UserConfiguration.sharedConfiguration.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
 
         floatingTableView?.reloadData()
     }
@@ -128,7 +128,7 @@ public class GeneralPreferencesViewController: NSViewController, CCNPreferencesW
         floatingBundleIdentifiers.removeAtIndex(floatingTableView!.selectedRow)
         self.floatingBundleIdentifiers = floatingBundleIdentifiers
 
-        Configuration.sharedConfiguration.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
+        UserConfiguration.sharedConfiguration.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
 
         floatingTableView?.reloadData()
     }

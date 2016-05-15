@@ -28,7 +28,7 @@ public extension SIWindow {
             return false
         }
 
-        guard Configuration.sharedConfiguration.mouseFollowsFocus() else {
+        guard UserConfiguration.sharedConfiguration.mouseFollowsFocus() else {
             return true
         }
 

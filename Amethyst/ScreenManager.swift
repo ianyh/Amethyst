@@ -42,7 +42,7 @@ import Silica
 			if let layouts = layoutsBySpaceIdentifier[spaceIdentifier] {
 				self.layouts = layouts
 			} else {
-				self.layouts = Configuration.sharedConfiguration.layoutsWithWindowActivityCache(self)
+				self.layouts = UserConfiguration.sharedConfiguration.layoutsWithWindowActivityCache(self)
 				layoutsBySpaceIdentifier[spaceIdentifier] = layouts
 			}
 		}
@@ -57,7 +57,7 @@ import Silica
 	private var layoutsBySpaceIdentifier: [String: [Layout]] = [:]
 	private var currentLayoutIndex: Int {
 		didSet {
-			if !self.changingSpace || Configuration.sharedConfiguration.enablesLayoutHUDOnSpaceChange() {
+			if !self.changingSpace || UserConfiguration.sharedConfiguration.enablesLayoutHUDOnSpaceChange() {
 				self.displayLayoutHUD()
 			}
 		}
@@ -83,7 +83,7 @@ import Silica
 
 		super.init()
 
-		self.layouts = Configuration.sharedConfiguration.layoutsWithWindowActivityCache(self)
+		self.layouts = UserConfiguration.sharedConfiguration.layoutsWithWindowActivityCache(self)
 	}
 
 	public func setNeedsReflow() {
@@ -106,7 +106,7 @@ import Silica
 		guard
 			currentSpaceIdentifier != nil &&
 				currentLayoutIndex < layouts.count &&
-				Configuration.sharedConfiguration.tilingEnabled &&
+				UserConfiguration.sharedConfiguration.tilingEnabled &&
 				!isFullscreen &&
 				!CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier)
 			else {
@@ -153,7 +153,7 @@ import Silica
 	}
 
 	public func displayLayoutHUD() {
-		guard Configuration.sharedConfiguration.enablesLayoutHUD() else {
+		guard UserConfiguration.sharedConfiguration.enablesLayoutHUD() else {
 			return
 		}
 

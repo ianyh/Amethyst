@@ -29,6 +29,10 @@ public class HotKey: NSObject {
     }
 }
 
+public protocol HotKeyRegistrar {
+    func registerHotKeyWithKeyString(string: String, modifiers: AMModifierFlags, handler: () -> (), defaultsKey: String, override: Bool)
+}
+
 public class HotKeyManager: NSObject {
     public lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
         return self.constructKeyCodeMap()
@@ -178,7 +182,9 @@ public class HotKeyManager: NSObject {
 
         return carbonModifiers
     }
+}
 
+extension HotKeyManager: HotKeyRegistrar {
     public func registerHotKeyWithKeyString(string: String, modifiers: AMModifierFlags, handler: () -> (), defaultsKey: String, override: Bool) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
 

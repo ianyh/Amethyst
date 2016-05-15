@@ -29,10 +29,10 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet public var startAtLoginMenuItem: NSMenuItem?
 
     public func applicationDidFinishLaunching(notification: NSNotification) {
-        Configuration.sharedConfiguration.loadConfiguration()
+        UserConfiguration.sharedConfiguration.loadConfiguration()
 
         let appcastURLString = { () -> String? in
-            if Configuration.sharedConfiguration.useCanaryBuild() {
+            if UserConfiguration.sharedConfiguration.useCanaryBuild() {
                 return NSBundle.mainBundle().infoDictionary?["SUCanaryFeedURL"] as? String
             } else {
                 return NSBundle.mainBundle().infoDictionary?["SUFeedURL"] as? String
@@ -41,7 +41,7 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
 
         SUUpdater.sharedUpdater().feedURL = NSURL(string: appcastURLString)
 
-        _ = Configuration.sharedConfiguration
+        _ = UserConfiguration.sharedConfiguration
             .rx_observe(Bool.self, "tilingEnabled")
             .subscribeNext() { [weak self] tilingEnabled in
                 var statusItemImage: NSImage?
@@ -74,7 +74,7 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         windowManager = WindowManager()
         hotKeyManager = HotKeyManager()
 
-        Configuration.sharedConfiguration.setUpWithHotKeyManager(hotKeyManager!, windowManager: windowManager!)
+        UserConfiguration.sharedConfiguration.setUpWithHotKeyManager(hotKeyManager!, windowManager: windowManager!)
     }
 
     public override func awakeFromNib() {
@@ -112,7 +112,7 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction public func showPreferencesWindow(sender: AnyObject) {
-        if Configuration.sharedConfiguration.hasCustomConfiguration() {
+        if UserConfiguration.sharedConfiguration.hasCustomConfiguration() {
             let alert = NSAlert()
             alert.alertStyle = .WarningAlertStyle
             alert.messageText = "Warning"

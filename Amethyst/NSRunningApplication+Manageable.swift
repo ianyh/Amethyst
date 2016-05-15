@@ -9,6 +9,12 @@
 import AppKit
 import Foundation
 
+public protocol BundleIdentifiable {
+    var bundleIdentifier: String? { get }
+}
+
+extension NSRunningApplication: BundleIdentifiable {}
+
 public extension NSRunningApplication {
     public var isManageable: Bool {
         guard let bundleIdentifier = bundleIdentifier where !isAgent() else {

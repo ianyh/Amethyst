@@ -4,9 +4,9 @@ PODS:
   - MASShortcut (2.3.3)
   - Nimble (4.0.1)
   - Quick (0.9.2)
-  - RxCocoa (2.4):
-    - RxSwift (~> 2.4)
-  - RxSwift (2.4)
+  - RxCocoa (2.5.0):
+    - RxSwift (~> 2.5)
+  - RxSwift (2.5.0)
   - Silica (0.1.4)
   - SwiftyJSON (2.3.2)
 
@@ -46,11 +46,11 @@ SPEC CHECKSUMS:
   MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
   Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
   Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
-  RxCocoa: 7d6cd877de99f5640306b3d6cf87f580c1d91b61
-  RxSwift: 67b9ef4e8b34fb394e200e754c6a09cc16559f94
+  RxCocoa: e1b1562e57a554d0fb2aabf9d71b637f177257c7
+  RxSwift: 402b41a50e922a0368fc14cb3bc9f4427920e8ae
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
 PODFILE CHECKSUM: d1e3221bd69859e5ffb38fb612bb7ae418ac7123
 
-COCOAPODS: 1.0.0.beta.5
+COCOAPODS: 1.0.0

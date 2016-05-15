@@ -231,7 +231,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
         let screenManager = screenManagers[screenArrayIndex]
         let windows = windowsForScreen(screenManager.screen)
 
-        if windows.count == 0 && Configuration.sharedConfiguration.mouseFollowsFocus() {
+        if windows.count == 0 && UserConfiguration.sharedConfiguration.mouseFollowsFocus() {
             screenManager.screen.focusScreen()
         } else if windows.count > 0 {
             windows.first?.am_focusWindow()
@@ -604,7 +604,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
         }
 
         floatingMap[window.windowID()] = application.floating()
-        if Configuration.sharedConfiguration.floatSmallWindows() && window.frame().size.width < 500 && window.frame().size.height < 500 {
+        if UserConfiguration.sharedConfiguration.floatSmallWindows() && window.frame().size.width < 500 && window.frame().size.height < 500 {
             floatingMap[window.windowID()] = true
         }
 
@@ -785,7 +785,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     }
 
     private func focusWindowWithMouseMovedEvent(event: NSEvent) {
-        guard Configuration.sharedConfiguration.focusFollowsMouse() else {
+        guard UserConfiguration.sharedConfiguration.focusFollowsMouse() else {
             return
         }
 

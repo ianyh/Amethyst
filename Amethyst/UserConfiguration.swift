@@ -1,5 +1,5 @@
 //
-//  Configuration.swift
+//  UserConfiguration.swift
 //  Amethyst
 //
 //  Created by Ian Ynda-Hummel on 5/8/16.
@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-private enum ConfigurationKey: String {
+internal enum ConfigurationKey: String {
     case Layouts = "layouts"
     case CommandMod = "mod"
     case CommandKey = "key"
@@ -44,7 +44,7 @@ private enum ConfigurationKey: String {
     }
 }
 
-private enum CommandKey: String {
+internal enum CommandKey: String {
     case CycleLayoutForward = "cycle-layout"
     case CycleLayoutBackward = "cycle-layout-backward"
     case ShrinkMain = "shrink-main"
@@ -66,19 +66,19 @@ private enum CommandKey: String {
     case ToggleTiling = "toggle-tiling"
 }
 
-public class Configuration: NSObject {
+public class UserConfiguration: NSObject {
     public typealias HotKeyHandler = () -> ()
 
-    public static let sharedConfiguration = Configuration()
+    public static let sharedConfiguration = UserConfiguration()
 
     public var tilingEnabled = true
 
-    private var configuration: JSON?
-    private var defaultConfiguration: JSON?
+    internal var configuration: JSON?
+    internal var defaultConfiguration: JSON?
 
-    private var modifier1: AMModifierFlags?
-    private var modifier2: AMModifierFlags?
-    private var screens: Int?
+    internal var modifier1: AMModifierFlags?
+    internal var modifier2: AMModifierFlags?
+    internal var screens: Int?
 
     private func configurationValueForKey<T>(key: ConfigurationKey) -> T? {
         guard let configurationValue = configuration?[key.rawValue].rawValue as? T else {
@@ -88,7 +88,7 @@ public class Configuration: NSObject {
         return configurationValue
     }
 
-    private func modifierFlagsForStrings(modifierStrings: [String]) -> AMModifierFlags {
+    internal func modifierFlagsForStrings(modifierStrings: [String]) -> AMModifierFlags {
         var flags: UInt = 0
         for modifierString in modifierStrings {
             switch modifierString {
@@ -153,7 +153,7 @@ public class Configuration: NSObject {
         }
     }
 
-    private func jsonForConfigAtPath(path: String) -> JSON? {
+    internal func jsonForConfigAtPath(path: String) -> JSON? {
         guard NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: nil) else {
             return nil
         }
@@ -165,7 +165,7 @@ public class Configuration: NSObject {
         return JSON(data: data)
     }
 
-    private func loadConfigurationFile() {
+    internal func loadConfigurationFile() {
         let amethystConfigPath = NSHomeDirectory().stringByAppendingString("/.amethyst")
         let defaultAmethystConfigPath = NSBundle.mainBundle().pathForResource("default", ofType: "amethyst")
 
@@ -221,7 +221,7 @@ public class Configuration: NSObject {
         }
     }
 
-    private func constructCommandWithHotKeyManager(hotKeyManager: HotKeyManager, commandKey: String, handler: HotKeyHandler) {
+    internal func constructCommandWithHotKeyRegistrar(hotKeyRegistrar: HotKeyRegistrar, commandKey: String, handler: HotKeyHandler) {
         var override = false
         var command: [String: String]? = configuration?[commandKey].object as? [String: String]
         if command != nil {
@@ -247,7 +247,7 @@ public class Configuration: NSObject {
             return
         }
 
-        hotKeyManager.registerHotKeyWithKeyString(
+        hotKeyRegistrar.registerHotKeyWithKeyString(
             commandKeyString,
             modifiers: commandFlags!,
             handler: handler,
@@ -257,67 +257,67 @@ public class Configuration: NSObject {
     }
 
     public func setUpWithHotKeyManager(hotKeyManager: HotKeyManager, windowManager: WindowManager) {
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.CycleLayoutForward.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.CycleLayoutForward.rawValue) {
             windowManager.focusedScreenManager()?.cycleLayoutForward()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.CycleLayoutBackward.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.CycleLayoutBackward.rawValue) {
             windowManager.focusedScreenManager()?.cycleLayoutBackward()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.ShrinkMain.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ShrinkMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.shrinkMainPane()
             }
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.ExpandMain.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ExpandMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.expandMainPane()
             }
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.IncreaseMain.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.IncreaseMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.increaseMainPaneCount()
             }
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.DecreaseMain.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.DecreaseMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.decreaseMainPaneCount()
             }
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.FocusCCW.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.FocusCCW.rawValue) {
             windowManager.moveFocusCounterClockwise()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.FocusCW.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.FocusCW.rawValue) {
             windowManager.moveFocusClockwise()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.SwapScreenCCW.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapScreenCCW.rawValue) {
             windowManager.swapFocusedWindowCounterClockwise()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.SwapScreenCW.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapScreenCW.rawValue) {
             windowManager.swapFocusedWindowScreenClockwise()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.SwapCCW.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapCCW.rawValue) {
             windowManager.swapFocusedWindowCounterClockwise()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.SwapCW.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapCW.rawValue) {
             windowManager.swapFocusedWindowClockwise()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.SwapMain.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapMain.rawValue) {
             windowManager.swapFocusedWindowToMain()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.DisplayCurrentLayout.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.DisplayCurrentLayout.rawValue) {
             windowManager.displayCurrentLayout()
         }
 
@@ -325,11 +325,11 @@ public class Configuration: NSObject {
             let focusCommandKey = "\(CommandKey.FocusScreenPrefix.rawValue)-\(screenNumber)"
             let throwCommandKey = "\(CommandKey.ThrowScreenPrefix.rawValue)-\(screenNumber)"
 
-            self.constructCommandWithHotKeyManager(hotKeyManager, commandKey: focusCommandKey) {
+            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: focusCommandKey) {
                 windowManager.focusScreenAtIndex(screenNumber)
             }
 
-            self.constructCommandWithHotKeyManager(hotKeyManager, commandKey: throwCommandKey) {
+            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: throwCommandKey) {
                 windowManager.throwToScreenAtIndex(screenNumber)
             }
         }
@@ -337,27 +337,27 @@ public class Configuration: NSObject {
         (1..<10).forEach { spaceNumber in
             let commandKey = "\(CommandKey.ThrowSpacePrefix.rawValue)-\(spaceNumber)"
 
-            self.constructCommandWithHotKeyManager(hotKeyManager, commandKey: commandKey) {
+            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: commandKey) {
                 windowManager.pushFocusedWindowToSpace(UInt(spaceNumber))
             }
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.ToggleFloat.rawValue) {
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ToggleFloat.rawValue) {
             windowManager.toggleFloatForFocusedWindow()
         }
 
-        constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.ToggleTiling.rawValue) {
-            Configuration.sharedConfiguration.tilingEnabled = !Configuration.sharedConfiguration.tilingEnabled
+        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ToggleTiling.rawValue) {
+            UserConfiguration.sharedConfiguration.tilingEnabled = !UserConfiguration.sharedConfiguration.tilingEnabled
             windowManager.markAllScreensForReflow()
         }
 
         let layoutStrings: [String] = configurationValueForKey(ConfigurationKey.Layouts)!
         layoutStrings.forEach { layoutString in
-            guard let layoutClass = Configuration.layoutClassForString(layoutString) else {
+            guard let layoutClass = UserConfiguration.layoutClassForString(layoutString) else {
                 return
             }
 
-            self.constructCommandWithHotKeyManager(hotKeyManager, commandKey: self.constructLayoutKeyString(layoutString)) {
+            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: self.constructLayoutKeyString(layoutString)) {
                 windowManager.focusedScreenManager()?.selectLayout(layoutClass)
             }
         }
@@ -366,7 +366,7 @@ public class Configuration: NSObject {
     public func layoutsWithWindowActivityCache(windowActivityCache: WindowActivityCache) -> [Layout] {
         let layoutStrings: [String] = configurationValueForKey(.Layouts)!
         let layouts = layoutStrings.map { layoutString -> Layout? in
-            guard let layoutClass = Configuration.layoutClassForString(layoutString) else {
+            guard let layoutClass = UserConfiguration.layoutClassForString(layoutString) else {
                 print("Unrecognized layout string \(layoutString)")
                 return nil
             }
@@ -401,12 +401,12 @@ public class Configuration: NSObject {
             WidescreenTallLayout.self
         ]
 
-        return layoutClasses.map { Configuration.stringForLayoutClass($0) }
+        return layoutClasses.map { UserConfiguration.stringForLayoutClass($0) }
     }
 
-    public func runningApplicationShouldFloat(runningApplication: NSRunningApplication) -> Bool {
+    public func runningApplicationShouldFloat(runningApplication: BundleIdentifiable) -> Bool {
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        guard let floatingBundleIdentifiers = userDefaults.arrayForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue) as? [String] else {
+        guard let floatingBundleIdentifiers = userDefaults.objectForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue) as? [String] else {
             return false
         }
 
