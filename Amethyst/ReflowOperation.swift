@@ -81,7 +81,7 @@ public struct FrameAssignment {
 
         if focused {
             finalFrame.size = CGSize(width: max(window.frame().size.width, finalFrame.size.width), height: max(window.frame().size.height, finalFrame.size.height))
-            if (!CGRectContainsRect(screenFrame, finalFrame)) {
+            if (!screenFrame.contains(finalFrame)) {
                 finalPosition.x = min(finalPosition.x, screenFrame.maxX - finalFrame.size.width)
                 finalPosition.y = min(finalPosition.y, screenFrame.maxY - finalFrame.size.height)
             }

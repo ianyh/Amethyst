@@ -43,9 +43,3 @@ public extension SIWindow {
         return true
     }
 }
-
-extension SIWindow {
-    public override var hashValue: Int {
-        return Int(windowID())
-    }
-}

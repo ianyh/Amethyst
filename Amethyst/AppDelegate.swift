@@ -8,7 +8,6 @@
 
 import CCNLaunchAtLoginItem
 import CCNPreferencesWindowController
-import CocoaLumberjack
 import CoreServices
 import Crashlytics
 import Fabric
@@ -30,9 +29,6 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet public var startAtLoginMenuItem: NSMenuItem?
 
     public func applicationDidFinishLaunching(notification: NSNotification) {
-        DDLog.addLogger(DDASLLogger.sharedInstance())
-        DDLog.addLogger(DDTTYLogger.sharedInstance())
-
         Configuration.sharedConfiguration.loadConfiguration()
 
         let appcastURLString = { () -> String? in

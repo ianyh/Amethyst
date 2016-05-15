@@ -6,7 +6,6 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
-import CocoaLumberjack
 import Foundation
 import SwiftyJSON
 

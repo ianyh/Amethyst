@@ -171,7 +171,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
 
         for screenManager in screenManagers {
             let screenFrame = screenManager.screen.frameIncludingDockAndMenu()
-            let intersection = CGRectIntersection(windowFrame, screenFrame)
+            let intersection = windowFrame.intersect(screenFrame)
             let volume = intersection.size.width * intersection.size.height
 
             if volume > lastVolume {
@@ -814,7 +814,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
             }
             CGRectMakeWithDictionaryRepresentation(windowFrameDictionary, &windowFrame)
 
-            guard CGRectContainsPoint(windowFrame, mousePoint) else {
+            guard windowFrame.contains(mousePoint) else {
                 continue
             }
             windowsAtPoint.append(windowDescription)

@@ -1,16 +1,6 @@
 PODS:
   - CCNLaunchAtLoginItem (0.1.0)
   - CCNPreferencesWindowController (1.3.0)
-  - CocoaLumberjack (2.0.0-beta):
-    - CocoaLumberjack/CLI (= 2.0.0-beta)
-    - CocoaLumberjack/Core (= 2.0.0-beta)
-    - CocoaLumberjack/Extensions (= 2.0.0-beta)
-  - CocoaLumberjack/CLI (2.0.0-beta):
-    - CocoaLumberjack/Core
-  - CocoaLumberjack/Core (2.0.0-beta)
-  - CocoaLumberjack/Extensions (2.0.0-beta):
-    - CocoaLumberjack/Core
-  - Masonry (0.6.1)
   - MASShortcut (2.3.3)
   - RxCocoa (2.4):
     - RxSwift (~> 2.4)
@@ -21,8 +11,6 @@ PODS:
 DEPENDENCIES:
   - CCNLaunchAtLoginItem (~> 0.1)
   - CCNPreferencesWindowController (from `https://github.com/phranck/CCNPreferencesWindowController`)
-  - CocoaLumberjack (= 2.0.0-beta)
-  - Masonry
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
   - RxCocoa
   - RxSwift
@@ -51,14 +39,12 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
   CCNPreferencesWindowController: 78ed2e3fc54207496c410196cba721f82eea7fc1
-  CocoaLumberjack: 7dbecb93eeec8dcc4fbbdb6fc77b8b64d9e77d0a
-  Masonry: 4972309f2f134de9dd312f4dc4a21359b50e6caa
   MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
   RxCocoa: 7d6cd877de99f5640306b3d6cf87f580c1d91b61
   RxSwift: 67b9ef4e8b34fb394e200e754c6a09cc16559f94
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
 
-PODFILE CHECKSUM: d6e9a9df7c1f1c9eddaf16fdcfd296c1b95d1743
+PODFILE CHECKSUM: ac37693f0f72493e082c745c231d6886cba5babf
 
 COCOAPODS: 1.0.0.beta.5
