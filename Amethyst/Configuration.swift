@@ -142,15 +142,15 @@ public class Configuration: NSObject {
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
         for key in ConfigurationKey.defaultsKeys {
-            let value = configuration?[key.rawValue].object
-            let defaultValue = defaultConfiguration?[key.rawValue].object
+            let value = configuration?[key.rawValue]
+            let defaultValue = defaultConfiguration?[key.rawValue]
             let existingValue = userDefaults.objectForKey(key.rawValue)
 
-            guard value != nil || (defaultValue != nil && existingValue == nil) else {
+            guard value?.error == nil || (defaultValue?.error == nil && existingValue == nil) else {
                 continue
             }
 
-            userDefaults.setObject(value ?? defaultValue, forKey: key.rawValue)
+            userDefaults.setObject(value?.error == nil ? value?.object : defaultValue?.object, forKey: key.rawValue)
         }
     }
 

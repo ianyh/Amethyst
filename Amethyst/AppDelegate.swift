@@ -70,8 +70,8 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         preferencesWindowController?.centerToolbarItems = false
         preferencesWindowController?.allowsVibrancy = true
         let preferencesViewControllers = [
-            AMGeneralPreferencesViewController(),
-            AMShortcutsPreferencesViewController()
+            GeneralPreferencesViewController(),
+            ShortcutsPreferencesViewController()
         ]
         preferencesWindowController?.setPreferencesViewControllers(preferencesViewControllers)
 

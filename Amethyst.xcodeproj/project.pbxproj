@@ -13,14 +13,16 @@
 		4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */; };
 		4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */; };
 		4006CF901CE017BA004CA512 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8F1CE017BA004CA512 /* Configuration.swift */; };
-		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
-		4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
-		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
 		4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B317517CE100548DBE /* icon-statusitem.png */; };
 		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
 		401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8971CE7E45300F89B3F /* WindowManager.swift */; };
 		401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */; };
+		401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */; };
+		401BC89F1CE8D82600F89B3F /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 401BC89D1CE8D6FB00F89B3F /* Cartography.framework */; };
+		401BC8A01CE8D82600F89B3F /* Cartography.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 401BC89D1CE8D6FB00F89B3F /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */; };
+		401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
@@ -33,8 +35,8 @@
 		404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
 		4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */; };
-		4058C47A1C54113D00B19D26 /* AMGeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* AMGeneralPreferencesViewController.xib */; };
-		4058C47E1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib */; };
+		4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */; };
+		4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */; };
 		4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */; };
 		4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */; };
 		4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */; };
@@ -77,6 +79,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				40986B951CAAC38E0030C711 /* Sparkle.framework in Embed Frameworks */,
+				401BC8A01CE8D82600F89B3F /* Cartography.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,17 +95,15 @@
 		4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSScreen+Amethyst.swift"; sourceTree = "<group>"; };
 		4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4006CF8F1CE017BA004CA512 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMGeneralPreferencesViewController.h; sourceTree = "<group>"; };
-		4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMGeneralPreferencesViewController.m; sourceTree = "<group>"; };
-		4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesViewController.h; sourceTree = "<group>"; };
-		4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesViewController.m; sourceTree = "<group>"; };
-		4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesListItemView.h; sourceTree = "<group>"; };
-		4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesListItemView.m; sourceTree = "<group>"; };
 		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
 		4015D9B317517CE100548DBE /* icon-statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem.png"; sourceTree = "<group>"; };
 		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
 		401BC8971CE7E45300F89B3F /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManager.swift; sourceTree = "<group>"; };
+		401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesListItemView.swift; sourceTree = "<group>"; };
+		401BC89D1CE8D6FB00F89B3F /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/Mac/Cartography.framework; sourceTree = "<group>"; };
+		401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesViewController.swift; sourceTree = "<group>"; };
+		401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesViewController.swift; sourceTree = "<group>"; };
 		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		4029C4F21C1124BC001E4788 /* ReflowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
@@ -123,8 +124,8 @@
 		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
 		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
 		4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMLayoutNameWindowController.swift; sourceTree = "<group>"; };
-		4058C4791C54113D00B19D26 /* AMGeneralPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMGeneralPreferencesViewController.xib; sourceTree = "<group>"; };
-		4058C47D1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMShortcutsPreferencesViewController.xib; sourceTree = "<group>"; };
+		4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralPreferencesViewController.xib; sourceTree = "<group>"; };
+		4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShortcutsPreferencesViewController.xib; sourceTree = "<group>"; };
 		4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingLayout.swift; sourceTree = "<group>"; };
 		4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenLayout.swift; sourceTree = "<group>"; };
 		4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TallLayout.swift; sourceTree = "<group>"; };
@@ -165,6 +166,7 @@
 				40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
+				401BC89F1CE8D82600F89B3F /* Cartography.framework in Frameworks */,
 				40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */,
 				40986B981CAAC3BE0030C711 /* Crashlytics.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
@@ -199,14 +201,11 @@
 		4008E724190C4D9D0049E2F6 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */,
-				4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */,
-				4058C4791C54113D00B19D26 /* AMGeneralPreferencesViewController.xib */,
-				4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */,
-				4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */,
-				4058C47D1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib */,
-				4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */,
-				4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */,
+				401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */,
+				4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */,
+				401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */,
+				4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */,
+				401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -234,6 +233,7 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				401BC89D1CE8D6FB00F89B3F /* Cartography.framework */,
 				40986B911CAAC38E0030C711 /* Sparkle.framework */,
 				40986B971CAAC3BE0030C711 /* Crashlytics.framework */,
 				40C3F9241BD1B36C00F58660 /* libz.tbd */,
@@ -446,14 +446,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4058C47A1C54113D00B19D26 /* AMGeneralPreferencesViewController.xib in Resources */,
+				4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */,
 				402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */,
 				402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */,
 				402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */,
 				404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */,
 				404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
 				4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */,
-				4058C47E1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib in Resources */,
+				4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */,
 				40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
 				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
 				4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */,
@@ -611,13 +611,12 @@
 				4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
 				4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */,
-				4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
 				401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */,
 				4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */,
+				401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */,
 				40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
-				4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
-				4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
+				401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */,
 				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
@@ -629,6 +628,7 @@
 				4006CF901CE017BA004CA512 /* Configuration.swift in Sources */,
 				4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
+				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
 				401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */,
 				4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
