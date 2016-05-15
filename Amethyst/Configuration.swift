@@ -424,7 +424,7 @@ public class Configuration: NSObject {
             }
         }
 
-        return true
+        return false
     }
 
     public func ignoreMenuBar() -> Bool {

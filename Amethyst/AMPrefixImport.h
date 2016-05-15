@@ -14,7 +14,6 @@
 #import <CocoaLumberjack/DDLogMacros.h>
 #import <Sparkle/Sparkle.h>
 #import <Masonry/Masonry.h>
-#import "SIWindow+Amethyst.h"
 
 #ifdef DEBUG
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;

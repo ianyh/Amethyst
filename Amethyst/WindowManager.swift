@@ -20,6 +20,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     private var mouseMovedEventHandler: AnyObject?
 
     private var activeIDCache: [CGWindowID: Bool] = [:]
+    private var floatingMap: [CGWindowID: Bool] = [:]
 
     public override init() {
         super.init()
@@ -100,6 +101,10 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
             return nil
         }
         return screenDescriptions
+    }
+
+    private func windowIsFloating(window: SIWindow) -> Bool {
+        return floatingMap[window.windowID()] ?? false
     }
 
     public func regenerateActiveIDCache() {
@@ -279,7 +284,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     }
 
     public func swapFocusedWindowToMain() {
-        guard let focusedWindow = SIWindow.focusedWindow() where !focusedWindow.floating else {
+        guard let focusedWindow = SIWindow.focusedWindow() where !windowIsFloating(focusedWindow) else {
             return
         }
 
@@ -307,7 +312,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     }
 
     public func swapFocusedWindowCounterClockwise() {
-        guard let focusedWindow = SIWindow.focusedWindow() where !focusedWindow.floating else {
+        guard let focusedWindow = SIWindow.focusedWindow() where !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(1)
             return
         }
@@ -336,7 +341,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     }
 
     public func swapFocusedWindowClockwise() {
-        guard let focusedWindow = SIWindow.focusedWindow() where !focusedWindow.floating else {
+        guard let focusedWindow = SIWindow.focusedWindow() where !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(1)
             return
         }
@@ -366,7 +371,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     }
 
     public func swapFocusedWindowScreenClockwise() {
-        guard let focusedWindow = SIWindow.focusedWindow() where !focusedWindow.floating else {
+        guard let focusedWindow = SIWindow.focusedWindow() where !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(1)
             return
         }
@@ -392,7 +397,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     }
 
     public func swapFocusedWindowScreenCounterClockwise() {
-        guard let focusedWindow = SIWindow.focusedWindow() where !focusedWindow.floating else {
+        guard let focusedWindow = SIWindow.focusedWindow() where !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(1)
             return
         }
@@ -521,7 +526,7 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
                 guard let window = accessibilityElement as? SIWindow else {
                     return
                 }
-                window.floating = floating
+                self.floatingMap[window.windowID()] = floating
                 self.addWindow(window)
             }
         )
@@ -598,9 +603,9 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
             return
         }
 
-        window.floating = application.floating()
+        floatingMap[window.windowID()] = application.floating()
         if Configuration.sharedConfiguration.floatSmallWindows() && window.frame().size.width < 500 && window.frame().size.height < 500 {
-            window.floating = true
+            floatingMap[window.windowID()] = true
         }
 
         application.observeNotification(
@@ -688,9 +693,10 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
     }
 
     private func activeWindowsForScreen(screen: NSScreen) -> [SIWindow] {
-        return windowsForScreen(screen).filter() { window in
-            return window.shouldBeManaged() && !window.floating
+        let activeWindows = windowsForScreen(screen).filter() { window in
+            return window.shouldBeManaged() && !windowIsFloating(window)
         }
+        return activeWindows
     }
 
     public func toggleFloatForFocusedWindow() {
@@ -700,14 +706,14 @@ public class WindowManager: NSObject, ScreenManagerDelegate {
 
         for window in windows {
             if window == focusedWindow {
-                window.floating = !window.floating
+                floatingMap[window.windowID()] = !windowIsFloating(window)
                 markScreenForReflow(window.screen())
                 return
             }
         }
 
         addWindow(focusedWindow)
-        focusedWindow.floating = false
+        floatingMap[focusedWindow.windowID()] = false
         markScreenForReflow(focusedWindow.screen())
     }
 
