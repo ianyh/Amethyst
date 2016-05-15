@@ -21,7 +21,7 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     private var loginItem: CCNLaunchAtLoginItem?
     private var preferencesWindowController: CCNPreferencesWindowController?
 
-    private var windowManager: AMWindowManager?
+    private var windowManager: WindowManager?
     private var hotKeyManager: AMHotKeyManager?
 
     private var statusItem: NSStatusItem?
@@ -75,10 +75,10 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         ]
         preferencesWindowController?.setPreferencesViewControllers(preferencesViewControllers)
 
-        windowManager = AMWindowManager()
+        windowManager = WindowManager()
         hotKeyManager = AMHotKeyManager()
 
-        Configuration.sharedConfiguration.setUpWithHotKeyManager(hotKeyManager!, windowManager:windowManager!)
+        Configuration.sharedConfiguration.setUpWithHotKeyManager(hotKeyManager!, windowManager: windowManager!)
     }
 
     public override func awakeFromNib() {

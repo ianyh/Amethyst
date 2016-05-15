@@ -2,4 +2,4 @@
 #import "AMHotKeyManager.h"
 #import "AMLayoutNameWindow.h"
 #import "AMShortcutsPreferencesViewController.h"
-#import "AMWindowManager.h"
+#import "SIWindow+Amethyst.h"

@@ -16,10 +16,10 @@
 		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
 		4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
 		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
-		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
 		4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B317517CE100548DBE /* icon-statusitem.png */; };
 		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
+		401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8971CE7E45300F89B3F /* WindowManager.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
@@ -98,11 +98,10 @@
 		4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesViewController.m; sourceTree = "<group>"; };
 		4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesListItemView.h; sourceTree = "<group>"; };
 		4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesListItemView.m; sourceTree = "<group>"; };
-		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
-		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
 		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
 		4015D9B317517CE100548DBE /* icon-statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem.png"; sourceTree = "<group>"; };
 		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
+		401BC8971CE7E45300F89B3F /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		4029C4F21C1124BC001E4788 /* ReflowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
@@ -273,8 +272,7 @@
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
 				4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */,
-				4010E7F0174540220066097B /* AMWindowManager.h */,
-				4010E7F1174540220066097B /* AMWindowManager.m */,
+				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
 				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
 				4006CF8F1CE017BA004CA512 /* Configuration.swift */,
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
@@ -531,7 +529,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n#swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		408D394419C7C2B90001981F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -613,7 +611,6 @@
 			files = (
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
 				4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */,
-				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
 				4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */,
 				4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
@@ -634,6 +631,7 @@
 				4006CF901CE017BA004CA512 /* Configuration.swift in Sources */,
 				4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
+				401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */,
 				4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,

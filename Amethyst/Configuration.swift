@@ -257,35 +257,35 @@ public class Configuration: NSObject {
         )
     }
 
-    public func setUpWithHotKeyManager(hotKeyManager: AMHotKeyManager, windowManager: AMWindowManager) {
+    public func setUpWithHotKeyManager(hotKeyManager: AMHotKeyManager, windowManager: WindowManager) {
         constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.CycleLayoutForward.rawValue) {
-            windowManager.focusedScreenManager().cycleLayoutForward()
+            windowManager.focusedScreenManager()?.cycleLayoutForward()
         }
 
         constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.CycleLayoutBackward.rawValue) {
-            windowManager.focusedScreenManager().cycleLayoutBackward()
+            windowManager.focusedScreenManager()?.cycleLayoutBackward()
         }
 
         constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.ShrinkMain.rawValue) {
-            windowManager.focusedScreenManager().updateCurrentLayout() { layout in
+            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.shrinkMainPane()
             }
         }
 
         constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.ExpandMain.rawValue) {
-            windowManager.focusedScreenManager().updateCurrentLayout() { layout in
+            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.expandMainPane()
             }
         }
 
         constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.IncreaseMain.rawValue) {
-            windowManager.focusedScreenManager().updateCurrentLayout() { layout in
+            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.increaseMainPaneCount()
             }
         }
 
         constructCommandWithHotKeyManager(hotKeyManager, commandKey: CommandKey.DecreaseMain.rawValue) {
-            windowManager.focusedScreenManager().updateCurrentLayout() { layout in
+            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
                 layout.decreaseMainPaneCount()
             }
         }
@@ -327,11 +327,11 @@ public class Configuration: NSObject {
             let throwCommandKey = "\(CommandKey.ThrowScreenPrefix.rawValue)-\(screenNumber)"
 
             self.constructCommandWithHotKeyManager(hotKeyManager, commandKey: focusCommandKey) {
-                windowManager.focusScreenAtIndex(UInt(screenNumber))
+                windowManager.focusScreenAtIndex(screenNumber)
             }
 
             self.constructCommandWithHotKeyManager(hotKeyManager, commandKey: throwCommandKey) {
-                windowManager.throwToScreenAtIndex(UInt(screenNumber))
+                windowManager.throwToScreenAtIndex(screenNumber)
             }
         }
 
@@ -359,7 +359,7 @@ public class Configuration: NSObject {
             }
 
             self.constructCommandWithHotKeyManager(hotKeyManager, commandKey: self.constructLayoutKeyString(layoutString)) {
-                windowManager.focusedScreenManager().selectLayout(layoutClass)
+                windowManager.focusedScreenManager()?.selectLayout(layoutClass)
             }
         }
     }
