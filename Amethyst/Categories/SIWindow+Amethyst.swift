@@ -11,6 +11,18 @@ import Foundation
 import Silica
 
 public extension SIWindow {
+    public static func windowDescriptions(options: CGWindowListOption, windowID: CGWindowID) -> [[String: AnyObject]]? {
+        guard let cfWindowDescriptions = CGWindowListCopyWindowInfo(options, windowID) else {
+            return nil
+        }
+
+        guard let windowDescriptions = cfWindowDescriptions as NSArray as? [[String: AnyObject]] else {
+            return nil
+        }
+
+        return windowDescriptions
+    }
+
     public func shouldBeManaged() -> Bool {
         guard isResizable() || isMovable() else {
             return false

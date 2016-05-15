@@ -11,6 +11,14 @@ import Foundation
 import Silica
 
 public extension NSScreen {
+    public static func screenDescriptions() -> [[String: AnyObject]]? {
+        let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection()).takeRetainedValue()
+        guard let screenDescriptions = cfScreenDescriptions as NSArray as? [[String: AnyObject]] else {
+            return nil
+        }
+        return screenDescriptions
+    }
+
     public func screenIdentifier() -> String {
         let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), self.frameIncludingDockAndMenu())
         return String(managedDisplay.takeRetainedValue())

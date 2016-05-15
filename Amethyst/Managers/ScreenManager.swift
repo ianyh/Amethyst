@@ -9,12 +9,12 @@
 import Foundation
 import Silica
 
-@objc public protocol ScreenManagerDelegate {
+public protocol ScreenManagerDelegate {
 	func activeWindowsForScreenManager(screenManager: ScreenManager) -> [SIWindow]
 	func windowIsActive(window: SIWindow) -> Bool
 }
 
-@objc public class ScreenManager: NSObject {
+public class ScreenManager: NSObject {
 	public var screen: NSScreen
 	public let screenIdentifier: String
 	private let delegate: ScreenManagerDelegate
@@ -42,7 +42,7 @@ import Silica
 			if let layouts = layoutsBySpaceIdentifier[spaceIdentifier] {
 				self.layouts = layouts
 			} else {
-				self.layouts = UserConfiguration.sharedConfiguration.layoutsWithWindowActivityCache(self)
+				self.layouts = LayoutManager.layoutsWithWindowActivityCache(self)
 				layoutsBySpaceIdentifier[spaceIdentifier] = layouts
 			}
 		}
@@ -83,7 +83,7 @@ import Silica
 
 		super.init()
 
-		self.layouts = UserConfiguration.sharedConfiguration.layoutsWithWindowActivityCache(self)
+		self.layouts = LayoutManager.layoutsWithWindowActivityCache(self)
 	}
 
 	public func setNeedsReflow() {
@@ -188,4 +188,20 @@ extension ScreenManager: WindowActivityCache {
 	public func windowIsActive(window: SIWindow) -> Bool {
 		return delegate.windowIsActive(window)
 	}
+}
+
+extension WindowManager: ScreenManagerDelegate {
+    public func activeWindowsForScreenManager(screenManager: ScreenManager) -> [SIWindow] {
+        return activeWindowsForScreen(screenManager.screen)
+    }
+
+    public func windowIsActive(window: SIWindow) -> Bool {
+        if !window.isActive() {
+            return false
+        }
+        if activeIDCache[window.windowID()] == nil {
+            return false
+        }
+        return true
+    }
 }

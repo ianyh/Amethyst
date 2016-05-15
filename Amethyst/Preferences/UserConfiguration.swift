@@ -44,7 +44,7 @@ internal enum ConfigurationKey: String {
     }
 }
 
-internal enum CommandKey: String {
+public enum CommandKey: String {
     case CycleLayoutForward = "cycle-layout"
     case CycleLayoutBackward = "cycle-layout-backward"
     case ShrinkMain = "shrink-main"
@@ -67,8 +67,6 @@ internal enum CommandKey: String {
 }
 
 public class UserConfiguration: NSObject {
-    public typealias HotKeyHandler = () -> ()
-
     public static let sharedConfiguration = UserConfiguration()
 
     public var tilingEnabled = true
@@ -105,35 +103,6 @@ public class UserConfiguration: NSObject {
             }
         }
         return flags
-    }
-
-    private static func layoutClassForString(layoutString: String) -> Layout.Type? {
-        switch layoutString {
-        case "tall":
-            return TallLayout.self
-        case "tall-right":
-            return TallRightLayout.self
-        case "wide":
-            return WideLayout.self
-        case "middle-wide":
-            return MiddleWideLayout.self
-        case "fullscreen":
-            return FullscreenLayout.self
-        case "column":
-            return ColumnLayout.self
-        case "row":
-            return RowLayout.self
-        case "floating":
-            return FloatingLayout.self
-        case "widescreen-tall":
-            return WidescreenTallLayout.self
-        default:
-            return nil
-        }
-    }
-
-    private static func stringForLayoutClass(layoutClass: Layout.Type) -> String {
-        return layoutClass.layoutKey
     }
 
     public func loadConfiguration() {
@@ -201,24 +170,8 @@ public class UserConfiguration: NSObject {
         self.screens = screens.integerValue
     }
 
-    private func constructLayoutKeyString(layoutString: String) -> String {
+    public static func constructLayoutKeyString(layoutString: String) -> String {
         return "select-\(layoutString)-layout"
-    }
-
-    public func hasCustomConfiguration() -> Bool {
-        return configuration != nil
-    }
-
-    private func modifierFlagsForModifierString(modifierString: String) -> AMModifierFlags {
-        switch modifierString {
-        case "mod1":
-            return modifier1!
-        case "mod2":
-            return modifier2!
-        default:
-            print("Unknown modifier string: \(modifierString)")
-            return modifier1!
-        }
     }
 
     internal func constructCommandWithHotKeyRegistrar(hotKeyRegistrar: HotKeyRegistrar, commandKey: String, handler: HotKeyHandler) {
@@ -256,125 +209,20 @@ public class UserConfiguration: NSObject {
         )
     }
 
-    public func setUpWithHotKeyManager(hotKeyManager: HotKeyManager, windowManager: WindowManager) {
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.CycleLayoutForward.rawValue) {
-            windowManager.focusedScreenManager()?.cycleLayoutForward()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.CycleLayoutBackward.rawValue) {
-            windowManager.focusedScreenManager()?.cycleLayoutBackward()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ShrinkMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
-                layout.shrinkMainPane()
-            }
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ExpandMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
-                layout.expandMainPane()
-            }
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.IncreaseMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
-                layout.increaseMainPaneCount()
-            }
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.DecreaseMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout() { layout in
-                layout.decreaseMainPaneCount()
-            }
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.FocusCCW.rawValue) {
-            windowManager.moveFocusCounterClockwise()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.FocusCW.rawValue) {
-            windowManager.moveFocusClockwise()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapScreenCCW.rawValue) {
-            windowManager.swapFocusedWindowCounterClockwise()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapScreenCW.rawValue) {
-            windowManager.swapFocusedWindowScreenClockwise()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapCCW.rawValue) {
-            windowManager.swapFocusedWindowCounterClockwise()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapCW.rawValue) {
-            windowManager.swapFocusedWindowClockwise()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.SwapMain.rawValue) {
-            windowManager.swapFocusedWindowToMain()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.DisplayCurrentLayout.rawValue) {
-            windowManager.displayCurrentLayout()
-        }
-
-        (1..<screens!).forEach { screenNumber in
-            let focusCommandKey = "\(CommandKey.FocusScreenPrefix.rawValue)-\(screenNumber)"
-            let throwCommandKey = "\(CommandKey.ThrowScreenPrefix.rawValue)-\(screenNumber)"
-
-            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: focusCommandKey) {
-                windowManager.focusScreenAtIndex(screenNumber)
-            }
-
-            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: throwCommandKey) {
-                windowManager.throwToScreenAtIndex(screenNumber)
-            }
-        }
-
-        (1..<10).forEach { spaceNumber in
-            let commandKey = "\(CommandKey.ThrowSpacePrefix.rawValue)-\(spaceNumber)"
-
-            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: commandKey) {
-                windowManager.pushFocusedWindowToSpace(UInt(spaceNumber))
-            }
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ToggleFloat.rawValue) {
-            windowManager.toggleFloatForFocusedWindow()
-        }
-
-        constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: CommandKey.ToggleTiling.rawValue) {
-            UserConfiguration.sharedConfiguration.tilingEnabled = !UserConfiguration.sharedConfiguration.tilingEnabled
-            windowManager.markAllScreensForReflow()
-        }
-
-        let layoutStrings: [String] = configurationValueForKey(ConfigurationKey.Layouts)!
-        layoutStrings.forEach { layoutString in
-            guard let layoutClass = UserConfiguration.layoutClassForString(layoutString) else {
-                return
-            }
-
-            self.constructCommandWithHotKeyRegistrar(hotKeyManager, commandKey: self.constructLayoutKeyString(layoutString)) {
-                windowManager.focusedScreenManager()?.selectLayout(layoutClass)
-            }
-        }
+    public func hasCustomConfiguration() -> Bool {
+        return configuration != nil
     }
 
-    public func layoutsWithWindowActivityCache(windowActivityCache: WindowActivityCache) -> [Layout] {
-        let layoutStrings: [String] = configurationValueForKey(.Layouts)!
-        let layouts = layoutStrings.map { layoutString -> Layout? in
-            guard let layoutClass = UserConfiguration.layoutClassForString(layoutString) else {
-                print("Unrecognized layout string \(layoutString)")
-                return nil
-            }
-
-            return layoutClass.init(windowActivityCache: windowActivityCache)
+    private func modifierFlagsForModifierString(modifierString: String) -> AMModifierFlags {
+        switch modifierString {
+        case "mod1":
+            return modifier1!
+        case "mod2":
+            return modifier2!
+        default:
+            print("Unknown modifier string: \(modifierString)")
+            return modifier1!
         }
-
-        return layouts.filter { $0 != nil }.map { $0! }
     }
 
     public func layoutStrings() -> [String] {
@@ -386,22 +234,6 @@ public class UserConfiguration: NSObject {
     public func setLayoutStrings(layoutStrings: [String]) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(layoutStrings, forKey: ConfigurationKey.Layouts.rawValue)
-    }
-
-    public func availableLayoutStrings() -> [String] {
-        let layoutClasses: [Layout.Type] = [
-            TallLayout.self,
-            TallRightLayout.self,
-            WideLayout.self,
-            MiddleWideLayout.self,
-            FullscreenLayout.self,
-            ColumnLayout.self,
-            RowLayout.self,
-            FloatingLayout.self,
-            WidescreenTallLayout.self
-        ]
-
-        return layoutClasses.map { UserConfiguration.stringForLayoutClass($0) }
     }
 
     public func runningApplicationShouldFloat(runningApplication: BundleIdentifiable) -> Bool {
@@ -480,50 +312,5 @@ public class UserConfiguration: NSObject {
     public func setFloatingBundleIdentifiers(floatingBundleIdentifiers: [String]) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(floatingBundleIdentifiers, forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue)
-    }
-
-    public func hotKeyNameToDefaultsKey() -> [[String]] {
-        var hotKeyNameToDefaultsKey: [[String]] = []
-
-        hotKeyNameToDefaultsKey.append(["Cycle layout forward", CommandKey.CycleLayoutForward.rawValue])
-        hotKeyNameToDefaultsKey.append(["Cycle layout backwards", CommandKey.CycleLayoutBackward.rawValue])
-        hotKeyNameToDefaultsKey.append(["Shrink main pane", CommandKey.ShrinkMain.rawValue])
-        hotKeyNameToDefaultsKey.append(["Expand main pane", CommandKey.ExpandMain.rawValue])
-        hotKeyNameToDefaultsKey.append(["Increase main pane count", CommandKey.IncreaseMain.rawValue])
-        hotKeyNameToDefaultsKey.append(["Decrease main pane count", CommandKey.DecreaseMain.rawValue])
-        hotKeyNameToDefaultsKey.append(["Move focus counter clockwise", CommandKey.FocusCCW.rawValue])
-        hotKeyNameToDefaultsKey.append(["Move focus clockwise", CommandKey.FocusCW.rawValue])
-        hotKeyNameToDefaultsKey.append(["Swap focused window to counter clockwise screen", CommandKey.SwapScreenCCW.rawValue])
-        hotKeyNameToDefaultsKey.append(["Swap focused window to clockwise screen", CommandKey.SwapScreenCW.rawValue])
-        hotKeyNameToDefaultsKey.append(["Swap focused window counter clockwise", CommandKey.SwapCCW.rawValue])
-        hotKeyNameToDefaultsKey.append(["Swap focused window clockwise", CommandKey.SwapCW.rawValue])
-        hotKeyNameToDefaultsKey.append(["Swap focused window with main window", CommandKey.SwapMain.rawValue])
-
-        (1..<10).forEach { spaceNumber in
-            let name = "Throw focused window to space \(spaceNumber)"
-            hotKeyNameToDefaultsKey.append([name, "\(CommandKey.ThrowSpacePrefix.rawValue)-\(spaceNumber)"])
-        }
-
-        (1..<3).forEach { screenNumber in
-            let focusCommandName = "Focus screen \(screenNumber)"
-            let throwCommandName = "Throw focused window to screen \(screenNumber)"
-            let focusCommandKey = "\(CommandKey.FocusScreenPrefix.rawValue)-\(screenNumber)"
-            let throwCommandKey = "\(CommandKey.ThrowScreenPrefix.rawValue)-\(screenNumber)"
-
-            hotKeyNameToDefaultsKey.append([focusCommandName, focusCommandKey])
-            hotKeyNameToDefaultsKey.append([throwCommandName, throwCommandKey])
-        }
-
-        hotKeyNameToDefaultsKey.append(["Toggle float for focused window", CommandKey.ToggleFloat.rawValue])
-        hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.DisplayCurrentLayout.rawValue])
-        hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.ToggleTiling.rawValue])
-
-        for layoutString in availableLayoutStrings() {
-            let commandName = "Select \(layoutString) layout"
-            let commandKey = "select-\(layoutString)-layout"
-            hotKeyNameToDefaultsKey.append([commandName, commandKey])
-        }
-
-        return hotKeyNameToDefaultsKey
     }
 }

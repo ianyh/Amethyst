@@ -40,7 +40,7 @@ public class GeneralPreferencesViewController: NSViewController, CCNPreferencesW
     @IBAction public func addLayout(sender: NSButton) {
         let layoutMenu = NSMenu(title: "")
 
-        for layoutString in UserConfiguration.sharedConfiguration.availableLayoutStrings() {
+        for layoutString in LayoutManager.availableLayoutStrings() {
             let menuItem = NSMenuItem(title: layoutString, action: #selector(addLayoutString(_:)), keyEquivalent: "")
             menuItem.target = self
             menuItem.action = #selector(addLayoutString(_:))

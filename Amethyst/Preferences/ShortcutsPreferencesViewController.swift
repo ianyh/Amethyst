@@ -23,7 +23,7 @@ import MASShortcut
     public override func viewWillAppear() {
         super.viewWillAppear()
 
-        hotKeyNameToDefaultsKey = UserConfiguration.sharedConfiguration.hotKeyNameToDefaultsKey()
+        hotKeyNameToDefaultsKey = HotKeyManager.hotKeyNameToDefaultsKey()
         tableView?.reloadData()
     }
 
