@@ -6,6 +6,7 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
+import AppKit
 import Foundation
 
 public extension NSRunningApplication {

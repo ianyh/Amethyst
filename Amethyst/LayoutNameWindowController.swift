@@ -1,5 +1,5 @@
 //
-//  AMLayoutNameWIndowController.swift
+//  LayoutNameWIndowController.swift
 //  Amethyst
 //
 //  Created by Ian Ynda-Hummel on 1/16/16.
@@ -8,6 +8,6 @@
 
 import AppKit
 
-class AMLayoutNameWindowController: NSWindowController {
+class LayoutNameWindowController: NSWindowController {
 
 }

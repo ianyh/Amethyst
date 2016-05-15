@@ -23,6 +23,7 @@
 		401BC8A01CE8D82600F89B3F /* Cartography.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 401BC89D1CE8D6FB00F89B3F /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */; };
 		401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */; };
+		401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
@@ -34,7 +35,7 @@
 		404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
 		404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
-		4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */; };
+		4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */; };
 		4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */; };
 		4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */; };
 		4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */; };
@@ -49,8 +50,7 @@
 		40986B941CAAC38E0030C711 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B911CAAC38E0030C711 /* Sparkle.framework */; };
 		40986B951CAAC38E0030C711 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B911CAAC38E0030C711 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40986B981CAAC3BE0030C711 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B971CAAC3BE0030C711 /* Crashlytics.framework */; };
-		40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
-		40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
+		40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* LayoutNameWindow.xib */; };
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
 		40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */; };
 		40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91C1BD1B22E00F58660 /* Fabric.framework */; };
@@ -104,6 +104,7 @@
 		401BC89D1CE8D6FB00F89B3F /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/Mac/Cartography.framework; sourceTree = "<group>"; };
 		401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesViewController.swift; sourceTree = "<group>"; };
 		401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesViewController.swift; sourceTree = "<group>"; };
+		401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindow.swift; sourceTree = "<group>"; };
 		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		4029C4F21C1124BC001E4788 /* ReflowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
@@ -123,7 +124,7 @@
 		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
 		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
 		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
-		4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMLayoutNameWindowController.swift; sourceTree = "<group>"; };
+		4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindowController.swift; sourceTree = "<group>"; };
 		4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralPreferencesViewController.xib; sourceTree = "<group>"; };
 		4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShortcutsPreferencesViewController.xib; sourceTree = "<group>"; };
 		4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingLayout.swift; sourceTree = "<group>"; };
@@ -137,9 +138,7 @@
 		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
 		40986B911CAAC38E0030C711 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
 		40986B971CAAC3BE0030C711 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMLayoutNameWindow.xib; sourceTree = "<group>"; };
-		40B39284181497C0009A296B /* AMLayoutNameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayoutNameWindow.h; sourceTree = "<group>"; };
-		40B39285181497C0009A296B /* AMLayoutNameWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayoutNameWindow.m; sourceTree = "<group>"; };
+		40B3927B1814967F009A296B /* LayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LayoutNameWindow.xib; sourceTree = "<group>"; };
 		40C3F91A1BD1B22E00F58660 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		40C3F91C1BD1B22E00F58660 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
@@ -341,10 +340,9 @@
 		40B392831814977D009A296B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */,
-				40B39284181497C0009A296B /* AMLayoutNameWindow.h */,
-				40B39285181497C0009A296B /* AMLayoutNameWindow.m */,
-				4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */,
+				40B3927B1814967F009A296B /* LayoutNameWindow.xib */,
+				401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */,
+				4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -454,7 +452,7 @@
 				404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
 				4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */,
 				4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */,
-				40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
+				40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */,
 				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
 				4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */,
 				40E705D8176EAD7800850DA6 /* default.amethyst in Resources */,
@@ -614,13 +612,13 @@
 				401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */,
 				4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */,
 				401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */,
-				40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
 				401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */,
 				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
+				401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
-				4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */,
+				4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */,
 				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
 				4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,

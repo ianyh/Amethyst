@@ -66,7 +66,7 @@ import Silica
 		return layouts[currentLayoutIndex]
 	}
 
-	private let layoutNameWindowController: AMLayoutNameWindowController
+	private let layoutNameWindowController: LayoutNameWindowController
 
 	private var changingSpace: Bool = false
 
@@ -79,7 +79,7 @@ import Silica
 		self.layoutsBySpaceIdentifier = [:]
 		self.currentLayoutIndex = 0
 
-		self.layoutNameWindowController = AMLayoutNameWindowController(windowNibName: "AMLayoutNameWindow")
+		self.layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
 
 		super.init()
 
@@ -162,7 +162,7 @@ import Silica
 			performSelector(#selector(ScreenManager.hideLayoutHUD(_:)), withObject: nil, afterDelay: 0.6)
 		}
 
-		guard let layoutNameWindow = layoutNameWindowController.window as? AMLayoutNameWindow else {
+		guard let layoutNameWindow = layoutNameWindowController.window as? LayoutNameWindow else {
 			return
 		}
 
