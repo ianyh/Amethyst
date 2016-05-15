@@ -197,6 +197,7 @@
 		4008E724190C4D9D0049E2F6 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				4006CF8F1CE017BA004CA512 /* Configuration.swift */,
 				401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */,
 				4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */,
 				401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */,
@@ -204,6 +205,22 @@
 				401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */,
 			);
 			name = Preferences;
+			sourceTree = "<group>";
+		};
+		401BC8AA1CE8F82700F89B3F /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
+				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		401BC8AB1CE8F84500F89B3F /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		402DB6D51742E41A00D1C936 = {
@@ -261,15 +278,13 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				401BC8AA1CE8F82700F89B3F /* Managers */,
 				4008E724190C4D9D0049E2F6 /* Preferences */,
 				40B392831814977D009A296B /* View */,
 				40B337EF174935ED0001D8FC /* Event Handling */,
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
 				4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */,
-				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
-				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
-				4006CF8F1CE017BA004CA512 /* Configuration.swift */,
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
 				402DB6E81742E41A00D1C936 /* Supporting Files */,
 			);
@@ -344,6 +359,7 @@
 		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
 			isa = PBXGroup;
 			children = (
+				401BC8AB1CE8F84500F89B3F /* Configuration */,
 				40D95B4B1C6E2ED800AAF433 /* Info.plist */,
 			);
 			path = AmethystTests;
