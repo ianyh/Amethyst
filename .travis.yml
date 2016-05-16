@@ -1,5 +1,5 @@
-language: objective-c
-osx_image: xcode7.2
+language: swift
+osx_image: xcode7.3.1
 before_install:
         - brew update
         - brew install xctool || true
