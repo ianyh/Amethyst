@@ -9,6 +9,7 @@ before_install:
         - gem install bundler
         - bundle install
         - export LC_ALL="en_US.UTF-8"
+        - pod repo update
 script:
   - carthage bootstrap --platform OSX --no-use-binaries
   # - xctool clean build test
