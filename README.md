@@ -19,7 +19,7 @@ Amethyst is available for direct download [here](http://ianyh.com/amethyst/versi
 brew cask install amethyst
 ```
 
-Note: that Amethyst now is only supported on OS X 10.9+. The last version that supports 10.8 can be found [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip).
+Note: that Amethyst now is only supported on OS X 10.10+.
 
 Using Amethyst
 ==============
