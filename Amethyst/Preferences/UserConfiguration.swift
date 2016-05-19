@@ -118,7 +118,7 @@ public class UserConfiguration: NSObject {
                 continue
             }
 
-            userDefaults.setObject(value?.error == nil ? value?.object : defaultValue?.object, forKey: key.rawValue)
+            userDefaults.setObject(value?.error != nil ? value?.object : defaultValue?.object, forKey: key.rawValue)
         }
     }
 

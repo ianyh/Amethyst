@@ -30,7 +30,7 @@ public protocol WindowModifierDelegate: class {
     func windowsForScreen(screen: NSScreen) -> [SIWindow]
     func activeWindowsForScreen(screen: NSScreen) -> [SIWindow]
     func windowIsFloating(window: SIWindow) -> Bool
-    func switchWindowAtIndex(index: Int, withWindowAtIndex otherIndex: Int)
+    func switchWindow(window: SIWindow, withWindow otherWindow: SIWindow)
 }
 
 public class WindowModifier: WindowModifierType {
@@ -121,15 +121,11 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
-        guard let mainWindowIndex = windows.indexOf(windows[0]) else {
+        guard windows.indexOf(focusedWindow) != nil else {
             return
         }
 
-        guard let focusedWindowIndex = windows.indexOf(focusedWindow) else {
-            return
-        }
-
-        delegate?.switchWindowAtIndex(focusedWindowIndex, withWindowAtIndex: mainWindowIndex)
+        delegate?.switchWindow(focusedWindow, withWindow: windows[0])
         delegate?.markScreenForReflow(focusedWindow.screen())
         focusedWindow.am_focusWindow()
     }
@@ -151,15 +147,7 @@ public class WindowModifier: WindowModifierType {
 
         let windowToSwapWith = windows[(focusedWindowIndex == 0 ? windows.count - 1 : focusedWindowIndex - 1)]
 
-        guard let focusedWindowActiveIndex = windows.indexOf(focusedWindow) else {
-            return
-        }
-
-        guard let windowToSwapWithActiveIndex = windows.indexOf(windowToSwapWith) else {
-            return
-        }
-
-        delegate?.switchWindowAtIndex(focusedWindowActiveIndex, withWindowAtIndex: windowToSwapWithActiveIndex)
+        delegate?.switchWindow(focusedWindow, withWindow: windowToSwapWith)
         delegate?.markScreenForReflow(focusedWindow.screen())
         focusedWindow.am_focusWindow()
     }
@@ -181,15 +169,7 @@ public class WindowModifier: WindowModifierType {
 
         let windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count]
 
-        guard let focusedWindowActiveIndex = windows.indexOf(focusedWindow) else {
-            return
-        }
-
-        guard let windowToSwapWithActiveIndex = windows.indexOf(windowToSwapWith) else {
-            return
-        }
-
-        delegate?.switchWindowAtIndex(focusedWindowActiveIndex, withWindowAtIndex: windowToSwapWithActiveIndex)
+        delegate?.switchWindow(focusedWindow, withWindow: windowToSwapWith)
         delegate?.markScreenForReflow(focusedWindow.screen())
         focusedWindow.am_focusWindow()
     }
@@ -370,11 +350,16 @@ extension WindowManager: WindowModifierDelegate {
         return floatingMap[window.windowID()] ?? false
     }
 
-    public func switchWindowAtIndex(index: Int, withWindowAtIndex otherIndex: Int) {
-        let window1 = windows[index]
-        let window2 = windows[otherIndex]
+    public func switchWindow(window: SIWindow, withWindow otherWindow: SIWindow) {
+        guard let windowIndex = windows.indexOf(window) else {
+            return
+        }
 
-        windows[index] = window2
-        windows[otherIndex] = window1
+        guard let otherWindowIndex = windows.indexOf(otherWindow) else {
+            return
+        }
+
+        windows[windowIndex] = otherWindow
+        windows[otherWindowIndex] = window
     }
 }
