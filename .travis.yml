@@ -12,5 +12,5 @@ before_install:
         - pod repo update
 script:
   - carthage bootstrap --platform OSX --no-use-binaries
-  # - xctool clean build test
-  - xctool clean build
+  - xctool clean build test
+  #- xctool clean build
