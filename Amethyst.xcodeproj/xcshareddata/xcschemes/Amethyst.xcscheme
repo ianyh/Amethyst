@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DD613904C77DB34467C0830F559AC993"
+               BlueprintIdentifier = "E18F92CCF22E0BCABA4F4FE23D478368"
                BuildableName = "Pods_Amethyst.framework"
                BlueprintName = "Pods-Amethyst"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -40,7 +40,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">

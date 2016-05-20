@@ -1,7 +1,5 @@
 language: objective-c
-osx_image: xcode7.2
-rvm:
-  - 2.2.0
+osx_image: xcode7.3
 before_install:
         - brew update
         - brew install xctool || true
@@ -11,6 +9,7 @@ before_install:
         - gem install bundler
         - bundle install
         - export LC_ALL="en_US.UTF-8"
+        - pod repo update
 script:
   - carthage bootstrap --platform OSX --no-use-binaries
   # - xctool clean build test
