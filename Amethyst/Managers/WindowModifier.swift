@@ -321,7 +321,7 @@ extension WindowManager: WindowModifierDelegate {
         }
 
         guard currentSpace != nil else {
-            print("Could not find a space for screen: \(screenIdentifier)")
+            LogManager.log?.warning("Could not find a space for screen: \(screenIdentifier)")
             return []
         }
 

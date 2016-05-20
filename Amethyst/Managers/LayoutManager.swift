@@ -58,7 +58,7 @@ public class LayoutManager {
         let layoutStrings: [String] = UserConfiguration.sharedConfiguration.layoutStrings()
         let layouts = layoutStrings.map { layoutString -> Layout? in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
-                print("Unrecognized layout string \(layoutString)")
+                LogManager.log?.warning("Unrecognized layout string \(layoutString)")
                 return nil
             }
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Log
 import MASShortcut
 
 public protocol HotKeyRegistrar {
@@ -23,7 +24,7 @@ extension HotKeyManager: HotKeyRegistrar {
         }
 
         guard let keyCodes = stringToKeyCodes[string.lowercaseString] where keyCodes.count > 0 else {
-            print("String \"\(string)\" does not map to any keycodes")
+            LogManager.log?.warning("String \"\(string)\" does not map to any keycodes")
             return
         }
 

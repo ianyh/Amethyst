@@ -5,6 +5,7 @@ use_frameworks!
 target 'Amethyst' do
   pod 'CCNLaunchAtLoginItem', '~> 0.1'
   pod 'CCNPreferencesWindowController', git: 'https://github.com/phranck/CCNPreferencesWindowController'
+  pod 'Log'
   pod 'MASShortcut', :git => 'https://github.com/ianyh/MASShortcut'
   pod 'RxCocoa'
   pod 'RxSwift'

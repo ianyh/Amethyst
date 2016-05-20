@@ -99,7 +99,7 @@ public class UserConfiguration: NSObject {
             case "command":
                 flags = flags | NSEventModifierFlags.CommandKeyMask.rawValue
             default:
-                print("Unrecognized modifier string: \(modifierString)")
+                LogManager.log?.warning("Unrecognized modifier string: \(modifierString)")
             }
         }
         return flags
@@ -142,7 +142,7 @@ public class UserConfiguration: NSObject {
             configuration = jsonForConfigAtPath(amethystConfigPath)
 
             if configuration == nil {
-                print("error loading configuration")
+                LogManager.log?.error("error loading configuration")
 
                 let alert = NSAlert()
                 alert.alertStyle = .CriticalAlertStyle
@@ -153,7 +153,7 @@ public class UserConfiguration: NSObject {
 
         defaultConfiguration = jsonForConfigAtPath(defaultAmethystConfigPath ?? "")
         if defaultConfiguration == nil {
-            print("error loading default configuration")
+            LogManager.log?.error("error loading default configuration")
 
             let alert = NSAlert()
             alert.alertStyle = .CriticalAlertStyle
@@ -196,7 +196,7 @@ public class UserConfiguration: NSObject {
         case "mod2":
             commandFlags = modifier2
         default:
-            print("Unknown modifier string: \(commandModifierString)")
+            LogManager.log?.warning("Unknown modifier string: \(commandModifierString)")
             return
         }
 
@@ -220,7 +220,7 @@ public class UserConfiguration: NSObject {
         case "mod2":
             return modifier2!
         default:
-            print("Unknown modifier string: \(modifierString)")
+            LogManager.log?.warning("Unknown modifier string: \(modifierString)")
             return modifier1!
         }
     }
