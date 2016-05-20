@@ -29,11 +29,17 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet public var startAtLoginMenuItem: NSMenuItem?
 
     public func applicationDidFinishLaunching(notification: NSNotification) {
-        #if RELEASE
+        if NSProcessInfo.processInfo().arguments.indexOf("--log") == nil {
             LogManager.log?.minLevel = .Warning
-        #else
+        } else {
+            LogManager.log?.minLevel = .Trace
+        }
+
+        #if DEBUG
             LogManager.log?.minLevel = .Trace
         #endif
+
+        LogManager.log?.info("Logging is enabled")
 
         UserConfiguration.sharedConfiguration.loadConfiguration()
 
