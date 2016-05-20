@@ -43,15 +43,17 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
 
         UserConfiguration.sharedConfiguration.loadConfiguration()
 
-        let appcastURLString = { () -> String? in
-            if UserConfiguration.sharedConfiguration.useCanaryBuild() {
-                return NSBundle.mainBundle().infoDictionary?["SUCanaryFeedURL"] as? String
-            } else {
-                return NSBundle.mainBundle().infoDictionary?["SUFeedURL"] as? String
-            }
-        }()!
+        #if RELEASE
+            let appcastURLString = { () -> String? in
+                if UserConfiguration.sharedConfiguration.useCanaryBuild() {
+                    return NSBundle.mainBundle().infoDictionary?["SUCanaryFeedURL"] as? String
+                } else {
+                    return NSBundle.mainBundle().infoDictionary?["SUFeedURL"] as? String
+                }
+            }()!
 
-        SUUpdater.sharedUpdater().feedURL = NSURL(string: appcastURLString)
+            SUUpdater.sharedUpdater().feedURL = NSURL(string: appcastURLString)
+        #endif
 
         _ = UserConfiguration.sharedConfiguration
             .rx_observe(Bool.self, "tilingEnabled")
@@ -133,5 +135,11 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         preferencesWindowController?.showPreferencesWindow()
+    }
+
+    @IBAction public func checkForUpdates(sender: AnyObject) {
+        #if RELEASE
+            SUUpdater.sharedUpdater().checkForUpdates(sender)
+        #endif
     }
 }
