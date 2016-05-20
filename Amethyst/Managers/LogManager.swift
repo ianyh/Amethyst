@@ -8,6 +8,6 @@
 
 import Log
 
-public class LogManager {
+public struct LogManager {
     public internal(set) static var log: Logger? = Logger()
 }

@@ -29,6 +29,12 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet public var startAtLoginMenuItem: NSMenuItem?
 
     public func applicationDidFinishLaunching(notification: NSNotification) {
+        #if RELEASE
+            LogManager.log?.minLevel = .Warning
+        #else
+            LogManager.log?.minLevel = .Trace
+        #endif
+
         UserConfiguration.sharedConfiguration.loadConfiguration()
 
         let appcastURLString = { () -> String? in
