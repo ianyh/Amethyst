@@ -41,6 +41,7 @@
             </view>
             <connections>
                 <outlet property="containerView" destination="2" id="ZO9-Uz-ux8"/>
+                <outlet property="contentView" destination="2" id="9oa-GD-j63"/>
                 <outlet property="layoutNameField" destination="YXF-Df-V9n" id="KfT-Yb-Yh3"/>
             </connections>
         </window>

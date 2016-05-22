@@ -13,7 +13,7 @@ import QuartzCore
 public class LayoutNameWindow: NSWindow {
     @IBOutlet public weak var layoutNameField: NSTextField?
 
-    public override var contentView: NSView? {
+    @IBOutlet public override var contentView: NSView? {
         didSet {
             contentView?.wantsLayer = true
             contentView?.layer?.frame = NSRectToCGRect(contentView!.frame)
@@ -22,6 +22,7 @@ public class LayoutNameWindow: NSWindow {
             contentView?.layer?.backgroundColor = NSColor.blackColor().colorWithAlphaComponent(0.75).CGColor
         }
     }
+    @IBOutlet public var containerView: NSView?
 
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,15 +32,4 @@ public class LayoutNameWindow: NSWindow {
         backgroundColor = NSColor.clearColor()
         level = Int(CGWindowLevelForKey(CGWindowLevelKey.FloatingWindowLevelKey))
     }
-
-//    - (void)setContentView:(NSView *)aView {
-//        aView.wantsLayer = YES;
-//        aView.layer.frame = aView.frame;
-//        aView.layer.cornerRadius = 20.0;
-//        aView.layer.masksToBounds = YES;
-//        aView.layer.backgroundColor = [[NSColor blackColor] colorWithAlphaComponent:0.75].CGColor;
-//
-//        [super setContentView:aView];
-//}
-
 }
