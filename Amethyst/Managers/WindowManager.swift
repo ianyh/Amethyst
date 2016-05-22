@@ -181,6 +181,12 @@ public class WindowManager: NSObject {
             self.floatingMap[window.windowID()] = floating
             self.addWindow(window)
         }
+        application.observeNotification(kAXWindowDeminiaturizedNotification, withElement: application) { accessibilityElement in
+            guard let window = accessibilityElement as? SIWindow else {
+                return
+            }
+            self.addWindow(window)
+        }
         application.observeNotification(kAXFocusedWindowChangedNotification, withElement:application) { accessibilityElement in
             guard let focusedWindow = SIWindow.focusedWindow() else {
                 return
