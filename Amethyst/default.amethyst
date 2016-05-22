@@ -207,6 +207,10 @@
         "mod": "mod1",
         "key": "i"
     },
+    "reevaluate-windows": {
+        "mod": "mod1",
+        "key": "z"
+    },
 
     "MISC": "----------------------",
     "floating": [],
