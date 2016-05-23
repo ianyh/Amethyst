@@ -64,6 +64,7 @@ public enum CommandKey: String {
     case ToggleFloat = "toggle-float"
     case DisplayCurrentLayout = "display-current-layout"
     case ToggleTiling = "toggle-tiling"
+    case ReevaluateWindows = "reevaluate-windows"
 }
 
 public class UserConfiguration: NSObject {

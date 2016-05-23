@@ -29,15 +29,6 @@ public class WindowManager: NSObject {
         focusFollowsMouseManager.delegate = self
         windowModifier.delegate = self
 
-        for runningApplication in NSWorkspace.sharedWorkspace().runningApplications {
-            guard runningApplication.isManageable else {
-                continue
-            }
-
-            let application = SIApplication(runningApplication: runningApplication)
-            addApplication(application)
-        }
-
         addWorkspaceNotificationObserver(NSWorkspaceDidLaunchApplicationNotification, selector: #selector(applicationDidLaunch(_:)))
         addWorkspaceNotificationObserver(NSWorkspaceDidTerminateApplicationNotification, selector: #selector(applicationDidTerminate(_:)))
         addWorkspaceNotificationObserver(NSWorkspaceDidHideApplicationNotification, selector: #selector(applicationDidHide(_:)))
@@ -51,6 +42,7 @@ public class WindowManager: NSObject {
             object: nil
         )
 
+        reevaluateWindows()
         updateScreenManagers()
     }
 
@@ -64,7 +56,7 @@ public class WindowManager: NSObject {
         workspaceNotificationCenter.addObserver(self, selector: selector, name: name, object: nil)
     }
 
-    public func regenerateActiveIDCache() {
+    private func regenerateActiveIDCache() {
         var activeIDCache: [CGWindowID: Bool] = [:]
         defer {
             self.activeIDCache = activeIDCache
@@ -88,7 +80,7 @@ public class WindowManager: NSObject {
         return spaceDictionary?["uuid"] as? String
     }
 
-    public func assignCurrentSpaceIdentifiers() {
+    private func assignCurrentSpaceIdentifiers() {
         regenerateActiveIDCache()
 
         guard let screenDictionaries = NSScreen.screenDescriptions() else {
@@ -119,7 +111,7 @@ public class WindowManager: NSObject {
         }
     }
 
-    public func screenManagerForCGWindowDescription(description: [String: AnyObject]) -> ScreenManager? {
+    private func screenManagerForCGWindowDescription(description: [String: AnyObject]) -> ScreenManager? {
         var windowFrame: CGRect = CGRect.zero
         let windowFrameDictionary = description[kCGWindowBounds as String] as? [String: AnyObject]
         CGRectMakeWithDictionaryRepresentation(windowFrameDictionary, &windowFrame)
@@ -139,6 +131,18 @@ public class WindowManager: NSObject {
         }
 
         return lastScreenManager
+    }
+
+    public func reevaluateWindows() {
+        for runningApplication in NSWorkspace.sharedWorkspace().runningApplications {
+            guard runningApplication.isManageable else {
+                continue
+            }
+
+            let application = SIApplication(runningApplication: runningApplication)
+            addApplication(application)
+        }
+        markAllScreensForReflow()
     }
 
     public func focusedScreenManager() -> ScreenManager? {
@@ -163,6 +167,9 @@ public class WindowManager: NSObject {
 
     private func addApplication(application: SIApplication) {
         guard !applications.contains(application) else {
+            for window in application.windows() as! [SIWindow] {
+                addWindow(window)
+            }
             return
         }
 

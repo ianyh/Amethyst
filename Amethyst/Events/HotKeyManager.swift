@@ -170,6 +170,10 @@ public class HotKeyManager: NSObject {
             windowManager.markAllScreensForReflow()
         }
 
+        constructCommandWithCommandKey(CommandKey.ReevaluateWindows.rawValue) {
+            windowManager.reevaluateWindows()
+        }
+
         let layoutStrings: [String] = UserConfiguration.sharedConfiguration.layoutStrings()
         layoutStrings.forEach { layoutString in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
@@ -308,6 +312,7 @@ public class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Swap focused window counter clockwise", CommandKey.SwapCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window clockwise", CommandKey.SwapCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window with main window", CommandKey.SwapMain.rawValue])
+        hotKeyNameToDefaultsKey.append(["Force windows to be reevaluated", CommandKey.ReevaluateWindows.rawValue])
 
         (1..<10).forEach { spaceNumber in
             let name = "Throw focused window to space \(spaceNumber)"
