@@ -26,6 +26,7 @@ internal enum ConfigurationKey: String {
     case LayoutHUD = "enables-layout-hud"
     case LayoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case UseCanaryBuild = "use-canary-build"
+    case NewWindowsToMain = "new-windows-to-main"
 
     static var defaultsKeys: [ConfigurationKey] {
         return [
@@ -319,5 +320,10 @@ public class UserConfiguration: NSObject {
     public func setFloatingBundleIdentifiers(floatingBundleIdentifiers: [String]) {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(floatingBundleIdentifiers, forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue)
+    }
+
+    public func sendNewWindowsToMainPane() -> Bool {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        return userDefaults.boolForKey(ConfigurationKey.NewWindowsToMain.rawValue)
     }
 }

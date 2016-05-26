@@ -252,7 +252,12 @@ public class WindowManager: NSObject {
 
         regenerateActiveIDCache()
 
-        windows.append(window)
+        if UserConfiguration.sharedConfiguration.sendNewWindowsToMainPane() {
+            windows.insert(window, atIndex: 0)
+        } else {
+            windows.append(window)
+        }
+
         markScreenForReflow(window.screen())
 
         guard let application = applicationWithProcessIdentifier(window.processIdentifier()) else {
