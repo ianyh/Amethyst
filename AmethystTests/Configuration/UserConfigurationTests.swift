@@ -219,5 +219,20 @@ public class UserConfigurationTests: QuickSpec {
                 expect(configuration.runningApplicationShouldFloat(bundleIdentifiable)).to(beFalse())
             }
         }
+
+        describe("focus follows mouse") {
+            it("toggles") {
+                let configuration = UserConfiguration()
+                let userDefaults = NSUserDefaults.standardUserDefaults()
+
+                userDefaults.setBool(true, forKey: "focus-follows-mouse")
+
+                expect(configuration.focusFollowsMouse()).to(beTrue())
+
+                configuration.toggleFocusFollowsMouse()
+
+                expect(configuration.focusFollowsMouse()).to(beFalse())
+            }
+        }
     }
 }

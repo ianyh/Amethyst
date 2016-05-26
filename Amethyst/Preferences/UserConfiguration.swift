@@ -65,6 +65,7 @@ public enum CommandKey: String {
     case DisplayCurrentLayout = "display-current-layout"
     case ToggleTiling = "toggle-tiling"
     case ReevaluateWindows = "reevaluate-windows"
+    case ToggleFocusFollowsMouse = "toggle-focus-follows-mouse"
 }
 
 public class UserConfiguration: NSObject {
@@ -277,6 +278,11 @@ public class UserConfiguration: NSObject {
     public func focusFollowsMouse() -> Bool {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         return userDefaults.boolForKey(ConfigurationKey.FocusFollowsMouse.rawValue)
+    }
+
+    public func toggleFocusFollowsMouse() {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setBool(!focusFollowsMouse(), forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
     }
 
     public func enablesLayoutHUD() -> Bool {
