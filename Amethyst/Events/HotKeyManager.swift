@@ -174,6 +174,10 @@ public class HotKeyManager: NSObject {
             windowManager.reevaluateWindows()
         }
 
+        constructCommandWithCommandKey(CommandKey.ToggleFocusFollowsMouse.rawValue) {
+            UserConfiguration.sharedConfiguration.toggleFocusFollowsMouse()
+        }
+
         let layoutStrings: [String] = UserConfiguration.sharedConfiguration.layoutStrings()
         layoutStrings.forEach { layoutString in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
