@@ -236,11 +236,12 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		401BC8AB1CE8F84500F89B3F /* Configuration */ = {
+		401BC8AB1CE8F84500F89B3F /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
 				401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */,
 			);
+			name = Preferences;
 			path = Configuration;
 			sourceTree = "<group>";
 		};
@@ -330,6 +331,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		408993E91CF66DE20048B3EA /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
 		40B337E11745CE340001D8FC /* Layout */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,7 +380,8 @@
 		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
 			isa = PBXGroup;
 			children = (
-				401BC8AB1CE8F84500F89B3F /* Configuration */,
+				408993E91CF66DE20048B3EA /* Managers */,
+				401BC8AB1CE8F84500F89B3F /* Preferences */,
 				40D95B4B1C6E2ED800AAF433 /* Info.plist */,
 				401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */,
 			);
