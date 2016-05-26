@@ -220,5 +220,7 @@
     "enables-layout-hud": true,
     "enables-layout-hud-on-space-change": true,
     "window-margin-size": 0,
-    "window-margins": false
+    "window-margins": false,
+    "ignore-menu-bar": false,
+    "use-canary-build": false
 }

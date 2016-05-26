@@ -115,7 +115,6 @@
 		401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfigurationTests.swift; sourceTree = "<group>"; };
-		401BC8B11CE909BC00F89B3F /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = "../../Library/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug/RxSwift/RxSwift.framework"; sourceTree = "<group>"; };
 		401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyRegistrar.swift; sourceTree = "<group>"; };
 		401BC8B51CE9259000F89B3F /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
 		401BC8B71CE9279E00F89B3F /* WindowModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowModifier.swift; sourceTree = "<group>"; };
@@ -125,7 +124,6 @@
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		402DB6E51742E41A00D1C936 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		402DB6E61742E41A00D1C936 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Amethyst-Info.plist"; sourceTree = "<group>"; };
 		402DB6EB1742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -236,11 +234,12 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		401BC8AB1CE8F84500F89B3F /* Configuration */ = {
+		401BC8AB1CE8F84500F89B3F /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
 				401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */,
 			);
+			name = Preferences;
 			path = Configuration;
 			sourceTree = "<group>";
 		};
@@ -267,7 +266,6 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				401BC8B11CE909BC00F89B3F /* RxSwift.framework */,
 				401BC89D1CE8D6FB00F89B3F /* Cartography.framework */,
 				40986B911CAAC38E0030C711 /* Sparkle.framework */,
 				40986B971CAAC3BE0030C711 /* Crashlytics.framework */,
@@ -291,7 +289,6 @@
 			isa = PBXGroup;
 			children = (
 				402DB6E41742E41A00D1C936 /* AppKit.framework */,
-				402DB6E51742E41A00D1C936 /* CoreData.framework */,
 				402DB6E61742E41A00D1C936 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
@@ -328,6 +325,13 @@
 				40E705D7176EAD7800850DA6 /* default.amethyst */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		408993E91CF66DE20048B3EA /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		40B337E11745CE340001D8FC /* Layout */ = {
@@ -372,7 +376,8 @@
 		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
 			isa = PBXGroup;
 			children = (
-				401BC8AB1CE8F84500F89B3F /* Configuration */,
+				408993E91CF66DE20048B3EA /* Managers */,
+				401BC8AB1CE8F84500F89B3F /* Preferences */,
 				40D95B4B1C6E2ED800AAF433 /* Info.plist */,
 				401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */,
 			);
@@ -392,10 +397,10 @@
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
-				408D394519C7C3C40001981F /* ShellScript */,
 				9904A011E7DAC210C65AE6D9 /* 📦 Embed Pods Frameworks */,
 				1A5AD7CBB6148D73FFB6D272 /* 📦 Copy Pods Resources */,
 				40986B961CAAC38E0030C711 /* Embed Frameworks */,
+				408D394519C7C3C40001981F /* ShellScript */,
 			);
 			buildRules = (
 			);
