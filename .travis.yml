@@ -12,5 +12,4 @@ before_install:
         - pod repo update
         - carthage bootstrap --platform OSX --no-use-binaries
 script:
-#        - xctool -workspace Amethyst.xcworkspace -scheme Amethyst test
-        - xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst test
+        - xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst test | xcpretty
