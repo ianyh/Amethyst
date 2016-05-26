@@ -186,5 +186,6 @@
     "window-margin-size": 0,
     "window-margins": false,
     "ignore-menu-bar": false,
-    "use-canary-build": false
+    "use-canary-build": false,
+    "new-windows-to-main": false
 }
