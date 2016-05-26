@@ -146,7 +146,9 @@ public class WindowManager: NSObject {
     }
 
     public func focusedScreenManager() -> ScreenManager? {
-        let focusedWindow = SIWindow.focusedWindow()
+        guard let focusedWindow = SIWindow.focusedWindow() else {
+            return nil
+        }
         for screenManager in screenManagers {
             if screenManager.screen.screenIdentifier() == focusedWindow.screen().screenIdentifier() {
                 return screenManager
