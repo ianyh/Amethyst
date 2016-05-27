@@ -2,7 +2,7 @@ Amethyst
 ========
 
 [![Join the chat at https://gitter.im/ianyh/Amethyst](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ianyh/Amethyst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=master)](https://travis-ci.org/ianyh/Amethyst)
+[![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=development)](https://travis-ci.org/ianyh/Amethyst)
 
 Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/) and [i3](https://i3wm.org/).
 
@@ -19,7 +19,7 @@ Amethyst is available for direct download [here](http://ianyh.com/amethyst/versi
 brew cask install amethyst
 ```
 
-Note: that Amethyst now is only supported on OS X 10.9+. The last version that supports 10.8 can be found [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip).
+Note: that Amethyst now is only supported on OS X 10.10+.
 
 Using Amethyst
 ==============
@@ -80,6 +80,13 @@ Contributing
 If you would like to see features or particular bugs fixed check out the Trello board [here](https://trello.com/b/cCg3xhlb/amethyst) and vote on things. It'll give me a better sense of what people want so I can prioritize.
 
 I love pull requests. If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than master. Otherwise just try to stick to the general style of the code.
+
+In order to build Amethyst locally, you'll need to also perform the following steps after cloning the repo:
+
+- Install `carthage` and `rbenv`.
+  - These are not installed via the setup script so as to not casually pollute your global environment.
+- Run `rake setup`, which installs dependencies from Carthage and CocoaPods.
+  - Note that by default CocoaPods will be installed and run via `bundler`. This restricts the version to get around some bugs in the current CocoaPods beta.
 
 Contact
 =======

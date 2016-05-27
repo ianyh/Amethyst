@@ -8,3 +8,5 @@ disabled_rules:
 included:
         - Amethyst
 line_length: 200
+file_length: 500
+cyclomatic_complexity: 15

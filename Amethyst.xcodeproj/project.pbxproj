@@ -7,50 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400299E3176393F10049001F /* SenTestingKit.framework */; };
-		400299E5176393F10049001F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
-		400299EB176393F10049001F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 400299E9176393F10049001F /* InfoPlist.strings */; };
-		400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 400299F5176396D30049001F /* AMFullscreenLayoutTest.m */; };
-		400299F717639AE40049001F /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
-		400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
-		400299FA17639AF20049001F /* AMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6F41742E41A00D1C936 /* AMAppDelegate.m */; };
-		400299FB17639AF20049001F /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
-		400299FD17639AF20049001F /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
-		400299FE17639AF70049001F /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
-		40029A0717639BDA0049001F /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
-		40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40029A081763A06A0049001F /* AMTallLayoutTest.m */; };
-		4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
-		4008E731190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */; };
-		4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
-		4008E735190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */; };
-		4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
-		4008E73F190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */; };
-		4010E7F2174540220066097B /* AMWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4010E7F1174540220066097B /* AMWindowManager.m */; };
-		4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */; };
+		2EF8435FE0931D79742833C1 /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB7CA49CFB92C8A1862B5852 /* Pods_Amethyst.framework */; };
+		4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */; };
+		4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */; };
+		4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */; };
+		4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */; };
+		4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */; };
 		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
 		4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B317517CE100548DBE /* icon-statusitem.png */; };
 		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
-		401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
-		401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */; };
-		4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */; };
+		401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8971CE7E45300F89B3F /* WindowManager.swift */; };
+		401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */; };
+		401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */; };
+		401BC89F1CE8D82600F89B3F /* Cartography.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 401BC89D1CE8D6FB00F89B3F /* Cartography.framework */; };
+		401BC8A01CE8D82600F89B3F /* Cartography.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 401BC89D1CE8D6FB00F89B3F /* Cartography.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */; };
+		401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */; };
+		401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */; };
+		401BC8A81CE8E94000F89B3F /* SIWindow+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A71CE8E94000F89B3F /* SIWindow+Amethyst.swift */; };
+		401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */; };
+		401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */; };
+		401BC8B61CE9259000F89B3F /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B51CE9259000F89B3F /* LayoutManager.swift */; };
+		401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B71CE9279E00F89B3F /* WindowModifier.swift */; };
+		401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
 		402DB6EE1742E41A00D1C936 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6ED1742E41A00D1C936 /* main.m */; };
 		402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F01742E41A00D1C936 /* Credits.rtf */; };
-		402DB6F51742E41A00D1C936 /* AMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6F41742E41A00D1C936 /* AMAppDelegate.m */; };
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
-		404A5FAF18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
 		404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
-		404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
-		404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
-		404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */; };
-		4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */; };
-		4058C47A1C54113D00B19D26 /* AMGeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* AMGeneralPreferencesViewController.xib */; };
-		4058C47E1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib */; };
+		4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */; };
+		4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */; };
+		4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */; };
 		4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */; };
 		4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */; };
 		4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */; };
@@ -60,105 +52,89 @@
 		4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD361C1FA83300DB612B /* RowLayout.swift */; };
 		4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */; };
 		4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */; };
-		40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337ED1746D8540001D8FC /* AMHotKeyManager.m */; };
-		40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B337F717495D7D0001D8FC /* AMConfiguration.m */; };
-		40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
-		40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */; };
-		40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
-		40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 40B39285181497C0009A296B /* AMLayoutNameWindow.m */; };
+		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
+		40986B941CAAC38E0030C711 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B911CAAC38E0030C711 /* Sparkle.framework */; };
+		40986B951CAAC38E0030C711 /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B911CAAC38E0030C711 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		40986B981CAAC3BE0030C711 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40986B971CAAC3BE0030C711 /* Crashlytics.framework */; };
+		40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* LayoutNameWindow.xib */; };
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
 		40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */; };
 		40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91C1BD1B22E00F58660 /* Fabric.framework */; };
-		40C3F9211BD1B22E00F58660 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */; };
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
-		40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
-		40E705D9176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
-		40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; };
-		40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; };
-		40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40EF05901AABE5D1001FBA5B /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */; };
-		5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */; };
-		9CB113BF95779C399B4EBF96 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC6A31D2564700A03F952CC5 /* Pods.framework */; };
-		A7BEC6020340824AB12E05D3 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E8C0455B5911AFE46DC2A54 /* Pods_AmethystTests.framework */; };
+		E0813042EE80CAF5D47073B9 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01DB57398AF21D123FD290F /* Pods_AmethystTests.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		4017800B176D267900C8216C /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
+/* Begin PBXContainerItemProxy section */
+		40D95B4C1C6E2ED800AAF433 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 402DB6D61742E41A00D1C936 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402DB6DD1742E41A00D1C936;
+			remoteInfo = Amethyst;
 		};
-		40CD2F95176D0F4A00251338 /* CopyFiles */ = {
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		40986B961CAAC38E0030C711 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				40EF058F1AABDF85001FBA5B /* ReactiveCocoa.framework in CopyFiles */,
-				40EF05931AABE5DF001FBA5B /* Sparkle.framework in CopyFiles */,
+				40986B951CAAC38E0030C711 /* Sparkle.framework in Embed Frameworks */,
+				401BC8A01CE8D82600F89B3F /* Cartography.framework in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		29C5F9A311406C7D459BABEC /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
-		400299E2176393F10049001F /* AmethystTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		400299E3176393F10049001F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		400299E8176393F10049001F /* AmethystTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AmethystTests-Info.plist"; sourceTree = "<group>"; };
-		400299EA176393F10049001F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		400299EF176393F10049001F /* AmethystTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Prefix.pch"; sourceTree = "<group>"; };
-		400299F5176396D30049001F /* AMFullscreenLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMFullscreenLayoutTest.m; sourceTree = "<group>"; };
-		40029A081763A06A0049001F /* AMTallLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMTallLayoutTest.m; sourceTree = "<group>"; };
-		4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMGeneralPreferencesViewController.h; sourceTree = "<group>"; };
-		4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMGeneralPreferencesViewController.m; sourceTree = "<group>"; };
-		4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesViewController.h; sourceTree = "<group>"; };
-		4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesViewController.m; sourceTree = "<group>"; };
-		4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMShortcutsPreferencesListItemView.h; sourceTree = "<group>"; };
-		4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMShortcutsPreferencesListItemView.m; sourceTree = "<group>"; };
-		4010E7F0174540220066097B /* AMWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMWindowManager.h; sourceTree = "<group>"; };
-		4010E7F1174540220066097B /* AMWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMWindowManager.m; sourceTree = "<group>"; };
-		4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSRunningApplication+Manageable.h"; sourceTree = "<group>"; };
-		4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRunningApplication+Manageable.m"; sourceTree = "<group>"; };
+		03DFBBC5233D7A561FE73BBF /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
+		3B1D20EE210E8A3589C0F547 /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRunningApplication+Manageable.swift"; sourceTree = "<group>"; };
+		4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIApplication+Amethyst.swift"; sourceTree = "<group>"; };
+		4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSScreen+Amethyst.swift"; sourceTree = "<group>"; };
+		4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfiguration.swift; sourceTree = "<group>"; };
 		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
 		4015D9B317517CE100548DBE /* icon-statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem.png"; sourceTree = "<group>"; };
 		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
-		401A406F1801C82B00136DC9 /* SIApplication+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIApplication+Amethyst.h"; sourceTree = "<group>"; };
-		401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIApplication+Amethyst.m"; sourceTree = "<group>"; };
-		4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfigurationTest.m; sourceTree = "<group>"; };
-		4026AB411777C017001E3783 /* AMConfiguration+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AMConfiguration+Private.h"; sourceTree = "<group>"; };
-		4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
+		401BC8971CE7E45300F89B3F /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotKeyManager.swift; path = ../Events/HotKeyManager.swift; sourceTree = "<group>"; };
+		401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesListItemView.swift; sourceTree = "<group>"; };
+		401BC89D1CE8D6FB00F89B3F /* Cartography.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cartography.framework; path = Carthage/Build/Mac/Cartography.framework; sourceTree = "<group>"; };
+		401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesViewController.swift; sourceTree = "<group>"; };
+		401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesViewController.swift; sourceTree = "<group>"; };
+		401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindow.swift; sourceTree = "<group>"; };
+		401BC8A71CE8E94000F89B3F /* SIWindow+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIWindow+Amethyst.swift"; sourceTree = "<group>"; };
+		401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
+		401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfigurationTests.swift; sourceTree = "<group>"; };
+		401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyRegistrar.swift; sourceTree = "<group>"; };
+		401BC8B51CE9259000F89B3F /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
+		401BC8B71CE9279E00F89B3F /* WindowModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowModifier.swift; sourceTree = "<group>"; };
+		401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusFollowsMouseManager.swift; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		4029C4F21C1124BC001E4788 /* ReflowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		402DB6E51742E41A00D1C936 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		402DB6E61742E41A00D1C936 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Amethyst-Info.plist"; sourceTree = "<group>"; };
 		402DB6EB1742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		402DB6ED1742E41A00D1C936 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		402DB6EF1742E41A00D1C936 /* Amethyst-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Prefix.pch"; sourceTree = "<group>"; };
 		402DB6F11742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		402DB6F31742E41A00D1C936 /* AMAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMAppDelegate.h; sourceTree = "<group>"; };
-		402DB6F41742E41A00D1C936 /* AMAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AMAppDelegate.m; sourceTree = "<group>"; };
 		402DB6F71742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled.png"; sourceTree = "<group>"; };
 		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
-		404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SIWindow+Amethyst.h"; sourceTree = "<group>"; };
-		404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SIWindow+Amethyst.m"; sourceTree = "<group>"; };
-		4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMLayoutNameWindowController.swift; sourceTree = "<group>"; };
-		4058C4791C54113D00B19D26 /* AMGeneralPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMGeneralPreferencesViewController.xib; sourceTree = "<group>"; };
-		4058C47D1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMShortcutsPreferencesViewController.xib; sourceTree = "<group>"; };
+		4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindowController.swift; sourceTree = "<group>"; };
+		4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralPreferencesViewController.xib; sourceTree = "<group>"; };
+		4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShortcutsPreferencesViewController.xib; sourceTree = "<group>"; };
 		4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingLayout.swift; sourceTree = "<group>"; };
 		4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenLayout.swift; sourceTree = "<group>"; };
 		4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TallLayout.swift; sourceTree = "<group>"; };
@@ -168,48 +144,26 @@
 		4062AD361C1FA83300DB612B /* RowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowLayout.swift; sourceTree = "<group>"; };
 		4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiddleWideLayout.swift; sourceTree = "<group>"; };
 		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
-		40B337EC1746D8540001D8FC /* AMHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMHotKeyManager.h; sourceTree = "<group>"; };
-		40B337ED1746D8540001D8FC /* AMHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMHotKeyManager.m; sourceTree = "<group>"; };
-		40B337F617495D7D0001D8FC /* AMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMConfiguration.h; sourceTree = "<group>"; };
-		40B337F717495D7D0001D8FC /* AMConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMConfiguration.m; sourceTree = "<group>"; };
-		40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AMLayoutNameWindow.xib; sourceTree = "<group>"; };
-		40B39284181497C0009A296B /* AMLayoutNameWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMLayoutNameWindow.h; sourceTree = "<group>"; };
-		40B39285181497C0009A296B /* AMLayoutNameWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMLayoutNameWindow.m; sourceTree = "<group>"; };
+		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		40986B911CAAC38E0030C711 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
+		40986B971CAAC3BE0030C711 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		40B3927B1814967F009A296B /* LayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LayoutNameWindow.xib; sourceTree = "<group>"; };
 		40C3F91A1BD1B22E00F58660 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		40C3F91C1BD1B22E00F58660 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		40C90FE417A330E900CE174B /* AMPrefixImport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMPrefixImport.h; sourceTree = "<group>"; };
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; };
-		40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMColumnLayoutTest.m; sourceTree = "<group>"; };
+		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
-		40E8B2061BD7C5B900AC70AC /* AMKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMKeys.h; sourceTree = "<group>"; };
-		40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/Mac/ReactiveCocoa.framework; sourceTree = "<group>"; };
-		40EF05901AABE5D1001FBA5B /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Sparkle.framework; path = Carthage/Build/Mac/Sparkle.framework; sourceTree = "<group>"; };
-		40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+Amethyst.h"; sourceTree = "<group>"; };
-		40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+Amethyst.m"; sourceTree = "<group>"; };
-		43BE96256148A252A0EDDBE5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		4E8C0455B5911AFE46DC2A54 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMRowLayoutTest.m; sourceTree = "<group>"; };
-		7BAAAA0E192A8194B5327A37 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		BC6A31D2564700A03F952CC5 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F849B0C3203E92DF484436DB /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
+		48A04C08B79381F097271198 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
+		6441E51294FF4505E05F6810 /* Pods-Amethyst.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.debug.xcconfig"; sourceTree = "<group>"; };
+		C01DB57398AF21D123FD290F /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB7CA49CFB92C8A1862B5852 /* Pods_Amethyst.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Amethyst.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		400299DE176393F10049001F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				40029A0717639BDA0049001F /* Carbon.framework in Frameworks */,
-				400299E4176393F10049001F /* SenTestingKit.framework in Frameworks */,
-				400299E5176393F10049001F /* Cocoa.framework in Frameworks */,
-				A7BEC6020340824AB12E05D3 /* Pods_AmethystTests.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		402DB6DB1742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -217,77 +171,73 @@
 				40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */,
 				40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
-				40C3F9211BD1B22E00F58660 /* Crashlytics.framework in Frameworks */,
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
-				40EF05921AABE5DF001FBA5B /* Sparkle.framework in Frameworks */,
+				401BC89F1CE8D82600F89B3F /* Cartography.framework in Frameworks */,
 				40C3F9201BD1B22E00F58660 /* Fabric.framework in Frameworks */,
+				40986B981CAAC3BE0030C711 /* Crashlytics.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
-				40EF058E1AABDF85001FBA5B /* ReactiveCocoa.framework in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
-				9CB113BF95779C399B4EBF96 /* Pods.framework in Frameworks */,
+				40986B941CAAC38E0030C711 /* Sparkle.framework in Frameworks */,
+				2EF8435FE0931D79742833C1 /* Pods_Amethyst.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40D95B441C6E2ED800AAF433 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0813042EE80CAF5D47073B9 /* Pods_AmethystTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09AB75A5E337120E06B863C4 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				7BAAAA0E192A8194B5327A37 /* Pods.debug.xcconfig */,
-				43BE96256148A252A0EDDBE5 /* Pods.release.xcconfig */,
-				F849B0C3203E92DF484436DB /* Pods-AmethystTests.debug.xcconfig */,
-				29C5F9A311406C7D459BABEC /* Pods-AmethystTests.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		400299E6176393F10049001F /* AmethystTests */ = {
-			isa = PBXGroup;
-			children = (
-				400299E7176393F10049001F /* Supporting Files */,
-				400299F5176396D30049001F /* AMFullscreenLayoutTest.m */,
-				40029A081763A06A0049001F /* AMTallLayoutTest.m */,
-				40D82F0317695F8600DE1A40 /* AMColumnLayoutTest.m */,
-				4026AB3A1777BF81001E3783 /* AMConfigurationTest.m */,
-				5CC5FEE618C5083500895144 /* AMRowLayoutTest.m */,
-			);
-			path = AmethystTests;
-			sourceTree = "<group>";
-		};
-		400299E7176393F10049001F /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				400299E8176393F10049001F /* AmethystTests-Info.plist */,
-				400299E9176393F10049001F /* InfoPlist.strings */,
-				400299EF176393F10049001F /* AmethystTests-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		4008E724190C4D9D0049E2F6 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				4008E72E190C4E020049E2F6 /* AMGeneralPreferencesViewController.h */,
-				4008E72F190C4E020049E2F6 /* AMGeneralPreferencesViewController.m */,
-				4058C4791C54113D00B19D26 /* AMGeneralPreferencesViewController.xib */,
-				4008E732190C4E190049E2F6 /* AMShortcutsPreferencesViewController.h */,
-				4008E733190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m */,
-				4058C47D1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib */,
-				4008E73C190D81580049E2F6 /* AMShortcutsPreferencesListItemView.h */,
-				4008E73D190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m */,
+				4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */,
+				401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */,
+				4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */,
+				401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */,
+				4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */,
+				401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		401BC8AA1CE8F82700F89B3F /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
+				401BC8B71CE9279E00F89B3F /* WindowModifier.swift */,
+				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
+				401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */,
+				401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */,
+				401BC8B51CE9259000F89B3F /* LayoutManager.swift */,
+				401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */,
+				409645B21CEE8D950042F459 /* LogManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		401BC8AB1CE8F84500F89B3F /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */,
 			);
 			name = Preferences;
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		402DB6D51742E41A00D1C936 = {
 			isa = PBXGroup;
 			children = (
 				402DB6E71742E41A00D1C936 /* Amethyst */,
-				400299E6176393F10049001F /* AmethystTests */,
+				40D95B481C6E2ED800AAF433 /* AmethystTests */,
 				402DB6E01742E41A00D1C936 /* Frameworks */,
 				402DB6DF1742E41A00D1C936 /* Products */,
-				09AB75A5E337120E06B863C4 /* Pods */,
+				BEAB13237C6A1846471DB0C4 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -295,7 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				402DB6DE1742E41A00D1C936 /* Amethyst.app */,
-				400299E2176393F10049001F /* AmethystTests.octest */,
+				40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -303,20 +253,19 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				401BC89D1CE8D6FB00F89B3F /* Cartography.framework */,
+				40986B911CAAC38E0030C711 /* Sparkle.framework */,
+				40986B971CAAC3BE0030C711 /* Crashlytics.framework */,
 				40C3F9241BD1B36C00F58660 /* libz.tbd */,
 				40C3F9221BD1B35E00F58660 /* libc++.tbd */,
 				40C3F91A1BD1B22E00F58660 /* Security.framework */,
 				40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */,
 				40C3F91C1BD1B22E00F58660 /* Fabric.framework */,
-				40C3F91D1BD1B22E00F58660 /* Crashlytics.framework */,
-				40EF05901AABE5D1001FBA5B /* Sparkle.framework */,
-				40EF058C1AABDF7D001FBA5B /* ReactiveCocoa.framework */,
 				402DB6FE1742E44E00D1C936 /* Carbon.framework */,
 				402DB6E11742E41A00D1C936 /* Cocoa.framework */,
-				400299E3176393F10049001F /* SenTestingKit.framework */,
 				402DB6E31742E41A00D1C936 /* Other Frameworks */,
-				BC6A31D2564700A03F952CC5 /* Pods.framework */,
-				4E8C0455B5911AFE46DC2A54 /* Pods_AmethystTests.framework */,
+				CB7CA49CFB92C8A1862B5852 /* Pods_Amethyst.framework */,
+				C01DB57398AF21D123FD290F /* Pods_AmethystTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -325,7 +274,6 @@
 			isa = PBXGroup;
 			children = (
 				402DB6E41742E41A00D1C936 /* AppKit.framework */,
-				402DB6E51742E41A00D1C936 /* CoreData.framework */,
 				402DB6E61742E41A00D1C936 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
@@ -334,23 +282,14 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				401BC8AA1CE8F82700F89B3F /* Managers */,
 				4008E724190C4D9D0049E2F6 /* Preferences */,
 				40B392831814977D009A296B /* View */,
-				40B337EF174935ED0001D8FC /* Event Handling */,
 				40B337E51745D1600001D8FC /* Categories */,
 				40B337E11745CE340001D8FC /* Layout */,
-				402DB6F31742E41A00D1C936 /* AMAppDelegate.h */,
-				402DB6F41742E41A00D1C936 /* AMAppDelegate.m */,
-				4010E7F0174540220066097B /* AMWindowManager.h */,
-				4010E7F1174540220066097B /* AMWindowManager.m */,
-				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
-				40B337F617495D7D0001D8FC /* AMConfiguration.h */,
-				40B337F717495D7D0001D8FC /* AMConfiguration.m */,
-				4026AB411777C017001E3783 /* AMConfiguration+Private.h */,
+				4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */,
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
 				402DB6E81742E41A00D1C936 /* Supporting Files */,
-				40C90FE417A330E900CE174B /* AMPrefixImport.h */,
-				40E8B2061BD7C5B900AC70AC /* AMKeys.h */,
 			);
 			path = Amethyst;
 			sourceTree = "<group>";
@@ -358,7 +297,7 @@
 		402DB6E81742E41A00D1C936 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4029C4EF1C112478001E4788 /* Amethyst-Bridging-Header.h */,
+				401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */,
 				404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */,
 				404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */,
 				4015D9B317517CE100548DBE /* icon-statusitem.png */,
@@ -367,11 +306,17 @@
 				402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */,
 				402DB6EA1742E41A00D1C936 /* InfoPlist.strings */,
 				402DB6ED1742E41A00D1C936 /* main.m */,
-				402DB6EF1742E41A00D1C936 /* Amethyst-Prefix.pch */,
 				402DB6F01742E41A00D1C936 /* Credits.rtf */,
 				40E705D7176EAD7800850DA6 /* default.amethyst */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		408993E91CF66DE20048B3EA /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		40B337E11745CE340001D8FC /* Layout */ = {
@@ -389,82 +334,69 @@
 				4029C4F01C112478001E4788 /* Layout.swift */,
 				4029C4F21C1124BC001E4788 /* ReflowOperation.swift */,
 			);
-			name = Layout;
+			path = Layout;
 			sourceTree = "<group>";
 		};
 		40B337E51745D1600001D8FC /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				4015D9AE175054D200548DBE /* NSRunningApplication+Manageable.h */,
-				4015D9AF175054D200548DBE /* NSRunningApplication+Manageable.m */,
-				404B0FFB1800EF7700309019 /* SIWindow+Amethyst.h */,
-				404B0FFC1800EF7700309019 /* SIWindow+Amethyst.m */,
-				401A406F1801C82B00136DC9 /* SIApplication+Amethyst.h */,
-				401A40701801C82B00136DC9 /* SIApplication+Amethyst.m */,
-				40F48BCF19D9BF8D0085453B /* NSScreen+Amethyst.h */,
-				40F48BD019D9BF8D0085453B /* NSScreen+Amethyst.m */,
+				4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */,
+				401BC8A71CE8E94000F89B3F /* SIWindow+Amethyst.swift */,
+				4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */,
+				4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */,
 			);
-			name = Categories;
-			sourceTree = "<group>";
-		};
-		40B337EF174935ED0001D8FC /* Event Handling */ = {
-			isa = PBXGroup;
-			children = (
-				40B337EC1746D8540001D8FC /* AMHotKeyManager.h */,
-				40B337ED1746D8540001D8FC /* AMHotKeyManager.m */,
-			);
-			name = "Event Handling";
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		40B392831814977D009A296B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				40B3927B1814967F009A296B /* AMLayoutNameWindow.xib */,
-				40B39284181497C0009A296B /* AMLayoutNameWindow.h */,
-				40B39285181497C0009A296B /* AMLayoutNameWindow.m */,
-				4058C46E1C4B119500B19D26 /* AMLayoutNameWindowController.swift */,
+				40B3927B1814967F009A296B /* LayoutNameWindow.xib */,
+				401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */,
+				4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */,
 			);
-			name = View;
+			path = View;
+			sourceTree = "<group>";
+		};
+		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
+			isa = PBXGroup;
+			children = (
+				408993E91CF66DE20048B3EA /* Managers */,
+				401BC8AB1CE8F84500F89B3F /* Preferences */,
+				40D95B4B1C6E2ED800AAF433 /* Info.plist */,
+				401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */,
+			);
+			path = AmethystTests;
+			sourceTree = "<group>";
+		};
+		BEAB13237C6A1846471DB0C4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6441E51294FF4505E05F6810 /* Pods-Amethyst.debug.xcconfig */,
+				48A04C08B79381F097271198 /* Pods-Amethyst.release.xcconfig */,
+				3B1D20EE210E8A3589C0F547 /* Pods-AmethystTests.debug.xcconfig */,
+				03DFBBC5233D7A561FE73BBF /* Pods-AmethystTests.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		400299E1176393F10049001F /* AmethystTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 400299F2176393F10049001F /* Build configuration list for PBXNativeTarget "AmethystTests" */;
-			buildPhases = (
-				75325DC6A6114F52971C92AF /* Check Pods Manifest.lock */,
-				400299DD176393F10049001F /* Sources */,
-				400299DE176393F10049001F /* Frameworks */,
-				400299DF176393F10049001F /* Resources */,
-				400299E0176393F10049001F /* ShellScript */,
-				2009177CB0564662B8D8773B /* Copy Pods Resources */,
-				4017800B176D267900C8216C /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AmethystTests;
-			productName = AmethystTests;
-			productReference = 400299E2176393F10049001F /* AmethystTests.octest */;
-			productType = "com.apple.product-type.bundle.ocunit-test";
-		};
 		402DB6DD1742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
+				2C1C9F6D72839342EADA9CF3 /* 📦 Check Pods Manifest.lock */,
 				4058C4701C4C4F9E00B19D26 /* ShellScript */,
-				C226F91CEBCF40B2B1E905D2 /* Check Pods Manifest.lock */,
 				408D394419C7C2B90001981F /* ShellScript */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
-				A45D6998D05F454B956A7978 /* Copy Pods Resources */,
-				40CD2F95176D0F4A00251338 /* CopyFiles */,
+				40986B961CAAC38E0030C711 /* Embed Frameworks */,
 				408D394519C7C3C40001981F /* ShellScript */,
-				A0FE5F1CFC10998E07965C6A /* Embed Pods Frameworks */,
+				7FAA2EF02210366C261135A4 /* 📦 Embed Pods Frameworks */,
+				2BA7033588D6ECE5F50B12B5 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -475,6 +407,27 @@
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
 			productType = "com.apple.product-type.application";
 		};
+		40D95B461C6E2ED800AAF433 /* AmethystTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */;
+			buildPhases = (
+				C5A5DB9F5599F37F9EB9751C /* 📦 Check Pods Manifest.lock */,
+				40D95B431C6E2ED800AAF433 /* Sources */,
+				40D95B441C6E2ED800AAF433 /* Frameworks */,
+				40D95B451C6E2ED800AAF433 /* Resources */,
+				3FA6B9927E302F5BA5787664 /* 📦 Embed Pods Frameworks */,
+				5D538A7AD98DDD09209924DA /* 📦 Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				40D95B4D1C6E2ED800AAF433 /* PBXTargetDependency */,
+			);
+			name = AmethystTests;
+			productName = AmethystTests;
+			productReference = 40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -482,10 +435,16 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AM;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 0730;
 				LastTestingUpgradeCheck = 0700;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
+				TargetAttributes = {
+					40D95B461C6E2ED800AAF433 = {
+						CreatedOnToolsVersion = 7.2.1;
+						TestTargetID = 402DB6DD1742E41A00D1C936;
+					};
+				};
 			};
 			buildConfigurationList = 402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -500,73 +459,85 @@
 			projectRoot = "";
 			targets = (
 				402DB6DD1742E41A00D1C936 /* Amethyst */,
-				400299E1176393F10049001F /* AmethystTests */,
+				40D95B461C6E2ED800AAF433 /* AmethystTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		400299DF176393F10049001F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				40B3927D1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
-				400299EB176393F10049001F /* InfoPlist.strings in Resources */,
-				404A5FB118442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
-				400299FE17639AF70049001F /* MainMenu.xib in Resources */,
-				40E705D9176EAD7800850DA6 /* default.amethyst in Resources */,
-				404A5FAF18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		402DB6DC1742E41A00D1C936 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4058C47A1C54113D00B19D26 /* AMGeneralPreferencesViewController.xib in Resources */,
+				4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */,
 				402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */,
 				402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */,
 				402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */,
 				404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */,
 				404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
 				4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */,
-				4058C47E1C54119B00B19D26 /* AMShortcutsPreferencesViewController.xib in Resources */,
-				40B3927C1814967F009A296B /* AMLayoutNameWindow.xib in Resources */,
+				4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */,
+				40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */,
 				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
 				4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */,
 				40E705D8176EAD7800850DA6 /* default.amethyst in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		40D95B451C6E2ED800AAF433 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2009177CB0564662B8D8773B /* Copy Pods Resources */ = {
+		2BA7033588D6ECE5F50B12B5 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
-		400299E0176393F10049001F /* ShellScript */ = {
+		2C1C9F6D72839342EADA9CF3 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		3FA6B9927E302F5BA5787664 /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		4058C4701C4C4F9E00B19D26 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -579,7 +550,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint autocorrect\n    swiftlint\nelse\n    echo \"SwiftLint does not exist, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		408D394419C7C2B90001981F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -607,133 +578,111 @@
 			shellPath = /bin/sh;
 			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ./Fabric.framework/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Amethyst/Amethyst-Info.plist\nfi\n";
 		};
-		75325DC6A6114F52971C92AF /* Check Pods Manifest.lock */ = {
+		5D538A7AD98DDD09209924DA /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-		};
-		A0FE5F1CFC10998E07965C6A /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A45D6998D05F454B956A7978 /* Copy Pods Resources */ = {
+		7FAA2EF02210366C261135A4 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
-		C226F91CEBCF40B2B1E905D2 /* Check Pods Manifest.lock */ = {
+		C5A5DB9F5599F37F9EB9751C /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		400299DD176393F10049001F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				400299F6176396D30049001F /* AMFullscreenLayoutTest.m in Sources */,
-				400299F717639AE40049001F /* AMHotKeyManager.m in Sources */,
-				400299F917639AEA0049001F /* NSRunningApplication+Manageable.m in Sources */,
-				400299FA17639AF20049001F /* AMAppDelegate.m in Sources */,
-				4008E73F190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
-				4008E735190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
-				4008E731190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
-				401A40721801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
-				400299FB17639AF20049001F /* AMWindowManager.m in Sources */,
-				40B39287181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
-				400299FD17639AF20049001F /* AMConfiguration.m in Sources */,
-				5CC5FEE718C5083500895144 /* AMRowLayoutTest.m in Sources */,
-				404B0FFE1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
-				40029A091763A06A0049001F /* AMTallLayoutTest.m in Sources */,
-				40D82F0517695F8600DE1A40 /* AMColumnLayoutTest.m in Sources */,
-				4026AB3B1777BF81001E3783 /* AMConfigurationTest.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		402DB6DA1742E41A00D1C936 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
-				402DB6F51742E41A00D1C936 /* AMAppDelegate.m in Sources */,
-				4010E7F2174540220066097B /* AMWindowManager.m in Sources */,
+				4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
-				4008E730190C4E020049E2F6 /* AMGeneralPreferencesViewController.m in Sources */,
+				409645B31CEE8D950042F459 /* LogManager.swift in Sources */,
+				4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */,
+				401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */,
 				4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */,
-				40B39286181497C0009A296B /* AMLayoutNameWindow.m in Sources */,
-				4008E73E190D81580049E2F6 /* AMShortcutsPreferencesListItemView.m in Sources */,
-				40B337EE1746D8550001D8FC /* AMHotKeyManager.m in Sources */,
-				401A40711801C82B00136DC9 /* SIApplication+Amethyst.m in Sources */,
+				401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
-				40B337F817495D7D0001D8FC /* AMConfiguration.m in Sources */,
-				4008E734190C4E190049E2F6 /* AMShortcutsPreferencesViewController.m in Sources */,
-				404B0FFD1800EF7700309019 /* SIWindow+Amethyst.m in Sources */,
+				401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */,
+				401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */,
+				401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
-				4058C46F1C4B119500B19D26 /* AMLayoutNameWindowController.swift in Sources */,
+				4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */,
 				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
-				4015D9B0175054D200548DBE /* NSRunningApplication+Manageable.m in Sources */,
+				401BC8B61CE9259000F89B3F /* LayoutManager.swift in Sources */,
+				4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
+				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
+				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
 				4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
+				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
+				401BC8A81CE8E94000F89B3F /* SIWindow+Amethyst.swift in Sources */,
+				401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */,
+				401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */,
 				4062AD391C206B3C00DB612B /* MiddleWideLayout.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
+				401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
-				40F48BD119D9BF8D0085453B /* NSScreen+Amethyst.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40D95B431C6E2ED800AAF433 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		400299E9176393F10049001F /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				400299EA176393F10049001F /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
+/* Begin PBXTargetDependency section */
+		40D95B4D1C6E2ED800AAF433 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402DB6DD1742E41A00D1C936 /* Amethyst */;
+			targetProxy = 40D95B4C1C6E2ED800AAF433 /* PBXContainerItemProxy */;
 		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
 		402DB6EA1742E41A00D1C936 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -761,42 +710,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		400299F0176393F10049001F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F849B0C3203E92DF484436DB /* Pods-AmethystTests.debug.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AmethystTests/AmethystTests-Prefix.pch";
-				INFOPLIST_FILE = "AmethystTests/AmethystTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		400299F1176393F10049001F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29C5F9A311406C7D459BABEC /* Pods-AmethystTests.release.xcconfig */;
-			buildSettings = {
-				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "AmethystTests/AmethystTests-Prefix.pch";
-				INFOPLIST_FILE = "AmethystTests/AmethystTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Release;
-		};
 		402DB6F91742E41A00D1C936 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -863,7 +776,7 @@
 		};
 		402DB6FC1742E41A00D1C936 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7BAAAA0E192A8194B5327A37 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 6441E51294FF4505E05F6810 /* Pods-Amethyst.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -876,12 +789,13 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				OTHER_CODE_SIGN_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"DEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
@@ -892,7 +806,7 @@
 		};
 		402DB6FD1742E41A00D1C936 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43BE96256148A252A0EDDBE5 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 48A04C08B79381F097271198 /* Pods-Amethyst.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Developer ID Application";
@@ -905,12 +819,14 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Amethyst/Amethyst-Prefix.pch";
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CODE_SIGN_FLAGS = "";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"RELEASE\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
@@ -918,18 +834,81 @@
 			};
 			name = Release;
 		};
+		40D95B4F1C6E2ED800AAF433 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B1D20EE210E8A3589C0F547 /* Pods-AmethystTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = AmethystTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
+			};
+			name = Debug;
+		};
+		40D95B501C6E2ED800AAF433 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 03DFBBC5233D7A561FE73BBF /* Pods-AmethystTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = AmethystTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		400299F2176393F10049001F /* Build configuration list for PBXNativeTarget "AmethystTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				400299F0176393F10049001F /* Debug */,
-				400299F1176393F10049001F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -944,6 +923,15 @@
 			buildConfigurations = (
 				402DB6FC1742E41A00D1C936 /* Debug */,
 				402DB6FD1742E41A00D1C936 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40D95B4F1C6E2ED800AAF433 /* Debug */,
+				40D95B501C6E2ED800AAF433 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
