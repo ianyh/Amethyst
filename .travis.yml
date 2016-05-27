@@ -9,8 +9,7 @@ before_install:
         - gem install bundler
         - bundle install
         - export LC_ALL="en_US.UTF-8"
-        - pod repo update
+        - pod repo update &> /dev/null
         - carthage bootstrap --platform OSX --no-use-binaries
 script:
-#        - xctool -workspace Amethyst.xcworkspace -scheme Amethyst test
-        - xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst test
+        - xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst test | xcpretty
