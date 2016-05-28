@@ -161,6 +161,14 @@ public class HotKeyManager: NSObject {
             }
         }
 
+        constructCommandWithCommandKey(CommandKey.ThrowSpaceLeft.rawValue) {
+            windowManager.pushFocusedWindowToSpaceLeft()
+        }
+
+        constructCommandWithCommandKey(CommandKey.ThrowSpaceRight.rawValue) {
+            windowManager.pushFocusedWindowToSpaceRight()
+        }
+
         constructCommandWithCommandKey(CommandKey.ToggleFloat.rawValue) {
             windowManager.toggleFloatForFocusedWindow()
         }

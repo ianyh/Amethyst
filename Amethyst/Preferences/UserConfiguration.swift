@@ -62,6 +62,8 @@ public enum CommandKey: String {
     case ThrowSpacePrefix = "throw-space"
     case FocusScreenPrefix = "focus-screen"
     case ThrowScreenPrefix = "throw-screen"
+    case ThrowSpaceLeft = "throw-space-left"
+    case ThrowSpaceRight = "throw-space-right"
     case ToggleFloat = "toggle-float"
     case DisplayCurrentLayout = "display-current-layout"
     case ToggleTiling = "toggle-tiling"

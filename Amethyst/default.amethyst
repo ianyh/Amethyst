@@ -157,6 +157,14 @@
         "mod": "mod2",
         "key": "9"
     },
+    "throw-space-left": {
+        "mod": "mod2",
+        "key": "left"
+    },
+    "throw-space-right": {
+        "mod": "mod2",
+        "key": "right"
+    },
     "toggle-float": {
         "mod": "mod1",
         "key": "t"

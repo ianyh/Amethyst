@@ -21,10 +21,14 @@ public protocol WindowModifierType {
     func swapFocusedWindowScreenClockwise()
     func swapFocusedWindowScreenCounterClockwise()
     func pushFocusedWindowToSpace(space: UInt)
+    func pushFocusedWindowToSpaceLeft()
+    func pushFocusedWindowToSpaceRight()
 }
 
 public protocol WindowModifierDelegate: class {
     func focusedWindow() -> SIWindow?
+    func currentFocusedSpace() -> CGSSpace?
+    func spacesForFocusedScreen() -> [CGSSpace]?
     func screenManagerForScreenIndex(screenIndex: Int) -> ScreenManager?
     func screenManagerIndexForScreen(screen: NSScreen) -> Int?
     func markScreenForReflow(screen: NSScreen)
@@ -225,6 +229,30 @@ public class WindowModifier: WindowModifierType {
         focusedWindow.moveToSpace(space)
         focusedWindow.am_focusWindow()
     }
+
+    public func pushFocusedWindowToSpaceLeft() {
+        guard let currentFocusedSpace = delegate?.currentFocusedSpace(), spaces = delegate?.spacesForFocusedScreen() else {
+            return
+        }
+
+        guard let index = spaces.indexOf(currentFocusedSpace) where index > 0 else {
+            return
+        }
+
+        pushFocusedWindowToSpace(UInt(index))
+    }
+
+    public func pushFocusedWindowToSpaceRight() {
+        guard let currentFocusedSpace = delegate?.currentFocusedSpace(), spaces = delegate?.spacesForFocusedScreen() else {
+            return
+        }
+
+        guard let index = spaces.indexOf(currentFocusedSpace) where index - 2 < spaces.count else {
+            return
+        }
+
+        pushFocusedWindowToSpace(UInt(index + 2))
+    }
 }
 
 extension WindowManager: WindowModifierType {
@@ -267,11 +295,99 @@ extension WindowManager: WindowModifierType {
     public func pushFocusedWindowToSpace(space: UInt) {
         windowModifier.pushFocusedWindowToSpace(space)
     }
+
+    public func pushFocusedWindowToSpaceLeft() {
+        windowModifier.pushFocusedWindowToSpaceLeft()
+    }
+
+    public func pushFocusedWindowToSpaceRight() {
+        windowModifier.pushFocusedWindowToSpaceRight()
+    }
 }
 
 extension WindowManager: WindowModifierDelegate {
     public func focusedWindow() -> SIWindow? {
         return SIWindow.focusedWindow()
+    }
+
+    public func spacesForScreen(screen: NSScreen) -> [CGSSpace]? {
+        guard let screenDescriptions = NSScreen.screenDescriptions() else {
+            return nil
+        }
+
+        let screenIdentifier = screen.screenIdentifier()
+
+        if NSScreen.screensHaveSeparateSpaces() {
+            for screenDescription in screenDescriptions {
+                guard let describedScreenIdentifier = screenDescription["Display Identifier"] as? String
+                    where describedScreenIdentifier == screenIdentifier,
+                    let spaceDescriptions = screenDescription["Spaces"] as? [[String: AnyObject]]
+                    else {
+                        continue
+                }
+
+                return spaceDescriptions.map { ($0["ManagedSpaceID"] as! NSNumber).unsignedLongLongValue as CGSSpace }
+            }
+        } else {
+            guard let screenDescription = screenDescriptions.first,
+                spaceDescriptions = screenDescription["Spaces"] as? [[String: AnyObject]]
+                else {
+                    return nil
+            }
+
+            return spaceDescriptions.map { $0["ManagedSpaceID"] as! CGSSpace }
+        }
+
+        return nil
+    }
+
+    public func spacesForFocusedScreen() -> [CGSSpace]? {
+        guard let focusedWindow = SIWindow.focusedWindow() else {
+            return nil
+        }
+
+        return spacesForScreen(focusedWindow.screen())
+    }
+
+    public func currentSpaceForScreen(screen: NSScreen) -> CGSSpace? {
+        guard let screenDescriptions = NSScreen.screenDescriptions() else {
+            return nil
+        }
+
+        let screenIdentifier = screen.screenIdentifier()
+
+        if NSScreen.screensHaveSeparateSpaces() {
+            for screenDescription in screenDescriptions {
+                guard let describedScreenIdentifier = screenDescription["Display Identifier"] as? String
+                    where describedScreenIdentifier == screenIdentifier,
+                    let cfCurrentSpace = screenDescription["Current Space"] as? [String: AnyObject],
+                    spaceNumber = cfCurrentSpace["ManagedSpaceID"] as? NSNumber
+                    else {
+                        continue
+                }
+
+                return spaceNumber.unsignedLongLongValue
+            }
+        } else {
+            guard let screenDescription = screenDescriptions.first,
+                cfCurrentSpace = screenDescription["Current Space"] as? [String: AnyObject],
+                spaceNumber = cfCurrentSpace["ManagedSpaceID"] as? NSNumber
+                else {
+                    return nil
+            }
+
+            return spaceNumber.unsignedLongLongValue
+        }
+
+        return nil
+    }
+
+    public func currentFocusedSpace() -> CGSSpace? {
+        guard let focusedWindow = SIWindow.focusedWindow() else {
+            return nil
+        }
+
+        return currentSpaceForScreen(focusedWindow.screen())
     }
 
     public func screenManagerForScreenIndex(screenIndex: Int) -> ScreenManager? {
