@@ -221,6 +221,10 @@ public class UserConfigurationTests: QuickSpec {
         }
 
         describe("focus follows mouse") {
+            afterEach() {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey("focus-follows-mouse")
+            }
+            
             it("toggles") {
                 let configuration = UserConfiguration()
                 let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -232,6 +236,54 @@ public class UserConfigurationTests: QuickSpec {
                 configuration.toggleFocusFollowsMouse()
 
                 expect(configuration.focusFollowsMouse()).to(beFalse())
+            }
+        }
+
+        describe("load configuration") {
+            afterEach() {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey("layouts")
+            }
+
+            it("default configuration does not override existing configuration") {
+                let configuration = UserConfiguration()
+                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let existingLayouts = ["wide"]
+                let defaultConfiguration = [
+                    "layouts": [
+                        "tall"
+                    ]
+                ]
+
+                userDefaults.setValue(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
+
+                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                configuration.defaultConfiguration = JSON(defaultConfiguration)
+                configuration.loadConfiguration()
+                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+            }
+
+            it("local configuration does override existing configuration") {
+                let configuration = UserConfiguration()
+                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let existingLayouts = ["wide"]
+                let localConfiguration = [
+                    "layouts": [
+                        "fullscreen"
+                    ]
+                ]
+                let defaultConfiguration = [
+                    "layouts": [
+                        "tall"
+                    ]
+                ]
+                
+                userDefaults.setValue(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
+                
+                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                configuration.configuration = JSON(localConfiguration)
+                configuration.defaultConfiguration = JSON(defaultConfiguration)
+                configuration.loadConfiguration()
+                expect(configuration.layoutStrings()).to(equal(localConfiguration["layouts"]))
             }
         }
     }

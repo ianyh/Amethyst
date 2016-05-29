@@ -41,7 +41,7 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
 
         LogManager.log?.info("Logging is enabled")
 
-        UserConfiguration.sharedConfiguration.loadConfiguration()
+        UserConfiguration.sharedConfiguration.load()
 
         #if RELEASE
             let appcastURLString = { () -> String? in

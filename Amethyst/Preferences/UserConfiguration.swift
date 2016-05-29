@@ -110,20 +110,27 @@ public class UserConfiguration: NSObject {
         return flags
     }
 
-    public func loadConfiguration() {
+    public func load() {
         loadConfigurationFile()
+        loadConfiguration()
+    }
 
+    internal func loadConfiguration() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         for key in ConfigurationKey.defaultsKeys {
             let value = configuration?[key.rawValue]
             let defaultValue = defaultConfiguration?[key.rawValue]
             let existingValue = userDefaults.objectForKey(key.rawValue)
 
-            guard value?.error == nil || (defaultValue?.error == nil && existingValue == nil) else {
+            let hasLocalConfigurationValue = (value != nil && value?.error == nil)
+            let hasDefaultConfigurationValue = (defaultValue != nil && defaultValue?.error == nil)
+            let hasExistingValue = (existingValue != nil)
+
+            guard hasLocalConfigurationValue || (hasDefaultConfigurationValue && !hasExistingValue) else {
                 continue
             }
 
-            userDefaults.setObject(value?.error != nil ? value?.object : defaultValue?.object, forKey: key.rawValue)
+            userDefaults.setObject(hasLocalConfigurationValue ? value?.object : defaultValue?.object, forKey: key.rawValue)
         }
     }
 
