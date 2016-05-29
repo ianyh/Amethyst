@@ -66,7 +66,7 @@ private class TallRightReflowOperation: ReflowOperation {
     }
 }
 
-@objc public class TallRightLayout: Layout {
+public class TallRightLayout: Layout {
     override public class var layoutName: String { return "Tall Right" }
     override public class var layoutKey: String { return "tall-right" }
 

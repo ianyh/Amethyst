@@ -10,7 +10,7 @@ import Silica
 
 private class FloatingReflowOperation: ReflowOperation {}
 
-@objc public class FloatingLayout: Layout {
+public class FloatingLayout: Layout {
     override public class var layoutName: String { return "Floating" }
     override public class var layoutKey: String { return "floating" }
 

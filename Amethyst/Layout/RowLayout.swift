@@ -46,7 +46,7 @@ private class RowReflowOperation: ReflowOperation {
     }
 }
 
-@objc public class RowLayout: Layout {
+public class RowLayout: Layout {
     override public class var layoutName: String { return "Row" }
     override public class var layoutKey: String { return "row" }
 
