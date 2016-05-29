@@ -66,12 +66,27 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
+        guard let focusedWindow = SIWindow.focusedWindow() where focusedWindow.screen() != screenManager.screen else {
+            return
+        }
+
         let windows = delegate?.windowsForScreen(screenManager.screen) ?? []
 
-        if windows.count == 0 && UserConfiguration.sharedConfiguration.mouseFollowsFocus() {
+        guard windows.count > 0 else {
             screenManager.screen.focusScreen()
-        } else if windows.count > 0 {
-            windows.first?.am_focusWindow()
+            return
+        }
+
+        let screenCenter = NSPointToCGPoint(NSPoint(x: screenManager.screen.frame.midX, y: screenManager.screen.frame.midY))
+        guard let topWindow = SIWindow.topWindowForScreenAtPoint(screenCenter, withWindows: windows) ?? windows.first else {
+            screenManager.screen.focusScreen()
+            return
+        }
+
+        if UserConfiguration.sharedConfiguration.mouseFollowsFocus() {
+            topWindow.am_focusWindow()
+        } else {
+            topWindow.focusWindow()
         }
     }
 
