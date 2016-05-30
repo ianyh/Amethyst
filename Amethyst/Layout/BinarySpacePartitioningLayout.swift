@@ -136,15 +136,21 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
         let baseFrame = adjustedFrameForLayout(screen)
         var frameAssignments: [FrameAssignment] = []
         var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
+        var windowIndex = 0
 
         while traversalNodes.count > 0 {
             let traversalNode = traversalNodes[0]
+
             traversalNodes = [TraversalNode](traversalNodes.dropFirst(1))
 
             if let windowID = traversalNode.node.windowID {
-                guard let window = windows.filter({ window -> Bool in return window.windowID() == windowID }).first else {
-                    LogManager.log?.error("Encountered a window id that does not match up to a window")
-                    continue
+                let window = windows[windowIndex]
+                windowIndex += 1
+
+                if windowID != window.windowID() {
+                    LogManager.log?.info("Encountered a window out of place, modifying tree")
+
+                    traversalNode.node.windowID = window.windowID()
                 }
 
                 let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame)
@@ -160,13 +166,13 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
                 if frame.width > frame.height {
                     let leftFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width / 2.0, height: frame.height)
                     let rightFrame = CGRect(x: frame.origin.x + frame.width / 2.0, y: frame.origin.y, width: frame.width / 2.0, height: frame.height)
-                    traversalNodes.append((node: left, frame: leftFrame))
-                    traversalNodes.append((node: right, frame: rightFrame))
+                    traversalNodes.insert((node: right, frame: rightFrame), atIndex: 0)
+                    traversalNodes.insert((node: left, frame: leftFrame), atIndex: 0)
                 } else {
                     let leftFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.height / 2.0)
                     let rightFrame = CGRect(x: frame.origin.x, y: frame.origin.y + frame.height / 2.0, width: frame.width, height: frame.height / 2.0)
-                    traversalNodes.append((node: left, frame: leftFrame))
-                    traversalNodes.append((node: right, frame: rightFrame))
+                    traversalNodes.insert((node: right, frame: rightFrame), atIndex: 0)
+                    traversalNodes.insert((node: left, frame: leftFrame), atIndex: 0)
                 }
             }
         }
