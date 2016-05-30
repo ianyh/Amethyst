@@ -202,13 +202,13 @@ public class WindowManager: NSObject {
             }
             self.addWindow(window)
         }
-        application.observeNotification(kAXFocusedWindowChangedNotification, withElement:application) { accessibilityElement in
+        application.observeNotification(kAXFocusedWindowChangedNotification, withElement: application) { accessibilityElement in
             guard let focusedWindow = SIWindow.focusedWindow() else {
                 return
             }
             self.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         }
-        application.observeNotification(kAXApplicationActivatedNotification, withElement:application) { accessibilityElement in
+        application.observeNotification(kAXApplicationActivatedNotification, withElement: application) { accessibilityElement in
             NSObject.cancelPreviousPerformRequestsWithTarget(
                 self,
                 selector: #selector(self.applicationActivated(_:)),

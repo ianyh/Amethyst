@@ -29,6 +29,8 @@ public class LayoutManager {
             return FloatingLayout.self
         case "widescreen-tall":
             return WidescreenTallLayout.self
+        case "bsp":
+            return BinarySpacePartitioningLayout.self
         default:
             return nil
         }
@@ -48,7 +50,8 @@ public class LayoutManager {
             ColumnLayout.self,
             RowLayout.self,
             FloatingLayout.self,
-            WidescreenTallLayout.self
+            WidescreenTallLayout.self,
+            BinarySpacePartitioningLayout.self
         ]
 
         return layoutClasses.map { LayoutManager.stringForLayoutClass($0) }

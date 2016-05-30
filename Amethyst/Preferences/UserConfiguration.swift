@@ -198,8 +198,13 @@ public class UserConfiguration: NSObject {
             command = defaultConfiguration?[commandKey].object as? [String: String]
         }
 
-        let commandKeyString = command![ConfigurationKey.CommandKey.rawValue]!
-        let commandModifierString = command![ConfigurationKey.CommandMod.rawValue]!
+        guard let commandInfo = command else {
+            LogManager.log?.warning("Unrecognized command key: command")
+            return
+        }
+
+        let commandKeyString = commandInfo[ConfigurationKey.CommandKey.rawValue]!
+        let commandModifierString = commandInfo[ConfigurationKey.CommandMod.rawValue]!
         var commandFlags: AMModifierFlags?
 
         switch commandModifierString {

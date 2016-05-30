@@ -14,6 +14,10 @@ internal class TreeNode {
     var right: TreeNode?
     var windowID: CGWindowID?
 
+    var valid: Bool {
+        return (left != nil && left != nil) || windowID != nil
+    }
+
     func insertWindowIDAtEnd(windowID: CGWindowID) {
         guard right == nil else {
             right?.insertWindowIDAtEnd(windowID)
@@ -73,7 +77,8 @@ internal class TreeNode {
     }
 
     internal func insertWindowID(windowID: CGWindowID) {
-        guard let parent = parent else {
+        guard parent != nil || self.windowID != nil else {
+            self.windowID = windowID
             return
         }
 
@@ -83,16 +88,26 @@ internal class TreeNode {
         newNode.parent = newParent
         newNode.windowID = windowID
 
-        newParent.left = self
-        newParent.right = newNode
+        if let parent = parent {
+            newParent.left = self
+            newParent.right = newNode
 
-        if self == parent.left {
-            parent.left = newParent
+            if self == parent.left {
+                parent.left = newParent
+            } else {
+                parent.right = newParent
+            }
+
+            self.parent = newParent
         } else {
-            parent.right = newParent
-        }
+            newParent.windowID = self.windowID
+            self.windowID = nil
 
-        self.parent = newParent
+            left = newParent
+            left?.parent = self
+            right = newNode
+            right?.parent = self
+        }
     }
 }
 
@@ -103,10 +118,57 @@ internal func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
 }
 
 private class BinarySpacePartitioningReflowOperation: ReflowOperation {
+    private typealias TraversalNode = (node: TreeNode, frame: CGRect)
+
+    private let rootNode: TreeNode
+
+    private init(screen: NSScreen, windows: [SIWindow], rootNode: TreeNode, windowActivityCache: WindowActivityCache) {
+        self.rootNode = rootNode
+        super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
+    }
+
     private override func main() {
-        let screenFrame = adjustedFrameForLayout(screen)
-        let frameAssignments: [FrameAssignment] = windows.map { window in
-            return FrameAssignment(frame: screenFrame, window: window, focused: false, screenFrame: screenFrame)
+        if windows.count == 0 {
+            return
+        }
+
+        let focusedWindow = SIWindow.focusedWindow()
+        let baseFrame = adjustedFrameForLayout(screen)
+        var frameAssignments: [FrameAssignment] = []
+        var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
+
+        while traversalNodes.count > 0 {
+            let traversalNode = traversalNodes[0]
+            traversalNodes = [TraversalNode](traversalNodes.dropFirst(1))
+
+            if let windowID = traversalNode.node.windowID {
+                guard let window = windows.filter({ window -> Bool in return window.windowID() == windowID }).first else {
+                    LogManager.log?.error("Encountered a window id that does not match up to a window")
+                    continue
+                }
+
+                let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame)
+                frameAssignments.append(frameAssignment)
+            } else {
+                guard let left = traversalNode.node.left, right = traversalNode.node.right else {
+                    LogManager.log?.error("Encountered an invalid node")
+                    continue
+                }
+
+                let frame = traversalNode.frame
+
+                if frame.width > frame.height {
+                    let leftFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width / 2.0, height: frame.height)
+                    let rightFrame = CGRect(x: frame.origin.x + frame.width / 2.0, y: frame.origin.y, width: frame.width / 2.0, height: frame.height)
+                    traversalNodes.append((node: left, frame: leftFrame))
+                    traversalNodes.append((node: right, frame: rightFrame))
+                } else {
+                    let leftFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.height / 2.0)
+                    let rightFrame = CGRect(x: frame.origin.x, y: frame.origin.y + frame.height / 2.0, width: frame.width, height: frame.height / 2.0)
+                    traversalNodes.append((node: left, frame: leftFrame))
+                    traversalNodes.append((node: right, frame: rightFrame))
+                }
+            }
         }
 
         if cancelled {
@@ -124,13 +186,17 @@ public class BinarySpacePartitioningLayout: Layout {
     internal var rootNode = TreeNode()
 
     public override func reflowOperationForScreen(screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
-        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
+        if windows.count > 0 && !rootNode.valid {
+            constructInitialTreeWithWindows(windows)
+        }
+
+        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, windowActivityCache: windowActivityCache)
     }
 
     public override func updateWithChange(windowChange: WindowChange) {
         switch windowChange {
         case let .Add(window, insertionPoint):
-            if let insertionPoint = insertionPoint {
+            if let insertionPoint = insertionPoint where window.windowID() != insertionPoint.windowID() {
                 rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint.windowID())
             } else {
                 rootNode.insertWindowIDAtEnd(window.windowID())
@@ -139,6 +205,12 @@ public class BinarySpacePartitioningLayout: Layout {
             rootNode.removeWindowID(window.windowID())
         case .Unknown:
             break
+        }
+    }
+
+    internal func constructInitialTreeWithWindows(windows: [SIWindow]) {
+        for window in windows {
+            rootNode.insertWindowIDAtEnd(window.windowID())
         }
     }
 }

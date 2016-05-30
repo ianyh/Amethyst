@@ -53,8 +53,6 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     rootNode.left = node1
                     rootNode.right = node2
                     
-                    print(rootNode)
-
                     rootNode.insertWindowID(CGWindowID(2), atPoint: CGWindowID(0))
                     
                     expect(rootNode.left?.windowID).to(beNil())
@@ -87,6 +85,25 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     expect(rootNode.left?.windowID).to(beNil())
                     expect(rootNode.left?.left?.windowID).to(equal(CGWindowID(0)))
                     expect(rootNode.left?.right?.windowID).to(equal(CGWindowID(2)))
+                }
+
+                it("sets root value when the tree is empty") {
+                    let rootNode = TreeNode()
+
+                    rootNode.insertWindowID(CGWindowID(0))
+
+                    expect(rootNode.windowID).to(equal(CGWindowID(0)))
+                }
+
+                it("clears root value when inserting value after first one") {
+                    let rootNode = TreeNode()
+                    
+                    rootNode.insertWindowID(CGWindowID(0))
+                    rootNode.insertWindowID(CGWindowID(1))
+                    
+                    expect(rootNode.left).toNot(beNil())
+                    expect(rootNode.right).toNot(beNil())
+                    expect(rootNode.windowID).to(beNil())
                 }
             }
 

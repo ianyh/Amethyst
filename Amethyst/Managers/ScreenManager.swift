@@ -89,6 +89,8 @@ public class ScreenManager: NSObject {
     public func setNeedsReflowWithWindowChange(windowChange: WindowChange) {
 		reflowOperation?.cancel()
 
+        currentLayout.updateWithChange(windowChange)
+
 		if changingSpace {
 			// The 0.4 is disgustingly tied to the space change animation time.
 			// This should get burned to the ground when space changes don't rely on the mouse click trick.
