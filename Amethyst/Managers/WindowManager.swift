@@ -10,6 +10,12 @@ import AppKit
 import Foundation
 import Silica
 
+public enum WindowChange {
+    case Add(window: SIWindow, insertionPoint: SIWindow?)
+    case Remove(window: SIWindow)
+    case Unknown
+}
+
 public class WindowManager: NSObject {
     internal var applications: [SIApplication] = []
     internal var windows: [SIWindow] = []
@@ -142,7 +148,7 @@ public class WindowManager: NSObject {
             let application = SIApplication(runningApplication: runningApplication)
             addApplication(application)
         }
-        markAllScreensForReflow()
+        markAllScreensForReflowWithChange(.Unknown)
     }
 
     public func focusedScreenManager() -> ScreenManager? {
@@ -200,15 +206,15 @@ public class WindowManager: NSObject {
             guard let focusedWindow = SIWindow.focusedWindow() else {
                 return
             }
-            self.markScreenForReflow(focusedWindow.screen())
+            self.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         }
         application.observeNotification(kAXApplicationActivatedNotification, withElement:application) { accessibilityElement in
             NSObject.cancelPreviousPerformRequestsWithTarget(
                 self,
-                selector: #selector(WindowManager.applicationActivated(_:)),
+                selector: #selector(self.applicationActivated(_:)),
                 object: nil
             )
-            self.performSelector(#selector(WindowManager.applicationActivated(_:)), withObject: nil, afterDelay: 0.2)
+            self.performSelector(#selector(self.applicationActivated(_:)), withObject: nil, afterDelay: 0.2)
         }
     }
 
@@ -216,7 +222,7 @@ public class WindowManager: NSObject {
         guard let focusedWindow = SIWindow.focusedWindow() else {
             return
         }
-        markScreenForReflow(focusedWindow.screen())
+        markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
     }
 
     private func removeApplication(application: SIApplication) {
@@ -232,7 +238,7 @@ public class WindowManager: NSObject {
     private func activateApplication(application: SIApplication) {
         for window in windows {
             if window.processIdentifier() == application.processIdentifier() {
-                markScreenForReflow(window.screen())
+                markScreenForReflow(window.screen(), withChange: .Unknown)
             }
         }
     }
@@ -240,7 +246,7 @@ public class WindowManager: NSObject {
     private func deactivateApplication(application: SIApplication) {
         for window in windows {
             if window.processIdentifier() == application.processIdentifier() {
-                markScreenForReflow(window.screen())
+                markScreenForReflow(window.screen(), withChange: .Unknown)
             }
         }
     }
@@ -258,7 +264,7 @@ public class WindowManager: NSObject {
             windows.append(window)
         }
 
-        markScreenForReflow(window.screen())
+        markScreenForReflow(window.screen(), withChange: .Add(window: window, insertionPoint: SIWindow.focusedWindow()))
 
         guard let application = applicationWithProcessIdentifier(window.processIdentifier()) else {
             return
@@ -273,15 +279,15 @@ public class WindowManager: NSObject {
             self.removeWindow(window)
         }
         application.observeNotification(kAXWindowMiniaturizedNotification, withElement: window) { accessibilityElement in
-            self.markScreenForReflow(window.screen())
+            self.markScreenForReflow(window.screen(), withChange: .Remove(window: window))
         }
         application.observeNotification(kAXWindowDeminiaturizedNotification, withElement: window) { accessibilityElement in
-            self.markScreenForReflow(window.screen())
+            self.markScreenForReflow(window.screen(), withChange: .Add(window: window, insertionPoint: nil))
         }
     }
 
     private func removeWindow(window: SIWindow) {
-        markAllScreensForReflow()
+        markAllScreensForReflowWithChange(.Remove(window: window))
 
         let application = applicationWithProcessIdentifier(window.processIdentifier())
         application?.unobserveNotification(kAXUIElementDestroyedNotification, withElement: window)
@@ -302,15 +308,17 @@ public class WindowManager: NSObject {
 
         for window in windows {
             if window == focusedWindow {
+                let windowChange: WindowChange = windowIsFloating(window) ? .Add(window: window, insertionPoint: nil) : .Remove(window: window)
                 floatingMap[window.windowID()] = !windowIsFloating(window)
-                markScreenForReflow(window.screen())
+                markScreenForReflow(window.screen(), withChange: windowChange)
                 return
             }
         }
 
+        let windowChange: WindowChange = windowIsFloating(focusedWindow) ? .Add(window: focusedWindow, insertionPoint: nil) : .Remove(window: focusedWindow)
         addWindow(focusedWindow)
         floatingMap[focusedWindow.windowID()] = false
-        markScreenForReflow(focusedWindow.screen())
+        markScreenForReflow(focusedWindow.screen(), withChange: windowChange)
     }
 
     private func updateScreenManagers() {
@@ -341,12 +349,12 @@ public class WindowManager: NSObject {
         self.screenManagers = screenManagers
 
         assignCurrentSpaceIdentifiers()
-        markAllScreensForReflow()
+        markAllScreensForReflowWithChange(.Unknown)
     }
 
-    public func markAllScreensForReflow() {
+    public func markAllScreensForReflowWithChange(windowChange: WindowChange) {
         for screenManager in screenManagers {
-            screenManager.setNeedsReflow()
+            screenManager.setNeedsReflowWithWindowChange(windowChange)
         }
     }
 
@@ -422,7 +430,7 @@ extension WindowManager {
             }
         }
 
-        markAllScreensForReflow()
+        markAllScreensForReflowWithChange(.Unknown)
     }
 
     public func screenParametersDidChange(notification: NSNotification) {

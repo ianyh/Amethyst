@@ -31,7 +31,7 @@ public protocol WindowModifierDelegate: class {
     func spacesForFocusedScreen() -> [CGSSpace]?
     func screenManagerForScreenIndex(screenIndex: Int) -> ScreenManager?
     func screenManagerIndexForScreen(screen: NSScreen) -> Int?
-    func markScreenForReflow(screen: NSScreen)
+    func markScreenForReflow(screen: NSScreen, withChange change: WindowChange)
     func windowsForScreen(screen: NSScreen) -> [SIWindow]
     func activeWindowsForScreen(screen: NSScreen) -> [SIWindow]
     func windowIsFloating(window: SIWindow) -> Bool
@@ -55,9 +55,9 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
-        delegate?.markScreenForReflow(focusedWindow.screen())
+        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Remove(window: focusedWindow))
         focusedWindow.moveToScreen(screenManager.screen)
-        delegate?.markScreenForReflow(screenManager.screen)
+        delegate?.markScreenForReflow(screenManager.screen, withChange: .Unknown)
         focusedWindow.am_focusWindow()
     }
 
@@ -144,7 +144,7 @@ public class WindowModifier: WindowModifierType {
         }
 
         delegate?.switchWindow(focusedWindow, withWindow: windows[0])
-        delegate?.markScreenForReflow(focusedWindow.screen())
+        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         focusedWindow.am_focusWindow()
     }
 
@@ -166,7 +166,7 @@ public class WindowModifier: WindowModifierType {
         let windowToSwapWith = windows[(focusedWindowIndex == 0 ? windows.count - 1 : focusedWindowIndex - 1)]
 
         delegate?.switchWindow(focusedWindow, withWindow: windowToSwapWith)
-        delegate?.markScreenForReflow(focusedWindow.screen())
+        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         focusedWindow.am_focusWindow()
     }
 
@@ -188,7 +188,7 @@ public class WindowModifier: WindowModifierType {
         let windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count]
 
         delegate?.switchWindow(focusedWindow, withWindow: windowToSwapWith)
-        delegate?.markScreenForReflow(focusedWindow.screen())
+        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         focusedWindow.am_focusWindow()
     }
 
@@ -208,10 +208,9 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
+        delegate?.markScreenForReflow(screen, withChange: .Remove(window: focusedWindow))
         focusedWindow.moveToScreen(screenToMoveTo)
-
-        delegate?.markScreenForReflow(screen)
-        delegate?.markScreenForReflow(screenToMoveTo)
+        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow, insertionPoint: nil))
     }
 
     public func swapFocusedWindowScreenCounterClockwise() {
@@ -230,10 +229,9 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
+        delegate?.markScreenForReflow(screen, withChange: .Remove(window: focusedWindow))
         focusedWindow.moveToScreen(screenToMoveTo)
-
-        delegate?.markScreenForReflow(screen)
-        delegate?.markScreenForReflow(screenToMoveTo)
+        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow, insertionPoint: nil))
     }
 
     public func pushFocusedWindowToSpace(space: UInt) {
@@ -418,13 +416,13 @@ extension WindowManager: WindowModifierDelegate {
         }
     }
 
-    public func markScreenForReflow(screen: NSScreen) {
+    public func markScreenForReflow(screen: NSScreen, withChange change: WindowChange) {
         for screenManager in screenManagers {
             guard screenManager.screen.screenIdentifier() == screen.screenIdentifier() else {
                 continue
             }
 
-            screenManager.setNeedsReflow()
+            screenManager.setNeedsReflowWithWindowChange(change)
         }
     }
 

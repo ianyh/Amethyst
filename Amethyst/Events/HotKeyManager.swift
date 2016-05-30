@@ -175,7 +175,7 @@ public class HotKeyManager: NSObject {
 
         constructCommandWithCommandKey(CommandKey.ToggleTiling.rawValue) {
             UserConfiguration.sharedConfiguration.tilingEnabled = !UserConfiguration.sharedConfiguration.tilingEnabled
-            windowManager.markAllScreensForReflow()
+            windowManager.markAllScreensForReflowWithChange(.Unknown)
         }
 
         constructCommandWithCommandKey(CommandKey.ReevaluateWindows.rawValue) {

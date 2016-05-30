@@ -32,4 +32,5 @@ public class Layout: NSObject {
     func expandMainPane() {}
     func increaseMainPaneCount() {}
     func decreaseMainPaneCount() {}
+    func updateWithChange(windowChange: WindowChange) {}
 }

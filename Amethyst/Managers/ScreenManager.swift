@@ -29,7 +29,7 @@ public class ScreenManager: NSObject {
 		}
 		didSet {
 			defer {
-				setNeedsReflow()
+				setNeedsReflowWithWindowChange(.Unknown)
 			}
 
 			guard let spaceIdentifier = currentSpaceIdentifier else {
@@ -86,31 +86,30 @@ public class ScreenManager: NSObject {
 		self.layouts = LayoutManager.layoutsWithWindowActivityCache(self)
 	}
 
-	public func setNeedsReflow() {
+    public func setNeedsReflowWithWindowChange(windowChange: WindowChange) {
 		reflowOperation?.cancel()
 
 		if changingSpace {
 			// The 0.4 is disgustingly tied to the space change animation time.
 			// This should get burned to the ground when space changes don't rely on the mouse click trick.
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(0.4) * NSEC_PER_SEC)), dispatch_get_main_queue()) {
-				self.reflow(nil)
+				self.reflow(windowChange)
 			}
 		} else {
 			dispatch_async(dispatch_get_main_queue()) {
-				self.reflow(nil)
+				self.reflow(windowChange)
 			}
 		}
 	}
 
-	private func reflow(sender: AnyObject?) {
-		guard
-			currentSpaceIdentifier != nil &&
-				currentLayoutIndex < layouts.count &&
-				UserConfiguration.sharedConfiguration.tilingEnabled &&
-				!isFullscreen &&
-				!CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier)
-			else {
-				return
+	private func reflow(change: WindowChange) {
+		guard currentSpaceIdentifier != nil &&
+            currentLayoutIndex < layouts.count &&
+            UserConfiguration.sharedConfiguration.tilingEnabled &&
+            !isFullscreen &&
+            !CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier)
+        else {
+            return
 		}
 
 		let windows = delegate.activeWindowsForScreenManager(self)
@@ -121,17 +120,17 @@ public class ScreenManager: NSObject {
 
 	public func updateCurrentLayout(updater: (Layout) -> ()) {
 		updater(currentLayout)
-		setNeedsReflow()
+		setNeedsReflowWithWindowChange(.Unknown)
 	}
 
 	public func cycleLayoutForward() {
 		currentLayoutIndex = (currentLayoutIndex + 1) % layouts.count
-		setNeedsReflow()
+		setNeedsReflowWithWindowChange(.Unknown)
 	}
 
 	public func cycleLayoutBackward() {
 		currentLayoutIndex = (currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1
-		setNeedsReflow()
+		setNeedsReflowWithWindowChange(.Unknown)
 	}
 
 	public func selectLayout(layoutType: AnyClass) {
@@ -141,7 +140,7 @@ public class ScreenManager: NSObject {
 		}
 
 		currentLayoutIndex = layoutIndex
-		setNeedsReflow()
+		setNeedsReflowWithWindowChange(.Unknown)
 	}
 
 	func shrinkMainPane() {
@@ -158,8 +157,8 @@ public class ScreenManager: NSObject {
 		}
 
 		defer {
-			NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(ScreenManager.hideLayoutHUD(_:)), object: nil)
-			performSelector(#selector(ScreenManager.hideLayoutHUD(_:)), withObject: nil, afterDelay: 0.6)
+			NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(hideLayoutHUD(_:)), object: nil)
+			performSelector(#selector(hideLayoutHUD(_:)), withObject: nil, afterDelay: 0.6)
 		}
 
 		guard let layoutNameWindow = layoutNameWindowController.window as? LayoutNameWindow else {
