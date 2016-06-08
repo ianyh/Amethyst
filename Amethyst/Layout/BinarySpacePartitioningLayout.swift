@@ -15,7 +15,7 @@ internal class TreeNode {
     var windowID: CGWindowID?
 
     var valid: Bool {
-        return (left != nil && left != nil) || windowID != nil
+        return (left != nil && right != nil && windowID == nil) || (left == nil && right == nil && windowID != nil)
     }
 
     func insertWindowIDAtEnd(windowID: CGWindowID) {
@@ -91,6 +91,7 @@ internal class TreeNode {
         if let parent = parent {
             newParent.left = self
             newParent.right = newNode
+            newParent.parent = parent
 
             if self == parent.left {
                 parent.left = newParent
@@ -144,11 +145,17 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
             traversalNodes = [TraversalNode](traversalNodes.dropFirst(1))
 
             if let windowID = traversalNode.node.windowID {
+                guard windowIndex < windows.count else {
+                    LogManager.log?.warning("Encountered a node outside of the bounds of the windows: \(windowID)")
+                    continue
+                }
+
                 let window = windows[windowIndex]
                 windowIndex += 1
 
                 if windowID != window.windowID() {
-                    LogManager.log?.info("Encountered a window out of place, modifying tree")
+                    LogManager.log?.info("Encountered a window out of place, modifying tree:")
+                    LogManager.log?.info("\n\t\(windowID) -> \(window.windowID())")
 
                     traversalNode.node.windowID = window.windowID()
                 }
@@ -164,15 +171,35 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
                 let frame = traversalNode.frame
 
                 if frame.width > frame.height {
-                    let leftFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width / 2.0, height: frame.height)
-                    let rightFrame = CGRect(x: frame.origin.x + frame.width / 2.0, y: frame.origin.y, width: frame.width / 2.0, height: frame.height)
-                    traversalNodes.insert((node: right, frame: rightFrame), atIndex: 0)
-                    traversalNodes.insert((node: left, frame: leftFrame), atIndex: 0)
+                    let leftFrame = CGRect(
+                        x: frame.origin.x,
+                        y: frame.origin.y,
+                        width: frame.width / 2.0,
+                        height: frame.height
+                    )
+                    let rightFrame = CGRect(
+                        x: frame.origin.x + frame.width / 2.0,
+                        y: frame.origin.y,
+                        width: frame.width / 2.0,
+                        height: frame.height
+                    )
+                    traversalNodes.append((node: left, frame: leftFrame))
+                    traversalNodes.append((node: right, frame: rightFrame))
                 } else {
-                    let leftFrame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: frame.height / 2.0)
-                    let rightFrame = CGRect(x: frame.origin.x, y: frame.origin.y + frame.height / 2.0, width: frame.width, height: frame.height / 2.0)
-                    traversalNodes.insert((node: right, frame: rightFrame), atIndex: 0)
-                    traversalNodes.insert((node: left, frame: leftFrame), atIndex: 0)
+                    let topFrame = CGRect(
+                        x: frame.origin.x,
+                        y: frame.origin.y,
+                        width: frame.width,
+                        height: frame.height / 2.0
+                    )
+                    let bottomFrame = CGRect(
+                        x: frame.origin.x,
+                        y: frame.origin.y + frame.height / 2.0,
+                        width: frame.width,
+                        height: frame.height / 2.0
+                    )
+                    traversalNodes.append((node: left, frame: topFrame))
+                    traversalNodes.append((node: right, frame: bottomFrame))
                 }
             }
         }
@@ -190,6 +217,7 @@ public class BinarySpacePartitioningLayout: Layout {
     override public class var layoutKey: String { return "bsp" }
 
     internal var rootNode = TreeNode()
+    internal var lastKnownFocusedWindowID: CGWindowID?
 
     public override func reflowOperationForScreen(screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         if windows.count > 0 && !rootNode.valid {
@@ -201,14 +229,17 @@ public class BinarySpacePartitioningLayout: Layout {
 
     public override func updateWithChange(windowChange: WindowChange) {
         switch windowChange {
-        case let .Add(window, insertionPoint):
-            if let insertionPoint = insertionPoint where window.windowID() != insertionPoint.windowID() {
-                rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint.windowID())
-            } else {
+        case let .Add(window):
+//            if let insertionPoint = lastKnownFocusedWindowID where window.windowID() != insertionPoint {
+//                print("insert at point: \(insertionPoint)")
+//                rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint)
+//            } else {
                 rootNode.insertWindowIDAtEnd(window.windowID())
-            }
+//            }
         case let .Remove(window):
             rootNode.removeWindowID(window.windowID())
+        case let .FocusChanged(window):
+            lastKnownFocusedWindowID = window.windowID()
         case .Unknown:
             break
         }

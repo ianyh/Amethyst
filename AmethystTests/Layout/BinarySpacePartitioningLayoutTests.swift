@@ -28,13 +28,17 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     rootNode.left = node1
                     rootNode.right = node2
 
+                    expect(rootNode.treeIsValid()).to(beTrue())
+
                     rootNode.insertWindowIDAtEnd(CGWindowID(2))
 
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.right?.left?.windowID).to(equal(CGWindowID(1)))
                     expect(rootNode.right?.right?.windowID).to(equal(CGWindowID(2)))
 
                     rootNode.insertWindowIDAtEnd(CGWindowID(3))
 
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.right?.left?.windowID).to(equal(CGWindowID(1)))
                     expect(rootNode.right?.right?.left?.windowID).to(equal(CGWindowID(2)))
                     expect(rootNode.right?.right?.right?.windowID).to(equal(CGWindowID(3)))
@@ -52,15 +56,19 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     
                     rootNode.left = node1
                     rootNode.right = node2
+
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     
                     rootNode.insertWindowID(CGWindowID(2), atPoint: CGWindowID(0))
                     
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.left?.windowID).to(beNil())
                     expect(rootNode.left?.left?.windowID).to(equal(CGWindowID(0)))
                     expect(rootNode.left?.right?.windowID).to(equal(CGWindowID(2)))
 
                     rootNode.insertWindowID(CGWindowID(3), atPoint: CGWindowID(2))
                     
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.left?.windowID).to(beNil())
                     expect(rootNode.left?.right?.windowID).to(beNil())
                     expect(rootNode.left?.right?.left?.windowID).to(equal(CGWindowID(2)))
@@ -80,8 +88,11 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     rootNode.left = node1
                     rootNode.right = node2
 
+                    expect(rootNode.treeIsValid()).to(beTrue())
+
                     node1.insertWindowID(CGWindowID(2))
 
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.left?.windowID).to(beNil())
                     expect(rootNode.left?.left?.windowID).to(equal(CGWindowID(0)))
                     expect(rootNode.left?.right?.windowID).to(equal(CGWindowID(2)))
@@ -92,6 +103,7 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
 
                     rootNode.insertWindowID(CGWindowID(0))
 
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.windowID).to(equal(CGWindowID(0)))
                 }
 
@@ -100,7 +112,8 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     
                     rootNode.insertWindowID(CGWindowID(0))
                     rootNode.insertWindowID(CGWindowID(1))
-                    
+
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.left).toNot(beNil())
                     expect(rootNode.right).toNot(beNil())
                     expect(rootNode.windowID).to(beNil())
@@ -108,7 +121,7 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
             }
 
             context("removing") {
-                it("removes") {
+                it("removes from a shallow tree") {
                     let rootNode = TreeNode()
                     let node1 = TreeNode()
                     let node2 = TreeNode()
@@ -118,28 +131,55 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     node1.parent = rootNode
                     node1.left = node2
                     node1.right = node3
-
+                    
                     node2.windowID = CGWindowID(0)
                     node2.parent = node1
-
+                    
                     node3.windowID = CGWindowID(1)
                     node3.parent = node1
-
+                    
                     node4.windowID = CGWindowID(2)
                     node4.parent = rootNode
-
+                    
                     rootNode.left = node1
                     rootNode.right = node4
-
+                    
+                    expect(rootNode.treeIsValid()).to(beTrue())
+                    
                     rootNode.removeWindowID(CGWindowID(1))
                     
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.left?.windowID).to(equal(CGWindowID(0)))
-
+                    
                     rootNode.removeWindowID(CGWindowID(2))
-
+                    
+                    expect(rootNode.treeIsValid()).to(beTrue())
                     expect(rootNode.windowID).to(equal(CGWindowID(0)))
+                }
+
+                it("removes from a deep tree") {
+                    let rootNode = TreeNode()
+
+                    (0..<10).forEach { rootNode.insertWindowIDAtEnd(CGWindowID($0)) }
+
+                    expect(rootNode.treeIsValid()).to(beTrue())
+
+                    rootNode.removeWindowID(CGWindowID(5))
+                    
+                    expect(rootNode.treeIsValid()).to(beTrue())
                 }
             }
         }
+    }
+}
+
+internal extension TreeNode {
+    func treeIsValid() -> Bool {
+        var valid = self.valid
+        if let left = left, right = right {
+            valid = valid && left.parent == self && right.parent == self
+            valid = valid && left.treeIsValid() && right.treeIsValid()
+        }
+        return valid
     }
 }

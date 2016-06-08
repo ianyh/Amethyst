@@ -11,8 +11,9 @@ import Foundation
 import Silica
 
 public enum WindowChange {
-    case Add(window: SIWindow, insertionPoint: SIWindow?)
+    case Add(window: SIWindow)
     case Remove(window: SIWindow)
+    case FocusChanged(window: SIWindow)
     case Unknown
 }
 
@@ -206,7 +207,11 @@ public class WindowManager: NSObject {
             guard let focusedWindow = SIWindow.focusedWindow() else {
                 return
             }
-            self.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
+            if self.windows.indexOf(focusedWindow) == nil {
+                self.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
+            } else {
+                self.markScreenForReflow(focusedWindow.screen(), withChange: .FocusChanged(window: focusedWindow))
+            }
         }
         application.observeNotification(kAXApplicationActivatedNotification, withElement: application) { accessibilityElement in
             NSObject.cancelPreviousPerformRequestsWithTarget(
@@ -264,7 +269,7 @@ public class WindowManager: NSObject {
             windows.append(window)
         }
 
-        markScreenForReflow(window.screen(), withChange: .Add(window: window, insertionPoint: SIWindow.focusedWindow()))
+        markScreenForReflow(window.screen(), withChange: .Add(window: window))
 
         guard let application = applicationWithProcessIdentifier(window.processIdentifier()) else {
             return
@@ -282,7 +287,7 @@ public class WindowManager: NSObject {
             self.markScreenForReflow(window.screen(), withChange: .Remove(window: window))
         }
         application.observeNotification(kAXWindowDeminiaturizedNotification, withElement: window) { accessibilityElement in
-            self.markScreenForReflow(window.screen(), withChange: .Add(window: window, insertionPoint: nil))
+            self.markScreenForReflow(window.screen(), withChange: .Add(window: window))
         }
     }
 
@@ -308,14 +313,14 @@ public class WindowManager: NSObject {
 
         for window in windows {
             if window == focusedWindow {
-                let windowChange: WindowChange = windowIsFloating(window) ? .Add(window: window, insertionPoint: nil) : .Remove(window: window)
+                let windowChange: WindowChange = windowIsFloating(window) ? .Add(window: window) : .Remove(window: window)
                 floatingMap[window.windowID()] = !windowIsFloating(window)
                 markScreenForReflow(window.screen(), withChange: windowChange)
                 return
             }
         }
 
-        let windowChange: WindowChange = windowIsFloating(focusedWindow) ? .Add(window: focusedWindow, insertionPoint: nil) : .Remove(window: focusedWindow)
+        let windowChange: WindowChange = windowIsFloating(focusedWindow) ? .Add(window: focusedWindow) : .Remove(window: focusedWindow)
         addWindow(focusedWindow)
         floatingMap[focusedWindow.windowID()] = false
         markScreenForReflow(focusedWindow.screen(), withChange: windowChange)

@@ -210,7 +210,7 @@ public class WindowModifier: WindowModifierType {
 
         delegate?.markScreenForReflow(screen, withChange: .Remove(window: focusedWindow))
         focusedWindow.moveToScreen(screenToMoveTo)
-        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow, insertionPoint: nil))
+        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow))
     }
 
     public func swapFocusedWindowScreenCounterClockwise() {
@@ -231,7 +231,7 @@ public class WindowModifier: WindowModifierType {
 
         delegate?.markScreenForReflow(screen, withChange: .Remove(window: focusedWindow))
         focusedWindow.moveToScreen(screenToMoveTo)
-        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow, insertionPoint: nil))
+        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow))
     }
 
     public func pushFocusedWindowToSpace(space: UInt) {
