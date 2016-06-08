@@ -144,7 +144,6 @@ public class WindowModifier: WindowModifierType {
         }
 
         delegate?.switchWindow(focusedWindow, withWindow: windows[0])
-        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         focusedWindow.am_focusWindow()
     }
 
@@ -166,7 +165,6 @@ public class WindowModifier: WindowModifierType {
         let windowToSwapWith = windows[(focusedWindowIndex == 0 ? windows.count - 1 : focusedWindowIndex - 1)]
 
         delegate?.switchWindow(focusedWindow, withWindow: windowToSwapWith)
-        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         focusedWindow.am_focusWindow()
     }
 
@@ -188,7 +186,6 @@ public class WindowModifier: WindowModifierType {
         let windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count]
 
         delegate?.switchWindow(focusedWindow, withWindow: windowToSwapWith)
-        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
         focusedWindow.am_focusWindow()
     }
 
@@ -496,5 +493,7 @@ extension WindowManager: WindowModifierDelegate {
 
         windows[windowIndex] = otherWindow
         windows[otherWindowIndex] = window
+
+        markAllScreensForReflowWithChange(.WindowSwap(window: window, otherWindow: otherWindow))
     }
 }

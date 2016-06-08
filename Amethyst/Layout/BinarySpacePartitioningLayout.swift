@@ -18,6 +18,14 @@ internal class TreeNode {
         return (left != nil && right != nil && windowID == nil) || (left == nil && right == nil && windowID != nil)
     }
 
+    func findWindowID(windowID: CGWindowID) -> TreeNode? {
+        guard self.windowID == windowID else {
+            return left?.findWindowID(windowID) ?? right?.findWindowID(windowID)
+        }
+
+        return self
+    }
+
     func insertWindowIDAtEnd(windowID: CGWindowID) {
         guard right == nil else {
             right?.insertWindowIDAtEnd(windowID)
@@ -38,18 +46,17 @@ internal class TreeNode {
     }
 
     func removeWindowID(windowID: CGWindowID) {
-        guard self.windowID == windowID else {
-            left?.removeWindowID(windowID)
-            right?.removeWindowID(windowID)
+        guard let node = findWindowID(windowID) else {
+            LogManager.log?.error("Trying to remove window not in tree")
             return
         }
 
-        guard let parent = parent else {
+        guard let parent = node.parent else {
             return
         }
 
         guard let grandparent = parent.parent else {
-            if self == parent.left {
+            if node == parent.left {
                 parent.windowID = parent.right?.windowID
             } else {
                 parent.windowID = parent.left?.windowID
@@ -60,14 +67,14 @@ internal class TreeNode {
         }
 
         if parent == grandparent.left {
-            if self == parent.left {
+            if node == parent.left {
                 grandparent.left = parent.right
             } else {
                 grandparent.left = parent.left
             }
             grandparent.left?.parent = grandparent
         } else {
-            if self == parent.left {
+            if node == parent.left {
                 grandparent.right = parent.right
             } else {
                 grandparent.right = parent.left
@@ -133,11 +140,37 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
             return
         }
 
+        var windowIDs: [CGWindowID] = []
+        var nodes = [rootNode]
+
+        while nodes.count > 0 {
+            let node = nodes[0]
+
+            nodes = [TreeNode](nodes.dropFirst())
+
+            if let windowID = node.windowID {
+                windowIDs.insert(windowID, atIndex: 0)
+            } else {
+                guard let left = node.left, right = node.right else {
+                    LogManager.log?.error("Encountered an invalid node")
+                    continue
+                }
+
+                nodes.append(left)
+                nodes.append(right)
+            }
+        }
+
+        let windowIDMap: [CGWindowID: SIWindow] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: SIWindow] in
+            var mutableWindowMap = windowMap
+            mutableWindowMap[window.windowID()] = window
+            return mutableWindowMap
+        }
+
         let focusedWindow = SIWindow.focusedWindow()
         let baseFrame = adjustedFrameForLayout(screen)
         var frameAssignments: [FrameAssignment] = []
         var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
-        var windowIndex = 0
 
         while traversalNodes.count > 0 {
             let traversalNode = traversalNodes[0]
@@ -145,19 +178,9 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
             traversalNodes = [TraversalNode](traversalNodes.dropFirst(1))
 
             if let windowID = traversalNode.node.windowID {
-                guard windowIndex < windows.count else {
-                    LogManager.log?.warning("Encountered a node outside of the bounds of the windows: \(windowID)")
+                guard let window = windowIDMap[windowID] else {
+                    LogManager.log?.warning("Could not find window for ID: \(windowID)")
                     continue
-                }
-
-                let window = windows[windowIndex]
-                windowIndex += 1
-
-                if windowID != window.windowID() {
-                    LogManager.log?.info("Encountered a window out of place, modifying tree:")
-                    LogManager.log?.info("\n\t\(windowID) -> \(window.windowID())")
-
-                    traversalNode.node.windowID = window.windowID()
                 }
 
                 let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame)
@@ -230,16 +253,29 @@ public class BinarySpacePartitioningLayout: Layout {
     public override func updateWithChange(windowChange: WindowChange) {
         switch windowChange {
         case let .Add(window):
-//            if let insertionPoint = lastKnownFocusedWindowID where window.windowID() != insertionPoint {
-//                print("insert at point: \(insertionPoint)")
-//                rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint)
-//            } else {
+            if let insertionPoint = lastKnownFocusedWindowID where window.windowID() != insertionPoint {
+                LogManager.log?.info("insert \(window) - \(window.windowID()) at point: \(insertionPoint)")
+                rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint)
+            } else {
+                LogManager.log?.info("insert \(window) - \(window.windowID()) at end")
                 rootNode.insertWindowIDAtEnd(window.windowID())
-//            }
+            }
         case let .Remove(window):
+            LogManager.log?.info("remove: \(window) - \(window.windowID())")
             rootNode.removeWindowID(window.windowID())
         case let .FocusChanged(window):
             lastKnownFocusedWindowID = window.windowID()
+        case let .WindowSwap(window, otherWindow):
+            let windowID = window.windowID()
+            let otherWindowID = otherWindow.windowID()
+
+            guard let windowNode = rootNode.findWindowID(windowID), otherWindowNode = rootNode.findWindowID(otherWindowID) else {
+                LogManager.log?.error("Tried to perform an unbalanced window swap: \(windowID) <-> \(otherWindowID)")
+                return
+            }
+
+            windowNode.windowID = otherWindowID
+            otherWindowNode.windowID = windowID
         case .Unknown:
             break
         }

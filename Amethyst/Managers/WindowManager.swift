@@ -14,6 +14,7 @@ public enum WindowChange {
     case Add(window: SIWindow)
     case Remove(window: SIWindow)
     case FocusChanged(window: SIWindow)
+    case WindowSwap(window: SIWindow, otherWindow: SIWindow)
     case Unknown
 }
 

@@ -73,6 +73,14 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
                     expect(rootNode.left?.right?.windowID).to(beNil())
                     expect(rootNode.left?.right?.left?.windowID).to(equal(CGWindowID(2)))
                     expect(rootNode.left?.right?.right?.windowID).to(equal(CGWindowID(3)))
+    
+                    rootNode.insertWindowID(CGWindowID(4), atPoint: CGWindowID(0))
+
+                    expect(rootNode.treeIsValid()).to(beTrue())
+                    expect(rootNode.left?.windowID).to(beNil())
+                    expect(rootNode.left?.left?.windowID).to(beNil())
+                    expect(rootNode.left?.left?.left?.windowID).to(equal(CGWindowID(0)))
+                    expect(rootNode.left?.left?.right?.windowID).to(equal(CGWindowID(4)))
                 }
 
                 it("inserts") {
