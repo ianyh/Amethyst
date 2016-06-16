@@ -26,8 +26,18 @@ internal class TreeNode {
         return self
     }
 
+    func orderedWindowIDs() -> [CGWindowID] {
+        guard let windowID = windowID else {
+            let leftWindowIDs = left?.orderedWindowIDs() ?? []
+            let rightWindowIDs = right?.orderedWindowIDs() ?? []
+            return leftWindowIDs + rightWindowIDs
+        }
+
+        return [windowID]
+    }
+
     func insertWindowIDAtEnd(windowID: CGWindowID) {
-        guard right == nil else {
+        guard left == nil && right == nil else {
             right?.insertWindowIDAtEnd(windowID)
             return
         }
@@ -89,13 +99,13 @@ internal class TreeNode {
             return
         }
 
-        let newParent = TreeNode()
-        let newNode = TreeNode()
-
-        newNode.parent = newParent
-        newNode.windowID = windowID
-
         if let parent = parent {
+            let newParent = TreeNode()
+            let newNode = TreeNode()
+
+            newNode.parent = newParent
+            newNode.windowID = windowID
+
             newParent.left = self
             newParent.right = newNode
             newParent.parent = parent
@@ -108,10 +118,15 @@ internal class TreeNode {
 
             self.parent = newParent
         } else {
-            newParent.windowID = self.windowID
+            let newSelf = TreeNode()
+            let newNode = TreeNode()
+
+            newSelf.windowID = self.windowID
             self.windowID = nil
 
-            left = newParent
+            newNode.windowID = windowID
+
+            left = newSelf
             left?.parent = self
             right = newNode
             right?.parent = self
@@ -138,27 +153,6 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
     private override func main() {
         if windows.count == 0 {
             return
-        }
-
-        var windowIDs: [CGWindowID] = []
-        var nodes = [rootNode]
-
-        while nodes.count > 0 {
-            let node = nodes[0]
-
-            nodes = [TreeNode](nodes.dropFirst())
-
-            if let windowID = node.windowID {
-                windowIDs.insert(windowID, atIndex: 0)
-            } else {
-                guard let left = node.left, right = node.right else {
-                    LogManager.log?.error("Encountered an invalid node")
-                    continue
-                }
-
-                nodes.append(left)
-                nodes.append(right)
-            }
         }
 
         let windowIDMap: [CGWindowID: SIWindow] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: SIWindow] in
@@ -253,6 +247,11 @@ public class BinarySpacePartitioningLayout: Layout {
     public override func updateWithChange(windowChange: WindowChange) {
         switch windowChange {
         case let .Add(window):
+            guard rootNode.findWindowID(window.windowID()) == nil else {
+                LogManager.log?.warning("Trying to add a window already in the tree")
+                return
+            }
+
             if let insertionPoint = lastKnownFocusedWindowID where window.windowID() != insertionPoint {
                 LogManager.log?.info("insert \(window) - \(window.windowID()) at point: \(insertionPoint)")
                 rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint)
@@ -281,8 +280,44 @@ public class BinarySpacePartitioningLayout: Layout {
         }
     }
 
+    public override func nextWindowIDCounterClockwise() -> CGWindowID? {
+        guard let focusedWindow = SIWindow.focusedWindow() else {
+            return nil
+        }
+
+        let orderedIDs = rootNode.orderedWindowIDs()
+
+        guard let focusedWindowIndex = orderedIDs.indexOf(focusedWindow.windowID()) else {
+            return nil
+        }
+
+        let nextWindowIndex = (focusedWindowIndex == 0 ? orderedIDs.count - 1 : focusedWindowIndex - 1)
+
+        return orderedIDs[nextWindowIndex]
+    }
+
+    public override func nextWindowIDClockwise() -> CGWindowID? {
+        guard let focusedWindow = SIWindow.focusedWindow() else {
+            return nil
+        }
+
+        let orderedIDs = rootNode.orderedWindowIDs()
+
+        guard let focusedWindowIndex = orderedIDs.indexOf(focusedWindow.windowID()) else {
+            return nil
+        }
+
+        let nextWindowIndex = (focusedWindowIndex == orderedIDs.count - 1 ? 0 : focusedWindowIndex + 1)
+
+        return orderedIDs[nextWindowIndex]
+    }
+
     internal func constructInitialTreeWithWindows(windows: [SIWindow]) {
         for window in windows {
+            guard rootNode.findWindowID(window.windowID()) == nil else {
+                continue
+            }
+
             rootNode.insertWindowIDAtEnd(window.windowID())
         }
     }

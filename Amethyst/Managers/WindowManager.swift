@@ -270,9 +270,8 @@ public class WindowManager: NSObject {
             windows.append(window)
         }
 
-        markScreenForReflow(window.screen(), withChange: .Add(window: window))
-
         guard let application = applicationWithProcessIdentifier(window.processIdentifier()) else {
+            LogManager.log?.error("Tried to add a window without an application")
             return
         }
 
@@ -290,6 +289,9 @@ public class WindowManager: NSObject {
         application.observeNotification(kAXWindowDeminiaturizedNotification, withElement: window) { accessibilityElement in
             self.markScreenForReflow(window.screen(), withChange: .Add(window: window))
         }
+
+        let windowChange: WindowChange = windowIsFloating(window) ? .Unknown : .Add(window: window)
+        markScreenForReflow(window.screen(), withChange: windowChange)
     }
 
     private func removeWindow(window: SIWindow) {
@@ -321,7 +323,7 @@ public class WindowManager: NSObject {
             }
         }
 
-        let windowChange: WindowChange = windowIsFloating(focusedWindow) ? .Add(window: focusedWindow) : .Remove(window: focusedWindow)
+        let windowChange: WindowChange = .Add(window: focusedWindow)
         addWindow(focusedWindow)
         floatingMap[focusedWindow.windowID()] = false
         markScreenForReflow(focusedWindow.screen(), withChange: windowChange)

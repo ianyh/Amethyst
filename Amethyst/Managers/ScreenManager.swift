@@ -145,12 +145,20 @@ public class ScreenManager: NSObject {
 		setNeedsReflowWithWindowChange(.Unknown)
 	}
 
-	func shrinkMainPane() {
+	public func shrinkMainPane() {
 		currentLayout.shrinkMainPane()
 	}
 
-	func expandMainPane() {
+	public func expandMainPane() {
 		currentLayout.expandMainPane()
+	}
+
+	public func nextWindowIDCounterClockwise() -> CGWindowID? {
+		return currentLayout.nextWindowIDCounterClockwise()
+	}
+
+	public func nextWindowIDClockwise() -> CGWindowID? {
+		return currentLayout.nextWindowIDClockwise()
 	}
 
 	public func displayLayoutHUD() {

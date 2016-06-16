@@ -33,4 +33,6 @@ public class Layout: NSObject {
     func increaseMainPaneCount() {}
     func decreaseMainPaneCount() {}
     func updateWithChange(windowChange: WindowChange) {}
+    func nextWindowIDCounterClockwise() -> CGWindowID? { return nil }
+    func nextWindowIDClockwise() -> CGWindowID? { return nil }
 }
