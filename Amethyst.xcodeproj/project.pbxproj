@@ -244,6 +244,7 @@
 				BEAB13237C6A1846471DB0C4 /* Pods */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		402DB6DF1742E41A00D1C936 /* Products */ = {
 			isa = PBXGroup;

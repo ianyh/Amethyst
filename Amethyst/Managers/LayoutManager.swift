@@ -57,8 +57,8 @@ public class LayoutManager {
         return layoutClasses.map { LayoutManager.stringForLayoutClass($0) }
     }
 
-    public static func layoutsWithWindowActivityCache(windowActivityCache: WindowActivityCache) -> [Layout] {
-        let layoutStrings: [String] = UserConfiguration.sharedConfiguration.layoutStrings()
+    public static func layoutsWithConfiguration(userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout] {
+        let layoutStrings: [String] = userConfiguration.layoutStrings()
         let layouts = layoutStrings.map { layoutString -> Layout? in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
                 LogManager.log?.warning("Unrecognized layout string \(layoutString)")

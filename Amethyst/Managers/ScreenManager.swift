@@ -18,6 +18,7 @@ public class ScreenManager: NSObject {
 	public var screen: NSScreen
 	public let screenIdentifier: String
 	private let delegate: ScreenManagerDelegate
+	private let userConfiguration: UserConfiguration
 
 	public var currentSpaceIdentifier: String? {
 		willSet {
@@ -42,7 +43,7 @@ public class ScreenManager: NSObject {
 			if let layouts = layoutsBySpaceIdentifier[spaceIdentifier] {
 				self.layouts = layouts
 			} else {
-				self.layouts = LayoutManager.layoutsWithWindowActivityCache(self)
+				self.layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
 				layoutsBySpaceIdentifier[spaceIdentifier] = layouts
 			}
 		}
@@ -57,7 +58,7 @@ public class ScreenManager: NSObject {
 	private var layoutsBySpaceIdentifier: [String: [Layout]] = [:]
 	private var currentLayoutIndex: Int {
 		didSet {
-			if !self.changingSpace || UserConfiguration.sharedConfiguration.enablesLayoutHUDOnSpaceChange() {
+			if !self.changingSpace || userConfiguration.enablesLayoutHUDOnSpaceChange() {
 				self.displayLayoutHUD()
 			}
 		}
@@ -70,20 +71,21 @@ public class ScreenManager: NSObject {
 
 	private var changingSpace: Bool = false
 
-	init(screen: NSScreen, screenIdentifier: String, delegate: ScreenManagerDelegate) {
+	init(screen: NSScreen, screenIdentifier: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
 		self.screen = screen
 		self.screenIdentifier = screenIdentifier
 		self.delegate = delegate
+		self.userConfiguration = userConfiguration
 
-		self.currentLayoutIndexBySpaceIdentifier = [:]
-		self.layoutsBySpaceIdentifier = [:]
-		self.currentLayoutIndex = 0
+		currentLayoutIndexBySpaceIdentifier = [:]
+		layoutsBySpaceIdentifier = [:]
+		currentLayoutIndex = 0
 
-		self.layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
+		layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
 
 		super.init()
 
-		self.layouts = LayoutManager.layoutsWithWindowActivityCache(self)
+		layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
 	}
 
     public func setNeedsReflowWithWindowChange(windowChange: WindowChange) {
@@ -107,7 +109,7 @@ public class ScreenManager: NSObject {
 	private func reflow(change: WindowChange) {
 		guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
-            UserConfiguration.sharedConfiguration.tilingEnabled &&
+            userConfiguration.tilingEnabled &&
             !isFullscreen &&
             !CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier)
         else {
@@ -162,7 +164,7 @@ public class ScreenManager: NSObject {
 	}
 
 	public func displayLayoutHUD() {
-		guard UserConfiguration.sharedConfiguration.enablesLayoutHUD() else {
+		guard userConfiguration.enablesLayoutHUD() else {
 			return
 		}
 

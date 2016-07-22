@@ -22,16 +22,20 @@ public class WindowManager: NSObject {
     internal var applications: [SIApplication] = []
     internal var windows: [SIWindow] = []
     internal let windowModifier = WindowModifier()
+    internal let userConfiguration: UserConfiguration
 
     internal var screenManagers: [ScreenManager] = []
     private let screenManagersCache: NSCache = NSCache()
 
-    private let focusFollowsMouseManager = FocusFollowsMouseManager()
+    private let focusFollowsMouseManager: FocusFollowsMouseManager
 
     internal var activeIDCache: [CGWindowID: Bool] = [:]
     internal var floatingMap: [CGWindowID: Bool] = [:]
 
-    public override init() {
+    public init(userConfiguration: UserConfiguration) {
+        self.userConfiguration = userConfiguration
+        self.focusFollowsMouseManager = FocusFollowsMouseManager(userConfiguration: userConfiguration)
+
         super.init()
 
         focusFollowsMouseManager.delegate = self
@@ -264,7 +268,7 @@ public class WindowManager: NSObject {
 
         regenerateActiveIDCache()
 
-        if UserConfiguration.sharedConfiguration.sendNewWindowsToMainPane() {
+        if userConfiguration.sendNewWindowsToMainPane() {
             windows.insert(window, atIndex: 0)
         } else {
             windows.append(window)
@@ -276,7 +280,7 @@ public class WindowManager: NSObject {
         }
 
         floatingMap[window.windowID()] = application.floating()
-        if UserConfiguration.sharedConfiguration.floatSmallWindows() && window.frame().size.width < 500 && window.frame().size.height < 500 {
+        if userConfiguration.floatSmallWindows() && window.frame().size.width < 500 && window.frame().size.height < 500 {
             floatingMap[window.windowID()] = true
         }
 
@@ -337,8 +341,8 @@ public class WindowManager: NSObject {
             var screenManager: ScreenManager? = screenManagersCache.objectForKey(screenIdentifier) as? ScreenManager
 
             if screenManager == nil {
-                screenManager = ScreenManager(screen:screen, screenIdentifier:screenIdentifier, delegate:self)
-                screenManagersCache.setObject(screenManager!, forKey:screenIdentifier)
+                screenManager = ScreenManager(screen: screen, screenIdentifier: screenIdentifier, delegate: self, userConfiguration: userConfiguration)
+                screenManagersCache.setObject(screenManager!, forKey: screenIdentifier)
             }
 
             screenManager!.screen = screen

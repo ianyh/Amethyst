@@ -9,6 +9,19 @@
 import Foundation
 import SwiftyJSON
 
+public protocol ConfigurationStorage {
+    func objectForKey(defaultName: String) -> AnyObject?
+    func arrayForKey(defaultName: String) -> [AnyObject]?
+    func boolForKey(defaultName: String) -> Bool
+    func floatForKey(defaultName: String) -> Float
+    func stringArrayForKey(defaultName: String) -> [String]?
+
+    func setObject(value: AnyObject?, forKey defaultName: String)
+    func setBool(value: Bool, forKey defaultName: String)
+}
+
+extension NSUserDefaults: ConfigurationStorage {}
+
 internal enum ConfigurationKey: String {
     case Layouts = "layouts"
     case CommandMod = "mod"
@@ -73,6 +86,7 @@ public enum CommandKey: String {
 
 public class UserConfiguration: NSObject {
     public static let sharedConfiguration = UserConfiguration()
+    internal var storage: ConfigurationStorage
 
     public var tilingEnabled = true
 
@@ -82,6 +96,14 @@ public class UserConfiguration: NSObject {
     internal var modifier1: AMModifierFlags?
     internal var modifier2: AMModifierFlags?
     internal var screens: Int?
+
+    public init(storage: ConfigurationStorage) {
+        self.storage = storage
+    }
+
+    public override convenience init() {
+        self.init(storage: NSUserDefaults.standardUserDefaults())
+    }
 
     private func configurationValueForKey<T>(key: ConfigurationKey) -> T? {
         guard let configurationValue = configuration?[key.rawValue].rawValue as? T else {
@@ -116,11 +138,10 @@ public class UserConfiguration: NSObject {
     }
 
     internal func loadConfiguration() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
         for key in ConfigurationKey.defaultsKeys {
             let value = configuration?[key.rawValue]
             let defaultValue = defaultConfiguration?[key.rawValue]
-            let existingValue = userDefaults.objectForKey(key.rawValue)
+            let existingValue = storage.objectForKey(key.rawValue)
 
             let hasLocalConfigurationValue = (value != nil && value?.error == nil)
             let hasDefaultConfigurationValue = (defaultValue != nil && defaultValue?.error == nil)
@@ -130,7 +151,7 @@ public class UserConfiguration: NSObject {
                 continue
             }
 
-            userDefaults.setObject(hasLocalConfigurationValue ? value?.object : defaultValue?.object, forKey: key.rawValue)
+            storage.setObject(hasLocalConfigurationValue ? value?.object : defaultValue?.object, forKey: key.rawValue)
         }
     }
 
@@ -243,19 +264,16 @@ public class UserConfiguration: NSObject {
     }
 
     public func layoutStrings() -> [String] {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        let layoutStrings = userDefaults.arrayForKey(ConfigurationKey.Layouts.rawValue) as? [String]
+        let layoutStrings = storage.arrayForKey(ConfigurationKey.Layouts.rawValue) as? [String]
         return layoutStrings ?? []
     }
 
     public func setLayoutStrings(layoutStrings: [String]) {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(layoutStrings, forKey: ConfigurationKey.Layouts.rawValue)
+        storage.setObject(layoutStrings, forKey: ConfigurationKey.Layouts.rawValue)
     }
 
     public func runningApplicationShouldFloat(runningApplication: BundleIdentifiable) -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        guard let floatingBundleIdentifiers = userDefaults.objectForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue) as? [String] else {
+        guard let floatingBundleIdentifiers = storage.objectForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue) as? [String] else {
             return false
         }
 
@@ -276,68 +294,55 @@ public class UserConfiguration: NSObject {
     }
 
     public func ignoreMenuBar() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.IgnoreMenuBar.rawValue)
+        return storage.boolForKey(ConfigurationKey.IgnoreMenuBar.rawValue)
     }
 
     public func floatSmallWindows() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.FloatSmallWindows.rawValue)
+        return storage.boolForKey(ConfigurationKey.FloatSmallWindows.rawValue)
     }
 
     public func mouseFollowsFocus() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.MouseFollowsFocus.rawValue)
+        return storage.boolForKey(ConfigurationKey.MouseFollowsFocus.rawValue)
     }
 
     public func focusFollowsMouse() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.FocusFollowsMouse.rawValue)
+        return storage.boolForKey(ConfigurationKey.FocusFollowsMouse.rawValue)
     }
 
     public func toggleFocusFollowsMouse() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setBool(!focusFollowsMouse(), forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
+        storage.setBool(!focusFollowsMouse(), forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
     }
 
     public func enablesLayoutHUD() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.LayoutHUD.rawValue)
+        return storage.boolForKey(ConfigurationKey.LayoutHUD.rawValue)
     }
 
     public func enablesLayoutHUDOnSpaceChange() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.LayoutHUDOnSpaceChange.rawValue)
+        return storage.boolForKey(ConfigurationKey.LayoutHUDOnSpaceChange.rawValue)
     }
 
     public func useCanaryBuild() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.UseCanaryBuild.rawValue)
+        return storage.boolForKey(ConfigurationKey.UseCanaryBuild.rawValue)
     }
 
     public func windowMarginSize() -> CGFloat {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return CGFloat(userDefaults.floatForKey(ConfigurationKey.WindowMarginSize.rawValue))
+        return CGFloat(storage.floatForKey(ConfigurationKey.WindowMarginSize.rawValue))
     }
 
     public func windowMargins() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.WindowMargins.rawValue)
+        return storage.boolForKey(ConfigurationKey.WindowMargins.rawValue)
     }
 
     public func floatingBundleIdentifiers() -> [String] {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        let floatingBundleIdentifiers = userDefaults.stringArrayForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue)
+        let floatingBundleIdentifiers = storage.stringArrayForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue)
         return floatingBundleIdentifiers ?? []
     }
 
     public func setFloatingBundleIdentifiers(floatingBundleIdentifiers: [String]) {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(floatingBundleIdentifiers, forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue)
+        storage.setObject(floatingBundleIdentifiers, forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue)
     }
 
     public func sendNewWindowsToMainPane() -> Bool {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        return userDefaults.boolForKey(ConfigurationKey.NewWindowsToMain.rawValue)
+        return storage.boolForKey(ConfigurationKey.NewWindowsToMain.rawValue)
     }
 }
