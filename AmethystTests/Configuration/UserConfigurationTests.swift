@@ -13,6 +13,38 @@ import Quick
 
 import SwiftyJSON
 
+private class TestConfigurationStorage: ConfigurationStorage {
+    var storage: [String: AnyObject] = [:]
+
+    func objectForKey(defaultName: String) -> AnyObject? {
+        return storage[defaultName]
+    }
+
+    func arrayForKey(defaultName: String) -> [AnyObject]? {
+        return storage[defaultName] as? [AnyObject]
+    }
+
+    func boolForKey(defaultName: String) -> Bool {
+        return (storage[defaultName] as? Bool) ?? false
+    }
+
+    func floatForKey(defaultName: String) -> Float {
+        return (storage[defaultName] as? Float) ?? 0
+    }
+
+    func stringArrayForKey(defaultName: String) -> [String]? {
+        return storage[defaultName] as? [String]
+    }
+    
+    func setObject(value: AnyObject?, forKey defaultName: String) {
+        storage[defaultName] = value
+    }
+
+    func setBool(value: Bool, forKey defaultName: String) {
+        storage[defaultName] = value
+    }
+}
+
 public class UserConfigurationTests: QuickSpec {
     internal class TestHotKeyRegistrar: HotKeyRegistrar {
         private(set) var keyString: String?
@@ -40,7 +72,7 @@ public class UserConfigurationTests: QuickSpec {
         describe("constructing commands") {
             context("overrides") {
                 it("when user configuration exists") {
-                    let configuration = UserConfiguration()
+                    let configuration = UserConfiguration(storage: TestConfigurationStorage())
                     let localConfiguration: [String: AnyObject] = [
                         "test": [
                             "mod": "mod1",
@@ -58,7 +90,7 @@ public class UserConfigurationTests: QuickSpec {
                 }
 
                 it("when custom mod1 is specified") {
-                    let configuration = UserConfiguration()
+                    let configuration = UserConfiguration(storage: TestConfigurationStorage())
                     let localConfiguration: [String: AnyObject] = [
                         "mod1": [
                             "command"
@@ -82,7 +114,7 @@ public class UserConfigurationTests: QuickSpec {
                 }
 
                 it("when custom mod2 is specified") {
-                    let configuration = UserConfiguration()
+                    let configuration = UserConfiguration(storage: TestConfigurationStorage())
                     let localConfiguration: [String: AnyObject] = [
                         "mod2": [
                             "command"
@@ -108,7 +140,7 @@ public class UserConfigurationTests: QuickSpec {
 
             context("takes command") {
                 it("from local configuration over default") {
-                    let configuration = UserConfiguration()
+                    let configuration = UserConfiguration(storage: TestConfigurationStorage())
                     let localConfiguration: [String: AnyObject] = [
                         "test": [
                             "mod": "mod1",
@@ -133,7 +165,7 @@ public class UserConfigurationTests: QuickSpec {
                 }
 
                 it("from default in absence of local configuration") {
-                    let configuration = UserConfiguration()
+                    let configuration = UserConfiguration(storage: TestConfigurationStorage())
                     let defaultConfiguration: [String: AnyObject] = [
                         "test": [
                             "mod": "mod1",
@@ -155,15 +187,11 @@ public class UserConfigurationTests: QuickSpec {
         }
 
         describe("floating application") {
-            afterEach() {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("floating")
-            }
-
             it("is not floating by default") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
 
-                userDefaults.setObject([], forKey: "floating")
+                storage.setObject([], forKey: "floating")
 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -172,10 +200,10 @@ public class UserConfigurationTests: QuickSpec {
             }
 
             it("floats for exact matches") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
                 
-                userDefaults.setObject(["test.test.Test"], forKey: "floating")
+                storage.setObject(["test.test.Test"], forKey: "floating")
 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -184,10 +212,10 @@ public class UserConfigurationTests: QuickSpec {
             }
 
             it("floats for wildcard matches") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
                 
-                userDefaults.setObject(["test.test.*"], forKey: "floating")
+                storage.setObject(["test.test.*"], forKey: "floating")
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -196,10 +224,10 @@ public class UserConfigurationTests: QuickSpec {
             }
 
             it("does not float for exact mismatches") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
                 
-                userDefaults.setObject(["test.test.Other"], forKey: "floating")
+                storage.setObject(["test.test.Other"], forKey: "floating")
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -208,10 +236,10 @@ public class UserConfigurationTests: QuickSpec {
             }
 
             it("does not float for wildcard mismatches") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
                 
-                userDefaults.setObject(["test.other.*"], forKey: "floating")
+                storage.setObject(["test.other.*"], forKey: "floating")
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -221,15 +249,11 @@ public class UserConfigurationTests: QuickSpec {
         }
 
         describe("focus follows mouse") {
-            afterEach() {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("focus-follows-mouse")
-            }
-            
             it("toggles") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
 
-                userDefaults.setBool(true, forKey: "focus-follows-mouse")
+                storage.setBool(true, forKey: "focus-follows-mouse")
 
                 expect(configuration.focusFollowsMouse()).to(beTrue())
 
@@ -240,13 +264,9 @@ public class UserConfigurationTests: QuickSpec {
         }
 
         describe("load configuration") {
-            afterEach() {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey("layouts")
-            }
-
             it("default configuration does not override existing configuration") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
                 let existingLayouts = ["wide"]
                 let defaultConfiguration = [
                     "layouts": [
@@ -254,7 +274,7 @@ public class UserConfigurationTests: QuickSpec {
                     ]
                 ]
 
-                userDefaults.setValue(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
+                storage.setObject(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
 
                 expect(configuration.layoutStrings()).to(equal(existingLayouts))
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
@@ -263,8 +283,8 @@ public class UserConfigurationTests: QuickSpec {
             }
 
             it("local configuration does override existing configuration") {
-                let configuration = UserConfiguration()
-                let userDefaults = NSUserDefaults.standardUserDefaults()
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
                 let existingLayouts = ["wide"]
                 let localConfiguration = [
                     "layouts": [
@@ -277,7 +297,7 @@ public class UserConfigurationTests: QuickSpec {
                     ]
                 ]
                 
-                userDefaults.setValue(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
+                storage.setObject(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
                 
                 expect(configuration.layoutStrings()).to(equal(existingLayouts))
                 configuration.configuration = JSON(localConfiguration)

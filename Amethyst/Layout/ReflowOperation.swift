@@ -16,7 +16,7 @@ public struct FrameAssignment {
     let screenFrame: CGRect
 }
 
-@objc public class ReflowOperation: NSOperation {
+public class ReflowOperation: NSOperation {
     public let screen: NSScreen
     public let windows: [SIWindow]
     private let windowActivityCache: WindowActivityCache

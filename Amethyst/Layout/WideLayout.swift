@@ -66,7 +66,7 @@ private class WideReflowOperation: ReflowOperation {
     }
 }
 
-@objc public class WideLayout: Layout {
+public class WideLayout: Layout {
     override public class var layoutName: String { return "Wide" }
     override public class var layoutKey: String { return "wide" }
 

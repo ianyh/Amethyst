@@ -29,6 +29,8 @@ public class LayoutManager {
             return FloatingLayout.self
         case "widescreen-tall":
             return WidescreenTallLayout.self
+        case "bsp":
+            return BinarySpacePartitioningLayout.self
         default:
             return nil
         }
@@ -48,14 +50,15 @@ public class LayoutManager {
             ColumnLayout.self,
             RowLayout.self,
             FloatingLayout.self,
-            WidescreenTallLayout.self
+            WidescreenTallLayout.self,
+            BinarySpacePartitioningLayout.self
         ]
 
         return layoutClasses.map { LayoutManager.stringForLayoutClass($0) }
     }
 
-    public static func layoutsWithWindowActivityCache(windowActivityCache: WindowActivityCache) -> [Layout] {
-        let layoutStrings: [String] = UserConfiguration.sharedConfiguration.layoutStrings()
+    public static func layoutsWithConfiguration(userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout] {
+        let layoutStrings: [String] = userConfiguration.layoutStrings()
         let layouts = layoutStrings.map { layoutString -> Layout? in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
                 LogManager.log?.warning("Unrecognized layout string \(layoutString)")

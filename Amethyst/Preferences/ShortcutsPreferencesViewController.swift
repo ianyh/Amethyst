@@ -11,7 +11,7 @@ import Cocoa
 import Foundation
 import MASShortcut
 
-@objc public class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
+public class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
     private var hotKeyNameToDefaultsKey: [[String]] = []
     @IBOutlet public var tableView: NSTableView?
 

@@ -17,16 +17,18 @@ public protocol FocusFollowsMouseManagerDelegate: class {
 public class FocusFollowsMouseManager {
     public weak var delegate: FocusFollowsMouseManagerDelegate?
 
+    private let userConfiguration: UserConfiguration
     private var mouseMovedEventHandler: AnyObject?
 
-    public init() {
+    public init(userConfiguration: UserConfiguration) {
+        self.userConfiguration = userConfiguration
         mouseMovedEventHandler = NSEvent.addGlobalMonitorForEventsMatchingMask(NSEventMask.MouseMovedMask) { event in
             self.focusWindowWithMouseMovedEvent(event)
         }
     }
 
     private func focusWindowWithMouseMovedEvent(event: NSEvent) {
-        guard UserConfiguration.sharedConfiguration.focusFollowsMouse() else {
+        guard userConfiguration.focusFollowsMouse() else {
             return
         }
 

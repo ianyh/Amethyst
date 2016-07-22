@@ -32,13 +32,16 @@ public class HotKey: NSObject {
 public typealias HotKeyHandler = () -> ()
 
 public class HotKeyManager: NSObject {
+    private let userConfiguration: UserConfiguration
+
     public lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
         return self.constructKeyCodeMap()
     }()
 
-    public override init() {
+    public init(userConfiguration: UserConfiguration) {
+        self.userConfiguration = userConfiguration
         super.init()
-        self.constructKeyCodeMap()
+        constructKeyCodeMap()
         MASShortcutValidator.sharedValidator().allowAnyShortcutWithOptionModifier = true
     }
 
@@ -174,8 +177,8 @@ public class HotKeyManager: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.ToggleTiling.rawValue) {
-            UserConfiguration.sharedConfiguration.tilingEnabled = !UserConfiguration.sharedConfiguration.tilingEnabled
-            windowManager.markAllScreensForReflow()
+            self.userConfiguration.tilingEnabled = !self.userConfiguration.tilingEnabled
+            windowManager.markAllScreensForReflowWithChange(.Unknown)
         }
 
         constructCommandWithCommandKey(CommandKey.ReevaluateWindows.rawValue) {
@@ -183,10 +186,10 @@ public class HotKeyManager: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.ToggleFocusFollowsMouse.rawValue) {
-            UserConfiguration.sharedConfiguration.toggleFocusFollowsMouse()
+            self.userConfiguration.toggleFocusFollowsMouse()
         }
 
-        let layoutStrings: [String] = UserConfiguration.sharedConfiguration.layoutStrings()
+        let layoutStrings: [String] = userConfiguration.layoutStrings()
         layoutStrings.forEach { layoutString in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
                 return
@@ -283,7 +286,7 @@ public class HotKeyManager: NSObject {
     }
 
     internal func constructCommandWithCommandKey(commandKey: String, handler: HotKeyHandler) {
-        UserConfiguration.sharedConfiguration.constructCommandWithHotKeyRegistrar(self, commandKey: commandKey, handler: handler)
+        userConfiguration.constructCommandWithHotKeyRegistrar(self, commandKey: commandKey, handler: handler)
     }
 
     private func carbonModifiersFromModifiers(modifiers: UInt) -> UInt32 {

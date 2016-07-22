@@ -9,11 +9,11 @@
 import Foundation
 import Silica
 
-@objc public protocol WindowActivityCache {
+public protocol WindowActivityCache {
     func windowIsActive(window: SIWindow) -> Bool
 }
 
-@objc public class Layout: NSObject {
+public class Layout: NSObject {
     public class var layoutName: String { return "" }
     public class var layoutKey: String { return "" }
 
@@ -32,4 +32,7 @@ import Silica
     func expandMainPane() {}
     func increaseMainPaneCount() {}
     func decreaseMainPaneCount() {}
+    func updateWithChange(windowChange: WindowChange) {}
+    func nextWindowIDCounterClockwise() -> CGWindowID? { return nil }
+    func nextWindowIDClockwise() -> CGWindowID? { return nil }
 }

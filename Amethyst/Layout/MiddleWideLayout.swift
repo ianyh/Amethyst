@@ -86,7 +86,7 @@ private class MiddleWideReflowOperation: ReflowOperation {
     }
 }
 
-@objc public class MiddleWideLayout: Layout {
+public class MiddleWideLayout: Layout {
     override public class var layoutName: String { return "Middle Wide" }
     override public class var layoutKey: String { return "middle-wide" }
 

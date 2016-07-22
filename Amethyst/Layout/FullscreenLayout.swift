@@ -23,7 +23,7 @@ private class FullscreenReflowOperation: ReflowOperation {
     }
 }
 
-@objc public class FullscreenLayout: Layout {
+public class FullscreenLayout: Layout {
     override public class var layoutName: String { return "Fullscreen" }
     override public class var layoutKey: String { return "fullscreen" }
 

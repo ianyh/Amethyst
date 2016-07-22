@@ -68,7 +68,7 @@ private class WidescreenTallReflowOperation: ReflowOperation {
     }
 }
 
-@objc public class WidescreenTallLayout: Layout {
+public class WidescreenTallLayout: Layout {
     override public class var layoutName: String { return "Widescreen Tall" }
     override public class var layoutKey: String { return "widescreen-tall" }
 
