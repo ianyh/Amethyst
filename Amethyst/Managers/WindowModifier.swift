@@ -246,8 +246,16 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
+        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Remove(window: focusedWindow))
         focusedWindow.moveToSpace(space)
         focusedWindow.am_focusWindow()
+
+        // *gags*
+        let delay = Int64(0.5 * Double(NSEC_PER_SEC))
+        let popTime = dispatch_time(DISPATCH_TIME_NOW, delay)
+        dispatch_after(popTime, dispatch_get_main_queue()) {
+            self.delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Add(window: focusedWindow))
+        }
     }
 
     public func pushFocusedWindowToSpaceLeft() {
