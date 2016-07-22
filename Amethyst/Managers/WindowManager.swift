@@ -25,7 +25,7 @@ public class WindowManager: NSObject {
     internal let userConfiguration: UserConfiguration
 
     internal var screenManagers: [ScreenManager] = []
-    private let screenManagersCache: NSCache = NSCache()
+    private var screenManagersCache: [String: ScreenManager] = [:]
 
     private let focusFollowsMouseManager: FocusFollowsMouseManager
 
@@ -101,8 +101,15 @@ public class WindowManager: NSObject {
 
         if NSScreen.screensHaveSeparateSpaces() {
             for screenDictionary in screenDictionaries {
-                let screenIdentifier = screenDictionary["Display Identifier"] as? String
-                let screenManager = screenManagersCache.objectForKey(screenIdentifier!) as! ScreenManager
+                guard let screenIdentifier = screenDictionary["Display Identifier"] as? String else {
+                    LogManager.log?.error("Could not identify screen with info: \(screenDictionary)")
+                    continue
+                }
+
+                guard let screenManager = screenManagersCache[screenIdentifier] else {
+                    LogManager.log?.error("Screen with identifier not managed: \(screenIdentifier)")
+                    continue
+                }
 
                 guard let spaceIdentifier = spaceIdentifierWithScreenDictionary(screenDictionary) where screenManager.currentSpaceIdentifier != spaceIdentifier else {
                     continue
@@ -338,11 +345,11 @@ public class WindowManager: NSObject {
 
         for screen in NSScreen.screens() ?? [] {
             let screenIdentifier = screen.screenIdentifier()
-            var screenManager: ScreenManager? = screenManagersCache.objectForKey(screenIdentifier) as? ScreenManager
+            var screenManager = screenManagersCache[screenIdentifier]
 
             if screenManager == nil {
                 screenManager = ScreenManager(screen: screen, screenIdentifier: screenIdentifier, delegate: self, userConfiguration: userConfiguration)
-                screenManagersCache.setObject(screenManager!, forKey: screenIdentifier)
+                screenManagersCache[screenIdentifier] = screenManager
             }
 
             screenManager!.screen = screen
