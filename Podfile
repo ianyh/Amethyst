@@ -3,6 +3,9 @@ platform :osx, '10.10'
 use_frameworks!
 
 target 'Amethyst' do
+  pod 'Fabric'
+  pod 'Crashlytics'
+
   pod 'CCNLaunchAtLoginItem', '~> 0.1'
   pod 'CCNPreferencesWindowController', git: 'https://github.com/phranck/CCNPreferencesWindowController'
   pod 'Log'
