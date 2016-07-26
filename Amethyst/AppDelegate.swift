@@ -68,12 +68,14 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.statusItem?.image = statusItemImage
             }
 
-        let crashlyticsAPIKey = NSBundle.mainBundle().infoDictionary?["AMCrashlyticsAPIKey"]
-        if crashlyticsAPIKey != nil {
-            Fabric.with([Crashlytics.self])
-            #if DEBUG
-                Crashlytics.sharedInstance().debugMode = true
-            #endif
+        if let fabricData = NSBundle.mainBundle().infoDictionary?["Fabric"] as? [String: AnyObject] where fabricData["APIKey"] != nil {
+            if UserConfiguration.sharedConfiguration.shouldSendCrashReports() {
+                LogManager.log?.info("Crash reporting enabled")
+                Fabric.with([Crashlytics.self])
+                #if DEBUG
+                    Crashlytics.sharedInstance().debugMode = true
+                #endif
+            }
         }
 
         preferencesWindowController = CCNPreferencesWindowController()

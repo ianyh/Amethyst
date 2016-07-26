@@ -40,6 +40,7 @@ internal enum ConfigurationKey: String {
     case LayoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case UseCanaryBuild = "use-canary-build"
     case NewWindowsToMain = "new-windows-to-main"
+    case SendCrashReports = "send-crash-reports"
 
     static var defaultsKeys: [ConfigurationKey] {
         return [
@@ -53,7 +54,8 @@ internal enum ConfigurationKey: String {
             .LayoutHUDOnSpaceChange,
             .UseCanaryBuild,
             .WindowMargins,
-            .WindowMarginSize
+            .WindowMarginSize,
+            .SendCrashReports
         ]
     }
 }
@@ -344,5 +346,9 @@ public class UserConfiguration: NSObject {
 
     public func sendNewWindowsToMainPane() -> Bool {
         return storage.boolForKey(ConfigurationKey.NewWindowsToMain.rawValue)
+    }
+
+    public func shouldSendCrashReports() -> Bool {
+        return storage.boolForKey(ConfigurationKey.SendCrashReports.rawValue)
     }
 }
