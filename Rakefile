@@ -1,5 +1,5 @@
 task :setup do
-  system 'carthage bootstrap --platform OSX' or exit!(1)
+  system 'carthage bootstrap --platform Mac' or exit!(1)
   system 'rbenv install -s' or exit!(1)
   system 'gem install bundler' or exit!(1)
   system 'bundle install' or exit!(1)
