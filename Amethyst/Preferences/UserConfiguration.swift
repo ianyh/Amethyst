@@ -336,7 +336,7 @@ public class UserConfiguration: NSObject {
     public func windowMargins() -> Bool {
         return storage.boolForKey(ConfigurationKey.WindowMargins.rawValue)
     }
-    
+
     public func windowResizeStep() -> CGFloat {
         return CGFloat(storage.floatForKey(ConfigurationKey.WindowResizeStep.rawValue) / 100.0)
     }
