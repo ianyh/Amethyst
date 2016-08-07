@@ -90,17 +90,17 @@ public class MiddleWideLayout: Layout {
     override public class var layoutName: String { return "Middle Wide" }
     override public class var layoutKey: String { return "middle-wide" }
 
-    private var mainPaneRatio: Double = 0.5
+    private var mainPaneRatio: CGFloat = 0.5
 
     override public func reflowOperationForScreen(screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
     }
 
     override public func expandMainPane() {
-        mainPaneRatio = min(1, mainPaneRatio + 0.05)
+        mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.sharedConfiguration.windowResizeStep())
     }
 
     override public func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - 0.05)
+        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.sharedConfiguration.windowResizeStep())
     }
 }
