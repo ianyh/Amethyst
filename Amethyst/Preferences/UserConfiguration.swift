@@ -41,6 +41,7 @@ internal enum ConfigurationKey: String {
     case UseCanaryBuild = "use-canary-build"
     case NewWindowsToMain = "new-windows-to-main"
     case SendCrashReports = "send-crash-reports"
+    case WindowResizeStep = "window-resize-step"
 
     static var defaultsKeys: [ConfigurationKey] {
         return [
@@ -55,7 +56,8 @@ internal enum ConfigurationKey: String {
             .UseCanaryBuild,
             .WindowMargins,
             .WindowMarginSize,
-            .SendCrashReports
+            .SendCrashReports,
+            .WindowResizeStep
         ]
     }
 }
@@ -333,6 +335,10 @@ public class UserConfiguration: NSObject {
 
     public func windowMargins() -> Bool {
         return storage.boolForKey(ConfigurationKey.WindowMargins.rawValue)
+    }
+    
+    public func windowResizeStep() -> CGFloat {
+        return CGFloat(storage.floatForKey(ConfigurationKey.WindowResizeStep.rawValue) / 100.0)
     }
 
     public func floatingBundleIdentifiers() -> [String] {
