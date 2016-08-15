@@ -216,13 +216,13 @@ public class WindowManager: NSObject {
             self.addWindow(window)
         }
         application.observeNotification(kAXFocusedWindowChangedNotification, withElement: application) { accessibilityElement in
-            guard let focusedWindow = SIWindow.focusedWindow() else {
+            guard let focusedWindow = SIWindow.focusedWindow(), screen = focusedWindow.screen() else {
                 return
             }
             if self.windows.indexOf(focusedWindow) == nil {
-                self.markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
+                self.markScreenForReflow(screen, withChange: .Unknown)
             } else {
-                self.markScreenForReflow(focusedWindow.screen(), withChange: .FocusChanged(window: focusedWindow))
+                self.markScreenForReflow(screen, withChange: .FocusChanged(window: focusedWindow))
             }
         }
         application.observeNotification(kAXApplicationActivatedNotification, withElement: application) { accessibilityElement in
@@ -236,10 +236,10 @@ public class WindowManager: NSObject {
     }
 
     public func applicationActivated(sender: AnyObject) {
-        guard let focusedWindow = SIWindow.focusedWindow() else {
+        guard let focusedWindow = SIWindow.focusedWindow(), screen = focusedWindow.screen() else {
             return
         }
-        markScreenForReflow(focusedWindow.screen(), withChange: .Unknown)
+        markScreenForReflow(screen, withChange: .Unknown)
     }
 
     private func removeApplication(application: SIApplication) {

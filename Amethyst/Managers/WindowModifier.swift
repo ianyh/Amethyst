@@ -482,11 +482,11 @@ extension WindowManager: WindowModifierDelegate {
             let spaces = CGSCopySpacesForWindows(_CGSDefaultConnection(), CGSSpaceSelector(7), windowIDsArray).takeRetainedValue() as NSArray as? [NSNumber]
             let space = spaces?.first?.unsignedLongLongValue
 
-            guard space == currentSpace else {
+            guard let windowScreen = window.screen() where space == currentSpace else {
                 return false
             }
 
-            return window.screen().screenIdentifier() == screen.screenIdentifier() && window.isActive() && self.activeIDCache[window.windowID()] == true
+            return windowScreen.screenIdentifier() == screen.screenIdentifier() && window.isActive() && self.activeIDCache[window.windowID()] == true
         }
         return screenWindows
     }
