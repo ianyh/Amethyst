@@ -91,6 +91,8 @@ public class ScreenManager: NSObject {
     public func setNeedsReflowWithWindowChange(windowChange: WindowChange) {
         reflowOperation?.cancel()
 
+        LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
+
         currentLayout.updateWithChange(windowChange)
 
         if changingSpace {
