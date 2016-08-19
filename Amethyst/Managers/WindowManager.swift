@@ -295,14 +295,24 @@ public class WindowManager: NSObject {
             self.removeWindow(window)
         }
         application.observeNotification(kAXWindowMiniaturizedNotification, withElement: window) { accessibilityElement in
-            self.markScreenForReflow(window.screen(), withChange: .Remove(window: window))
+            guard let screen = window.screen() else {
+                return
+            }
+            self.markScreenForReflow(screen, withChange: .Remove(window: window))
         }
         application.observeNotification(kAXWindowDeminiaturizedNotification, withElement: window) { accessibilityElement in
-            self.markScreenForReflow(window.screen(), withChange: .Add(window: window))
+            guard let screen = window.screen() else {
+                return
+            }
+            self.markScreenForReflow(screen, withChange: .Add(window: window))
+        }
+
+        guard let screen = window.screen() else {
+            return
         }
 
         let windowChange: WindowChange = windowIsFloating(window) ? .Unknown : .Add(window: window)
-        markScreenForReflow(window.screen(), withChange: windowChange)
+        markScreenForReflow(screen, withChange: windowChange)
     }
 
     private func removeWindow(window: SIWindow) {
