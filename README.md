@@ -112,7 +112,6 @@ If you are considering donating to me, you are more than welcome to. You should 
 
 And a bunch of technology-oriented ones:
 
-* [Ada Initiative](https://adainitiative.org/donate/)
 * [National Center for Women & Information Technology](https://www.ncwit.org/donate)
 * [girls who code](http://girlswhocode.com/get-involved/)
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
