@@ -70,7 +70,6 @@ private class RowReflowOperation: ReflowOperation {
     }
 }
 
-// TODO(glib): there is quite a lot of this copied around between Layouts... probably should abstract
 public class RowLayout: Layout {
     override public class var layoutName: String { return "Row" }
     override public class var layoutKey: String { return "row" }
