@@ -10,11 +10,11 @@ import Silica
 
 private class FloatingReflowOperation: ReflowOperation {}
 
-public class FloatingLayout: Layout {
-    override public class var layoutName: String { return "Floating" }
-    override public class var layoutKey: String { return "floating" }
+open class FloatingLayout: Layout {
+    override open class var layoutName: String { return "Floating" }
+    override open class var layoutKey: String { return "floating" }
 
-    override public func reflowOperationForScreen(screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
+    override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         return FloatingReflowOperation(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
     }
 }

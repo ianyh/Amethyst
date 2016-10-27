@@ -1,22 +1,22 @@
 PODS:
   - CCNLaunchAtLoginItem (0.1.0)
-  - CCNPreferencesWindowController (1.3.0)
-  - Crashlytics (3.7.2):
+  - CCNPreferencesWindowController-ObjC (1.4.2)
+  - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
-  - Fabric (1.6.7)
-  - Log (0.5)
+  - Fabric (1.6.10)
+  - Log (1.0)
   - MASShortcut (2.3.3)
-  - Nimble (4.0.1)
-  - Quick (0.9.2)
-  - RxCocoa (2.5.0):
-    - RxSwift (~> 2.5)
-  - RxSwift (2.5.0)
+  - Nimble (5.1.0)
+  - Quick (0.10.0)
+  - RxCocoa (3.0.0):
+    - RxSwift (~> 3.0)
+  - RxSwift (3.0.0)
   - Silica (0.1.4)
-  - SwiftyJSON (2.3.2)
+  - SwiftyJSON (3.1.1)
 
 DEPENDENCIES:
   - CCNLaunchAtLoginItem (~> 0.1)
-  - CCNPreferencesWindowController (from `https://github.com/phranck/CCNPreferencesWindowController`)
+  - CCNPreferencesWindowController-ObjC
   - Crashlytics
   - Fabric
   - Log
@@ -29,17 +29,12 @@ DEPENDENCIES:
   - SwiftyJSON
 
 EXTERNAL SOURCES:
-  CCNPreferencesWindowController:
-    :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
     :git: https://github.com/ianyh/MASShortcut
   Silica:
     :git: https://github.com/ianyh/Silica
 
 CHECKOUT OPTIONS:
-  CCNPreferencesWindowController:
-    :commit: bd9d7967772cefefe9154d2b16d93b9a305f1c72
-    :git: https://github.com/phranck/CCNPreferencesWindowController
   MASShortcut:
     :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
     :git: https://github.com/ianyh/MASShortcut
@@ -49,18 +44,18 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
-  CCNPreferencesWindowController: 78ed2e3fc54207496c410196cba721f82eea7fc1
-  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
-  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  Log: 5972312cb85cffbc56407b612936b610eb4af8a5
+  CCNPreferencesWindowController-ObjC: bf262c7e22e50361c12085f6bbd4bedc77ad05cb
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
+  Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
+  Log: 5e368c9528db07517d18d2d04ff5fe2b6f5a1e21
   MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
-  Nimble: 0f3c8b8b084cda391209c3c5efbb48bedeeb920a
-  Quick: 18d057bc66451eedd5d1c8dc99ba2a5db6e60226
-  RxCocoa: e1b1562e57a554d0fb2aabf9d71b637f177257c7
-  RxSwift: 402b41a50e922a0368fc14cb3bc9f4427920e8ae
+  Nimble: 5ea121a2eda60440287054cde077fc0ad22227b3
+  Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
+  RxCocoa: 0a2f3ae381cf16f4021a4cee7a4420f83058a965
+  RxSwift: a930cd662f5b4a7ca9dc3518585dba91dadf497c
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
-  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
 
-PODFILE CHECKSUM: 3d744bcef562b313823d1c4cf61e25d8f0541d58
+PODFILE CHECKSUM: c3e29e9636cd3088e4ede5c47b5789344dbb8f45
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.1.1

@@ -10,21 +10,21 @@ import Foundation
 import Silica
 
 public protocol WindowActivityCache {
-    func windowIsActive(window: SIWindow) -> Bool
+    func windowIsActive(_ window: SIWindow) -> Bool
 }
 
-public class Layout: NSObject {
-    public class var layoutName: String { return "" }
-    public class var layoutKey: String { return "" }
+open class Layout: NSObject {
+    open class var layoutName: String { return "" }
+    open class var layoutKey: String { return "" }
 
-    public let windowActivityCache: WindowActivityCache
+    open let windowActivityCache: WindowActivityCache
 
     public required init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
         super.init()
     }
 
-    func reflowOperationForScreen(screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
+    func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         fatalError()
     }
 
@@ -32,7 +32,7 @@ public class Layout: NSObject {
     func expandMainPane() {}
     func increaseMainPaneCount() {}
     func decreaseMainPaneCount() {}
-    func updateWithChange(windowChange: WindowChange) {}
+    func updateWithChange(_ windowChange: WindowChange) {}
     func nextWindowIDCounterClockwise() -> CGWindowID? { return nil }
     func nextWindowIDClockwise() -> CGWindowID? { return nil }
 }

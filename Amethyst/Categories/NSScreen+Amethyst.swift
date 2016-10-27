@@ -21,14 +21,14 @@ public extension NSScreen {
 
     public func screenIdentifier() -> String {
         let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), self.frameIncludingDockAndMenu())
-        return String(managedDisplay.takeRetainedValue())
+        return String(managedDisplay!.takeRetainedValue())
     }
 
     public func focusScreen() {
         let screenFrame = self.frame
-        let mouseCursorPoint = NSMakePoint(NSMidX(screenFrame), NSMidY(screenFrame))
-        let mouseMoveEvent = CGEventCreateMouseEvent(nil, .MouseMoved, mouseCursorPoint, .Left)
-        CGEventSetFlags(mouseMoveEvent, CGEventFlags(rawValue: 0)!)
-        CGEventPost(.CGHIDEventTap, mouseMoveEvent)
+        let mouseCursorPoint = NSPoint(x: screenFrame.midX, y: screenFrame.midY)
+        let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left)
+        mouseMoveEvent?.flags = CGEventFlags(rawValue: 0)
+        mouseMoveEvent?.post(tap: .cghidEventTap)
     }
 }

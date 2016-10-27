@@ -7,7 +7,7 @@
 //
 
 import CCNLaunchAtLoginItem
-import CCNPreferencesWindowController
+import CCNPreferencesWindowController_ObjC
 import CoreServices
 import Crashlytics
 import Fabric
@@ -16,36 +16,37 @@ import RxCocoa
 import RxSwift
 import Sparkle
 
-public class AppDelegate: NSObject, NSApplicationDelegate {
-    private var loginItem: CCNLaunchAtLoginItem?
-    private var preferencesWindowController: CCNPreferencesWindowController?
+open class AppDelegate: NSObject, NSApplicationDelegate {
+    fileprivate var loginItem: CCNLaunchAtLoginItem?
+    fileprivate var preferencesWindowController: CCNPreferencesWindowController?
 
-    private var windowManager: WindowManager?
-    private var hotKeyManager: HotKeyManager?
+    fileprivate var windowManager: WindowManager?
+    fileprivate var hotKeyManager: HotKeyManager?
 
-    private var statusItem: NSStatusItem?
-    @IBOutlet public var statusItemMenu: NSMenu?
-    @IBOutlet public var versionMenuItem: NSMenuItem?
-    @IBOutlet public var startAtLoginMenuItem: NSMenuItem?
+    fileprivate var statusItem: NSStatusItem?
+    @IBOutlet open var statusItemMenu: NSMenu?
+    @IBOutlet open var versionMenuItem: NSMenuItem?
+    @IBOutlet open var startAtLoginMenuItem: NSMenuItem?
 
-    public func applicationDidFinishLaunching(notification: NSNotification) {
-        if NSProcessInfo.processInfo().arguments.indexOf("--log") == nil {
-            LogManager.log?.minLevel = .Warning
+    open func applicationDidFinishLaunching(_ notification: Notification) {
+        if ProcessInfo.processInfo.arguments.index(of: "--log") == nil {
+            LogManager.log?.minLevel = .warning
         } else {
-            LogManager.log?.minLevel = .Trace
+            LogManager.log?.minLevel = .trace
         }
 
         #if DEBUG
-            LogManager.log?.minLevel = .Trace
+            LogManager.log?.minLevel = .trace
         #endif
 
         LogManager.log?.info("Logging is enabled")
 
-        UserConfiguration.sharedConfiguration.load()
+        UserConfiguration.shared.delegate = self
+        UserConfiguration.shared.load()
 
         #if RELEASE
             let appcastURLString = { () -> String? in
-                if UserConfiguration.sharedConfiguration.useCanaryBuild() {
+                if UserConfiguration.shared.useCanaryBuild() {
                     return NSBundle.mainBundle().infoDictionary?["SUCanaryFeedURL"] as? String
                 } else {
                     return NSBundle.mainBundle().infoDictionary?["SUFeedURL"] as? String
@@ -55,21 +56,8 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
             SUUpdater.sharedUpdater().feedURL = NSURL(string: appcastURLString)
         #endif
 
-        _ = UserConfiguration.sharedConfiguration
-            .rx_observe(Bool.self, "tilingEnabled")
-            .subscribeNext() { [weak self] tilingEnabled in
-                var statusItemImage: NSImage?
-                if tilingEnabled == true {
-                    statusItemImage = NSImage(named: "icon-statusitem")
-                } else {
-                    statusItemImage = NSImage(named: "icon-statusitem-disabled")
-                }
-                statusItemImage?.template = true
-                self?.statusItem?.image = statusItemImage
-            }
-
-        if let fabricData = NSBundle.mainBundle().infoDictionary?["Fabric"] as? [String: AnyObject] where fabricData["APIKey"] != nil {
-            if UserConfiguration.sharedConfiguration.shouldSendCrashReports() {
+        if let fabricData = Bundle.main.infoDictionary?["Fabric"] as? [String: AnyObject], fabricData["APIKey"] != nil {
+            if UserConfiguration.shared.shouldSendCrashReports() {
                 LogManager.log?.info("Crash reporting enabled")
                 Fabric.with([Crashlytics.self])
                 #if DEBUG
@@ -87,30 +75,30 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         ]
         preferencesWindowController?.setPreferencesViewControllers(preferencesViewControllers)
 
-        windowManager = WindowManager(userConfiguration: UserConfiguration.sharedConfiguration)
-        hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.sharedConfiguration)
+        windowManager = WindowManager(userConfiguration: UserConfiguration.shared)
+        hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
-        hotKeyManager?.setUpWithHotKeyManager(windowManager!, configuration: UserConfiguration.sharedConfiguration)
+        hotKeyManager?.setUpWithHotKeyManager(windowManager!, configuration: UserConfiguration.shared)
     }
 
-    public override func awakeFromNib() {
+    open override func awakeFromNib() {
         super.awakeFromNib()
 
-        let version = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as! String
-        let shortVersion = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as! String
+        let version = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
+        let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
 
-        statusItem = NSStatusBar.systemStatusBar().statusItemWithLength(NSVariableStatusItemLength)
+        statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
         statusItem?.image = NSImage(named: "icon-statusitem")
         statusItem?.menu = statusItemMenu
         statusItem?.highlightMode = true
 
         versionMenuItem?.title = "Version \(shortVersion) (\(version))"
 
-        loginItem = CCNLaunchAtLoginItem(forBundle: NSBundle.mainBundle())
+        loginItem = CCNLaunchAtLoginItem(for: Bundle.main)
         startAtLoginMenuItem?.state = (loginItem!.isActive() ? NSOnState : NSOffState)
     }
 
-    @IBAction public func toggleStartAtLogin(sender: AnyObject) {
+    @IBAction open func toggleStartAtLogin(_ sender: AnyObject) {
         if startAtLoginMenuItem?.state == NSOffState {
             loginItem?.activate()
         } else {
@@ -119,18 +107,18 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         startAtLoginMenuItem?.state = (loginItem!.isActive() ? NSOnState : NSOffState)
     }
 
-    @IBAction public func relaunch(sender: AnyObject) {
-        let executablePath = NSBundle.mainBundle().executablePath! as NSString
+    @IBAction open func relaunch(_ sender: AnyObject) {
+        let executablePath = Bundle.main.executablePath! as NSString
         let fileSystemRepresentedPath = executablePath.fileSystemRepresentation
-        let fileSystemPath = NSFileManager.defaultManager().stringWithFileSystemRepresentation(fileSystemRepresentedPath, length: Int(strlen(fileSystemRepresentedPath)))
-        NSTask.launchedTaskWithLaunchPath(fileSystemPath, arguments: [])
+        let fileSystemPath = FileManager.default.string(withFileSystemRepresentation: fileSystemRepresentedPath, length: Int(strlen(fileSystemRepresentedPath)))
+        Process.launchedProcess(launchPath: fileSystemPath, arguments: [])
         NSApp.terminate(self)
     }
 
-    @IBAction public func showPreferencesWindow(sender: AnyObject) {
-        if UserConfiguration.sharedConfiguration.hasCustomConfiguration() {
+    @IBAction open func showPreferencesWindow(_ sender: AnyObject) {
+        if UserConfiguration.shared.hasCustomConfiguration() {
             let alert = NSAlert()
-            alert.alertStyle = .WarningAlertStyle
+            alert.alertStyle = .warning
             alert.messageText = "Warning"
             alert.informativeText = "You have a .amethyst file, which can override in-app preferences. You may encounter unexpected behavior."
             alert.runModal()
@@ -139,9 +127,22 @@ public class AppDelegate: NSObject, NSApplicationDelegate {
         preferencesWindowController?.showPreferencesWindow()
     }
 
-    @IBAction public func checkForUpdates(sender: AnyObject) {
+    @IBAction open func checkForUpdates(_ sender: AnyObject) {
         #if RELEASE
             SUUpdater.sharedUpdater().checkForUpdates(sender)
         #endif
+    }
+}
+
+extension AppDelegate: UserConfigurationDelegate {
+    public func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration) {
+        var statusItemImage: NSImage?
+        if UserConfiguration.shared.tilingEnabled == true {
+            statusItemImage = NSImage(named: "icon-statusitem")
+        } else {
+            statusItemImage = NSImage(named: "icon-statusitem-disabled")
+        }
+        statusItemImage?.isTemplate = true
+        statusItem?.image = statusItemImage
     }
 }

@@ -16,10 +16,10 @@ public struct FrameAssignment {
     let screenFrame: CGRect
 }
 
-public class ReflowOperation: NSOperation {
-    public let screen: NSScreen
-    public let windows: [SIWindow]
-    private let windowActivityCache: WindowActivityCache
+open class ReflowOperation: Operation {
+    open let screen: NSScreen
+    open let windows: [SIWindow]
+    fileprivate let windowActivityCache: WindowActivityCache
 
     public init(screen: NSScreen, windows: [SIWindow], windowActivityCache: WindowActivityCache) {
         self.screen = screen
@@ -28,12 +28,12 @@ public class ReflowOperation: NSOperation {
         super.init()
     }
 
-    public func adjustedFrameForLayout(screen: NSScreen) -> CGRect {
-        var frame = UserConfiguration.sharedConfiguration.ignoreMenuBar() ? screen.frameIncludingDockAndMenu() : screen.frameWithoutDockOrMenu()
+    open func adjustedFrameForLayout(_ screen: NSScreen) -> CGRect {
+        var frame = UserConfiguration.shared.ignoreMenuBar() ? screen.frameIncludingDockAndMenu() : screen.frameWithoutDockOrMenu()
 
-        if UserConfiguration.sharedConfiguration.windowMargins() {
+        if UserConfiguration.shared.windowMargins() {
             /* Inset for producing half of the full padding around screen as collapse only adds half of it to all windows */
-            let padding = floor(UserConfiguration.sharedConfiguration.windowMarginSize() / 2)
+            let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
 
             frame.origin.x += padding
             frame.origin.y += padding
@@ -44,8 +44,8 @@ public class ReflowOperation: NSOperation {
         return frame
     }
 
-    public func performFrameAssignments(frameAssignments: [FrameAssignment]) {
-        if self.cancelled {
+    open func performFrameAssignments(_ frameAssignments: [FrameAssignment]) {
+        if self.isCancelled {
             return
         }
 
@@ -62,11 +62,11 @@ public class ReflowOperation: NSOperation {
         }
     }
 
-    private func assignFrame(frame: CGRect, toWindow window: SIWindow, focused: Bool, screenFrame: CGRect) {
-        var padding = UserConfiguration.sharedConfiguration.windowMarginSize()
+    fileprivate func assignFrame(_ frame: CGRect, toWindow window: SIWindow, focused: Bool, screenFrame: CGRect) {
+        var padding = UserConfiguration.shared.windowMarginSize()
         var finalFrame = frame
 
-        if UserConfiguration.sharedConfiguration.windowMargins() {
+        if UserConfiguration.shared.windowMargins() {
             padding = floor(padding / 2)
 
             finalFrame.origin.x += padding

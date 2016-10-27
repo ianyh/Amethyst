@@ -11,19 +11,18 @@ import Foundation
 import Silica
 
 public extension SIWindow {
-    public static func topWindowForScreenAtPoint(point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
-        guard let windowDescriptions = windowDescriptions(.OptionOnScreenOnly, windowID: CGWindowID(0)) where windowDescriptions.count > 0 else {
+    public static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
+        guard let windowDescriptions = windowDescriptions(.optionOnScreenOnly, windowID: CGWindowID(0)), windowDescriptions.count > 0 else {
             return nil
         }
 
         var windowsAtPoint: [[String: AnyObject]] = []
         for windowDescription in windowDescriptions {
-            var windowFrame = CGRect.zero
-            guard let windowFrameDictionary = windowDescription[kCGWindowBounds as String] as? [String: AnyObject] else {
+            guard let windowFrameDictionary = windowDescription[kCGWindowBounds as String] as? [String: Any] else {
                 continue
             }
 
-            CGRectMakeWithDictionaryRepresentation(windowFrameDictionary, &windowFrame)
+            let windowFrame = CGRect(dictionaryRepresentation: windowFrameDictionary as CFDictionary)!
 
             guard windowFrame.contains(point) else {
                 continue
@@ -47,7 +46,7 @@ public extension SIWindow {
                 continue
             }
 
-            guard let windowsAboveWindow = SIWindow.windowDescriptions(.OptionOnScreenAboveWindow, windowID: windowID.unsignedIntValue) else {
+            guard let windowsAboveWindow = SIWindow.windowDescriptions(.optionOnScreenAboveWindow, windowID: windowID.uint32Value) else {
                 continue
             }
 
@@ -64,27 +63,25 @@ public extension SIWindow {
         return windowInWindows(windows, withCGWindowDescription: windowDictionaryToFocus)
     }
 
-    internal static func windowInWindows(windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
+    internal static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
         for window in windows {
             guard
-                let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber
-                where windowOwnerProcessIdentifier.intValue == window.processIdentifier()
+                let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber, windowOwnerProcessIdentifier.int32Value == window.processIdentifier()
             else {
                 continue
             }
 
-            guard let boundsDictionary = windowDescription[kCGWindowBounds as String] as? [String: AnyObject] else {
+            guard let boundsDictionary = windowDescription[kCGWindowBounds as String] as? [String: Any] else {
                 continue
             }
 
-            var windowFrame: CGRect = CGRect.zero
-            CGRectMakeWithDictionaryRepresentation(boundsDictionary, &windowFrame)
+            let windowFrame = CGRect(dictionaryRepresentation: boundsDictionary as CFDictionary)!
 
-            guard CGRectEqualToRect(windowFrame, window.frame()) else {
+            guard windowFrame.equalTo(window.frame()) else {
                 continue
             }
 
-            guard let windowTitle = windowDescription[kCGWindowName as String] as? String where windowTitle == window.stringForKey(kAXTitleAttribute) else {
+            guard let windowTitle = windowDescription[kCGWindowName as String] as? String, windowTitle == window.string(forKey: kAXTitleAttribute as CFString!) else {
                 continue
             }
 
@@ -94,7 +91,7 @@ public extension SIWindow {
         return nil
     }
 
-    public static func windowDescriptions(options: CGWindowListOption, windowID: CGWindowID) -> [[String: AnyObject]]? {
+    public static func windowDescriptions(_ options: CGWindowListOption, windowID: CGWindowID) -> [[String: AnyObject]]? {
         guard let cfWindowDescriptions = CGWindowListCopyWindowInfo(options, windowID) else {
             return nil
         }
@@ -111,29 +108,29 @@ public extension SIWindow {
             return false
         }
 
-        guard let subrole = stringForKey(kAXSubroleAttribute) where subrole == kAXStandardWindowSubrole as String else {
+        guard let subrole = string(forKey: kAXSubroleAttribute as CFString!), subrole == kAXStandardWindowSubrole as String else {
             return false
         }
 
         return true
     }
 
-    public func am_focusWindow() -> Bool {
-        guard self.focusWindow() else {
+    @discardableResult public func am_focusWindow() -> Bool {
+        guard self.focus() else {
             return false
         }
 
-        guard UserConfiguration.sharedConfiguration.mouseFollowsFocus() else {
+        guard UserConfiguration.shared.mouseFollowsFocus() else {
             return true
         }
 
         let windowFrame = frame()
-        let mouseCursorPoint = NSMakePoint(NSMidX(windowFrame), NSMidY(windowFrame))
-        guard let mouseMoveEvent = CGEventCreateMouseEvent(nil, .MouseMoved, mouseCursorPoint, .Left) else {
+        let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
+        guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
             return true
         }
-        CGEventSetFlags(mouseMoveEvent, CGEventFlags(rawValue: 0)!)
-        CGEventPost(CGEventTapLocation.CGHIDEventTap, mouseMoveEvent)
+        mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
+        mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
 
         return true
     }

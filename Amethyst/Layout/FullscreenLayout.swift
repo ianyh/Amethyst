@@ -9,13 +9,13 @@
 import Silica
 
 private class FullscreenReflowOperation: ReflowOperation {
-    private override func main() {
+    fileprivate override func main() {
         let screenFrame = adjustedFrameForLayout(screen)
         let frameAssignments: [FrameAssignment] = windows.map { window in
             return FrameAssignment(frame: screenFrame, window: window, focused: false, screenFrame: screenFrame)
         }
 
-        if cancelled {
+        if isCancelled {
             return
         }
 
@@ -23,11 +23,11 @@ private class FullscreenReflowOperation: ReflowOperation {
     }
 }
 
-public class FullscreenLayout: Layout {
-    override public class var layoutName: String { return "Fullscreen" }
-    override public class var layoutKey: String { return "fullscreen" }
+open class FullscreenLayout: Layout {
+    override open class var layoutName: String { return "Fullscreen" }
+    override open class var layoutKey: String { return "fullscreen" }
 
-    override public func reflowOperationForScreen(screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
+    override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         return FullscreenReflowOperation(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
     }
 }

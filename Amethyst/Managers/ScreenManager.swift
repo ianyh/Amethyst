@@ -10,17 +10,17 @@ import Foundation
 import Silica
 
 public protocol ScreenManagerDelegate {
-    func activeWindowsForScreenManager(screenManager: ScreenManager) -> [SIWindow]
-    func windowIsActive(window: SIWindow) -> Bool
+    func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow]
+    func windowIsActive(_ window: SIWindow) -> Bool
 }
 
-public class ScreenManager: NSObject {
-    public var screen: NSScreen
-    public let screenIdentifier: String
-    private let delegate: ScreenManagerDelegate
-    private let userConfiguration: UserConfiguration
+open class ScreenManager: NSObject {
+    open var screen: NSScreen
+    open let screenIdentifier: String
+    fileprivate let delegate: ScreenManagerDelegate
+    fileprivate let userConfiguration: UserConfiguration
 
-    public var currentSpaceIdentifier: String? {
+    open var currentSpaceIdentifier: String? {
         willSet {
             guard let spaceIdentifier = currentSpaceIdentifier else {
                 return
@@ -30,7 +30,7 @@ public class ScreenManager: NSObject {
         }
         didSet {
             defer {
-                setNeedsReflowWithWindowChange(.Unknown)
+                setNeedsReflowWithWindowChange(.unknown)
             }
 
             guard let spaceIdentifier = currentSpaceIdentifier else {
@@ -48,28 +48,28 @@ public class ScreenManager: NSObject {
             }
         }
     }
-    public var isFullscreen = false
+    open var isFullscreen = false
 
-    private var reflowTimer: NSTimer?
-    private var reflowOperation: ReflowOperation?
+    fileprivate var reflowTimer: Timer?
+    fileprivate var reflowOperation: ReflowOperation?
 
-    private var layouts: [Layout] = []
-    private var currentLayoutIndexBySpaceIdentifier: [String: Int] = [:]
-    private var layoutsBySpaceIdentifier: [String: [Layout]] = [:]
-    private var currentLayoutIndex: Int {
+    fileprivate var layouts: [Layout] = []
+    fileprivate var currentLayoutIndexBySpaceIdentifier: [String: Int] = [:]
+    fileprivate var layoutsBySpaceIdentifier: [String: [Layout]] = [:]
+    fileprivate var currentLayoutIndex: Int {
         didSet {
             if !self.changingSpace || userConfiguration.enablesLayoutHUDOnSpaceChange() {
                 self.displayLayoutHUD()
             }
         }
     }
-    private var currentLayout: Layout {
+    fileprivate var currentLayout: Layout {
         return layouts[currentLayoutIndex]
     }
 
-    private let layoutNameWindowController: LayoutNameWindowController
+    fileprivate let layoutNameWindowController: LayoutNameWindowController
 
-    private var changingSpace: Bool = false
+    fileprivate var changingSpace: Bool = false
 
     init(screen: NSScreen, screenIdentifier: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
         self.screen = screen
@@ -88,7 +88,7 @@ public class ScreenManager: NSObject {
         layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
     }
 
-    public func setNeedsReflowWithWindowChange(windowChange: WindowChange) {
+    open func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
         reflowOperation?.cancel()
 
         LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
@@ -98,22 +98,22 @@ public class ScreenManager: NSObject {
         if changingSpace {
             // The 0.4 is disgustingly tied to the space change animation time.
             // This should get burned to the ground when space changes don't rely on the mouse click trick.
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(0.4) * NSEC_PER_SEC)), dispatch_get_main_queue()) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(UInt64(0.4) * NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
                 self.reflow(windowChange)
             }
         } else {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.reflow(windowChange)
             }
         }
     }
 
-    private func reflow(change: WindowChange) {
+    fileprivate func reflow(_ change: WindowChange) {
         guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
             !isFullscreen &&
-            !CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier)
+            !CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier as CGSManagedDisplay!)
         else {
             return
         }
@@ -121,58 +121,58 @@ public class ScreenManager: NSObject {
         let windows = delegate.activeWindowsForScreenManager(self)
         changingSpace = false
         reflowOperation = currentLayout.reflowOperationForScreen(screen, withWindows: windows)
-        NSOperationQueue.mainQueue().addOperation(reflowOperation!)
+        OperationQueue.main.addOperation(reflowOperation!)
     }
 
-    public func updateCurrentLayout(updater: (Layout) -> ()) {
+    open func updateCurrentLayout(_ updater: (Layout) -> ()) {
         updater(currentLayout)
-        setNeedsReflowWithWindowChange(.Unknown)
+        setNeedsReflowWithWindowChange(.unknown)
     }
 
-    public func cycleLayoutForward() {
+    open func cycleLayoutForward() {
         currentLayoutIndex = (currentLayoutIndex + 1) % layouts.count
-        setNeedsReflowWithWindowChange(.Unknown)
+        setNeedsReflowWithWindowChange(.unknown)
     }
 
-    public func cycleLayoutBackward() {
+    open func cycleLayoutBackward() {
         currentLayoutIndex = (currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1
-        setNeedsReflowWithWindowChange(.Unknown)
+        setNeedsReflowWithWindowChange(.unknown)
     }
 
-    public func selectLayout(layoutType: AnyClass) {
-        let index = layouts.indexOf { $0.isKindOfClass(layoutType) }
+    open func selectLayout(_ layoutType: AnyClass) {
+        let index = layouts.index { $0.isKind(of: layoutType) }
         guard let layoutIndex = index else {
             return
         }
 
         currentLayoutIndex = layoutIndex
-        setNeedsReflowWithWindowChange(.Unknown)
+        setNeedsReflowWithWindowChange(.unknown)
     }
 
-    public func shrinkMainPane() {
+    open func shrinkMainPane() {
         currentLayout.shrinkMainPane()
     }
 
-    public func expandMainPane() {
+    open func expandMainPane() {
         currentLayout.expandMainPane()
     }
 
-    public func nextWindowIDCounterClockwise() -> CGWindowID? {
+    open func nextWindowIDCounterClockwise() -> CGWindowID? {
         return currentLayout.nextWindowIDCounterClockwise()
     }
 
-    public func nextWindowIDClockwise() -> CGWindowID? {
+    open func nextWindowIDClockwise() -> CGWindowID? {
         return currentLayout.nextWindowIDClockwise()
     }
 
-    public func displayLayoutHUD() {
+    open func displayLayoutHUD() {
         guard userConfiguration.enablesLayoutHUD() else {
             return
         }
 
         defer {
-            NSObject.cancelPreviousPerformRequestsWithTarget(self, selector: #selector(hideLayoutHUD(_:)), object: nil)
-            performSelector(#selector(hideLayoutHUD(_:)), withObject: nil, afterDelay: 0.6)
+            NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(hideLayoutHUD(_:)), object: nil)
+            perform(#selector(hideLayoutHUD(_:)), with: nil, afterDelay: 0.6)
         }
 
         guard let layoutNameWindow = layoutNameWindowController.window as? LayoutNameWindow else {
@@ -186,29 +186,29 @@ public class ScreenManager: NSObject {
             y: screenCenter.y - layoutNameWindow.frame.height / 2.0
         )
 
-        layoutNameWindow.layoutNameField?.stringValue = currentLayout.dynamicType.layoutName
+        layoutNameWindow.layoutNameField?.stringValue = type(of: currentLayout).layoutName
         layoutNameWindow.setFrameOrigin(NSPointFromCGPoint(windowOrigin))
 
         layoutNameWindowController.showWindow(self)
     }
 
-    public func hideLayoutHUD(sender: AnyObject) {
+    open func hideLayoutHUD(_ sender: AnyObject) {
         layoutNameWindowController.close()
     }
 }
 
 extension ScreenManager: WindowActivityCache {
-    public func windowIsActive(window: SIWindow) -> Bool {
+    public func windowIsActive(_ window: SIWindow) -> Bool {
         return delegate.windowIsActive(window)
     }
 }
 
 extension WindowManager: ScreenManagerDelegate {
-    public func activeWindowsForScreenManager(screenManager: ScreenManager) -> [SIWindow] {
+    public func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow] {
         return activeWindowsForScreen(screenManager.screen)
     }
 
-    public func windowIsActive(window: SIWindow) -> Bool {
+    public func windowIsActive(_ window: SIWindow) -> Bool {
         if !window.isActive() {
             return false
         }

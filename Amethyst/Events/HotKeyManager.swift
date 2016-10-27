@@ -19,11 +19,11 @@ public typealias AMModifierFlags = UInt
 // Can be used to identify if a returned key code is valid or not.
 public let AMKeyCodeInvalid: AMKeyCode = 0xFF
 
-public class HotKey: NSObject {
-    public let hotKeyRef: EventHotKeyRef
-    public let handler: () -> ()
+open class HotKey: NSObject {
+    open let hotKeyRef: EventHotKeyRef
+    open let handler: () -> ()
 
-    public init(hotKeyRef: EventHotKeyRef, handler: () -> ()) {
+    public init(hotKeyRef: EventHotKeyRef, handler: @escaping () -> ()) {
         self.hotKeyRef = hotKeyRef
         self.handler = handler
     }
@@ -31,21 +31,21 @@ public class HotKey: NSObject {
 
 public typealias HotKeyHandler = () -> ()
 
-public class HotKeyManager: NSObject {
-    private let userConfiguration: UserConfiguration
+open class HotKeyManager: NSObject {
+    fileprivate let userConfiguration: UserConfiguration
 
-    public lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
+    open lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
         return self.constructKeyCodeMap()
     }()
 
     public init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
         super.init()
-        constructKeyCodeMap()
-        MASShortcutValidator.sharedValidator().allowAnyShortcutWithOptionModifier = true
+        _ = constructKeyCodeMap()
+        MASShortcutValidator.shared().allowAnyShortcutWithOptionModifier = true
     }
 
-    private static func keyCodeForNumber(number: NSNumber) -> AMKeyCode {
+    fileprivate static func keyCodeForNumber(_ number: NSNumber) -> AMKeyCode {
         let string = "\(number)"
 
         guard string.characters.count > 0 else {
@@ -78,7 +78,7 @@ public class HotKeyManager: NSObject {
         }
     }
 
-    public func setUpWithHotKeyManager(windowManager: WindowManager, configuration: UserConfiguration) {
+    open func setUpWithHotKeyManager(_ windowManager: WindowManager, configuration: UserConfiguration) {
         constructCommandWithCommandKey(CommandKey.CycleLayoutForward.rawValue) {
             windowManager.focusedScreenManager()?.cycleLayoutForward()
         }
@@ -178,7 +178,7 @@ public class HotKeyManager: NSObject {
 
         constructCommandWithCommandKey(CommandKey.ToggleTiling.rawValue) {
             self.userConfiguration.tilingEnabled = !self.userConfiguration.tilingEnabled
-            windowManager.markAllScreensForReflowWithChange(.Unknown)
+            windowManager.markAllScreensForReflowWithChange(.unknown)
         }
 
         constructCommandWithCommandKey(CommandKey.ReevaluateWindows.rawValue) {
@@ -201,7 +201,7 @@ public class HotKeyManager: NSObject {
         }
     }
 
-    public func constructKeyCodeMap() -> [String: [AMKeyCode]] {
+    open func constructKeyCodeMap() -> [String: [AMKeyCode]] {
         var stringToKeyCodes: [String: [AMKeyCode]] = [:]
 
         // Generate unicode character keymapping from keyboard layout data.  We go
@@ -218,8 +218,8 @@ public class HotKeyManager: NSObject {
         }
 
         // Get the layout
-        let layoutData = unsafeBitCast(rawLayoutData, CFDataRef.self)
-        let layout: UnsafePointer<UCKeyboardLayout> = unsafeBitCast(CFDataGetBytePtr(layoutData), UnsafePointer<UCKeyboardLayout>.self)
+        let layoutData = unsafeBitCast(rawLayoutData, to: CFData.self)
+        let layout: UnsafePointer<UCKeyboardLayout> = unsafeBitCast(CFDataGetBytePtr(layoutData), to: UnsafePointer<UCKeyboardLayout>.self)
 
         var keysDown: UInt32 = 0
         var chars: [UniChar] = [0, 0, 0, 0]
@@ -285,33 +285,33 @@ public class HotKeyManager: NSObject {
         return stringToKeyCodes
     }
 
-    internal func constructCommandWithCommandKey(commandKey: String, handler: HotKeyHandler) {
+    internal func constructCommandWithCommandKey(_ commandKey: String, handler: @escaping HotKeyHandler) {
         userConfiguration.constructCommandWithHotKeyRegistrar(self, commandKey: commandKey, handler: handler)
     }
 
-    private func carbonModifiersFromModifiers(modifiers: UInt) -> UInt32 {
+    fileprivate func carbonModifiersFromModifiers(_ modifiers: UInt) -> UInt32 {
         var carbonModifiers: UInt32 = 0
 
-        if (modifiers & UInt(NSEventModifierFlags.ShiftKeyMask.rawValue)) > 0 {
+        if (modifiers & UInt(NSEventModifierFlags.shift.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(shiftKey)
         }
 
-        if (modifiers & UInt(NSEventModifierFlags.CommandKeyMask.rawValue)) > 0 {
+        if (modifiers & UInt(NSEventModifierFlags.command.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(cmdKey)
         }
 
-        if (modifiers & UInt(NSEventModifierFlags.AlternateKeyMask.rawValue)) > 0 {
+        if (modifiers & UInt(NSEventModifierFlags.option.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(optionKey)
         }
 
-        if (modifiers & UInt(NSEventModifierFlags.ControlKeyMask.rawValue)) > 0 {
+        if (modifiers & UInt(NSEventModifierFlags.control.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(controlKey)
         }
 
         return carbonModifiers
     }
 
-    public static func hotKeyNameToDefaultsKey() -> [[String]] {
+    open static func hotKeyNameToDefaultsKey() -> [[String]] {
         var hotKeyNameToDefaultsKey: [[String]] = []
 
         hotKeyNameToDefaultsKey.append(["Cycle layout forward", CommandKey.CycleLayoutForward.rawValue])

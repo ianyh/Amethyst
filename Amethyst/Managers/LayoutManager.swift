@@ -8,8 +8,8 @@
 
 import Foundation
 
-public class LayoutManager {
-    public static func layoutClassForString(layoutString: String) -> Layout.Type? {
+open class LayoutManager {
+    open static func layoutClassForString(_ layoutString: String) -> Layout.Type? {
         switch layoutString {
         case "tall":
             return TallLayout.self
@@ -36,11 +36,11 @@ public class LayoutManager {
         }
     }
 
-    public static func stringForLayoutClass(layoutClass: Layout.Type) -> String {
+    open static func stringForLayoutClass(_ layoutClass: Layout.Type) -> String {
         return layoutClass.layoutKey
     }
 
-    public static func availableLayoutStrings() -> [String] {
+    open static func availableLayoutStrings() -> [String] {
         let layoutClasses: [Layout.Type] = [
             TallLayout.self,
             TallRightLayout.self,
@@ -57,7 +57,7 @@ public class LayoutManager {
         return layoutClasses.map { LayoutManager.stringForLayoutClass($0) }
     }
 
-    public static func layoutsWithConfiguration(userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout] {
+    open static func layoutsWithConfiguration(_ userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout] {
         let layoutStrings: [String] = userConfiguration.layoutStrings()
         let layouts = layoutStrings.map { layoutString -> Layout? in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {

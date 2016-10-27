@@ -394,16 +394,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
-				2C1C9F6D72839342EADA9CF3 /* 📦 Check Pods Manifest.lock */,
-				4058C4701C4C4F9E00B19D26 /* ShellScript */,
+				2C1C9F6D72839342EADA9CF3 /* [CP] Check Pods Manifest.lock */,
+				4058C4701C4C4F9E00B19D26 /* Lint */,
 				408D394419C7C2B90001981F /* ShellScript */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
 				40986B961CAAC38E0030C711 /* Embed Frameworks */,
 				408D394519C7C3C40001981F /* ShellScript */,
-				7FAA2EF02210366C261135A4 /* 📦 Embed Pods Frameworks */,
-				2BA7033588D6ECE5F50B12B5 /* 📦 Copy Pods Resources */,
+				7FAA2EF02210366C261135A4 /* [CP] Embed Pods Frameworks */,
+				2BA7033588D6ECE5F50B12B5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -418,12 +418,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */;
 			buildPhases = (
-				C5A5DB9F5599F37F9EB9751C /* 📦 Check Pods Manifest.lock */,
+				C5A5DB9F5599F37F9EB9751C /* [CP] Check Pods Manifest.lock */,
 				40D95B431C6E2ED800AAF433 /* Sources */,
 				40D95B441C6E2ED800AAF433 /* Frameworks */,
 				40D95B451C6E2ED800AAF433 /* Resources */,
-				3FA6B9927E302F5BA5787664 /* 📦 Embed Pods Frameworks */,
-				5D538A7AD98DDD09209924DA /* 📦 Copy Pods Resources */,
+				3FA6B9927E302F5BA5787664 /* [CP] Embed Pods Frameworks */,
+				5D538A7AD98DDD09209924DA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -447,8 +447,16 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
 				TargetAttributes = {
+					402DB6DD1742E41A00D1C936 = {
+						DevelopmentTeam = 82P2XLB4UH;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
+					};
 					40D95B461C6E2ED800AAF433 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = 82P2XLB4UH;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Automatic;
 						TestTargetID = 402DB6DD1742E41A00D1C936;
 					};
 				};
@@ -501,14 +509,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2BA7033588D6ECE5F50B12B5 /* 📦 Copy Pods Resources */ = {
+		2BA7033588D6ECE5F50B12B5 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -516,29 +524,29 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2C1C9F6D72839342EADA9CF3 /* 📦 Check Pods Manifest.lock */ = {
+		2C1C9F6D72839342EADA9CF3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		3FA6B9927E302F5BA5787664 /* 📦 Embed Pods Frameworks */ = {
+		3FA6B9927E302F5BA5787664 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,13 +554,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4058C4701C4C4F9E00B19D26 /* ShellScript */ = {
+		4058C4701C4C4F9E00B19D26 /* Lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = Lint;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -570,7 +579,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Amethyst/Amethyst-Info.plist\nfi\n";
+			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Amethyst/Amethyst-Info.plist || true\nfi\n";
 		};
 		408D394519C7C3C40001981F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -585,14 +594,14 @@
 			shellPath = /bin/sh;
 			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ${PODS_ROOT}/Fabric/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Amethyst/Amethyst-Info.plist\nfi\n";
 		};
-		5D538A7AD98DDD09209924DA /* 📦 Copy Pods Resources */ = {
+		5D538A7AD98DDD09209924DA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -600,14 +609,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7FAA2EF02210366C261135A4 /* 📦 Embed Pods Frameworks */ = {
+		7FAA2EF02210366C261135A4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -615,19 +624,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C5A5DB9F5599F37F9EB9751C /* 📦 Check Pods Manifest.lock */ = {
+		C5A5DB9F5599F37F9EB9751C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -788,10 +797,10 @@
 			baseConfigurationReference = 6441E51294FF4505E05F6810 /* Pods-Amethyst.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
@@ -809,6 +818,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -818,10 +828,10 @@
 			baseConfigurationReference = 48A04C08B79381F097271198 /* Pods-Amethyst.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Developer ID Application";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
@@ -839,6 +849,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -853,9 +864,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -875,6 +887,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
 			};
 			name = Debug;
@@ -889,9 +902,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -911,6 +925,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
 			};
 			name = Release;

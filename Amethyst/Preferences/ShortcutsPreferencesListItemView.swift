@@ -10,20 +10,20 @@ import Cartography
 import Foundation
 import MASShortcut
 
-public class ShortcutsPreferencesListItemView: NSView {
-    public private(set) var nameLabel: NSTextField?
-    public private(set) var shortcutView: MASShortcutView?
+open class ShortcutsPreferencesListItemView: NSView {
+    open fileprivate(set) var nameLabel: NSTextField?
+    open fileprivate(set) var shortcutView: MASShortcutView?
 
     public override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
         let label = NSTextField()
-        let shortcutView = MASShortcutView(frame: NSMakeRect(0, 0, 120, 19))
+        let shortcutView = MASShortcutView(frame: NSRect(x: 0, y: 0, width: 120, height: 19))
 
-        label.bezeled = false
-        label.editable = false
+        label.isBezeled = false
+        label.isEditable = false
         label.stringValue = ""
-        label.backgroundColor = NSColor.clearColor()
+        label.backgroundColor = NSColor.clear
         label.sizeToFit()
 
         addSubview(label)
