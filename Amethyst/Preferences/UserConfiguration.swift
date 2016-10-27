@@ -10,17 +10,17 @@ import Foundation
 import SwiftyJSON
 
 public protocol ConfigurationStorage {
-    func objectForKey(defaultName: String) -> AnyObject?
-    func arrayForKey(defaultName: String) -> [AnyObject]?
-    func boolForKey(defaultName: String) -> Bool
-    func floatForKey(defaultName: String) -> Float
-    func stringArrayForKey(defaultName: String) -> [String]?
+    func object(forKey defaultName: String) -> Any?
+    func array(forKey defaultName: String) -> [Any]?
+    func bool(forKey defaultName: String) -> Bool
+    func float(forKey defaultName: String) -> Float
+    func stringArray(forKey defaultName: String) -> [String]?
 
-    func setObject(value: AnyObject?, forKey defaultName: String)
-    func setBool(value: Bool, forKey defaultName: String)
+    func set(_ value: Any?, forKey defaultName: String)
+    func set(_ value: Bool, forKey defaultName: String)
 }
 
-extension NSUserDefaults: ConfigurationStorage {}
+extension UserDefaults: ConfigurationStorage {}
 
 internal enum ConfigurationKey: String {
     case Layouts = "layouts"
@@ -88,11 +88,21 @@ public enum CommandKey: String {
     case ToggleFocusFollowsMouse = "toggle-focus-follows-mouse"
 }
 
+public protocol UserConfigurationDelegate: class {
+    func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration)
+}
+
 public class UserConfiguration: NSObject {
-    public static let sharedConfiguration = UserConfiguration()
+    public static let shared = UserConfiguration()
     internal var storage: ConfigurationStorage
 
-    public var tilingEnabled = true
+    public weak var delegate: UserConfigurationDelegate?
+
+    public var tilingEnabled = true {
+        didSet {
+            delegate?.configurationGlobalTilingDidChange(self)
+        }
+    }
 
     internal var configuration: JSON?
     internal var defaultConfiguration: JSON?
@@ -106,10 +116,10 @@ public class UserConfiguration: NSObject {
     }
 
     public override convenience init() {
-        self.init(storage: NSUserDefaults.standardUserDefaults())
+        self.init(storage: UserDefaults.standard)
     }
 
-    private func configurationValueForKey<T>(key: ConfigurationKey) -> T? {
+    fileprivate func configurationValueForKey<T>(_ key: ConfigurationKey) -> T? {
         guard let configurationValue = configuration?[key.rawValue].rawValue as? T else {
             return defaultConfiguration![key.rawValue].object as? T
         }
@@ -117,18 +127,18 @@ public class UserConfiguration: NSObject {
         return configurationValue
     }
 
-    internal func modifierFlagsForStrings(modifierStrings: [String]) -> AMModifierFlags {
+    internal func modifierFlagsForStrings(_ modifierStrings: [String]) -> AMModifierFlags {
         var flags: UInt = 0
         for modifierString in modifierStrings {
             switch modifierString {
             case "option":
-                flags = flags | NSEventModifierFlags.AlternateKeyMask.rawValue
+                flags = flags | NSEventModifierFlags.option.rawValue
             case "shift":
-                flags = flags | NSEventModifierFlags.ShiftKeyMask.rawValue
+                flags = flags | NSEventModifierFlags.shift.rawValue
             case "control":
-                flags = flags | NSEventModifierFlags.ControlKeyMask.rawValue
+                flags = flags | NSEventModifierFlags.control.rawValue
             case "command":
-                flags = flags | NSEventModifierFlags.CommandKeyMask.rawValue
+                flags = flags | NSEventModifierFlags.command.rawValue
             default:
                 LogManager.log?.warning("Unrecognized modifier string: \(modifierString)")
             }
@@ -136,7 +146,7 @@ public class UserConfiguration: NSObject {
         return flags
     }
 
-    public func load() {
+    open func load() {
         loadConfigurationFile()
         loadConfiguration()
     }
@@ -145,7 +155,7 @@ public class UserConfiguration: NSObject {
         for key in ConfigurationKey.defaultsKeys {
             let value = configuration?[key.rawValue]
             let defaultValue = defaultConfiguration?[key.rawValue]
-            let existingValue = storage.objectForKey(key.rawValue)
+            let existingValue = storage.object(forKey: key.rawValue)
 
             let hasLocalConfigurationValue = (value != nil && value?.error == nil)
             let hasDefaultConfigurationValue = (defaultValue != nil && defaultValue?.error == nil)
@@ -155,16 +165,16 @@ public class UserConfiguration: NSObject {
                 continue
             }
 
-            storage.setObject(hasLocalConfigurationValue ? value?.object : defaultValue?.object, forKey: key.rawValue)
+            storage.set(hasLocalConfigurationValue ? value?.object : defaultValue?.object as Any?, forKey: key.rawValue)
         }
     }
 
-    internal func jsonForConfigAtPath(path: String) -> JSON? {
-        guard NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: nil) else {
+    internal func jsonForConfig(at path: String) -> JSON? {
+        guard FileManager.default.fileExists(atPath: path, isDirectory: nil) else {
             return nil
         }
 
-        guard let data = NSData(contentsOfFile: path) else {
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
             return nil
         }
 
@@ -172,28 +182,28 @@ public class UserConfiguration: NSObject {
     }
 
     internal func loadConfigurationFile() {
-        let amethystConfigPath = NSHomeDirectory().stringByAppendingString("/.amethyst")
-        let defaultAmethystConfigPath = NSBundle.mainBundle().pathForResource("default", ofType: "amethyst")
+        let amethystConfigPath = NSHomeDirectory() + "/.amethyst"
+        let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
-        if NSFileManager.defaultManager().fileExistsAtPath(amethystConfigPath, isDirectory: nil) {
-            configuration = jsonForConfigAtPath(amethystConfigPath)
+        if FileManager.default.fileExists(atPath: amethystConfigPath, isDirectory: nil) {
+            configuration = jsonForConfig(at: amethystConfigPath)
 
             if configuration == nil {
                 LogManager.log?.error("error loading configuration")
 
                 let alert = NSAlert()
-                alert.alertStyle = .CriticalAlertStyle
+                alert.alertStyle = .critical
                 alert.messageText = "Error loading configuration"
                 alert.runModal()
             }
         }
 
-        defaultConfiguration = jsonForConfigAtPath(defaultAmethystConfigPath ?? "")
+        defaultConfiguration = jsonForConfig(at: defaultAmethystConfigPath ?? "")
         if defaultConfiguration == nil {
             LogManager.log?.error("error loading default configuration")
 
             let alert = NSAlert()
-            alert.alertStyle = .CriticalAlertStyle
+            alert.alertStyle = .critical
             alert.messageText = "Error loading default configuration"
             alert.runModal()
         }
@@ -204,14 +214,14 @@ public class UserConfiguration: NSObject {
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
         let screens: NSNumber = configurationValueForKey(.Screens)!
-        self.screens = screens.integerValue
+        self.screens = screens.intValue
     }
 
-    public static func constructLayoutKeyString(layoutString: String) -> String {
+    open static func constructLayoutKeyString(_ layoutString: String) -> String {
         return "select-\(layoutString)-layout"
     }
 
-    internal func constructCommandWithHotKeyRegistrar(hotKeyRegistrar: HotKeyRegistrar, commandKey: String, handler: HotKeyHandler) {
+    internal func constructCommandWithHotKeyRegistrar(_ hotKeyRegistrar: HotKeyRegistrar, commandKey: String, handler: @escaping HotKeyHandler) {
         var override = false
         var command: [String: String]? = configuration?[commandKey].object as? [String: String]
         if command != nil {
@@ -242,8 +252,8 @@ public class UserConfiguration: NSObject {
             return
         }
 
-        hotKeyRegistrar.registerHotKeyWithKeyString(
-            commandKeyString,
+        hotKeyRegistrar.registerHotKey(
+            with: commandKeyString,
             modifiers: commandFlags!,
             handler: handler,
             defaultsKey: commandKey,
@@ -251,11 +261,11 @@ public class UserConfiguration: NSObject {
         )
     }
 
-    public func hasCustomConfiguration() -> Bool {
+    open func hasCustomConfiguration() -> Bool {
         return configuration != nil
     }
 
-    private func modifierFlagsForModifierString(modifierString: String) -> AMModifierFlags {
+    fileprivate func modifierFlagsForModifierString(_ modifierString: String) -> AMModifierFlags {
         switch modifierString {
         case "mod1":
             return modifier1!
@@ -267,23 +277,23 @@ public class UserConfiguration: NSObject {
         }
     }
 
-    public func layoutStrings() -> [String] {
-        let layoutStrings = storage.arrayForKey(ConfigurationKey.Layouts.rawValue) as? [String]
+    open func layoutStrings() -> [String] {
+        let layoutStrings = storage.array(forKey: ConfigurationKey.Layouts.rawValue) as? [String]
         return layoutStrings ?? []
     }
 
-    public func setLayoutStrings(layoutStrings: [String]) {
-        storage.setObject(layoutStrings, forKey: ConfigurationKey.Layouts.rawValue)
+    open func setLayoutStrings(_ layoutStrings: [String]) {
+        storage.set(layoutStrings as Any?, forKey: ConfigurationKey.Layouts.rawValue)
     }
 
-    public func runningApplicationShouldFloat(runningApplication: BundleIdentifiable) -> Bool {
-        guard let floatingBundleIdentifiers = storage.objectForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue) as? [String] else {
+    open func runningApplicationShouldFloat(_ runningApplication: BundleIdentifiable) -> Bool {
+        guard let floatingBundleIdentifiers = storage.object(forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue) as? [String] else {
             return false
         }
 
         for floatingBundleIdentifier in floatingBundleIdentifiers {
-            if floatingBundleIdentifier.containsString("*") {
-                let sanitizedIdentifier = floatingBundleIdentifier.stringByReplacingOccurrencesOfString("*", withString: "")
+            if floatingBundleIdentifier.contains("*") {
+                let sanitizedIdentifier = floatingBundleIdentifier.replacingOccurrences(of: "*", with: "")
                 if runningApplication.bundleIdentifier?.hasPrefix(sanitizedIdentifier) == true {
                     return true
                 }
@@ -297,64 +307,64 @@ public class UserConfiguration: NSObject {
         return false
     }
 
-    public func ignoreMenuBar() -> Bool {
-        return storage.boolForKey(ConfigurationKey.IgnoreMenuBar.rawValue)
+    open func ignoreMenuBar() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.IgnoreMenuBar.rawValue)
     }
 
-    public func floatSmallWindows() -> Bool {
-        return storage.boolForKey(ConfigurationKey.FloatSmallWindows.rawValue)
+    open func floatSmallWindows() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.FloatSmallWindows.rawValue)
     }
 
-    public func mouseFollowsFocus() -> Bool {
-        return storage.boolForKey(ConfigurationKey.MouseFollowsFocus.rawValue)
+    open func mouseFollowsFocus() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.MouseFollowsFocus.rawValue)
     }
 
-    public func focusFollowsMouse() -> Bool {
-        return storage.boolForKey(ConfigurationKey.FocusFollowsMouse.rawValue)
+    open func focusFollowsMouse() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
     }
 
-    public func toggleFocusFollowsMouse() {
-        storage.setBool(!focusFollowsMouse(), forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
+    open func toggleFocusFollowsMouse() {
+        storage.set(!focusFollowsMouse(), forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
     }
 
-    public func enablesLayoutHUD() -> Bool {
-        return storage.boolForKey(ConfigurationKey.LayoutHUD.rawValue)
+    open func enablesLayoutHUD() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.LayoutHUD.rawValue)
     }
 
-    public func enablesLayoutHUDOnSpaceChange() -> Bool {
-        return storage.boolForKey(ConfigurationKey.LayoutHUDOnSpaceChange.rawValue)
+    open func enablesLayoutHUDOnSpaceChange() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.LayoutHUDOnSpaceChange.rawValue)
     }
 
-    public func useCanaryBuild() -> Bool {
-        return storage.boolForKey(ConfigurationKey.UseCanaryBuild.rawValue)
+    open func useCanaryBuild() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.UseCanaryBuild.rawValue)
     }
 
-    public func windowMarginSize() -> CGFloat {
-        return CGFloat(storage.floatForKey(ConfigurationKey.WindowMarginSize.rawValue))
+    open func windowMarginSize() -> CGFloat {
+        return CGFloat(storage.float(forKey: ConfigurationKey.WindowMarginSize.rawValue))
     }
 
-    public func windowMargins() -> Bool {
-        return storage.boolForKey(ConfigurationKey.WindowMargins.rawValue)
+    open func windowMargins() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.WindowMargins.rawValue)
     }
 
-    public func windowResizeStep() -> CGFloat {
-        return CGFloat(storage.floatForKey(ConfigurationKey.WindowResizeStep.rawValue) / 100.0)
+    open func windowResizeStep() -> CGFloat {
+        return CGFloat(storage.float(forKey: ConfigurationKey.WindowResizeStep.rawValue) / 100.0)
     }
 
-    public func floatingBundleIdentifiers() -> [String] {
-        let floatingBundleIdentifiers = storage.stringArrayForKey(ConfigurationKey.FloatingBundleIdentifiers.rawValue)
+    open func floatingBundleIdentifiers() -> [String] {
+        let floatingBundleIdentifiers = storage.stringArray(forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue)
         return floatingBundleIdentifiers ?? []
     }
 
-    public func setFloatingBundleIdentifiers(floatingBundleIdentifiers: [String]) {
-        storage.setObject(floatingBundleIdentifiers, forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue)
+    open func setFloatingBundleIdentifiers(_ floatingBundleIdentifiers: [String]) {
+        storage.set(floatingBundleIdentifiers as Any?, forKey: ConfigurationKey.FloatingBundleIdentifiers.rawValue)
     }
 
-    public func sendNewWindowsToMainPane() -> Bool {
-        return storage.boolForKey(ConfigurationKey.NewWindowsToMain.rawValue)
+    open func sendNewWindowsToMainPane() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.NewWindowsToMain.rawValue)
     }
 
-    public func shouldSendCrashReports() -> Bool {
-        return storage.boolForKey(ConfigurationKey.SendCrashReports.rawValue)
+    open func shouldSendCrashReports() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.SendCrashReports.rawValue)
     }
 }

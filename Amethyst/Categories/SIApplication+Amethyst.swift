@@ -12,6 +12,6 @@ import Silica
 public extension SIApplication {
     public func floating() -> Bool {
         let runningApplication = NSRunningApplication(processIdentifier: self.processIdentifier())
-        return UserConfiguration.sharedConfiguration.runningApplicationShouldFloat(runningApplication!)
+        return UserConfiguration.shared.runningApplicationShouldFloat(runningApplication!)
     }
 }

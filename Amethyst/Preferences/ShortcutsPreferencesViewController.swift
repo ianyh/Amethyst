@@ -6,45 +6,45 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
-import CCNPreferencesWindowController
+import CCNPreferencesWindowController_ObjC
 import Cocoa
 import Foundation
 import MASShortcut
 
-public class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
-    private var hotKeyNameToDefaultsKey: [[String]] = []
-    @IBOutlet public var tableView: NSTableView?
+open class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
+    fileprivate var hotKeyNameToDefaultsKey: [[String]] = []
+    @IBOutlet open var tableView: NSTableView?
 
-    public override func awakeFromNib() {
-        tableView?.setDataSource(self)
-        tableView?.setDelegate(self)
+    open override func awakeFromNib() {
+        tableView?.dataSource = self
+        tableView?.delegate = self
     }
 
-    public override func viewWillAppear() {
+    open override func viewWillAppear() {
         super.viewWillAppear()
 
         hotKeyNameToDefaultsKey = HotKeyManager.hotKeyNameToDefaultsKey()
         tableView?.reloadData()
     }
 
-    public func preferenceIdentifier() -> String! {
-        return NSStringFromClass(self.dynamicType)
+    open func preferenceIdentifier() -> String! {
+        return NSStringFromClass(type(of: self))
     }
 
-    public func preferenceIcon() -> NSImage! {
+    open func preferenceIcon() -> NSImage! {
         return NSImage(named: NSImageNameAdvanced)
     }
 
-    public func preferenceTitle() -> String! {
+    open func preferenceTitle() -> String! {
         return "Shortcuts"
     }
 
-    public func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    open func numberOfRows(in tableView: NSTableView) -> Int {
         return hotKeyNameToDefaultsKey.count
     }
 
-    public func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
-        let frame = NSMakeRect(0, 0, tableView.frame.size.width, 30)
+    open func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let frame = NSRect(x: 0, y: 0, width: tableView.frame.size.width, height: 30)
         let shortcutItemView = ShortcutsPreferencesListItemView(frame: frame)
         let name = hotKeyNameToDefaultsKey[row][0]
         let key = hotKeyNameToDefaultsKey[row][1]
@@ -55,7 +55,7 @@ public class ShortcutsPreferencesViewController: NSViewController, CCNPreference
         return shortcutItemView
     }
 
-    public func selectionShouldChangeInTableView(tableView: NSTableView) -> Bool {
+    open func selectionShouldChange(in tableView: NSTableView) -> Bool {
         return false
     }
 }

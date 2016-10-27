@@ -14,20 +14,20 @@ public protocol FocusFollowsMouseManagerDelegate: class {
     func windowsForFocusFollowsMouse() -> [SIWindow]
 }
 
-public class FocusFollowsMouseManager {
-    public weak var delegate: FocusFollowsMouseManagerDelegate?
+open class FocusFollowsMouseManager {
+    open weak var delegate: FocusFollowsMouseManagerDelegate?
 
-    private let userConfiguration: UserConfiguration
-    private var mouseMovedEventHandler: AnyObject?
+    fileprivate let userConfiguration: UserConfiguration
+    fileprivate var mouseMovedEventHandler: AnyObject?
 
     public init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
-        mouseMovedEventHandler = NSEvent.addGlobalMonitorForEventsMatchingMask(NSEventMask.MouseMovedMask) { event in
+        mouseMovedEventHandler = NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.mouseMoved) { event in
             self.focusWindowWithMouseMovedEvent(event)
-        }
+        } as AnyObject?
     }
 
-    private func focusWindowWithMouseMovedEvent(event: NSEvent) {
+    fileprivate func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
         guard userConfiguration.focusFollowsMouse() else {
             return
         }
@@ -37,9 +37,9 @@ public class FocusFollowsMouseManager {
         }
 
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
-        mousePoint.y = NSScreen.mainScreen()!.frame.size.height - mousePoint.y
+        mousePoint.y = NSScreen.main()!.frame.size.height - mousePoint.y
 
-        if let focusedWindow = SIWindow.focusedWindow() {
+        if let focusedWindow = SIWindow.focused() {
             // If the point is already in the frame of the focused window do nothing.
             guard !focusedWindow.frame().contains(mousePoint) else {
                 return

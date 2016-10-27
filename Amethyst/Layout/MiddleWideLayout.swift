@@ -9,14 +9,14 @@
 import Silica
 
 private class MiddleWideReflowOperation: ReflowOperation {
-    private let layout: MiddleWideLayout
+    fileprivate let layout: MiddleWideLayout
 
-    private init(screen: NSScreen, windows: [SIWindow], layout: MiddleWideLayout, windowActivityCache: WindowActivityCache) {
+    fileprivate init(screen: NSScreen, windows: [SIWindow], layout: MiddleWideLayout, windowActivityCache: WindowActivityCache) {
         self.layout = layout
         super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
     }
 
-    private override func main() {
+    fileprivate override func main() {
         if windows.count == 0 {
             return
         }
@@ -47,7 +47,7 @@ private class MiddleWideReflowOperation: ReflowOperation {
 
         let tertiaryPaneWindowWidth = screenFrame.width - mainPaneWindowWidth - secondaryPaneWindowWidth
 
-        let focusedWindow = SIWindow.focusedWindow()
+        let focusedWindow = SIWindow.focused()
 
         let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
@@ -71,14 +71,14 @@ private class MiddleWideReflowOperation: ReflowOperation {
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqualTo(focusedWindow), screenFrame: screenFrame)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
 
             assignments.append(frameAssignment)
 
             return assignments
         }
 
-        if cancelled {
+        if isCancelled {
             return
         }
 
@@ -86,21 +86,21 @@ private class MiddleWideReflowOperation: ReflowOperation {
     }
 }
 
-public class MiddleWideLayout: Layout {
-    override public class var layoutName: String { return "Middle Wide" }
-    override public class var layoutKey: String { return "middle-wide" }
+open class MiddleWideLayout: Layout {
+    override open class var layoutName: String { return "Middle Wide" }
+    override open class var layoutKey: String { return "middle-wide" }
 
-    private var mainPaneRatio: CGFloat = 0.5
+    fileprivate var mainPaneRatio: CGFloat = 0.5
 
-    override public func reflowOperationForScreen(screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
+    override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
     }
 
-    override public func expandMainPane() {
-        mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.sharedConfiguration.windowResizeStep())
+    override open func expandMainPane() {
+        mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
-    override public func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.sharedConfiguration.windowResizeStep())
+    override open func shrinkMainPane() {
+        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 }

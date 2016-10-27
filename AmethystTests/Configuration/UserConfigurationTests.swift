@@ -14,48 +14,48 @@ import Quick
 import SwiftyJSON
 
 private class TestConfigurationStorage: ConfigurationStorage {
-    var storage: [String: AnyObject] = [:]
+    var storage: [String: Any] = [:]
 
-    func objectForKey(defaultName: String) -> AnyObject? {
+    func object(forKey defaultName: String) -> Any? {
         return storage[defaultName]
     }
 
-    func arrayForKey(defaultName: String) -> [AnyObject]? {
-        return storage[defaultName] as? [AnyObject]
+    func array(forKey defaultName: String) -> [Any]? {
+        return storage[defaultName] as? [Any]
     }
 
-    func boolForKey(defaultName: String) -> Bool {
+    func bool(forKey defaultName: String) -> Bool {
         return (storage[defaultName] as? Bool) ?? false
     }
 
-    func floatForKey(defaultName: String) -> Float {
+    func float(forKey defaultName: String) -> Float {
         return (storage[defaultName] as? Float) ?? 0
     }
 
-    func stringArrayForKey(defaultName: String) -> [String]? {
+    func stringArray(forKey defaultName: String) -> [String]? {
         return storage[defaultName] as? [String]
     }
     
-    func setObject(value: AnyObject?, forKey defaultName: String) {
+    func set(_ value: Any?, forKey defaultName: String) {
         storage[defaultName] = value
     }
 
-    func setBool(value: Bool, forKey defaultName: String) {
-        storage[defaultName] = value
+    func set(_ value: Bool, forKey defaultName: String) {
+        storage[defaultName] = value as AnyObject?
     }
 }
 
-public class UserConfigurationTests: QuickSpec {
+open class UserConfigurationTests: QuickSpec {
     internal class TestHotKeyRegistrar: HotKeyRegistrar {
-        private(set) var keyString: String?
-        private(set) var modifiers: AMModifierFlags?
-        private(set) var handler: (() -> ())?
-        private(set) var defaultsKey: String?
-        private(set) var override: Bool?
+        fileprivate(set) var keyString: String?
+        fileprivate(set) var modifiers: AMModifierFlags?
+        fileprivate(set) var handler: (() -> ())?
+        fileprivate(set) var defaultsKey: String?
+        fileprivate(set) var override: Bool?
 
         init() {}
 
-        internal func registerHotKeyWithKeyString(string: String, modifiers: AMModifierFlags, handler: () -> (), defaultsKey: String, override: Bool) {
+        public func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool) {
             keyString = string
             self.modifiers = modifiers
             self.handler = handler
@@ -68,12 +68,12 @@ public class UserConfigurationTests: QuickSpec {
         var bundleIdentifier: String?
     }
 
-    public override func spec() {
+    open override func spec() {
         describe("constructing commands") {
             context("overrides") {
                 it("when user configuration exists") {
                     let configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    let localConfiguration: [String: AnyObject] = [
+                    let localConfiguration: [String: Any] = [
                         "test": [
                             "mod": "mod1",
                             "key": "1"
@@ -91,12 +91,12 @@ public class UserConfigurationTests: QuickSpec {
 
                 it("when custom mod1 is specified") {
                     let configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    let localConfiguration: [String: AnyObject] = [
+                    let localConfiguration: [String: Any] = [
                         "mod1": [
                             "command"
                         ]
                     ]
-                    let defaultConfiguration: [String: AnyObject] = [
+                    let defaultConfiguration: [String: Any] = [
                         "test": [
                             "mod": "mod1",
                             "key": "1"
@@ -115,12 +115,12 @@ public class UserConfigurationTests: QuickSpec {
 
                 it("when custom mod2 is specified") {
                     let configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    let localConfiguration: [String: AnyObject] = [
+                    let localConfiguration: [String: Any] = [
                         "mod2": [
                             "command"
                         ]
                     ]
-                    let defaultConfiguration: [String: AnyObject] = [
+                    let defaultConfiguration: [String: Any] = [
                         "test": [
                             "mod": "mod1",
                             "key": "1"
@@ -141,13 +141,13 @@ public class UserConfigurationTests: QuickSpec {
             context("takes command") {
                 it("from local configuration over default") {
                     let configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    let localConfiguration: [String: AnyObject] = [
+                    let localConfiguration: [String: Any] = [
                         "test": [
                             "mod": "mod1",
                             "key": "1"
                         ]
                     ]
-                    let defaultConfiguration: [String: AnyObject] = [
+                    let defaultConfiguration: [String: Any] = [
                         "test": [
                             "mod": "mod1",
                             "key": "2"
@@ -166,7 +166,7 @@ public class UserConfigurationTests: QuickSpec {
 
                 it("from default in absence of local configuration") {
                     let configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    let defaultConfiguration: [String: AnyObject] = [
+                    let defaultConfiguration: [String: Any] = [
                         "test": [
                             "mod": "mod1",
                             "key": "1"
@@ -191,7 +191,7 @@ public class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
 
-                storage.setObject([], forKey: "floating")
+                storage.set([], forKey: "floating")
 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -203,7 +203,7 @@ public class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.setObject(["test.test.Test"], forKey: "floating")
+                storage.set(["test.test.Test"], forKey: "floating")
 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -215,7 +215,7 @@ public class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.setObject(["test.test.*"], forKey: "floating")
+                storage.set(["test.test.*"], forKey: "floating")
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -227,7 +227,7 @@ public class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.setObject(["test.test.Other"], forKey: "floating")
+                storage.set(["test.test.Other"], forKey: "floating")
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -239,7 +239,7 @@ public class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.setObject(["test.other.*"], forKey: "floating")
+                storage.set(["test.other.*"], forKey: "floating")
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -253,7 +253,7 @@ public class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
 
-                storage.setBool(true, forKey: "focus-follows-mouse")
+                storage.set(true, forKey: "focus-follows-mouse")
 
                 expect(configuration.focusFollowsMouse()).to(beTrue())
 
@@ -274,7 +274,7 @@ public class UserConfigurationTests: QuickSpec {
                     ]
                 ]
 
-                storage.setObject(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
+                storage.set(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
 
                 expect(configuration.layoutStrings()).to(equal(existingLayouts))
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
@@ -297,7 +297,7 @@ public class UserConfigurationTests: QuickSpec {
                     ]
                 ]
                 
-                storage.setObject(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
+                storage.set(existingLayouts, forKey: ConfigurationKey.Layouts.rawValue)
                 
                 expect(configuration.layoutStrings()).to(equal(existingLayouts))
                 configuration.configuration = JSON(localConfiguration)

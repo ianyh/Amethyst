@@ -11,8 +11,8 @@ import Quick
 
 @testable import Amethyst
 
-public class BinarySpacePartitioningLayoutTests: QuickSpec {
-    public override func spec() {
+open class BinarySpacePartitioningLayoutTests: QuickSpec {
+    open override func spec() {
         describe("TreeNode") {
             describe("finding") {
                 it("finds a node that exists") {
@@ -289,7 +289,7 @@ public class BinarySpacePartitioningLayoutTests: QuickSpec {
 internal extension TreeNode {
     func treeIsValid() -> Bool {
         var valid = self.valid
-        if let left = left, right = right {
+        if let left = left, let right = right {
             valid = valid && left.parent == self && right.parent == self
             valid = valid && left.treeIsValid() && right.treeIsValid()
         }

@@ -11,8 +11,8 @@ import Foundation
 import Silica
 
 public protocol WindowModifierType {
-    func throwToScreenAtIndex(screenIndex: Int)
-    func focusScreenAtIndex(screenIndex: Int)
+    func throwToScreenAtIndex(_ screenIndex: Int)
+    func focusScreenAtIndex(_ screenIndex: Int)
     func moveFocusCounterClockwise()
     func moveFocusClockwise()
     func swapFocusedWindowToMain()
@@ -20,7 +20,7 @@ public protocol WindowModifierType {
     func swapFocusedWindowClockwise()
     func swapFocusedWindowScreenClockwise()
     func swapFocusedWindowScreenCounterClockwise()
-    func pushFocusedWindowToSpace(space: UInt)
+    func pushFocusedWindowToSpace(_ space: UInt)
     func pushFocusedWindowToSpaceLeft()
     func pushFocusedWindowToSpaceRight()
 }
@@ -29,25 +29,25 @@ public protocol WindowModifierDelegate: class {
     func focusedWindow() -> SIWindow?
     func currentFocusedSpace() -> CGSSpace?
     func spacesForFocusedScreen() -> [CGSSpace]?
-    func screenManagerForScreen(screen: NSScreen) -> ScreenManager?
-    func screenManagerForScreenIndex(screenIndex: Int) -> ScreenManager?
-    func screenManagerIndexForScreen(screen: NSScreen) -> Int?
-    func markScreenForReflow(screen: NSScreen, withChange change: WindowChange)
-    func windowsForScreen(screen: NSScreen) -> [SIWindow]
-    func activeWindowsForScreen(screen: NSScreen) -> [SIWindow]
-    func windowIsFloating(window: SIWindow) -> Bool
-    func switchWindow(window: SIWindow, withWindow otherWindow: SIWindow)
+    func screenManagerForScreen(_ screen: NSScreen) -> ScreenManager?
+    func screenManagerForScreenIndex(_ screenIndex: Int) -> ScreenManager?
+    func screenManagerIndexForScreen(_ screen: NSScreen) -> Int?
+    func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange)
+    func windowsForScreen(_ screen: NSScreen) -> [SIWindow]
+    func activeWindowsForScreen(_ screen: NSScreen) -> [SIWindow]
+    func windowIsFloating(_ window: SIWindow) -> Bool
+    func switchWindow(_ window: SIWindow, withWindow otherWindow: SIWindow)
 }
 
-public class WindowModifier: WindowModifierType {
-    public weak var delegate: WindowModifierDelegate?
+open class WindowModifier: WindowModifierType {
+    open weak var delegate: WindowModifierDelegate?
 
-    internal func windowIsFloating(window: SIWindow) -> Bool {
+    internal func windowIsFloating(_ window: SIWindow) -> Bool {
         return delegate?.windowIsFloating(window) ?? false
     }
 
-    public func throwToScreenAtIndex(screenIndex: Int) {
-        guard let screenManager = delegate?.screenManagerForScreenIndex(screenIndex), focusedWindow = delegate?.focusedWindow() else {
+    open func throwToScreenAtIndex(_ screenIndex: Int) {
+        guard let screenManager = delegate?.screenManagerForScreenIndex(screenIndex), let focusedWindow = delegate?.focusedWindow() else {
             return
         }
 
@@ -56,18 +56,18 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
-        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Remove(window: focusedWindow))
-        focusedWindow.moveToScreen(screenManager.screen)
-        delegate?.markScreenForReflow(screenManager.screen, withChange: .Unknown)
+        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .remove(window: focusedWindow))
+        focusedWindow.move(to: screenManager.screen)
+        delegate?.markScreenForReflow(screenManager.screen, withChange: .unknown)
         focusedWindow.am_focusWindow()
     }
 
-    public func focusScreenAtIndex(screenIndex: Int) {
+    open func focusScreenAtIndex(_ screenIndex: Int) {
         guard let screenManager = delegate?.screenManagerForScreenIndex(screenIndex) else {
             return
         }
 
-        guard let focusedWindow = SIWindow.focusedWindow() where focusedWindow.screen() != screenManager.screen else {
+        guard let focusedWindow = SIWindow.focused(), focusedWindow.screen() != screenManager.screen else {
             return
         }
 
@@ -87,7 +87,7 @@ public class WindowModifier: WindowModifierType {
         topWindow.am_focusWindow()
     }
 
-    public func moveFocusCounterClockwise() {
+    open func moveFocusCounterClockwise() {
         guard let focusedWindow = delegate?.focusedWindow() else {
             focusScreenAtIndex(0)
             return
@@ -95,16 +95,16 @@ public class WindowModifier: WindowModifierType {
 
         let screen = focusedWindow.screen()
 
-        guard let windows = delegate?.windowsForScreen(screen) where windows.count > 0 else {
+        guard let windows = delegate?.windowsForScreen(screen!), windows.count > 0 else {
             return
         }
 
         let windowToFocus: SIWindow = { () -> SIWindow in
-            if let nextWindowID = delegate?.screenManagerForScreen(screen)?.nextWindowIDCounterClockwise() {
-                let windowToFocusIndex = windows.indexOf { $0.windowID() == nextWindowID } ?? 0
+            if let nextWindowID = delegate?.screenManagerForScreen(screen!)?.nextWindowIDCounterClockwise() {
+                let windowToFocusIndex = windows.index { $0.windowID() == nextWindowID } ?? 0
                 return windows[windowToFocusIndex]
             } else {
-                let windowIndex = windows.indexOf(focusedWindow) ?? 0
+                let windowIndex = windows.index(of: focusedWindow) ?? 0
                 let windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1)
                 return windows[windowToFocusIndex]
             }
@@ -113,7 +113,7 @@ public class WindowModifier: WindowModifierType {
         windowToFocus.am_focusWindow()
     }
 
-    public func moveFocusClockwise() {
+    open func moveFocusClockwise() {
         guard let focusedWindow = delegate?.focusedWindow() else {
             focusScreenAtIndex(0)
             return
@@ -121,16 +121,16 @@ public class WindowModifier: WindowModifierType {
 
         let screen = focusedWindow.screen()
 
-        guard let windows = delegate?.windowsForScreen(screen) where windows.count > 0 else {
+        guard let windows = delegate?.windowsForScreen(screen!), windows.count > 0 else {
             return
         }
 
         let windowToFocus: SIWindow = { () -> SIWindow in
-            if let nextWindowID = delegate?.screenManagerForScreen(screen)?.nextWindowIDClockwise() {
-                let windowToFocusIndex = windows.indexOf { $0.windowID() == nextWindowID } ?? 0
+            if let nextWindowID = delegate?.screenManagerForScreen(screen!)?.nextWindowIDClockwise() {
+                let windowToFocusIndex = windows.index { $0.windowID() == nextWindowID } ?? 0
                 return windows[windowToFocusIndex]
             } else {
-                let windowIndex = windows.indexOf(focusedWindow) ?? windows.count - 1
+                let windowIndex = windows.index(of: focusedWindow) ?? windows.count - 1
                 let windowToFocusIndex = (windowIndex + 1) % windows.count
                 return windows[windowToFocusIndex]
             }
@@ -139,17 +139,17 @@ public class WindowModifier: WindowModifierType {
         windowToFocus.am_focusWindow()
     }
 
-    public func swapFocusedWindowToMain() {
-        guard let focusedWindow = delegate?.focusedWindow() where !windowIsFloating(focusedWindow) else {
+    open func swapFocusedWindowToMain() {
+        guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             return
         }
 
         let screen = focusedWindow.screen()
-        guard let windows = delegate?.activeWindowsForScreen(screen) where windows.count > 0 else {
+        guard let windows = delegate?.activeWindowsForScreen(screen!), windows.count > 0 else {
             return
         }
 
-        guard windows.indexOf(focusedWindow) != nil else {
+        guard windows.index(of: focusedWindow) != nil else {
             return
         }
 
@@ -157,18 +157,18 @@ public class WindowModifier: WindowModifierType {
         focusedWindow.am_focusWindow()
     }
 
-    public func swapFocusedWindowCounterClockwise() {
-        guard let focusedWindow = delegate?.focusedWindow() where !windowIsFloating(focusedWindow) else {
+    open func swapFocusedWindowCounterClockwise() {
+        guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
         }
 
         let screen = focusedWindow.screen()
-        guard let windows = delegate?.activeWindowsForScreen(screen) else {
+        guard let windows = delegate?.activeWindowsForScreen(screen!) else {
             return
         }
 
-        guard let focusedWindowIndex = windows.indexOf(focusedWindow) else {
+        guard let focusedWindowIndex = windows.index(of: focusedWindow) else {
             return
         }
 
@@ -178,18 +178,18 @@ public class WindowModifier: WindowModifierType {
         focusedWindow.am_focusWindow()
     }
 
-    public func swapFocusedWindowClockwise() {
-        guard let focusedWindow = delegate?.focusedWindow() where !windowIsFloating(focusedWindow) else {
+    open func swapFocusedWindowClockwise() {
+        guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
         }
 
         let screen = focusedWindow.screen()
-        guard let windows = delegate?.activeWindowsForScreen(screen) else {
+        guard let windows = delegate?.activeWindowsForScreen(screen!) else {
             return
         }
 
-        guard let focusedWindowIndex = windows.indexOf(focusedWindow) else {
+        guard let focusedWindowIndex = windows.index(of: focusedWindow) else {
             return
         }
 
@@ -199,14 +199,14 @@ public class WindowModifier: WindowModifierType {
         focusedWindow.am_focusWindow()
     }
 
-    public func swapFocusedWindowScreenClockwise() {
-        guard let focusedWindow = delegate?.focusedWindow() where !windowIsFloating(focusedWindow) else {
+    open func swapFocusedWindowScreenClockwise() {
+        guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
         }
 
         let screen = focusedWindow.screen()
-        guard let screenManagerIndex = delegate?.screenManagerIndexForScreen(screen) else {
+        guard let screenManagerIndex = delegate?.screenManagerIndexForScreen(screen!) else {
             return
         }
 
@@ -215,19 +215,19 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
-        delegate?.markScreenForReflow(screen, withChange: .Remove(window: focusedWindow))
-        focusedWindow.moveToScreen(screenToMoveTo)
-        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow))
+        delegate?.markScreenForReflow(screen!, withChange: .remove(window: focusedWindow))
+        focusedWindow.move(to: screenToMoveTo)
+        delegate?.markScreenForReflow(screenToMoveTo, withChange: .add(window: focusedWindow))
     }
 
-    public func swapFocusedWindowScreenCounterClockwise() {
-        guard let focusedWindow = delegate?.focusedWindow() where !windowIsFloating(focusedWindow) else {
+    open func swapFocusedWindowScreenCounterClockwise() {
+        guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
         }
 
         let screen = focusedWindow.screen()
-        guard let screenManagerIndex = delegate?.screenManagerIndexForScreen(screen) else {
+        guard let screenManagerIndex = delegate?.screenManagerIndexForScreen(screen!) else {
             return
         }
 
@@ -236,46 +236,46 @@ public class WindowModifier: WindowModifierType {
             return
         }
 
-        delegate?.markScreenForReflow(screen, withChange: .Remove(window: focusedWindow))
-        focusedWindow.moveToScreen(screenToMoveTo)
-        delegate?.markScreenForReflow(screenToMoveTo, withChange: .Add(window: focusedWindow))
+        delegate?.markScreenForReflow(screen!, withChange: .remove(window: focusedWindow))
+        focusedWindow.move(to: screenToMoveTo)
+        delegate?.markScreenForReflow(screenToMoveTo, withChange: .add(window: focusedWindow))
     }
 
-    public func pushFocusedWindowToSpace(space: UInt) {
+    open func pushFocusedWindowToSpace(_ space: UInt) {
         guard let focusedWindow = delegate?.focusedWindow() else {
             return
         }
 
-        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Remove(window: focusedWindow))
-        focusedWindow.moveToSpace(space)
+        delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .remove(window: focusedWindow))
+        focusedWindow.move(toSpace: space)
         focusedWindow.am_focusWindow()
 
         // *gags*
         let delay = Int64(0.5 * Double(NSEC_PER_SEC))
-        let popTime = dispatch_time(DISPATCH_TIME_NOW, delay)
-        dispatch_after(popTime, dispatch_get_main_queue()) {
-            self.delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .Add(window: focusedWindow))
+        let popTime = DispatchTime.now() + Double(delay) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: popTime) {
+            self.delegate?.markScreenForReflow(focusedWindow.screen(), withChange: .add(window: focusedWindow))
         }
     }
 
-    public func pushFocusedWindowToSpaceLeft() {
-        guard let currentFocusedSpace = delegate?.currentFocusedSpace(), spaces = delegate?.spacesForFocusedScreen() else {
+    open func pushFocusedWindowToSpaceLeft() {
+        guard let currentFocusedSpace = delegate?.currentFocusedSpace(), let spaces = delegate?.spacesForFocusedScreen() else {
             return
         }
 
-        guard let index = spaces.indexOf(currentFocusedSpace) where index > 0 else {
+        guard let index = spaces.index(of: currentFocusedSpace), index > 0 else {
             return
         }
 
         pushFocusedWindowToSpace(UInt(index))
     }
 
-    public func pushFocusedWindowToSpaceRight() {
-        guard let currentFocusedSpace = delegate?.currentFocusedSpace(), spaces = delegate?.spacesForFocusedScreen() else {
+    open func pushFocusedWindowToSpaceRight() {
+        guard let currentFocusedSpace = delegate?.currentFocusedSpace(), let spaces = delegate?.spacesForFocusedScreen() else {
             return
         }
 
-        guard let index = spaces.indexOf(currentFocusedSpace) where index - 2 < spaces.count else {
+        guard let index = spaces.index(of: currentFocusedSpace), index - 2 < spaces.count else {
             return
         }
 
@@ -284,11 +284,11 @@ public class WindowModifier: WindowModifierType {
 }
 
 extension WindowManager: WindowModifierType {
-    public func throwToScreenAtIndex(screenIndex: Int) {
+    public func throwToScreenAtIndex(_ screenIndex: Int) {
         windowModifier.throwToScreenAtIndex(screenIndex)
     }
 
-    public func focusScreenAtIndex(screenIndex: Int) {
+    public func focusScreenAtIndex(_ screenIndex: Int) {
         windowModifier.focusScreenAtIndex(screenIndex)
     }
 
@@ -320,7 +320,7 @@ extension WindowManager: WindowModifierType {
         windowModifier.swapFocusedWindowScreenCounterClockwise()
     }
 
-    public func pushFocusedWindowToSpace(space: UInt) {
+    public func pushFocusedWindowToSpace(_ space: UInt) {
         windowModifier.pushFocusedWindowToSpace(space)
     }
 
@@ -335,10 +335,10 @@ extension WindowManager: WindowModifierType {
 
 extension WindowManager: WindowModifierDelegate {
     public func focusedWindow() -> SIWindow? {
-        return SIWindow.focusedWindow()
+        return SIWindow.focused()
     }
 
-    public func spacesForScreen(screen: NSScreen) -> [CGSSpace]? {
+    public func spacesForScreen(_ screen: NSScreen) -> [CGSSpace]? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
@@ -347,18 +347,17 @@ extension WindowManager: WindowModifierDelegate {
 
         if NSScreen.screensHaveSeparateSpaces() {
             for screenDescription in screenDescriptions {
-                guard let describedScreenIdentifier = screenDescription["Display Identifier"] as? String
-                    where describedScreenIdentifier == screenIdentifier,
+                guard let describedScreenIdentifier = screenDescription["Display Identifier"] as? String, describedScreenIdentifier == screenIdentifier,
                     let spaceDescriptions = screenDescription["Spaces"] as? [[String: AnyObject]]
                     else {
                         continue
                 }
 
-                return spaceDescriptions.map { ($0["ManagedSpaceID"] as! NSNumber).unsignedLongLongValue as CGSSpace }
+                return spaceDescriptions.map { ($0["ManagedSpaceID"] as! NSNumber).uint64Value as CGSSpace }
             }
         } else {
             guard let screenDescription = screenDescriptions.first,
-                spaceDescriptions = screenDescription["Spaces"] as? [[String: AnyObject]]
+                let spaceDescriptions = screenDescription["Spaces"] as? [[String: AnyObject]]
                 else {
                     return nil
             }
@@ -370,14 +369,14 @@ extension WindowManager: WindowModifierDelegate {
     }
 
     public func spacesForFocusedScreen() -> [CGSSpace]? {
-        guard let focusedWindow = SIWindow.focusedWindow() else {
+        guard let focusedWindow = SIWindow.focused() else {
             return nil
         }
 
         return spacesForScreen(focusedWindow.screen())
     }
 
-    public func currentSpaceForScreen(screen: NSScreen) -> CGSSpace? {
+    public func currentSpaceForScreen(_ screen: NSScreen) -> CGSSpace? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
@@ -386,54 +385,53 @@ extension WindowManager: WindowModifierDelegate {
 
         if NSScreen.screensHaveSeparateSpaces() {
             for screenDescription in screenDescriptions {
-                guard let describedScreenIdentifier = screenDescription["Display Identifier"] as? String
-                    where describedScreenIdentifier == screenIdentifier,
+                guard let describedScreenIdentifier = screenDescription["Display Identifier"] as? String, describedScreenIdentifier == screenIdentifier,
                     let cfCurrentSpace = screenDescription["Current Space"] as? [String: AnyObject],
-                    spaceNumber = cfCurrentSpace["ManagedSpaceID"] as? NSNumber
+                    let spaceNumber = cfCurrentSpace["ManagedSpaceID"] as? NSNumber
                     else {
                         continue
                 }
 
-                return spaceNumber.unsignedLongLongValue
+                return spaceNumber.uint64Value
             }
         } else {
             guard let screenDescription = screenDescriptions.first,
-                cfCurrentSpace = screenDescription["Current Space"] as? [String: AnyObject],
-                spaceNumber = cfCurrentSpace["ManagedSpaceID"] as? NSNumber
+                let cfCurrentSpace = screenDescription["Current Space"] as? [String: AnyObject],
+                let spaceNumber = cfCurrentSpace["ManagedSpaceID"] as? NSNumber
                 else {
                     return nil
             }
 
-            return spaceNumber.unsignedLongLongValue
+            return spaceNumber.uint64Value
         }
 
         return nil
     }
 
     public func currentFocusedSpace() -> CGSSpace? {
-        guard let focusedWindow = SIWindow.focusedWindow() else {
+        guard let focusedWindow = SIWindow.focused() else {
             return nil
         }
 
         return currentSpaceForScreen(focusedWindow.screen())
     }
 
-    public func screenManagerForScreen(screen: NSScreen) -> ScreenManager? {
+    public func screenManagerForScreen(_ screen: NSScreen) -> ScreenManager? {
         return screenManagers.filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }.first
     }
 
-    public func screenManagerForScreenIndex(screenIndex: Int) -> ScreenManager? {
+    public func screenManagerForScreenIndex(_ screenIndex: Int) -> ScreenManager? {
         guard screenIndex < screenManagers.count else {
             return nil
         }
         return screenManagers[screenIndex]
     }
 
-    public func screenManagerIndexForScreen(screen: NSScreen) -> Int? {
-        return screenManagers.indexOf() { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+    public func screenManagerIndexForScreen(_ screen: NSScreen) -> Int? {
+        return screenManagers.index() { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 
-    public func markScreenForReflow(screen: NSScreen, withChange change: WindowChange) {
+    public func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange) {
         for screenManager in screenManagers {
             guard screenManager.screen.screenIdentifier() == screen.screenIdentifier() else {
                 continue
@@ -443,7 +441,7 @@ extension WindowManager: WindowModifierDelegate {
         }
     }
 
-    public func windowsForScreen(screen: NSScreen) -> [SIWindow] {
+    public func windowsForScreen(_ screen: NSScreen) -> [SIWindow] {
         let screenIdentifier = screen.screenIdentifier()
         guard let spaces = NSScreen.screenDescriptions() else {
             return []
@@ -463,13 +461,13 @@ extension WindowManager: WindowModifierDelegate {
                         continue
                     }
 
-                    currentSpace = spaceIdentifier.unsignedLongLongValue
+                    currentSpace = spaceIdentifier.uint64Value
                     break
                 }
             }
         } else {
             let spaceDictionary = spaces[0]["Current Space"] as? [String: AnyObject]
-            currentSpace = (spaceDictionary?["ManagedSpaceID"] as? NSNumber)?.unsignedLongLongValue
+            currentSpace = (spaceDictionary?["ManagedSpaceID"] as? NSNumber)?.uint64Value
         }
 
         guard currentSpace != nil else {
@@ -478,11 +476,11 @@ extension WindowManager: WindowModifierDelegate {
         }
 
         let screenWindows = windows.filter() { window in
-            let windowIDsArray = [NSNumber(unsignedInt: window.windowID())] as NSArray
+            let windowIDsArray = [NSNumber(value: window.windowID() as UInt32)] as NSArray
             let spaces = CGSCopySpacesForWindows(_CGSDefaultConnection(), CGSSpaceSelector(7), windowIDsArray).takeRetainedValue() as NSArray as? [NSNumber]
-            let space = spaces?.first?.unsignedLongLongValue
+            let space = spaces?.first?.uint64Value
 
-            guard let windowScreen = window.screen() where space == currentSpace else {
+            guard let windowScreen = window.screen(), space == currentSpace else {
                 return false
             }
 
@@ -491,29 +489,29 @@ extension WindowManager: WindowModifierDelegate {
         return screenWindows
     }
 
-    public func activeWindowsForScreen(screen: NSScreen) -> [SIWindow] {
+    public func activeWindowsForScreen(_ screen: NSScreen) -> [SIWindow] {
         let activeWindows = windowsForScreen(screen).filter() { window in
             return window.shouldBeManaged() && !windowIsFloating(window)
         }
         return activeWindows
     }
 
-    public func windowIsFloating(window: SIWindow) -> Bool {
+    public func windowIsFloating(_ window: SIWindow) -> Bool {
         return floatingMap[window.windowID()] ?? false
     }
 
-    public func switchWindow(window: SIWindow, withWindow otherWindow: SIWindow) {
-        guard let windowIndex = windows.indexOf(window) else {
+    public func switchWindow(_ window: SIWindow, withWindow otherWindow: SIWindow) {
+        guard let windowIndex = windows.index(of: window) else {
             return
         }
 
-        guard let otherWindowIndex = windows.indexOf(otherWindow) else {
+        guard let otherWindowIndex = windows.index(of: otherWindow) else {
             return
         }
 
         windows[windowIndex] = otherWindow
         windows[otherWindowIndex] = window
 
-        markAllScreensForReflowWithChange(.WindowSwap(window: window, otherWindow: otherWindow))
+        markAllScreensForReflowWithChange(.windowSwap(window: window, otherWindow: otherWindow))
     }
 }

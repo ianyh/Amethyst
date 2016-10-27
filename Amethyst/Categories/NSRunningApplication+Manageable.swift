@@ -17,7 +17,7 @@ extension NSRunningApplication: BundleIdentifiable {}
 
 public extension NSRunningApplication {
     public var isManageable: Bool {
-        guard let bundleIdentifier = bundleIdentifier where !isAgent() else {
+        guard let bundleIdentifier = bundleIdentifier, !isAgent() else {
             return false
         }
 
