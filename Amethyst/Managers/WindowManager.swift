@@ -254,7 +254,10 @@ open class WindowManager: NSObject {
     fileprivate func activateApplication(_ application: SIApplication) {
         for window in windows {
             if window.processIdentifier() == application.processIdentifier() {
-                markScreenForReflow(window.screen(), withChange: .unknown)
+                guard let screen = window.screen() else {
+                    return
+                }
+                markScreenForReflow(screen, withChange: .unknown)
             }
         }
     }
@@ -262,7 +265,10 @@ open class WindowManager: NSObject {
     fileprivate func deactivateApplication(_ application: SIApplication) {
         for window in windows {
             if window.processIdentifier() == application.processIdentifier() {
-                markScreenForReflow(window.screen(), withChange: .unknown)
+                guard let screen = window.screen() else {
+                    return
+                }
+                markScreenForReflow(screen, withChange: .unknown)
             }
         }
     }
@@ -335,18 +341,22 @@ open class WindowManager: NSObject {
         }
 
         for window in windows {
-            if window == focusedWindow {
+            if let screen = window.screen(), window == focusedWindow {
                 let windowChange: WindowChange = windowIsFloating(window) ? .add(window: window) : .remove(window: window)
                 floatingMap[window.windowID()] = !windowIsFloating(window)
-                markScreenForReflow(window.screen(), withChange: windowChange)
+                markScreenForReflow(screen, withChange: windowChange)
                 return
             }
+        }
+
+        guard let screen = focusedWindow.screen() else {
+            return
         }
 
         let windowChange: WindowChange = .add(window: focusedWindow)
         addWindow(focusedWindow)
         floatingMap[focusedWindow.windowID()] = false
-        markScreenForReflow(focusedWindow.screen(), withChange: windowChange)
+        markScreenForReflow(screen, withChange: windowChange)
     }
 
     fileprivate func updateScreenManagers() {
