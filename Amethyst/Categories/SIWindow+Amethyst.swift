@@ -104,7 +104,7 @@ public extension SIWindow {
     }
 
     public func shouldBeManaged() -> Bool {
-        guard isResizable() || isMovable() else {
+        guard isMovable() else {
             return false
         }
 
