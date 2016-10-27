@@ -47,13 +47,13 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
         #if RELEASE
             let appcastURLString = { () -> String? in
                 if UserConfiguration.shared.useCanaryBuild() {
-                    return NSBundle.mainBundle().infoDictionary?["SUCanaryFeedURL"] as? String
+                    return Bundle.main.infoDictionary?["SUCanaryFeedURL"] as? String
                 } else {
-                    return NSBundle.mainBundle().infoDictionary?["SUFeedURL"] as? String
+                    return Bundle.main.infoDictionary?["SUFeedURL"] as? String
                 }
             }()!
 
-            SUUpdater.sharedUpdater().feedURL = NSURL(string: appcastURLString)
+            SUUpdater.shared().feedURL = URL(string: appcastURLString)
         #endif
 
         if let fabricData = Bundle.main.infoDictionary?["Fabric"] as? [String: AnyObject], fabricData["APIKey"] != nil {
@@ -129,7 +129,7 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction open func checkForUpdates(_ sender: AnyObject) {
         #if RELEASE
-            SUUpdater.sharedUpdater().checkForUpdates(sender)
+            SUUpdater.shared().checkForUpdates(sender)
         #endif
     }
 }
