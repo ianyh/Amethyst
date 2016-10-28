@@ -300,16 +300,11 @@ open class WindowManager: NSObject {
             self.removeWindow(window)
         }
         application.observeNotification(kAXWindowMiniaturizedNotification as CFString!, with: window) { accessibilityElement in
+            self.removeWindow(window)
             guard let screen = window.screen() else {
                 return
             }
             self.markScreenForReflow(screen, withChange: .remove(window: window))
-        }
-        application.observeNotification(kAXWindowDeminiaturizedNotification as CFString!, with: window) { accessibilityElement in
-            guard let screen = window.screen() else {
-                return
-            }
-            self.markScreenForReflow(screen, withChange: .add(window: window))
         }
 
         guard let screen = window.screen() else {
@@ -329,9 +324,11 @@ open class WindowManager: NSObject {
         application?.unobserveNotification(kAXWindowDeminiaturizedNotification as CFString!, with: window)
 
         regenerateActiveIDCache()
+
         guard let windowIndex = windows.index(of: window) else {
             return
         }
+
         windows.remove(at: windowIndex)
     }
 
