@@ -18,7 +18,7 @@ import Sparkle
 
 open class AppDelegate: NSObject, NSApplicationDelegate {
     fileprivate var loginItem: CCNLaunchAtLoginItem?
-    fileprivate var preferencesWindowController: CCNPreferencesWindowController?
+    @IBOutlet public var preferencesWindowController: CCNPreferencesWindowController?
 
     fileprivate var windowManager: WindowManager?
     fileprivate var hotKeyManager: HotKeyManager?
@@ -66,7 +66,6 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
 
-        preferencesWindowController = CCNPreferencesWindowController()
         preferencesWindowController?.centerToolbarItems = false
         preferencesWindowController?.allowsVibrancy = true
         let preferencesViewControllers = [
