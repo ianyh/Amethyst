@@ -448,6 +448,7 @@
 				ORGANIZATIONNAME = "Ian Ynda-Hummel";
 				TargetAttributes = {
 					402DB6DD1742E41A00D1C936 = {
+						DevelopmentTeam = 82P2XLB4UH;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -799,7 +800,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
@@ -830,7 +831,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
