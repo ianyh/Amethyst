@@ -85,9 +85,11 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
 
         let version = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
         let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        let statusItemImage = NSImage(named: "icon-statusitem")
+        statusItemImage?.isTemplate = true
 
         statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
-        statusItem?.image = NSImage(named: "icon-statusitem")
+        statusItem?.image = statusItemImage
         statusItem?.menu = statusItemMenu
         statusItem?.highlightMode = true
 
