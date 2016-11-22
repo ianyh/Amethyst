@@ -230,7 +230,7 @@ open class WindowModifier: WindowModifierType {
             return
         }
 
-        let screenIndex = (screenManagerIndex + 1) % (NSScreen.screens()!.count - 1)
+        let screenIndex = (screenManagerIndex + 1) % (NSScreen.screens()!.count)
         guard let screenToMoveTo = delegate?.screenManagerForScreenIndex(screenIndex)?.screen else {
             return
         }
