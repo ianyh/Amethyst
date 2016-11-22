@@ -120,7 +120,7 @@ open class HotKeyManager: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.SwapScreenCCW.rawValue) {
-            windowManager.swapFocusedWindowCounterClockwise()
+            windowManager.swapFocusedWindowScreenCounterClockwise()
         }
 
         constructCommandWithCommandKey(CommandKey.SwapScreenCW.rawValue) {
