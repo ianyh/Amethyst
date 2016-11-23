@@ -811,7 +811,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"DEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
@@ -842,7 +842,7 @@
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CODE_SIGN_FLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"RELEASE\"";
