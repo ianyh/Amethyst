@@ -2,11 +2,11 @@ Amethyst
 ========
 
 [![Join the chat at https://gitter.im/ianyh/Amethyst](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ianyh/Amethyst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=master)](https://travis-ci.org/ianyh/Amethyst)
+[![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=development)](https://travis-ci.org/ianyh/Amethyst)
 
 Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/) and [i3](https://i3wm.org/).
 
-![Example 1](http://ianyh.com/amethyst/images/example-1.gif)
+![Windows](http://ianyh.com/amethyst/images/windows.png)
 
 A quick screencast of basic functionality can be found [here](https://youtu.be/boPilhScpkY). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
 
@@ -19,7 +19,7 @@ Amethyst is available for direct download [here](http://ianyh.com/amethyst/versi
 brew cask install amethyst
 ```
 
-Note: that Amethyst now is only supported on OS X 10.9+. The last version that supports 10.8 can be found [here](http://ianyh.com/amethyst/versions/Amethyst-0.8.2.zip).
+Note: that Amethyst now is only supported on OS X 10.10+.
 
 Using Amethyst
 ==============
@@ -47,6 +47,8 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 * `mod2 + e` - move focused window to 2nd screen
 * `mod2 + r` - move focused window to 3rd screen
 * `mod2 + [n]` - move focused window to nth space
+* `mod2 + left` - move focused window left one space
+* `mod2 + right` - move focused window right one space
 * `mod1 + h` - shrink the main pane
 * `mod1 + l` - expand the main pane
 * `mod1 + ,` - increase the number of windows in the main pane
@@ -110,7 +112,6 @@ If you are considering donating to me, you are more than welcome to. You should 
 
 And a bunch of technology-oriented ones:
 
-* [Ada Initiative](https://adainitiative.org/donate/)
 * [National Center for Women & Information Technology](https://www.ncwit.org/donate)
 * [girls who code](http://girlswhocode.com/get-involved/)
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)

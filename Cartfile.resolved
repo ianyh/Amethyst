@@ -1,2 +1,2 @@
-github "ReactiveCocoa/ReactiveCocoa" "v2.4.7"
-github "sparkle-project/Sparkle" "1.13.1"
+github "robb/Cartography" "1.0.1"
+github "sparkle-project/Sparkle" "1.14.0"

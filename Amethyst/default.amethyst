@@ -1,20 +1,16 @@
 {
-    "LAYOUTS": "----------------------",
     "layouts": [
         "tall",
         "wide",
         "fullscreen",
         "column"
     ],
-
-    "MODIFIERS": "----------------------",
     "Valid modifiers are": [
         "option",
         "shift",
         "control",
         "command"
     ],
-
     "mod1": [
         "option",
         "shift"
@@ -24,42 +20,7 @@
         "shift",
         "control"
     ],
-
-    "COMMANDS": "----------------------",
-    "Commands are": {
-        "cycle-layout": "Cycle layout to the next layout",
-        "cycle-layout-backward": "Cycle layout to the previous layout",
-        "focus-screen-1": "Focus the main window on the first screen",
-        "focus-screen-2": "Focus the main window on the second screen",
-        "focus-screen-3": "Focus the main window on the third screen",
-        "focus-screen-4": "Focus the main window on the fourth screen",
-        "throw-screen-1": "Throw the focused window to the first screen",
-        "throw-screen-2": "Throw the focused window to the second screen",
-        "throw-screen-3": "Throw the focused window to the third screen",
-        "throw-screen-4": "Throw the focused window to the fourth screen",
-        "shrink-main": "Shrink the main pane of the current layout",
-        "expand-main": "Expand the main pane of the current layout",
-        "increase-main": "Increase the number of windows in the main pane",
-        "decrease-main": "Decrease the number of windows in the main pane",
-        "focus-ccw": "Move window focus counter-clockwise on the current screen",
-        "focus-cw": "Move window focus clockwise on the current screen",
-        "swap-ccw": "Swap focused window with the next window going counter-clockwise",
-        "swap-cw": "Swap focused window with the next window going clockwise",
-        "swap-main": "Swap focused window with the main window of its screen",
-        "throw-space-1": "Throw the focused window to the first space",
-        "throw-space-2": "Throw the focused window to the second space",
-        "throw-space-3": "Throw the focused window to the third space",
-        "throw-space-4": "Throw the focused window to the fourth space",
-        "throw-space-5": "Throw the focused window to the fifth space",
-        "throw-space-6": "Throw the focused window to the sixth space",
-        "throw-space-7": "Throw the focused window to the seventh space",
-        "throw-space-8": "Throw the focused window to the eighth space",
-        "throw-space-9": "Throw the focused window to the ninth space",
-        "toggle-float": "Toggle the focused window between being floating and tiled"
-    },
-
-    "screens": "4",
-
+    "screens": 4,
     "cycle-layout": {
         "mod": "mod1",
         "key": "space"
@@ -196,6 +157,14 @@
         "mod": "mod2",
         "key": "9"
     },
+    "throw-space-left": {
+        "mod": "mod2",
+        "key": "left"
+    },
+    "throw-space-right": {
+        "mod": "mod2",
+        "key": "right"
+    },
     "toggle-float": {
         "mod": "mod1",
         "key": "t"
@@ -208,8 +177,14 @@
         "mod": "mod1",
         "key": "i"
     },
-
-    "MISC": "----------------------",
+    "reevaluate-windows": {
+        "mod": "mod1",
+        "key": "z"
+    },
+    "toggle-focus-follows-mouse": {
+        "mod": "mod2",
+        "key": "x"
+    },
     "floating": [],
     "float-small-windows": true,
     "mouse-follows-focus": false,
@@ -217,5 +192,10 @@
     "enables-layout-hud": true,
     "enables-layout-hud-on-space-change": true,
     "window-margin-size": 0,
-    "window-margins": false
+    "window-resize-step": 5,
+    "window-margins": false,
+    "ignore-menu-bar": false,
+    "use-canary-build": false,
+    "new-windows-to-main": false,
+    "send-crash-reports": false
 }

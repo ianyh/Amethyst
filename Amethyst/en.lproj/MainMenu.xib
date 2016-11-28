@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -33,7 +35,7 @@
                 <menuItem title="Check for Updates..." id="554">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
-                        <action selector="checkForUpdates:" target="552" id="555"/>
+                        <action selector="checkForUpdates:" target="494" id="l9Y-Ct-Bzq"/>
                     </connections>
                 </menuItem>
                 <menuItem title="Relaunch Amethyst" id="8DH-wG-R1x">
@@ -50,14 +52,30 @@
                 </menuItem>
             </items>
         </menu>
-        <customObject id="494" customClass="AMAppDelegate">
+        <customObject id="494" customClass="AppDelegate" customModule="Amethyst" customModuleProvider="target">
             <connections>
+                <outlet property="preferencesWindowController" destination="0fi-bi-huz" id="dfn-JC-QBQ"/>
                 <outlet property="startAtLoginMenuItem" destination="549" id="551"/>
                 <outlet property="statusItemMenu" destination="536" id="547"/>
                 <outlet property="versionMenuItem" destination="bNZ-Ry-Q4Q" id="jXC-pY-N2a"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <customObject id="552" customClass="SUUpdater"/>
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="pO4-7U-3HA" customClass="CCNPreferencesWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowPositionMask key="initialPositionMask" topStrut="YES"/>
+            <rect key="contentRect" x="446" y="472" width="480" height="270"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <view key="contentView" id="IHj-fa-gIc">
+                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </view>
+            <point key="canvasLocation" x="606" y="152"/>
+        </window>
+        <customObject id="0fi-bi-huz" userLabel="Preferences Window Controller" customClass="CCNPreferencesWindowController">
+            <connections>
+                <outlet property="window" destination="pO4-7U-3HA" id="9gm-N1-3ZQ"/>
+            </connections>
+        </customObject>
     </objects>
 </document>
