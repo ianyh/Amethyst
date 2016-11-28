@@ -4,7 +4,7 @@ Amethyst
 [![Join the chat at https://gitter.im/ianyh/Amethyst](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ianyh/Amethyst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=development)](https://travis-ci.org/ianyh/Amethyst)
 
-Tiling window manager for OS X along the lines of [xmonad](http://xmonad.org/) and [i3](https://i3wm.org/).
+Tiling window manager for macOS along the lines of [xmonad](http://xmonad.org/).
 
 ![Windows](http://ianyh.com/amethyst/images/windows.png)
 
@@ -19,7 +19,7 @@ Amethyst is available for direct download [here](http://ianyh.com/amethyst/versi
 brew cask install amethyst
 ```
 
-Note: that Amethyst now is only supported on OS X 10.10+.
+Note: that Amethyst now is only supported on OS X 10.12+.
 
 Using Amethyst
 ==============
@@ -57,10 +57,13 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 * `mod1 + k` - focus the next window clockwise
 * `mod2 + j` - move the focused window one space counterclockwise
 * `mod2 + k` - move the focused window one space clockwise
+* `mod2 + h` - move the focused window one window counterclockwise
+* `mod2 + l` - move the focused window one window clockwise
 * `mod1 + return` - swap the focused window with the main window
 * `mod1 + t` - toggle whether or not the focused window is floating
 * `mod2 + t` - toggle globally whether or not Amethyst tiles windows
 * `mod1 + i` - display the current layout for each screen
+* `mod1 + z` - force windows to be reevalulated
 
 Setting Up Spaces Support
 -------------------------
@@ -91,7 +94,7 @@ In order to build Amethyst locally, you'll need to also perform the following st
 Contact
 =======
 
-If you have questions or feedback you have a plethora of options. You can [email me](mailto:ianynda@gmail.com), [tweet at me](https://twitter.com/ianyh), or get on [gitter](https://gitter.im/ianyh/Amethyst). That last one is new and kind of experimental. You can [drop by #amethyst on Freenode](http://webchat.freenode.net/?channels=amethyst), as well, but I am on there fairly infrequently.
+If you have questions or feedback you have a plethora of options. You can [email me](mailto:ianynda@gmail.com), [tweet at me](https://twitter.com/ianyh), or get on [gitter](https://gitter.im/ianyh/Amethyst).
 
 Donating
 ========
