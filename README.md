@@ -108,7 +108,6 @@ Amethyst is free and always will be. That said, a couple of people have expresse
 
 If you are considering donating to me, you are more than welcome to. You should also consider donating that money to a charity in addition to or instead. Here's a very incomplete list of things that you might want to throw money at:
 
-* [Freedom to Marry](https://secure.freedomtomarry.org/pages/donatetowin?source=BSDAds_GoogleGrant_EOY2013_Freedom%20to%20Marry-GG_Freedom%20to%20Marry_freedomtomarry&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAsmb9ggRZp1ukDdxwvn7Y-1AN7mhTPZxcpC3dNokzY8aAmcl8P8HAQ)
 * [Doctors Without Borders](https://donate.doctorswithoutborders.org/monthly.cfm?source=AZD140001D51&utm_source=google&utm_medium=ppc&gclid=Cj0KEQjwq52iBRDEvrC12Jnz6coBEiQA2otXAt-jLIelzmFWTo9t3xnrXGnyjffRnHQ_Ug2o6C1PdvkaAqQt8P8HAQ)
 * [American Civil Liberties Union](https://www.aclu.org/secure/our-civil-liberties-are-under-attack-3?s_src=UNW140001SEM&ms=gad_SEM_Google_Search-Evergreen-ACLU%20Brand_ACLU%20Name%20Terms_DD_B2_aclu_e_53001180982)
 * [Heifer International](http://www.heifer.org/what-you-can-do/index.html)
