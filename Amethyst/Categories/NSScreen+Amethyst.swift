@@ -12,7 +12,9 @@ import Silica
 
 public extension NSScreen {
     public static func screenDescriptions() -> [[String: AnyObject]]? {
-        let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection()).takeRetainedValue()
+        guard let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection())?.takeRetainedValue() else {
+            return nil
+        }
         guard let screenDescriptions = cfScreenDescriptions as NSArray as? [[String: AnyObject]] else {
             return nil
         }
