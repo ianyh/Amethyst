@@ -8,8 +8,7 @@
 
 import Silica
 
-
-private class AutoBinarySpacePartitioningReflowOperation: ReflowOperation {
+private class AutoBSPReflowOperation: ReflowOperation {
     fileprivate let layout: AutoBinarySpacePartitioningLayout
 
     fileprivate init(screen: NSScreen, windows: [SIWindow], layout: AutoBinarySpacePartitioningLayout, windowActivityCache: WindowActivityCache) {
@@ -114,7 +113,7 @@ open class AutoBinarySpacePartitioningLayout: Layout {
     fileprivate var mainPaneRatio: CGFloat = 0.5
 
     override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
-        return AutoBinarySpacePartitioningReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
+        return AutoBSPReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
     }
 
     override open func expandMainPane() {
