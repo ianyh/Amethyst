@@ -42,11 +42,11 @@ private class AutoBSPReflowOperation: ReflowOperation {
             }
 
             //Sanity check solution
-            if largestAreaIndex < 0  {
+            if largestAreaIndex < 0 {
                 NSLog("Unable to find a window to split: Index of window of -1 is invalid")
                 return
             }
-            if largestArea <= 0  {
+            if largestArea <= 0 {
                 NSLog("Unable to find a window to split: Largest window area of < 1 is invalid")
                 return
             }
@@ -57,7 +57,7 @@ private class AutoBSPReflowOperation: ReflowOperation {
             var childFrame2: CGRect
 
             //Figure out how to split the frame
-            if splittableFrame.size.width > splittableFrame.size.height  {
+            if splittableFrame.size.width > splittableFrame.size.height {
                 //split vertically x | x
                 let newWidth1 = floor(splittableFrame.size.width * layout.mainPaneRatio)
                 let newWidth2 = ceil(splittableFrame.size.width - newWidth1)
