@@ -11,12 +11,12 @@ import Silica
 
 private class AutoBinarySpacePartitioningReflowOperation: ReflowOperation {
     fileprivate let layout: AutoBinarySpacePartitioningLayout
-    
+
     fileprivate init(screen: NSScreen, windows: [SIWindow], layout: AutoBinarySpacePartitioningLayout, windowActivityCache: WindowActivityCache) {
         self.layout = layout
         super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
     }
-    
+
     fileprivate override func main() {
         if windows.count == 0 {
             return
@@ -26,7 +26,7 @@ private class AutoBinarySpacePartitioningReflowOperation: ReflowOperation {
         // Add the first frame which is the whole screen
         let screenFrame = adjustedFrameForLayout(screen)
         binaryFrames.append(screenFrame)
-        
+
         // Split until we have the right number of frames to hold the windows
         while(binaryFrames.count < windows.count){
             //Find the frame with the largest area and then split it
@@ -34,14 +34,14 @@ private class AutoBinarySpacePartitioningReflowOperation: ReflowOperation {
             var largestAreaIndex = -1
             for index in 0...(binaryFrames.count-1) {
                 let candidate:CGRect = binaryFrames[index]
-                
+
                 let area = Float(candidate.size.width) * Float(candidate.size.height)
                 if(area >= largestArea){ //Prefer later matches
                     largestArea = area
                     largestAreaIndex = index
                 }
             }
-            
+
             //Sanity check solution
             if(largestAreaIndex < 0){
                 NSLog("Unable to find a window to split: Index of window of -1 is invalid")
@@ -51,13 +51,12 @@ private class AutoBinarySpacePartitioningReflowOperation: ReflowOperation {
                 NSLog("Unable to find a window to split: Largest window area of < 1 is invalid")
                 return
             }
-            
+
             //Calculate two child frames
             let splittableFrame = binaryFrames[largestAreaIndex]
             var childFrame1:CGRect
             var childFrame2:CGRect
-            
-            
+
             //Figure out how to split the frame
             if(splittableFrame.size.width > splittableFrame.size.height){
                 //split vertically x | x
@@ -83,26 +82,26 @@ private class AutoBinarySpacePartitioningReflowOperation: ReflowOperation {
             binaryFrames[largestAreaIndex] = childFrame1
             binaryFrames.append(childFrame2)
         }
-        
+
         //Assign windows to binaryFrames
         let focusedWindow = SIWindow.focused()
-        
+
         let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
-            
+
             let windowFrame = binaryFrames[frameAssignments.count]
-            
+
             let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
-            
+
             assignments.append(frameAssignment)
-            
+
             return assignments
         }
-        
+
         if isCancelled {
             return
         }
-        
+
         performFrameAssignments(frameAssignments)
     }
 }
@@ -110,26 +109,26 @@ private class AutoBinarySpacePartitioningReflowOperation: ReflowOperation {
 open class AutoBinarySpacePartitioningLayout: Layout {
     override open class var layoutName: String { return "Auto Binary Space Partition" }
     override open class var layoutKey: String { return "absp" }
-    
+
     fileprivate var mainPaneCount: Int = 1
     fileprivate var mainPaneRatio: CGFloat = 0.5
-    
+
     override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         return AutoBinarySpacePartitioningReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
     }
-    
+
     override open func expandMainPane() {
         mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
-    
+
     override open func shrinkMainPane() {
         mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
-    
+
     override open func increaseMainPaneCount() {
         mainPaneCount = mainPaneCount + 1
     }
-    
+
     override open func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
