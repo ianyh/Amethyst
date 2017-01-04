@@ -13,58 +13,58 @@ internal class TreeNode {
     var left: TreeNode?
     var right: TreeNode?
     var windowID: CGWindowID?
-    
+
     var valid: Bool {
         return (left != nil && right != nil && windowID == nil) || (left == nil && right == nil && windowID != nil)
     }
-    
+
     func findWindowID(_ windowID: CGWindowID) -> TreeNode? {
         guard self.windowID == windowID else {
             return left?.findWindowID(windowID) ?? right?.findWindowID(windowID)
         }
-        
+
         return self
     }
-    
+
     func orderedWindowIDs() -> [CGWindowID] {
         guard let windowID = windowID else {
             let leftWindowIDs = left?.orderedWindowIDs() ?? []
             let rightWindowIDs = right?.orderedWindowIDs() ?? []
             return leftWindowIDs + rightWindowIDs
         }
-        
+
         return [windowID]
     }
-    
+
     func insertWindowIDAtEnd(_ windowID: CGWindowID) {
         guard left == nil && right == nil else {
             right?.insertWindowIDAtEnd(windowID)
             return
         }
-        
+
         insertWindowID(windowID)
     }
-    
+
     func insertWindowID(_ windowID: CGWindowID, atPoint insertionPoint: CGWindowID) {
         guard self.windowID == insertionPoint else {
             left?.insertWindowID(windowID, atPoint: insertionPoint)
             right?.insertWindowID(windowID, atPoint: insertionPoint)
             return
         }
-        
+
         insertWindowID(windowID)
     }
-    
+
     func removeWindowID(_ windowID: CGWindowID) {
         guard let node = findWindowID(windowID) else {
             LogManager.log?.error("Trying to remove window not in tree")
             return
         }
-        
+
         guard let parent = node.parent else {
             return
         }
-        
+
         guard let grandparent = parent.parent else {
             if node == parent.left {
                 parent.windowID = parent.right?.windowID
