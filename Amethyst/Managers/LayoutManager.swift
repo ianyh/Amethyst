@@ -31,6 +31,8 @@ open class LayoutManager {
             return WidescreenTallLayout.self
         case "bsp":
             return BinarySpacePartitioningLayout.self
+        case "absp":
+            return AutoBinarySpacePartitioningLayout.self
         default:
             return nil
         }
@@ -51,7 +53,8 @@ open class LayoutManager {
             RowLayout.self,
             FloatingLayout.self,
             WidescreenTallLayout.self,
-            BinarySpacePartitioningLayout.self
+            BinarySpacePartitioningLayout.self,
+            AutoBinarySpacePartitioningLayout.self
         ]
 
         return layoutClasses.map { LayoutManager.stringForLayoutClass($0) }
