@@ -62,7 +62,7 @@ open class ReflowOperation: Operation {
         }
     }
 
-    open func isDegenerateWindow(window:SIWindow) -> Bool {
+    open func isDegenerateWindow(window: SIWindow) -> Bool {
         let window_frame = window.frame()
         if window_frame.origin.x < 0.0 {
             return true
@@ -104,7 +104,7 @@ open class ReflowOperation: Operation {
         return false
     }
 
-    fileprivate func categorizeWindows(candidateFrames: [CGRect]) -> ([SIWindow],[SIWindow]) {
+    fileprivate func categorizeWindows(candidateFrames: [CGRect]) -> ([SIWindow], [SIWindow]) {
 
         var displaced: [SIWindow] = []
         var aligned: [SIWindow] = []
@@ -133,7 +133,7 @@ open class ReflowOperation: Operation {
                 }
             }
         }
-        return (displaced,aligned)
+        return (displaced, aligned)
 
     }
 
@@ -141,7 +141,7 @@ open class ReflowOperation: Operation {
 
         var candidateFramesMutable = candidateFrames
         //Find those windows that are not perfectly on top of a frame to assign first, because those are the ones that have been newly created or manually moved
-        let (displacedWindows,alignedWindows) = categorizeWindows(candidateFrames: candidateFrames)
+        let (displacedWindows, alignedWindows) = categorizeWindows(candidateFrames: candidateFrames)
 
         //Now preferentially assign displaced windows a location
         let screenFrame = adjustedFrameForLayout(screen)
@@ -156,7 +156,7 @@ open class ReflowOperation: Operation {
                 let window_frame = window.frame()
                 let windows_center_x = window_frame.origin.x + (window_frame.width/2.0)
                 let windows_center_y = window_frame.origin.y + (window_frame.height/2.0)
-                for (index,frame) in candidateFramesMutable.enumerated() {
+                for (index, frame) in candidateFramesMutable.enumerated() {
                     let frame_center_x = frame.origin.x + (frame.width/2.0)
                     let frame_center_y = frame.origin.y + (frame.height/2.0)
                     let distance_x = (frame_center_x - windows_center_x)
@@ -186,7 +186,7 @@ open class ReflowOperation: Operation {
                 let window_frame = window.frame()
                 let windows_center_x = window_frame.origin.x + (window_frame.width/2.0)
                 let windows_center_y = window_frame.origin.y + (window_frame.height/2.0)
-                for (index,frame) in candidateFramesMutable.enumerated() {
+                for (index, frame) in candidateFramesMutable.enumerated() {
                     let frame_center_x = frame.origin.x + (frame.width/2.0)
                     let frame_center_y = frame.origin.y + (frame.height/2.0)
                     let distance_x = (frame_center_x - windows_center_x)
@@ -218,7 +218,7 @@ open class ReflowOperation: Operation {
             if !isDegenerateWindow(window:window) {
                 let windows_center_x = window_frame.origin.x + (window_frame.width/2.0)
                 let windows_center_y = window_frame.origin.y + (window_frame.height/2.0)
-                for (index,frame) in candidateFramesMutable.enumerated() {
+                for (index, frame) in candidateFramesMutable.enumerated() {
                     let frame_center_x = frame.origin.x + (frame.width/2.0)
                     let frame_center_y = frame.origin.y + (frame.height/2.0)
                     let distance_x = (frame_center_x - windows_center_x)
