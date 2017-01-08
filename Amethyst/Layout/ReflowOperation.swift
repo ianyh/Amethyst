@@ -61,7 +61,7 @@ open class ReflowOperation: Operation {
             self.assignFrame(frameAssignment.frame, toWindow: frameAssignment.window, focused: frameAssignment.focused, screenFrame: frameAssignment.screenFrame)
         }
     }
-    
+
     open func isDegenerateWindow(window:SIWindow) -> Bool{
         let window_frame = window.frame()
         if window_frame.origin.x < 0.0 {
@@ -82,7 +82,7 @@ open class ReflowOperation: Operation {
         if window_frame.origin.y.isNaN{
             return true
         }
-    
+
         if window_frame.width <= 0.0 {
             return true
         }
@@ -103,11 +103,11 @@ open class ReflowOperation: Operation {
         }
         return false
     }
-    
+
     open func assignWindowsToFramesBasedOnDistance(candidateFrames:[CGRect]) {
-        
+
         var candidateFramesCopy = candidateFrames
-        
+
         //Find those windows that are not perfectly on top of a frame to assign first, because those are the ones that have been newly created or manually moved
         var displacedWindows: [SIWindow] = []
         var alignedWindows: [SIWindow] = []
@@ -137,7 +137,7 @@ open class ReflowOperation: Operation {
                 }
             }
         }
-        
+
         //Now preferentially assign displaced windows a location
         let screenFrame = adjustedFrameForLayout(screen)
         let focusedWindow = SIWindow.focused()
@@ -145,7 +145,7 @@ open class ReflowOperation: Operation {
         for window in displacedWindows{
             var min_distance = FLT_MAX
             var min_index = -1
-    
+
             //Sometimes the windows become degenerate for some reason
             if !isDegenerateWindow(window:window){
                 let window_frame = window.frame()
@@ -169,13 +169,13 @@ open class ReflowOperation: Operation {
                 candidateFramesCopy.remove(at: min_index)
             }
         }
-        
+
         //Now assigned aligned windows that are still aligned a location
         var alignedNoMoreWindows: [SIWindow] = []
         for window in alignedWindows{
             var min_distance = FLT_MAX
             var min_index = -1
-    
+
             //Sometimes the windows become degenerate for some reason, ignore them
             if !isDegenerateWindow(window:window){
                 let window_frame = window.frame()
@@ -203,7 +203,7 @@ open class ReflowOperation: Operation {
                 candidateFramesCopy.remove(at: min_index)
             }
         }
-        
+
         //Now assigned anything that is left
         for window in alignedNoMoreWindows{
             var min_distance = FLT_MAX
@@ -231,7 +231,7 @@ open class ReflowOperation: Operation {
                 candidateFramesCopy.remove(at: min_index)
             }
         }
-    
+
         performFrameAssignments(frameAssignments)
     }
 
