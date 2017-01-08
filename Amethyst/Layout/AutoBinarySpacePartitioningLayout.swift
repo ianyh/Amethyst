@@ -17,19 +17,28 @@ private class AutoBSPReflowOperation: ReflowOperation {
     }
 
     fileprivate override func main() {
-        if windows.count == 0 {
+        //Check to see how many legit windows we have
+        var windows_count = 0
+        for window in self.windows{
+            if !isDegenerateWindow(window:window){
+                windows_count = windows_count + 1
+            }
+        }
+        if windows_count == 0 {
             return
         }
-        // Create an array to hold all the window frames
+        
+        // Create an array to hold all the candidate frames
         var binaryFrames = [CGRect]()
+        
         // Add the first frame which is the whole screen
         let screenFrame = adjustedFrameForLayout(screen)
         binaryFrames.append(screenFrame)
-
+        
         // Split until we have the right number of frames to hold the windows
-        while binaryFrames.count < windows.count {
+        while binaryFrames.count < windows_count {
             //Find the frame with the largest area and then split it
-            var largestArea: Float = -1.0
+            var largestArea: Float = -FLT_MAX
             var largestAreaIndex = -1
             for index in 0...(binaryFrames.count-1) {
                 let candidate: CGRect = binaryFrames[index]
@@ -82,26 +91,12 @@ private class AutoBSPReflowOperation: ReflowOperation {
             binaryFrames.append(childFrame2)
         }
 
-        //Assign windows to binaryFrames
-        let focusedWindow = SIWindow.focused()
-
-        let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
-            var assignments = frameAssignments
-
-            let windowFrame = binaryFrames[frameAssignments.count]
-
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
-
-            assignments.append(frameAssignment)
-
-            return assignments
-        }
-
         if isCancelled {
             return
         }
-
-        performFrameAssignments(frameAssignments)
+        
+        //Assign windows to binaryFrames
+        assignWindowsToFramesBasedOnDistance(candidateFrames: binaryFrames)
     }
 }
 
