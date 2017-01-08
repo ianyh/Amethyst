@@ -103,9 +103,9 @@ open class ReflowOperation: Operation {
         }
         return false
     }
-    
+
     fileprivate func categorizeWindows(candidateFrames: [CGRect]) -> ([SIWindow],[SIWindow]) {
-        
+
         var displaced: [SIWindow] = []
         var aligned: [SIWindow] = []
         for window in self.windows {
@@ -134,7 +134,7 @@ open class ReflowOperation: Operation {
             }
         }
         return (displaced,aligned)
-        
+
     }
 
     open func assignWindowsToFramesBasedOnDistance(candidateFrames: [CGRect]) {
@@ -142,8 +142,6 @@ open class ReflowOperation: Operation {
         var candidateFramesMutable = candidateFrames
         //Find those windows that are not perfectly on top of a frame to assign first, because those are the ones that have been newly created or manually moved
         let (displacedWindows,alignedWindows) = categorizeWindows(candidateFrames: candidateFrames)
-
-        
 
         //Now preferentially assign displaced windows a location
         let screenFrame = adjustedFrameForLayout(screen)
