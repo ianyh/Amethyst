@@ -27,14 +27,14 @@ private class AutoBSPReflowOperation: ReflowOperation {
         if windows_count == 0 {
             return
         }
-        
+
         // Create an array to hold all the candidate frames
         var binaryFrames = [CGRect]()
-        
+
         // Add the first frame which is the whole screen
         let screenFrame = adjustedFrameForLayout(screen)
         binaryFrames.append(screenFrame)
-        
+
         // Split until we have the right number of frames to hold the windows
         while binaryFrames.count < windows_count {
             //Find the frame with the largest area and then split it
@@ -94,7 +94,7 @@ private class AutoBSPReflowOperation: ReflowOperation {
         if isCancelled {
             return
         }
-        
+
         //Assign windows to binaryFrames
         assignWindowsToFramesBasedOnDistance(candidateFrames: binaryFrames)
     }
