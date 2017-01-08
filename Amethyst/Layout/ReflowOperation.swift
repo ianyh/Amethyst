@@ -62,150 +62,157 @@ open class ReflowOperation: Operation {
         }
     }
 
-    open func isDegenerateWindow(window:SIWindow) -> Bool{
+    open func isDegenerateWindow(window:SIWindow) -> Bool {
         let window_frame = window.frame()
         if window_frame.origin.x < 0.0 {
             return true
         }
-        if window_frame.origin.x.isInfinite{
+        if window_frame.origin.x.isInfinite {
             return true
         }
-        if window_frame.origin.x.isNaN{
+        if window_frame.origin.x.isNaN {
             return true
         }
         if window_frame.origin.y < 0.0 {
             return true
         }
-        if window_frame.origin.y.isInfinite{
+        if window_frame.origin.y.isInfinite {
             return true
         }
-        if window_frame.origin.y.isNaN{
+        if window_frame.origin.y.isNaN {
             return true
         }
 
         if window_frame.width <= 0.0 {
             return true
         }
-        if window_frame.width.isInfinite{
+        if window_frame.width.isInfinite {
             return true
         }
-        if window_frame.width.isNaN{
+        if window_frame.width.isNaN {
             return true
         }
         if window_frame.height <= 0.0 {
             return true
         }
-        if window_frame.height.isInfinite{
+        if window_frame.height.isInfinite {
             return true
         }
-        if window_frame.height.isNaN{
+        if window_frame.height.isNaN {
             return true
         }
         return false
     }
-
-    open func assignWindowsToFramesBasedOnDistance(candidateFrames:[CGRect]) {
-
-        var candidateFramesCopy = candidateFrames
-
-        //Find those windows that are not perfectly on top of a frame to assign first, because those are the ones that have been newly created or manually moved
-        var displacedWindows: [SIWindow] = []
-        var alignedWindows: [SIWindow] = []
-
-        for window in self.windows{
+    
+    fileprivate func categorizeWindows(candidateFrames: [CGRect]) -> ([SIWindow],[SIWindow]) {
+        
+        var displaced: [SIWindow] = []
+        var aligned: [SIWindow] = []
+        for window in self.windows {
             //Sometimes the windows become degenerate for some reason, ignore them
             if !isDegenerateWindow(window:window) {
                 var min_distance = FLT_MAX
                 let window_frame = window.frame()
                 let windows_center_x = window_frame.origin.x + (window_frame.width/2.0)
                 let windows_center_y = window_frame.origin.y + (window_frame.height/2.0)
-                for frame in candidateFramesCopy{
+                for frame in candidateFrames {
                     let frame_center_x = frame.origin.x + (frame.width/2.0)
                     let frame_center_y = frame.origin.y + (frame.height/2.0)
                     let distance_x = (frame_center_x - windows_center_x)
                     let distance_y = (frame_center_y - windows_center_y)
                     let distance = sqrt(distance_x*distance_x + distance_y*distance_y)
-                    if(Float(distance) < min_distance){
+                    if Float(distance) < min_distance {
                         min_distance = Float(distance)
                     }
                 }
-                if(min_distance < 1.0){
-                    alignedWindows.append(window)
+                if min_distance < 1.0 {
+                    aligned.append(window)
                 }
-                else{
-                    displacedWindows.append(window)
+                else {
+                    displaced.append(window)
                 }
             }
         }
+        return (displaced,aligned)
+        
+    }
+
+    open func assignWindowsToFramesBasedOnDistance(candidateFrames: [CGRect]) {
+
+        var candidateFramesMutable = candidateFrames
+        //Find those windows that are not perfectly on top of a frame to assign first, because those are the ones that have been newly created or manually moved
+        let (displacedWindows,alignedWindows) = categorizeWindows(candidateFrames: candidateFrames)
+
+        
 
         //Now preferentially assign displaced windows a location
         let screenFrame = adjustedFrameForLayout(screen)
         let focusedWindow = SIWindow.focused()
         var frameAssignments: [FrameAssignment] = []
-        for window in displacedWindows{
+        for window in displacedWindows {
             var min_distance = FLT_MAX
             var min_index = -1
 
             //Sometimes the windows become degenerate for some reason
-            if !isDegenerateWindow(window:window){
+            if !isDegenerateWindow(window:window) {
                 let window_frame = window.frame()
                 let windows_center_x = window_frame.origin.x + (window_frame.width/2.0)
                 let windows_center_y = window_frame.origin.y + (window_frame.height/2.0)
-                for (index,frame) in candidateFramesCopy.enumerated(){
+                for (index,frame) in candidateFramesMutable.enumerated() {
                     let frame_center_x = frame.origin.x + (frame.width/2.0)
                     let frame_center_y = frame.origin.y + (frame.height/2.0)
                     let distance_x = (frame_center_x - windows_center_x)
                     let distance_y = (frame_center_y - windows_center_y)
                     let distance = sqrt(distance_x*distance_x + distance_y*distance_y)
-                    if(Float(distance) < min_distance){
+                    if Float(distance) < min_distance {
                         min_distance = Float(distance)
                         min_index = index
                     }
                 }
             }
-            if(min_index != -1){
-                let frameAssignment = FrameAssignment(frame: candidateFramesCopy[min_index], window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
+            if min_index != -1 {
+                let frameAssignment = FrameAssignment(frame: candidateFramesMutable[min_index], window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
                 frameAssignments.append(frameAssignment)
-                candidateFramesCopy.remove(at: min_index)
+                candidateFramesMutable.remove(at: min_index)
             }
         }
 
         //Now assigned aligned windows that are still aligned a location
         var alignedNoMoreWindows: [SIWindow] = []
-        for window in alignedWindows{
+        for window in alignedWindows {
             var min_distance = FLT_MAX
             var min_index = -1
 
             //Sometimes the windows become degenerate for some reason, ignore them
-            if !isDegenerateWindow(window:window){
+            if !isDegenerateWindow(window:window) {
                 let window_frame = window.frame()
                 let windows_center_x = window_frame.origin.x + (window_frame.width/2.0)
                 let windows_center_y = window_frame.origin.y + (window_frame.height/2.0)
-                for (index,frame) in candidateFramesCopy.enumerated(){
+                for (index,frame) in candidateFramesMutable.enumerated() {
                     let frame_center_x = frame.origin.x + (frame.width/2.0)
                     let frame_center_y = frame.origin.y + (frame.height/2.0)
                     let distance_x = (frame_center_x - windows_center_x)
                     let distance_y = (frame_center_y - windows_center_y)
                     let distance = sqrt(distance_x*distance_x + distance_y*distance_y)
-                    if(Float(distance) < min_distance){
+                    if Float(distance) < min_distance {
                         min_distance = Float(distance)
                         min_index = index
                     }
                 }
             }
             //If a displaced window took the frame that the previously aligned window was aligned to, then it is no longer aligned
-            if(min_distance >= 1.0){
+            if min_distance >= 1.0 {
                 alignedNoMoreWindows.append(window)
             }
             else {
-                let frameAssignment = FrameAssignment(frame: candidateFramesCopy[min_index], window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
+                let frameAssignment = FrameAssignment(frame: candidateFramesMutable[min_index], window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
                 frameAssignments.append(frameAssignment)
-                candidateFramesCopy.remove(at: min_index)
+                candidateFramesMutable.remove(at: min_index)
             }
         }
 
         //Now assigned anything that is left
-        for window in alignedNoMoreWindows{
+        for window in alignedNoMoreWindows {
             var min_distance = FLT_MAX
             var min_index = -1
             let window_frame = window.frame()
@@ -213,22 +220,22 @@ open class ReflowOperation: Operation {
             if !isDegenerateWindow(window:window) {
                 let windows_center_x = window_frame.origin.x + (window_frame.width/2.0)
                 let windows_center_y = window_frame.origin.y + (window_frame.height/2.0)
-                for (index,frame) in candidateFramesCopy.enumerated(){
+                for (index,frame) in candidateFramesMutable.enumerated() {
                     let frame_center_x = frame.origin.x + (frame.width/2.0)
                     let frame_center_y = frame.origin.y + (frame.height/2.0)
                     let distance_x = (frame_center_x - windows_center_x)
                     let distance_y = (frame_center_y - windows_center_y)
                     let distance = sqrt(distance_x*distance_x + distance_y*distance_y)
-                    if(Float(distance) < min_distance){
+                    if Float(distance) < min_distance {
                         min_distance = Float(distance)
                         min_index = index
                     }
                 }
             }
-            if(min_index != -1){
-                let frameAssignment = FrameAssignment(frame: candidateFramesCopy[min_index], window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
+            if min_index != -1 {
+                let frameAssignment = FrameAssignment(frame: candidateFramesMutable[min_index], window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
                 frameAssignments.append(frameAssignment)
-                candidateFramesCopy.remove(at: min_index)
+                candidateFramesMutable.remove(at: min_index)
             }
         }
 
