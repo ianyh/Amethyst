@@ -19,8 +19,8 @@ private class AutoBSPReflowOperation: ReflowOperation {
     fileprivate override func main() {
         //Check to see how many legit windows we have
         var windows_count = 0
-        for window in self.windows{
-            if !isDegenerateWindow(window:window){
+        for window in self.windows {
+            if !isDegenerateWindow(window:window) {
                 windows_count = windows_count + 1
             }
         }

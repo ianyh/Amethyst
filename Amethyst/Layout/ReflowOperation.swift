@@ -94,7 +94,7 @@ open class ReflowOperation: Operation {
         }
         if window_frame.height <= 0.0 {
             return true
-        }
+        2
         if window_frame.height.isInfinite {
             return true
         }
