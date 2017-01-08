@@ -94,7 +94,7 @@ open class ReflowOperation: Operation {
         }
         if window_frame.height <= 0.0 {
             return true
-        2
+        }
         if window_frame.height.isInfinite {
             return true
         }
@@ -104,7 +104,7 @@ open class ReflowOperation: Operation {
         return false
     }
 
-    fileprivate func categorizeWindows(candidateFrames: [CGRect]) -> ([SIWindow], [SIWindow]) {
+    private func categorizeWindows(candidateFrames: [CGRect]) -> ([SIWindow], [SIWindow]) {
 
         var displaced: [SIWindow] = []
         var aligned: [SIWindow] = []
