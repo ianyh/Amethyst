@@ -64,16 +64,10 @@ open class ReflowOperation: Operation {
 
     open func isDegenerateWindow(window: SIWindow) -> Bool {
         let window_frame = window.frame()
-        if window_frame.origin.x < 0.0 {
-            return true
-        }
         if window_frame.origin.x.isInfinite {
             return true
         }
         if window_frame.origin.x.isNaN {
-            return true
-        }
-        if window_frame.origin.y < 0.0 {
             return true
         }
         if window_frame.origin.y.isInfinite {
@@ -82,7 +76,6 @@ open class ReflowOperation: Operation {
         if window_frame.origin.y.isNaN {
             return true
         }
-
         if window_frame.width <= 0.0 {
             return true
         }
