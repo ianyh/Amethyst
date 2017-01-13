@@ -55,10 +55,31 @@ open class ReflowOperation: Operation {
             }
         }
 
-        for frameAssignment in frameAssignments {
-            LogManager.log?.debug("Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
+        if UserConfiguration.shared.animateWindows() {
+            for i in stride(from:0,to:101,by:10) {
+                for frameAssignment in frameAssignments {
+                    LogManager.log?.debug("Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
+                
+                    let dx = frameAssignment.frame.origin.x - frameAssignment.window.frame().origin.x
+                    let x = Float(frameAssignment.window.frame().origin.x) + (Float(i)/100.0)*Float(dx)
+                    let dy = frameAssignment.frame.origin.y - frameAssignment.window.frame().origin.y
+                    let y = Float(frameAssignment.window.frame().origin.y) + (Float(i)/100.0)*Float(dy)
+                    let dw = frameAssignment.frame.width - frameAssignment.window.frame().width
+                    let width = Float(frameAssignment.window.frame().width) + (Float(i)/100.0)*Float(dw)
+                    let dh = frameAssignment.frame.height - frameAssignment.window.frame().height
+                    let height = Float(frameAssignment.window.frame().height) + (Float(i)/100.0)*Float(dh)
+                    self.assignFrame(CGRect(x:CGFloat(x),y:CGFloat(y),width:CGFloat(width),height:CGFloat(height)), toWindow: frameAssignment.window, focused: frameAssignment.focused, screenFrame: frameAssignment.screenFrame)
+                }
+                //usleep(10000)
+            }
+            
+        }
+        else{
+            for frameAssignment in frameAssignments {
+                LogManager.log?.debug("Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
 
-            self.assignFrame(frameAssignment.frame, toWindow: frameAssignment.window, focused: frameAssignment.focused, screenFrame: frameAssignment.screenFrame)
+                self.assignFrame(frameAssignment.frame,toWindow: frameAssignment.window, focused: frameAssignment.focused, screenFrame: frameAssignment.screenFrame)
+            }
         }
     }
 
