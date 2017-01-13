@@ -188,6 +188,14 @@ open class HotKeyManager: NSObject {
         constructCommandWithCommandKey(CommandKey.ToggleFocusFollowsMouse.rawValue) {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
+        
+        constructCommandWithCommandKey(CommandKey.ToggleAnimateWindows.rawValue) {
+            self.userConfiguration.toggleAnimateWindows()
+        }
+
+        constructCommandWithCommandKey(CommandKey.ToggleAnimateWindows.rawValue) {
+            self.userConfiguration.toggleAnimateWindows()
+        }
 
         let layoutStrings: [String] = userConfiguration.layoutStrings()
         layoutStrings.forEach { layoutString in
