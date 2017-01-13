@@ -72,7 +72,7 @@ open class ReflowOperation: Operation {
 					                        y: CGFloat(y),
 										width: CGFloat(width),
 									   height: CGFloat(height)),
-									  oWindow: frameAssignment.window,
+                                     toWindow: frameAssignment.window,
 									  focused: frameAssignment.focused,
 								  screenFrame: frameAssignment.screenFrame)
                 }
