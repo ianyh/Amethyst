@@ -329,11 +329,11 @@ public class UserConfiguration: NSObject {
     open func toggleFocusFollowsMouse() {
         storage.set(!focusFollowsMouse(), forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
     }
-    
+
     open func animateWindows() -> Bool {
         return storage.bool(forKey: ConfigurationKey.AnimateWindows.rawValue)
     }
-    
+
     open func toggleAnimateWindows() {
         storage.set(!animateWindows(), forKey: ConfigurationKey.AnimateWindows.rawValue)
     }

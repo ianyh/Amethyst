@@ -188,7 +188,7 @@ open class HotKeyManager: NSObject {
         constructCommandWithCommandKey(CommandKey.ToggleFocusFollowsMouse.rawValue) {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
-        
+
         constructCommandWithCommandKey(CommandKey.ToggleAnimateWindows.rawValue) {
             self.userConfiguration.toggleAnimateWindows()
         }
