@@ -68,7 +68,13 @@ open class ReflowOperation: Operation {
                     let width = Float(frameAssignment.window.frame().width) + (Float(i)/100.0)*Float(dw)
                     let dh = frameAssignment.frame.height - frameAssignment.window.frame().height
                     let height = Float(frameAssignment.window.frame().height) + (Float(i)/100.0)*Float(dh)
-                    self.assignFrame(CGRect(x:CGFloat(x), y:CGFloat(y), width:CGFloat(width), height:CGFloat(height)), toWindow: frameAssignment.window, focused: frameAssignment.focused, screenFrame: frameAssignment.screenFrame)
+                    self.assignFrame(CGRect(x: CGFloat(x),
+					                        y: CGFloat(y), 
+										width: CGFloat(width),
+									   height: CGFloat(height)),
+									  oWindow: frameAssignment.window, 
+									  focused: frameAssignment.focused, 
+								  screenFrame: frameAssignment.screenFrame)
                 }
                 //usleep(10000)
             }
