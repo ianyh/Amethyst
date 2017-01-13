@@ -59,7 +59,7 @@ open class ReflowOperation: Operation {
             for i in stride(from:0, to:101, by:10) {
                 for frameAssignment in frameAssignments {
                     LogManager.log?.debug("Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
-                
+
                     let dx = frameAssignment.frame.origin.x - frameAssignment.window.frame().origin.x
                     let x = Float(frameAssignment.window.frame().origin.x) + (Float(i)/100.0)*Float(dx)
                     let dy = frameAssignment.frame.origin.y - frameAssignment.window.frame().origin.y
@@ -69,16 +69,14 @@ open class ReflowOperation: Operation {
                     let dh = frameAssignment.frame.height - frameAssignment.window.frame().height
                     let height = Float(frameAssignment.window.frame().height) + (Float(i)/100.0)*Float(dh)
                     self.assignFrame(CGRect(x: CGFloat(x),
-					                        y: CGFloat(y), 
+					                        y: CGFloat(y),
 										width: CGFloat(width),
 									   height: CGFloat(height)),
-									  oWindow: frameAssignment.window, 
-									  focused: frameAssignment.focused, 
+									  oWindow: frameAssignment.window,
+									  focused: frameAssignment.focused,
 								  screenFrame: frameAssignment.screenFrame)
                 }
-                //usleep(10000)
             }
-            
         }
         else{
             for frameAssignment in frameAssignments {
