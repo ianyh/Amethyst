@@ -39,6 +39,9 @@ open class ScreenManager: NSObject {
 
             changingSpace = true
             currentLayoutIndex = currentLayoutIndexBySpaceIdentifier[spaceIdentifier] ?? 0
+            if(currentLayoutIndex >= layouts.count){
+                currentLayoutIndex = 0
+            }
 
             if let layouts = layoutsBySpaceIdentifier[spaceIdentifier] {
                 self.layouts = layouts
@@ -135,7 +138,7 @@ open class ScreenManager: NSObject {
     }
 
     open func cycleLayoutBackward() {
-        currentLayoutIndex = (currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1
+        currentLayoutIndex = (currentLayoutIndex - 1) % layouts.count
         setNeedsReflowWithWindowChange(.unknown)
     }
 
@@ -145,8 +148,13 @@ open class ScreenManager: NSObject {
             return
         }
 
-        currentLayoutIndex = layoutIndex
-        setNeedsReflowWithWindowChange(.unknown)
+        if((layoutIndex < 0 ) || (layoutIndex >= layouts.count)){
+            return
+        }
+        else{
+            currentLayoutIndex = layoutIndex
+            setNeedsReflowWithWindowChange(.unknown)
+        }
     }
 
     open func shrinkMainPane() {
