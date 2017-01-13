@@ -193,6 +193,10 @@ open class HotKeyManager: NSObject {
             self.userConfiguration.toggleAnimateWindows()
         }
 
+        constructCommandWithCommandKey(CommandKey.ToggleAnimateWindows.rawValue) {
+            self.userConfiguration.toggleAnimateWindows()
+        }
+
         let layoutStrings: [String] = userConfiguration.layoutStrings()
         layoutStrings.forEach { layoutString in
             guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {

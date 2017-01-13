@@ -338,6 +338,14 @@ public class UserConfiguration: NSObject {
         storage.set(!animateWindows(), forKey: ConfigurationKey.AnimateWindows.rawValue)
     }
 
+    open func animateWindows() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.AnimateWindows.rawValue)
+    }
+
+    open func toggleAnimateWindows() {
+        storage.set(!animateWindows(), forKey: ConfigurationKey.AnimateWindows.rawValue)
+    }
+
     open func enablesLayoutHUD() -> Bool {
         return storage.bool(forKey: ConfigurationKey.LayoutHUD.rawValue)
     }
