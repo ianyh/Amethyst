@@ -78,7 +78,7 @@ open class ReflowOperation: Operation {
                 }
             }
         }
-        else{
+        else {
             for frameAssignment in frameAssignments {
                 LogManager.log?.debug("Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
 
