@@ -55,6 +55,38 @@ open class ReflowOperation: Operation {
             }
         }
 
+		//Set intermediate positions for the windows
+        if UserConfiguration.shared.animateWindows() {
+            let step: CGFloat = CGFloat(0.05)
+            for i in stride(from:step, to:1.0, by:step) {
+                for frameAssignment in frameAssignments {
+                    LogManager.log?.debug("Intermediate Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
+
+                    let dx = frameAssignment.frame.origin.x - frameAssignment.window.frame().origin.x
+                    let x = frameAssignment.window.frame().origin.x + i*dx
+                    let dy = frameAssignment.frame.origin.y - frameAssignment.window.frame().origin.y
+                    let y = frameAssignment.window.frame().origin.y + i*dy
+                    let dw = frameAssignment.frame.width - frameAssignment.window.frame().width
+                    let width = frameAssignment.window.frame().width + i*dw
+                    let dh = frameAssignment.frame.height - frameAssignment.window.frame().height
+                    let height = frameAssignment.window.frame().height + i*dh
+                    if x != frameAssignment.window.frame().origin.x ||
+                       y != frameAssignment.window.frame().origin.y ||
+                       width != frameAssignment.window.frame().width ||
+                       height != frameAssignment.window.frame().height {
+                        self.assignFrame(CGRect(x: x,
+                                                y: y,
+                                            width: width,
+                                           height: height),
+                                         toWindow: frameAssignment.window,
+									      focused: frameAssignment.focused,
+								      screenFrame: frameAssignment.screenFrame)
+                    }
+                }
+            }
+        }
+
+        //Set the final position for the windows
         for frameAssignment in frameAssignments {
             LogManager.log?.debug("Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
 
@@ -64,33 +96,17 @@ open class ReflowOperation: Operation {
 
     fileprivate func assignFrame(_ frame: CGRect, toWindow window: SIWindow, focused: Bool, screenFrame: CGRect) {
         var padding = UserConfiguration.shared.windowMarginSize()
-        var finalFrame = frame
+        var correctedFrame = frame
 
-        if UserConfiguration.shared.windowMargins() {
+        //If there is padding to do....
+        if UserConfiguration.shared.windowMargins() && padding > CGFloat(0.0) {
             padding = floor(padding / 2)
 
-            finalFrame.origin.x += padding
-            finalFrame.origin.y += padding
-            finalFrame.size.width -= 2 * padding
-            finalFrame.size.height -= 2 * padding
+            correctedFrame.origin.x += padding
+            correctedFrame.origin.y += padding
+            correctedFrame.size.width -= 2 * padding
+            correctedFrame.size.height -= 2 * padding
         }
-
-        var finalPosition = finalFrame.origin
-
-        // Just resize the window
-        finalFrame.origin = window.frame().origin
-        window.setFrame(finalFrame)
-
-        if focused {
-            finalFrame.size = CGSize(width: max(window.frame().size.width, finalFrame.size.width), height: max(window.frame().size.height, finalFrame.size.height))
-            if !screenFrame.contains(finalFrame) {
-                finalPosition.x = min(finalPosition.x, screenFrame.maxX - finalFrame.size.width)
-                finalPosition.y = min(finalPosition.y, screenFrame.maxY - finalFrame.size.height)
-            }
-        }
-
-        // Move the window to its final frame
-        finalFrame.origin = finalPosition
-        window.setFrame(finalFrame)
+        window.setFrame(correctedFrame)
     }
 }

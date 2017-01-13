@@ -36,6 +36,7 @@ internal enum ConfigurationKey: String {
     case FloatSmallWindows = "float-small-windows"
     case MouseFollowsFocus = "mouse-follows-focus"
     case FocusFollowsMouse = "focus-follows-mouse"
+    case AnimateWindows = "animate-windows"
     case LayoutHUD = "enables-layout-hud"
     case LayoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case UseCanaryBuild = "use-canary-build"
@@ -51,6 +52,7 @@ internal enum ConfigurationKey: String {
             .FloatSmallWindows,
             .MouseFollowsFocus,
             .FocusFollowsMouse,
+            .AnimateWindows,
             .LayoutHUD,
             .LayoutHUDOnSpaceChange,
             .UseCanaryBuild,
@@ -78,6 +80,7 @@ public enum CommandKey: String {
     case SwapMain = "swap-main"
     case ThrowSpacePrefix = "throw-space"
     case FocusScreenPrefix = "focus-screen"
+    case ToggleAnimateWindows = "toggle-animate-windows"
     case ThrowScreenPrefix = "throw-screen"
     case ThrowSpaceLeft = "throw-space-left"
     case ThrowSpaceRight = "throw-space-right"
@@ -325,6 +328,14 @@ public class UserConfiguration: NSObject {
 
     open func toggleFocusFollowsMouse() {
         storage.set(!focusFollowsMouse(), forKey: ConfigurationKey.FocusFollowsMouse.rawValue)
+    }
+
+    open func animateWindows() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.AnimateWindows.rawValue)
+    }
+
+    open func toggleAnimateWindows() {
+        storage.set(!animateWindows(), forKey: ConfigurationKey.AnimateWindows.rawValue)
     }
 
     open func enablesLayoutHUD() -> Bool {
