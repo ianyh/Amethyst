@@ -39,7 +39,7 @@ open class ScreenManager: NSObject {
 
             changingSpace = true
             currentLayoutIndex = currentLayoutIndexBySpaceIdentifier[spaceIdentifier] ?? 0
-            if(currentLayoutIndex >= layouts.count){
+            if currentLayoutIndex >= layouts.count {
                 currentLayoutIndex = 0
             }
 
