@@ -148,10 +148,10 @@ open class ScreenManager: NSObject {
             return
         }
 
-        if((layoutIndex < 0 ) || (layoutIndex >= layouts.count)){
+        if (layoutIndex < 0 ) || (layoutIndex >= layouts.count) {
             return
         }
-        else{
+        else {
             currentLayoutIndex = layoutIndex
             setNeedsReflowWithWindowChange(.unknown)
         }
