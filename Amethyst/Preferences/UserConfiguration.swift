@@ -120,6 +120,10 @@ public class UserConfiguration: NSObject {
     }
 
     fileprivate func configurationValueForKey<T>(_ key: ConfigurationKey) -> T? {
+        guard let exists = configuration?[key.rawValue].exists(), exists else {
+            return defaultConfiguration![key.rawValue].object as? T
+        }
+
         guard let configurationValue = configuration?[key.rawValue].rawValue as? T else {
             return defaultConfiguration![key.rawValue].object as? T
         }
@@ -144,6 +148,21 @@ public class UserConfiguration: NSObject {
             }
         }
         return flags
+    }
+
+    internal func screenCount() -> Int {
+        guard let screens: NSObject = configurationValueForKey(.Screens) else {
+            return 4
+        }
+
+        dump(screens)
+        if let screensNumber = screens as? NSNumber {
+            return screensNumber.intValue
+        } else if let screensString = screens as? String {
+            return Int(screensString) ?? 4
+        } else {
+            return 4
+        }
     }
 
     open func load() {
@@ -213,8 +232,7 @@ public class UserConfiguration: NSObject {
 
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
-        let screens: NSNumber = configurationValueForKey(.Screens)!
-        self.screens = screens.intValue
+        screens = screenCount()
     }
 
     open static func constructLayoutKeyString(_ layoutString: String) -> String {
