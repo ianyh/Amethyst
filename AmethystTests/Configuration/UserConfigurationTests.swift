@@ -16,46 +16,46 @@ import SwiftyJSON
 private class TestConfigurationStorage: ConfigurationStorage {
     var storage: [String: Any] = [:]
 
-    func object(forKey defaultName: String) -> Any? {
+    fileprivate func object(forKey defaultName: String) -> Any? {
         return storage[defaultName]
     }
 
-    func array(forKey defaultName: String) -> [Any]? {
+    fileprivate func array(forKey defaultName: String) -> [Any]? {
         return storage[defaultName] as? [Any]
     }
 
-    func bool(forKey defaultName: String) -> Bool {
+    fileprivate func bool(forKey defaultName: String) -> Bool {
         return (storage[defaultName] as? Bool) ?? false
     }
 
-    func float(forKey defaultName: String) -> Float {
+    fileprivate func float(forKey defaultName: String) -> Float {
         return (storage[defaultName] as? Float) ?? 0
     }
 
-    func stringArray(forKey defaultName: String) -> [String]? {
+    fileprivate func stringArray(forKey defaultName: String) -> [String]? {
         return storage[defaultName] as? [String]
     }
     
-    func set(_ value: Any?, forKey defaultName: String) {
+    fileprivate func set(_ value: Any?, forKey defaultName: String) {
         storage[defaultName] = value
     }
 
-    func set(_ value: Bool, forKey defaultName: String) {
+    fileprivate func set(_ value: Bool, forKey defaultName: String) {
         storage[defaultName] = value as AnyObject?
     }
 }
 
-open class UserConfigurationTests: QuickSpec {
-    internal class TestHotKeyRegistrar: HotKeyRegistrar {
-        fileprivate(set) var keyString: String?
-        fileprivate(set) var modifiers: AMModifierFlags?
-        fileprivate(set) var handler: (() -> ())?
-        fileprivate(set) var defaultsKey: String?
-        fileprivate(set) var override: Bool?
+public class UserConfigurationTests: QuickSpec {
+    private class TestHotKeyRegistrar: HotKeyRegistrar {
+        fileprivate private(set) var keyString: String?
+        fileprivate private(set) var modifiers: AMModifierFlags?
+        fileprivate private(set) var handler: (() -> ())?
+        fileprivate private(set) var defaultsKey: String?
+        fileprivate private(set) var override: Bool?
 
-        init() {}
+        fileprivate init() {}
 
-        public func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool) {
+        fileprivate func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool) {
             keyString = string
             self.modifiers = modifiers
             self.handler = handler
@@ -64,11 +64,11 @@ open class UserConfigurationTests: QuickSpec {
         }
     }
 
-    internal class TestBundleIdentifiable: BundleIdentifiable {
+    private class TestBundleIdentifiable: BundleIdentifiable {
         var bundleIdentifier: String?
     }
 
-    open override func spec() {
+    public override func spec() {
         describe("constructing commands") {
             context("overrides") {
                 it("when user configuration exists") {
@@ -304,6 +304,43 @@ open class UserConfigurationTests: QuickSpec {
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()
                 expect(configuration.layoutStrings()).to(equal(localConfiguration["layouts"]))
+            }
+
+            describe("screen count") {
+                it("favors explicit config") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    let localConfiguration = ["screens": 2]
+                    let defaultConfiguration = ["screens": 1]
+                    
+                    configuration.configuration = JSON(localConfiguration)
+                    configuration.defaultConfiguration = JSON(defaultConfiguration)
+                    
+                    expect(configuration.screenCount()).to(equal(2))
+                }
+
+                it("falls back on default if no explicit config exists") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    let defaultConfiguration = ["screens": 1]
+
+                    configuration.configuration = JSON([:])
+                    configuration.defaultConfiguration = JSON(defaultConfiguration)
+
+                    expect(configuration.screenCount()).to(equal(1))
+                }
+
+                it("converts strings if necessary") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    let localConfiguration = ["screens": "3"]
+                    let defaultConfiguration = ["screens": 1]
+                    
+                    configuration.configuration = JSON(localConfiguration)
+                    configuration.defaultConfiguration = JSON(defaultConfiguration)
+                    
+                    expect(configuration.screenCount()).to(equal(3))
+                }
             }
         }
     }
