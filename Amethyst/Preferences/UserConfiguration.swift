@@ -155,7 +155,6 @@ public class UserConfiguration: NSObject {
             return 4
         }
 
-        dump(screens)
         if let screensNumber = screens as? NSNumber {
             return screensNumber.intValue
         } else if let screensString = screens as? String {
