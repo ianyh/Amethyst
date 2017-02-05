@@ -184,6 +184,30 @@ public class UserConfigurationTests: QuickSpec {
                     expect(registrar.keyString).to(equal("1"))
                 }
             }
+
+            it("does not crash for malformed commands") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                let localConfiguration: [String: Any] = [
+                    "test": [
+                        "key": "2"
+                    ]
+                ]
+                let defaultConfiguration: [String: Any] = [
+                    "test": [
+                        "mod": "mod1",
+                        "key": "2"
+                    ]
+                ]
+                configuration.configuration = JSON(localConfiguration)
+                configuration.defaultConfiguration = JSON(defaultConfiguration)
+                configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
+                
+                let registrar = TestHotKeyRegistrar()
+                
+                expect {
+                    configuration.constructCommandWithHotKeyRegistrar(registrar, commandKey: "test", handler: {})
+                }.toNot(throwError())
+            }
         }
 
         describe("floating application") {

@@ -256,8 +256,16 @@ public class UserConfiguration: NSObject {
             return
         }
 
-        let commandKeyString = commandInfo[ConfigurationKey.CommandKey.rawValue]!
-        let commandModifierString = commandInfo[ConfigurationKey.CommandMod.rawValue]!
+        guard let commandKeyString = commandInfo[ConfigurationKey.CommandKey.rawValue] else {
+            LogManager.log?.warning("No keys specified for command: \(commandKey)")
+            return
+        }
+
+        guard let commandModifierString = commandInfo[ConfigurationKey.CommandMod.rawValue] else {
+            LogManager.log?.warning("No mod specified for command: \(commandKey)")
+            return
+        }
+
         var commandFlags: AMModifierFlags?
 
         switch commandModifierString {
