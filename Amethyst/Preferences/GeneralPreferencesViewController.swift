@@ -170,17 +170,21 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
     }
 
     @IBAction open func removeFloatingApplication(_ sender: AnyObject) {
-        guard floatingTableView?.selectedRow < self.floatingBundleIdentifiers.count else {
+        guard let floatingTableView = floatingTableView else {
+            return
+        }
+
+        guard floatingTableView.selectedRow < self.floatingBundleIdentifiers.count else {
             return
         }
 
         var floatingBundleIdentifiers = self.floatingBundleIdentifiers
-        floatingBundleIdentifiers.remove(at: floatingTableView!.selectedRow)
+        floatingBundleIdentifiers.remove(at: floatingTableView.selectedRow)
         self.floatingBundleIdentifiers = floatingBundleIdentifiers
 
         UserConfiguration.shared.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
 
-        floatingTableView?.reloadData()
+        floatingTableView.reloadData()
     }
 
     open func preferenceIdentifier() -> String! {
@@ -211,15 +215,14 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
             return nil
         }
 
-        switch tableView {
-        case layoutsTableView!:
+        if tableView == layoutsTableView {
             return layouts[row]
-        case floatingTableView!:
+        } else if tableView == floatingTableView {
             if editingFloatingBundleIdentifier && row == floatingBundleIdentifiers.count {
                 return nil
             }
             return floatingBundleIdentifiers[row]
-        default:
+        } else {
             return nil
         }
     }
