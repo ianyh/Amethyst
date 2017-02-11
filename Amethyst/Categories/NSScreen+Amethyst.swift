@@ -21,9 +21,11 @@ public extension NSScreen {
         return screenDescriptions
     }
 
-    public func screenIdentifier() -> String {
-        let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), self.frameIncludingDockAndMenu())
-        return String(managedDisplay!.takeRetainedValue())
+    public func screenIdentifier() -> String? {
+        guard let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), frameIncludingDockAndMenu()) else {
+            return nil
+        }
+        return String(managedDisplay.takeRetainedValue())
     }
 
     public func focusScreen() {
