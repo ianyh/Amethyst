@@ -360,7 +360,10 @@ open class WindowManager: NSObject {
         var screenManagers: [ScreenManager] = []
 
         for screen in NSScreen.screens() ?? [] {
-            let screenIdentifier = screen.screenIdentifier()
+            guard let screenIdentifier = screen.screenIdentifier() else {
+                continue
+            }
+
             var screenManager = screenManagersCache[screenIdentifier]
 
             if screenManager == nil {

@@ -503,8 +503,12 @@ extension WindowManager: WindowModifierDelegate {
 
         let screenWindows = windows.filter() { window in
             let windowIDsArray = [NSNumber(value: window.windowID() as UInt32)] as NSArray
-            let spaces = CGSCopySpacesForWindows(_CGSDefaultConnection(), CGSSpaceSelector(7), windowIDsArray).takeRetainedValue() as NSArray as? [NSNumber]
-            let space = spaces?.first?.uint64Value
+
+            guard let spaces = CGSCopySpacesForWindows(_CGSDefaultConnection(), CGSSpaceSelector(7), windowIDsArray)?.takeRetainedValue() else {
+                return false
+            }
+
+            let space = (spaces as NSArray as? [NSNumber])?.first?.uint64Value
 
             guard let windowScreen = window.screen(), space == currentSpace else {
                 return false
@@ -512,6 +516,7 @@ extension WindowManager: WindowModifierDelegate {
 
             return windowScreen.screenIdentifier() == screen.screenIdentifier() && window.isActive() && self.activeIDCache[window.windowID()] == true
         }
+
         return screenWindows
     }
 
