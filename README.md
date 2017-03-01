@@ -77,6 +77,8 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 
 ![Mission Control keyboard shortcuts](http://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
 
+_Important note_: You will probably want to disable `Automatically rearrange Spaces based on most recent use` (found under Mission Control in System Preferences). This setting is enabled by default, and will cause your Spaces to swap places based on use. This makes keyboard navigation between Spaces unpredictable.
+
 Contributing
 ============
 
