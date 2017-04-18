@@ -311,7 +311,7 @@ open class HotKeyManager: NSObject {
         return carbonModifiers
     }
 
-    open static func hotKeyNameToDefaultsKey() -> [[String]] {
+    open static func hotKeyNameToDefaultsKey(screenCount: Int) -> [[String]] {
         var hotKeyNameToDefaultsKey: [[String]] = []
 
         hotKeyNameToDefaultsKey.append(["Cycle layout forward", CommandKey.CycleLayoutForward.rawValue])
@@ -334,7 +334,7 @@ open class HotKeyManager: NSObject {
             hotKeyNameToDefaultsKey.append([name, "\(CommandKey.ThrowSpacePrefix.rawValue)-\(spaceNumber)"])
         }
 
-        (1..<3).forEach { screenNumber in
+        (1...screenCount).forEach { screenNumber in
             let focusCommandName = "Focus screen \(screenNumber)"
             let throwCommandName = "Throw focused window to screen \(screenNumber)"
             let focusCommandKey = "\(CommandKey.FocusScreenPrefix.rawValue)-\(screenNumber)"
