@@ -6,41 +6,39 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
+@testable import Amethyst
 import Nimble
 import Quick
-
-@testable import Amethyst
-
 import SwiftyJSON
 
-private class TestConfigurationStorage: ConfigurationStorage {
+final class TestConfigurationStorage: ConfigurationStorage {
     var storage: [String: Any] = [:]
 
-    fileprivate func object(forKey defaultName: String) -> Any? {
+    func object(forKey defaultName: String) -> Any? {
         return storage[defaultName]
     }
 
-    fileprivate func array(forKey defaultName: String) -> [Any]? {
+    func array(forKey defaultName: String) -> [Any]? {
         return storage[defaultName] as? [Any]
     }
 
-    fileprivate func bool(forKey defaultName: String) -> Bool {
+    func bool(forKey defaultName: String) -> Bool {
         return (storage[defaultName] as? Bool) ?? false
     }
 
-    fileprivate func float(forKey defaultName: String) -> Float {
+    func float(forKey defaultName: String) -> Float {
         return (storage[defaultName] as? Float) ?? 0
     }
 
-    fileprivate func stringArray(forKey defaultName: String) -> [String]? {
+    func stringArray(forKey defaultName: String) -> [String]? {
         return storage[defaultName] as? [String]
     }
     
-    fileprivate func set(_ value: Any?, forKey defaultName: String) {
+    func set(_ value: Any?, forKey defaultName: String) {
         storage[defaultName] = value
     }
 
-    fileprivate func set(_ value: Bool, forKey defaultName: String) {
+    func set(_ value: Bool, forKey defaultName: String) {
         storage[defaultName] = value as AnyObject?
     }
 }
