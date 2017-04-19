@@ -13,7 +13,7 @@ target 'Amethyst' do
   pod 'RxCocoa'
   pod 'RxSwift'
   pod 'Silica', :git => 'https://github.com/ianyh/Silica'
-  pod 'SwiftyJSON'
+  pod 'SwiftyJSON', '~> 3.1'
   target 'AmethystTests' do
     inherit! :search_paths
     pod 'Nimble'

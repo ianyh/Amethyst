@@ -12,7 +12,7 @@ PODS:
     - RxSwift (~> 3.0)
   - RxSwift (3.0.1)
   - Silica (0.1.4)
-  - SwiftyJSON (3.1.1)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - CCNLaunchAtLoginItem (~> 0.1)
@@ -26,7 +26,7 @@ DEPENDENCIES:
   - RxCocoa
   - RxSwift
   - Silica (from `https://github.com/ianyh/Silica`)
-  - SwiftyJSON
+  - SwiftyJSON (~> 3.1)
 
 EXTERNAL SOURCES:
   MASShortcut:
@@ -54,8 +54,8 @@ SPEC CHECKSUMS:
   RxCocoa: 15a52fc590dcc700cb4a690a633b5c5184ce3a78
   RxSwift: af5680055c4ad04480189c52d28385b1029493a6
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
-  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: a4d3add8380cd11739e854f78b3ea52a1cd009f2
+PODFILE CHECKSUM: 8077ba09c915c6e6b5fa3749095bab1066122492
 
 COCOAPODS: 1.2.0
