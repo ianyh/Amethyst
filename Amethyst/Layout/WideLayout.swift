@@ -86,7 +86,7 @@ open class WideLayout: Layout {
     }
 
     override open func increaseMainPaneCount() {
-        mainPaneCount = mainPaneCount + 1
+        mainPaneCount += 1
     }
 
     override open func decreaseMainPaneCount() {

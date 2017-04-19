@@ -11,11 +11,11 @@ import Log
 import MASShortcut
 
 public protocol HotKeyRegistrar {
-    func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool)
+    func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> Void, defaultsKey: String, override: Bool)
 }
 
 extension HotKeyManager: HotKeyRegistrar {
-    public func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool) {
+    public func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> Void, defaultsKey: String, override: Bool) {
         let userDefaults = UserDefaults.standard
 
         if userDefaults.object(forKey: defaultsKey) != nil && !override {
@@ -30,7 +30,7 @@ extension HotKeyManager: HotKeyRegistrar {
 
         let shortcut = MASShortcut(keyCode: UInt(keyCodes[0]), modifierFlags: modifiers)
 
-        MASShortcutBinder.shared().registerDefaultShortcuts([ defaultsKey: shortcut ])
+        MASShortcutBinder.shared().registerDefaultShortcuts([ defaultsKey: shortcut as Any ])
         MASShortcutBinder.shared().bindShortcut(withDefaultsKey: defaultsKey, toAction: handler)
 
         // Note that the shortcut binder above only sets the default value, not the stored value, so we explicitly store it here.

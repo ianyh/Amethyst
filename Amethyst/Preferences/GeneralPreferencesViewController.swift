@@ -21,7 +21,6 @@ fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-
 open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
     fileprivate var layouts: [String] = []
     fileprivate var floatingBundleIdentifiers: [String] = []
