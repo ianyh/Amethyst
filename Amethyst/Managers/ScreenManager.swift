@@ -9,7 +9,7 @@
 import Foundation
 import Silica
 
-public protocol ScreenManagerDelegate {
+public protocol ScreenManagerDelegate: class {
     func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow]
     func windowIsActive(_ window: SIWindow) -> Bool
 }
@@ -17,7 +17,7 @@ public protocol ScreenManagerDelegate {
 open class ScreenManager: NSObject {
     open var screen: NSScreen
     open let screenIdentifier: String
-    fileprivate let delegate: ScreenManagerDelegate
+    fileprivate weak var delegate: ScreenManagerDelegate?
     fileprivate let userConfiguration: UserConfiguration
 
     open var currentSpaceIdentifier: String? {
@@ -118,13 +118,13 @@ open class ScreenManager: NSObject {
             return
         }
 
-        let windows = delegate.activeWindowsForScreenManager(self)
+        let windows = delegate?.activeWindowsForScreenManager(self) ?? []
         changingSpace = false
         reflowOperation = currentLayout.reflowOperationForScreen(screen, withWindows: windows)
         OperationQueue.main.addOperation(reflowOperation!)
     }
 
-    open func updateCurrentLayout(_ updater: (Layout) -> ()) {
+    open func updateCurrentLayout(_ updater: (Layout) -> Void) {
         updater(currentLayout)
         setNeedsReflowWithWindowChange(.unknown)
     }
@@ -199,7 +199,7 @@ open class ScreenManager: NSObject {
 
 extension ScreenManager: WindowActivityCache {
     public func windowIsActive(_ window: SIWindow) -> Bool {
-        return delegate.windowIsActive(window)
+        return delegate?.windowIsActive(window) ?? false
     }
 }
 

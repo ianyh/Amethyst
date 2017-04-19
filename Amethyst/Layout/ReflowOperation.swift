@@ -56,7 +56,7 @@ open class ReflowOperation: Operation {
         }
 
         for frameAssignment in frameAssignments {
-            LogManager.log?.debug("Screen: \(screen.screenIdentifier()) -- Frame Assignment: \(frameAssignment)")
+            LogManager.log?.debug("Screen: \(screen.screenIdentifier() ?? "") -- Frame Assignment: \(frameAssignment)")
 
             self.assignFrame(frameAssignment.frame, toWindow: frameAssignment.window, focused: frameAssignment.focused, screenFrame: frameAssignment.screenFrame)
         }

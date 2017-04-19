@@ -15,7 +15,7 @@ final class HotKeyManagerTests: QuickSpec {
         describe("hotKeyNameToDefaultsKey") {
             it("respects screen count") {
                 let keyMapping = HotKeyManager.hotKeyNameToDefaultsKey(screenCount: 4)
-                let screenCommands = keyMapping.filter { $0[1].hasPrefix(CommandKey.FocusScreenPrefix.rawValue) }
+                let screenCommands = keyMapping.filter { $0[1].hasPrefix(CommandKey.focusScreenPrefix.rawValue) }
                 expect(screenCommands.count).to(equal(4))
             }
         }

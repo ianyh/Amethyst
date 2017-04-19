@@ -454,7 +454,7 @@ extension WindowManager: WindowModifierDelegate {
     }
 
     public func screenManagerIndexForScreen(_ screen: NSScreen) -> Int? {
-        return screenManagers.index() { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+        return screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 
     public func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange) {
@@ -497,11 +497,11 @@ extension WindowManager: WindowModifierDelegate {
         }
 
         guard currentSpace != nil else {
-            LogManager.log?.warning("Could not find a space for screen: \(screenIdentifier)")
+            LogManager.log?.warning("Could not find a space for screen: \(screenIdentifier ?? "nil")")
             return []
         }
 
-        let screenWindows = windows.filter() { window in
+        let screenWindows = windows.filter { window in
             let windowIDsArray = [NSNumber(value: window.windowID() as UInt32)] as NSArray
 
             guard let spaces = CGSCopySpacesForWindows(_CGSDefaultConnection(), CGSSpaceSelector(7), windowIDsArray)?.takeRetainedValue() else {
@@ -521,7 +521,7 @@ extension WindowManager: WindowModifierDelegate {
     }
 
     public func activeWindowsForScreen(_ screen: NSScreen) -> [SIWindow] {
-        let activeWindows = windowsForScreen(screen).filter() { window in
+        let activeWindows = windowsForScreen(screen).filter { window in
             return window.shouldBeManaged() && !windowIsFloating(window)
         }
         return activeWindows

@@ -214,7 +214,7 @@ open class WindowManager: NSObject {
             }
             self.addWindow(window)
         }
-        application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { accessibilityElement in
+        application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { _ in
             guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
                 return
             }
@@ -224,7 +224,7 @@ open class WindowManager: NSObject {
                 self.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
             }
         }
-        application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { accessibilityElement in
+        application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { _ in
             NSObject.cancelPreviousPerformRequests(
                 withTarget: self,
                 selector: #selector(self.applicationActivated(_:)),
@@ -296,10 +296,10 @@ open class WindowManager: NSObject {
             floatingMap[window.windowID()] = true
         }
 
-        application.observeNotification(kAXUIElementDestroyedNotification as CFString!, with: window) { accessibilityElement in
+        application.observeNotification(kAXUIElementDestroyedNotification as CFString!, with: window) { _ in
             self.removeWindow(window)
         }
-        application.observeNotification(kAXWindowMiniaturizedNotification as CFString!, with: window) { accessibilityElement in
+        application.observeNotification(kAXWindowMiniaturizedNotification as CFString!, with: window) { _ in
             self.removeWindow(window)
             guard let screen = window.screen() else {
                 return
@@ -377,7 +377,7 @@ open class WindowManager: NSObject {
         }
 
         // Window managers are sorted by screen position along the x-axis.
-        screenManagers.sort() { screenManager1, screenManager2 -> Bool in
+        screenManagers.sort { screenManager1, screenManager2 -> Bool in
             let x1 = screenManager1.screen.frameWithoutDockOrMenu().origin.x
             let x2 = screenManager2.screen.frameWithoutDockOrMenu().origin.x
 
