@@ -10,4 +10,4 @@ before_install:
         - pod repo update &> /dev/null
         - carthage bootstrap --platform mac --cache-builds
 script:
-        - xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | xcpretty
+        - set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | xcpretty
