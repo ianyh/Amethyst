@@ -28,7 +28,6 @@ internal enum ConfigurationKey: String {
     case commandKey = "key"
     case mod1 = "mod1"
     case mod2 = "mod2"
-    case screens = "screens"
     case windowMargins = "window-margins"
     case windowMarginSize = "window-margin-size"
     case floatingBundleIdentifiers = "floating"
@@ -109,7 +108,6 @@ public class UserConfiguration: NSObject {
 
     internal var modifier1: AMModifierFlags?
     internal var modifier2: AMModifierFlags?
-    internal var screens: Int?
 
     public init(storage: ConfigurationStorage) {
         self.storage = storage
@@ -148,20 +146,6 @@ public class UserConfiguration: NSObject {
             }
         }
         return flags
-    }
-
-    internal func screenCount() -> Int {
-        guard let screens: NSObject = configurationValueForKey(.screens) else {
-            return 4
-        }
-
-        if let screensNumber = screens as? NSNumber {
-            return screensNumber.intValue
-        } else if let screensString = screens as? String {
-            return Int(screensString) ?? 4
-        } else {
-            return 4
-        }
     }
 
     open func load() {
@@ -231,7 +215,6 @@ public class UserConfiguration: NSObject {
 
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
-        screens = screenCount()
     }
 
     open static func constructLayoutKeyString(_ layoutString: String) -> String {
