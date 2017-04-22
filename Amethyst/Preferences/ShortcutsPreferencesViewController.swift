@@ -23,8 +23,7 @@ open class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesW
     open override func viewWillAppear() {
         super.viewWillAppear()
 
-        let configuration = UserConfiguration.shared
-        hotKeyNameToDefaultsKey = HotKeyManager.hotKeyNameToDefaultsKey(screenCount: configuration.screens!)
+        hotKeyNameToDefaultsKey = HotKeyManager.hotKeyNameToDefaultsKey()
         tableView?.reloadData()
     }
 

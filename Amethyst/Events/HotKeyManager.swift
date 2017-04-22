@@ -143,7 +143,7 @@ open class HotKeyManager: NSObject {
             windowManager.displayCurrentLayout()
         }
 
-        (1...configuration.screens!).forEach { screenNumber in
+        (1...4).forEach { screenNumber in
             let focusCommandKey = "\(CommandKey.focusScreenPrefix.rawValue)-\(screenNumber)"
             let throwCommandKey = "\(CommandKey.throwScreenPrefix.rawValue)-\(screenNumber)"
 
@@ -311,7 +311,7 @@ open class HotKeyManager: NSObject {
         return carbonModifiers
     }
 
-    open static func hotKeyNameToDefaultsKey(screenCount: Int) -> [[String]] {
+    open static func hotKeyNameToDefaultsKey() -> [[String]] {
         var hotKeyNameToDefaultsKey: [[String]] = []
 
         hotKeyNameToDefaultsKey.append(["Cycle layout forward", CommandKey.cycleLayoutForward.rawValue])
@@ -334,7 +334,7 @@ open class HotKeyManager: NSObject {
             hotKeyNameToDefaultsKey.append([name, "\(CommandKey.throwSpacePrefix.rawValue)-\(spaceNumber)"])
         }
 
-        (1...screenCount).forEach { screenNumber in
+        (1...4).forEach { screenNumber in
             let focusCommandName = "Focus screen \(screenNumber)"
             let throwCommandName = "Throw focused window to screen \(screenNumber)"
             let focusCommandKey = "\(CommandKey.focusScreenPrefix.rawValue)-\(screenNumber)"
