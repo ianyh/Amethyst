@@ -63,7 +63,10 @@ open class ScreenManager: NSObject {
             }
         }
     }
-    fileprivate var currentLayout: Layout {
+    fileprivate var currentLayout: Layout? {
+        guard !layouts.isEmpty else {
+            return nil
+        }
         return layouts[currentLayoutIndex]
     }
 
@@ -93,7 +96,7 @@ open class ScreenManager: NSObject {
 
         LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
 
-        currentLayout.updateWithChange(windowChange)
+        currentLayout?.updateWithChange(windowChange)
 
         if changingSpace {
             // The 0.4 is disgustingly tied to the space change animation time.
@@ -120,12 +123,15 @@ open class ScreenManager: NSObject {
 
         let windows = delegate?.activeWindowsForScreenManager(self) ?? []
         changingSpace = false
-        reflowOperation = currentLayout.reflowOperationForScreen(screen, withWindows: windows)
+        reflowOperation = currentLayout?.reflowOperationForScreen(screen, withWindows: windows)
         OperationQueue.main.addOperation(reflowOperation!)
     }
 
     open func updateCurrentLayout(_ updater: (Layout) -> Void) {
-        updater(currentLayout)
+        guard let layout = currentLayout else {
+            return
+        }
+        updater(layout)
         setNeedsReflowWithWindowChange(.unknown)
     }
 
@@ -150,19 +156,19 @@ open class ScreenManager: NSObject {
     }
 
     open func shrinkMainPane() {
-        currentLayout.shrinkMainPane()
+        currentLayout?.shrinkMainPane()
     }
 
     open func expandMainPane() {
-        currentLayout.expandMainPane()
+        currentLayout?.expandMainPane()
     }
 
     open func nextWindowIDCounterClockwise() -> CGWindowID? {
-        return currentLayout.nextWindowIDCounterClockwise()
+        return currentLayout?.nextWindowIDCounterClockwise()
     }
 
     open func nextWindowIDClockwise() -> CGWindowID? {
-        return currentLayout.nextWindowIDClockwise()
+        return currentLayout?.nextWindowIDClockwise()
     }
 
     open func displayLayoutHUD() {
@@ -186,7 +192,7 @@ open class ScreenManager: NSObject {
             y: screenCenter.y - layoutNameWindow.frame.height / 2.0
         )
 
-        layoutNameWindow.layoutNameField?.stringValue = type(of: currentLayout).layoutName
+        layoutNameWindow.layoutNameField?.stringValue = currentLayout.flatMap({ type(of: $0).layoutName }) ?? "None"
         layoutNameWindow.setFrameOrigin(NSPointFromCGPoint(windowOrigin))
 
         layoutNameWindowController.showWindow(self)
