@@ -28,6 +28,8 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet open var versionMenuItem: NSMenuItem?
     @IBOutlet open var startAtLoginMenuItem: NSMenuItem?
 
+    private var isFirstLaunch = true
+
     open func applicationDidFinishLaunching(_ notification: Notification) {
         if ProcessInfo.processInfo.arguments.index(of: "--log") == nil {
             LogManager.log?.minLevel = .warning
@@ -97,6 +99,15 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
 
         loginItem = CCNLaunchAtLoginItem(for: Bundle.main)
         startAtLoginMenuItem?.state = (loginItem!.isActive() ? NSOnState : NSOffState)
+    }
+
+    public func applicationDidBecomeActive(_ notification: Notification) {
+        guard !isFirstLaunch else {
+            isFirstLaunch = false
+            return
+        }
+
+        showPreferencesWindow(self)
     }
 
     @IBAction open func toggleStartAtLogin(_ sender: AnyObject) {
