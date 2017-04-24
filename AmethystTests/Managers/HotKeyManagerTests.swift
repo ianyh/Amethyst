@@ -13,8 +13,8 @@ import Quick
 final class HotKeyManagerTests: QuickSpec {
     override func spec() {
         describe("hotKeyNameToDefaultsKey") {
-            it("respects screen count") {
-                let keyMapping = HotKeyManager.hotKeyNameToDefaultsKey(screenCount: 4)
+            it("has the right number of screens") {
+                let keyMapping = HotKeyManager.hotKeyNameToDefaultsKey()
                 let screenCommands = keyMapping.filter { $0[1].hasPrefix(CommandKey.focusScreenPrefix.rawValue) }
                 expect(screenCommands.count).to(equal(4))
             }

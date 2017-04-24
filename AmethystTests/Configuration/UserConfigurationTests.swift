@@ -327,43 +327,6 @@ public class UserConfigurationTests: QuickSpec {
                 configuration.loadConfiguration()
                 expect(configuration.layoutStrings()).to(equal(localConfiguration["layouts"]))
             }
-
-            describe("screen count") {
-                it("favors explicit config") {
-                    let storage = TestConfigurationStorage()
-                    let configuration = UserConfiguration(storage: storage)
-                    let localConfiguration = ["screens": 2]
-                    let defaultConfiguration = ["screens": 1]
-                    
-                    configuration.configuration = JSON(localConfiguration)
-                    configuration.defaultConfiguration = JSON(defaultConfiguration)
-                    
-                    expect(configuration.screenCount()).to(equal(2))
-                }
-
-                it("falls back on default if no explicit config exists") {
-                    let storage = TestConfigurationStorage()
-                    let configuration = UserConfiguration(storage: storage)
-                    let defaultConfiguration = ["screens": 1]
-
-                    configuration.configuration = JSON([:])
-                    configuration.defaultConfiguration = JSON(defaultConfiguration)
-
-                    expect(configuration.screenCount()).to(equal(1))
-                }
-
-                it("converts strings if necessary") {
-                    let storage = TestConfigurationStorage()
-                    let configuration = UserConfiguration(storage: storage)
-                    let localConfiguration = ["screens": "3"]
-                    let defaultConfiguration = ["screens": 1]
-                    
-                    configuration.configuration = JSON(localConfiguration)
-                    configuration.defaultConfiguration = JSON(defaultConfiguration)
-                    
-                    expect(configuration.screenCount()).to(equal(3))
-                }
-            }
         }
     }
 }
