@@ -1,13 +1,9 @@
 language: objective-c
-osx_image: xcode8.2
+osx_image: xcode8.3
 before_install:
-        - brew update
         - brew install carthage || true
         - brew upgrade carthage || true
-        - gem install bundler
-        - bundle install
         - export LC_ALL="en_US.UTF-8"
-        - pod repo update &> /dev/null
         - carthage bootstrap --platform mac --cache-builds
 script:
         - set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | xcpretty
