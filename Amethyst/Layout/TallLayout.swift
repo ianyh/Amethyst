@@ -58,7 +58,7 @@ private class TallReflowOperation: ReflowOperation {
             return assignments
         }
 
-        if !isCancelled {
+        guard !isCancelled else {
             return
         }
 
