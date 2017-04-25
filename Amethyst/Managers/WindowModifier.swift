@@ -71,23 +71,29 @@ open class WindowModifier: WindowModifierType {
             return
         }
 
-        guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen(), screen != screenManager.screen else {
+        // Do nothing if the screen is already focused
+        if let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen(), screen == screenManager.screen {
             return
         }
 
         let windows = delegate?.windowsForScreen(screenManager.screen) ?? []
 
-        guard windows.count > 0 else {
+        // If there are no windows on the screen focus the screen directly
+        guard !windows.isEmpty else {
             screenManager.screen.focusScreen()
             return
         }
 
+        // Otherwise find the topmost window on the screen
         let screenCenter = NSPointToCGPoint(NSPoint(x: screenManager.screen.frame.midX, y: screenManager.screen.frame.midY))
+
+        // If there is no window at that point just focus the screen directly
         guard let topWindow = SIWindow.topWindowForScreenAtPoint(screenCenter, withWindows: windows) ?? windows.first else {
             screenManager.screen.focusScreen()
             return
         }
 
+        // Otherwise focus the topmost window
         topWindow.am_focusWindow()
     }
 
