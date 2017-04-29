@@ -41,16 +41,16 @@ open class WindowManager: NSObject {
         focusFollowsMouseManager.delegate = self
         windowModifier.delegate = self
 
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidLaunchApplication.rawValue, selector: #selector(applicationDidLaunch(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidTerminateApplication.rawValue, selector: #selector(applicationDidTerminate(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidHideApplication.rawValue, selector: #selector(applicationDidHide(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidUnhideApplication.rawValue, selector: #selector(applicationDidUnhide(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceActiveSpaceDidChange.rawValue, selector: #selector(activeSpaceDidChange(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidLaunchApplication, selector: #selector(applicationDidLaunch(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidTerminateApplication, selector: #selector(applicationDidTerminate(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidHideApplication, selector: #selector(applicationDidHide(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidUnhideApplication, selector: #selector(applicationDidUnhide(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceActiveSpaceDidChange, selector: #selector(activeSpaceDidChange(_:)))
 
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(screenParametersDidChange(_:)),
-            name: NSNotification.Name.NSApplicationDidChangeScreenParameters,
+            name: .NSApplicationDidChangeScreenParameters,
             object: nil
         )
 
@@ -63,9 +63,9 @@ open class WindowManager: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    fileprivate func addWorkspaceNotificationObserver(_ name: String, selector: Selector) {
+    fileprivate func addWorkspaceNotificationObserver(_ name: NSNotification.Name, selector: Selector) {
         let workspaceNotificationCenter = NSWorkspace.shared().notificationCenter
-        workspaceNotificationCenter.addObserver(self, selector: selector, name: NSNotification.Name(rawValue: name), object: nil)
+        workspaceNotificationCenter.addObserver(self, selector: selector, name: name, object: nil)
     }
 
     fileprivate func regenerateActiveIDCache() {
@@ -149,6 +149,12 @@ open class WindowManager: NSObject {
         }
 
         return lastScreenManager
+    }
+
+    open func preferencesDidClose() {
+        DispatchQueue.main.async {
+            self.focusScreenAtIndex(0)
+        }
     }
 
     open func reevaluateWindows() {
