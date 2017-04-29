@@ -56,17 +56,14 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
             }()!
 
             SUUpdater.shared().feedURL = URL(string: appcastURLString)
-        #endif
 
-        if let fabricData = Bundle.main.infoDictionary?["Fabric"] as? [String: AnyObject], fabricData["APIKey"] != nil {
-            if UserConfiguration.shared.shouldSendCrashReports() {
-                LogManager.log?.info("Crash reporting enabled")
-                Fabric.with([Crashlytics.self])
-                #if DEBUG
-                    Crashlytics.sharedInstance().debugMode = true
-                #endif
+            if let fabricData = Bundle.main.infoDictionary?["Fabric"] as? [String: AnyObject], fabricData["APIKey"] != nil {
+                if UserConfiguration.shared.shouldSendCrashReports() {
+                    LogManager.log?.info("Crash reporting enabled")
+                    Fabric.with([Crashlytics.self])
+                }
             }
-        }
+        #endif
 
         preferencesWindowController?.centerToolbarItems = false
         preferencesWindowController?.allowsVibrancy = true
