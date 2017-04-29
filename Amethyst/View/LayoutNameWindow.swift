@@ -10,10 +10,10 @@ import Cocoa
 import Foundation
 import QuartzCore
 
-open class LayoutNameWindow: NSWindow {
-    @IBOutlet open weak var layoutNameField: NSTextField?
+final class LayoutNameWindow: NSWindow {
+    @IBOutlet weak var layoutNameField: NSTextField?
 
-    @IBOutlet open override var contentView: NSView? {
+    @IBOutlet override var contentView: NSView? {
         didSet {
             contentView?.wantsLayer = true
             contentView?.layer?.frame = NSRectToCGRect(contentView!.frame)
@@ -22,9 +22,9 @@ open class LayoutNameWindow: NSWindow {
             contentView?.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.75).cgColor
         }
     }
-    @IBOutlet open var containerView: NSView?
+    @IBOutlet var containerView: NSView?
 
-    open override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         isOpaque = false

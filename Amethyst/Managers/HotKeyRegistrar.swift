@@ -10,12 +10,12 @@ import Foundation
 import Log
 import MASShortcut
 
-public protocol HotKeyRegistrar {
+protocol HotKeyRegistrar {
     func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> Void, defaultsKey: String, override: Bool)
 }
 
 extension HotKeyManager: HotKeyRegistrar {
-    public func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> Void, defaultsKey: String, override: Bool) {
+    func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> Void, defaultsKey: String, override: Bool) {
         let userDefaults = UserDefaults.standard
 
         if userDefaults.object(forKey: defaultsKey) != nil && !override {

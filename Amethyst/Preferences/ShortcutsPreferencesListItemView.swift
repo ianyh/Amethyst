@@ -10,11 +10,11 @@ import Cartography
 import Foundation
 import MASShortcut
 
-open class ShortcutsPreferencesListItemView: NSView {
-    open fileprivate(set) var nameLabel: NSTextField?
-    open fileprivate(set) var shortcutView: MASShortcutView?
+final class ShortcutsPreferencesListItemView: NSView {
+    private(set) var nameLabel: NSTextField?
+    private(set) var shortcutView: MASShortcutView?
 
-    public override init(frame frameRect: NSRect) {
+    override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
         let label = NSTextField()
@@ -43,7 +43,7 @@ open class ShortcutsPreferencesListItemView: NSView {
         self.shortcutView = shortcutView
     }
 
-    public required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

@@ -9,8 +9,8 @@
 import Foundation
 import Silica
 
-public extension SIApplication {
-    public func floating() -> Bool {
+extension SIApplication {
+    func floating() -> Bool {
         guard let runningApplication = NSRunningApplication(processIdentifier: processIdentifier()) else {
             return true
         }

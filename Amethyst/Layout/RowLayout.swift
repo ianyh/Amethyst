@@ -8,15 +8,15 @@
 
 import Silica
 
-private class RowReflowOperation: ReflowOperation {
-    fileprivate let layout: RowLayout
+private final class RowReflowOperation: ReflowOperation {
+    let layout: RowLayout
 
-    fileprivate init(screen: NSScreen, windows: [SIWindow], layout: RowLayout, windowActivityCache: WindowActivityCache) {
+    init(screen: NSScreen, windows: [SIWindow], layout: RowLayout, windowActivityCache: WindowActivityCache) {
         self.layout = layout
         super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
     }
 
-    fileprivate override func main() {
+    override func main() {
         if windows.count == 0 {
             return
         }
@@ -68,30 +68,30 @@ private class RowReflowOperation: ReflowOperation {
     }
 }
 
-open class RowLayout: Layout {
-    override open class var layoutName: String { return "Row" }
-    override open class var layoutKey: String { return "row" }
+final class RowLayout: Layout {
+    override class var layoutName: String { return "Row" }
+    override class var layoutKey: String { return "row" }
 
     fileprivate var mainPaneCount: Int = 1
     fileprivate var mainPaneRatio: CGFloat = 0.5
 
-    override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
+    override func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         return RowReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
     }
 
-    override public func expandMainPane() {
+    override func expandMainPane() {
         mainPaneRatio = max(0, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
-    override public func shrinkMainPane() {
+    override func shrinkMainPane() {
         mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 
-    override public func increaseMainPaneCount() {
+    override func increaseMainPaneCount() {
         mainPaneCount += 1
     }
 
-    override public func decreaseMainPaneCount() {
+    override func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 }

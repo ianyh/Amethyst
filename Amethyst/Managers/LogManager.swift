@@ -8,6 +8,6 @@
 
 import Log
 
-public struct LogManager {
-    public internal(set) static var log: Logger? = Logger()
+enum LogManager {
+    internal(set) static var log: Logger? = Logger()
 }

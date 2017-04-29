@@ -9,17 +9,17 @@
 import Foundation
 import Silica
 
-public protocol WindowActivityCache {
+protocol WindowActivityCache {
     func windowIsActive(_ window: SIWindow) -> Bool
 }
 
-open class Layout: NSObject {
-    open class var layoutName: String { return "" }
-    open class var layoutKey: String { return "" }
+class Layout: NSObject {
+    class var layoutName: String { return "" }
+    class var layoutKey: String { return "" }
 
-    open let windowActivityCache: WindowActivityCache
+    let windowActivityCache: WindowActivityCache
 
-    public required init(windowActivityCache: WindowActivityCache) {
+    required init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
         super.init()
     }

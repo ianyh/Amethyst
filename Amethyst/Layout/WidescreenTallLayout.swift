@@ -8,15 +8,15 @@
 
 import Silica
 
-private class WidescreenTallReflowOperation: ReflowOperation {
-    fileprivate let layout: WidescreenTallLayout
+private final class WidescreenTallReflowOperation: ReflowOperation {
+    let layout: WidescreenTallLayout
 
-    fileprivate init(screen: NSScreen, windows: [SIWindow], layout: WidescreenTallLayout, windowActivityCache: WindowActivityCache) {
+    init(screen: NSScreen, windows: [SIWindow], layout: WidescreenTallLayout, windowActivityCache: WindowActivityCache) {
         self.layout = layout
         super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
     }
 
-    fileprivate override func main() {
+    override func main() {
         if windows.count == 0 {
             return
         }
@@ -68,30 +68,30 @@ private class WidescreenTallReflowOperation: ReflowOperation {
     }
 }
 
-open class WidescreenTallLayout: Layout {
-    override open class var layoutName: String { return "Widescreen Tall" }
-    override open class var layoutKey: String { return "widescreen-tall" }
+final class WidescreenTallLayout: Layout {
+    override class var layoutName: String { return "Widescreen Tall" }
+    override class var layoutKey: String { return "widescreen-tall" }
 
     fileprivate var mainPaneCount: Int = 1
     fileprivate var mainPaneRatio: CGFloat = 0.5
 
-    override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
+    override func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
     }
 
-    override open func expandMainPane() {
+    override func expandMainPane() {
         mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
-    override open func shrinkMainPane() {
+    override func shrinkMainPane() {
         mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 
-    override open func increaseMainPaneCount() {
+    override func increaseMainPaneCount() {
         mainPaneCount += 1
     }
 
-    override open func decreaseMainPaneCount() {
+    override func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 }
