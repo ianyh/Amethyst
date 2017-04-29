@@ -325,6 +325,7 @@ open class WindowManager: NSObject {
 
         regenerateActiveIDCache()
 
+        application?.dropWindowsCache()
         if let applicationWindows = application?.visibleWindows(), applicationWindows.isEmpty {
             focusScreenAtIndex(0)
         }
