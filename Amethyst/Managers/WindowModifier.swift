@@ -10,7 +10,7 @@ import Cocoa
 import Foundation
 import Silica
 
-public protocol WindowModifierType {
+protocol WindowModifierType {
     func throwToScreenAtIndex(_ screenIndex: Int)
     func focusScreenAtIndex(_ screenIndex: Int)
     func moveFocusCounterClockwise()
@@ -25,7 +25,7 @@ public protocol WindowModifierType {
     func pushFocusedWindowToSpaceRight()
 }
 
-public protocol WindowModifierDelegate: class {
+protocol WindowModifierDelegate: class {
     func focusedWindow() -> SIWindow?
     func currentFocusedSpace() -> CGSSpace?
     func spacesForFocusedScreen() -> [CGSSpace]?
@@ -39,14 +39,14 @@ public protocol WindowModifierDelegate: class {
     func switchWindow(_ window: SIWindow, withWindow otherWindow: SIWindow)
 }
 
-open class WindowModifier: WindowModifierType {
-    open weak var delegate: WindowModifierDelegate?
+final class WindowModifier: WindowModifierType {
+    weak var delegate: WindowModifierDelegate?
 
-    internal func windowIsFloating(_ window: SIWindow) -> Bool {
+    func windowIsFloating(_ window: SIWindow) -> Bool {
         return delegate?.windowIsFloating(window) ?? false
     }
 
-    open func throwToScreenAtIndex(_ screenIndex: Int) {
+    func throwToScreenAtIndex(_ screenIndex: Int) {
         guard let screenManager = delegate?.screenManagerForScreenIndex(screenIndex), let focusedWindow = delegate?.focusedWindow() else {
             return
         }
@@ -66,7 +66,7 @@ open class WindowModifier: WindowModifierType {
         focusedWindow.am_focusWindow()
     }
 
-    open func focusScreenAtIndex(_ screenIndex: Int) {
+    func focusScreenAtIndex(_ screenIndex: Int) {
         guard let screenManager = delegate?.screenManagerForScreenIndex(screenIndex) else {
             return
         }
@@ -97,7 +97,7 @@ open class WindowModifier: WindowModifierType {
         topWindow.am_focusWindow()
     }
 
-    open func moveFocusCounterClockwise() {
+    func moveFocusCounterClockwise() {
         guard let focusedWindow = delegate?.focusedWindow() else {
             focusScreenAtIndex(0)
             return
@@ -125,7 +125,7 @@ open class WindowModifier: WindowModifierType {
         windowToFocus.am_focusWindow()
     }
 
-    open func moveFocusClockwise() {
+    func moveFocusClockwise() {
         guard let focusedWindow = delegate?.focusedWindow() else {
             focusScreenAtIndex(0)
             return
@@ -153,7 +153,7 @@ open class WindowModifier: WindowModifierType {
         windowToFocus.am_focusWindow()
     }
 
-    open func swapFocusedWindowToMain() {
+    func swapFocusedWindowToMain() {
         guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             return
         }
@@ -174,7 +174,7 @@ open class WindowModifier: WindowModifierType {
         focusedWindow.am_focusWindow()
     }
 
-    open func swapFocusedWindowCounterClockwise() {
+    func swapFocusedWindowCounterClockwise() {
         guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
@@ -198,7 +198,7 @@ open class WindowModifier: WindowModifierType {
         focusedWindow.am_focusWindow()
     }
 
-    open func swapFocusedWindowClockwise() {
+    func swapFocusedWindowClockwise() {
         guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
@@ -222,7 +222,7 @@ open class WindowModifier: WindowModifierType {
         focusedWindow.am_focusWindow()
     }
 
-    open func swapFocusedWindowScreenClockwise() {
+    func swapFocusedWindowScreenClockwise() {
         guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
@@ -246,7 +246,7 @@ open class WindowModifier: WindowModifierType {
         delegate?.markScreenForReflow(screenToMoveTo, withChange: .add(window: focusedWindow))
     }
 
-    open func swapFocusedWindowScreenCounterClockwise() {
+    func swapFocusedWindowScreenCounterClockwise() {
         guard let focusedWindow = delegate?.focusedWindow(), !windowIsFloating(focusedWindow) else {
             focusScreenAtIndex(0)
             return
@@ -270,7 +270,7 @@ open class WindowModifier: WindowModifierType {
         delegate?.markScreenForReflow(screenToMoveTo, withChange: .add(window: focusedWindow))
     }
 
-    open func pushFocusedWindowToSpace(_ space: UInt) {
+    func pushFocusedWindowToSpace(_ space: UInt) {
         guard let focusedWindow = delegate?.focusedWindow(), let screen = focusedWindow.screen() else {
             return
         }
@@ -290,7 +290,7 @@ open class WindowModifier: WindowModifierType {
         }
     }
 
-    open func pushFocusedWindowToSpaceLeft() {
+    func pushFocusedWindowToSpaceLeft() {
         guard let currentFocusedSpace = delegate?.currentFocusedSpace(), let spaces = delegate?.spacesForFocusedScreen() else {
             return
         }
@@ -302,7 +302,7 @@ open class WindowModifier: WindowModifierType {
         pushFocusedWindowToSpace(UInt(index))
     }
 
-    open func pushFocusedWindowToSpaceRight() {
+    func pushFocusedWindowToSpaceRight() {
         guard let currentFocusedSpace = delegate?.currentFocusedSpace(), let spaces = delegate?.spacesForFocusedScreen() else {
             return
         }
@@ -316,61 +316,61 @@ open class WindowModifier: WindowModifierType {
 }
 
 extension WindowManager: WindowModifierType {
-    public func throwToScreenAtIndex(_ screenIndex: Int) {
+    func throwToScreenAtIndex(_ screenIndex: Int) {
         windowModifier.throwToScreenAtIndex(screenIndex)
     }
 
-    public func focusScreenAtIndex(_ screenIndex: Int) {
+    func focusScreenAtIndex(_ screenIndex: Int) {
         windowModifier.focusScreenAtIndex(screenIndex)
     }
 
-    public func moveFocusCounterClockwise() {
+    func moveFocusCounterClockwise() {
         windowModifier.moveFocusCounterClockwise()
     }
 
-    public func moveFocusClockwise() {
+    func moveFocusClockwise() {
         windowModifier.moveFocusClockwise()
     }
 
-    public func swapFocusedWindowToMain() {
+    func swapFocusedWindowToMain() {
         windowModifier.swapFocusedWindowToMain()
     }
 
-    public func swapFocusedWindowCounterClockwise() {
+    func swapFocusedWindowCounterClockwise() {
         windowModifier.swapFocusedWindowCounterClockwise()
     }
 
-    public func swapFocusedWindowClockwise() {
+    func swapFocusedWindowClockwise() {
         windowModifier.swapFocusedWindowClockwise()
     }
 
-    public func swapFocusedWindowScreenClockwise() {
+    func swapFocusedWindowScreenClockwise() {
         windowModifier.swapFocusedWindowScreenClockwise()
     }
 
-    public func swapFocusedWindowScreenCounterClockwise() {
+    func swapFocusedWindowScreenCounterClockwise() {
         windowModifier.swapFocusedWindowScreenCounterClockwise()
     }
 
-    public func pushFocusedWindowToSpace(_ space: UInt) {
+    func pushFocusedWindowToSpace(_ space: UInt) {
         windowModifier.pushFocusedWindowToSpace(space)
     }
 
-    public func pushFocusedWindowToSpaceLeft() {
+    func pushFocusedWindowToSpaceLeft() {
         windowModifier.pushFocusedWindowToSpaceLeft()
     }
 
-    public func pushFocusedWindowToSpaceRight() {
+    func pushFocusedWindowToSpaceRight() {
         windowModifier.pushFocusedWindowToSpaceRight()
     }
 }
 
 extension WindowManager: WindowModifierDelegate {
-    public func focusedWindow() -> SIWindow? {
+    func focusedWindow() -> SIWindow? {
         return SIWindow.focused()
     }
 
-    public func spacesForScreen(_ screen: NSScreen) -> [CGSSpace]? {
+    func spacesForScreen(_ screen: NSScreen) -> [CGSSpace]? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
@@ -400,7 +400,7 @@ extension WindowManager: WindowModifierDelegate {
         return nil
     }
 
-    public func spacesForFocusedScreen() -> [CGSSpace]? {
+    func spacesForFocusedScreen() -> [CGSSpace]? {
         guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
             return nil
         }
@@ -408,7 +408,7 @@ extension WindowManager: WindowModifierDelegate {
         return spacesForScreen(screen)
     }
 
-    public func currentSpaceForScreen(_ screen: NSScreen) -> CGSSpace? {
+    func currentSpaceForScreen(_ screen: NSScreen) -> CGSSpace? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
@@ -440,7 +440,7 @@ extension WindowManager: WindowModifierDelegate {
         return nil
     }
 
-    public func currentFocusedSpace() -> CGSSpace? {
+    func currentFocusedSpace() -> CGSSpace? {
         guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
             return nil
         }
@@ -448,22 +448,22 @@ extension WindowManager: WindowModifierDelegate {
         return currentSpaceForScreen(screen)
     }
 
-    public func screenManagerForScreen(_ screen: NSScreen) -> ScreenManager? {
+    func screenManagerForScreen(_ screen: NSScreen) -> ScreenManager? {
         return screenManagers.filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }.first
     }
 
-    public func screenManagerForScreenIndex(_ screenIndex: Int) -> ScreenManager? {
+    func screenManagerForScreenIndex(_ screenIndex: Int) -> ScreenManager? {
         guard screenIndex < screenManagers.count else {
             return nil
         }
         return screenManagers[screenIndex]
     }
 
-    public func screenManagerIndexForScreen(_ screen: NSScreen) -> Int? {
+    func screenManagerIndexForScreen(_ screen: NSScreen) -> Int? {
         return screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 
-    public func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange) {
+    func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange) {
         for screenManager in screenManagers {
             guard screenManager.screen.screenIdentifier() == screen.screenIdentifier() else {
                 continue
@@ -473,7 +473,7 @@ extension WindowManager: WindowModifierDelegate {
         }
     }
 
-    public func windowsForScreen(_ screen: NSScreen) -> [SIWindow] {
+    func windowsForScreen(_ screen: NSScreen) -> [SIWindow] {
         let screenIdentifier = screen.screenIdentifier()
         guard let spaces = NSScreen.screenDescriptions() else {
             return []
@@ -526,18 +526,18 @@ extension WindowManager: WindowModifierDelegate {
         return screenWindows
     }
 
-    public func activeWindowsForScreen(_ screen: NSScreen) -> [SIWindow] {
+    func activeWindowsForScreen(_ screen: NSScreen) -> [SIWindow] {
         let activeWindows = windowsForScreen(screen).filter { window in
             return window.shouldBeManaged() && !windowIsFloating(window)
         }
         return activeWindows
     }
 
-    public func windowIsFloating(_ window: SIWindow) -> Bool {
+    func windowIsFloating(_ window: SIWindow) -> Bool {
         return floatingMap[window.windowID()] ?? false
     }
 
-    public func switchWindow(_ window: SIWindow, withWindow otherWindow: SIWindow) {
+    func switchWindow(_ window: SIWindow, withWindow otherWindow: SIWindow) {
         guard let windowIndex = windows.index(of: window) else {
             return
         }

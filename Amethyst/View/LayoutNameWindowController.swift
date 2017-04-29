@@ -8,6 +8,6 @@
 
 import AppKit
 
-class LayoutNameWindowController: NSWindowController {
+final class LayoutNameWindowController: NSWindowController {
 
 }

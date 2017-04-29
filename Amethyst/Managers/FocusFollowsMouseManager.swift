@@ -10,24 +10,24 @@ import Cocoa
 import Foundation
 import Silica
 
-public protocol FocusFollowsMouseManagerDelegate: class {
+protocol FocusFollowsMouseManagerDelegate: class {
     func windowsForFocusFollowsMouse() -> [SIWindow]
 }
 
-open class FocusFollowsMouseManager {
-    open weak var delegate: FocusFollowsMouseManagerDelegate?
+final class FocusFollowsMouseManager {
+    weak var delegate: FocusFollowsMouseManagerDelegate?
 
-    fileprivate let userConfiguration: UserConfiguration
-    fileprivate var mouseMovedEventHandler: AnyObject?
+    private let userConfiguration: UserConfiguration
+    private var mouseMovedEventHandler: AnyObject?
 
-    public init(userConfiguration: UserConfiguration) {
+    init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
         mouseMovedEventHandler = NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.mouseMoved) { event in
             self.focusWindowWithMouseMovedEvent(event)
         } as AnyObject?
     }
 
-    fileprivate func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
+    private func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
         guard userConfiguration.focusFollowsMouse() else {
             return
         }
@@ -55,7 +55,7 @@ open class FocusFollowsMouseManager {
 }
 
 extension WindowManager: FocusFollowsMouseManagerDelegate {
-    public func windowsForFocusFollowsMouse() -> [SIWindow] {
+    func windowsForFocusFollowsMouse() -> [SIWindow] {
         return windows
     }
 }

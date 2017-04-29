@@ -11,7 +11,7 @@ import Nimble
 import Quick
 import SwiftyJSON
 
-final class TestConfigurationStorage: ConfigurationStorage {
+fileprivate final class TestConfigurationStorage: ConfigurationStorage {
     var storage: [String: Any] = [:]
 
     func object(forKey defaultName: String) -> Any? {
@@ -43,17 +43,17 @@ final class TestConfigurationStorage: ConfigurationStorage {
     }
 }
 
-public class UserConfigurationTests: QuickSpec {
+final class UserConfigurationTests: QuickSpec {
     private class TestHotKeyRegistrar: HotKeyRegistrar {
-        fileprivate private(set) var keyString: String?
-        fileprivate private(set) var modifiers: AMModifierFlags?
-        fileprivate private(set) var handler: (() -> ())?
-        fileprivate private(set) var defaultsKey: String?
-        fileprivate private(set) var override: Bool?
+        private(set) var keyString: String?
+        private(set) var modifiers: AMModifierFlags?
+        private(set) var handler: (() -> ())?
+        private(set) var defaultsKey: String?
+        private(set) var override: Bool?
 
-        fileprivate init() {}
+        init() {}
 
-        fileprivate func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool) {
+        func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool) {
             keyString = string
             self.modifiers = modifiers
             self.handler = handler
@@ -66,7 +66,7 @@ public class UserConfigurationTests: QuickSpec {
         var bundleIdentifier: String?
     }
 
-    public override func spec() {
+    override func spec() {
         describe("constructing commands") {
             context("overrides") {
                 it("when user configuration exists") {
@@ -82,7 +82,7 @@ public class UserConfigurationTests: QuickSpec {
 
                     let registrar = TestHotKeyRegistrar()
 
-                    configuration.constructCommandWithHotKeyRegistrar(registrar, commandKey: "test", handler: {})
+                    configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
 
                     expect(registrar.override).to(beTrue())
                 }
@@ -106,7 +106,7 @@ public class UserConfigurationTests: QuickSpec {
 
                     let registrar = TestHotKeyRegistrar()
 
-                    configuration.constructCommandWithHotKeyRegistrar(registrar, commandKey: "test", handler: {})
+                    configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
 
                     expect(registrar.override).to(beTrue())
                 }
@@ -130,7 +130,7 @@ public class UserConfigurationTests: QuickSpec {
                     
                     let registrar = TestHotKeyRegistrar()
                     
-                    configuration.constructCommandWithHotKeyRegistrar(registrar, commandKey: "test", handler: {})
+                    configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
                     
                     expect(registrar.override).to(beTrue())
                 }
@@ -157,7 +157,7 @@ public class UserConfigurationTests: QuickSpec {
 
                     let registrar = TestHotKeyRegistrar()
 
-                    configuration.constructCommandWithHotKeyRegistrar(registrar, commandKey: "test", handler: {})
+                    configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
 
                     expect(registrar.keyString).to(equal("1"))
                 }
@@ -176,7 +176,7 @@ public class UserConfigurationTests: QuickSpec {
                     
                     let registrar = TestHotKeyRegistrar()
                     
-                    configuration.constructCommandWithHotKeyRegistrar(registrar, commandKey: "test", handler: {})
+                    configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
 
                     expect(configuration.defaultConfiguration?["test"]["key"].string).to(equal("1"))
                     expect(registrar.keyString).to(equal("1"))
@@ -203,7 +203,7 @@ public class UserConfigurationTests: QuickSpec {
                 let registrar = TestHotKeyRegistrar()
                 
                 expect {
-                    configuration.constructCommandWithHotKeyRegistrar(registrar, commandKey: "test", handler: {})
+                    configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
                 }.toNot(throwError())
             }
         }

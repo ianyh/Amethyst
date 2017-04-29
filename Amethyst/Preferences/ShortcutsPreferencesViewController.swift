@@ -11,39 +11,39 @@ import Cocoa
 import Foundation
 import MASShortcut
 
-open class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
-    fileprivate var hotKeyNameToDefaultsKey: [[String]] = []
-    @IBOutlet open var tableView: NSTableView?
+final class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
+    private var hotKeyNameToDefaultsKey: [[String]] = []
+    @IBOutlet var tableView: NSTableView?
 
-    open override func awakeFromNib() {
+    override func awakeFromNib() {
         tableView?.dataSource = self
         tableView?.delegate = self
     }
 
-    open override func viewWillAppear() {
+    override func viewWillAppear() {
         super.viewWillAppear()
 
         hotKeyNameToDefaultsKey = HotKeyManager.hotKeyNameToDefaultsKey()
         tableView?.reloadData()
     }
 
-    open func preferenceIdentifier() -> String! {
+    func preferenceIdentifier() -> String! {
         return NSStringFromClass(type(of: self))
     }
 
-    open func preferenceIcon() -> NSImage! {
+    func preferenceIcon() -> NSImage! {
         return NSImage(named: NSImageNameAdvanced)
     }
 
-    open func preferenceTitle() -> String! {
+    func preferenceTitle() -> String! {
         return "Shortcuts"
     }
 
-    open func numberOfRows(in tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return hotKeyNameToDefaultsKey.count
     }
 
-    open func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let frame = NSRect(x: 0, y: 0, width: tableView.frame.size.width, height: 30)
         let shortcutItemView = ShortcutsPreferencesListItemView(frame: frame)
         let name = hotKeyNameToDefaultsKey[row][0]
@@ -55,7 +55,7 @@ open class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesW
         return shortcutItemView
     }
 
-    open func selectionShouldChange(in tableView: NSTableView) -> Bool {
+    func selectionShouldChange(in tableView: NSTableView) -> Bool {
         return false
     }
 }

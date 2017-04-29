@@ -8,7 +8,7 @@
 
 import Silica
 
-internal class TreeNode {
+final class TreeNode {
     weak var parent: TreeNode?
     var left: TreeNode?
     var right: TreeNode?
@@ -93,7 +93,7 @@ internal class TreeNode {
         }
     }
 
-    internal func insertWindowID(_ windowID: CGWindowID) {
+    func insertWindowID(_ windowID: CGWindowID) {
         guard parent != nil || self.windowID != nil else {
             self.windowID = windowID
             return
@@ -136,21 +136,20 @@ internal class TreeNode {
 
 extension TreeNode: Equatable {}
 
-internal func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
+func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
     return lhs.windowID == rhs.windowID
 }
 
-private class BinarySpacePartitioningReflowOperation: ReflowOperation {
-    fileprivate typealias TraversalNode = (node: TreeNode, frame: CGRect)
+private final class BinarySpacePartitioningReflowOperation: ReflowOperation {
+    private typealias TraversalNode = (node: TreeNode, frame: CGRect)
+    private let rootNode: TreeNode
 
-    fileprivate let rootNode: TreeNode
-
-    fileprivate init(screen: NSScreen, windows: [SIWindow], rootNode: TreeNode, windowActivityCache: WindowActivityCache) {
+    init(screen: NSScreen, windows: [SIWindow], rootNode: TreeNode, windowActivityCache: WindowActivityCache) {
         self.rootNode = rootNode
         super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
     }
 
-    fileprivate override func main() {
+    override func main() {
         if windows.count == 0 {
             return
         }
@@ -229,14 +228,14 @@ private class BinarySpacePartitioningReflowOperation: ReflowOperation {
     }
 }
 
-open class BinarySpacePartitioningLayout: Layout {
-    override open class var layoutName: String { return "Binary Space Partitioning" }
-    override open class var layoutKey: String { return "bsp" }
+final class BinarySpacePartitioningLayout: Layout {
+    override class var layoutName: String { return "Binary Space Partitioning" }
+    override class var layoutKey: String { return "bsp" }
 
-    internal var rootNode = TreeNode()
-    internal var lastKnownFocusedWindowID: CGWindowID?
+    private var rootNode = TreeNode()
+    private var lastKnownFocusedWindowID: CGWindowID?
 
-    open override func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
+    override func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
         if windows.count > 0 && !rootNode.valid {
             constructInitialTreeWithWindows(windows)
         }
@@ -244,7 +243,7 @@ open class BinarySpacePartitioningLayout: Layout {
         return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, windowActivityCache: windowActivityCache)
     }
 
-    open override func updateWithChange(_ windowChange: WindowChange) {
+    override func updateWithChange(_ windowChange: WindowChange) {
         switch windowChange {
         case let .add(window):
             guard rootNode.findWindowID(window.windowID()) == nil else {
@@ -280,7 +279,7 @@ open class BinarySpacePartitioningLayout: Layout {
         }
     }
 
-    open override func nextWindowIDCounterClockwise() -> CGWindowID? {
+    override func nextWindowIDCounterClockwise() -> CGWindowID? {
         guard let focusedWindow = SIWindow.focused() else {
             return nil
         }
@@ -296,7 +295,7 @@ open class BinarySpacePartitioningLayout: Layout {
         return orderedIDs[nextWindowIndex]
     }
 
-    open override func nextWindowIDClockwise() -> CGWindowID? {
+    override func nextWindowIDClockwise() -> CGWindowID? {
         guard let focusedWindow = SIWindow.focused() else {
             return nil
         }
@@ -312,7 +311,7 @@ open class BinarySpacePartitioningLayout: Layout {
         return orderedIDs[nextWindowIndex]
     }
 
-    internal func constructInitialTreeWithWindows(_ windows: [SIWindow]) {
+    private func constructInitialTreeWithWindows(_ windows: [SIWindow]) {
         for window in windows {
             guard rootNode.findWindowID(window.windowID()) == nil else {
                 continue

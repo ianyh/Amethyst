@@ -9,18 +9,18 @@
 import Foundation
 import Silica
 
-public protocol ScreenManagerDelegate: class {
+protocol ScreenManagerDelegate: class {
     func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow]
     func windowIsActive(_ window: SIWindow) -> Bool
 }
 
-open class ScreenManager: NSObject {
-    open var screen: NSScreen
-    open let screenIdentifier: String
+final class ScreenManager: NSObject {
+    var screen: NSScreen
+    let screenIdentifier: String
     fileprivate weak var delegate: ScreenManagerDelegate?
-    fileprivate let userConfiguration: UserConfiguration
+    private let userConfiguration: UserConfiguration
 
-    open var currentSpaceIdentifier: String? {
+    var currentSpaceIdentifier: String? {
         willSet {
             guard let spaceIdentifier = currentSpaceIdentifier else {
                 return
@@ -48,31 +48,31 @@ open class ScreenManager: NSObject {
             }
         }
     }
-    open var isFullscreen = false
+    var isFullscreen = false
 
-    fileprivate var reflowTimer: Timer?
-    fileprivate var reflowOperation: ReflowOperation?
+    private var reflowTimer: Timer?
+    private var reflowOperation: ReflowOperation?
 
-    fileprivate var layouts: [Layout] = []
-    fileprivate var currentLayoutIndexBySpaceIdentifier: [String: Int] = [:]
-    fileprivate var layoutsBySpaceIdentifier: [String: [Layout]] = [:]
-    fileprivate var currentLayoutIndex: Int {
+    private var layouts: [Layout] = []
+    private var currentLayoutIndexBySpaceIdentifier: [String: Int] = [:]
+    private var layoutsBySpaceIdentifier: [String: [Layout]] = [:]
+    private var currentLayoutIndex: Int {
         didSet {
             if !self.changingSpace || userConfiguration.enablesLayoutHUDOnSpaceChange() {
                 self.displayLayoutHUD()
             }
         }
     }
-    fileprivate var currentLayout: Layout? {
+    private var currentLayout: Layout? {
         guard !layouts.isEmpty else {
             return nil
         }
         return layouts[currentLayoutIndex]
     }
 
-    fileprivate let layoutNameWindowController: LayoutNameWindowController
+    private let layoutNameWindowController: LayoutNameWindowController
 
-    fileprivate var changingSpace: Bool = false
+    private var changingSpace: Bool = false
 
     init(screen: NSScreen, screenIdentifier: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
         self.screen = screen
@@ -91,7 +91,7 @@ open class ScreenManager: NSObject {
         layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
     }
 
-    open func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
+    func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
         reflowOperation?.cancel()
 
         LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
@@ -111,7 +111,7 @@ open class ScreenManager: NSObject {
         }
     }
 
-    fileprivate func reflow(_ change: WindowChange) {
+    private func reflow(_ change: WindowChange) {
         guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
@@ -127,7 +127,7 @@ open class ScreenManager: NSObject {
         OperationQueue.main.addOperation(reflowOperation!)
     }
 
-    open func updateCurrentLayout(_ updater: (Layout) -> Void) {
+    func updateCurrentLayout(_ updater: (Layout) -> Void) {
         guard let layout = currentLayout else {
             return
         }
@@ -135,17 +135,17 @@ open class ScreenManager: NSObject {
         setNeedsReflowWithWindowChange(.unknown)
     }
 
-    open func cycleLayoutForward() {
+    func cycleLayoutForward() {
         currentLayoutIndex = (currentLayoutIndex + 1) % layouts.count
         setNeedsReflowWithWindowChange(.unknown)
     }
 
-    open func cycleLayoutBackward() {
+    func cycleLayoutBackward() {
         currentLayoutIndex = (currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1
         setNeedsReflowWithWindowChange(.unknown)
     }
 
-    open func selectLayout(_ layoutType: AnyClass) {
+    func selectLayout(_ layoutType: AnyClass) {
         let index = layouts.index { $0.isKind(of: layoutType) }
         guard let layoutIndex = index else {
             return
@@ -155,23 +155,23 @@ open class ScreenManager: NSObject {
         setNeedsReflowWithWindowChange(.unknown)
     }
 
-    open func shrinkMainPane() {
+    func shrinkMainPane() {
         currentLayout?.shrinkMainPane()
     }
 
-    open func expandMainPane() {
+    func expandMainPane() {
         currentLayout?.expandMainPane()
     }
 
-    open func nextWindowIDCounterClockwise() -> CGWindowID? {
+    func nextWindowIDCounterClockwise() -> CGWindowID? {
         return currentLayout?.nextWindowIDCounterClockwise()
     }
 
-    open func nextWindowIDClockwise() -> CGWindowID? {
+    func nextWindowIDClockwise() -> CGWindowID? {
         return currentLayout?.nextWindowIDClockwise()
     }
 
-    open func displayLayoutHUD() {
+    func displayLayoutHUD() {
         guard userConfiguration.enablesLayoutHUD() else {
             return
         }
@@ -198,23 +198,23 @@ open class ScreenManager: NSObject {
         layoutNameWindowController.showWindow(self)
     }
 
-    open func hideLayoutHUD(_ sender: AnyObject) {
+    func hideLayoutHUD(_ sender: AnyObject) {
         layoutNameWindowController.close()
     }
 }
 
 extension ScreenManager: WindowActivityCache {
-    public func windowIsActive(_ window: SIWindow) -> Bool {
+    func windowIsActive(_ window: SIWindow) -> Bool {
         return delegate?.windowIsActive(window) ?? false
     }
 }
 
 extension WindowManager: ScreenManagerDelegate {
-    public func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow] {
+    func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow] {
         return activeWindowsForScreen(screenManager.screen)
     }
 
-    public func windowIsActive(_ window: SIWindow) -> Bool {
+    func windowIsActive(_ window: SIWindow) -> Bool {
         if !window.isActive() {
             return false
         }

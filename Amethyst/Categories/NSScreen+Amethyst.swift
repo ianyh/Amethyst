@@ -10,8 +10,8 @@ import ApplicationServices
 import Foundation
 import Silica
 
-public extension NSScreen {
-    public static func screenDescriptions() -> [[String: AnyObject]]? {
+extension NSScreen {
+    static func screenDescriptions() -> [[String: AnyObject]]? {
         guard let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection())?.takeRetainedValue() else {
             return nil
         }
@@ -21,14 +21,14 @@ public extension NSScreen {
         return screenDescriptions
     }
 
-    public func screenIdentifier() -> String? {
+    func screenIdentifier() -> String? {
         guard let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), frameIncludingDockAndMenu()) else {
             return nil
         }
         return String(managedDisplay.takeRetainedValue())
     }
 
-    public func focusScreen() {
+    func focusScreen() {
         let screenFrame = self.frame
         let mouseCursorPoint = NSPoint(x: screenFrame.midX, y: screenFrame.midY)
         let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left)

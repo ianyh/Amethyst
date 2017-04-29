@@ -10,8 +10,8 @@ import ApplicationServices
 import Foundation
 import Silica
 
-public extension SIWindow {
-    public static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
+extension SIWindow {
+    static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
         guard let windowDescriptions = windowDescriptions(.optionOnScreenOnly, windowID: CGWindowID(0)), windowDescriptions.count > 0 else {
             return nil
         }
@@ -63,7 +63,7 @@ public extension SIWindow {
         return windowInWindows(windows, withCGWindowDescription: windowDictionaryToFocus)
     }
 
-    internal static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
+    static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
         for window in windows {
             guard
                 let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber, windowOwnerProcessIdentifier.int32Value == window.processIdentifier()
@@ -91,7 +91,7 @@ public extension SIWindow {
         return nil
     }
 
-    public static func windowDescriptions(_ options: CGWindowListOption, windowID: CGWindowID) -> [[String: AnyObject]]? {
+    static func windowDescriptions(_ options: CGWindowListOption, windowID: CGWindowID) -> [[String: AnyObject]]? {
         guard let cfWindowDescriptions = CGWindowListCopyWindowInfo(options, windowID) else {
             return nil
         }
@@ -103,7 +103,7 @@ public extension SIWindow {
         return windowDescriptions
     }
 
-    public func shouldBeManaged() -> Bool {
+    func shouldBeManaged() -> Bool {
         guard isMovable() else {
             return false
         }
@@ -115,7 +115,7 @@ public extension SIWindow {
         return true
     }
 
-    @discardableResult public func am_focusWindow() -> Bool {
+    @discardableResult func am_focusWindow() -> Bool {
         guard self.focus() else {
             return false
         }
