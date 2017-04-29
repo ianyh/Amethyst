@@ -143,6 +143,12 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
     }
 }
 
+extension AppDelegate: NSWindowDelegate {
+    public func windowWillClose(_ notification: Notification) {
+        windowManager?.preferencesDidClose()
+    }
+}
+
 extension AppDelegate: UserConfigurationDelegate {
     public func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration) {
         var statusItemImage: NSImage?
