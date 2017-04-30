@@ -31,7 +31,6 @@
 		401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B71CE9279E00F89B3F /* WindowModifier.swift */; };
 		401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
-		4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F21C1124BC001E4788 /* ReflowOperation.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
 		402DB6EE1742E41A00D1C936 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 402DB6ED1742E41A00D1C936 /* main.m */; };
@@ -122,7 +121,6 @@
 		401BC8B71CE9279E00F89B3F /* WindowModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowModifier.swift; sourceTree = "<group>"; };
 		401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusFollowsMouseManager.swift; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
-		4029C4F21C1124BC001E4788 /* ReflowOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -344,7 +342,6 @@
 				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
 				4029C4F01C112478001E4788 /* Layout.swift */,
 				4062AD381C206B3C00DB612B /* MiddleWideLayout.swift */,
-				4029C4F21C1124BC001E4788 /* ReflowOperation.swift */,
 				4062AD361C1FA83300DB612B /* RowLayout.swift */,
 				4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */,
 				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
@@ -695,7 +692,6 @@
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
-				4029C4F31C1124BC001E4788 /* ReflowOperation.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
 				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
 				401BC8A81CE8E94000F89B3F /* SIWindow+Amethyst.swift in Sources */,

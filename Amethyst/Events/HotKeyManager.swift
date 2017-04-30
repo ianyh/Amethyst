@@ -79,25 +79,33 @@ final class HotKeyManager: NSObject {
 
         constructCommandWithCommandKey(CommandKey.shrinkMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
-                layout.shrinkMainPane()
+                if let panedLayout = layout as? PanedLayout {
+                    panedLayout.shrinkMainPane()
+                }
             }
         }
 
         constructCommandWithCommandKey(CommandKey.expandMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
-                layout.expandMainPane()
+                if let panedLayout = layout as? PanedLayout {
+                    panedLayout.expandMainPane()
+                }
             }
         }
 
         constructCommandWithCommandKey(CommandKey.increaseMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
-                layout.increaseMainPaneCount()
+                if let panedLayout = layout as? PanedLayout {
+                    panedLayout.increaseMainPaneCount()
+                }
             }
         }
 
         constructCommandWithCommandKey(CommandKey.decreaseMain.rawValue) {
             windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
-                layout.decreaseMainPaneCount()
+                if let panedLayout = layout as? PanedLayout {
+                    panedLayout.decreaseMainPaneCount()
+                }
             }
         }
 
@@ -181,12 +189,8 @@ final class HotKeyManager: NSObject {
 
         let layoutStrings: [String] = userConfiguration.layoutStrings()
         layoutStrings.forEach { layoutString in
-            guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
-                return
-            }
-
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutString)) {
-                windowManager.focusedScreenManager()?.selectLayout(layoutClass)
+                windowManager.focusedScreenManager()?.selectLayout(layoutString)
             }
         }
     }
