@@ -427,7 +427,6 @@
 			buildConfigurationList = 40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */;
 			buildPhases = (
 				C5A5DB9F5599F37F9EB9751C /* [CP] Check Pods Manifest.lock */,
-				40952CE81E47CE9200DD679A /* Lint */,
 				40D95B431C6E2ED800AAF433 /* Sources */,
 				40D95B441C6E2ED800AAF433 /* Frameworks */,
 				40D95B451C6E2ED800AAF433 /* Resources */,
@@ -603,20 +602,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ${PODS_ROOT}/Fabric/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Amethyst/Amethyst-Info.plist\nfi\n";
-		};
-		40952CE81E47CE9200DD679A /* Lint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Lint;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "swiftlint autocorrect\nswiftlint\n";
 		};
 		5D538A7AD98DDD09209924DA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

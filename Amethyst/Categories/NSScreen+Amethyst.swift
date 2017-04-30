@@ -9,16 +9,17 @@
 import ApplicationServices
 import Foundation
 import Silica
+import SwiftyJSON
 
 extension NSScreen {
-    static func screenDescriptions() -> [[String: AnyObject]]? {
+    static func screenDescriptions() -> [JSON]? {
         guard let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection())?.takeRetainedValue() else {
             return nil
         }
         guard let screenDescriptions = cfScreenDescriptions as NSArray as? [[String: AnyObject]] else {
             return nil
         }
-        return screenDescriptions
+        return screenDescriptions.map { JSON($0) }
     }
 
     func screenIdentifier() -> String? {
