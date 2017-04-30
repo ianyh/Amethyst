@@ -226,16 +226,6 @@ extension ScreenManager: WindowActivityCache {
 
 extension WindowManager: ScreenManagerDelegate {
     func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow] {
-        return activeWindowsForScreen(screenManager.screen)
-    }
-
-    func windowIsActive(_ window: SIWindow) -> Bool {
-        if !window.isActive() {
-            return false
-        }
-        if activeIDCache[window.windowID()] == nil {
-            return false
-        }
-        return true
+        return activeWindows(on: screenManager.screen)
     }
 }

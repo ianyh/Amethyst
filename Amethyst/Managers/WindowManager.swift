@@ -9,6 +9,7 @@
 import AppKit
 import Foundation
 import Silica
+import SwiftyJSON
 
 enum WindowChange {
     case add(window: SIWindow)
@@ -21,7 +22,6 @@ enum WindowChange {
 final class WindowManager: NSObject {
     private var applications: [SIApplication] = []
     var windows: [SIWindow] = []
-    let windowModifier = WindowModifier()
     fileprivate let userConfiguration: UserConfiguration
 
     private(set) var screenManagers: [ScreenManager] = []
@@ -29,7 +29,7 @@ final class WindowManager: NSObject {
 
     private let focusFollowsMouseManager: FocusFollowsMouseManager
 
-    private(set) var activeIDCache: [CGWindowID: Bool] = [:]
+    fileprivate private(set) var activeIDCache: Set<CGWindowID> = Set()
     private(set) var floatingMap: [CGWindowID: Bool] = [:]
 
     init(userConfiguration: UserConfiguration) {
@@ -39,7 +39,6 @@ final class WindowManager: NSObject {
         super.init()
 
         focusFollowsMouseManager.delegate = self
-        windowModifier.delegate = self
 
         addWorkspaceNotificationObserver(.NSWorkspaceDidLaunchApplication, selector: #selector(applicationDidLaunch(_:)))
         addWorkspaceNotificationObserver(.NSWorkspaceDidTerminateApplication, selector: #selector(applicationDidTerminate(_:)))
@@ -69,7 +68,8 @@ final class WindowManager: NSObject {
     }
 
     private func regenerateActiveIDCache() {
-        var activeIDCache: [CGWindowID: Bool] = [:]
+        var activeIDCache: Set<CGWindowID> = Set()
+
         defer {
             self.activeIDCache = activeIDCache
         }
@@ -83,13 +83,12 @@ final class WindowManager: NSObject {
                 continue
             }
 
-            activeIDCache[CGWindowID(windowID.uint64Value)] = true
+            activeIDCache.insert(CGWindowID(windowID.uint64Value))
         }
     }
 
-    private func spaceIdentifierWithScreenDictionary(_ screenDictionary: [String: AnyObject]) -> String? {
-        let spaceDictionary = screenDictionary["Current Space"] as? [String: AnyObject]
-        return spaceDictionary?["uuid"] as? String
+    private func spaceIdentifier(from screenDictionary: JSON) -> String? {
+        return screenDictionary["Current Space"]["uuid"].string
     }
 
     fileprivate func assignCurrentSpaceIdentifiers() {
@@ -101,7 +100,7 @@ final class WindowManager: NSObject {
 
         if NSScreen.screensHaveSeparateSpaces() {
             for screenDictionary in screenDictionaries {
-                guard let screenIdentifier = screenDictionary["Display Identifier"] as? String else {
+                guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
                     LogManager.log?.error("Could not identify screen with info: \(screenDictionary)")
                     continue
                 }
@@ -111,7 +110,7 @@ final class WindowManager: NSObject {
                     continue
                 }
 
-                guard let spaceIdentifier = spaceIdentifierWithScreenDictionary(screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
                     continue
                 }
 
@@ -121,7 +120,7 @@ final class WindowManager: NSObject {
             for screenManager in screenManagers {
                 let screenDictionary = screenDictionaries[0]
 
-                guard let spaceIdentifier = spaceIdentifierWithScreenDictionary(screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
                     continue
                 }
 
@@ -153,7 +152,7 @@ final class WindowManager: NSObject {
 
     func preferencesDidClose() {
         DispatchQueue.main.async {
-            self.focusScreenAtIndex(0)
+            self.focusScreen(at: 0)
         }
     }
 
@@ -333,7 +332,7 @@ final class WindowManager: NSObject {
 
         application?.dropWindowsCache()
         if let applicationWindows = application?.visibleWindows(), applicationWindows.isEmpty {
-            focusScreenAtIndex(0)
+            focusScreen(at: 0)
         }
 
         guard let windowIndex = windows.index(of: window) else {
@@ -416,7 +415,7 @@ final class WindowManager: NSObject {
 
 extension WindowManager {
     func applicationDidLaunch(_ notification: Notification) {
-        guard let launchedApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+        guard let launchedApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
         let application = SIApplication(runningApplication: launchedApplication)
@@ -424,7 +423,7 @@ extension WindowManager {
     }
 
     func applicationDidTerminate(_ notification: Notification) {
-        guard let terminatedApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+        guard let terminatedApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
 
@@ -436,7 +435,7 @@ extension WindowManager {
     }
 
     func applicationDidHide(_ notification: Notification) {
-        guard let hiddenApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+        guard let hiddenApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
 
@@ -448,7 +447,7 @@ extension WindowManager {
     }
 
     func applicationDidUnhide(_ notification: Notification) {
-        guard let unhiddenApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+        guard let unhiddenApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
 
@@ -484,5 +483,11 @@ extension WindowManager {
 
     func screenParametersDidChange(_ notification: Notification) {
         updateScreenManagers()
+    }
+}
+
+extension WindowManager: WindowActivityCache {
+    func windowIsActive(_ window: SIWindow) -> Bool {
+        return window.isActive() && activeIDCache.contains(window.windowID())
     }
 }

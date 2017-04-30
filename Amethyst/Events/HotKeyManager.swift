@@ -146,7 +146,7 @@ final class HotKeyManager: NSObject {
             let throwCommandKey = "\(CommandKey.throwScreenPrefix.rawValue)-\(screenNumber)"
 
             self.constructCommandWithCommandKey(focusCommandKey) {
-                windowManager.focusScreenAtIndex(screenNumber - 1)
+                windowManager.focusScreen(at: screenNumber - 1)
             }
 
             self.constructCommandWithCommandKey(throwCommandKey) {
