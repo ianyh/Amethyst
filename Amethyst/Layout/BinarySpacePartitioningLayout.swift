@@ -140,17 +140,17 @@ func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
     return lhs.windowID == rhs.windowID
 }
 
-private final class BinarySpacePartitioningReflowOperation: ReflowOperation {
+final class BinarySpacePartitioningReflowOperation: ReflowOperation {
     private typealias TraversalNode = (node: TreeNode, frame: CGRect)
     private let rootNode: TreeNode
 
-    init(screen: NSScreen, windows: [SIWindow], rootNode: TreeNode, windowActivityCache: WindowActivityCache) {
+    init(screen: NSScreen, windows: [SIWindow], rootNode: TreeNode, frameAssigner: FrameAssigner) {
         self.rootNode = rootNode
-        super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
+        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
     override func main() {
-        if windows.count == 0 {
+        guard !windows.isEmpty else {
             return
         }
 
@@ -161,7 +161,7 @@ private final class BinarySpacePartitioningReflowOperation: ReflowOperation {
         }
 
         let focusedWindow = SIWindow.focused()
-        let baseFrame = adjustedFrameForLayout(screen)
+        let baseFrame = screen.adjustedFrame()
         var frameAssignments: [FrameAssignment] = []
         var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
 
@@ -220,30 +220,48 @@ private final class BinarySpacePartitioningReflowOperation: ReflowOperation {
             }
         }
 
-        if isCancelled {
+        guard !isCancelled else {
             return
         }
 
-        performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments)
     }
 }
 
 final class BinarySpacePartitioningLayout: Layout {
-    override class var layoutName: String { return "Binary Space Partitioning" }
-    override class var layoutKey: String { return "bsp" }
+    static var layoutName: String { return "Binary Space Partitioning" }
+    static var layoutKey: String { return "bsp" }
 
-    private var rootNode = TreeNode()
-    private var lastKnownFocusedWindowID: CGWindowID?
+    let windowActivityCache: WindowActivityCache
 
-    override func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
-        if windows.count > 0 && !rootNode.valid {
+    fileprivate var rootNode = TreeNode()
+    fileprivate var lastKnownFocusedWindowID: CGWindowID?
+
+    init(windowActivityCache: WindowActivityCache) {
+        self.windowActivityCache = windowActivityCache
+    }
+
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+        if !windows.isEmpty && !rootNode.valid {
             constructInitialTreeWithWindows(windows)
         }
 
-        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, windowActivityCache: windowActivityCache)
+        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self)
     }
 
-    override func updateWithChange(_ windowChange: WindowChange) {
+    private func constructInitialTreeWithWindows(_ windows: [SIWindow]) {
+        for window in windows {
+            guard rootNode.findWindowID(window.windowID()) == nil else {
+                continue
+            }
+
+            rootNode.insertWindowIDAtEnd(window.windowID())
+        }
+    }
+}
+
+extension BinarySpacePartitioningLayout: StatefulLayout {
+    func updateWithChange(_ windowChange: WindowChange) {
         switch windowChange {
         case let .add(window):
             guard rootNode.findWindowID(window.windowID()) == nil else {
@@ -279,7 +297,7 @@ final class BinarySpacePartitioningLayout: Layout {
         }
     }
 
-    override func nextWindowIDCounterClockwise() -> CGWindowID? {
+    func nextWindowIDCounterClockwise() -> CGWindowID? {
         guard let focusedWindow = SIWindow.focused() else {
             return nil
         }
@@ -295,7 +313,7 @@ final class BinarySpacePartitioningLayout: Layout {
         return orderedIDs[nextWindowIndex]
     }
 
-    override func nextWindowIDClockwise() -> CGWindowID? {
+    func nextWindowIDClockwise() -> CGWindowID? {
         guard let focusedWindow = SIWindow.focused() else {
             return nil
         }
@@ -310,14 +328,6 @@ final class BinarySpacePartitioningLayout: Layout {
 
         return orderedIDs[nextWindowIndex]
     }
-
-    private func constructInitialTreeWithWindows(_ windows: [SIWindow]) {
-        for window in windows {
-            guard rootNode.findWindowID(window.windowID()) == nil else {
-                continue
-            }
-
-            rootNode.insertWindowIDAtEnd(window.windowID())
-        }
-    }
 }
+
+extension BinarySpacePartitioningLayout: FrameAssigner {}

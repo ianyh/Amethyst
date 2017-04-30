@@ -96,7 +96,9 @@ final class ScreenManager: NSObject {
 
         LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
 
-        currentLayout?.updateWithChange(windowChange)
+        if let statefulLayout = currentLayout as? StatefulLayout {
+            statefulLayout.updateWithChange(windowChange)
+        }
 
         if changingSpace {
             // The 0.4 is disgustingly tied to the space change animation time.
@@ -123,7 +125,7 @@ final class ScreenManager: NSObject {
 
         let windows = delegate?.activeWindowsForScreenManager(self) ?? []
         changingSpace = false
-        reflowOperation = currentLayout?.reflowOperationForScreen(screen, withWindows: windows)
+        reflowOperation = currentLayout?.reflow(windows, on: screen)
         OperationQueue.main.addOperation(reflowOperation!)
     }
 
@@ -145,9 +147,8 @@ final class ScreenManager: NSObject {
         setNeedsReflowWithWindowChange(.unknown)
     }
 
-    func selectLayout(_ layoutType: AnyClass) {
-        let index = layouts.index { $0.isKind(of: layoutType) }
-        guard let layoutIndex = index else {
+    func selectLayout(_ layoutString: String) {
+        guard let layoutIndex = layouts.index(where: { type(of: $0).layoutKey == layoutString }) else {
             return
         }
 
@@ -156,19 +157,33 @@ final class ScreenManager: NSObject {
     }
 
     func shrinkMainPane() {
-        currentLayout?.shrinkMainPane()
+        guard let panedLayout = currentLayout as? PanedLayout else {
+            return
+        }
+        panedLayout.shrinkMainPane()
     }
 
     func expandMainPane() {
-        currentLayout?.expandMainPane()
+        guard let panedLayout = currentLayout as? PanedLayout else {
+            return
+        }
+        panedLayout.expandMainPane()
     }
 
     func nextWindowIDCounterClockwise() -> CGWindowID? {
-        return currentLayout?.nextWindowIDCounterClockwise()
+        guard let statefulLayout = currentLayout as? StatefulLayout else {
+            return nil
+        }
+
+        return statefulLayout.nextWindowIDCounterClockwise()
     }
 
     func nextWindowIDClockwise() -> CGWindowID? {
-        return currentLayout?.nextWindowIDClockwise()
+        guard let statefulLayout = currentLayout as? StatefulLayout else {
+            return nil
+        }
+
+        return statefulLayout.nextWindowIDClockwise()
     }
 
     func displayLayoutHUD() {

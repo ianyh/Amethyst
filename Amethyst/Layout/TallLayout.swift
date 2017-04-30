@@ -8,16 +8,16 @@
 
 import Silica
 
-private final class TallReflowOperation: ReflowOperation {
+final class TallReflowOperation: ReflowOperation {
     let layout: TallLayout
 
-    init(screen: NSScreen, windows: [SIWindow], layout: TallLayout, windowActivityCache: WindowActivityCache) {
+    init(screen: NSScreen, windows: [SIWindow], layout: TallLayout, frameAssigner: FrameAssigner) {
         self.layout = layout
-        super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
+        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
     override func main() {
-        if windows.count == 0 {
+        guard !windows.isEmpty else {
             return
         }
 
@@ -25,7 +25,7 @@ private final class TallReflowOperation: ReflowOperation {
         let secondaryPaneCount = windows.count - mainPaneCount
         let hasSecondaryPane = secondaryPaneCount > 0
 
-        let screenFrame = adjustedFrameForLayout(screen)
+        let screenFrame = screen.adjustedFrame()
 
         let mainPaneWindowHeight = round(screenFrame.size.height / CGFloat(mainPaneCount))
         let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.size.height / CGFloat(secondaryPaneCount)) : 0.0
@@ -62,34 +62,44 @@ private final class TallReflowOperation: ReflowOperation {
             return
         }
 
-        performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments)
     }
 }
 
 final class TallLayout: Layout {
-    override class var layoutName: String { return "Tall" }
-    override class var layoutKey: String { return "tall" }
+    static var layoutName: String { return "Tall" }
+    static var layoutKey: String { return "tall" }
+
+    let windowActivityCache: WindowActivityCache
 
     fileprivate var mainPaneCount: Int = 1
     fileprivate var mainPaneRatio: CGFloat = 0.5
 
-    override func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
-        return TallReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
+    init(windowActivityCache: WindowActivityCache) {
+        self.windowActivityCache = windowActivityCache
     }
 
-    override func expandMainPane() {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+        return TallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
+    }
+}
+
+extension TallLayout: PanedLayout {
+    func expandMainPane() {
         mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
-    override func shrinkMainPane() {
+    func shrinkMainPane() {
         mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 
-    override func increaseMainPaneCount() {
+    func increaseMainPaneCount() {
         mainPaneCount += 1
     }
 
-    override func decreaseMainPaneCount() {
+    func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 }
+
+extension TallLayout: FrameAssigner {}

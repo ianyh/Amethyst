@@ -9,28 +9,28 @@
 import Foundation
 
 enum LayoutManager {
-    static func layoutClassForString(_ layoutString: String) -> Layout.Type? {
+    static func layoutForKey(_ layoutString: String, with windowActivityCache: WindowActivityCache) -> Layout? {
         switch layoutString {
         case "tall":
-            return TallLayout.self
+            return TallLayout(windowActivityCache: windowActivityCache)
         case "tall-right":
-            return TallRightLayout.self
+            return TallRightLayout(windowActivityCache: windowActivityCache)
         case "wide":
-            return WideLayout.self
+            return WideLayout(windowActivityCache: windowActivityCache)
         case "middle-wide":
-            return MiddleWideLayout.self
+            return MiddleWideLayout(windowActivityCache: windowActivityCache)
         case "fullscreen":
-            return FullscreenLayout.self
+            return FullscreenLayout(windowActivityCache: windowActivityCache)
         case "column":
-            return ColumnLayout.self
+            return ColumnLayout(windowActivityCache: windowActivityCache)
         case "row":
-            return RowLayout.self
+            return RowLayout(windowActivityCache: windowActivityCache)
         case "floating":
-            return FloatingLayout.self
+            return FloatingLayout(windowActivityCache: windowActivityCache)
         case "widescreen-tall":
-            return WidescreenTallLayout.self
+            return WidescreenTallLayout(windowActivityCache: windowActivityCache)
         case "bsp":
-            return BinarySpacePartitioningLayout.self
+            return BinarySpacePartitioningLayout(windowActivityCache: windowActivityCache)
         default:
             return nil
         }
@@ -60,14 +60,14 @@ enum LayoutManager {
     static func layoutsWithConfiguration(_ userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout] {
         let layoutStrings: [String] = userConfiguration.layoutStrings()
         let layouts = layoutStrings.map { layoutString -> Layout? in
-            guard let layoutClass = LayoutManager.layoutClassForString(layoutString) else {
+            guard let layout = LayoutManager.layoutForKey(layoutString, with: windowActivityCache) else {
                 LogManager.log?.warning("Unrecognized layout string \(layoutString)")
                 return nil
             }
 
-            return layoutClass.init(windowActivityCache: windowActivityCache)
+            return layout
         }
 
-        return layouts.filter { $0 != nil }.map { $0! }
+        return layouts.flatMap { $0 }
     }
 }

@@ -8,12 +8,12 @@
 
 import Silica
 
-private final class ColumnReflowOperation: ReflowOperation {
+final class ColumnReflowOperation: ReflowOperation {
     let layout: ColumnLayout
 
-    init(screen: NSScreen, windows: [SIWindow], layout: ColumnLayout, windowActivityCache: WindowActivityCache) {
+    init(screen: NSScreen, windows: [SIWindow], layout: ColumnLayout, frameAssigner: FrameAssigner) {
         self.layout = layout
-        super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
+        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
     override func main() {
@@ -25,7 +25,7 @@ private final class ColumnReflowOperation: ReflowOperation {
         let secondaryPaneCount = windows.count - mainPaneCount
         let hasSecondaryPane = secondaryPaneCount > 0
 
-        let screenFrame = adjustedFrameForLayout(screen)
+        let screenFrame = screen.adjustedFrame()
         let mainPaneWindowWidth = round(screenFrame.width * (hasSecondaryPane ? CGFloat(layout.mainPaneRatio) : 1.0))
         let secondaryPaneWindowWidth = hasSecondaryPane ? round((screenFrame.width - mainPaneWindowWidth) / CGFloat(secondaryPaneCount)) : 0.0
 
@@ -58,34 +58,43 @@ private final class ColumnReflowOperation: ReflowOperation {
             return
         }
 
-        performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments)
     }
 }
 
 final class ColumnLayout: Layout {
-    override class var layoutName: String { return "Column" }
-    override class var layoutKey: String { return "column" }
+    static var layoutName: String { return "Column" }
+    static var layoutKey: String { return "column" }
 
+    let windowActivityCache: WindowActivityCache
     fileprivate var mainPaneCount: Int = 1
     fileprivate var mainPaneRatio: CGFloat = 0.5
 
-    override func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
-        return ColumnReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
+    init(windowActivityCache: WindowActivityCache) {
+        self.windowActivityCache = windowActivityCache
     }
 
-    override func expandMainPane() {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+        return ColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
+    }
+}
+
+extension ColumnLayout: PanedLayout {
+    func expandMainPane() {
         mainPaneRatio = max(0, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
-    override func shrinkMainPane() {
+    func shrinkMainPane() {
         mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 
-    override func increaseMainPaneCount() {
+    func increaseMainPaneCount() {
         mainPaneCount += 1
     }
 
-    override func decreaseMainPaneCount() {
+    func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 }
+
+extension ColumnLayout: FrameAssigner {}
