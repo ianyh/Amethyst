@@ -154,7 +154,7 @@ final class HotKeyManager: NSObject {
             }
         }
 
-        (1..<10).forEach { spaceNumber in
+        (1...10).forEach { spaceNumber in
             let commandKey = "\(CommandKey.throwSpacePrefix.rawValue)-\(spaceNumber)"
 
             self.constructCommandWithCommandKey(commandKey) {
@@ -323,8 +323,9 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Swap focused window with main window", CommandKey.swapMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Force windows to be reevaluated", CommandKey.reevaluateWindows.rawValue])
 
-        (1..<10).forEach { spaceNumber in
+        (1...10).forEach { spaceNumber in
             let name = "Throw focused window to space \(spaceNumber)"
+
             hotKeyNameToDefaultsKey.append([name, "\(CommandKey.throwSpacePrefix.rawValue)-\(spaceNumber)"])
         }
 
