@@ -73,6 +73,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         ]
         preferencesWindowController?.setPreferencesViewControllers(preferencesViewControllers)
 
+        guard ProcessInfo.processInfo.environment["IS_TESTING"] == nil else {
+            return
+        }
+
         windowManager = WindowManager(userConfiguration: UserConfiguration.shared)
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
