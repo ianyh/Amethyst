@@ -38,7 +38,7 @@ Amethyst uses two modifier combinations.
 
 And defines the following commands, mostly a mapping to xmonad key combinations.
 
-* `mod1 + space` — cycle to next layout
+* `mod1 + space` - cycle to next layout
 * `mod2 + space` - cycle to previous layout
 * `mod1 + w` - focus 1st screen
 * `mod1 + e` - focus 2nd screen
@@ -63,7 +63,7 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 * `mod1 + t` - toggle whether or not the focused window is floating
 * `mod2 + t` - toggle globally whether or not Amethyst tiles windows
 * `mod1 + i` - display the current layout for each screen
-* `mod1 + z` - force windows to be reevalulated
+* `mod1 + z` - force windows to be reevaluated
 
 Setting Up Spaces Support
 -------------------------
