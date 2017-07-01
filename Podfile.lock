@@ -1,4 +1,5 @@
 PODS:
+  - Cartography (1.1.0)
   - CCNLaunchAtLoginItem (0.1.0)
   - CCNPreferencesWindowController-ObjC (1.4.2)
   - Crashlytics (3.8.3):
@@ -12,9 +13,11 @@ PODS:
     - RxSwift (~> 3.0)
   - RxSwift (3.0.1)
   - Silica (0.1.4)
+  - Sparkle (1.17.0)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
+  - Cartography (~> 1.1.0)
   - CCNLaunchAtLoginItem (~> 0.1)
   - CCNPreferencesWindowController-ObjC
   - Crashlytics
@@ -26,6 +29,7 @@ DEPENDENCIES:
   - RxCocoa
   - RxSwift
   - Silica (from `https://github.com/ianyh/Silica`)
+  - Sparkle
   - SwiftyJSON (~> 3.1)
 
 EXTERNAL SOURCES:
@@ -36,13 +40,14 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MASShortcut:
-    :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
+    :commit: '0964e89cb52c99fb9e7a02f21127d01ca82b0c8f'
     :git: https://github.com/ianyh/MASShortcut
   Silica:
     :commit: a73415cd79ccee6e7c3dcb87ecf5d9889a6d85d2
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
+  Cartography: '0538ccb4044acbbda2266335fc58cb4228794d90'
   CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
   CCNPreferencesWindowController-ObjC: 32dfc15ac2630ebbfa65e469d773d4dd7c51cc5d
   Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
@@ -54,8 +59,9 @@ SPEC CHECKSUMS:
   RxCocoa: 15a52fc590dcc700cb4a690a633b5c5184ce3a78
   RxSwift: af5680055c4ad04480189c52d28385b1029493a6
   Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
+  Sparkle: ccfb47699feea7b40b51cf3176f69404e5b1da6c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 8077ba09c915c6e6b5fa3749095bab1066122492
+PODFILE CHECKSUM: edfdbf2378d7cf4b810621a733da0f281b5f08c3
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

@@ -6,6 +6,7 @@ target 'Amethyst' do
   pod 'Fabric'
   pod 'Crashlytics'
 
+  pod 'Cartography', '~> 1.1.0'
   pod 'CCNLaunchAtLoginItem', '~> 0.1'
   pod 'CCNPreferencesWindowController-ObjC'
   pod 'Log'
@@ -13,6 +14,7 @@ target 'Amethyst' do
   pod 'RxCocoa'
   pod 'RxSwift'
   pod 'Silica', :git => 'https://github.com/ianyh/Silica'
+  pod 'Sparkle'
   pod 'SwiftyJSON', '~> 3.1'
   target 'AmethystTests' do
     inherit! :search_paths
