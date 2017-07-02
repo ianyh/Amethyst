@@ -390,7 +390,7 @@ extension WindowManager: WindowMover {
 
     func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange) {
         screenManagers
-            .filter { $0.screen.screenIdentifier() != screen.screenIdentifier() }
+            .filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }
             .forEach { screenManager in
                 screenManager.setNeedsReflowWithWindowChange(change)
             }
