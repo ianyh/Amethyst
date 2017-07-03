@@ -12,7 +12,11 @@ PODS:
   - RxCocoa (3.0.1):
     - RxSwift (~> 3.0)
   - RxSwift (3.0.1)
-  - Silica (0.1.4)
+  - RxSwiftExt (2.3.0):
+    - RxSwiftExt/Core (= 2.3.0)
+  - RxSwiftExt/Core (2.3.0):
+    - RxSwift (~> 3.0)
+  - Silica (0.1.5)
   - Sparkle (1.17.0)
   - SwiftyJSON (3.1.4)
 
@@ -28,6 +32,7 @@ DEPENDENCIES:
   - Quick
   - RxCocoa
   - RxSwift
+  - RxSwiftExt
   - Silica (from `https://github.com/ianyh/Silica`)
   - Sparkle
   - SwiftyJSON (~> 3.1)
@@ -43,7 +48,7 @@ CHECKOUT OPTIONS:
     :commit: '0964e89cb52c99fb9e7a02f21127d01ca82b0c8f'
     :git: https://github.com/ianyh/MASShortcut
   Silica:
-    :commit: a73415cd79ccee6e7c3dcb87ecf5d9889a6d85d2
+    :commit: 231e303da30450ba364f1ff3c0007b00931c6e71
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
@@ -58,10 +63,11 @@ SPEC CHECKSUMS:
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
   RxCocoa: 15a52fc590dcc700cb4a690a633b5c5184ce3a78
   RxSwift: af5680055c4ad04480189c52d28385b1029493a6
-  Silica: 8434165d6cc5f853e8434118e49bad5da85f080e
+  RxSwiftExt: b0faec123d5c424092e2fd9f1bd6306b2c1155f3
+  Silica: 3b5a774469476ef84fe9d96a63bfe09908654e50
   Sparkle: ccfb47699feea7b40b51cf3176f69404e5b1da6c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: edfdbf2378d7cf4b810621a733da0f281b5f08c3
+PODFILE CHECKSUM: aedde71d35b85ad3a9e25ee6cd14e50661e62a4f
 
 COCOAPODS: 1.2.1

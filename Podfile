@@ -10,10 +10,11 @@ target 'Amethyst' do
   pod 'CCNLaunchAtLoginItem', '~> 0.1'
   pod 'CCNPreferencesWindowController-ObjC'
   pod 'Log'
-  pod 'MASShortcut', :git => 'https://github.com/ianyh/MASShortcut'
+  pod 'MASShortcut', git: 'https://github.com/ianyh/MASShortcut'
   pod 'RxCocoa'
   pod 'RxSwift'
-  pod 'Silica', :git => 'https://github.com/ianyh/Silica'
+  pod 'RxSwiftExt'
+  pod 'Silica', git: 'https://github.com/ianyh/Silica'
   pod 'Sparkle'
   pod 'SwiftyJSON', '~> 3.1'
   target 'AmethystTests' do
