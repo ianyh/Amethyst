@@ -8,6 +8,8 @@
 
 import AppKit
 import Foundation
+import RxSwift
+import RxSwiftExt
 import Silica
 import SwiftyJSON
 
@@ -17,6 +19,69 @@ enum WindowChange {
     case focusChanged(window: SIWindow)
     case windowSwap(window: SIWindow, otherWindow: SIWindow)
     case unknown
+}
+
+private struct ObserveApplicationNotifications {
+    enum Error: Swift.Error {
+        case failed
+    }
+
+    fileprivate let application: SIApplication
+    fileprivate let windowManager: WindowManager
+
+    fileprivate func addObservers() -> Observable<Void> {
+        return _addObservers().retry(.exponentialDelayed(maxCount: 4, initial: 0.1, multiplier: 2))
+    }
+
+    private func _addObservers() -> Observable<Void> {
+        let application = self.application
+        let windowManager = self.windowManager
+
+        return Observable.create { observer in
+            var success: Bool = false
+
+            success = application.observeNotification(kAXCreatedNotification as CFString!, with: application) { accessibilityElement in
+                guard let window = accessibilityElement as? SIWindow else {
+                    return
+                }
+                windowManager.addWindow(window)
+            }
+
+            guard success else {
+                observer.on(.error(Error.failed))
+                return Disposables.create()
+            }
+
+            application.observeNotification(kAXWindowDeminiaturizedNotification as CFString!, with: application) { accessibilityElement in
+                guard let window = accessibilityElement as? SIWindow else {
+                    return
+                }
+                windowManager.addWindow(window)
+            }
+            application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { _ in
+                guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+                    return
+                }
+                if windowManager.windows.index(of: focusedWindow) == nil {
+                    windowManager.markScreenForReflow(screen, withChange: .unknown)
+                } else {
+                    windowManager.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
+                }
+            }
+            application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { _ in
+                NSObject.cancelPreviousPerformRequests(
+                    withTarget: windowManager,
+                    selector: #selector(WindowManager.applicationActivated(_:)),
+                    object: nil
+                )
+                windowManager.perform(#selector(WindowManager.applicationActivated(_:)), with: nil, afterDelay: 0.2)
+            }
+
+            observer.on(.next())
+            observer.on(.completed)
+            return Disposables.create()
+        }
+    }
 }
 
 final class WindowManager: NSObject {
@@ -31,6 +96,8 @@ final class WindowManager: NSObject {
 
     fileprivate private(set) var activeIDCache: Set<CGWindowID> = Set()
     private(set) var floatingMap: [CGWindowID: Bool] = [:]
+
+    private let disposeBag = DisposeBag()
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
@@ -163,7 +230,7 @@ final class WindowManager: NSObject {
             }
 
             let application = SIApplication(runningApplication: runningApplication)
-            addApplication(application!)
+            addApplication(application)
         }
         markAllScreensForReflowWithChange(.unknown)
     }
@@ -173,7 +240,7 @@ final class WindowManager: NSObject {
             return nil
         }
         for screenManager in screenManagers {
-            if screenManager.screen.screenIdentifier() == focusedWindow.screen().screenIdentifier() {
+            if screenManager.screen.screenIdentifier() == focusedWindow.screen()?.screenIdentifier() {
                 return screenManager
             }
         }
@@ -198,45 +265,21 @@ final class WindowManager: NSObject {
             return
         }
 
-        applications.append(application)
+        let applicationObservers = ObserveApplicationNotifications(application: application, windowManager: self)
 
-        for window in application.windows() as! [SIWindow] {
-            addWindow(window)
-        }
+        applicationObservers.addObservers()
+            .subscribe(
+                onCompleted: { [weak self] in
+                    guard let strongSelf = self else { return }
 
-        let floating = application.floating()
+                    strongSelf.applications.append(application)
 
-        application.observeNotification(kAXWindowCreatedNotification as CFString!, with: application) { accessibilityElement in
-            guard let window = accessibilityElement as? SIWindow else {
-                return
-            }
-            self.floatingMap[window.windowID()] = floating
-            self.addWindow(window)
-        }
-        application.observeNotification(kAXWindowDeminiaturizedNotification as CFString!, with: application) { accessibilityElement in
-            guard let window = accessibilityElement as? SIWindow else {
-                return
-            }
-            self.addWindow(window)
-        }
-        application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { _ in
-            guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
-                return
-            }
-            if self.windows.index(of: focusedWindow) == nil {
-                self.markScreenForReflow(screen, withChange: .unknown)
-            } else {
-                self.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
-            }
-        }
-        application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { _ in
-            NSObject.cancelPreviousPerformRequests(
-                withTarget: self,
-                selector: #selector(self.applicationActivated(_:)),
-                object: nil
+                    for window in application.windows() as! [SIWindow] {
+                        strongSelf.addWindow(window)
+                    }
+                }
             )
-            self.perform(#selector(self.applicationActivated(_:)), with: nil, afterDelay: 0.2)
-        }
+            .addDisposableTo(disposeBag)
     }
 
     func applicationActivated(_ sender: AnyObject) {
@@ -414,7 +457,7 @@ extension WindowManager {
             return
         }
         let application = SIApplication(runningApplication: launchedApplication)
-        addApplication(application!)
+        addApplication(application)
     }
 
     func applicationDidTerminate(_ notification: Notification) {
