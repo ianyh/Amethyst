@@ -17,9 +17,18 @@ target 'Amethyst' do
   pod 'Silica', git: 'https://github.com/ianyh/Silica'
   pod 'Sparkle'
   pod 'SwiftyJSON', '~> 3.1'
+
   target 'AmethystTests' do
     inherit! :search_paths
     pod 'Nimble'
     pod 'Quick'
+  end
+
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '3.2'
+      end
+    end
   end
 end

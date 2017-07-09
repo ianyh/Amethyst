@@ -286,19 +286,19 @@ final class HotKeyManager: NSObject {
     private func carbonModifiersFromModifiers(_ modifiers: UInt) -> UInt32 {
         var carbonModifiers: UInt32 = 0
 
-        if (modifiers & UInt(NSEventModifierFlags.shift.rawValue)) > 0 {
+        if (modifiers & UInt(NSEvent.ModifierFlags.shift.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(shiftKey)
         }
 
-        if (modifiers & UInt(NSEventModifierFlags.command.rawValue)) > 0 {
+        if (modifiers & UInt(NSEvent.ModifierFlags.command.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(cmdKey)
         }
 
-        if (modifiers & UInt(NSEventModifierFlags.option.rawValue)) > 0 {
+        if (modifiers & UInt(NSEvent.ModifierFlags.option.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(optionKey)
         }
 
-        if (modifiers & UInt(NSEventModifierFlags.control.rawValue)) > 0 {
+        if (modifiers & UInt(NSEvent.ModifierFlags.control.rawValue)) > 0 {
             carbonModifiers = carbonModifiers | UInt32(controlKey)
         }
 

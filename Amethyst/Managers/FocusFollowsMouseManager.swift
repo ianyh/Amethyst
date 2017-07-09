@@ -22,7 +22,7 @@ final class FocusFollowsMouseManager {
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
-        mouseMovedEventHandler = NSEvent.addGlobalMonitorForEvents(matching: NSEventMask.mouseMoved) { event in
+        mouseMovedEventHandler = NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { event in
             self.focusWindowWithMouseMovedEvent(event)
         } as AnyObject?
     }
@@ -37,7 +37,7 @@ final class FocusFollowsMouseManager {
         }
 
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
-        mousePoint.y = NSScreen.main()!.frame.size.height - mousePoint.y
+        mousePoint.y = NSScreen.main!.frame.size.height - mousePoint.y
 
         if let focusedWindow = SIWindow.focused() {
             // If the point is already in the frame of the focused window do nothing.

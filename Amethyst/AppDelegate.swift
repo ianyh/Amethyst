@@ -84,10 +84,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let version = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
         let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-        let statusItemImage = NSImage(named: "icon-statusitem")
+        let statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
         statusItemImage?.isTemplate = true
 
-        statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem?.image = statusItemImage
         statusItem?.menu = statusItemMenu
         statusItem?.highlightMode = true
@@ -95,7 +95,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         versionMenuItem?.title = "Version \(shortVersion) (\(version))"
 
         loginItem = CCNLaunchAtLoginItem(for: Bundle.main)
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? NSOnState : NSOffState)
+        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .onState : .offState)
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -108,12 +108,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func toggleStartAtLogin(_ sender: AnyObject) {
-        if startAtLoginMenuItem?.state == NSOffState {
+        if startAtLoginMenuItem?.state == .offState {
             loginItem?.activate()
         } else {
             loginItem?.deActivate()
         }
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? NSOnState : NSOffState)
+        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .onState : .offState)
     }
 
     @IBAction func relaunch(_ sender: AnyObject) {
@@ -153,9 +153,9 @@ extension AppDelegate: UserConfigurationDelegate {
     func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration) {
         var statusItemImage: NSImage?
         if UserConfiguration.shared.tilingEnabled == true {
-            statusItemImage = NSImage(named: "icon-statusitem")
+            statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
         } else {
-            statusItemImage = NSImage(named: "icon-statusitem-disabled")
+            statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem-disabled"))
         }
         statusItemImage?.isTemplate = true
         statusItem?.image = statusItemImage

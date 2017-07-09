@@ -32,7 +32,7 @@ final class ShortcutsPreferencesViewController: NSViewController, CCNPreferences
     }
 
     func preferenceIcon() -> NSImage! {
-        return NSImage(named: NSImageNameAdvanced)
+        return NSImage(named: .advanced)
     }
 
     func preferenceTitle() -> String! {
