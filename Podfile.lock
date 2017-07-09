@@ -11,7 +11,7 @@ PODS:
   - Quick (0.10.0)
   - RxCocoa (3.0.1):
     - RxSwift (~> 3.0)
-  - RxSwift (3.0.1)
+  - RxSwift (3.5.0)
   - RxSwiftExt (2.3.0):
     - RxSwiftExt/Core (= 2.3.0)
   - RxSwiftExt/Core (2.3.0):
@@ -45,14 +45,14 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MASShortcut:
-    :commit: '0964e89cb52c99fb9e7a02f21127d01ca82b0c8f'
+    :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
     :git: https://github.com/ianyh/MASShortcut
   Silica:
     :commit: 231e303da30450ba364f1ff3c0007b00931c6e71
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
-  Cartography: '0538ccb4044acbbda2266335fc58cb4228794d90'
+  Cartography: 0538ccb4044acbbda2266335fc58cb4228794d90
   CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
   CCNPreferencesWindowController-ObjC: 32dfc15ac2630ebbfa65e469d773d4dd7c51cc5d
   Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
@@ -62,12 +62,12 @@ SPEC CHECKSUMS:
   Nimble: 5ea121a2eda60440287054cde077fc0ad22227b3
   Quick: 5d290df1c69d5ee2f0729956dcf0fd9a30447eaa
   RxCocoa: 15a52fc590dcc700cb4a690a633b5c5184ce3a78
-  RxSwift: af5680055c4ad04480189c52d28385b1029493a6
+  RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
   RxSwiftExt: b0faec123d5c424092e2fd9f1bd6306b2c1155f3
   Silica: 3b5a774469476ef84fe9d96a63bfe09908654e50
   Sparkle: ccfb47699feea7b40b51cf3176f69404e5b1da6c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: aedde71d35b85ad3a9e25ee6cd14e50661e62a4f
+PODFILE CHECKSUM: ab1114d62b5a987d5d7b17554883396596526adc
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.0.beta.2

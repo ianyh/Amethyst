@@ -198,7 +198,7 @@ extension CrossScreenWindowMover where Self: ScreenFocuser {
             return
         }
 
-        let screenIndex = (screenManagerIndex + 1) % (NSScreen.screens()!.count)
+        let screenIndex = (screenManagerIndex + 1) % (NSScreen.screens.count)
 
         guard let screenToMoveTo = screenManager(at: screenIndex)?.screen else {
             return
@@ -219,7 +219,7 @@ extension CrossScreenWindowMover where Self: ScreenFocuser {
             return
         }
 
-        let screenIndex = (screenManagerIndex == 0 ? NSScreen.screens()!.count - 1 : screenManagerIndex - 1)
+        let screenIndex = (screenManagerIndex == 0 ? NSScreen.screens.count - 1 : screenManagerIndex - 1)
 
         guard let screenToMoveTo = self.screenManager(at: screenIndex)?.screen else {
             return
@@ -316,7 +316,7 @@ extension WindowManager: CrossSpaceWindowMover {
 
         let screenIdentifier = screen.screenIdentifier()
 
-        if NSScreen.screensHaveSeparateSpaces() {
+        if NSScreen.screensHaveSeparateSpaces {
             for screenDescription in screenDescriptions {
                 guard screenDescription["Display Identifier"].string == screenIdentifier else {
                     continue
@@ -348,7 +348,7 @@ extension WindowManager: CrossSpaceWindowMover {
             return nil
         }
 
-        if NSScreen.screensHaveSeparateSpaces() {
+        if NSScreen.screensHaveSeparateSpaces {
             for screenDescription in screenDescriptions {
                 guard screenDescription["Display Identifier"].string == screenIdentifier else {
                     continue

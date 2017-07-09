@@ -84,7 +84,7 @@ final class ScreenManager: NSObject {
         layoutsBySpaceIdentifier = [:]
         currentLayoutIndex = 0
 
-        layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
+        layoutNameWindowController = LayoutNameWindowController(windowNibName: NSNib.Name(rawValue: "LayoutNameWindow"))
 
         super.init()
 
@@ -213,7 +213,7 @@ final class ScreenManager: NSObject {
         layoutNameWindowController.showWindow(self)
     }
 
-    func hideLayoutHUD(_ sender: AnyObject) {
+    @objc func hideLayoutHUD(_ sender: AnyObject) {
         layoutNameWindowController.close()
     }
 }
