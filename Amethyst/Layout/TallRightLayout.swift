@@ -8,16 +8,16 @@
 
 import Silica
 
-private class TallRightReflowOperation: ReflowOperation {
-    fileprivate let layout: TallRightLayout
+final class TallRightReflowOperation: ReflowOperation {
+    let layout: TallRightLayout
 
-    fileprivate init(screen: NSScreen, windows: [SIWindow], layout: TallRightLayout, windowActivityCache: WindowActivityCache) {
+    init(screen: NSScreen, windows: [SIWindow], layout: TallRightLayout, frameAssigner: FrameAssigner) {
         self.layout = layout
-        super.init(screen: screen, windows: windows, windowActivityCache: windowActivityCache)
+        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    fileprivate override func main() {
-        if windows.count == 0 {
+    override func main() {
+        guard !windows.isEmpty else {
             return
         }
 
@@ -25,7 +25,7 @@ private class TallRightReflowOperation: ReflowOperation {
         let secondaryPaneCount = windows.count - mainPaneCount
         let hasSecondaryPane = secondaryPaneCount > 0
 
-        let screenFrame = adjustedFrameForLayout(screen)
+        let screenFrame = screen.adjustedFrame()
 
         let mainPaneWindowHeight = round(screenFrame.size.height / CGFloat(mainPaneCount))
         let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.size.height / CGFloat(secondaryPaneCount)) : 0.0
@@ -58,38 +58,48 @@ private class TallRightReflowOperation: ReflowOperation {
             return assignments
         }
 
-        if isCancelled {
+        guard !isCancelled else {
             return
         }
 
-        performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments)
     }
 }
 
-open class TallRightLayout: Layout {
-    override open class var layoutName: String { return "Tall Right" }
-    override open class var layoutKey: String { return "tall-right" }
+final class TallRightLayout: Layout {
+    static var layoutName: String { return "Tall Right" }
+    static var layoutKey: String { return "tall-right" }
+
+    let windowActivityCache: WindowActivityCache
 
     fileprivate var mainPaneCount: Int = 1
     fileprivate var mainPaneRatio: CGFloat = 0.5
 
-    override open func reflowOperationForScreen(_ screen: NSScreen, withWindows windows: [SIWindow]) -> ReflowOperation {
-        return TallRightReflowOperation(screen: screen, windows: windows, layout: self, windowActivityCache: windowActivityCache)
+    init(windowActivityCache: WindowActivityCache) {
+        self.windowActivityCache = windowActivityCache
     }
 
-    override open func expandMainPane() {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+        return TallRightReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
+    }
+}
+
+extension TallRightLayout: PanedLayout {
+    func expandMainPane() {
         mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
-    override open func shrinkMainPane() {
+    func shrinkMainPane() {
         mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 
-    override open func increaseMainPaneCount() {
-        mainPaneCount = mainPaneCount + 1
+    func increaseMainPaneCount() {
+        mainPaneCount += 1
     }
 
-    override open func decreaseMainPaneCount() {
+    func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 }
+
+extension TallRightLayout: FrameAssigner {}

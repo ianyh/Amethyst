@@ -9,26 +9,27 @@
 import ApplicationServices
 import Foundation
 import Silica
+import SwiftyJSON
 
-public extension NSScreen {
-    public static func screenDescriptions() -> [[String: AnyObject]]? {
+extension NSScreen {
+    static func screenDescriptions() -> [JSON]? {
         guard let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection())?.takeRetainedValue() else {
             return nil
         }
         guard let screenDescriptions = cfScreenDescriptions as NSArray as? [[String: AnyObject]] else {
             return nil
         }
-        return screenDescriptions
+        return screenDescriptions.map { JSON($0) }
     }
 
-    public func screenIdentifier() -> String? {
+    func screenIdentifier() -> String? {
         guard let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), frameIncludingDockAndMenu()) else {
             return nil
         }
         return String(managedDisplay.takeRetainedValue())
     }
 
-    public func focusScreen() {
+    func focusScreen() {
         let screenFrame = self.frame
         let mouseCursorPoint = NSPoint(x: screenFrame.midX, y: screenFrame.midY)
         let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left)

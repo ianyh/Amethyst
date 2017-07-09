@@ -9,8 +9,9 @@
 import AppKit
 import Foundation
 import Silica
+import SwiftyJSON
 
-public enum WindowChange {
+enum WindowChange {
     case add(window: SIWindow)
     case remove(window: SIWindow)
     case focusChanged(window: SIWindow)
@@ -18,39 +19,37 @@ public enum WindowChange {
     case unknown
 }
 
-open class WindowManager: NSObject {
-    internal var applications: [SIApplication] = []
-    internal var windows: [SIWindow] = []
-    internal let windowModifier = WindowModifier()
-    internal let userConfiguration: UserConfiguration
+final class WindowManager: NSObject {
+    private var applications: [SIApplication] = []
+    var windows: [SIWindow] = []
+    fileprivate let userConfiguration: UserConfiguration
 
-    internal var screenManagers: [ScreenManager] = []
-    fileprivate var screenManagersCache: [String: ScreenManager] = [:]
+    private(set) var screenManagers: [ScreenManager] = []
+    private var screenManagersCache: [String: ScreenManager] = [:]
 
-    fileprivate let focusFollowsMouseManager: FocusFollowsMouseManager
+    private let focusFollowsMouseManager: FocusFollowsMouseManager
 
-    internal var activeIDCache: [CGWindowID: Bool] = [:]
-    internal var floatingMap: [CGWindowID: Bool] = [:]
+    fileprivate private(set) var activeIDCache: Set<CGWindowID> = Set()
+    private(set) var floatingMap: [CGWindowID: Bool] = [:]
 
-    public init(userConfiguration: UserConfiguration) {
+    init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
         self.focusFollowsMouseManager = FocusFollowsMouseManager(userConfiguration: userConfiguration)
 
         super.init()
 
         focusFollowsMouseManager.delegate = self
-        windowModifier.delegate = self
 
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidLaunchApplication.rawValue, selector: #selector(applicationDidLaunch(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidTerminateApplication.rawValue, selector: #selector(applicationDidTerminate(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidHideApplication.rawValue, selector: #selector(applicationDidHide(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceDidUnhideApplication.rawValue, selector: #selector(applicationDidUnhide(_:)))
-        addWorkspaceNotificationObserver(NSNotification.Name.NSWorkspaceActiveSpaceDidChange.rawValue, selector: #selector(activeSpaceDidChange(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidLaunchApplication, selector: #selector(applicationDidLaunch(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidTerminateApplication, selector: #selector(applicationDidTerminate(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidHideApplication, selector: #selector(applicationDidHide(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceDidUnhideApplication, selector: #selector(applicationDidUnhide(_:)))
+        addWorkspaceNotificationObserver(.NSWorkspaceActiveSpaceDidChange, selector: #selector(activeSpaceDidChange(_:)))
 
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(screenParametersDidChange(_:)),
-            name: NSNotification.Name.NSApplicationDidChangeScreenParameters,
+            name: .NSApplicationDidChangeScreenParameters,
             object: nil
         )
 
@@ -63,13 +62,14 @@ open class WindowManager: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    fileprivate func addWorkspaceNotificationObserver(_ name: String, selector: Selector) {
+    private func addWorkspaceNotificationObserver(_ name: NSNotification.Name, selector: Selector) {
         let workspaceNotificationCenter = NSWorkspace.shared().notificationCenter
-        workspaceNotificationCenter.addObserver(self, selector: selector, name: NSNotification.Name(rawValue: name), object: nil)
+        workspaceNotificationCenter.addObserver(self, selector: selector, name: name, object: nil)
     }
 
-    fileprivate func regenerateActiveIDCache() {
-        var activeIDCache: [CGWindowID: Bool] = [:]
+    private func regenerateActiveIDCache() {
+        var activeIDCache: Set<CGWindowID> = Set()
+
         defer {
             self.activeIDCache = activeIDCache
         }
@@ -83,13 +83,12 @@ open class WindowManager: NSObject {
                 continue
             }
 
-            activeIDCache[CGWindowID(windowID.uint64Value)] = true
+            activeIDCache.insert(CGWindowID(windowID.uint64Value))
         }
     }
 
-    fileprivate func spaceIdentifierWithScreenDictionary(_ screenDictionary: [String: AnyObject]) -> String? {
-        let spaceDictionary = screenDictionary["Current Space"] as? [String: AnyObject]
-        return spaceDictionary?["uuid"] as? String
+    private func spaceIdentifier(from screenDictionary: JSON) -> String? {
+        return screenDictionary["Current Space"]["uuid"].string
     }
 
     fileprivate func assignCurrentSpaceIdentifiers() {
@@ -101,7 +100,7 @@ open class WindowManager: NSObject {
 
         if NSScreen.screensHaveSeparateSpaces() {
             for screenDictionary in screenDictionaries {
-                guard let screenIdentifier = screenDictionary["Display Identifier"] as? String else {
+                guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
                     LogManager.log?.error("Could not identify screen with info: \(screenDictionary)")
                     continue
                 }
@@ -111,7 +110,7 @@ open class WindowManager: NSObject {
                     continue
                 }
 
-                guard let spaceIdentifier = spaceIdentifierWithScreenDictionary(screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
                     continue
                 }
 
@@ -121,7 +120,7 @@ open class WindowManager: NSObject {
             for screenManager in screenManagers {
                 let screenDictionary = screenDictionaries[0]
 
-                guard let spaceIdentifier = spaceIdentifierWithScreenDictionary(screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
                     continue
                 }
 
@@ -130,7 +129,7 @@ open class WindowManager: NSObject {
         }
     }
 
-    fileprivate func screenManagerForCGWindowDescription(_ description: [String: AnyObject]) -> ScreenManager? {
+    private func screenManagerForCGWindowDescription(_ description: [String: AnyObject]) -> ScreenManager? {
         let windowFrameDictionary = description[kCGWindowBounds as String] as! [String: Any]
         let windowFrame = CGRect(dictionaryRepresentation: windowFrameDictionary as CFDictionary)!
 
@@ -151,7 +150,13 @@ open class WindowManager: NSObject {
         return lastScreenManager
     }
 
-    open func reevaluateWindows() {
+    func preferencesDidClose() {
+        DispatchQueue.main.async {
+            self.focusScreen(at: 0)
+        }
+    }
+
+    func reevaluateWindows() {
         for runningApplication in NSWorkspace.shared().runningApplications {
             guard runningApplication.isManageable else {
                 continue
@@ -163,7 +168,7 @@ open class WindowManager: NSObject {
         markAllScreensForReflowWithChange(.unknown)
     }
 
-    open func focusedScreenManager() -> ScreenManager? {
+    func focusedScreenManager() -> ScreenManager? {
         guard let focusedWindow = SIWindow.focused() else {
             return nil
         }
@@ -214,7 +219,7 @@ open class WindowManager: NSObject {
             }
             self.addWindow(window)
         }
-        application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { accessibilityElement in
+        application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { _ in
             guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
                 return
             }
@@ -224,7 +229,7 @@ open class WindowManager: NSObject {
                 self.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
             }
         }
-        application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { accessibilityElement in
+        application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { _ in
             NSObject.cancelPreviousPerformRequests(
                 withTarget: self,
                 selector: #selector(self.applicationActivated(_:)),
@@ -234,7 +239,7 @@ open class WindowManager: NSObject {
         }
     }
 
-    open func applicationActivated(_ sender: AnyObject) {
+    func applicationActivated(_ sender: AnyObject) {
         guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
             return
         }
@@ -296,10 +301,10 @@ open class WindowManager: NSObject {
             floatingMap[window.windowID()] = true
         }
 
-        application.observeNotification(kAXUIElementDestroyedNotification as CFString!, with: window) { accessibilityElement in
+        application.observeNotification(kAXUIElementDestroyedNotification as CFString!, with: window) { _ in
             self.removeWindow(window)
         }
-        application.observeNotification(kAXWindowMiniaturizedNotification as CFString!, with: window) { accessibilityElement in
+        application.observeNotification(kAXWindowMiniaturizedNotification as CFString!, with: window) { _ in
             self.removeWindow(window)
             guard let screen = window.screen() else {
                 return
@@ -315,7 +320,7 @@ open class WindowManager: NSObject {
         markScreenForReflow(screen, withChange: windowChange)
     }
 
-    fileprivate func removeWindow(_ window: SIWindow) {
+    private func removeWindow(_ window: SIWindow) {
         markAllScreensForReflowWithChange(.remove(window: window))
 
         let application = applicationWithProcessIdentifier(window.processIdentifier())
@@ -332,7 +337,7 @@ open class WindowManager: NSObject {
         windows.remove(at: windowIndex)
     }
 
-    open func toggleFloatForFocusedWindow() {
+    func toggleFloatForFocusedWindow() {
         guard let focusedWindow = SIWindow.focused() else {
             return
         }
@@ -377,7 +382,7 @@ open class WindowManager: NSObject {
         }
 
         // Window managers are sorted by screen position along the x-axis.
-        screenManagers.sort() { screenManager1, screenManager2 -> Bool in
+        screenManagers.sort { screenManager1, screenManager2 -> Bool in
             let x1 = screenManager1.screen.frameWithoutDockOrMenu().origin.x
             let x2 = screenManager2.screen.frameWithoutDockOrMenu().origin.x
 
@@ -390,13 +395,13 @@ open class WindowManager: NSObject {
         markAllScreensForReflowWithChange(.unknown)
     }
 
-    open func markAllScreensForReflowWithChange(_ windowChange: WindowChange) {
+    func markAllScreensForReflowWithChange(_ windowChange: WindowChange) {
         for screenManager in screenManagers {
             screenManager.setNeedsReflowWithWindowChange(windowChange)
         }
     }
 
-    open func displayCurrentLayout() {
+    func displayCurrentLayout() {
         for screenManager in screenManagers {
             screenManager.displayLayoutHUD()
         }
@@ -404,16 +409,16 @@ open class WindowManager: NSObject {
 }
 
 extension WindowManager {
-    public func applicationDidLaunch(_ notification: Notification) {
-        guard let launchedApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+    func applicationDidLaunch(_ notification: Notification) {
+        guard let launchedApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
         let application = SIApplication(runningApplication: launchedApplication)
         addApplication(application!)
     }
 
-    public func applicationDidTerminate(_ notification: Notification) {
-        guard let terminatedApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+    func applicationDidTerminate(_ notification: Notification) {
+        guard let terminatedApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
 
@@ -424,8 +429,8 @@ extension WindowManager {
         removeApplication(application)
     }
 
-    public func applicationDidHide(_ notification: Notification) {
-        guard let hiddenApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+    func applicationDidHide(_ notification: Notification) {
+        guard let hiddenApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
 
@@ -436,8 +441,8 @@ extension WindowManager {
         deactivateApplication(application)
     }
 
-    public func applicationDidUnhide(_ notification: Notification) {
-        guard let unhiddenApplication = (notification as NSNotification).userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
+    func applicationDidUnhide(_ notification: Notification) {
+        guard let unhiddenApplication = notification.userInfo?[NSWorkspaceApplicationKey] as? NSRunningApplication else {
             return
         }
 
@@ -448,7 +453,7 @@ extension WindowManager {
         activateApplication(application)
     }
 
-    public func activeSpaceDidChange(_ notification: Notification) {
+    func activeSpaceDidChange(_ notification: Notification) {
         assignCurrentSpaceIdentifiers()
 
         for runningApplication in NSWorkspace.shared().runningApplications {
@@ -471,7 +476,13 @@ extension WindowManager {
         markAllScreensForReflowWithChange(.unknown)
     }
 
-    public func screenParametersDidChange(_ notification: Notification) {
+    func screenParametersDidChange(_ notification: Notification) {
         updateScreenManagers()
+    }
+}
+
+extension WindowManager: WindowActivityCache {
+    func windowIsActive(_ window: SIWindow) -> Bool {
+        return window.isActive() && activeIDCache.contains(window.windowID())
     }
 }

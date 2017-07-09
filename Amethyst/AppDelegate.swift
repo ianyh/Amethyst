@@ -16,19 +16,21 @@ import RxCocoa
 import RxSwift
 import Sparkle
 
-open class AppDelegate: NSObject, NSApplicationDelegate {
-    fileprivate var loginItem: CCNLaunchAtLoginItem?
-    @IBOutlet public var preferencesWindowController: CCNPreferencesWindowController?
+final class AppDelegate: NSObject, NSApplicationDelegate {
+    private var loginItem: CCNLaunchAtLoginItem?
+    @IBOutlet var preferencesWindowController: CCNPreferencesWindowController?
 
     fileprivate var windowManager: WindowManager?
-    fileprivate var hotKeyManager: HotKeyManager?
+    private var hotKeyManager: HotKeyManager?
 
     fileprivate var statusItem: NSStatusItem?
-    @IBOutlet open var statusItemMenu: NSMenu?
-    @IBOutlet open var versionMenuItem: NSMenuItem?
-    @IBOutlet open var startAtLoginMenuItem: NSMenuItem?
+    @IBOutlet var statusItemMenu: NSMenu?
+    @IBOutlet var versionMenuItem: NSMenuItem?
+    @IBOutlet var startAtLoginMenuItem: NSMenuItem?
 
-    open func applicationDidFinishLaunching(_ notification: Notification) {
+    private var isFirstLaunch = true
+
+    func applicationDidFinishLaunching(_ notification: Notification) {
         if ProcessInfo.processInfo.arguments.index(of: "--log") == nil {
             LogManager.log?.minLevel = .warning
         } else {
@@ -54,17 +56,14 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
             }()!
 
             SUUpdater.shared().feedURL = URL(string: appcastURLString)
-        #endif
 
-        if let fabricData = Bundle.main.infoDictionary?["Fabric"] as? [String: AnyObject], fabricData["APIKey"] != nil {
-            if UserConfiguration.shared.shouldSendCrashReports() {
-                LogManager.log?.info("Crash reporting enabled")
-                Fabric.with([Crashlytics.self])
-                #if DEBUG
-                    Crashlytics.sharedInstance().debugMode = true
-                #endif
+            if let fabricData = Bundle.main.infoDictionary?["Fabric"] as? [String: AnyObject], fabricData["APIKey"] != nil {
+                if UserConfiguration.shared.shouldSendCrashReports() {
+                    LogManager.log?.info("Crash reporting enabled")
+                    Fabric.with([Crashlytics.self])
+                }
             }
-        }
+        #endif
 
         preferencesWindowController?.centerToolbarItems = false
         preferencesWindowController?.allowsVibrancy = true
@@ -77,10 +76,10 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
         windowManager = WindowManager(userConfiguration: UserConfiguration.shared)
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
-        hotKeyManager?.setUpWithHotKeyManager(windowManager!, configuration: UserConfiguration.shared)
+        hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared)
     }
 
-    open override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         let version = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
@@ -99,7 +98,16 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
         startAtLoginMenuItem?.state = (loginItem!.isActive() ? NSOnState : NSOffState)
     }
 
-    @IBAction open func toggleStartAtLogin(_ sender: AnyObject) {
+    func applicationDidBecomeActive(_ notification: Notification) {
+        guard !isFirstLaunch else {
+            isFirstLaunch = false
+            return
+        }
+
+        showPreferencesWindow(self)
+    }
+
+    @IBAction func toggleStartAtLogin(_ sender: AnyObject) {
         if startAtLoginMenuItem?.state == NSOffState {
             loginItem?.activate()
         } else {
@@ -108,7 +116,7 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
         startAtLoginMenuItem?.state = (loginItem!.isActive() ? NSOnState : NSOffState)
     }
 
-    @IBAction open func relaunch(_ sender: AnyObject) {
+    @IBAction func relaunch(_ sender: AnyObject) {
         let executablePath = Bundle.main.executablePath! as NSString
         let fileSystemRepresentedPath = executablePath.fileSystemRepresentation
         let fileSystemPath = FileManager.default.string(withFileSystemRepresentation: fileSystemRepresentedPath, length: Int(strlen(fileSystemRepresentedPath)))
@@ -116,7 +124,7 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.terminate(self)
     }
 
-    @IBAction open func showPreferencesWindow(_ sender: AnyObject) {
+    @IBAction func showPreferencesWindow(_ sender: AnyObject) {
         if UserConfiguration.shared.hasCustomConfiguration() {
             let alert = NSAlert()
             alert.alertStyle = .warning
@@ -128,15 +136,21 @@ open class AppDelegate: NSObject, NSApplicationDelegate {
         preferencesWindowController?.showPreferencesWindow()
     }
 
-    @IBAction open func checkForUpdates(_ sender: AnyObject) {
+    @IBAction func checkForUpdates(_ sender: AnyObject) {
         #if RELEASE
             SUUpdater.shared().checkForUpdates(sender)
         #endif
     }
 }
 
+extension AppDelegate: NSWindowDelegate {
+    func windowWillClose(_ notification: Notification) {
+        windowManager?.preferencesDidClose()
+    }
+}
+
 extension AppDelegate: UserConfigurationDelegate {
-    public func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration) {
+    func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration) {
         var statusItemImage: NSImage?
         if UserConfiguration.shared.tilingEnabled == true {
             statusItemImage = NSImage(named: "icon-statusitem")

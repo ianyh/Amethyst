@@ -77,20 +77,20 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 
 ![Mission Control keyboard shortcuts](http://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
 
+Amethyst currently supports sending windows to up to 10 spaces, despite macOS' limit of 16 spaces per display.
+
+_Important note_: You will probably want to disable `Automatically rearrange Spaces based on most recent use` (found under Mission Control in System Preferences). This setting is enabled by default, and will cause your Spaces to swap places based on use. This makes keyboard navigation between Spaces unpredictable.
+
 Contributing
 ============
 
 If you would like to see features or particular bugs fixed check out the Trello board [here](https://trello.com/b/cCg3xhlb/amethyst) and vote on things. It'll give me a better sense of what people want so I can prioritize.
 
-I love pull requests. If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than master. Otherwise just try to stick to the general style of the code.
+If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than `master`. Otherwise just try to stick to the general style of the code. There is a setup script to guide you through the process of installing necessary tools and getting dependencies built. To get started run
 
-In order to build Amethyst locally, you'll need to also perform the following steps after cloning the repo:
-
-- Install `carthage` and `rbenv`.
-  - These are not installed via the setup script so as to not casually pollute your global environment.
-- Run `rake setup`, which installs dependencies from Carthage and CocoaPods.
-  - Note that by default CocoaPods will be installed and run via `bundler`. This restricts the version to get around some bugs in the current CocoaPods beta.
-- Install [`swiftlint`](https://github.com/realm/SwiftLint).
+```bash
+$ ./bin/setup.sh
+```
 
 Contact
 =======
@@ -124,5 +124,5 @@ And a bunch of technology-oriented ones:
 * [National Center for Women & Information Technology](https://www.ncwit.org/donate)
 * [girls who code](http://girlswhocode.com/get-involved/)
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
-* [Trans*H4CK](http://www.transhack.org/support/)
+* [Trans*H4CK](http://www.transhack.org/donate/)
 * [Black Girls CODE](http://www.blackgirlscode.com/)

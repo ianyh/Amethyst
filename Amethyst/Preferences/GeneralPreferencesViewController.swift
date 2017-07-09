@@ -10,28 +10,16 @@ import CCNPreferencesWindowController_ObjC
 import Cocoa
 import Foundation
 
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l < r
-    case (nil, _?):
-        return true
-    default:
-        return false
-    }
-}
+final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
+    private var layouts: [String] = []
+    private var floatingBundleIdentifiers: [String] = []
 
+    @IBOutlet var layoutsTableView: NSTableView?
+    @IBOutlet var floatingTableView: NSTableView?
 
-open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
-    fileprivate var layouts: [String] = []
-    fileprivate var floatingBundleIdentifiers: [String] = []
+    private var editingFloatingBundleIdentifier = false
 
-    @IBOutlet open var layoutsTableView: NSTableView?
-    @IBOutlet open var floatingTableView: NSTableView?
-
-    fileprivate var editingFloatingBundleIdentifier = false
-
-    open override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
 
         layoutsTableView?.dataSource = self
@@ -41,7 +29,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         floatingTableView?.delegate = self
     }
 
-    open override func viewWillAppear() {
+    override func viewWillAppear() {
         super.viewWillAppear()
 
         layouts = UserConfiguration.shared.layoutStrings()
@@ -51,7 +39,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         floatingTableView?.reloadData()
     }
 
-    @IBAction open func addLayout(_ sender: NSButton) {
+    @IBAction func addLayout(_ sender: NSButton) {
         let layoutMenu = NSMenu(title: "")
 
         for layoutString in LayoutManager.availableLayoutStrings() {
@@ -80,7 +68,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         NSMenu.popUpContextMenu(layoutMenu, with: event!, for: sender)
     }
 
-    @IBAction open func addLayoutString(_ sender: NSMenuItem) {
+    @IBAction func addLayoutString(_ sender: NSMenuItem) {
         var layouts = self.layouts
         layouts.append(sender.title)
         self.layouts = layouts
@@ -90,13 +78,13 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         layoutsTableView?.reloadData()
     }
 
-    @IBAction open func removeLayout(_ sender: AnyObject) {
-        guard layoutsTableView?.selectedRow < self.layouts.count else {
+    @IBAction func removeLayout(_ sender: AnyObject) {
+        guard let selectedRow = layoutsTableView?.selectedRow, selectedRow < self.layouts.count else {
             return
         }
 
         var layouts = self.layouts
-        layouts.remove(at: layoutsTableView!.selectedRow)
+        layouts.remove(at: selectedRow)
         self.layouts = layouts
 
         UserConfiguration.shared.setLayoutStrings(self.layouts)
@@ -104,7 +92,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         layoutsTableView?.reloadData()
     }
 
-    @IBAction open func addFloatingApplication(_ sender: NSButton) {
+    @IBAction func addFloatingApplication(_ sender: NSButton) {
         let layoutMenu = NSMenu(title: "")
         let selectMenuItem = NSMenuItem(title: "Select from applications...", action: #selector(selectFloatingApplication(_:)), keyEquivalent: "")
         let manualMenuItem = NSMenuItem(title: "Manually enter identifier...", action: #selector(manuallyEnterFloatingApplication(_:)), keyEquivalent: "")
@@ -130,7 +118,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         NSMenu.popUpContextMenu(layoutMenu, with: event!, for: sender)
     }
 
-    open func selectFloatingApplication(_ sender: AnyObject) {
+    func selectFloatingApplication(_ sender: AnyObject) {
         let openPanel = NSOpenPanel()
         let applicationDirectories = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask)
 
@@ -155,13 +143,13 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         floatingTableView?.reloadData()
     }
 
-    open func manuallyEnterFloatingApplication(_ sender: AnyObject) {
+    func manuallyEnterFloatingApplication(_ sender: AnyObject) {
         editingFloatingBundleIdentifier = true
         floatingTableView?.reloadData()
         floatingTableView?.editColumn(0, row: floatingBundleIdentifiers.count, with: nil, select: true)
     }
 
-    fileprivate func addFloatingApplicationBundleIdentifier(_ bundleIdentifier: String) {
+    private func addFloatingApplicationBundleIdentifier(_ bundleIdentifier: String) {
         var floatingBundleIdentifiers = self.floatingBundleIdentifiers
         floatingBundleIdentifiers.append(bundleIdentifier)
         self.floatingBundleIdentifiers = floatingBundleIdentifiers
@@ -169,7 +157,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         UserConfiguration.shared.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
     }
 
-    @IBAction open func removeFloatingApplication(_ sender: AnyObject) {
+    @IBAction func removeFloatingApplication(_ sender: AnyObject) {
         guard let floatingTableView = floatingTableView else {
             return
         }
@@ -187,19 +175,19 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         floatingTableView.reloadData()
     }
 
-    open func preferenceIdentifier() -> String! {
+    func preferenceIdentifier() -> String! {
         return NSStringFromClass(type(of: self))
     }
 
-    open func preferenceIcon() -> NSImage! {
+    func preferenceIcon() -> NSImage! {
         return NSImage(named: NSImageNamePreferencesGeneral)
     }
 
-    open func preferenceTitle() -> String! {
+    func preferenceTitle() -> String! {
         return "General"
     }
 
-    open func numberOfRows(in tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         switch tableView {
         case layoutsTableView!:
             return layouts.count
@@ -210,7 +198,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         }
     }
 
-    open func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         guard row > -1 else {
             return nil
         }
@@ -227,7 +215,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         }
     }
 
-    open func tableView(_ tableView: NSTableView, shouldEdit tableColumn: NSTableColumn?, row: Int) -> Bool {
+    func tableView(_ tableView: NSTableView, shouldEdit tableColumn: NSTableColumn?, row: Int) -> Bool {
         guard tableView == floatingTableView && row == floatingBundleIdentifiers.count else {
             return false
         }
@@ -235,7 +223,7 @@ open class GeneralPreferencesViewController: NSViewController, CCNPreferencesWin
         return true
     }
 
-    open func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
+    func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
         guard tableView == floatingTableView && row == floatingBundleIdentifiers.count else {
             return
         }

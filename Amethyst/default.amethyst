@@ -157,6 +157,10 @@
         "mod": "mod2",
         "key": "9"
     },
+    "throw-space-10": {
+        "mod": "mod2",
+        "key": "0"
+    },
     "throw-space-left": {
         "mod": "mod2",
         "key": "left"
