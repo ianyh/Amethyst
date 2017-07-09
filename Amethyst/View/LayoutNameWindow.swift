@@ -30,6 +30,6 @@ final class LayoutNameWindow: NSWindow {
         isOpaque = false
         ignoresMouseEvents = true
         backgroundColor = NSColor.clear
-        level = Int(CGWindowLevelForKey(CGWindowLevelKey.floatingWindow))
+        level = .floating
     }
 }

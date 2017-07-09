@@ -54,9 +54,9 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         let menuOrigin = sender.superview!.convert(NSPoint(x: frame.origin.x, y: frame.origin.y + frame.size.height + 40), to: nil)
 
         let event = NSEvent.mouseEvent(
-            with: NSEventType.leftMouseDown,
+            with: NSEvent.EventType.leftMouseDown,
             location: menuOrigin,
-            modifierFlags: NSEventModifierFlags(),
+            modifierFlags: [],
             timestamp: 0,
             windowNumber: sender.window!.windowNumber,
             context: sender.window!.graphicsContext,
@@ -104,9 +104,9 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         let menuOrigin = sender.superview!.convert(NSPoint(x: frame.origin.x, y: frame.origin.y + frame.size.height + 40), to: nil)
 
         let event = NSEvent.mouseEvent(
-            with: NSEventType.leftMouseDown,
+            with: NSEvent.EventType.leftMouseDown,
             location: menuOrigin,
-            modifierFlags: NSEventModifierFlags(),
+            modifierFlags: [],
             timestamp: 0,
             windowNumber: sender.window!.windowNumber,
             context: sender.window!.graphicsContext,
@@ -118,7 +118,7 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         NSMenu.popUpContextMenu(layoutMenu, with: event!, for: sender)
     }
 
-    func selectFloatingApplication(_ sender: AnyObject) {
+    @objc func selectFloatingApplication(_ sender: AnyObject) {
         let openPanel = NSOpenPanel()
         let applicationDirectories = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask)
 
@@ -129,7 +129,7 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         openPanel.prompt = "Select"
         openPanel.directoryURL = applicationDirectories.first
 
-        guard openPanel.runModal() != NSFileHandlingPanelCancelButton else {
+        guard case openPanel.runModal() = NSApplication.ModalResponse.cancel else {
             return
         }
 
@@ -143,7 +143,7 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         floatingTableView?.reloadData()
     }
 
-    func manuallyEnterFloatingApplication(_ sender: AnyObject) {
+    @objc func manuallyEnterFloatingApplication(_ sender: AnyObject) {
         editingFloatingBundleIdentifier = true
         floatingTableView?.reloadData()
         floatingTableView?.editColumn(0, row: floatingBundleIdentifiers.count, with: nil, select: true)
@@ -180,7 +180,7 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
     }
 
     func preferenceIcon() -> NSImage! {
-        return NSImage(named: NSImageNamePreferencesGeneral)
+        return NSImage(named: .preferencesGeneral)
     }
 
     func preferenceTitle() -> String! {

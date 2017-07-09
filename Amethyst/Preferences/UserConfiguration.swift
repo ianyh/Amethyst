@@ -134,13 +134,13 @@ final class UserConfiguration: NSObject {
         for modifierString in modifierStrings {
             switch modifierString {
             case "option":
-                flags = flags | NSEventModifierFlags.option.rawValue
+                flags = flags | NSEvent.ModifierFlags.option.rawValue
             case "shift":
-                flags = flags | NSEventModifierFlags.shift.rawValue
+                flags = flags | NSEvent.ModifierFlags.shift.rawValue
             case "control":
-                flags = flags | NSEventModifierFlags.control.rawValue
+                flags = flags | NSEvent.ModifierFlags.control.rawValue
             case "command":
-                flags = flags | NSEventModifierFlags.command.rawValue
+                flags = flags | NSEvent.ModifierFlags.command.rawValue
             default:
                 LogManager.log?.warning("Unrecognized modifier string: \(modifierString)")
             }
