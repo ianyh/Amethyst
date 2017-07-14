@@ -116,11 +116,19 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
 
         let windows = activeWindows(on: screen)
 
-        guard windows.index(of: focusedWindow) != nil else {
+        guard let focusedIndex = windows.index(of: focusedWindow) else {
             return
         }
 
-        switchWindow(focusedWindow, with: windows[0])
+        // if there are 2 windows, we can always swap.  Just make sure we don't swap focusedWindow with itself.
+        switch windows.count {
+        case 1:
+            return
+        case 2:
+            switchWindow(focusedWindow, with: windows[1 - focusedIndex])
+        default:
+            switchWindow(focusedWindow, with: windows[0])
+        }
         focusedWindow.am_focusWindow()
     }
 
