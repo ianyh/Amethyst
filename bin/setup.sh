@@ -30,7 +30,7 @@ else
     if [ $ACTUAL = $EXPECTED ] ; then
 	printf "Correct ruby version is already installed, without rbenv\n"
     else
-	printf "WARNING: You have ruby $ACTUAL, we want ruby $EXPECTED, and and rbenv is not installed.\n"
+	printf "WARNING: You have ruby $ACTUAL, we want ruby $EXPECTED, and rbenv is not installed.\n"
 	printf "If you encounter setup problems, Try running:\n\tbrew install rbenv\n"
     fi
 fi
