@@ -115,6 +115,17 @@ extension SIWindow {
         return true
     }
 
+    func shouldFloat() -> Bool {
+        let userConfiguration = UserConfiguration.shared
+        let frame = self.frame()
+
+        if userConfiguration.floatSmallWindows() && frame.size.width < 500 && frame.size.height < 500 {
+            return true
+        }
+
+        return false
+    }
+
     @discardableResult func am_focusWindow() -> Bool {
         guard self.focus() else {
             return false
