@@ -233,36 +233,26 @@ final class UserConfiguration: NSObject {
             command = defaultConfiguration?[commandKey].object as? [String: String]
         }
 
-        guard let commandInfo = command else {
-            LogManager.log?.warning("Unrecognized command key: command")
-            return
-        }
-
-        guard let commandKeyString = commandInfo[ConfigurationKey.commandKey.rawValue] else {
-            LogManager.log?.warning("No keys specified for command: \(commandKey)")
-            return
-        }
-
-        guard let commandModifierString = commandInfo[ConfigurationKey.commandMod.rawValue] else {
-            LogManager.log?.warning("No mod specified for command: \(commandKey)")
-            return
-        }
+        let commandKeyString = command?[ConfigurationKey.commandKey.rawValue]
+        let commandModifierString = command?[ConfigurationKey.commandMod.rawValue]
 
         var commandFlags: AMModifierFlags?
 
-        switch commandModifierString {
-        case "mod1":
-            commandFlags = modifier1
-        case "mod2":
-            commandFlags = modifier2
-        default:
-            LogManager.log?.warning("Unknown modifier string: \(commandModifierString)")
-            return
+        if let modifierString = commandModifierString {
+            switch modifierString {
+            case "mod1":
+                commandFlags = modifier1
+            case "mod2":
+                commandFlags = modifier2
+            default:
+                LogManager.log?.warning("Unknown modifier string: \(modifierString)")
+                return
+            }
         }
 
         hotKeyRegistrar.registerHotKey(
             with: commandKeyString,
-            modifiers: commandFlags!,
+            modifiers: commandFlags,
             handler: handler,
             defaultsKey: commandKey,
             override: override
