@@ -332,9 +332,10 @@ final class WindowManager: NSObject {
             return
         }
 
-        floatingMap[window.windowID()] = application.floating()
-        if userConfiguration.floatSmallWindows() && window.frame().size.width < 500 && window.frame().size.height < 500 {
+        if application.floating() {
             floatingMap[window.windowID()] = true
+        } else {
+            floatingMap[window.windowID()] = window.shouldFloat()
         }
 
         application.observeNotification(kAXUIElementDestroyedNotification as CFString!, with: window) { _ in
