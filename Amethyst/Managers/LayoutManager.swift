@@ -36,10 +36,6 @@ enum LayoutManager {
         }
     }
 
-    static func stringForLayoutClass(_ layoutClass: Layout.Type) -> String {
-        return layoutClass.layoutKey
-    }
-
     static func availableLayoutStrings() -> [String] {
         let layoutClasses: [Layout.Type] = [
             TallLayout.self,
@@ -54,7 +50,7 @@ enum LayoutManager {
             BinarySpacePartitioningLayout.self
         ]
 
-        return layoutClasses.map { LayoutManager.stringForLayoutClass($0) }
+        return layoutClasses.map { $0.layoutKey }
     }
 
     static func layoutsWithConfiguration(_ userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout] {

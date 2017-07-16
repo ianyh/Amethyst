@@ -187,8 +187,7 @@ final class HotKeyManager: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
-        let layoutStrings: [String] = userConfiguration.layoutStrings()
-        layoutStrings.forEach { layoutString in
+        LayoutManager.availableLayoutStrings().forEach { layoutString in
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutString)) {
                 windowManager.focusedScreenManager()?.selectLayout(layoutString)
             }
