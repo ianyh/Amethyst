@@ -77,6 +77,30 @@ private struct ObserveApplicationNotifications {
                 windowManager.perform(#selector(WindowManager.applicationActivated(_:)), with: nil, afterDelay: 0.2)
             }
 
+            application.observeNotification(kAXWindowMovedNotification as CFString!, with: application) { accessibilityElement in
+                guard let window = accessibilityElement as? SIWindow else {
+                    return
+                }
+
+                guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+                    return
+                }
+
+                let windows = windowManager.windows(on: screen)
+
+                // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/42901022/2063546
+                let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
+                let screenFrame = (NSScreen.main?.frame)!
+                let unflippedY = screenFrame.size.height - flippedPointerLocation.y
+                let pointerLocation = NSPoint(x: flippedPointerLocation.x, y: unflippedY)
+
+                // Ignore if there is no window at that point
+                guard let secondWindow = SIWindow.secondWindowForScreenAtPoint(pointerLocation, withWindows: windows) else {
+                    return
+                }
+
+                windowManager.switchWindow(focusedWindow, with: secondWindow)
+            }
             observer.on(.next(true))
             observer.on(.completed)
             return Disposables.create()
