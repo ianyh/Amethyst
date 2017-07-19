@@ -8,7 +8,7 @@ target 'Amethyst' do
 
   pod 'Cartography', '~> 1.1.0'
   pod 'CCNLaunchAtLoginItem', '~> 0.1'
-  pod 'CCNPreferencesWindowController-ObjC'
+  pod 'CCNPreferencesWindowController'
   pod 'Log'
   pod 'MASShortcut', git: 'https://github.com/ianyh/MASShortcut'
   pod 'RxCocoa'

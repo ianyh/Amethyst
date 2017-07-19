@@ -6,7 +6,7 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
-import CCNPreferencesWindowController_ObjC
+import CCNPreferencesWindowController
 import Cocoa
 import Foundation
 

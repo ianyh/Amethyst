@@ -1,7 +1,7 @@
 PODS:
   - Cartography (1.1.0)
   - CCNLaunchAtLoginItem (0.1.0)
-  - CCNPreferencesWindowController-ObjC (1.4.2)
+  - CCNPreferencesWindowController (1.4.3)
   - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.10)
@@ -23,7 +23,7 @@ PODS:
 DEPENDENCIES:
   - Cartography (~> 1.1.0)
   - CCNLaunchAtLoginItem (~> 0.1)
-  - CCNPreferencesWindowController-ObjC
+  - CCNPreferencesWindowController
   - Crashlytics
   - Fabric
   - Log
@@ -54,7 +54,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Cartography: 0538ccb4044acbbda2266335fc58cb4228794d90
   CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
-  CCNPreferencesWindowController-ObjC: 32dfc15ac2630ebbfa65e469d773d4dd7c51cc5d
+  CCNPreferencesWindowController: e89fc1d448197c6d20e995a4d6488142cae529f5
   Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
   Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
   Log: 5e368c9528db07517d18d2d04ff5fe2b6f5a1e21
@@ -68,6 +68,6 @@ SPEC CHECKSUMS:
   Sparkle: ccfb47699feea7b40b51cf3176f69404e5b1da6c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: ab1114d62b5a987d5d7b17554883396596526adc
+PODFILE CHECKSUM: 86c1020e1ea85d16513ff45f5635d5b49c87c52a
 
 COCOAPODS: 1.3.0.beta.2

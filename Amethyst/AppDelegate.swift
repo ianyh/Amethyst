@@ -7,7 +7,7 @@
 //
 
 import CCNLaunchAtLoginItem
-import CCNPreferencesWindowController_ObjC
+import CCNPreferencesWindowController
 import CoreServices
 import Crashlytics
 import Fabric
@@ -67,6 +67,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         preferencesWindowController?.centerToolbarItems = false
         preferencesWindowController?.allowsVibrancy = true
+        preferencesWindowController?.window?.level = .floating
         let preferencesViewControllers = [
             GeneralPreferencesViewController(),
             ShortcutsPreferencesViewController()
