@@ -78,7 +78,7 @@ private struct ObserveApplicationNotifications {
             }
 
             application.observeNotification(kAXWindowMovedNotification as CFString!, with: application) { accessibilityElement in
-                guard let window = accessibilityElement as? SIWindow else {
+                guard accessibilityElement is SIWindow else {
                     return
                 }
 
