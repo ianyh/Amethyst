@@ -11,30 +11,46 @@ import Foundation
 import Silica
 
 extension SIWindow {
-    static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
-        guard let windowDescriptions = windowDescriptions(.optionOnScreenOnly, windowID: CGWindowID(0)), windowDescriptions.count > 0 else {
-            return nil
-        }
+    fileprivate static func windowInformation(_ windows: [SIWindow]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
+        let ids = Set(windows.map { $0.windowID() })
+        return (IDs: ids, descriptions: windowDescriptions(.optionOnScreenOnly, windowID: CGWindowID(0)))
+    }
 
-        let windowIDs = Set(windows.map { $0.windowID() })
-        var windowsAtPoint: [[String: AnyObject]] = []
+    fileprivate static func onScreenWindowsAtPoint(_ point: CGPoint,
+                                                   withIDs windowIDs: Set<CGWindowID>,
+                                                   withDescriptions windowDescriptions: [[String: AnyObject]]) -> [[String: AnyObject]] {
+        var ret: [[String: AnyObject]] = []
+
+        // build a list of windows at this point
         for windowDescription in windowDescriptions {
-            guard let windowID = (windowDescription[kCGWindowNumber as String] as? NSNumber).flatMap({ CGWindowID($0.intValue) }), windowIDs.contains(windowID) else {
+            guard let windowID = (windowDescription[kCGWindowNumber as String] as? NSNumber).flatMap({ CGWindowID($0.intValue) }),
+                windowIDs.contains(windowID) else {
                 continue
             }
 
+            // only consider windows with bounds
             guard let windowFrameDictionary = windowDescription[kCGWindowBounds as String] as? [String: Any] else {
                 continue
             }
 
+            // only consider window bounds that contain the given point
             let windowFrame = CGRect(dictionaryRepresentation: windowFrameDictionary as CFDictionary)!
-
             guard windowFrame.contains(point) else {
                 continue
             }
-
-            windowsAtPoint.append(windowDescription)
+            ret.append(windowDescription)
         }
+
+        return ret
+    }
+
+    static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
+        let info = windowInformation(windows)
+        guard let windowDescriptions = info.descriptions, windowDescriptions.count > 0 else {
+            return nil
+        }
+
+        let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: info.IDs, withDescriptions: windowDescriptions)
 
         guard windowsAtPoint.count > 0 else {
             return nil
@@ -66,6 +82,27 @@ extension SIWindow {
         }
 
         return windowInWindows(windows, withCGWindowDescription: windowDictionaryToFocus)
+    }
+
+    static func secondWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
+        // only consider windows on this screen
+        let info = windowInformation(windows)
+        guard let windowDescriptions = info.descriptions, windowDescriptions.count > 0 else {
+            return nil
+        }
+
+        let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: info.IDs, withDescriptions: windowDescriptions)
+
+        // early exit for no 2 windows found
+        guard windowsAtPoint.count > 1 else {
+            return nil
+        }
+
+        // it's the one under the one we're dragging
+        guard let ret = windowInWindows(windows, withCGWindowDescription: windowsAtPoint[1]) else {
+            return nil
+        }
+        return ret
     }
 
     static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
