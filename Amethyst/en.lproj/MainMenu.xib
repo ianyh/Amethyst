@@ -61,7 +61,7 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="pO4-7U-3HA" customClass="CCNPreferencesWindow">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="pO4-7U-3HA" customClass="PreferencesWindow" customModule="Amethyst" customModuleProvider="target">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
             <rect key="contentRect" x="446" y="472" width="480" height="270"/>
@@ -71,6 +71,7 @@
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
             <connections>
+                <outlet property="closeMenuItem" destination="qQS-B4-nPy" id="4g6-N2-DxV"/>
                 <outlet property="delegate" destination="494" id="OGF-zj-QHD"/>
             </connections>
             <point key="canvasLocation" x="606" y="152"/>
@@ -80,5 +81,11 @@
                 <outlet property="window" destination="pO4-7U-3HA" id="9gm-N1-3ZQ"/>
             </connections>
         </customObject>
+        <menu id="zK2-oi-EfJ">
+            <items>
+                <menuItem title="Close" keyEquivalent="w" id="qQS-B4-nPy"/>
+            </items>
+            <point key="canvasLocation" x="560" y="-126"/>
+        </menu>
     </objects>
 </document>
