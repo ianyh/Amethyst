@@ -126,6 +126,26 @@ extension SIWindow {
         return false
     }
 
+    func moveScaled(to screen: NSScreen) {
+        let screenFrame = screen.frameWithoutDockOrMenu()
+        let currentFrame = frame()
+        var scaledFrame = currentFrame
+
+        if scaledFrame.width > screenFrame.width {
+            scaledFrame.size.width = screenFrame.width
+        }
+
+        if scaledFrame.height > screenFrame.height {
+            scaledFrame.size.height = screenFrame.height
+        }
+
+        if scaledFrame != currentFrame {
+            setFrame(scaledFrame)
+        }
+
+        move(to: screen)
+    }
+
     @discardableResult func am_focusWindow() -> Bool {
         guard self.focus() else {
             return false

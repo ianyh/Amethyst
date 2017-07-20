@@ -189,7 +189,7 @@ extension CrossScreenWindowMover {
         }
 
         markScreenForReflow(screen, withChange: .remove(window: focusedWindow))
-        focusedWindow.move(to: screenManager.screen)
+        focusedWindow.moveScaled(to: screenManager.screen)
         markScreenForReflow(screenManager.screen, withChange: .unknown)
         focusedWindow.am_focusWindow()
     }
@@ -213,7 +213,7 @@ extension CrossScreenWindowMover where Self: ScreenFocuser {
         }
 
         markScreenForReflow(screen, withChange: .remove(window: focusedWindow))
-        focusedWindow.move(to: screenToMoveTo)
+        focusedWindow.moveScaled(to: screenToMoveTo)
         markScreenForReflow(screenToMoveTo, withChange: .add(window: focusedWindow))
     }
 
@@ -234,7 +234,7 @@ extension CrossScreenWindowMover where Self: ScreenFocuser {
         }
 
         markScreenForReflow(screen, withChange: .remove(window: focusedWindow))
-        focusedWindow.move(to: screenToMoveTo)
+        focusedWindow.moveScaled(to: screenToMoveTo)
         markScreenForReflow(screenToMoveTo, withChange: .add(window: focusedWindow))
     }
 }
