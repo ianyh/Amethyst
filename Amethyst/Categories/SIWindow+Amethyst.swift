@@ -16,8 +16,13 @@ extension SIWindow {
             return nil
         }
 
+        let windowIDs = Set(windows.map { $0.windowID() })
         var windowsAtPoint: [[String: AnyObject]] = []
         for windowDescription in windowDescriptions {
+            guard let windowID = (windowDescription[kCGWindowNumber as String] as? NSNumber).flatMap({ CGWindowID($0.intValue) }), windowIDs.contains(windowID) else {
+                continue
+            }
+
             guard let windowFrameDictionary = windowDescription[kCGWindowBounds as String] as? [String: Any] else {
                 continue
             }
