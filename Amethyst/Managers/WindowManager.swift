@@ -90,8 +90,7 @@ private struct ObserveApplicationNotifications {
 
                 // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/42901022/2063546
                 let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
-                let heightMax = NSScreen.screens.map {$0.frame.origin.y + $0.frame.height}.max()!
-                let unflippedY = heightMax - flippedPointerLocation.y
+                let unflippedY = NSScreen.globalHeight() - flippedPointerLocation.y
                 let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
 
                 // Ignore if there is no window at that point
