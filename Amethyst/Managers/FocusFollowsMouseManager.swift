@@ -18,13 +18,13 @@ final class FocusFollowsMouseManager {
     weak var delegate: FocusFollowsMouseManagerDelegate?
 
     private let userConfiguration: UserConfiguration
-    private var mouseMovedEventHandler: AnyObject?
+    private var mouseMovedEventHandler: Any?
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
         mouseMovedEventHandler = NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { event in
             self.focusWindowWithMouseMovedEvent(event)
-        } as AnyObject?
+        }
     }
 
     private func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
