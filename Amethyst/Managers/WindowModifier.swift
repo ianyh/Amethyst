@@ -443,15 +443,24 @@ extension WindowManager: WindowMover {
         return floatingMap[window.windowID()] ?? false
     }
 
-    func switchWindow(_ window: SIWindow, with otherWindow: SIWindow) {
+    func switchWindow(_ window: SIWindow, with otherWindow: SIWindow, whileDragging windowToNotReflow: SIWindow?) {
         guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
             return
         }
 
         windows[windowIndex] = otherWindow
         windows[otherWindowIndex] = window
+        let theChange = WindowChange.windowSwap(window: window, otherWindow: otherWindow)
 
-        markAllScreensForReflowWithChange(.windowSwap(window: window, otherWindow: otherWindow))
+        guard let windowBeingDragged = windowToNotReflow else {
+            return markAllScreensForReflowWithChange(theChange)
+        }
+
+        markAllScreensForReflowWithChange(theChange) { $0.windowID() != windowBeingDragged.windowID() }
+    }
+
+    func switchWindow(_ window: SIWindow, with otherWindow: SIWindow) {
+        switchWindow(window, with: otherWindow, whileDragging: nil)
     }
 }
 
