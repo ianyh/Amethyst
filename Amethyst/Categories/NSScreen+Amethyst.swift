@@ -22,6 +22,10 @@ extension NSScreen {
         return screenDescriptions.map { JSON($0) }
     }
 
+    static func globalHeight() -> CGFloat {
+        return screens.map {$0.frame.origin.y + $0.frame.height}.max()!
+    }
+
     func screenIdentifier() -> String? {
         guard let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), frameIncludingDockAndMenu()) else {
             return nil

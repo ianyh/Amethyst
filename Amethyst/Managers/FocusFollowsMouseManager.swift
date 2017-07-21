@@ -37,7 +37,7 @@ final class FocusFollowsMouseManager {
         }
 
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
-        mousePoint.y = NSScreen.main!.frame.size.height - mousePoint.y
+        mousePoint.y = NSScreen.globalHeight() - mousePoint.y
 
         if let focusedWindow = SIWindow.focused() {
             // If the point is already in the frame of the focused window do nothing.
