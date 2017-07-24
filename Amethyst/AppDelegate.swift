@@ -126,6 +126,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func showPreferencesWindow(_ sender: AnyObject) {
+        guard let isVisible = preferencesWindowController?.window?.isVisible, !isVisible else {
+            return
+        }
+
         if UserConfiguration.shared.hasCustomConfiguration() {
             let alert = NSAlert()
             alert.alertStyle = .warning
