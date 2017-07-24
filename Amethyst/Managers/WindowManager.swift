@@ -78,6 +78,10 @@ private struct ObserveApplicationNotifications {
             }
 
             application.observeNotification(kAXWindowMovedNotification as CFString!, with: application) { accessibilityElement in
+                guard windowManager.userConfiguration.mouseSwapsWindows() else {
+                    return
+                }
+
                 guard accessibilityElement is SIWindow else {
                     return
                 }
