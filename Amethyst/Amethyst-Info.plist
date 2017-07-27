@@ -17,11 +17,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.11.3</string>
+	<string>0.11.4b</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>49</string>
+	<string>50</string>
 	<key>Fabric</key>
 	<dict>
 		<key>Kits</key>
