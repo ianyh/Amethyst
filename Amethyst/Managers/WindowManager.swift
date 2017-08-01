@@ -13,6 +13,8 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
+fileprivate let mouseDragRaceThresholdSeconds = 0.15
+
 enum WindowChange {
     case add(window: SIWindow)
     case remove(window: SIWindow)
@@ -33,9 +35,52 @@ private struct ObserveApplicationNotifications {
         return _addObservers().retry(.exponentialDelayed(maxCount: 4, initial: 0.1, multiplier: 2))
     }
 
+    private func swapDraggedWindowWithDropzone(_ draggedWindow: SIWindow) {
+        guard let screen = draggedWindow.screen() else {
+            return
+        }
+
+        let windows = windowManager.windows(on: screen)
+
+        // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
+        let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
+        let unflippedY = NSScreen.globalHeight() - flippedPointerLocation.y
+        let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
+
+        // Ignore if there is no window at that point
+        guard let secondWindow = SIWindow.secondWindowForScreenAtPoint(pointerLocation, withWindows: windows) else {
+            return
+        }
+        windowManager.switchWindow(draggedWindow, with: secondWindow)
+    }
+
     private func _addObservers() -> Observable<Bool> {
         let application = self.application
         let windowManager = self.windowManager
+
+        var leftMouseButtonUpMoment: NSDate? = nil
+        var windowBeingDragged: SIWindow? = nil
+        let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp] //, .leftMouseDragged]
+
+        NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch) { anEvent in
+            switch anEvent.type {
+            case .leftMouseDown:
+                leftMouseButtonUpMoment = nil
+            case .leftMouseDragged:
+                leftMouseButtonUpMoment = nil
+            case .leftMouseUp:
+                if let draggedWindow = windowBeingDragged {
+                    self.swapDraggedWindowWithDropzone(draggedWindow)
+                    leftMouseButtonUpMoment = nil
+                } else {
+                    // assume window move event will come shortly after
+                    leftMouseButtonUpMoment = NSDate()
+                }
+                windowBeingDragged = nil
+
+            default: ()
+            }
+        }
 
         return Observable.create { observer in
             var success: Bool = false
@@ -90,19 +135,29 @@ private struct ObserveApplicationNotifications {
                     return
                 }
 
-                let windows = windowManager.windows(on: screen)
-
-                // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/42901022/2063546
-                let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
-                let unflippedY = NSScreen.globalHeight() - flippedPointerLocation.y
-                let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
-
-                // Ignore if there is no window at that point
-                guard let secondWindow = SIWindow.secondWindowForScreenAtPoint(pointerLocation, withWindows: windows) else {
+                // if mouse button is down, record window and wait for mouse up
+                guard let lmbUpMoment = leftMouseButtonUpMoment else {
+                    windowBeingDragged = focusedWindow
                     return
                 }
 
-                windowManager.switchWindow(focusedWindow, with: secondWindow)
+                // if mouse button recently came up, assume window move is related
+                let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
+                if dragEndInterval < mouseDragRaceThresholdSeconds {
+                    self.swapDraggedWindowWithDropzone(focusedWindow)
+                    leftMouseButtonUpMoment = nil
+                }
+            }
+
+            application.observeNotification(kAXWindowResizedNotification as CFString!, with: application) { accessibilityElement in
+                guard let window = accessibilityElement as? SIWindow else {
+                    return
+                }
+
+                guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+                    return
+                }
+
             }
             observer.on(.next(true))
             observer.on(.completed)
