@@ -48,7 +48,7 @@ private struct ObserveApplicationNotifications {
         let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
 
         // Ignore if there is no window at that point
-        guard let secondWindow = SIWindow.secondWindowForScreenAtPoint(pointerLocation, withWindows: windows) else {
+        guard let secondWindow = SIWindow.alternateWindowForScreenAtPoint(pointerLocation, withWindows: windows, butNot: draggedWindow) else {
             return
         }
         windowManager.switchWindow(draggedWindow, with: secondWindow)
