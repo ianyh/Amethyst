@@ -84,7 +84,7 @@ extension SIWindow {
         return windowInWindows(windows, withCGWindowDescription: windowDictionaryToFocus)
     }
 
-    static func secondWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
+    static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow], butNot ignoreWindow: SIWindow?) -> SIWindow? {
         // only consider windows on this screen
         let info = windowInformation(windows)
         guard let windowDescriptions = info.descriptions, windowDescriptions.count > 0 else {
@@ -93,16 +93,17 @@ extension SIWindow {
 
         let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: info.IDs, withDescriptions: windowDescriptions)
 
-        // early exit for no 2 windows found
-        guard windowsAtPoint.count > 1 else {
-            return nil
+        for windowDescription in windowsAtPoint {
+            if let window = windowInWindows(windows, withCGWindowDescription: windowDescription) {
+                if window != ignoreWindow {
+                    return window
+                }
+            } else {
+                print("Couldn't get window \(windowDescription["kCGWindowName"])")
+            }
         }
 
-        // it's the one under the one we're dragging
-        guard let ret = windowInWindows(windows, withCGWindowDescription: windowsAtPoint[1]) else {
-            return nil
-        }
-        return ret
+        return nil
     }
 
     static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
