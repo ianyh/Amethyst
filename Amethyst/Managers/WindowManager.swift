@@ -23,6 +23,15 @@ enum WindowChange {
     case unknown
 }
 
+enum MouseState {
+    case pointing
+    case clicking
+    case dragging
+    case moving(window: SIWindow)
+    case resizing(window: SIWindow)
+    case doneDragging(atTime: NSDate)
+}
+
 private struct ObserveApplicationNotifications {
     enum Error: Swift.Error {
         case failed
@@ -58,25 +67,38 @@ private struct ObserveApplicationNotifications {
         let application = self.application
         let windowManager = self.windowManager
 
-        var leftMouseButtonUpMoment: NSDate? = nil
-        var windowBeingDragged: SIWindow? = nil
-        let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp] //, .leftMouseDragged]
+        var mouseState: MouseState = .pointing
+        let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp, .leftMouseDragged]
 
         NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch) { anEvent in
             switch anEvent.type {
             case .leftMouseDown:
-                leftMouseButtonUpMoment = nil
+                mouseState = .clicking
             case .leftMouseDragged:
-                leftMouseButtonUpMoment = nil
-            case .leftMouseUp:
-                if let draggedWindow = windowBeingDragged {
-                    self.swapDraggedWindowWithDropzone(draggedWindow)
-                    leftMouseButtonUpMoment = nil
-                } else {
-                    // assume window move event will come shortly after
-                    leftMouseButtonUpMoment = NSDate()
+                switch mouseState {
+                case .moving, .resizing:
+                    () // ignore - we have what we need
+                default:
+                    mouseState = .dragging
                 }
-                windowBeingDragged = nil
+
+            case .leftMouseUp:
+                switch mouseState {
+                case .clicking:
+                    mouseState = .pointing
+                case .pointing:
+                    mouseState = .pointing
+                case .dragging:
+                    // assume window move event will come shortly after
+                    mouseState = .doneDragging(atTime: NSDate())
+                case let .moving(draggedWindow):
+                    self.swapDraggedWindowWithDropzone(draggedWindow)
+                    mouseState = .pointing
+                case let .resizing(resizedWindow):
+                    mouseState = .pointing
+                case .doneDragging:
+                    mouseState = .doneDragging(atTime: NSDate()) // reset the clock I guess
+                }
 
             default: ()
             }
@@ -131,21 +153,22 @@ private struct ObserveApplicationNotifications {
                     return
                 }
 
-                guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+                guard let focusedWindow = SIWindow.focused() else {
                     return
                 }
 
-                // if mouse button is down, record window and wait for mouse up
-                guard let lmbUpMoment = leftMouseButtonUpMoment else {
-                    windowBeingDragged = focusedWindow
-                    return
-                }
-
-                // if mouse button recently came up, assume window move is related
-                let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
-                if dragEndInterval < mouseDragRaceThresholdSeconds {
-                    self.swapDraggedWindowWithDropzone(focusedWindow)
-                    leftMouseButtonUpMoment = nil
+                switch mouseState {
+                case .dragging:
+                    // record window and wait for mouse up
+                    mouseState = .moving(window: focusedWindow)
+                case let .doneDragging(lmbUpMoment):
+                    // if mouse button recently came up, assume window move is related
+                    let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
+                    if dragEndInterval < mouseDragRaceThresholdSeconds {
+                        self.swapDraggedWindowWithDropzone(focusedWindow)
+                        mouseState = .pointing
+                    }
+                default: ()
                 }
             }
 
