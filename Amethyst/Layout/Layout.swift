@@ -32,22 +32,7 @@ struct FrameAssignment {
             finalFrame.size.height -= 2 * padding
         }
 
-        var finalPosition = finalFrame.origin
-
-        // Just resize the window
-        finalFrame.origin = window.frame().origin
-        window.setFrame(finalFrame)
-
-        if focused {
-            finalFrame.size = CGSize(width: max(window.frame().size.width, finalFrame.size.width), height: max(window.frame().size.height, finalFrame.size.height))
-            if !screenFrame.contains(finalFrame) {
-                finalPosition.x = min(finalPosition.x, screenFrame.maxX - finalFrame.size.width)
-                finalPosition.y = min(finalPosition.y, screenFrame.maxY - finalFrame.size.height)
-            }
-        }
-
         // Move the window to its final frame
-        finalFrame.origin = finalPosition
         window.setFrame(finalFrame)
     }
 }
