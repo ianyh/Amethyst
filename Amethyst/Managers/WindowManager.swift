@@ -149,7 +149,7 @@ private struct ObserveApplicationNotifications {
                     return
                 }
 
-                guard accessibilityElement is SIWindow else {
+                guard let movedWindow = accessibilityElement as? SIWindow else {
                     return
                 }
 
@@ -157,15 +157,27 @@ private struct ObserveApplicationNotifications {
                     return
                 }
 
+                guard focusedWindow == movedWindow else {
+                    // Explicitly reset mouse state if what we are dragging isn't a real window.  e.g. Giphy Capture
+                    if case .moving(window: _) = mouseState {
+                        mouseState = .pointing
+                    }
+                    return
+                }
+
+                guard !windowManager.windowIsFloating(movedWindow) else {
+                    return
+                }
+
                 switch mouseState {
                 case .dragging:
                     // record window and wait for mouse up
-                    mouseState = .moving(window: focusedWindow)
+                    mouseState = .moving(window: movedWindow)
                 case let .doneDragging(lmbUpMoment):
                     // if mouse button recently came up, assume window move is related
                     let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
                     if dragEndInterval < mouseDragRaceThresholdSeconds {
-                        self.swapDraggedWindowWithDropzone(focusedWindow)
+                        self.swapDraggedWindowWithDropzone(movedWindow)
                         mouseState = .pointing
                     }
                 default: ()
