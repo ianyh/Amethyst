@@ -165,6 +165,15 @@ private struct ObserveApplicationNotifications {
                     return
                 }
 
+                // Do a more in-depth check; make sure the window being dragged is being managed
+                guard let screenManager = windowManager.focusedScreenManager(),
+                    let layout = screenManager.currentLayout,
+                    let screen = movedWindow.screen(),
+                    layout.windowHasAssignedFrame(movedWindow, of: windowManager.activeWindowsForScreenManager(screenManager), on: screen) else {
+                    mouseState = .pointing
+                    return
+                }
+
                 guard !windowManager.windowIsFloating(movedWindow) else {
                     return
                 }
