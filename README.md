@@ -100,14 +100,7 @@ If you have questions or feedback you have a plethora of options. You can [email
 Donating
 ========
 
-Amethyst is free and always will be. That said, a couple of people have expressed their desire to donate money in appreciation. If you are so inclined I've set up two options:
-
-* You can find a Patreon page [here](http://www.patreon.com/ianyh) if you would like to pledge money regularly for releases.
-* If you would like to do a one-time donation there's a PayPal button below. If there's some other method of donating that you would prefer open an issue and I'll try to add it!
-
-[![PayPal Donate](https://img.shields.io/badge/paypal-donate-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=ianynda%40gmail%2ecom&lc=US&item_name=Ian%20Ynda%2dHummel&item_number=Amethyst&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
-
-If you are considering donating to me, you are more than welcome to. Given the political climate in the US, though, you should also consider donating that money to a good cause in addition to or instead. Here's a very incomplete list of things that you might want to throw money at:
+Amethyst is free and always will be. That said, a couple of people have expressed their desire to donate money in appreciation. Given the current political climate I would recommend donating to one of these organizations instead:
 
 * [American Civil Liberties Union](https://www.aclu.org/)
 * [Planned Parenthood](https://www.plannedparenthood.org/)
@@ -126,3 +119,5 @@ And a bunch of technology-oriented ones:
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
 * [Trans*H4CK](http://www.transhack.org/donate/)
 * [Black Girls CODE](http://www.blackgirlscode.com/)
+
+Alternatively, I have a Patreon page set up [here](https://www.patreon.com/ianyh). Any proceeds will be donated to one of the above organizations. 
