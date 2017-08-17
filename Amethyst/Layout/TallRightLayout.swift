@@ -16,9 +16,9 @@ final class TallRightReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func main() {
+    var frameAssignments: [FrameAssignment] {
         guard !windows.isEmpty else {
-            return
+            return []
         }
 
         let mainPaneCount = min(windows.count, layout.mainPaneCount)
@@ -35,7 +35,7 @@ final class TallRightReflowOperation: ReflowOperation {
 
         let focusedWindow = SIWindow.focused()
 
-        let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
 
@@ -57,8 +57,10 @@ final class TallRightReflowOperation: ReflowOperation {
 
             return assignments
         }
+    }
 
-        guard !isCancelled else {
+    override func main() {
+         guard !isCancelled else {
             return
         }
 
@@ -82,6 +84,11 @@ final class TallRightLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
         return TallRightReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
+
+    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool {
+        return TallRightReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.contains { $0.window == window }
+    }
+
 }
 
 extension TallRightLayout: PanedLayout {
