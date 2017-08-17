@@ -149,9 +149,9 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func main() {
+    var frameAssignments: [FrameAssignment] {
         guard !windows.isEmpty else {
-            return
+            return []
         }
 
         let windowIDMap: [CGWindowID: SIWindow] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: SIWindow] in
@@ -162,7 +162,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
 
         let focusedWindow = SIWindow.focused()
         let baseFrame = screen.adjustedFrame()
-        var frameAssignments: [FrameAssignment] = []
+        var ret: [FrameAssignment] = []
         var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
 
         while traversalNodes.count > 0 {
@@ -177,7 +177,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
                 }
 
                 let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame)
-                frameAssignments.append(frameAssignment)
+                ret.append(frameAssignment)
             } else {
                 guard let left = traversalNode.node.left, let right = traversalNode.node.right else {
                     LogManager.log?.error("Encountered an invalid node")
@@ -220,6 +220,10 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
             }
         }
 
+        return ret
+    }
+
+    override func main() {
         guard !isCancelled else {
             return
         }
@@ -247,6 +251,10 @@ final class BinarySpacePartitioningLayout: Layout {
         }
 
         return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self)
+    }
+
+    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool {
+        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self).frameAssignments.contains { $0.window == window }
     }
 
     private func constructInitialTreeWithWindows(_ windows: [SIWindow]) {

@@ -100,6 +100,7 @@ protocol Layout {
     var windowActivityCache: WindowActivityCache { get }
 
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation
+    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool
 }
 
 protocol PanedLayout {

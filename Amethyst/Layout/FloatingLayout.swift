@@ -23,6 +23,11 @@ final class FloatingLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
         return FloatingReflowOperation(screen: screen, windows: windows, frameAssigner: self)
     }
+
+    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool {
+        return false
+    }
+
 }
 
 extension FloatingLayout: FrameAssigner {}
