@@ -63,7 +63,7 @@ final class ScreenManager: NSObject {
             }
         }
     }
-    private var currentLayout: Layout? {
+    var currentLayout: Layout? {
         guard !layouts.isEmpty else {
             return nil
         }
