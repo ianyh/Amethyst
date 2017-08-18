@@ -166,24 +166,13 @@ private class ObserveApplicationNotifications {
                     return
                 }
 
-                guard let focusedWindow = SIWindow.focused() else {
-                    return
-                }
-
-                guard focusedWindow == movedWindow else {
-                    // Explicitly reset mouse state if what we are dragging isn't a real window.  e.g. Giphy Capture
-                    if case .moving(window: _) = mouseState {
-                        mouseState = .pointing
-                    }
-                    return
-                }
-
+                // Do a more in-depth check; make sure the window being dragged is being managed
                 guard let screenManager = windowManager.focusedScreenManager(),
                     let layout = screenManager.currentLayout,
                     let screen = movedWindow.screen(),
                     layout.windowHasAssignedFrame(movedWindow, of: windowManager.activeWindowsForScreenManager(screenManager), on: screen) else {
                         self.mouse.state = .pointing
-                    return
+                        return
                 }
 
                 guard !windowManager.windowIsFloating(movedWindow) else {
