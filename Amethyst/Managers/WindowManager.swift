@@ -32,13 +32,27 @@ enum MouseState {
     case doneDragging(atTime: NSDate)
 }
 
-private struct ObserveApplicationNotifications {
+class MouseStateKeeper {
+    public var state: MouseState
+    init() {
+        state = .pointing
+    }
+}
+
+private class ObserveApplicationNotifications {
     enum Error: Swift.Error {
         case failed
     }
 
     fileprivate let application: SIApplication
     fileprivate let windowManager: WindowManager
+    fileprivate let mouse: MouseStateKeeper
+
+    init(application app: SIApplication, windowManager wm: WindowManager) {
+        application = app
+        windowManager = wm
+        mouse = wm.mouseStateKeeper
+    }
 
     fileprivate func addObservers() -> Observable<Bool> {
         return _addObservers().retry(.exponentialDelayed(maxCount: 4, initial: 0.1, multiplier: 2))
@@ -67,37 +81,34 @@ private struct ObserveApplicationNotifications {
         let application = self.application
         let windowManager = self.windowManager
 
-        var mouseState: MouseState = .pointing
         let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp, .leftMouseDragged]
 
         NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch) { anEvent in
             switch anEvent.type {
             case .leftMouseDown:
-                mouseState = .clicking
+                self.mouse.state = .clicking
             case .leftMouseDragged:
-                switch mouseState {
+                switch self.mouse.state {
                 case .moving, .resizing:
                     () // ignore - we have what we need
                 default:
-                    mouseState = .dragging
+                    self.mouse.state = .dragging
                 }
 
             case .leftMouseUp:
-                switch mouseState {
-                case .clicking:
-                    mouseState = .pointing
-                case .pointing:
-                    mouseState = .pointing
+                switch self.mouse.state {
                 case .dragging:
                     // assume window move event will come shortly after
-                    mouseState = .doneDragging(atTime: NSDate())
+                    self.mouse.state = .doneDragging(atTime: NSDate())
                 case let .moving(draggedWindow):
+                    self.mouse.state = .pointing // flip state first to prevent race condition
                     self.swapDraggedWindowWithDropzone(draggedWindow)
-                    mouseState = .pointing
                 case let .resizing(resizedWindow):
-                    mouseState = .pointing
+                    self.mouse.state = .pointing
                 case .doneDragging:
-                    mouseState = .doneDragging(atTime: NSDate()) // reset the clock I guess
+                    self.mouse.state = .doneDragging(atTime: NSDate()) // reset the clock I guess
+                default:
+                    self.mouse.state = .pointing
                 }
 
             default: ()
@@ -125,6 +136,7 @@ private struct ObserveApplicationNotifications {
                 }
                 windowManager.addWindow(window)
             }
+
             application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { _ in
                 guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
                     return
@@ -135,6 +147,7 @@ private struct ObserveApplicationNotifications {
                     windowManager.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
                 }
             }
+
             application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { _ in
                 NSObject.cancelPreviousPerformRequests(
                     withTarget: windowManager,
@@ -165,12 +178,11 @@ private struct ObserveApplicationNotifications {
                     return
                 }
 
-                // Do a more in-depth check; make sure the window being dragged is being managed
                 guard let screenManager = windowManager.focusedScreenManager(),
                     let layout = screenManager.currentLayout,
                     let screen = movedWindow.screen(),
                     layout.windowHasAssignedFrame(movedWindow, of: windowManager.activeWindowsForScreenManager(screenManager), on: screen) else {
-                    mouseState = .pointing
+                        self.mouse.state = .pointing
                     return
                 }
 
@@ -178,16 +190,16 @@ private struct ObserveApplicationNotifications {
                     return
                 }
 
-                switch mouseState {
+                switch self.mouse.state {
                 case .dragging:
                     // record window and wait for mouse up
-                    mouseState = .moving(window: movedWindow)
+                    self.mouse.state = .moving(window: movedWindow)
                 case let .doneDragging(lmbUpMoment):
                     // if mouse button recently came up, assume window move is related
                     let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
                     if dragEndInterval < mouseDragRaceThresholdSeconds {
+                        self.mouse.state = .pointing // flip state first to prevent race condition
                         self.swapDraggedWindowWithDropzone(movedWindow)
-                        mouseState = .pointing
                     }
                 default: ()
                 }
@@ -212,6 +224,7 @@ private struct ObserveApplicationNotifications {
 
 final class WindowManager: NSObject {
     private var applications: [SIApplication] = []
+    private(set) var mouseStateKeeper = MouseStateKeeper()
     var windows: [SIWindow] = []
     fileprivate let userConfiguration: UserConfiguration
 
