@@ -48,10 +48,10 @@ private class ObserveApplicationNotifications {
     fileprivate let windowManager: WindowManager
     fileprivate let mouse: MouseStateKeeper
 
-    init(application app: SIApplication, windowManager wm: WindowManager) {
-        application = app
-        windowManager = wm
-        mouse = wm.mouseStateKeeper
+    init(application theApp: SIApplication, windowManager theWM: WindowManager) {
+        application = theApp
+        windowManager = theWM
+        mouse = theWM.mouseStateKeeper
     }
 
     fileprivate func addObservers() -> Observable<Bool> {
