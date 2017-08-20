@@ -129,7 +129,7 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         openPanel.prompt = "Select"
         openPanel.directoryURL = applicationDirectories.first
 
-        guard case openPanel.runModal() = NSApplication.ModalResponse.cancel else {
+        guard case openPanel.runModal() = NSApplication.ModalResponse.OK else {
             return
         }
 
@@ -137,6 +137,7 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
             guard let applicationBundleIdentifier = Bundle(url: applicationURL)?.bundleIdentifier else {
                 continue
             }
+
             addFloatingApplicationBundleIdentifier(applicationBundleIdentifier)
         }
 
