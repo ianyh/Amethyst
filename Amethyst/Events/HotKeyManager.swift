@@ -38,7 +38,7 @@ final class HotKeyManager: NSObject {
     private static func keyCodeForNumber(_ number: NSNumber) -> AMKeyCode {
         let string = "\(number)"
 
-        guard string.characters.count > 0 else {
+        guard !string.characters.isEmpty else {
             return AMKeyCodeInvalid
         }
 

@@ -46,13 +46,13 @@ extension SIWindow {
 
     static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
         let info = windowInformation(windows)
-        guard let windowDescriptions = info.descriptions, windowDescriptions.count > 0 else {
+        guard let windowDescriptions = info.descriptions, !windowDescriptions.isEmpty else {
             return nil
         }
 
         let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: info.IDs, withDescriptions: windowDescriptions)
 
-        guard windowsAtPoint.count > 0 else {
+        guard !windowsAtPoint.isEmpty else {
             return nil
         }
 
@@ -87,7 +87,7 @@ extension SIWindow {
     static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow], butNot ignoreWindow: SIWindow?) -> SIWindow? {
         // only consider windows on this screen
         let info = windowInformation(windows)
-        guard let windowDescriptions = info.descriptions, windowDescriptions.count > 0 else {
+        guard let windowDescriptions = info.descriptions, !windowDescriptions.isEmpty else {
             return nil
         }
 

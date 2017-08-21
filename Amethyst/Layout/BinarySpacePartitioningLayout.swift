@@ -165,7 +165,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
         var ret: [FrameAssignment] = []
         var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
 
-        while traversalNodes.count > 0 {
+        while !traversalNodes.isEmpty {
             let traversalNode = traversalNodes[0]
 
             traversalNodes = [TraversalNode](traversalNodes.dropFirst(1))
