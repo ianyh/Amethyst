@@ -105,8 +105,8 @@ final class MiddleWideLayout: Layout {
         return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
 
-    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool {
-        return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.contains { $0.window == window }
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+        return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.first { $0.window == window }
     }
 }
 

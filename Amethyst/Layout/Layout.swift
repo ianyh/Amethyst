@@ -19,19 +19,23 @@ struct FrameAssignment {
     let focused: Bool
     let screenFrame: CGRect
 
-    fileprivate func perform() {
-        var padding = UserConfiguration.shared.windowMarginSize()
-        var finalFrame = frame
-
-        if UserConfiguration.shared.windowMargins() {
-            padding = floor(padding / 2)
-
-            finalFrame.origin.x += padding
-            finalFrame.origin.y += padding
-            finalFrame.size.width -= 2 * padding
-            finalFrame.size.height -= 2 * padding
+    var finalFrame: CGRect {
+        guard UserConfiguration.shared.windowMargins() else {
+            return frame
         }
 
+        var ret = frame
+        var padding = UserConfiguration.shared.windowMarginSize()
+        padding = floor(padding / 2)
+
+        ret.origin.x += padding
+        ret.origin.y += padding
+        ret.size.width -= 2 * padding
+        ret.size.height -= 2 * padding
+        return ret
+    }
+
+    fileprivate func perform() {
         // Move the window to its final frame
         window.setFrame(finalFrame)
     }
@@ -100,7 +104,7 @@ protocol Layout {
     var windowActivityCache: WindowActivityCache { get }
 
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation
-    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment?
 }
 
 protocol PanedLayout {

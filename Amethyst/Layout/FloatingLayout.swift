@@ -24,8 +24,8 @@ final class FloatingLayout: Layout {
         return FloatingReflowOperation(screen: screen, windows: windows, frameAssigner: self)
     }
 
-    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool {
-        return false
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+        return nil
     }
 
 }
