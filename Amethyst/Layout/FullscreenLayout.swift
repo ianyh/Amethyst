@@ -47,8 +47,8 @@ final class FullscreenLayout: Layout {
         return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
 
-    func windowHasAssignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> Bool {
-        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.contains { $0.window == window }
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.first { $0.window == window }
     }
 }
 
