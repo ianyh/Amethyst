@@ -62,8 +62,8 @@ class MouseStateKeeper {
                 case .leftMouseDragged:
                     switch self.state {
                     case .moving, .resizing:
-                        () // ignore - we have what we need
-                    default:
+                        break // ignore - we have what we need
+                    case .pointing, .clicking, .dragging, .doneDragging:
                         self.state = .dragging
                     }
 
@@ -79,7 +79,7 @@ class MouseStateKeeper {
                         self.state = .pointing
                     case .doneDragging:
                         self.state = .doneDragging(atTime: NSDate()) // reset the clock I guess
-                    default:
+                    case .pointing, .clicking:
                         self.state = .pointing
                     }
 
