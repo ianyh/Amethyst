@@ -183,15 +183,8 @@ private class ObserveApplicationNotifications {
                     return
                 }
 
-                guard let screen = movedWindow.screen() else {
-                    return
-                }
-
-                guard windowManager.activeWindows(on: screen).contains(movedWindow) else {
-                    return
-                }
-
-                guard !windowManager.windowIsFloating(movedWindow) else {
+                guard let screen = movedWindow.screen(),
+                    windowManager.activeWindows(on: screen).contains(movedWindow) else {
                     return
                 }
 
