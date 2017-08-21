@@ -23,7 +23,7 @@ extension NSScreen {
     }
 
     static func globalHeight() -> CGFloat {
-        return screens.map {$0.frame.origin.y + $0.frame.height}.max()!
+        return screens.map { $0.frame.maxY }.max()! - screens.map { $0.frame.minY }.min()!
     }
 
     func screenIdentifier() -> String? {
