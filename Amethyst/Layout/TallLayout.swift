@@ -51,7 +51,6 @@ final class TallReflowOperation: ReflowOperation {
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            print("Framing \(windowFrame)\thas \(window.title())")
             let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
 
             assignments.append(frameAssignment)
@@ -76,7 +75,7 @@ final class TallLayout: Layout {
     let windowActivityCache: WindowActivityCache
 
     fileprivate var mainPaneCount: Int = 1
-    fileprivate var mainPaneRatio: CGFloat = 0.5
+    internal var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -89,16 +88,11 @@ final class TallLayout: Layout {
     func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
         return TallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.first { $0.window == window }
     }
-
 }
 
 extension TallLayout: PanedLayout {
-    func expandMainPane() {
-        mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
-    }
-
-    func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    func setMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
     func increaseMainPaneCount() {

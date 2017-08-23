@@ -108,10 +108,26 @@ protocol Layout {
 }
 
 protocol PanedLayout {
+    var mainPaneRatio: CGFloat { get }
+    func setMainPaneRawRatio(rawRatio: CGFloat)
     func shrinkMainPane()
     func expandMainPane()
     func increaseMainPaneCount()
     func decreaseMainPaneCount()
+}
+
+extension PanedLayout {
+    func setMainPaneRatio(_ ratio: CGFloat) {
+        setMainPaneRawRatio(rawRatio: min(1, max(0, ratio)))
+    }
+
+    func expandMainPane() {
+        setMainPaneRatio(mainPaneRatio + UserConfiguration.shared.windowResizeStep())
+    }
+
+    func shrinkMainPane() {
+        setMainPaneRatio(mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    }
 }
 
 protocol StatefulLayout {

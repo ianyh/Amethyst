@@ -77,7 +77,7 @@ final class RowLayout: Layout {
     let windowActivityCache: WindowActivityCache
 
     fileprivate var mainPaneCount: Int = 1
-    fileprivate var mainPaneRatio: CGFloat = 0.5
+    internal var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -93,12 +93,8 @@ final class RowLayout: Layout {
 }
 
 extension RowLayout: PanedLayout {
-    func expandMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
-    }
-
-    func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    func setMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
     func increaseMainPaneCount() {

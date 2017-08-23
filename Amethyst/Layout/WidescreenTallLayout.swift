@@ -78,7 +78,7 @@ final class WidescreenTallLayout: Layout {
     let windowActivityCache: WindowActivityCache
 
     fileprivate var mainPaneCount: Int = 1
-    fileprivate var mainPaneRatio: CGFloat = 0.5
+    internal var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -94,12 +94,8 @@ final class WidescreenTallLayout: Layout {
 }
 
 extension WidescreenTallLayout: PanedLayout {
-    func expandMainPane() {
-        mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
-    }
-
-    func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    func setMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
     func increaseMainPaneCount() {
