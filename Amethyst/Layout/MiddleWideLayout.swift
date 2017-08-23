@@ -95,7 +95,7 @@ final class MiddleWideLayout: Layout {
 
     let windowActivityCache: WindowActivityCache
 
-    fileprivate var mainPaneRatio: CGFloat = 0.5
+    internal var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -111,12 +111,8 @@ final class MiddleWideLayout: Layout {
 }
 
 extension MiddleWideLayout: PanedLayout {
-    func expandMainPane() {
-        mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
-    }
-
-    func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    func setMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
     func increaseMainPaneCount() {}
