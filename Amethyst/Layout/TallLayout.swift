@@ -38,20 +38,25 @@ final class TallReflowOperation: ReflowOperation {
         return windows.reduce([]) { acc, window -> [FrameAssignment] in
             var assignments = acc
             var windowFrame = CGRect.zero
+            let isMain = acc.count < mainPaneCount
+            var scaleFactor: CGFloat
 
-            if acc.count < mainPaneCount {
+            if isMain {
+                scaleFactor = screenFrame.size.width / mainPaneWindowWidth
                 windowFrame.origin.x = screenFrame.origin.x
                 windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * CGFloat(acc.count))
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = mainPaneWindowHeight
             } else {
+                scaleFactor = screenFrame.size.width / secondaryPaneWindowWidth
                 windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth
                 windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(acc.count - mainPaneCount))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
+            let resizeRules = ResizeRules(isMain: isMain, scaleFactor: scaleFactor, unconstrainedDimension: .horizontal)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
 

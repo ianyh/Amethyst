@@ -176,7 +176,8 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
                     continue
                 }
 
-                let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame)
+                let resizeRules = ResizeRules(isMain: true, scaleFactor: 1, unconstrainedDimension: .horizontal)
+                let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame, resizeRules: resizeRules)
                 ret.append(frameAssignment)
             } else {
                 guard let left = traversalNode.node.left, let right = traversalNode.node.right else {
