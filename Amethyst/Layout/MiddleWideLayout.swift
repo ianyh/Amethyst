@@ -57,7 +57,7 @@ final class MiddleWideReflowOperation: ReflowOperation {
             let hasTertiary = windowIndex > Int(secondaryPaneCount)
             var scaleFactor: CGFloat
 
-            scaleFactor = (screenFrame.width / secondaryPaneWindowWidth) / (hasTertiaryPane ? 2.0 : 1.0)
+            scaleFactor = (screenFrame.width / secondaryPaneWindowWidth)
             if isMain {
                 scaleFactor = screenFrame.width / mainPaneWindowWidth
                 windowFrame.origin.x = screenFrame.origin.x + (hasSecondaryPane ? secondaryPaneWindowWidth : 0)
@@ -76,7 +76,9 @@ final class MiddleWideReflowOperation: ReflowOperation {
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let resizeRules = ResizeRules(isMain: isMain, scaleFactor: scaleFactor, unconstrainedDimension: .horizontal)
+            let hackIsMain = (hasTertiaryPane ? isMain : !isMain)
+
+            let resizeRules = ResizeRules(isMain: hackIsMain, scaleFactor: scaleFactor, unconstrainedDimension: .horizontal)
             let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
