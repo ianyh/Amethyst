@@ -41,7 +41,7 @@ final class ColumnReflowOperation: ReflowOperation {
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = screenFrame.height
             } else {
-                windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth + (secondaryPaneWindowWidth * CGFloat(frameAssignments.count - mainPaneCount))
+                windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * CGFloat(mainPaneCount)) + (secondaryPaneWindowWidth * CGFloat(frameAssignments.count - mainPaneCount))
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = screenFrame.height
