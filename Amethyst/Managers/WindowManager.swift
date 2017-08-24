@@ -208,7 +208,7 @@ private class ObserveApplicationNotifications {
 
             application.observeNotification(kAXWindowResizedNotification as CFString!, with: application) { accessibilityElement in
 
-                guard windowManager.userConfiguration.mouseSwapsWindows() else {
+                guard windowManager.userConfiguration.mouseResizesWindows() else {
                     return
                 }
 
