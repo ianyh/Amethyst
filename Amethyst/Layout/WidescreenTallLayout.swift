@@ -40,20 +40,25 @@ final class WidescreenTallReflowOperation: ReflowOperation {
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let windowIndex = frameAssignments.count
+            let isMain = windowIndex < mainPaneCount
+            var scaleFactor: CGFloat
 
-            if windowIndex < mainPaneCount {
+            if isMain {
+                scaleFactor = CGFloat(screenFrame.size.width / mainPaneWindowWidth)
                 windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * CGFloat(windowIndex)
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = mainPaneWindowHeight
             } else {
+                scaleFactor = CGFloat(screenFrame.size.width / secondaryPaneWindowWidth)
                 windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * CGFloat(mainPaneCount)
                 windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(windowIndex - mainPaneCount))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
+            let resizeRules = ResizeRules(isMain: isMain, scaleFactor: scaleFactor, unconstrainedDimension: .horizontal)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
 

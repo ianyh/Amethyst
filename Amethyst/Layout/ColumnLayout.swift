@@ -34,20 +34,25 @@ final class ColumnReflowOperation: ReflowOperation {
         return windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
             var windowFrame: CGRect = .zero
+            let isMain = frameAssignments.count < mainPaneCount
+            var scaleFactor: CGFloat
 
-            if frameAssignments.count < mainPaneCount {
+            if isMain {
+                scaleFactor = screenFrame.width / mainPaneWindowWidth
                 windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * CGFloat(frameAssignments.count))
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = screenFrame.height
             } else {
+                scaleFactor = (screenFrame.width / secondaryPaneWindowWidth) / CGFloat(secondaryPaneCount)
                 windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * CGFloat(mainPaneCount)) + (secondaryPaneWindowWidth * CGFloat(frameAssignments.count - mainPaneCount))
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = screenFrame.height
             }
 
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
+            let resizeRules = ResizeRules(isMain: isMain, scaleFactor: scaleFactor, unconstrainedDimension: .horizontal)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
 

@@ -13,11 +13,23 @@ protocol WindowActivityCache {
     func windowIsActive(_ window: SIWindow) -> Bool
 }
 
+enum UnconstrainedDimension: Int {
+    case horizontal
+    case vertical
+}
+
+struct ResizeRules {
+    let isMain: Bool
+    let scaleFactor: CGFloat    // how to scale up window width to pane width
+    let unconstrainedDimension: UnconstrainedDimension
+}
+
 struct FrameAssignment {
     let frame: CGRect
     let window: SIWindow
     let focused: Bool
     let screenFrame: CGRect
+    let resizeRules: ResizeRules
 
     var finalFrame: CGRect {
         guard UserConfiguration.shared.windowMargins() else {
@@ -33,6 +45,16 @@ struct FrameAssignment {
         ret.size.width -= 2 * padding
         ret.size.height -= 2 * padding
         return ret
+    }
+
+    // Given a window frame and based on resizeRules, determine what the main pane ratio would be
+    // this accounts for multiple main windows and primary vs non-primary being resized
+    func impliedMainPaneRatio(windowFrame: CGRect) -> CGFloat {
+        let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
+        let oldDimension = resizeRules.unconstrainedDimension == .horizontal ? frame.width : frame.height
+        let newDimension = resizeRules.unconstrainedDimension == .horizontal ? windowFrame.width : windowFrame.height
+        let implied =  (newDimension / (oldDimension + padding * 2)) / resizeRules.scaleFactor
+        return resizeRules.isMain ? implied : 1 - implied
     }
 
     fileprivate func perform() {

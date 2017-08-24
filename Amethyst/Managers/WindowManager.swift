@@ -28,7 +28,7 @@ enum MouseState {
     case clicking
     case dragging
     case moving(window: SIWindow)
-    case resizing(window: SIWindow)
+    case resizing(screen: NSScreen, layout: Layout & PanedLayout, ratio: CGFloat)
     case doneDragging(atTime: NSDate)
 }
 
@@ -75,8 +75,10 @@ class MouseStateKeeper {
                     case let .moving(draggedWindow):
                         self.state = .pointing // flip state first to prevent race condition
                         self.swapDraggedWindowWithDropzone(draggedWindow)
-                    case let .resizing(resizedWindow):
+                    case let .resizing(screen, layout, ratio):
                         self.state = .pointing
+                        layout.setMainPaneRatio(ratio)
+                        self._windowManager.markScreenForReflow(screen, withChange: .unknown)
                     case .doneDragging:
                         self.state = .doneDragging(atTime: NSDate()) // reset the clock I guess
                     case .pointing, .clicking:
@@ -199,17 +201,48 @@ private class ObserveApplicationNotifications {
                         self.mouse.state = .pointing // flip state first to prevent race condition
                         self.mouse.swapDraggedWindowWithDropzone(movedWindow)
                     }
-                default: ()
+                default:
+                    break
                 }
             }
 
             application.observeNotification(kAXWindowResizedNotification as CFString!, with: application) { accessibilityElement in
-                guard let window = accessibilityElement as? SIWindow else {
+
+                guard windowManager.userConfiguration.mouseSwapsWindows() else {
                     return
                 }
 
-                guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+                guard let resizedWindow = accessibilityElement as? SIWindow else {
                     return
+                }
+
+                guard let screen = resizedWindow.screen(),
+                    windowManager.activeWindows(on: screen).contains(resizedWindow) else {
+                        return
+                }
+
+                guard let screenManager = windowManager.focusedScreenManager(),
+                    let layout = screenManager.currentLayout as? Layout & PanedLayout,
+                    let oldFrame = layout.assignedFrame(resizedWindow, of: windowManager.activeWindowsForScreenManager(screenManager), on: screen) else {
+                        return
+                }
+
+                let ratio = oldFrame.impliedMainPaneRatio(windowFrame: resizedWindow.frame())
+
+                switch self.mouse.state {
+                case .dragging, .resizing:
+                    // record window and wait for mouse up
+                    self.mouse.state = .resizing(screen: screen, layout: layout, ratio: ratio)
+                case let .doneDragging(lmbUpMoment):
+                    // if mouse button recently came up, assume window resize is related
+                    let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
+                    if dragEndInterval < mouseDragRaceThresholdSeconds {
+                        self.mouse.state = .pointing // flip state first to prevent race condition
+                        layout.setMainPaneRatio(ratio)
+                        windowManager.markScreenForReflow(screen, withChange: .unknown)
+                    }
+                default:
+                    break
                 }
 
             }
