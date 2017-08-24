@@ -44,7 +44,7 @@ final class WidescreenTallReflowOperation: ReflowOperation {
             var scaleFactor: CGFloat
 
             if isMain {
-                scaleFactor = CGFloat(screenFrame.size.width / mainPaneWindowWidth)
+                scaleFactor = CGFloat(screenFrame.size.width / mainPaneWindowWidth) / CGFloat(mainPaneCount)
                 windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * CGFloat(windowIndex)
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = mainPaneWindowWidth
