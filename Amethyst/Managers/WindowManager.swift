@@ -28,7 +28,7 @@ enum MouseState {
     case clicking
     case dragging
     case moving(window: SIWindow)
-    case resizing(screen: NSScreen, layout: Layout & PanedLayout, ratio: CGFloat)
+    case resizing(screen: NSScreen, ratio: CGFloat)
     case doneDragging(atTime: NSDate)
 }
 
@@ -75,10 +75,13 @@ class MouseStateKeeper {
                     case let .moving(draggedWindow):
                         self.state = .pointing // flip state first to prevent race condition
                         self.swapDraggedWindowWithDropzone(draggedWindow)
-                    case let .resizing(screen, layout, ratio):
+                    case let .resizing(screen, ratio):
                         self.state = .pointing
-                        layout.setMainPaneRatio(ratio)
-                        self._windowManager.markScreenForReflow(screen, withChange: .unknown)
+                        self._windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+                            if let panedLayout = layout as? PanedLayout {
+                                panedLayout.setMainPaneRatio(ratio)
+                            }
+                        }
                     case .doneDragging:
                         self.state = .doneDragging(atTime: NSDate()) // reset the clock I guess
                     case .pointing, .clicking:
@@ -232,14 +235,17 @@ private class ObserveApplicationNotifications {
                 switch self.mouse.state {
                 case .dragging, .resizing:
                     // record window and wait for mouse up
-                    self.mouse.state = .resizing(screen: screen, layout: layout, ratio: ratio)
+                    self.mouse.state = .resizing(screen: screen, ratio: ratio)
                 case let .doneDragging(lmbUpMoment):
                     // if mouse button recently came up, assume window resize is related
                     let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
                     if dragEndInterval < mouseDragRaceThresholdSeconds {
                         self.mouse.state = .pointing // flip state first to prevent race condition
-                        layout.setMainPaneRatio(ratio)
-                        windowManager.markScreenForReflow(screen, withChange: .unknown)
+                        windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+                            if let panedLayout = layout as? PanedLayout {
+                                panedLayout.setMainPaneRatio(ratio)
+                            }
+                        }
                     }
                 default:
                     break
