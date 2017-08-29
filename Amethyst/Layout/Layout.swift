@@ -22,6 +22,12 @@ struct ResizeRules {
     let isMain: Bool
     let scaleFactor: CGFloat    // how to scale up window width to pane width
     let unconstrainedDimension: UnconstrainedDimension
+
+    func scaledDimension(_ frame: CGRect, isPadded: Bool) -> CGFloat {
+        let dimension = unconstrainedDimension == .horizontal ? frame.width : frame.height
+        let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
+        return isPadded ? dimension + padding * 2 : dimension
+    }
 }
 
 struct FrameAssignment {
@@ -37,8 +43,7 @@ struct FrameAssignment {
         }
 
         var ret = frame
-        var padding = UserConfiguration.shared.windowMarginSize()
-        padding = floor(padding / 2)
+        let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
 
         ret.origin.x += padding
         ret.origin.y += padding
@@ -50,10 +55,9 @@ struct FrameAssignment {
     // Given a window frame and based on resizeRules, determine what the main pane ratio would be
     // this accounts for multiple main windows and primary vs non-primary being resized
     func impliedMainPaneRatio(windowFrame: CGRect) -> CGFloat {
-        let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
-        let oldDimension = resizeRules.unconstrainedDimension == .horizontal ? frame.width : frame.height
-        let newDimension = resizeRules.unconstrainedDimension == .horizontal ? windowFrame.width : windowFrame.height
-        let implied =  (newDimension / (oldDimension + padding * 2)) / resizeRules.scaleFactor
+        let oldDimension = resizeRules.scaledDimension(frame, isPadded: false)
+        let newDimension = resizeRules.scaledDimension(windowFrame, isPadded: true)
+        let implied =  (newDimension / oldDimension) / resizeRules.scaleFactor
         return resizeRules.isMain ? implied : 1 - implied
     }
 
