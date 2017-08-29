@@ -144,7 +144,15 @@ protocol PanedLayout {
 
 extension PanedLayout {
     func setMainPaneRatio(_ ratio: CGFloat) {
-        setMainPaneRawRatio(rawRatio: min(1, max(0, ratio)))
+        guard ratio >= 0 else {
+            LogManager.log?.warning("tried to setMainPaneRatio < 0:  \(ratio)")
+            return setMainPaneRawRatio(rawRatio: 0)
+        }
+        guard ratio <= 1 else {
+            LogManager.log?.warning("tried to setMainPaneRatio > 1: \(ratio)")
+            return setMainPaneRawRatio(rawRatio: 1)
+        }
+        setMainPaneRawRatio(rawRatio: ratio)
     }
 
     func expandMainPane() {
