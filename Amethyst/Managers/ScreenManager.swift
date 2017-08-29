@@ -91,7 +91,7 @@ final class ScreenManager: NSObject {
         layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
     }
 
-    func setNeedsReflowWithWindowChange(_ windowChange: WindowChange, windowFilter isWindowIncluded: @escaping (SIWindow) -> Bool) {
+    func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
         reflowOperation?.cancel()
 
         LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
@@ -104,21 +104,16 @@ final class ScreenManager: NSObject {
             // The 0.4 is disgustingly tied to the space change animation time.
             // This should get burned to the ground when space changes don't rely on the mouse click trick.
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(UInt64(0.4) * NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
-                self.reflow(windowChange, windowFilter: isWindowIncluded)
+                self.reflow(windowChange)
             }
         } else {
             DispatchQueue.main.async {
-                self.reflow(windowChange, windowFilter: isWindowIncluded)
+                self.reflow(windowChange)
             }
         }
     }
 
-    func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
-        setNeedsReflowWithWindowChange(windowChange) { _ in true }
-    }
-
-    // reflow some windows, according to filter
-    private func reflow(_ change: WindowChange, windowFilter isWindowIncluded: (SIWindow) -> Bool) {
+    private func reflow(_ change: WindowChange) {
         guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
@@ -128,15 +123,10 @@ final class ScreenManager: NSObject {
             return
         }
 
-        let windows = (delegate?.activeWindowsForScreenManager(self) ?? []).filter(isWindowIncluded)
+        let windows = (delegate?.activeWindowsForScreenManager(self) ?? [])
         changingSpace = false
         reflowOperation = currentLayout?.reflow(windows, on: screen)
         OperationQueue.main.addOperation(reflowOperation!)
-    }
-
-    // reflow all windows
-    private func reflow(_ change: WindowChange) {
-        reflow(change) { _ in true }
     }
 
     func updateCurrentLayout(_ updater: (Layout) -> Void) {

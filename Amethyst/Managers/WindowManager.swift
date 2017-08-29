@@ -609,14 +609,10 @@ final class WindowManager: NSObject {
         markAllScreensForReflowWithChange(.unknown)
     }
 
-    func markAllScreensForReflowWithChange(_ windowChange: WindowChange, windowFilter isWindowIncluded: @escaping (SIWindow) -> Bool) {
-        for screenManager in screenManagers {
-            screenManager.setNeedsReflowWithWindowChange(windowChange, windowFilter: isWindowIncluded)
-        }
-    }
-
     func markAllScreensForReflowWithChange(_ windowChange: WindowChange) {
-        markAllScreensForReflowWithChange(windowChange) { _ in true }
+        for screenManager in screenManagers {
+            screenManager.setNeedsReflowWithWindowChange(windowChange)
+        }
     }
 
     func displayCurrentLayout() {
