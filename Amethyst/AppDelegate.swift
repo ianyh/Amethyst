@@ -96,7 +96,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         versionMenuItem?.title = "Version \(shortVersion) (\(version))"
 
         loginItem = CCNLaunchAtLoginItem(for: Bundle.main)
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .onState : .offState)
+        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -109,12 +109,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func toggleStartAtLogin(_ sender: AnyObject) {
-        if startAtLoginMenuItem?.state == .offState {
+        if startAtLoginMenuItem?.state == .off {
             loginItem?.activate()
         } else {
             loginItem?.deActivate()
         }
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .onState : .offState)
+        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
     }
 
     @IBAction func relaunch(_ sender: AnyObject) {
