@@ -338,11 +338,18 @@ final class WindowManager: NSObject {
             floatingMap[window.windowID()] = window.shouldFloat()
         }
 
-        application.observeNotification(kAXUIElementDestroyedNotification as CFString!, with: window) { _ in
+        application.observeNotification(kAXUIElementDestroyedNotification as CFString!, with: window) { element in
+            guard let window = element as? SIWindow else {
+                return
+            }
             self.removeWindow(window)
         }
-        application.observeNotification(kAXWindowMiniaturizedNotification as CFString!, with: window) { _ in
+        application.observeNotification(kAXWindowMiniaturizedNotification as CFString!, with: window) { element in
+            guard let window = element as? SIWindow else {
+                return
+            }
             self.removeWindow(window)
+
             guard let screen = window.screen() else {
                 return
             }
