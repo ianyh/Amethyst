@@ -13,7 +13,7 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-fileprivate let mouseDragRaceThresholdSeconds = 0.15
+private let mouseDragRaceThresholdSeconds = 0.15
 
 enum WindowChange {
     case add(window: SIWindow)
