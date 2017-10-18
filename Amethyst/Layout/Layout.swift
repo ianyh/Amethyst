@@ -63,7 +63,7 @@ struct FrameAssignment {
 
     fileprivate func perform() {
         // Move the window to its final frame
-        window.setFrame(finalFrame)
+        window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
     }
 }
 
