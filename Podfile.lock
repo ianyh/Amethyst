@@ -48,7 +48,7 @@ CHECKOUT OPTIONS:
     :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
     :git: https://github.com/ianyh/MASShortcut
   Silica:
-    :commit: 231e303da30450ba364f1ff3c0007b00931c6e71
+    :commit: 84037d446e6109875182fdb8f490e8a22a192237
     :git: https://github.com/ianyh/Silica
 
 SPEC CHECKSUMS:
