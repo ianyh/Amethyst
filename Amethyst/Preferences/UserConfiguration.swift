@@ -30,6 +30,8 @@ enum ConfigurationKey: String {
     case mod2 = "mod2"
     case windowMargins = "window-margins"
     case windowMarginSize = "window-margin-size"
+    case windowMinimumHeight = "window-minimum-height"
+    case windowMinimumWidth = "window-minimum-width"
     case floatingBundleIdentifiers = "floating"
     case ignoreMenuBar = "ignore-menu-bar"
     case floatSmallWindows = "float-small-windows"
@@ -55,6 +57,8 @@ enum ConfigurationKey: String {
             .useCanaryBuild,
             .windowMargins,
             .windowMarginSize,
+            .windowMinimumHeight,
+            .windowMinimumWidth,
             .sendCrashReports,
             .windowResizeStep
         ]
@@ -343,6 +347,14 @@ final class UserConfiguration: NSObject {
 
     func windowMargins() -> Bool {
         return storage.bool(forKey: ConfigurationKey.windowMargins.rawValue)
+    }
+
+    func windowMinimumHeight() -> CGFloat {
+        return CGFloat(storage.float(forKey: ConfigurationKey.windowMinimumHeight.rawValue))
+    }
+
+    func windowMinimumWidth() -> CGFloat {
+        return CGFloat(storage.float(forKey: ConfigurationKey.windowMinimumWidth.rawValue))
     }
 
     func windowResizeStep() -> CGFloat {
