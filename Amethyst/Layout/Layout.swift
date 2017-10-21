@@ -36,11 +36,13 @@ struct FrameAssignment {
 
         if focused {
             if windowMinimumWidth > finalFrame.size.width {
-                finalFrame.size.width = max(finalFrame.size.width, windowMinimumWidth)
+                finalFrame.origin.x -= ((windowMinimumWidth - finalFrame.size.width) / 2)
+                finalFrame.size.width = windowMinimumWidth
             }
 
             if windowMinimumHeight > finalFrame.size.height {
-                finalFrame.size.height = max(finalFrame.size.height, windowMinimumHeight)
+                finalFrame.origin.y -= ((windowMinimumHeight - finalFrame.size.height) / 2)
+                finalFrame.size.height = windowMinimumHeight
             }
         }
 
@@ -56,8 +58,8 @@ struct FrameAssignment {
             // Update origin to determine if position should be adjusted
             finalFrame.origin = finalPosition
             if !screenFrame.contains(finalFrame) {
-                finalPosition.x = min(finalPosition.x, screenFrame.maxX - finalFrame.size.width)
-                finalPosition.y = min(finalPosition.y, screenFrame.maxY - finalFrame.size.height)
+                finalPosition.x = max(0, min(finalPosition.x, screenFrame.maxX - finalFrame.size.width))
+                finalPosition.y = max(0, min(finalPosition.y, screenFrame.maxY - finalFrame.size.height))
             }
         }
 
@@ -123,11 +125,13 @@ extension NSScreen {
         let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
 
         if windowMinimumWidth > frame.size.width {
-            frame.size.width = max(frame.size.width, windowMinimumWidth)
+            frame.origin.x -= (windowMinimumWidth - frame.size.width) / 2
+            frame.size.width = windowMinimumWidth
         }
 
         if windowMinimumHeight > frame.size.height {
-            frame.size.height = max(frame.size.height, windowMinimumHeight)
+            frame.origin.y -= (windowMinimumHeight - frame.size.height) / 2
+            frame.size.height = windowMinimumHeight
         }
 
         return frame
