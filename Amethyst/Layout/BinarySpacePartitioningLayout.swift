@@ -161,6 +161,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
         }
 
         let focusedWindow = SIWindow.focused()
+
         let baseFrame = screen.adjustedFrame()
         var frameAssignments: [FrameAssignment] = []
         var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
@@ -176,7 +177,8 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
                     continue
                 }
 
-                let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame)
+                let focused = focusedWindow != nil && window.processIdentifier() == focusedWindow?.processIdentifier()
+                let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: focused, screenFrame: baseFrame)
                 frameAssignments.append(frameAssignment)
             } else {
                 guard let left = traversalNode.node.left, let right = traversalNode.node.right else {
