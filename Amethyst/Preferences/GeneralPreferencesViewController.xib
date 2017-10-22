@@ -29,6 +29,17 @@
                         <binding destination="XhK-Tn-zrU" name="value" keyPath="values.float-small-windows" id="ahP-PY-5hW"/>
                     </connections>
                 </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="feH-10-64P">
+                    <rect key="frame" x="170" y="431" width="117" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Use as blacklist" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="oCx-5O-Ocb">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="N2H-cZ-f1m" name="value" keyPath="values.floating-is-blacklist" id="ZII-r2-BtU"/>
+                    </connections>
+                </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jbq-77-1YW">
                     <rect key="frame" x="170" y="355" width="142" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -480,8 +491,8 @@
             </subviews>
             <point key="canvasLocation" x="562" y="340"/>
         </customView>
-        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <userDefaultsController id="XhK-Tn-zrU"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <userDefaultsController representsSharedInstance="YES" id="N2H-cZ-f1m"/>
     </objects>
     <resources>
