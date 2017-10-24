@@ -33,7 +33,6 @@ final class RowReflowOperation: ReflowOperation {
         let focusedWindow = SIWindow.focused()
 
         let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
-            let focused = focusedWindow != nil && window.processIdentifier() == focusedWindow?.processIdentifier()
             var assignments = frameAssignments
             var windowFrame: CGRect = .zero
 
@@ -52,7 +51,7 @@ final class RowReflowOperation: ReflowOperation {
             let frameAssignment = FrameAssignment(
                 frame: windowFrame,
                 window: window,
-                focused: focused,
+                focused: window.isEqual(to: focusedWindow),
                 screenFrame: screenFrame
             )
 

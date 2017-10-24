@@ -36,7 +36,6 @@ private final class WideReflowOperation: ReflowOperation {
         let focusedWindow = SIWindow.focused()
 
         let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
-            let focused = focusedWindow != nil && window.processIdentifier() == focusedWindow?.processIdentifier()
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
 
@@ -52,7 +51,7 @@ private final class WideReflowOperation: ReflowOperation {
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: focused, screenFrame: screenFrame)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
 
             assignments.append(frameAssignment)
 
