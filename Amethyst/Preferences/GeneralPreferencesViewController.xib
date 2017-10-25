@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="GeneralPreferencesViewController" customModule="Amethyst" customModuleProvider="target">
             <connections>
+                <outlet property="floatingLabel" destination="NDo-t3-gcp" id="s12-sy-lno"/>
                 <outlet property="floatingTableView" destination="0sm-tb-Rkn" id="4dS-u4-ZLp"/>
                 <outlet property="layoutsTableView" destination="fHR-0d-W1l" id="TR4-Ub-lKc"/>
                 <outlet property="view" destination="LsO-9M-hEw" id="7dy-Su-MSH"/>
@@ -30,13 +31,14 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="feH-10-64P">
-                    <rect key="frame" x="170" y="431" width="117" height="18"/>
+                    <rect key="frame" x="170" y="431" width="244" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Use as blacklist" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="oCx-5O-Ocb">
+                    <buttonCell key="cell" type="check" title="Float all windows except those listed" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="oCx-5O-Ocb">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
+                        <action selector="toggleFloatingLabel:" target="-2" id="OmC-bt-dOp"/>
                         <binding destination="N2H-cZ-f1m" name="value" keyPath="values.floating-is-blacklist" id="ZII-r2-BtU"/>
                     </connections>
                 </button>

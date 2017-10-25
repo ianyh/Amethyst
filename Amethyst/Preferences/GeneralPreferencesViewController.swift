@@ -16,6 +16,7 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
 
     @IBOutlet var layoutsTableView: NSTableView?
     @IBOutlet var floatingTableView: NSTableView?
+    @IBOutlet weak var floatingLabel: NSTextField!
 
     private var editingFloatingBundleIdentifier = false
 
@@ -37,6 +38,8 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
 
         layoutsTableView?.reloadData()
         floatingTableView?.reloadData()
+
+        updateFloatingLabel()
     }
 
     @IBAction func addLayout(_ sender: NSButton) {
@@ -174,6 +177,14 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         UserConfiguration.shared.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
 
         floatingTableView.reloadData()
+    }
+
+    @IBAction func toggleFloatingLabel(_ sender: NSButton) {
+        updateFloatingLabel()
+    }
+
+    private func updateFloatingLabel() {
+        floatingLabel.stringValue = UserConfiguration.shared.floatingBundleIdentifiersIsBlacklist() ? "Tile Windows:" : "Float Windows:"
     }
 
     func preferenceIdentifier() -> String! {
