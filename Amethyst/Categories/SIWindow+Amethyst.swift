@@ -45,12 +45,12 @@ extension SIWindow {
     }
 
     static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
-        let info = windowInformation(windows)
-        guard let windowDescriptions = info.descriptions, !windowDescriptions.isEmpty else {
+        let (ids, maybeWindowDescriptions) = windowInformation(windows)
+        guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
             return nil
         }
 
-        let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: info.IDs, withDescriptions: windowDescriptions)
+        let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: ids, withDescriptions: windowDescriptions)
 
         guard !windowsAtPoint.isEmpty else {
             return nil
@@ -86,20 +86,18 @@ extension SIWindow {
 
     static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow], butNot ignoreWindow: SIWindow?) -> SIWindow? {
         // only consider windows on this screen
-        let info = windowInformation(windows)
-        guard let windowDescriptions = info.descriptions, !windowDescriptions.isEmpty else {
+        let (ids, maybeWindowDescriptions) = windowInformation(windows)
+        guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
             return nil
         }
 
-        let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: info.IDs, withDescriptions: windowDescriptions)
+        let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: ids, withDescriptions: windowDescriptions)
 
         for windowDescription in windowsAtPoint {
             if let window = windowInWindows(windows, withCGWindowDescription: windowDescription) {
                 if window != ignoreWindow {
                     return window
                 }
-            } else {
-                print("Couldn't get window \(windowDescription["kCGWindowName"])")
             }
         }
 
