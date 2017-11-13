@@ -83,7 +83,7 @@ final class RowLayout: Layout {
     let windowActivityCache: WindowActivityCache
 
     fileprivate var mainPaneCount: Int = 1
-    internal var mainPaneRatio: CGFloat = 0.5
+    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache

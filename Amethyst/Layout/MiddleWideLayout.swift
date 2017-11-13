@@ -103,7 +103,7 @@ final class MiddleWideLayout: Layout {
 
     let windowActivityCache: WindowActivityCache
 
-    internal var mainPaneRatio: CGFloat = 0.5
+    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
