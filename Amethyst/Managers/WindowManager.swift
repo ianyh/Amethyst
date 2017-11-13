@@ -30,31 +30,42 @@ enum MouseState {
     case doneDragging(atTime: Date)
 }
 
+protocol MouseStateKeeperDelegate: class {
+	func focusedScreenManager() -> ScreenManager?
+    func windows(on screen: NSScreen) -> [SIWindow]
+    func switchWindow(_ window: SIWindow, with otherWindow: SIWindow)
+}
+
 class MouseStateKeeper {
     public let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
     public var state: MouseState
-    private var _windowManager: WindowManager!
+    weak var mskDelegate: MouseStateKeeperDelegate!
     private var monitor: Any?
 
     init() {
         state = .pointing
     }
 
-    var windowManager: WindowManager {
+    deinit {
+        guard let oldMonitor = monitor else { return }
+        NSEvent.removeMonitor(oldMonitor)
+    }
+
+    var delegate: MouseStateKeeperDelegate {
         get {
-            return _windowManager
+            return mskDelegate
         }
         set {
-            self._windowManager = newValue
+            self.mskDelegate = newValue
             let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp, .leftMouseDragged]
 
-            // remove any existing monitors, although we expect to never reassign windowManager.
+            // remove any existing monitors, although we expect to never reassign windowManager
             if let oldMonitor = monitor {
                 NSEvent.removeMonitor(oldMonitor)
                 monitor = nil
             }
 
-            monitor = NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch) { anEvent in
+            monitor = NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch) { [unowned self] anEvent in
                 switch anEvent.type {
                 case .leftMouseDown:
                     self.state = .clicking
@@ -76,7 +87,7 @@ class MouseStateKeeper {
                         self.swapDraggedWindowWithDropzone(draggedWindow)
                     case let .resizing(screen, ratio):
                         self.state = .pointing
-                        self._windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+                        self.delegate.focusedScreenManager()?.updateCurrentLayout { layout in
                             if let panedLayout = layout as? PanedLayout {
                                 panedLayout.setMainPaneRatio(ratio)
                             }
@@ -98,7 +109,7 @@ class MouseStateKeeper {
             return
         }
 
-        let windows = windowManager.windows(on: screen)
+        let windows = delegate.windows(on: screen)
 
         // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
         let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
@@ -109,7 +120,7 @@ class MouseStateKeeper {
         guard let secondWindow = SIWindow.alternateWindowForScreenAtPoint(pointerLocation, withWindows: windows, butNot: draggedWindow) else {
             return
         }
-        windowManager.switchWindow(draggedWindow, with: secondWindow)
+        delegate.switchWindow(draggedWindow, with: secondWindow)
     }
 }
 
@@ -258,7 +269,7 @@ private class ObserveApplicationNotifications {
     }
 }
 
-final class WindowManager: NSObject {
+final class WindowManager: NSObject, MouseStateKeeperDelegate {
     private var applications: [SIApplication] = []
     private(set) var mouseStateKeeper = MouseStateKeeper()
     var windows: [SIWindow] = []
@@ -279,7 +290,7 @@ final class WindowManager: NSObject {
         self.focusFollowsMouseManager = FocusFollowsMouseManager(userConfiguration: userConfiguration)
         super.init()
 
-        mouseStateKeeper.windowManager = self
+        mouseStateKeeper.delegate = self
         focusFollowsMouseManager.delegate = self
 
         addWorkspaceNotificationObserver(NSWorkspace.didLaunchApplicationNotification, selector: #selector(applicationDidLaunch(_:)))
