@@ -13,8 +13,6 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-private let mouseDragRaceThresholdSeconds = 0.15
-
 enum WindowChange {
     case add(window: SIWindow)
     case remove(window: SIWindow)
@@ -29,10 +27,11 @@ enum MouseState {
     case dragging
     case moving(window: SIWindow)
     case resizing(screen: NSScreen, ratio: CGFloat)
-    case doneDragging(atTime: NSDate)
+    case doneDragging(atTime: Date)
 }
 
 class MouseStateKeeper {
+    public let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
     public var state: MouseState
     private var _windowManager: WindowManager!
     private var monitor: Any?
@@ -71,7 +70,7 @@ class MouseStateKeeper {
                     switch self.state {
                     case .dragging:
                         // assume window move event will come shortly after
-                        self.state = .doneDragging(atTime: NSDate())
+                        self.state = .doneDragging(atTime: Date())
                     case let .moving(draggedWindow):
                         self.state = .pointing // flip state first to prevent race condition
                         self.swapDraggedWindowWithDropzone(draggedWindow)
@@ -83,7 +82,7 @@ class MouseStateKeeper {
                             }
                         }
                     case .doneDragging:
-                        self.state = .doneDragging(atTime: NSDate()) // reset the clock I guess
+                        self.state = .doneDragging(atTime: Date()) // reset the clock I guess
                     case .pointing, .clicking:
                         self.state = .pointing
                     }
@@ -199,8 +198,8 @@ private class ObserveApplicationNotifications {
                     self.mouse.state = .moving(window: movedWindow)
                 case let .doneDragging(lmbUpMoment):
                     // if mouse button recently came up, assume window move is related
-                    let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
-                    if dragEndInterval < mouseDragRaceThresholdSeconds {
+                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment as Date)
+                    if dragEndInterval < self.mouse.dragRaceThresholdSeconds {
                         self.mouse.state = .pointing // flip state first to prevent race condition
                         self.mouse.swapDraggedWindowWithDropzone(movedWindow)
                     }
@@ -238,8 +237,8 @@ private class ObserveApplicationNotifications {
                     self.mouse.state = .resizing(screen: screen, ratio: ratio)
                 case let .doneDragging(lmbUpMoment):
                     // if mouse button recently came up, assume window resize is related
-                    let dragEndInterval = NSDate().timeIntervalSince(lmbUpMoment as Date)
-                    if dragEndInterval < mouseDragRaceThresholdSeconds {
+                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment as Date)
+                    if dragEndInterval < self.mouse.dragRaceThresholdSeconds {
                         self.mouse.state = .pointing // flip state first to prevent race condition
                         windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
                             if let panedLayout = layout as? PanedLayout {

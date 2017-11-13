@@ -20,7 +20,7 @@ final class FullscreenReflowOperation: ReflowOperation {
         let window: SIWindow
         let screenFrame = screen.adjustedFrame()
         return windows.map { window in
-            let resizeRules = ResizeRules(isMain: true, scaleFactor: 1, unconstrainedDimension: .horizontal)
+            let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
             return FrameAssignment(frame: screenFrame, window: window, focused: false, screenFrame: screenFrame, resizeRules: resizeRules)
         }
     }

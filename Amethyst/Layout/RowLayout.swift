@@ -52,7 +52,7 @@ final class RowReflowOperation: ReflowOperation {
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let resizeRules = ResizeRules(isMain: isMain, scaleFactor: scaleFactor, unconstrainedDimension: .vertical)
+            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .vertical, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment(
                 frame: windowFrame,
                 window: window,
