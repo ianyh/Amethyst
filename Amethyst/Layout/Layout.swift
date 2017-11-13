@@ -20,12 +20,18 @@ enum UnconstrainedDimension: Int {
 
 struct ResizeRules {
     let isMain: Bool
-    let scaleFactor: CGFloat    // how to scale up window width to pane width
     let unconstrainedDimension: UnconstrainedDimension
+    let scaleFactor: CGFloat    // the scale factor for the unconstrained dimension
 
     // given a new frame, decide which dimension will be honored and return its size
     func scaledDimension(_ frame: CGRect, negatePadding: Bool) -> CGFloat {
-        let dimension = unconstrainedDimension == .horizontal ? frame.width : frame.height
+        let dimension: CGFloat = {
+            switch unconstrainedDimension {
+            case .horizontal: return frame.width
+            case .vertical: return frame.height
+            }
+        }()
+
         let padding = UserConfiguration.shared.windowMargins() ? UserConfiguration.shared.windowMarginSize() : 0
         return negatePadding ? dimension + padding : dimension
     }
@@ -145,13 +151,9 @@ protocol PanedLayout {
 
 extension PanedLayout {
     func setMainPaneRatio(_ ratio: CGFloat) {
-        guard ratio >= 0 else {
-            LogManager.log?.warning("tried to setMainPaneRatio < 0:  \(ratio)")
-            return setMainPaneRawRatio(rawRatio: 0)
-        }
-        guard ratio <= 1 else {
-            LogManager.log?.warning("tried to setMainPaneRatio > 1: \(ratio)")
-            return setMainPaneRawRatio(rawRatio: 1)
+        guard 0 <= ratio && ratio <= 1 else {
+            LogManager.log?.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
+            return setMainPaneRawRatio(rawRatio: max(min(ratio, 1), 0))
         }
         setMainPaneRawRatio(rawRatio: ratio)
     }

@@ -76,9 +76,9 @@ final class MiddleWideReflowOperation: ReflowOperation {
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let hackIsMain = (hasTertiaryPane ? isMain : !isMain)
+            let isTertiaryMain = (hasTertiaryPane ? isMain : !isMain)
 
-            let resizeRules = ResizeRules(isMain: hackIsMain, scaleFactor: scaleFactor, unconstrainedDimension: .horizontal)
+            let resizeRules = ResizeRules(isMain: isTertiaryMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
