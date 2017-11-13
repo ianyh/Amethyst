@@ -16,7 +16,7 @@ private final class WideReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    var frameAssignments: [FrameAssignment] {
+    func frameAssignments() -> [FrameAssignment] {
         guard !windows.isEmpty else {
             return []
         }
@@ -70,7 +70,7 @@ private final class WideReflowOperation: ReflowOperation {
             return
         }
 
-        frameAssigner.performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments())
     }
 }
 
@@ -92,7 +92,7 @@ final class WideLayout: Layout {
     }
 
     func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return WideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.first { $0.window == window }
+        return WideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 

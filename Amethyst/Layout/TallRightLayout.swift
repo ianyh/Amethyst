@@ -16,7 +16,7 @@ final class TallRightReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    var frameAssignments: [FrameAssignment] {
+    func frameAssignments() -> [FrameAssignment] {
         guard !windows.isEmpty else {
             return []
         }
@@ -69,7 +69,7 @@ final class TallRightReflowOperation: ReflowOperation {
             return
         }
 
-        frameAssigner.performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments())
     }
 }
 
@@ -91,7 +91,7 @@ final class TallRightLayout: Layout {
     }
 
     func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return TallRightReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.first { $0.window == window }
+        return TallRightReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 

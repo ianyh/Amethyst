@@ -16,7 +16,7 @@ final class FullscreenReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    var frameAssignments: [FrameAssignment] {
+    func frameAssignments() -> [FrameAssignment] {
         let window: SIWindow
         let screenFrame = screen.adjustedFrame()
         return windows.map { window in
@@ -30,7 +30,7 @@ final class FullscreenReflowOperation: ReflowOperation {
             return
         }
 
-        frameAssigner.performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments())
     }
 }
 
@@ -49,7 +49,7 @@ final class FullscreenLayout: Layout {
     }
 
     func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments.first { $0.window == window }
+        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 

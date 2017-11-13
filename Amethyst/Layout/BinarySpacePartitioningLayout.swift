@@ -149,7 +149,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    var frameAssignments: [FrameAssignment] {
+    func frameAssignments() -> [FrameAssignment] {
         guard !windows.isEmpty else {
             return []
         }
@@ -229,7 +229,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
             return
         }
 
-        frameAssigner.performFrameAssignments(frameAssignments)
+        frameAssigner.performFrameAssignments(frameAssignments())
     }
 }
 
@@ -255,7 +255,7 @@ final class BinarySpacePartitioningLayout: Layout {
     }
 
     func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self).frameAssignments.first { $0.window == window }
+        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 
     private func constructInitialTreeWithWindows(_ windows: [SIWindow]) {
