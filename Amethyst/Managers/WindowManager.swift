@@ -39,11 +39,13 @@ protocol MouseStateKeeperDelegate: class {
 class MouseStateKeeper {
     public let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
     public var state: MouseState
-    weak var mskDelegate: MouseStateKeeperDelegate!
+    weak var delegate: MouseStateKeeperDelegate?
     private var monitor: Any?
 
     init() {
         state = .pointing
+        let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp, .leftMouseDragged]
+        monitor = NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch, handler: self.handleMouseEvent)
     }
 
     deinit {
@@ -51,60 +53,51 @@ class MouseStateKeeper {
         NSEvent.removeMonitor(oldMonitor)
     }
 
-    var delegate: MouseStateKeeperDelegate {
-        get {
-            return mskDelegate
-        }
-        set {
-            self.mskDelegate = newValue
-            let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp, .leftMouseDragged]
-
-            // remove any existing monitors, although we expect to never reassign windowManager
-            if let oldMonitor = monitor {
-                NSEvent.removeMonitor(oldMonitor)
-                monitor = nil
+    func handleMouseEvent(anEvent: NSEvent) {
+        switch anEvent.type {
+        case .leftMouseDown:
+            self.state = .clicking
+        case .leftMouseDragged:
+            switch self.state {
+            case .moving, .resizing:
+            break // ignore - we have what we need
+            case .pointing, .clicking, .dragging, .doneDragging:
+                self.state = .dragging
             }
 
-            monitor = NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch) { [unowned self] anEvent in
-                switch anEvent.type {
-                case .leftMouseDown:
-                    self.state = .clicking
-                case .leftMouseDragged:
-                    switch self.state {
-                    case .moving, .resizing:
-                        break // ignore - we have what we need
-                    case .pointing, .clicking, .dragging, .doneDragging:
-                        self.state = .dragging
-                    }
+        case .leftMouseUp:
+            switch self.state {
+            case .dragging:
+                // assume window move event will come shortly after
+                self.state = .doneDragging(atTime: Date())
+            case let .moving(draggedWindow):
+                self.state = .pointing // flip state first to prevent race condition
+                self.swapDraggedWindowWithDropzone(draggedWindow)
+            case let .resizing(screen, ratio):
+                self.state = .pointing
+                self.resizeFrameToDraggedWindowBorder(ratio)
+            case .doneDragging:
+                self.state = .doneDragging(atTime: Date()) // reset the clock I guess
+            case .pointing, .clicking:
+                self.state = .pointing
+            }
 
-                case .leftMouseUp:
-                    switch self.state {
-                    case .dragging:
-                        // assume window move event will come shortly after
-                        self.state = .doneDragging(atTime: Date())
-                    case let .moving(draggedWindow):
-                        self.state = .pointing // flip state first to prevent race condition
-                        self.swapDraggedWindowWithDropzone(draggedWindow)
-                    case let .resizing(screen, ratio):
-                        self.state = .pointing
-                        self.delegate.focusedScreenManager()?.updateCurrentLayout { layout in
-                            if let panedLayout = layout as? PanedLayout {
-                                panedLayout.recommendMainPaneRatio(ratio)
-                            }
-                        }
-                    case .doneDragging:
-                        self.state = .doneDragging(atTime: Date()) // reset the clock I guess
-                    case .pointing, .clicking:
-                        self.state = .pointing
-                    }
+        default: ()
+        }
 
-                default: ()
-                }
+    }
+
+    func resizeFrameToDraggedWindowBorder(_ ratio: CGFloat) {
+        guard let delegate = self.delegate else { return }
+        delegate.focusedScreenManager()?.updateCurrentLayout { layout in
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.recommendMainPaneRatio(ratio)
             }
         }
     }
 
     func swapDraggedWindowWithDropzone(_ draggedWindow: SIWindow) {
+        guard let delegate = self.delegate else { return }
         guard let screen = draggedWindow.screen() else {
             return
         }
