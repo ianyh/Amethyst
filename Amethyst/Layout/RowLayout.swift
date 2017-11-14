@@ -99,7 +99,7 @@ final class RowLayout: Layout {
 }
 
 extension RowLayout: PanedLayout {
-    func setMainPaneRawRatio(rawRatio: CGFloat) {
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
 

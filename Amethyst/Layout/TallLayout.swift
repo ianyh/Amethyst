@@ -96,7 +96,7 @@ final class TallLayout: Layout {
 }
 
 extension TallLayout: PanedLayout {
-    func setMainPaneRawRatio(rawRatio: CGFloat) {
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
 

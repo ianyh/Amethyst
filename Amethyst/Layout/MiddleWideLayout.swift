@@ -119,7 +119,7 @@ final class MiddleWideLayout: Layout {
 }
 
 extension MiddleWideLayout: PanedLayout {
-    func setMainPaneRawRatio(rawRatio: CGFloat) {
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
 
