@@ -31,7 +31,7 @@ enum MouseState {
 }
 
 protocol MouseStateKeeperDelegate: class {
-	func focusedScreenManager() -> ScreenManager?
+    func focusedScreenManager() -> ScreenManager?
     func windows(on screen: NSScreen) -> [SIWindow]
     func switchWindow(_ window: SIWindow, with otherWindow: SIWindow)
 }
