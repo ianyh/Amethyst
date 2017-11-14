@@ -89,7 +89,7 @@ class MouseStateKeeper {
                         self.state = .pointing
                         self.delegate.focusedScreenManager()?.updateCurrentLayout { layout in
                             if let panedLayout = layout as? PanedLayout {
-                                panedLayout.setMainPaneRatio(ratio)
+                                panedLayout.recommendMainPaneRatio(ratio)
                             }
                         }
                     case .doneDragging:
@@ -253,7 +253,7 @@ private class ObserveApplicationNotifications {
                         self.mouse.state = .pointing // flip state first to prevent race condition
                         windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
                             if let panedLayout = layout as? PanedLayout {
-                                panedLayout.setMainPaneRatio(ratio)
+                                panedLayout.recommendMainPaneRatio(ratio)
                             }
                         }
                     }

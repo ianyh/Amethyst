@@ -142,7 +142,7 @@ protocol Layout {
 
 protocol PanedLayout {
     var mainPaneRatio: CGFloat { get }
-    func setMainPaneRawRatio(rawRatio: CGFloat)
+    func recommendMainPaneRawRatio(rawRatio: CGFloat)
     func shrinkMainPane()
     func expandMainPane()
     func increaseMainPaneCount()
@@ -150,20 +150,20 @@ protocol PanedLayout {
 }
 
 extension PanedLayout {
-    func setMainPaneRatio(_ ratio: CGFloat) {
+    func recommendMainPaneRatio(_ ratio: CGFloat) {
         guard 0 <= ratio && ratio <= 1 else {
             LogManager.log?.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
-            return setMainPaneRawRatio(rawRatio: max(min(ratio, 1), 0))
+            return recommendMainPaneRawRatio(rawRatio: max(min(ratio, 1), 0))
         }
-        setMainPaneRawRatio(rawRatio: ratio)
+        recommendMainPaneRawRatio(rawRatio: ratio)
     }
 
     func expandMainPane() {
-        setMainPaneRatio(mainPaneRatio + UserConfiguration.shared.windowResizeStep())
+        recommendMainPaneRatio(mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
     func shrinkMainPane() {
-        setMainPaneRatio(mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+        recommendMainPaneRatio(mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 }
 

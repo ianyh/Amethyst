@@ -99,7 +99,7 @@ final class WidescreenTallLayout: Layout {
 }
 
 extension WidescreenTallLayout: PanedLayout {
-    func setMainPaneRawRatio(rawRatio: CGFloat) {
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
 
