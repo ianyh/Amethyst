@@ -187,6 +187,20 @@ private class ObserveApplicationNotifications {
                 windowManager.addWindow(window)
             }
 
+            application.observeNotification(kAXApplicationHiddenNotification as CFString!, with: application) { accessibilityElement in
+                guard let window = accessibilityElement as? SIWindow else {
+                    return
+                }
+                windowManager.removeWindow(window)
+            }
+
+            application.observeNotification(kAXApplicationShownNotification as CFString!, with: application) { accessibilityElement in
+                guard let window = accessibilityElement as? SIWindow else {
+                    return
+                }
+                windowManager.addWindow(window)
+            }
+
             application.observeNotification(kAXFocusedWindowChangedNotification as CFString!, with: application) { _ in
                 guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
                     return
@@ -567,7 +581,7 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
         markScreenForReflow(screen, withChange: windowChange)
     }
 
-    private func removeWindow(_ window: SIWindow) {
+    fileprivate func removeWindow(_ window: SIWindow) {
         markAllScreensForReflowWithChange(.remove(window: window))
 
         let application = applicationWithProcessIdentifier(window.processIdentifier())
