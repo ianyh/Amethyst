@@ -18,6 +18,10 @@ enum UnconstrainedDimension: Int {
     case vertical
 }
 
+// Some window resizes reflect valid adjustments to the frame layout.
+// Some window resizes would not be allowed due to hard constraints.
+// This struct defines what adjustments to a particular window frame are allowed
+//  and tracks its size as a proportion of available space (for use in resize calculations)
 struct ResizeRules {
     let isMain: Bool
     let unconstrainedDimension: UnconstrainedDimension
@@ -44,6 +48,7 @@ struct FrameAssignment {
     let screenFrame: CGRect
     let resizeRules: ResizeRules
 
+    // the final frame is the desired frame, but shrunk to provide desired padding
     var finalFrame: CGRect {
         guard UserConfiguration.shared.windowMargins() else {
             return frame

@@ -22,6 +22,9 @@ extension NSScreen {
         return screenDescriptions.map { JSON($0) }
     }
 
+    // Depending on the arrangement of multiple monitors, it's possible to get a height that's larger
+    // than any of the individual screens.  This function looks at each display frame's Y coordinates
+    // to calculate that height
     static func globalHeight() -> CGFloat {
         return (screens.map { $0.frame.maxY }.max() ?? 0) - (screens.map { $0.frame.minY }.min() ?? 0)
     }

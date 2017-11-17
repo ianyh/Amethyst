@@ -21,6 +21,9 @@ enum WindowChange {
     case unknown
 }
 
+// These are the possible actions that the mouse might be taking (that we care about).
+//  We use this enum to convey some information about the window that the mouse
+//  might be interacting with.
 enum MouseState {
     case pointing
     case clicking
@@ -30,12 +33,23 @@ enum MouseState {
     case doneDragging(atTime: Date)
 }
 
+// MouseStateKeeper will need a few things to do its job effectively
 protocol MouseStateKeeperDelegate: class {
     func focusedScreenManager() -> ScreenManager?
     func windows(on screen: NSScreen) -> [SIWindow]
     func switchWindow(_ window: SIWindow, with otherWindow: SIWindow)
 }
 
+// MouseStateKeeper exists because we need a single shared mouse state between all
+//  SIApplications being observed.  This class captures the state and coordinates
+//  any Amethyst reflow actions that are required in response to mouse events.
+// Note that some actions may be initiated here and some actions may be completed
+//  here; we don't know whether the mouse event stream or the accessibility event
+//  stream will fire first.
+// This class by itself can only understand clicking, dragging, and "pointing"
+//  (no mouse buttons down).  The SIApplication observers are able to augment that
+//  understanding of state by "upgrading" a drag action to a "window move" or a
+//  "window resize" event since those observers will have proper context.
 class MouseStateKeeper {
     public let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
     public var state: MouseState
@@ -53,6 +67,11 @@ class MouseStateKeeper {
         NSEvent.removeMonitor(oldMonitor)
     }
 
+    // Update our understanding of the current state unless an observer has already
+    // done it for us.  mouseUp events take precedence over anything an observer had
+    // found -- you can't be dragging or resizing with a mouse button up, even if
+    // you're using the "3 finger drag" accessibility option, where no physical button
+    // is being pressed.
     func handleMouseEvent(anEvent: NSEvent) {
         switch anEvent.type {
         case .leftMouseDown:
@@ -87,6 +106,7 @@ class MouseStateKeeper {
 
     }
 
+    // Execute an action that was initiated by the observer and completed by the state keeper
     func resizeFrameToDraggedWindowBorder(_ ratio: CGFloat) {
         guard let delegate = self.delegate else { return }
         delegate.focusedScreenManager()?.updateCurrentLayout { layout in
@@ -96,6 +116,7 @@ class MouseStateKeeper {
         }
     }
 
+    // Execute an action that was initiated by the observer and completed by the state keeper
     func swapDraggedWindowWithDropzone(_ draggedWindow: SIWindow) {
         guard let delegate = self.delegate else { return }
         guard let screen = draggedWindow.screen() else {
@@ -117,6 +138,10 @@ class MouseStateKeeper {
     }
 }
 
+// This class sets up accessibility API event subscriptions for a given SIApplication,
+// handling references to the window manager and mouse state.  The observers themselves
+// react to mouse / accessibility state by either changing window positions or updating
+// the mouse state based on new information
 private class ObserveApplicationNotifications {
     enum Error: Swift.Error {
         case failed
