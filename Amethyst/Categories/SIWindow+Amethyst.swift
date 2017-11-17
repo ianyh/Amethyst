@@ -11,6 +11,8 @@ import Foundation
 import Silica
 
 extension SIWindow {
+    // convert SIWindow objects to CGWindowIDs.
+    // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
     fileprivate static func windowInformation(_ windows: [SIWindow]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
         let ids = Set(windows.map { $0.windowID() })
         return (IDs: ids, descriptions: windowDescriptions(.optionOnScreenOnly, windowID: CGWindowID(0)))
@@ -44,6 +46,7 @@ extension SIWindow {
         return ret
     }
 
+    // if there are several windows at a given screen point, take the top one
     static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
@@ -84,6 +87,7 @@ extension SIWindow {
         return windowInWindows(windows, withCGWindowDescription: windowDictionaryToFocus)
     }
 
+    // get the first window at a certain point, excluding one specific window from consideration
     static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow], butNot ignoreWindow: SIWindow?) -> SIWindow? {
         // only consider windows on this screen
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
@@ -104,6 +108,7 @@ extension SIWindow {
         return nil
     }
 
+    // find a window based on its window description within an array of SIWindow objects
     static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
         for window in windows {
             guard
@@ -132,6 +137,8 @@ extension SIWindow {
         return nil
     }
 
+    // return an array of dictionaries of window information for all windows relative to windowID
+    // if windowID is 0, this will return all window information
     static func windowDescriptions(_ options: CGWindowListOption, windowID: CGWindowID) -> [[String: AnyObject]]? {
         guard let cfWindowDescriptions = CGWindowListCopyWindowInfo(options, windowID) else {
             return nil
