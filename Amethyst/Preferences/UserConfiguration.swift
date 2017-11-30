@@ -31,6 +31,7 @@ enum ConfigurationKey: String {
     case windowMargins = "window-margins"
     case windowMarginSize = "window-margin-size"
     case floatingBundleIdentifiers = "floating"
+    case floatingBundleIdentifiersIsBlacklist = "floating-is-blacklist"
     case ignoreMenuBar = "ignore-menu-bar"
     case floatSmallWindows = "float-small-windows"
     case mouseFollowsFocus = "mouse-follows-focus"
@@ -48,6 +49,7 @@ enum ConfigurationKey: String {
         return [
             .layouts,
             .floatingBundleIdentifiers,
+            .floatingBundleIdentifiersIsBlacklist,
             .ignoreMenuBar,
             .floatSmallWindows,
             .mouseFollowsFocus,
@@ -293,20 +295,22 @@ final class UserConfiguration: NSObject {
             return false
         }
 
+        let useIdentifiersAsBlacklist = floatingBundleIdentifiersIsBlacklist()
+
         for floatingBundleIdentifier in floatingBundleIdentifiers {
             if floatingBundleIdentifier.contains("*") {
                 let sanitizedIdentifier = floatingBundleIdentifier.replacingOccurrences(of: "*", with: "")
                 if runningApplication.bundleIdentifier?.hasPrefix(sanitizedIdentifier) == true {
-                    return true
+                    return !useIdentifiersAsBlacklist
                 }
             } else {
                 if floatingBundleIdentifier == runningApplication.bundleIdentifier {
-                    return true
+                    return !useIdentifiersAsBlacklist
                 }
             }
         }
 
-        return false
+        return useIdentifiersAsBlacklist
     }
 
     func ignoreMenuBar() -> Bool {
@@ -359,6 +363,10 @@ final class UserConfiguration: NSObject {
 
     func windowResizeStep() -> CGFloat {
         return CGFloat(storage.float(forKey: ConfigurationKey.windowResizeStep.rawValue) / 100.0)
+    }
+
+    func floatingBundleIdentifiersIsBlacklist() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.floatingBundleIdentifiersIsBlacklist.rawValue)
     }
 
     func floatingBundleIdentifiers() -> [String] {
