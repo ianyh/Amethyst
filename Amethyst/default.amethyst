@@ -190,7 +190,7 @@
         "key": "x"
     },
     "floating": [],
-    "floating-is-blacklist": false,
+    "floating-is-blacklist": true,
     "float-small-windows": true,
     "mouse-follows-focus": false,
     "focus-follows-mouse": false,

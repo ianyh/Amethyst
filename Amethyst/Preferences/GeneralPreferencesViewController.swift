@@ -16,7 +16,6 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
 
     @IBOutlet var layoutsTableView: NSTableView?
     @IBOutlet var floatingTableView: NSTableView?
-    @IBOutlet weak var floatingLabel: NSTextField!
 
     private var editingFloatingBundleIdentifier = false
 
@@ -38,8 +37,6 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
 
         layoutsTableView?.reloadData()
         floatingTableView?.reloadData()
-
-        updateFloatingLabel()
     }
 
     @IBAction func addLayout(_ sender: NSButton) {
@@ -179,14 +176,6 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         floatingTableView.reloadData()
     }
 
-    @IBAction func toggleFloatingLabel(_ sender: NSButton) {
-        updateFloatingLabel()
-    }
-
-    private func updateFloatingLabel() {
-        floatingLabel.stringValue = UserConfiguration.shared.floatingBundleIdentifiersIsBlacklist() ? "Tile Windows:" : "Float Windows:"
-    }
-
     func preferenceIdentifier() -> String! {
         return NSStringFromClass(type(of: self))
     }
@@ -247,5 +236,20 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         }
 
         floatingTableView?.reloadData()
+    }
+}
+
+@objc(TileOrFloatTransformer) class TileOrFloatTransformer: ValueTransformer {
+    override class func transformedValueClass() -> AnyClass {
+        return NSString.self
+    }
+
+    override class func allowsReverseTransformation() -> Bool {
+        return false
+    }
+
+    override func transformedValue(_ value: Any?) -> Any? {
+        guard let type = value as? Int else { return nil }
+        return (type == 1 ? "Tile Windows:" : "Float Windows:") as AnyObject?
     }
 }

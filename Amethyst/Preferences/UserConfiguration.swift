@@ -301,16 +301,16 @@ final class UserConfiguration: NSObject {
             if floatingBundleIdentifier.contains("*") {
                 let sanitizedIdentifier = floatingBundleIdentifier.replacingOccurrences(of: "*", with: "")
                 if runningApplication.bundleIdentifier?.hasPrefix(sanitizedIdentifier) == true {
-                    return useIdentifiersAsBlacklist ? false : true
+                    return !useIdentifiersAsBlacklist
                 }
             } else {
                 if floatingBundleIdentifier == runningApplication.bundleIdentifier {
-                    return useIdentifiersAsBlacklist ? false : true
+                    return !useIdentifiersAsBlacklist
                 }
             }
         }
 
-        return useIdentifiersAsBlacklist ? true : false
+        return useIdentifiersAsBlacklist
     }
 
     func ignoreMenuBar() -> Bool {
