@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13122.19" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13529" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13122.19"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,6 +19,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="uP9-ch-b7n"/>
+                <menuItem title="Disable" id="rjJ-w4-5Ht">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="toggleGlobalTiling:" target="494" id="3aM-9U-hWx"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Start Amethyst on Login" id="549">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -51,12 +57,14 @@
                     </connections>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="-179" y="92"/>
         </menu>
         <customObject id="494" customClass="AppDelegate" customModule="Amethyst" customModuleProvider="target">
             <connections>
                 <outlet property="preferencesWindowController" destination="0fi-bi-huz" id="dfn-JC-QBQ"/>
                 <outlet property="startAtLoginMenuItem" destination="549" id="551"/>
                 <outlet property="statusItemMenu" destination="536" id="547"/>
+                <outlet property="toggleGlobalTilingMenuItem" destination="rjJ-w4-5Ht" id="4Dq-e8-R1M"/>
                 <outlet property="versionMenuItem" destination="bNZ-Ry-Q4Q" id="jXC-pY-N2a"/>
             </connections>
         </customObject>
@@ -65,7 +73,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
             <rect key="contentRect" x="446" y="472" width="480" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
             <view key="contentView" id="IHj-fa-gIc">
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

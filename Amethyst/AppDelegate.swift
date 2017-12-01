@@ -27,6 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var statusItemMenu: NSMenu?
     @IBOutlet var versionMenuItem: NSMenuItem?
     @IBOutlet var startAtLoginMenuItem: NSMenuItem?
+    @IBOutlet var toggleGlobalTilingMenuItem: NSMenuItem?
 
     private var isFirstLaunch = true
 
@@ -94,6 +95,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem?.highlightMode = true
 
         versionMenuItem?.title = "Version \(shortVersion) (\(version))"
+        toggleGlobalTilingMenuItem?.title = "Disable"
 
         loginItem = CCNLaunchAtLoginItem(for: Bundle.main)
         startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
@@ -115,6 +117,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             loginItem?.deActivate()
         }
         startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
+    }
+
+    @IBAction func toggleGlobalTiling(_ sender: AnyObject) {
+        UserConfiguration.shared.tilingEnabled = !UserConfiguration.shared.tilingEnabled
+        windowManager?.markAllScreensForReflowWithChange(.unknown)
     }
 
     @IBAction func relaunch(_ sender: AnyObject) {
@@ -159,8 +166,10 @@ extension AppDelegate: UserConfigurationDelegate {
         var statusItemImage: NSImage?
         if UserConfiguration.shared.tilingEnabled == true {
             statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
+            toggleGlobalTilingMenuItem?.title = "Disable"
         } else {
             statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem-disabled"))
+            toggleGlobalTilingMenuItem?.title = "Enable"
         }
         statusItemImage?.isTemplate = true
         statusItem?.image = statusItemImage
