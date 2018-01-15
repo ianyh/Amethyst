@@ -52,7 +52,7 @@ struct FrameAssignment {
     var finalFrame: CGRect {
         var ret = frame
         let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
-        
+
         if UserConfiguration.shared.windowMargins() {
             ret.origin.x += padding
             ret.origin.y += padding
@@ -63,16 +63,14 @@ struct FrameAssignment {
         let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
         let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
 
-        if focused {
-            if windowMinimumWidth > ret.size.width {
-                ret.origin.x -= ((windowMinimumWidth - ret.size.width) / 2)
-                ret.size.width = windowMinimumWidth
-            }
+        if windowMinimumWidth > ret.size.width {
+            ret.origin.x -= ((windowMinimumWidth - ret.size.width) / 2)
+            ret.size.width = windowMinimumWidth
+        }
 
-            if windowMinimumHeight > ret.size.height {
-                ret.origin.y -= ((windowMinimumHeight - ret.size.height) / 2)
-                ret.size.height = windowMinimumHeight
-            }
+        if windowMinimumHeight > ret.size.height {
+            ret.origin.y -= ((windowMinimumHeight - ret.size.height) / 2)
+            ret.size.height = windowMinimumHeight
         }
 
         return ret
@@ -88,7 +86,22 @@ struct FrameAssignment {
     }
 
     fileprivate func perform() {
+        var finalFrame = self.finalFrame
+        var finalOrigin = finalFrame.origin
+
+        // Just resize the window first to see what the dimensions end up being
+        // Sometimes applications have internal window requirements that are not exposed to us directly
+        finalFrame.origin = window.frame().origin
+        window.setFrame(finalFrame)
+
+        // If this is the focused window then we need to shift it to be on screen regardless of size
+        if focused && !screenFrame.contains(finalFrame) {
+            finalOrigin.x = max(screenFrame.minX, min(finalOrigin.x, screenFrame.maxX - finalFrame.size.width))
+            finalOrigin.y = max(screenFrame.minY, min(finalOrigin.y, screenFrame.maxY - finalFrame.size.height))
+        }
+
         // Move the window to its final frame
+        finalFrame.origin = finalOrigin
         window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
     }
 }
