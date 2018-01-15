@@ -50,17 +50,31 @@ struct FrameAssignment {
 
     // the final frame is the desired frame, but shrunk to provide desired padding
     var finalFrame: CGRect {
-        guard UserConfiguration.shared.windowMargins() else {
-            return frame
-        }
-
         var ret = frame
         let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
+        
+        if UserConfiguration.shared.windowMargins() {
+            ret.origin.x += padding
+            ret.origin.y += padding
+            ret.size.width -= 2 * padding
+            ret.size.height -= 2 * padding
+        }
 
-        ret.origin.x += padding
-        ret.origin.y += padding
-        ret.size.width -= 2 * padding
-        ret.size.height -= 2 * padding
+        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
+        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
+
+        if focused {
+            if windowMinimumWidth > ret.size.width {
+                ret.origin.x -= ((windowMinimumWidth - ret.size.width) / 2)
+                ret.size.width = windowMinimumWidth
+            }
+
+            if windowMinimumHeight > ret.size.height {
+                ret.origin.y -= ((windowMinimumHeight - ret.size.height) / 2)
+                ret.size.height = windowMinimumHeight
+            }
+        }
+
         return ret
     }
 
@@ -129,6 +143,19 @@ extension NSScreen {
             frame.origin.y += padding
             frame.size.width -= 2 * padding
             frame.size.height -= 2 * padding
+        }
+
+        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
+        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
+
+        if windowMinimumWidth > frame.size.width {
+            frame.origin.x -= (windowMinimumWidth - frame.size.width) / 2
+            frame.size.width = windowMinimumWidth
+        }
+
+        if windowMinimumHeight > frame.size.height {
+            frame.origin.y -= (windowMinimumHeight - frame.size.height) / 2
+            frame.size.height = windowMinimumHeight
         }
 
         return frame
