@@ -86,6 +86,27 @@ struct FrameAssignment {
     }
 
     fileprivate func perform() {
+        var finalFrame = self.finalFrame
+        var finalOrigin = finalFrame.origin
+
+        // If this is the focused window then we need to shift it to be on screen regardless of size
+        if focused {
+            // Just resize the window first to see what the dimensions end up being
+            // Sometimes applications have internal window requirements that are not exposed to us directly
+            finalFrame.origin = window.frame().origin
+            window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
+
+            // With the real height we can update the frame to account for the current size
+            finalFrame.size = CGSize(
+                width: max(window.frame().width, finalFrame.width),
+                height: max(window.frame().height, finalFrame.height)
+            )
+            finalOrigin.x = max(screenFrame.minX, min(finalOrigin.x, screenFrame.maxX - finalFrame.size.width))
+            finalOrigin.y = max(screenFrame.minY, min(finalOrigin.y, screenFrame.maxY - finalFrame.size.height))
+        }
+
+        // Move the window to its final frame
+        finalFrame.origin = finalOrigin
         window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
     }
 }
