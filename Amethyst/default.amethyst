@@ -20,6 +20,10 @@
         "shift",
         "control"
     ],
+    "mod3": [
+        "command",
+        "shift"
+    ],
     "screens": 4,
     "cycle-layout": {
         "mod": "mod1",
@@ -188,6 +192,10 @@
     "toggle-focus-follows-mouse": {
         "mod": "mod2",
         "key": "x"
+    },
+    "toggle-amethyst":{
+        "mod": "mod3",
+        "key": "r"
     },
     "floating": [],
     "float-small-windows": true,

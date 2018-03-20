@@ -179,6 +179,11 @@ final class HotKeyManager: NSObject {
             windowManager.markAllScreensForReflowWithChange(.unknown)
         }
 
+        constructCommandWithCommandKey(CommandKey.toggleAmethyst.rawValue) {
+            let appDelegate = NSApplication.shared.delegate as! AppDelegate
+            appDelegate.relaunch("Restart" as AnyObject)
+        }
+
         constructCommandWithCommandKey(CommandKey.reevaluateWindows.rawValue) {
             windowManager.reevaluateWindows()
         }
@@ -245,15 +250,15 @@ final class HotKeyManager: NSObject {
             }
 
             UCKeyTranslate(layout,
-                           UInt16(keyCode),
-                           UInt16(kUCKeyActionDisplay),
-                           0,
-                           UInt32(LMGetKbdType()),
-                           UInt32(kUCKeyTranslateNoDeadKeysBit),
-                           &keysDown,
-                           chars.count,
-                           &realLength,
-                           &chars)
+                    UInt16(keyCode),
+                    UInt16(kUCKeyActionDisplay),
+                    0,
+                    UInt32(LMGetKbdType()),
+                    UInt32(kUCKeyTranslateNoDeadKeysBit),
+                    &keysDown,
+                    chars.count,
+                    &realLength,
+                    &chars)
 
             let string = CFStringCreateWithCharacters(kCFAllocatorDefault, chars, realLength) as String
 
@@ -323,6 +328,7 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Force windows to be reevaluated", CommandKey.reevaluateWindows.rawValue])
         hotKeyNameToDefaultsKey.append(["Throw focused window to space left", CommandKey.throwSpaceLeft.rawValue])
         hotKeyNameToDefaultsKey.append(["Throw focused window to space right", CommandKey.throwSpaceRight.rawValue])
+        hotKeyNameToDefaultsKey.append(["Toggle Amethyst (restart)", CommandKey.toggleAmethyst.rawValue])
 
         (1...10).forEach { spaceNumber in
             let name = "Throw focused window to space \(spaceNumber)"
