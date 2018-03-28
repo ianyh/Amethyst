@@ -19,6 +19,8 @@ final class ScreenManager: NSObject {
     let screenIdentifier: String
     fileprivate weak var delegate: ScreenManagerDelegate?
     private let userConfiguration: UserConfiguration
+    public var onReflowInitiation: (() -> Void)?
+    public var onReflowCompletion: (() -> Void)?
 
     var currentSpaceIdentifier: String? {
         willSet {
@@ -79,6 +81,8 @@ final class ScreenManager: NSObject {
         self.screenIdentifier = screenIdentifier
         self.delegate = delegate
         self.userConfiguration = userConfiguration
+        self.onReflowInitiation = nil
+        self.onReflowCompletion = nil
 
         currentLayoutIndexBySpaceIdentifier = [:]
         layoutsBySpaceIdentifier = [:]
@@ -89,6 +93,10 @@ final class ScreenManager: NSObject {
         super.init()
 
         layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
+    }
+
+    deinit {
+        self.onReflowCompletion = nil
     }
 
     func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
@@ -126,6 +134,14 @@ final class ScreenManager: NSObject {
         let windows = (delegate?.activeWindowsForScreenManager(self) ?? [])
         changingSpace = false
         reflowOperation = currentLayout?.reflow(windows, on: screen)
+        reflowOperation!.onReflowCompletion = {
+            // propagate the completion handler if we have one
+            guard let onReflow = self.onReflowCompletion else { return }
+            onReflow()
+        }
+        if let onReflowInitiation = self.onReflowInitiation {
+            onReflowInitiation()
+        }
         OperationQueue.main.addOperation(reflowOperation!)
     }
 

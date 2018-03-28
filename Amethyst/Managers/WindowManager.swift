@@ -38,6 +38,7 @@ protocol MouseStateKeeperDelegate: class {
     func focusedScreenManager() -> ScreenManager?
     func windows(on screen: NSScreen) -> [SIWindow]
     func switchWindow(_ window: SIWindow, with otherWindow: SIWindow)
+    var lastReflowTime: Date { get }
 }
 
 // MouseStateKeeper exists because we need a single shared mouse state between all
@@ -101,6 +102,19 @@ class MouseStateKeeper {
                 self.state = .pointing
             }
 
+        default: ()
+        }
+
+    }
+
+    // React to a reflow event.  Typically this means that any window we were dragging
+    // is no longer valid and should be de-correlated from the mouse
+    func handleReflowEvent() {
+        switch self.state {
+        case .doneDragging:
+            self.state = .pointing // remove associated timestamp
+        case .moving:
+            self.state = .dragging // remove associated window
         default: ()
         }
 
@@ -237,15 +251,21 @@ private class ObserveApplicationNotifications {
 
                 switch self.mouse.state {
                 case .dragging:
+                    // be aware of last reflow time, again to prevent race condition
+                    guard let delegate = self.mouse.delegate else { break }
+                    let reflowEndInterval = Date().timeIntervalSince(delegate.lastReflowTime as Date)
+                    guard reflowEndInterval > self.mouse.dragRaceThresholdSeconds else { break }
+
                     // record window and wait for mouse up
                     self.mouse.state = .moving(window: movedWindow)
                 case let .doneDragging(lmbUpMoment):
+                    self.mouse.state = .pointing // flip state first to prevent race condition
+
                     // if mouse button recently came up, assume window move is related
                     let dragEndInterval = Date().timeIntervalSince(lmbUpMoment as Date)
-                    if dragEndInterval < self.mouse.dragRaceThresholdSeconds {
-                        self.mouse.state = .pointing // flip state first to prevent race condition
-                        self.mouse.swapDraggedWindowWithDropzone(movedWindow)
-                    }
+                    guard dragEndInterval < self.mouse.dragRaceThresholdSeconds else { break }
+
+                    self.mouse.swapDraggedWindowWithDropzone(movedWindow)
                 default:
                     break
                 }
@@ -314,11 +334,14 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
     fileprivate private(set) var activeIDCache: Set<CGWindowID> = Set()
     private(set) var floatingMap: [CGWindowID: Bool] = [:]
 
+    public private(set) var lastReflowTime: Date
+
     private let disposeBag = DisposeBag()
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
         self.focusFollowsMouseManager = FocusFollowsMouseManager(userConfiguration: userConfiguration)
+        lastReflowTime = Date()
         super.init()
 
         mouseStateKeeper.delegate = self
@@ -634,6 +657,17 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
 
             if screenManager == nil {
                 screenManager = ScreenManager(screen: screen, screenIdentifier: screenIdentifier, delegate: self, userConfiguration: userConfiguration)
+                screenManager!.onReflowInitiation = {
+                    self.mouseStateKeeper.handleReflowEvent()
+                }
+                screenManager!.onReflowCompletion = {
+                    // This handler will be executed by the Operation, in a queue.  Although async
+                    // (and although the docs say that it executes in a separate thread), I consider
+                    // this to be thread safe, at least safe enough, because we always want the
+                    // latest time that a reflow took place.
+                    self.mouseStateKeeper.handleReflowEvent()
+                    self.lastReflowTime = Date()
+                }
                 screenManagersCache[screenIdentifier] = screenManager
             }
 

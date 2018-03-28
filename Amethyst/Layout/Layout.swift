@@ -90,6 +90,7 @@ struct FrameAssignment {
         var finalOrigin = finalFrame.origin
 
         // If this is the focused window then we need to shift it to be on screen regardless of size
+        // We call this "window peeking" (this line here to aid in text search)
         if focused {
             // Just resize the window first to see what the dimensions end up being
             // Sometimes applications have internal window requirements that are not exposed to us directly
@@ -115,12 +116,23 @@ class ReflowOperation: Operation {
     let screen: NSScreen
     let windows: [SIWindow]
     let frameAssigner: FrameAssigner
+    public var onReflowCompletion: (() -> Void)?
 
     init(screen: NSScreen, windows: [SIWindow], frameAssigner: FrameAssigner) {
         self.screen = screen
         self.windows = windows
         self.frameAssigner = frameAssigner
+        self.onReflowCompletion = nil
         super.init()
+        self.completionBlock = {
+            guard !self.isCancelled else { return }
+            guard let onReflowCompletion = self.onReflowCompletion else { return }
+            onReflowCompletion()
+        }
+    }
+
+    deinit {
+        self.onReflowCompletion = nil
     }
 }
 
