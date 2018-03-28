@@ -9,65 +9,45 @@
 import Cocoa
 import Foundation
 import Silica
+import RxSwift
 
 protocol FocusFollowsMouseManagerDelegate: class {
     func windowsForFocusFollowsMouse() -> [SIWindow]
 }
 
-// need to inherit from NSObject to track UserDefaults changes
-final class FocusFollowsMouseManager: NSObject {
+final class FocusFollowsMouseManager {
     weak var delegate: FocusFollowsMouseManagerDelegate?
 
     private let userConfiguration: UserConfiguration
-    private var focusConfigurationChangeHandler: (Bool) -> Void   // var not let.  necessary for closure setup.
-    private var mouseMovedEventHandler: Any?
+
+    private var subscription: Disposable? // to work around capture of self in closure
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
-        self.mouseMovedEventHandler = nil
 
-        // must fully init self before we can use it in a closure, so we put in a fake closure for the handler (for now)
-        self.focusConfigurationChangeHandler = { _ in () }
-        super.init()  // fully init self
+        subscription = nil // with this done, we can capture self
 
-        // can now set up self as an observer.
         // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
-        UserDefaults.standard.addObserver(self, forKeyPath: ConfigurationKey.focusFollowsMouse.rawValue, options: NSKeyValueObservingOptions.new, context: nil)
-
-        // now that we've initialized self for the closure, change the member function to the actual config change handler
-        // TL;DR: subscribe or unsubscribe as desired.
-        self.focusConfigurationChangeHandler = { followingIsDesired in
-            if followingIsDesired {
-                guard self.mouseMovedEventHandler == nil else {
-                    return
+        let stupidCompilerWorkaround: Observable<Any?> = UserDefaults.standard.rx.observe(Bool.self, ConfigurationKey.focusFollowsMouse.rawValue)
+            .distinctUntilChanged { $0 == $1 }
+            .scan(nil) { existingHandler, followingIsDesired in
+                if let handler = existingHandler {
+                    NSEvent.removeMonitor(handler)
+                    return nil
+                } else if followingIsDesired! {
+                    return NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { event in
+                        self.focusWindowWithMouseMovedEvent(event)
+                    }
+                } else {
+                    return nil
                 }
-                self.mouseMovedEventHandler = NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { event in
-                    self.focusWindowWithMouseMovedEvent(event)
-                }
-            } else {
-                guard let handler = self.mouseMovedEventHandler else {
-                    return
-                }
-                NSEvent.removeMonitor(handler)
-                self.mouseMovedEventHandler = nil
             }
-        }
-
-        // now that we set up the state tracker for changes, react to the current state.  Because this is a user config setting,
-        // the chance of a race condition here is negligible.
-        focusConfigurationChangeHandler(self.userConfiguration.focusFollowsMouse())
+        subscription = stupidCompilerWorkaround.subscribe()
     }
 
     deinit {
-        UserDefaults.standard.removeObserver(self, forKeyPath: ConfigurationKey.focusFollowsMouse.rawValue)
-    }
-
-    // handle changes to UserDefaults, specifically focusFollowsMouse
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard keyPath == ConfigurationKey.focusFollowsMouse.rawValue else {
-            return
-        }
-        self.focusConfigurationChangeHandler(self.userConfiguration.focusFollowsMouse())
+        guard let subscription = subscription else { return }
+        subscription.dispose()
     }
 
     private func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
