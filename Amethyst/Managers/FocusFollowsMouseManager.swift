@@ -28,9 +28,9 @@ final class FocusFollowsMouseManager {
         subscription = nil // with this done, we can capture self
 
         // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
-        let stupidCompilerWorkaround: Observable<Any?> = UserDefaults.standard.rx.observe(Bool.self, ConfigurationKey.focusFollowsMouse.rawValue)
+        subscription = UserDefaults.standard.rx.observe(Bool.self, ConfigurationKey.focusFollowsMouse.rawValue)
             .distinctUntilChanged { $0 == $1 }
-            .scan(nil) { existingHandler, followingIsDesired in
+            .scan(nil) { existingHandler, followingIsDesired -> Any? in
                 if let handler = existingHandler {
                     NSEvent.removeMonitor(handler)
                     return nil
@@ -42,7 +42,7 @@ final class FocusFollowsMouseManager {
                     return nil
                 }
             }
-        subscription = stupidCompilerWorkaround.subscribe()
+            .subscribe()
     }
 
     deinit {
