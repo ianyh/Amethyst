@@ -30,12 +30,12 @@ final class FocusFollowsMouseManager {
         // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
         subscription = UserDefaults.standard.rx.observe(Bool.self, ConfigurationKey.focusFollowsMouse.rawValue)
             .distinctUntilChanged { $0 == $1 }
-            .scan(nil) { existingHandler, followingIsDesired -> Any? in
+            .scan(nil) { [unowned self] existingHandler, followingIsDesired -> Any? in
                 if let handler = existingHandler {
                     NSEvent.removeMonitor(handler)
                     return nil
                 } else if followingIsDesired! {
-                    return NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { event in
+                    return NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { [unowned self] event in
                         self.focusWindowWithMouseMovedEvent(event)
                     }
                 } else {
