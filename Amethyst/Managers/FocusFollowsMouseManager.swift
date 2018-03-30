@@ -46,8 +46,7 @@ final class FocusFollowsMouseManager {
     }
 
     deinit {
-        guard let subscription = subscription else { return }
-        subscription.dispose()
+        subscription?.dispose()
     }
 
     private func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
