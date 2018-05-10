@@ -20,15 +20,13 @@ final class FocusFollowsMouseManager {
 
     private let userConfiguration: UserConfiguration
 
-    private var subscription: Disposable? // to work around capture of self in closure
+    private let disposeBag = DisposeBag()
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
 
-        subscription = nil // with this done, we can capture self
-
         // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
-        subscription = UserDefaults.standard.rx.observe(Bool.self, ConfigurationKey.focusFollowsMouse.rawValue)
+        UserDefaults.standard.rx.observe(Bool.self, ConfigurationKey.focusFollowsMouse.rawValue)
             .distinctUntilChanged { $0 == $1 }
             .scan(nil) { [unowned self] existingHandler, followingIsDesired -> Any? in
                 if let handler = existingHandler {
@@ -43,10 +41,7 @@ final class FocusFollowsMouseManager {
                 }
             }
             .subscribe()
-    }
-
-    deinit {
-        subscription?.dispose()
+            .disposed(by: disposeBag)
     }
 
     private func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
