@@ -238,3 +238,18 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         floatingTableView?.reloadData()
     }
 }
+
+@objc(TileOrFloatTransformer) class TileOrFloatTransformer: ValueTransformer {
+    override class func transformedValueClass() -> AnyClass {
+        return NSString.self
+    }
+
+    override class func allowsReverseTransformation() -> Bool {
+        return false
+    }
+
+    override func transformedValue(_ value: Any?) -> Any? {
+        guard let type = value as? Int else { return nil }
+        return (type == 1 ? "Tile Windows:" : "Float Windows:") as AnyObject?
+    }
+}
