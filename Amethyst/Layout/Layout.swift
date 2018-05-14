@@ -124,7 +124,7 @@ class ReflowOperation: Operation {
         self.frameAssigner = frameAssigner
         self.onReflowCompletion = nil
         super.init()
-        self.completionBlock = {
+        self.completionBlock = { [unowned self] in
             guard !self.isCancelled else { return }
             guard let onReflowCompletion = self.onReflowCompletion else { return }
             onReflowCompletion()
