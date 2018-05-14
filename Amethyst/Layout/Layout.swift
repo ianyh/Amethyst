@@ -124,7 +124,19 @@ class ReflowOperation: Operation {
         self.frameAssigner = frameAssigner
         self.onReflowCompletion = nil
         super.init()
-        self.completionBlock = nil
+        makeCompletionBlock(nil)
+    }
+
+    private func makeCompletionBlock(_ aBlock: (() -> Void)?) {
+        super.completionBlock = { [unowned self] in
+            aBlock?()
+            guard !self.isCancelled else { return }
+            self.onReflowCompletion?()
+        }
+    }
+
+    public func enqueue(_ aQueue: OperationQueue) {
+        aQueue.addOperation(self)
     }
 
     // Carve out a separate completion block for reflow stuff.
@@ -135,11 +147,7 @@ class ReflowOperation: Operation {
             return super.completionBlock
         }
         set {
-            self.completionBlock = { [unowned self] in
-                newValue?()
-                guard !self.isCancelled else { return }
-                self.onReflowCompletion?()
-            }
+            makeCompletionBlock(newValue)
         }
     }
 
