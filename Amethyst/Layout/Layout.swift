@@ -124,10 +124,22 @@ class ReflowOperation: Operation {
         self.frameAssigner = frameAssigner
         self.onReflowCompletion = nil
         super.init()
-        self.completionBlock = { [unowned self] in
-            guard !self.isCancelled else { return }
-            guard let onReflowCompletion = self.onReflowCompletion else { return }
-            onReflowCompletion()
+        self.completionBlock = nil
+    }
+
+    // Carve out a separate completion block for reflow stuff.
+    // It will always fire after any existing completion block
+    // UNLESS the operation completed by being cancelled.
+    override public var completionBlock: (() -> Void)? {
+        get {
+            return super.completionBlock
+        }
+        set {
+            self.completionBlock = { [unowned self] in
+                newValue?()
+                guard !self.isCancelled else { return }
+                self.onReflowCompletion?()
+            }
         }
     }
 
