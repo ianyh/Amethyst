@@ -117,7 +117,6 @@ class MouseStateKeeper {
             self.state = .dragging // remove associated window
         default: ()
         }
-
     }
 
     // Execute an action that was initiated by the observer and completed by the state keeper
@@ -253,7 +252,7 @@ private class ObserveApplicationNotifications {
                 case .dragging:
                     // be aware of last reflow time, again to prevent race condition
                     guard let delegate = self.mouse.delegate else { break }
-                    let reflowEndInterval = Date().timeIntervalSince(delegate.lastReflowTime as Date)
+                    let reflowEndInterval = Date().timeIntervalSince(delegate.lastReflowTime)
                     guard reflowEndInterval > self.mouse.dragRaceThresholdSeconds else { break }
 
                     // record window and wait for mouse up
@@ -262,7 +261,7 @@ private class ObserveApplicationNotifications {
                     self.mouse.state = .pointing // flip state first to prevent race condition
 
                     // if mouse button recently came up, assume window move is related
-                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment as Date)
+                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
                     guard dragEndInterval < self.mouse.dragRaceThresholdSeconds else { break }
 
                     self.mouse.swapDraggedWindowWithDropzone(movedWindow)
@@ -299,7 +298,7 @@ private class ObserveApplicationNotifications {
                     self.mouse.state = .resizing(screen: screen, ratio: ratio)
                 case let .doneDragging(lmbUpMoment):
                     // if mouse button recently came up, assume window resize is related
-                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment as Date)
+                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
                     if dragEndInterval < self.mouse.dragRaceThresholdSeconds {
                         self.mouse.state = .pointing // flip state first to prevent race condition
                         windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
@@ -657,10 +656,10 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
 
             if screenManager == nil {
                 screenManager = ScreenManager(screen: screen, screenIdentifier: screenIdentifier, delegate: self, userConfiguration: userConfiguration)
-                screenManager!.onReflowInitiation = {
+                screenManager!.onReflowInitiation = { [unowned self] in
                     self.mouseStateKeeper.handleReflowEvent()
                 }
-                screenManager!.onReflowCompletion = {
+                screenManager!.onReflowCompletion = { [unowned self] in
                     // This handler will be executed by the Operation, in a queue.  Although async
                     // (and although the docs say that it executes in a separate thread), I consider
                     // this to be thread safe, at least safe enough, because we always want the

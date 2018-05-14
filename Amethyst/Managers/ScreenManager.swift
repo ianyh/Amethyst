@@ -133,16 +133,14 @@ final class ScreenManager: NSObject {
 
         let windows = (delegate?.activeWindowsForScreenManager(self) ?? [])
         changingSpace = false
-        reflowOperation = currentLayout?.reflow(windows, on: screen)
-        reflowOperation!.onReflowCompletion = {
+
+        guard let reflowOperation = currentLayout?.reflow(windows, on: screen) else { return }
+        reflowOperation.onReflowCompletion = { [unowned self] in
             // propagate the completion handler if we have one
-            guard let onReflow = self.onReflowCompletion else { return }
-            onReflow()
+            self.onReflowCompletion?()
         }
-        if let onReflowInitiation = self.onReflowInitiation {
-            onReflowInitiation()
-        }
-        OperationQueue.main.addOperation(reflowOperation!)
+        self.onReflowInitiation?()
+        OperationQueue.main.addOperation(reflowOperation)
     }
 
     func updateCurrentLayout(_ updater: (Layout) -> Void) {
