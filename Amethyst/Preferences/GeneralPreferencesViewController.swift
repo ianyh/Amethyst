@@ -79,15 +79,11 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
     }
 
     @IBAction func removeLayout(_ sender: AnyObject) {
-        guard let selectedRow = layoutsTableView?.selectedRow, selectedRow < self.layouts.count else {
-            return
-        }
+        guard let selectedRow = layoutsTableView?.selectedRow, selectedRow < self.layouts.count, selectedRow != NSTableView.noRowSelectedIndex else { return }
 
-        var layouts = self.layouts
         layouts.remove(at: selectedRow)
-        self.layouts = layouts
 
-        UserConfiguration.shared.setLayoutStrings(self.layouts)
+        UserConfiguration.shared.setLayoutStrings(layouts)
 
         layoutsTableView?.reloadData()
     }
@@ -159,21 +155,13 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
     }
 
     @IBAction func removeFloatingApplication(_ sender: AnyObject) {
-        guard let floatingTableView = floatingTableView else {
-            return
-        }
+        guard let selectedRow = floatingTableView?.selectedRow, selectedRow < self.layouts.count, selectedRow != NSTableView.noRowSelectedIndex else { return }
 
-        guard floatingTableView.selectedRow < self.floatingBundleIdentifiers.count else {
-            return
-        }
+        floatingBundleIdentifiers.remove(at: selectedRow)
 
-        var floatingBundleIdentifiers = self.floatingBundleIdentifiers
-        floatingBundleIdentifiers.remove(at: floatingTableView.selectedRow)
-        self.floatingBundleIdentifiers = floatingBundleIdentifiers
+        UserConfiguration.shared.setFloatingBundleIdentifiers(floatingBundleIdentifiers)
 
-        UserConfiguration.shared.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
-
-        floatingTableView.reloadData()
+        floatingTableView?.reloadData()
     }
 
     func preferenceIdentifier() -> String! {

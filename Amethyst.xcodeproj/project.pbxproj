@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B46EA20AA7717003D5110 /* NSTableView+Amethyst.swift */; };
 		2EF8435FE0931D79742833C1 /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB7CA49CFB92C8A1862B5852 /* Pods_Amethyst.framework */; };
 		4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */; };
 		4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */; };
@@ -89,6 +90,7 @@
 
 /* Begin PBXFileReference section */
 		03DFBBC5233D7A561FE73BBF /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
+		1A4B46EA20AA7717003D5110 /* NSTableView+Amethyst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Amethyst.swift"; sourceTree = "<group>"; };
 		3B1D20EE210E8A3589C0F547 /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRunningApplication+Manageable.swift"; sourceTree = "<group>"; };
 		4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIApplication+Amethyst.swift"; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				401BC8A71CE8E94000F89B3F /* SIWindow+Amethyst.swift */,
 				4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */,
 				4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */,
+				1A4B46EA20AA7717003D5110 /* NSTableView+Amethyst.swift */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -706,6 +709,7 @@
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
+				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
