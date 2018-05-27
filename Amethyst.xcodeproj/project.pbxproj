@@ -55,6 +55,8 @@
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
+		40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */; };
+		40AF71DE20BB401400F58EA9 /* FloatingPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */; };
 		40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* LayoutNameWindow.xib */; };
 		40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C1357B1F202AEE00FF9FA7 /* PreferencesWindow.swift */; };
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
@@ -145,6 +147,8 @@
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		40AF71D920BB348300F58EA9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPreferencesViewController.swift; sourceTree = "<group>"; };
+		40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingPreferencesViewController.xib; sourceTree = "<group>"; };
 		40B3927B1814967F009A296B /* LayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LayoutNameWindow.xib; sourceTree = "<group>"; };
 		40C1357B1F202AEE00FF9FA7 /* PreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindow.swift; sourceTree = "<group>"; };
 		40C3F91A1BD1B22E00F58660 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -190,12 +194,14 @@
 		4008E724190C4D9D0049E2F6 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */,
+				40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */,
+				40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */,
 				401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */,
 				4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */,
+				401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */,
 				401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */,
 				4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */,
-				401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */,
+				4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */,
 			);
 			path = Preferences;
 			sourceTree = "<group>";
@@ -491,6 +497,7 @@
 				4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */,
 				40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */,
 				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
+				40AF71DE20BB401400F58EA9 /* FloatingPreferencesViewController.xib in Resources */,
 				4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */,
 				40E705D8176EAD7800850DA6 /* default.amethyst in Resources */,
 			);
@@ -679,6 +686,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
 				4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
