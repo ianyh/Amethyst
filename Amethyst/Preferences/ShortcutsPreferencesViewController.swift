@@ -6,12 +6,11 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
-import CCNPreferencesWindowController
 import Cocoa
 import Foundation
 import MASShortcut
 
-final class ShortcutsPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
+final class ShortcutsPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var hotKeyNameToDefaultsKey: [[String]] = []
     @IBOutlet var tableView: NSTableView?
 
@@ -25,18 +24,6 @@ final class ShortcutsPreferencesViewController: NSViewController, CCNPreferences
 
         hotKeyNameToDefaultsKey = HotKeyManager.hotKeyNameToDefaultsKey()
         tableView?.reloadData()
-    }
-
-    func preferenceIdentifier() -> String! {
-        return NSStringFromClass(type(of: self))
-    }
-
-    func preferenceIcon() -> NSImage! {
-        return NSImage(named: .advanced)
-    }
-
-    func preferenceTitle() -> String! {
-        return "Shortcuts"
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {

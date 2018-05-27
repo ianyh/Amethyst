@@ -620,7 +620,6 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CCNLaunchAtLoginItem/CCNLaunchAtLoginItem.framework",
-				"${BUILT_PRODUCTS_DIR}/CCNPreferencesWindowController/CCNPreferencesWindowController.framework",
 				"${BUILT_PRODUCTS_DIR}/Cartography/Cartography.framework",
 				"${BUILT_PRODUCTS_DIR}/Log/Log.framework",
 				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
@@ -635,7 +634,6 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CCNLaunchAtLoginItem.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CCNPreferencesWindowController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cartography.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Log.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
