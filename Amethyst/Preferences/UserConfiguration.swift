@@ -314,7 +314,7 @@ final class UserConfiguration: NSObject {
             }
         }
 
-        return useIdentifiersAsBlacklist
+        return !useIdentifiersAsBlacklist
     }
 
     func ignoreMenuBar() -> Bool {
