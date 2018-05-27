@@ -90,7 +90,7 @@
                             <action selector="selectPane:" target="0fi-bi-huz" id="9kO-ms-dfq"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="A7FE5E71-A3DC-43B8-92B2-5CF107F2DB2F" explicitItemIdentifier="floating" label="Floating" paletteLabel="Floating" tag="-1" image="toolbar-icon-floating" id="QEp-pN-Lz9">
+                    <toolbarItem implicitItemIdentifier="A7FE5E71-A3DC-43B8-92B2-5CF107F2DB2F" explicitItemIdentifier="floating" label="Floating" paletteLabel="Floating" tag="-1" image="toolbar-icon-floating" selectable="YES" id="QEp-pN-Lz9">
                         <connections>
                             <action selector="selectPane:" target="0fi-bi-huz" id="WEg-vF-5FE"/>
                         </connections>
@@ -99,6 +99,7 @@
                 <defaultToolbarItems>
                     <toolbarItem reference="WV2-G9-AL4"/>
                     <toolbarItem reference="j0a-87-Yvz"/>
+                    <toolbarItem reference="QEp-pN-Lz9"/>
                 </defaultToolbarItems>
                 <connections>
                     <outlet property="delegate" destination="0fi-bi-huz" id="zer-Uh-aco"/>

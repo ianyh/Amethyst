@@ -26,6 +26,8 @@ class PreferencesWindowController: NSWindowController {
             contentViewController = GeneralPreferencesViewController()
         case "shortcuts":
             contentViewController = ShortcutsPreferencesViewController()
+        case "floating":
+            contentViewController = FloatingPreferencesViewController()
         default:
             break
         }

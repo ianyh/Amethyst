@@ -11,31 +11,22 @@ import Foundation
 
 final class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var layouts: [String] = []
-    private var floatingBundleIdentifiers: [String] = []
 
     @IBOutlet var layoutsTableView: NSTableView?
-    @IBOutlet var floatingTableView: NSTableView?
-
-    private var editingFloatingBundleIdentifier = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
         layoutsTableView?.dataSource = self
         layoutsTableView?.delegate = self
-
-        floatingTableView?.dataSource = self
-        floatingTableView?.delegate = self
     }
 
     override func viewWillAppear() {
         super.viewWillAppear()
 
         layouts = UserConfiguration.shared.layoutStrings()
-        floatingBundleIdentifiers = UserConfiguration.shared.floatingBundleIdentifiers()
 
         layoutsTableView?.reloadData()
-        floatingTableView?.reloadData()
     }
 
     @IBAction func addLayout(_ sender: NSButton) {
@@ -87,91 +78,8 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
         layoutsTableView?.reloadData()
     }
 
-    @IBAction func addFloatingApplication(_ sender: NSButton) {
-        let layoutMenu = NSMenu(title: "")
-        let selectMenuItem = NSMenuItem(title: "Select from applications...", action: #selector(selectFloatingApplication(_:)), keyEquivalent: "")
-        let manualMenuItem = NSMenuItem(title: "Manually enter identifier...", action: #selector(manuallyEnterFloatingApplication(_:)), keyEquivalent: "")
-
-        layoutMenu.addItem(selectMenuItem)
-        layoutMenu.addItem(manualMenuItem)
-
-        let frame = sender.frame
-        let menuOrigin = sender.superview!.convert(NSPoint(x: frame.origin.x, y: frame.origin.y + frame.size.height + 40), to: nil)
-
-        let event = NSEvent.mouseEvent(
-            with: NSEvent.EventType.leftMouseDown,
-            location: menuOrigin,
-            modifierFlags: [],
-            timestamp: 0,
-            windowNumber: sender.window!.windowNumber,
-            context: sender.window!.graphicsContext,
-            eventNumber: 0,
-            clickCount: 1,
-            pressure: 1
-        )
-
-        NSMenu.popUpContextMenu(layoutMenu, with: event!, for: sender)
-    }
-
-    @objc func selectFloatingApplication(_ sender: AnyObject) {
-        let openPanel = NSOpenPanel()
-        let applicationDirectories = FileManager.default.urls(for: .applicationDirectory, in: .localDomainMask)
-
-        openPanel.canChooseFiles = true
-        openPanel.canChooseDirectories = false
-        openPanel.allowsMultipleSelection = true
-        openPanel.allowedFileTypes = ["app"]
-        openPanel.prompt = "Select"
-        openPanel.directoryURL = applicationDirectories.first
-
-        guard case openPanel.runModal() = NSApplication.ModalResponse.OK else {
-            return
-        }
-
-        for applicationURL in openPanel.urls {
-            guard let applicationBundleIdentifier = Bundle(url: applicationURL)?.bundleIdentifier else {
-                continue
-            }
-
-            addFloatingApplicationBundleIdentifier(applicationBundleIdentifier)
-        }
-
-        floatingTableView?.reloadData()
-    }
-
-    @objc func manuallyEnterFloatingApplication(_ sender: AnyObject) {
-        editingFloatingBundleIdentifier = true
-        floatingTableView?.reloadData()
-        floatingTableView?.editColumn(0, row: floatingBundleIdentifiers.count, with: nil, select: true)
-    }
-
-    private func addFloatingApplicationBundleIdentifier(_ bundleIdentifier: String) {
-        var floatingBundleIdentifiers = self.floatingBundleIdentifiers
-        floatingBundleIdentifiers.append(bundleIdentifier)
-        self.floatingBundleIdentifiers = floatingBundleIdentifiers
-
-        UserConfiguration.shared.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
-    }
-
-    @IBAction func removeFloatingApplication(_ sender: AnyObject) {
-        guard let selectedRow = floatingTableView?.selectedRow, selectedRow < self.layouts.count, selectedRow != NSTableView.noRowSelectedIndex else { return }
-
-        floatingBundleIdentifiers.remove(at: selectedRow)
-
-        UserConfiguration.shared.setFloatingBundleIdentifiers(floatingBundleIdentifiers)
-
-        floatingTableView?.reloadData()
-    }
-
     func numberOfRows(in tableView: NSTableView) -> Int {
-        switch tableView {
-        case layoutsTableView!:
-            return layouts.count
-        case floatingTableView!:
-            return floatingBundleIdentifiers.count + (editingFloatingBundleIdentifier ? 1 : 0)
-        default:
-            return 0
-        }
+        return layouts.count
     }
 
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
@@ -179,52 +87,6 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
             return nil
         }
 
-        if tableView == layoutsTableView {
-            return layouts[row]
-        } else if tableView == floatingTableView {
-            if editingFloatingBundleIdentifier && row == floatingBundleIdentifiers.count {
-                return nil
-            }
-            return floatingBundleIdentifiers[row]
-        } else {
-            return nil
-        }
-    }
-
-    func tableView(_ tableView: NSTableView, shouldEdit tableColumn: NSTableColumn?, row: Int) -> Bool {
-        guard tableView == floatingTableView && row == floatingBundleIdentifiers.count else {
-            return false
-        }
-
-        return true
-    }
-
-    func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
-        guard tableView == floatingTableView && row == floatingBundleIdentifiers.count else {
-            return
-        }
-
-        editingFloatingBundleIdentifier = false
-
-        if let identifier = object as? String {
-            addFloatingApplicationBundleIdentifier(identifier)
-        }
-
-        floatingTableView?.reloadData()
-    }
-}
-
-@objc(TileOrFloatTransformer) class TileOrFloatTransformer: ValueTransformer {
-    override class func transformedValueClass() -> AnyClass {
-        return NSString.self
-    }
-
-    override class func allowsReverseTransformation() -> Bool {
-        return false
-    }
-
-    override func transformedValue(_ value: Any?) -> Any? {
-        guard let type = value as? Int else { return nil }
-        return (type == 1 ? "Tile Windows:" : "Float Windows:") as AnyObject?
+        return layouts[row]
     }
 }
