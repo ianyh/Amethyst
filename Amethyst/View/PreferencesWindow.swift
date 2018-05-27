@@ -8,6 +8,30 @@
 
 import AppKit
 
+class PreferencesWindowController: NSWindowController {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        guard let firstItem = window?.toolbar?.items.first else {
+            return
+        }
+
+        window?.toolbar?.selectedItemIdentifier = firstItem.itemIdentifier
+        selectPane(firstItem)
+    }
+
+    @IBAction func selectPane(_ sender: NSToolbarItem) {
+        switch sender.itemIdentifier.rawValue {
+        case "general":
+            contentViewController = GeneralPreferencesViewController()
+        case "shortcuts":
+            contentViewController = ShortcutsPreferencesViewController()
+        default:
+            break
+        }
+    }
+}
+
 final class PreferencesWindow: NSWindow {
     @IBOutlet var closeMenuItem: NSMenuItem?
 

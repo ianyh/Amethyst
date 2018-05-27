@@ -7,7 +7,6 @@
 //
 
 import CCNLaunchAtLoginItem
-import CCNPreferencesWindowController
 import CoreServices
 import Crashlytics
 import Fabric
@@ -18,7 +17,7 @@ import Sparkle
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var loginItem: CCNLaunchAtLoginItem?
-    @IBOutlet var preferencesWindowController: CCNPreferencesWindowController?
+    @IBOutlet var preferencesWindowController: PreferencesWindowController?
 
     fileprivate var windowManager: WindowManager?
     private var hotKeyManager: HotKeyManager?
@@ -66,14 +65,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         #endif
 
-        preferencesWindowController?.centerToolbarItems = false
-        preferencesWindowController?.allowsVibrancy = true
         preferencesWindowController?.window?.level = .floating
-        let preferencesViewControllers = [
-            GeneralPreferencesViewController(),
-            ShortcutsPreferencesViewController()
-        ]
-        preferencesWindowController?.setPreferencesViewControllers(preferencesViewControllers)
 
         windowManager = WindowManager(userConfiguration: UserConfiguration.shared)
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
@@ -145,7 +137,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             alert.runModal()
         }
 
-        preferencesWindowController?.showPreferencesWindow()
+        preferencesWindowController?.showWindow(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     @IBAction func checkForUpdates(_ sender: AnyObject) {

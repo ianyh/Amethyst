@@ -6,11 +6,10 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
-import CCNPreferencesWindowController
 import Cocoa
 import Foundation
 
-final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWindowControllerProtocol, NSTableViewDataSource, NSTableViewDelegate {
+final class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var layouts: [String] = []
     private var floatingBundleIdentifiers: [String] = []
 
@@ -162,18 +161,6 @@ final class GeneralPreferencesViewController: NSViewController, CCNPreferencesWi
         UserConfiguration.shared.setFloatingBundleIdentifiers(floatingBundleIdentifiers)
 
         floatingTableView?.reloadData()
-    }
-
-    func preferenceIdentifier() -> String! {
-        return NSStringFromClass(type(of: self))
-    }
-
-    func preferenceIcon() -> NSImage! {
-        return NSImage(named: .preferencesGeneral)
-    }
-
-    func preferenceTitle() -> String! {
-        return "General"
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
