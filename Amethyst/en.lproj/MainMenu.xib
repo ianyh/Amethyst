@@ -78,16 +78,21 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="2383369F-98A6-4420-8EFE-319DB9588C53" autosavesConfiguration="NO" displayMode="iconAndLabel" sizeMode="regular" id="5oI-m4-akz">
+            <toolbar key="toolbar" implicitIdentifier="2383369F-98A6-4420-8EFE-319DB9588C53" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="5oI-m4-akz">
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="D4FDE95C-2F3E-4C93-8777-9FBAD1EDB613" explicitItemIdentifier="general" label="General" paletteLabel="General" image="NSPreferencesGeneral" selectable="YES" id="WV2-G9-AL4">
                         <connections>
                             <action selector="selectPane:" target="0fi-bi-huz" id="bq3-bL-T4h"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="04C17AAF-5F6B-422F-8592-E8AA78DEB9C7" explicitItemIdentifier="shortcuts" label="Shortcuts" paletteLabel="Shortcuts" tag="1" image="NSAdvanced" selectable="YES" id="j0a-87-Yvz">
+                    <toolbarItem implicitItemIdentifier="04C17AAF-5F6B-422F-8592-E8AA78DEB9C7" explicitItemIdentifier="shortcuts" label="Shortcuts" paletteLabel="Shortcuts" tag="1" image="toolbar-icon-shortcuts" selectable="YES" id="j0a-87-Yvz">
                         <connections>
                             <action selector="selectPane:" target="0fi-bi-huz" id="9kO-ms-dfq"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="A7FE5E71-A3DC-43B8-92B2-5CF107F2DB2F" explicitItemIdentifier="floating" label="Floating" paletteLabel="Floating" tag="-1" image="toolbar-icon-floating" id="QEp-pN-Lz9">
+                        <connections>
+                            <action selector="selectPane:" target="0fi-bi-huz" id="WEg-vF-5FE"/>
                         </connections>
                     </toolbarItem>
                 </allowedToolbarItems>
@@ -118,7 +123,8 @@
         </menu>
     </objects>
     <resources>
-        <image name="NSAdvanced" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
+        <image name="toolbar-icon-floating" width="32" height="32"/>
+        <image name="toolbar-icon-shortcuts" width="32" height="32"/>
     </resources>
 </document>
