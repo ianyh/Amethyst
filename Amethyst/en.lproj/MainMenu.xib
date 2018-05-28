@@ -70,7 +70,7 @@
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="pO4-7U-3HA" customClass="PreferencesWindow" customModule="Amethyst" customModuleProvider="target">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
             <rect key="contentRect" x="446" y="472" width="480" height="270"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
