@@ -14,9 +14,6 @@
 		4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */; };
 		4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */; };
 		4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */; };
-		4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B1175146CC00548DBE /* Amethyst.iconset */; };
-		4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B317517CE100548DBE /* icon-statusitem.png */; };
-		4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4015D9B417517CE100548DBE /* icon-statusitem@2x.png */; };
 		401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8971CE7E45300F89B3F /* WindowManager.swift */; };
 		401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */; };
 		401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */; };
@@ -36,8 +33,6 @@
 		402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F01742E41A00D1C936 /* Credits.rtf */; };
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
-		404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */; };
-		404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */; };
 		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
 		404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */; };
 		4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */; };
@@ -100,9 +95,6 @@
 		4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSScreen+Amethyst.swift"; sourceTree = "<group>"; };
 		4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfiguration.swift; sourceTree = "<group>"; };
-		4015D9B1175146CC00548DBE /* Amethyst.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = Amethyst.iconset; sourceTree = "<group>"; };
-		4015D9B317517CE100548DBE /* icon-statusitem.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem.png"; sourceTree = "<group>"; };
-		4015D9B417517CE100548DBE /* icon-statusitem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem@2x.png"; sourceTree = "<group>"; };
 		401BC8971CE7E45300F89B3F /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotKeyManager.swift; path = ../Events/HotKeyManager.swift; sourceTree = "<group>"; };
 		401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesListItemView.swift; sourceTree = "<group>"; };
@@ -128,8 +120,6 @@
 		402DB6F11742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		402DB6F71742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
-		404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled.png"; sourceTree = "<group>"; };
-		404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-statusitem-disabled@2x.png"; sourceTree = "<group>"; };
 		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
 		404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayoutTests.swift; sourceTree = "<group>"; };
 		4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindowController.swift; sourceTree = "<group>"; };
@@ -296,11 +286,6 @@
 			isa = PBXGroup;
 			children = (
 				401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */,
-				404A5FAC18442CD5009B86D3 /* icon-statusitem-disabled.png */,
-				404A5FAD18442CD5009B86D3 /* icon-statusitem-disabled@2x.png */,
-				4015D9B317517CE100548DBE /* icon-statusitem.png */,
-				4015D9B417517CE100548DBE /* icon-statusitem@2x.png */,
-				4015D9B1175146CC00548DBE /* Amethyst.iconset */,
 				402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */,
 				402DB6EA1742E41A00D1C936 /* InfoPlist.strings */,
 				402DB6ED1742E41A00D1C936 /* main.m */,
@@ -491,14 +476,9 @@
 				402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */,
 				40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */,
 				402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */,
-				404A5FAE18442CD5009B86D3 /* icon-statusitem-disabled.png in Resources */,
-				404A5FB018442CD5009B86D3 /* icon-statusitem-disabled@2x.png in Resources */,
-				4015D9B2175146CC00548DBE /* Amethyst.iconset in Resources */,
 				4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */,
 				40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */,
-				4015D9B517517CE100548DBE /* icon-statusitem.png in Resources */,
 				40AF71DE20BB401400F58EA9 /* FloatingPreferencesViewController.xib in Resources */,
-				4015D9B617517CE100548DBE /* icon-statusitem@2x.png in Resources */,
 				40E705D8176EAD7800850DA6 /* default.amethyst in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
