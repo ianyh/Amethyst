@@ -139,8 +139,10 @@ final class ScreenManager: NSObject {
             // propagate the completion handler if we have one
             self.onReflowCompletion?()
         }
-        self.onReflowInitiation?()
-        reflowOperation?.enqueue(OperationQueue.main)
+        onReflowInitiation?()
+        if let reflowOperation = reflowOperation {
+            reflowOperation.enqueue(OperationQueue.main)
+        }
     }
 
     func updateCurrentLayout(_ updater: (Layout) -> Void) {

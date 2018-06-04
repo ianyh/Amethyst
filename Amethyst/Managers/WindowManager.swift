@@ -656,16 +656,16 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
 
             if screenManager == nil {
                 screenManager = ScreenManager(screen: screen, screenIdentifier: screenIdentifier, delegate: self, userConfiguration: userConfiguration)
-                screenManager!.onReflowInitiation = { [unowned self] in
-                    self.mouseStateKeeper.handleReflowEvent()
+                screenManager!.onReflowInitiation = { [weak self] in
+                    self?.mouseStateKeeper.handleReflowEvent()
                 }
-                screenManager!.onReflowCompletion = { [unowned self] in
+                screenManager!.onReflowCompletion = { [weak self] in
                     // This handler will be executed by the Operation, in a queue.  Although async
                     // (and although the docs say that it executes in a separate thread), I consider
                     // this to be thread safe, at least safe enough, because we always want the
                     // latest time that a reflow took place.
-                    self.mouseStateKeeper.handleReflowEvent()
-                    self.lastReflowTime = Date()
+                    self?.mouseStateKeeper.handleReflowEvent()
+                    self?.lastReflowTime = Date()
                 }
                 screenManagersCache[screenIdentifier] = screenManager
             }
