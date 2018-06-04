@@ -97,8 +97,9 @@ enum CommandKey: String {
     case toggleFocusFollowsMouse = "toggle-focus-follows-mouse"
 }
 
-protocol UserConfigurationDelegate: class {
+protocol UserConfigurationDelegate: AnyObject {
     func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration)
+    func configurationAccessibilityPermissionsDidChange(_ userConfiguration: UserConfiguration)
 }
 
 final class UserConfiguration: NSObject {
@@ -110,6 +111,11 @@ final class UserConfiguration: NSObject {
     var tilingEnabled = true {
         didSet {
             delegate?.configurationGlobalTilingDidChange(self)
+        }
+    }
+    var hasAccessibilityPermissions = true {
+        didSet {
+            delegate?.configurationAccessibilityPermissionsDidChange(self)
         }
     }
 
@@ -159,6 +165,10 @@ final class UserConfiguration: NSObject {
     }
 
     func load() {
+        let hasAccessibilityPermissions = confirmAccessibilityPermissions()
+        if self.hasAccessibilityPermissions != hasAccessibilityPermissions {
+            self.hasAccessibilityPermissions = hasAccessibilityPermissions
+        }
         loadConfigurationFile()
         loadConfiguration()
     }
@@ -260,10 +270,28 @@ final class UserConfiguration: NSObject {
             }
         }
 
+        let injectedHandler: () -> Void = { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+
+            let hasAccessibilityPermissions = self.confirmAccessibilityPermissions()
+
+            if self.hasAccessibilityPermissions != hasAccessibilityPermissions {
+                self.hasAccessibilityPermissions = hasAccessibilityPermissions
+            }
+
+            guard hasAccessibilityPermissions else {
+                return
+            }
+
+            handler()
+        }
+
         hotKeyRegistrar.registerHotKey(
             with: commandKeyString,
             modifiers: commandFlags,
-            handler: handler,
+            handler: injectedHandler,
             defaultsKey: commandKey,
             override: override
         )
@@ -396,5 +424,15 @@ final class UserConfiguration: NSObject {
 
     func shouldSendCrashReports() -> Bool {
         return storage.bool(forKey: ConfigurationKey.sendCrashReports.rawValue)
+    }
+}
+
+extension UserConfiguration {
+    @discardableResult func confirmAccessibilityPermissions() -> Bool {
+        let options = [
+            kAXTrustedCheckOptionPrompt.takeRetainedValue() as String: true
+        ]
+
+        return AXIsProcessTrustedWithOptions(options as CFDictionary)
     }
 }
