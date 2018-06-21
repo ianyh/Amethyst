@@ -333,11 +333,11 @@ final class UserConfiguration: NSObject {
             if floatingBundleIdentifier.contains("*") {
                 let sanitizedIdentifier = floatingBundleIdentifier.replacingOccurrences(of: "*", with: "")
                 if runningApplication.bundleIdentifier?.hasPrefix(sanitizedIdentifier) == true {
-                    return !useIdentifiersAsBlacklist
+                    return useIdentifiersAsBlacklist
                 }
             } else {
                 if floatingBundleIdentifier == runningApplication.bundleIdentifier {
-                    return !useIdentifiersAsBlacklist
+                    return useIdentifiersAsBlacklist
                 }
             }
         }
