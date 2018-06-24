@@ -247,6 +247,32 @@ final class UserConfigurationTests: QuickSpec {
                 
                 expect(configuration.runningApplicationShouldFloat(bundleIdentifiable)).to(beTrue())
             }
+            
+            it("floats for prefixed wildcard matches") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+                
+                storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                storage.set(["*.Test"], forKey: .floatingBundleIdentifiers)
+                
+                let bundleIdentifiable = TestBundleIdentifiable()
+                bundleIdentifiable.bundleIdentifier = "test.test.Test"
+                
+                expect(configuration.runningApplicationShouldFloat(bundleIdentifiable)).to(beTrue())
+            }
+            
+            it("floats for inline wildcard matches") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+                
+                storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                storage.set(["test.*.Test"], forKey: .floatingBundleIdentifiers)
+                
+                let bundleIdentifiable = TestBundleIdentifiable()
+                bundleIdentifiable.bundleIdentifier = "test.foo.Test"
+                
+                expect(configuration.runningApplicationShouldFloat(bundleIdentifiable)).to(beTrue())
+            }
 
             it("does not float for exact mismatches") {
                 let storage = TestConfigurationStorage()
