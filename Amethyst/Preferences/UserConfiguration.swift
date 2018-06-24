@@ -359,9 +359,22 @@ final class UserConfiguration: NSObject {
 
         for floatingBundleIdentifier in floatingBundleIdentifiers {
             if floatingBundleIdentifier.contains("*") {
-                let sanitizedIdentifier = floatingBundleIdentifier.replacingOccurrences(of: "*", with: "")
-                if runningApplication.bundleIdentifier?.hasPrefix(sanitizedIdentifier) == true {
-                    return useIdentifiersAsBlacklist
+                do {
+                    guard let bundleIdentifier = runningApplication.bundleIdentifier else {
+                        continue
+                    }
+
+                    let pattern = floatingBundleIdentifier
+                        .replacingOccurrences(of: ".", with: "\\.")
+                        .replacingOccurrences(of: "*", with: ".*")
+                    let regex = try NSRegularExpression(pattern: "^\(pattern)$", options: [])
+                    let fullRange = NSRange(location: 0, length: bundleIdentifier.count)
+
+                    if regex.firstMatch(in: bundleIdentifier, options: [], range: fullRange) != nil {
+                        return useIdentifiersAsBlacklist
+                    }
+                } catch {
+                    continue
                 }
             } else {
                 if floatingBundleIdentifier == runningApplication.bundleIdentifier {
