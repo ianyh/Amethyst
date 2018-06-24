@@ -10,17 +10,45 @@ import Foundation
 import SwiftyJSON
 
 protocol ConfigurationStorage {
-    func object(forKey defaultName: String) -> Any?
-    func array(forKey defaultName: String) -> [Any]?
-    func bool(forKey defaultName: String) -> Bool
-    func float(forKey defaultName: String) -> Float
-    func stringArray(forKey defaultName: String) -> [String]?
+    func object(forKey key: ConfigurationKey) -> Any?
+    func array(forKey key: ConfigurationKey) -> [Any]?
+    func bool(forKey key: ConfigurationKey) -> Bool
+    func float(forKey key: ConfigurationKey) -> Float
+    func stringArray(forKey key: ConfigurationKey) -> [String]?
 
-    func set(_ value: Any?, forKey defaultName: String)
-    func set(_ value: Bool, forKey defaultName: String)
+    func set(_ value: Any?, forKey key: ConfigurationKey)
+    func set(_ value: Bool, forKey key: ConfigurationKey)
 }
 
-extension UserDefaults: ConfigurationStorage {}
+extension UserDefaults: ConfigurationStorage {
+    func object(forKey key: ConfigurationKey) -> Any? {
+        return object(forKey: key.rawValue)
+    }
+
+    func array(forKey key: ConfigurationKey) -> [Any]? {
+        return array(forKey: key.rawValue)
+    }
+
+    func bool(forKey key: ConfigurationKey) -> Bool {
+        return bool(forKey: key.rawValue)
+    }
+
+    func float(forKey key: ConfigurationKey) -> Float {
+        return float(forKey: key.rawValue)
+    }
+
+    func stringArray(forKey key: ConfigurationKey) -> [String]? {
+        return stringArray(forKey: key.rawValue)
+    }
+
+    func set(_ value: Any?, forKey key: ConfigurationKey) {
+        set(value, forKey: key.rawValue)
+    }
+
+    func set(_ value: Bool, forKey key: ConfigurationKey) {
+        set(value, forKey: key.rawValue)
+    }
+}
 
 enum ConfigurationKey: String {
     case layouts = "layouts"
@@ -177,7 +205,7 @@ final class UserConfiguration: NSObject {
         for key in ConfigurationKey.defaultsKeys {
             let value = configuration?[key.rawValue]
             let defaultValue = defaultConfiguration?[key.rawValue]
-            let existingValue = storage.object(forKey: key.rawValue)
+            let existingValue = storage.object(forKey: key)
 
             let hasLocalConfigurationValue = (value != nil && value?.error == nil)
             let hasDefaultConfigurationValue = (defaultValue != nil && defaultValue?.error == nil)
@@ -187,7 +215,7 @@ final class UserConfiguration: NSObject {
                 continue
             }
 
-            storage.set(hasLocalConfigurationValue ? value?.object : defaultValue?.object as Any?, forKey: key.rawValue)
+            storage.set(hasLocalConfigurationValue ? value?.object : defaultValue?.object as Any?, forKey: key)
         }
     }
 
@@ -314,16 +342,16 @@ final class UserConfiguration: NSObject {
     }
 
     func layoutStrings() -> [String] {
-        let layoutStrings = storage.array(forKey: ConfigurationKey.layouts.rawValue) as? [String]
+        let layoutStrings = storage.array(forKey: .layouts) as? [String]
         return layoutStrings ?? []
     }
 
     func setLayoutStrings(_ layoutStrings: [String]) {
-        storage.set(layoutStrings as Any?, forKey: ConfigurationKey.layouts.rawValue)
+        storage.set(layoutStrings as Any?, forKey: .layouts)
     }
 
     func runningApplicationShouldFloat(_ runningApplication: BundleIdentifiable) -> Bool {
-        guard let floatingBundleIdentifiers = storage.object(forKey: ConfigurationKey.floatingBundleIdentifiers.rawValue) as? [String] else {
+        guard let floatingBundleIdentifiers = storage.object(forKey: .floatingBundleIdentifiers) as? [String] else {
             return false
         }
 
@@ -346,84 +374,84 @@ final class UserConfiguration: NSObject {
     }
 
     func ignoreMenuBar() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.ignoreMenuBar.rawValue)
+        return storage.bool(forKey: .ignoreMenuBar)
     }
 
     func floatSmallWindows() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.floatSmallWindows.rawValue)
+        return storage.bool(forKey: .floatSmallWindows)
     }
 
     func mouseFollowsFocus() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.mouseFollowsFocus.rawValue)
+        return storage.bool(forKey: .mouseFollowsFocus)
     }
 
     func focusFollowsMouse() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.focusFollowsMouse.rawValue)
+        return storage.bool(forKey: .focusFollowsMouse)
     }
 
     func toggleFocusFollowsMouse() {
-        storage.set(!focusFollowsMouse(), forKey: ConfigurationKey.focusFollowsMouse.rawValue)
+        storage.set(!focusFollowsMouse(), forKey: .focusFollowsMouse)
     }
 
     func mouseSwapsWindows() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.mouseSwapsWindows.rawValue)
+        return storage.bool(forKey: .mouseSwapsWindows)
     }
 
     func mouseResizesWindows() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.mouseResizesWindows.rawValue)
+        return storage.bool(forKey: .mouseResizesWindows)
     }
 
     func enablesLayoutHUD() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.layoutHUD.rawValue)
+        return storage.bool(forKey: .layoutHUD)
     }
 
     func enablesLayoutHUDOnSpaceChange() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.layoutHUDOnSpaceChange.rawValue)
+        return storage.bool(forKey: .layoutHUDOnSpaceChange)
     }
 
     func useCanaryBuild() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.useCanaryBuild.rawValue)
+        return storage.bool(forKey: .useCanaryBuild)
     }
 
     func windowMarginSize() -> CGFloat {
-        return CGFloat(storage.float(forKey: ConfigurationKey.windowMarginSize.rawValue))
+        return CGFloat(storage.float(forKey: .windowMarginSize))
     }
 
     func windowMargins() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.windowMargins.rawValue)
+        return storage.bool(forKey: .windowMargins)
     }
 
     func windowMinimumHeight() -> CGFloat {
-        return CGFloat(storage.float(forKey: ConfigurationKey.windowMinimumHeight.rawValue))
+        return CGFloat(storage.float(forKey: .windowMinimumHeight))
     }
 
     func windowMinimumWidth() -> CGFloat {
-        return CGFloat(storage.float(forKey: ConfigurationKey.windowMinimumWidth.rawValue))
+        return CGFloat(storage.float(forKey: .windowMinimumWidth))
     }
 
     func windowResizeStep() -> CGFloat {
-        return CGFloat(storage.float(forKey: ConfigurationKey.windowResizeStep.rawValue) / 100.0)
+        return CGFloat(storage.float(forKey: .windowResizeStep) / 100.0)
     }
 
     func floatingBundleIdentifiersIsBlacklist() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.floatingBundleIdentifiersIsBlacklist.rawValue)
+        return storage.bool(forKey: .floatingBundleIdentifiersIsBlacklist)
     }
 
     func floatingBundleIdentifiers() -> [String] {
-        let floatingBundleIdentifiers = storage.stringArray(forKey: ConfigurationKey.floatingBundleIdentifiers.rawValue)
+        let floatingBundleIdentifiers = storage.stringArray(forKey: .floatingBundleIdentifiers)
         return floatingBundleIdentifiers ?? []
     }
 
     func setFloatingBundleIdentifiers(_ floatingBundleIdentifiers: [String]) {
-        storage.set(floatingBundleIdentifiers as Any?, forKey: ConfigurationKey.floatingBundleIdentifiers.rawValue)
+        storage.set(floatingBundleIdentifiers as Any?, forKey: .floatingBundleIdentifiers)
     }
 
     func sendNewWindowsToMainPane() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.newWindowsToMain.rawValue)
+        return storage.bool(forKey: .newWindowsToMain)
     }
 
     func shouldSendCrashReports() -> Bool {
-        return storage.bool(forKey: ConfigurationKey.sendCrashReports.rawValue)
+        return storage.bool(forKey: .sendCrashReports)
     }
 }
 
