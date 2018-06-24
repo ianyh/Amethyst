@@ -12,34 +12,34 @@ import Quick
 import SwiftyJSON
 
 fileprivate final class TestConfigurationStorage: ConfigurationStorage {
-    var storage: [String: Any] = [:]
+    var storage: [ConfigurationKey: Any] = [:]
 
-    func object(forKey defaultName: String) -> Any? {
-        return storage[defaultName]
+    func object(forKey key: ConfigurationKey) -> Any? {
+        return storage[key]
     }
 
-    func array(forKey defaultName: String) -> [Any]? {
-        return storage[defaultName] as? [Any]
+    func array(forKey key: ConfigurationKey) -> [Any]? {
+        return storage[key] as? [Any]
     }
 
-    func bool(forKey defaultName: String) -> Bool {
-        return (storage[defaultName] as? Bool) ?? false
+    func bool(forKey key: ConfigurationKey) -> Bool {
+        return (storage[key] as? Bool) ?? false
     }
 
-    func float(forKey defaultName: String) -> Float {
-        return (storage[defaultName] as? Float) ?? 0
+    func float(forKey key: ConfigurationKey) -> Float {
+        return (storage[key] as? Float) ?? 0
     }
 
-    func stringArray(forKey defaultName: String) -> [String]? {
-        return storage[defaultName] as? [String]
+    func stringArray(forKey key: ConfigurationKey) -> [String]? {
+        return storage[key] as? [String]
     }
     
-    func set(_ value: Any?, forKey defaultName: String) {
-        storage[defaultName] = value
+    func set(_ value: Any?, forKey key: ConfigurationKey) {
+        storage[key] = value
     }
 
-    func set(_ value: Bool, forKey defaultName: String) {
-        storage[defaultName] = value as AnyObject?
+    func set(_ value: Bool, forKey key: ConfigurationKey) {
+        storage[key] = value
     }
 }
 
@@ -53,7 +53,7 @@ final class UserConfigurationTests: QuickSpec {
 
         init() {}
 
-        func registerHotKey(with string: String, modifiers: AMModifierFlags, handler: @escaping () -> (), defaultsKey: String, override: Bool) {
+        func registerHotKey(with string: String?, modifiers: AMModifierFlags?, handler: @escaping () -> Void, defaultsKey: String, override: Bool) {
             keyString = string
             self.modifiers = modifiers
             self.handler = handler
@@ -213,7 +213,8 @@ final class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
 
-                storage.set([], forKey: "floating")
+                storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                storage.set([] as Any?, forKey: .floatingBundleIdentifiers)
 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -225,7 +226,8 @@ final class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.set(["test.test.Test"], forKey: "floating")
+                storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                storage.set(["test.test.Test"], forKey: .floatingBundleIdentifiers)
 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -237,7 +239,8 @@ final class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.set(["test.test.*"], forKey: "floating")
+                storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                storage.set(["test.test.*"], forKey: .floatingBundleIdentifiers)
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -249,7 +252,8 @@ final class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.set(["test.test.Other"], forKey: "floating")
+                storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                storage.set(["test.test.Other"], forKey: .floatingBundleIdentifiers)
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -261,7 +265,8 @@ final class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
                 
-                storage.set(["test.other.*"], forKey: "floating")
+                storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                storage.set(["test.other.*"], forKey: .floatingBundleIdentifiers)
                 
                 let bundleIdentifiable = TestBundleIdentifiable()
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
@@ -275,7 +280,7 @@ final class UserConfigurationTests: QuickSpec {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
 
-                storage.set(true, forKey: "focus-follows-mouse")
+                storage.set(true, forKey: .focusFollowsMouse)
 
                 expect(configuration.focusFollowsMouse()).to(beTrue())
 
@@ -296,7 +301,7 @@ final class UserConfigurationTests: QuickSpec {
                     ]
                 ]
 
-                storage.set(existingLayouts, forKey: ConfigurationKey.layouts.rawValue)
+                storage.set(existingLayouts, forKey: .layouts)
 
                 expect(configuration.layoutStrings()).to(equal(existingLayouts))
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
@@ -319,7 +324,7 @@ final class UserConfigurationTests: QuickSpec {
                     ]
                 ]
                 
-                storage.set(existingLayouts, forKey: ConfigurationKey.layouts.rawValue)
+                storage.set(existingLayouts, forKey: .layouts)
                 
                 expect(configuration.layoutStrings()).to(equal(existingLayouts))
                 configuration.configuration = JSON(localConfiguration)

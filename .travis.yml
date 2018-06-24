@@ -1,9 +1,4 @@
 language: objective-c
-osx_image: xcode8.3
-before_install:
-        - brew install carthage || true
-        - brew upgrade carthage || true
-        - export LC_ALL="en_US.UTF-8"
-        - carthage bootstrap --platform mac --cache-builds
+osx_image: xcode9.4
 script:
-        - set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | xcpretty
+	- set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | xcpretty
