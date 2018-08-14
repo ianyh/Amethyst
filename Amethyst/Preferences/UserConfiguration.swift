@@ -130,6 +130,34 @@ protocol UserConfigurationDelegate: AnyObject {
     func configurationAccessibilityPermissionsDidChange(_ userConfiguration: UserConfiguration)
 }
 
+struct FloatingBundle: Equatable {
+    let id: String
+    let windowTitles: [String]
+
+    func encoded() -> Any {
+        return [
+            "id": id,
+            "window-titles": windowTitles
+        ]
+    }
+
+    static func from(_ object: Any) -> FloatingBundle? {
+        if let id = object as? String {
+            return FloatingBundle(id: id, windowTitles: [])
+        } else if let dict = object as? [String: Any] {
+            let json = JSON(dict)
+
+            guard let id = json["id"].string, let windowTitles = json["window-titles"].arrayObject as? [String] else {
+                return nil
+            }
+
+            return FloatingBundle(id: id, windowTitles: windowTitles)
+        } else {
+            return nil
+        }
+    }
+}
+
 final class UserConfiguration: NSObject {
     static let shared = UserConfiguration()
     private let storage: ConfigurationStorage
@@ -455,8 +483,20 @@ final class UserConfiguration: NSObject {
         return floatingBundleIdentifiers ?? []
     }
 
+    func floatingBundles() -> [FloatingBundle] {
+        guard let floatingBundles = storage.array(forKey: .floatingBundleIdentifiers) else {
+            return []
+        }
+
+        return floatingBundles.compactMap { FloatingBundle.from($0) }
+    }
+
     func setFloatingBundleIdentifiers(_ floatingBundleIdentifiers: [String]) {
         storage.set(floatingBundleIdentifiers as Any?, forKey: .floatingBundleIdentifiers)
+    }
+
+    func setFloatingBundles(_ floatingBundles: [FloatingBundle]) {
+        storage.set(floatingBundles.map { $0.encoded() }, forKey: .floatingBundleIdentifiers)
     }
 
     func sendNewWindowsToMainPane() -> Bool {
