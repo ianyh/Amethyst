@@ -12,6 +12,8 @@ class PreferencesWindowController: NSWindowController {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        window?.title = ""
+
         guard let firstItem = window?.toolbar?.items.first else {
             return
         }
