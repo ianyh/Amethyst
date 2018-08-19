@@ -1,13 +1,16 @@
 disabled_rules:
-        - function_body_length
-        - closing_brace
-        - statement_position
-        - force_cast
-        - force_try
-        - variable_name_min_length
+    - function_body_length
+    - closing_brace
+    - statement_position
+    - force_cast
+    - force_try
+    - variable_name_min_length
 included:
-        - Amethyst
+    - Amethyst
 line_length: 200
 file_length: 500
 type_body_length: 400
 cyclomatic_complexity: 15
+identifier_name:
+    excluded:
+        - id
