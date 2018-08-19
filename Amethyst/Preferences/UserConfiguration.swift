@@ -130,9 +130,14 @@ protocol UserConfigurationDelegate: AnyObject {
     func configurationAccessibilityPermissionsDidChange(_ userConfiguration: UserConfiguration)
 }
 
-struct FloatingBundle: Equatable {
-    let id: String
-    let windowTitles: [String]
+class FloatingBundle: NSObject {
+    @objc dynamic let id: String
+    @objc dynamic let windowTitles: [String]
+
+    init(id: String, windowTitles: [String]) {
+        self.id = id
+        self.windowTitles = windowTitles
+    }
 
     func encoded() -> Any {
         return [
