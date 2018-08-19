@@ -9,26 +9,40 @@
 import Cocoa
 import Foundation
 
+class ManualFloatingBundleID: NSObject {
+    @objc dynamic var id: String = ""
+    @objc dynamic var windowTitles: [String] = []
+}
+
 final class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
-    private var floatingBundleIdentifiers: [String] = []
+    private var floatingBundles: [FloatingBundle] = [] {
+        didSet {
+            guard let arrayController = arrayController else {
+                return
+            }
 
-    @IBOutlet var floatingTableView: NSTableView?
+            arrayController.remove(contentsOf: arrayController.arrangedObjects as! [Any])
+            arrayController.add(contentsOf: floatingBundles)
+        }
+    }
 
-    private var editingFloatingBundleIdentifier = false
+    @IBOutlet var floatingTableView: NSTableView!
+    @IBOutlet var windowTitlesTableView: NSTableView!
+    @IBOutlet var windowTitlesCoverView: NSView!
+    @IBOutlet var arrayController: NSArrayController!
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        floatingTableView?.dataSource = self
-        floatingTableView?.delegate = self
+        windowTitlesCoverView.wantsLayer = true
+        windowTitlesCoverView.layer?.backgroundColor = NSColor.black.withAlphaComponent(0.3).cgColor
     }
 
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        floatingBundleIdentifiers = UserConfiguration.shared.floatingBundleIdentifiers()
-
-        floatingTableView?.reloadData()
+        floatingBundles = UserConfiguration.shared.floatingBundles()
+        arrayController?.setSelectionIndexes(IndexSet())
     }
 
     @IBAction func addFloatingApplication(_ sender: NSButton) {
@@ -79,22 +93,36 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
 
             addFloatingApplicationBundleIdentifier(applicationBundleIdentifier)
         }
-
-        floatingTableView?.reloadData()
     }
 
     @objc func manuallyEnterFloatingApplication(_ sender: AnyObject) {
-        editingFloatingBundleIdentifier = true
-        floatingTableView?.reloadData()
-        floatingTableView?.editColumn(0, row: floatingBundleIdentifiers.count, with: nil, select: true)
+        guard let window = view.window else {
+            return
+        }
+
+        let alert = NSAlert()
+        let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
+        alert.accessoryView = field
+        alert.icon = nil
+        alert.messageText = "Application Bundle ID"
+        alert.addButton(withTitle: "Add")
+        alert.addButton(withTitle: "Cancel")
+        alert.beginSheetModal(for: window) { [weak self] response in
+            guard response == .alertFirstButtonReturn else {
+                return
+            }
+
+            self?.addFloatingApplicationBundleIdentifier(field.stringValue)
+        }
     }
 
     private func addFloatingApplicationBundleIdentifier(_ bundleIdentifier: String) {
-        var floatingBundleIdentifiers = self.floatingBundleIdentifiers
-        floatingBundleIdentifiers.append(bundleIdentifier)
-        self.floatingBundleIdentifiers = floatingBundleIdentifiers
+        var floatingBundles = self.floatingBundles
+        let floatingBundle = FloatingBundle(id: bundleIdentifier, windowTitles: [])
+        floatingBundles.append(floatingBundle)
+        self.floatingBundles = floatingBundles
 
-        UserConfiguration.shared.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
+        UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
     }
 
     @IBAction func removeFloatingApplication(_ sender: AnyObject) {
@@ -102,51 +130,65 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
             return
         }
 
-        guard floatingTableView.selectedRow < self.floatingBundleIdentifiers.count, floatingTableView.selectedRow != NSTableView.noRowSelectedIndex else {
+        guard floatingTableView.selectedRow < floatingBundles.count, floatingTableView.selectedRow != NSTableView.noRowSelectedIndex else {
             return
         }
 
-        var floatingBundleIdentifiers = self.floatingBundleIdentifiers
-        floatingBundleIdentifiers.remove(at: floatingTableView.selectedRow)
-        self.floatingBundleIdentifiers = floatingBundleIdentifiers
+        floatingBundles.remove(at: floatingTableView.selectedRow)
 
-        UserConfiguration.shared.setFloatingBundleIdentifiers(self.floatingBundleIdentifiers)
-
-        floatingTableView.reloadData()
+        UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
     }
 
-    func numberOfRows(in tableView: NSTableView) -> Int {
-        return floatingBundleIdentifiers.count + (editingFloatingBundleIdentifier ? 1 : 0)
-    }
-
-    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
-        guard row > -1 else {
-            return nil
-        }
-
-        if editingFloatingBundleIdentifier && row == floatingBundleIdentifiers.count {
-            return nil
-        }
-
-        return floatingBundleIdentifiers[row]
-    }
-
-    func tableView(_ tableView: NSTableView, shouldEdit tableColumn: NSTableColumn?, row: Int) -> Bool {
-        return row == floatingBundleIdentifiers.count
-    }
-
-    func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
-        guard row == floatingBundleIdentifiers.count else {
+    @IBAction func addWindowTitle(_ sender: AnyObject) {
+        guard let window = view.window else {
             return
         }
 
-        editingFloatingBundleIdentifier = false
+        let alert = NSAlert()
+        let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 200, height: 24))
+        alert.accessoryView = field
+        alert.icon = nil
+        alert.messageText = "Window Title"
+        alert.addButton(withTitle: "Add")
+        alert.addButton(withTitle: "Cancel")
+        alert.beginSheetModal(for: window) { [weak self] response in
+            guard response == .alertFirstButtonReturn else {
+                return
+            }
 
-        if let identifier = object as? String {
-            addFloatingApplicationBundleIdentifier(identifier)
+            self?.addWindowTitleToSelectedApplication(field.stringValue)
+        }
+    }
+
+    @IBAction func removeWindowTitle(_ sender: AnyObject) {
+        let selection = arrayController.selection as AnyObject
+
+        guard let id = selection.value(forKey: "id") as? String, let windowTitles = selection.value(forKey: "windowTitles") as? [String] else {
+            return
         }
 
-        floatingTableView?.reloadData()
+        guard windowTitlesTableView.selectedRow < windowTitles.count, windowTitlesTableView.selectedRow != NSTableView.noRowSelectedIndex else {
+            return
+        }
+
+        let title = windowTitles[windowTitlesTableView.selectedRow]
+        let updatedBundle = FloatingBundle(id: id, windowTitles: windowTitles.filter { $0 != title })
+        floatingBundles.index { $0.id == id }.flatMap { floatingBundles[$0] = updatedBundle }
+
+        UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
+    }
+
+    private func addWindowTitleToSelectedApplication(_ title: String) {
+        let selection = arrayController.selection as AnyObject
+
+        guard let id = selection.value(forKey: "id") as? String, let windowTitles = selection.value(forKey: "windowTitles") as? [String] else {
+            return
+        }
+
+        let updatedBundle = FloatingBundle(id: id, windowTitles: windowTitles + [title])
+        floatingBundles.index { $0.id == id }.flatMap { floatingBundles[$0] = updatedBundle }
+
+        UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
     }
 }
 
@@ -176,5 +218,19 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
         }
 
         return boolean ? 0 : 1
+    }
+}
+
+@objc(AllWindowsHiddenTitlesCountTransformer) class AllWindowsHiddenTitlesCountTransformer: ValueTransformer {
+    override class func transformedValueClass() -> AnyClass {
+        return NSNumber.self
+    }
+
+    override func transformedValue(_ value: Any?) -> Any? {
+        guard let count = value as? Int else {
+            return false
+        }
+
+        return count != 0
     }
 }
