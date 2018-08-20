@@ -139,6 +139,14 @@ class FloatingBundle: NSObject {
         self.windowTitles = windowTitles
     }
 
+    override func isEqual(_ object: Any?) -> Bool {
+        guard let other = object as? FloatingBundle else {
+            return false
+        }
+
+        return other.id == id && other.windowTitles == windowTitles
+    }
+
     func encoded() -> Any {
         return [
             "id": id,
