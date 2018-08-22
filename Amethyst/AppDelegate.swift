@@ -6,17 +6,16 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
-import CCNLaunchAtLoginItem
 import CoreServices
 import Crashlytics
 import Fabric
 import Foundation
+import LoginServiceKit
 import RxCocoa
 import RxSwift
 import Sparkle
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    private var loginItem: CCNLaunchAtLoginItem?
     @IBOutlet var preferencesWindowController: PreferencesWindowController?
 
     fileprivate var windowManager: WindowManager?
@@ -89,8 +88,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         versionMenuItem?.title = "Version \(shortVersion) (\(version))"
         toggleGlobalTilingMenuItem?.title = "Disable"
 
-        loginItem = CCNLaunchAtLoginItem(for: Bundle.main)
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
+        startAtLoginMenuItem?.state = (LoginServiceKit.isExistLoginItems(at: Bundle.main.bundlePath) ? .on : .off)
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -104,11 +102,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func toggleStartAtLogin(_ sender: AnyObject) {
         if startAtLoginMenuItem?.state == .off {
-            loginItem?.activate()
+            LoginServiceKit.addLoginItems(at: Bundle.main.bundlePath)
         } else {
-            loginItem?.deActivate()
+            LoginServiceKit.removeLoginItems(at: Bundle.main.bundlePath)
         }
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
+        startAtLoginMenuItem?.state = (LoginServiceKit.isExistLoginItems(at: Bundle.main.bundlePath) ? .on : .off)
     }
 
     @IBAction func toggleGlobalTiling(_ sender: AnyObject) {
