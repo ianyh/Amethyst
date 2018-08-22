@@ -1,10 +1,10 @@
 PODS:
   - Cartography (1.1.0)
-  - CCNLaunchAtLoginItem (0.1.0)
   - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
   - Fabric (1.6.10)
   - Log (1.0)
+  - LoginServiceKit (1.2.0)
   - MASShortcut (2.3.3)
   - Nimble (7.1.2)
   - Quick (1.3.0)
@@ -21,10 +21,10 @@ PODS:
 
 DEPENDENCIES:
   - Cartography (~> 1.1.0)
-  - CCNLaunchAtLoginItem (~> 0.1)
   - Crashlytics
   - Fabric
   - Log
+  - LoginServiceKit (from `https://github.com/Clipy/LoginServiceKit.git`)
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
   - Nimble
   - Quick
@@ -36,12 +36,17 @@ DEPENDENCIES:
   - SwiftyJSON (~> 3.1)
 
 EXTERNAL SOURCES:
+  LoginServiceKit:
+    :git: https://github.com/Clipy/LoginServiceKit.git
   MASShortcut:
     :git: https://github.com/ianyh/MASShortcut
   Silica:
     :git: https://github.com/ianyh/Silica
 
 CHECKOUT OPTIONS:
+  LoginServiceKit:
+    :commit: afd5c029251790bc410d37b92dd1e1f50ef4b0db
+    :git: https://github.com/Clipy/LoginServiceKit.git
   MASShortcut:
     :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
     :git: https://github.com/ianyh/MASShortcut
@@ -51,10 +56,10 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Cartography: 0538ccb4044acbbda2266335fc58cb4228794d90
-  CCNLaunchAtLoginItem: 84638e22b5e50f861600eed9440d4a0c3d5a8f27
   Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
   Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
   Log: 5e368c9528db07517d18d2d04ff5fe2b6f5a1e21
+  LoginServiceKit: 4e51d3007cd6fc1d0453ba98c3328fcf06fa27c1
   MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
   Nimble: 3835ba9f459daa6b347f8a8e110aaae8ca1920a8
   Quick: 03278013f71aa05fe9ecabc94fbcc6835f1ee76f
@@ -65,6 +70,6 @@ SPEC CHECKSUMS:
   Sparkle: ccfb47699feea7b40b51cf3176f69404e5b1da6c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 60941d1ce28c0b2203a9604b8a1a34e7bf164835
+PODFILE CHECKSUM: 3722a6f13d5262e0e2530db501d4670a211b1f5f
 
 COCOAPODS: 1.4.0

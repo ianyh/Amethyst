@@ -7,8 +7,8 @@ target 'Amethyst' do
   pod 'Crashlytics'
 
   pod 'Cartography', '~> 1.1.0'
-  pod 'CCNLaunchAtLoginItem', '~> 0.1'
   pod 'Log'
+  pod 'LoginServiceKit', :git => 'https://github.com/Clipy/LoginServiceKit.git'
   pod 'MASShortcut', git: 'https://github.com/ianyh/MASShortcut'
   pod 'RxCocoa'
   pod 'RxSwift'
