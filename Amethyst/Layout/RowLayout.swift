@@ -16,9 +16,9 @@ final class RowReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func main() {
+    func frameAssignments() -> [FrameAssignment] {
         guard !windows.isEmpty else {
-            return
+            return []
         }
 
         let mainPaneCount = min(windows.count, layout.mainPaneCount)
@@ -32,39 +32,47 @@ final class RowReflowOperation: ReflowOperation {
 
         let focusedWindow = SIWindow.focused()
 
-        let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
             var windowFrame: CGRect = .zero
+            let isMain = frameAssignments.count < mainPaneCount
+            var scaleFactor: CGFloat
 
-            if frameAssignments.count < mainPaneCount {
+            if isMain {
+                scaleFactor = screenFrame.size.height / mainPaneWindowHeight
                 windowFrame.origin.x = screenFrame.origin.x
                 windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * CGFloat(frameAssignments.count))
                 windowFrame.size.width = screenFrame.width
                 windowFrame.size.height = mainPaneWindowHeight
             } else {
+                scaleFactor = screenFrame.size.height / secondaryPaneWindowHeight / CGFloat(secondaryPaneCount)
                 windowFrame.origin.x = screenFrame.origin.x
-                windowFrame.origin.y = screenFrame.origin.y + mainPaneWindowHeight + (secondaryPaneWindowHeight * CGFloat(frameAssignments.count - mainPaneCount))
+                windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * CGFloat(mainPaneCount)) + (secondaryPaneWindowHeight * CGFloat(frameAssignments.count - mainPaneCount))
                 windowFrame.size.width = screenFrame.width
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
+            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .vertical, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment(
                 frame: windowFrame,
                 window: window,
                 focused: window.isEqual(to: focusedWindow),
-                screenFrame: screenFrame
+                screenFrame: screenFrame,
+                resizeRules: resizeRules
             )
 
             assignments.append(frameAssignment)
 
             return assignments
         }
+    }
 
+    override func main() {
         guard !isCancelled else {
             return
         }
 
-        layout.performFrameAssignments(frameAssignments)
+        layout.performFrameAssignments(frameAssignments())
     }
 }
 
@@ -75,7 +83,7 @@ final class RowLayout: Layout {
     let windowActivityCache: WindowActivityCache
 
     fileprivate var mainPaneCount: Int = 1
-    fileprivate var mainPaneRatio: CGFloat = 0.5
+    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -84,15 +92,15 @@ final class RowLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
         return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
+
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+        return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
+    }
 }
 
 extension RowLayout: PanedLayout {
-    func expandMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
-    }
-
-    func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
     func increaseMainPaneCount() {

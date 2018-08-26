@@ -16,20 +16,21 @@ final class MiddleWideReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func main() {
+    func frameAssignments() -> [FrameAssignment] {
         guard !windows.isEmpty else {
-            return
+            return []
         }
 
-        let secondaryPaneCount = round(Double(windows.count - 1) / 2.0)
-        let tertiaryPaneCount = Double(windows.count - 1) - secondaryPaneCount
+        let mainPaneCount = min(windows.count, layout.mainPaneCount)
+        let secondaryPaneCount = round(Double(windows.count - mainPaneCount) / 2.0)
+        let tertiaryPaneCount = Double(windows.count - mainPaneCount) - secondaryPaneCount
 
         let hasSecondaryPane = secondaryPaneCount > 0
         let hasTertiaryPane = tertiaryPaneCount > 0
 
         let screenFrame = screen.adjustedFrame()
 
-        let mainPaneWindowHeight = screenFrame.height
+        let mainPaneWindowHeight = round(screenFrame.height / CGFloat(mainPaneCount))
         let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.height / CGFloat(secondaryPaneCount)) : 0.0
         let tertiaryPaneWindowHeight = hasTertiaryPane ? round(screenFrame.height / CGFloat(tertiaryPaneCount)) : 0.0
 
@@ -49,40 +50,57 @@ final class MiddleWideReflowOperation: ReflowOperation {
 
         let focusedWindow = SIWindow.focused()
 
-        let frameAssignments = windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let windowIndex = frameAssignments.count
+            // main windows are indexes [0, mainPaneCount)
+            let isMain = windowIndex < mainPaneCount
+            // secondary windows are indexes [mainPaneCount, mainPaneCount + secondaryPaneCount)
+            // tertiary windows are indexes [mainPaneCount + secondaryPaneCount, ...)
+            let hasTertiary = windowIndex >= (mainPaneCount + Int(secondaryPaneCount))
+            var scaleFactor: CGFloat
 
-            if windowIndex == 0 {
+            scaleFactor = (screenFrame.width / secondaryPaneWindowWidth)
+            if isMain { // main (center)
+                let mainSubIndex = windowIndex
+                scaleFactor = screenFrame.width / mainPaneWindowWidth
                 windowFrame.origin.x = screenFrame.origin.x + (hasSecondaryPane ? secondaryPaneWindowWidth : 0)
-                windowFrame.origin.y = screenFrame.origin.y
+                windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * CGFloat(mainSubIndex))
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = mainPaneWindowHeight
-            } else if windowIndex > Int(secondaryPaneCount) { // tertiary
+            } else if hasTertiary { // tertiary (right)
+                let tertiarySubIndex = windowIndex - (mainPaneCount + Int(secondaryPaneCount))
                 windowFrame.origin.x = screenFrame.origin.x + secondaryPaneWindowWidth + mainPaneWindowWidth
-                windowFrame.origin.y = screenFrame.origin.y + (tertiaryPaneWindowHeight * CGFloat(Double(windowIndex) - (1 + secondaryPaneCount)))
+                windowFrame.origin.y = screenFrame.origin.y + (tertiaryPaneWindowHeight * CGFloat(tertiarySubIndex))
                 windowFrame.size.width = tertiaryPaneWindowWidth
                 windowFrame.size.height = tertiaryPaneWindowHeight
-            } else { // secondary
+            } else { // secondary (left)
+                let secondarySubIndex = windowIndex - mainPaneCount
                 windowFrame.origin.x = screenFrame.origin.x
-                windowFrame.origin.y = screenFrame.maxY - secondaryPaneWindowHeight * CGFloat(windowIndex)
+                windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(secondarySubIndex))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
 
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame)
+            let isTertiaryMain = (hasTertiaryPane ? isMain : !isMain)
+
+            let resizeRules = ResizeRules(isMain: isTertiaryMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
 
             return assignments
         }
+    }
+
+    override func main() {
 
         guard !isCancelled else {
             return
         }
 
-        layout.performFrameAssignments(frameAssignments)
+        layout.performFrameAssignments(frameAssignments())
     }
 }
 
@@ -92,7 +110,8 @@ final class MiddleWideLayout: Layout {
 
     let windowActivityCache: WindowActivityCache
 
-    fileprivate var mainPaneRatio: CGFloat = 0.5
+    fileprivate var mainPaneCount: Int = 1
+    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -101,19 +120,24 @@ final class MiddleWideLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
         return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
+
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+        return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
+    }
 }
 
 extension MiddleWideLayout: PanedLayout {
-    func expandMainPane() {
-        mainPaneRatio = min(1, mainPaneRatio + UserConfiguration.shared.windowResizeStep())
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
-    func shrinkMainPane() {
-        mainPaneRatio = max(0, mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    func increaseMainPaneCount() {
+        mainPaneCount += 1
     }
 
-    func increaseMainPaneCount() {}
-    func decreaseMainPaneCount() {}
+    func decreaseMainPaneCount() {
+        mainPaneCount = max(1, mainPaneCount - 1)
+    }
 }
 
 extension MiddleWideLayout: FrameAssigner {}

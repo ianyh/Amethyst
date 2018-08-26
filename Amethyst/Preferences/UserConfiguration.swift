@@ -30,11 +30,16 @@ enum ConfigurationKey: String {
     case mod2 = "mod2"
     case windowMargins = "window-margins"
     case windowMarginSize = "window-margin-size"
+    case windowMinimumHeight = "window-minimum-height"
+    case windowMinimumWidth = "window-minimum-width"
     case floatingBundleIdentifiers = "floating"
+    case floatingBundleIdentifiersIsBlacklist = "floating-is-blacklist"
     case ignoreMenuBar = "ignore-menu-bar"
     case floatSmallWindows = "float-small-windows"
     case mouseFollowsFocus = "mouse-follows-focus"
     case focusFollowsMouse = "focus-follows-mouse"
+    case mouseSwapsWindows = "mouse-swaps-windows"
+    case mouseResizesWindows = "mouse-resizes-windows"
     case layoutHUD = "enables-layout-hud"
     case layoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case useCanaryBuild = "use-canary-build"
@@ -46,15 +51,20 @@ enum ConfigurationKey: String {
         return [
             .layouts,
             .floatingBundleIdentifiers,
+            .floatingBundleIdentifiersIsBlacklist,
             .ignoreMenuBar,
             .floatSmallWindows,
             .mouseFollowsFocus,
             .focusFollowsMouse,
+            .mouseSwapsWindows,
+            .mouseResizesWindows,
             .layoutHUD,
             .layoutHUDOnSpaceChange,
             .useCanaryBuild,
             .windowMargins,
             .windowMarginSize,
+            .windowMinimumHeight,
+            .windowMinimumWidth,
             .sendCrashReports,
             .windowResizeStep
         ]
@@ -87,8 +97,9 @@ enum CommandKey: String {
     case toggleFocusFollowsMouse = "toggle-focus-follows-mouse"
 }
 
-protocol UserConfigurationDelegate: class {
+protocol UserConfigurationDelegate: AnyObject {
     func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration)
+    func configurationAccessibilityPermissionsDidChange(_ userConfiguration: UserConfiguration)
 }
 
 final class UserConfiguration: NSObject {
@@ -100,6 +111,11 @@ final class UserConfiguration: NSObject {
     var tilingEnabled = true {
         didSet {
             delegate?.configurationGlobalTilingDidChange(self)
+        }
+    }
+    var hasAccessibilityPermissions = true {
+        didSet {
+            delegate?.configurationAccessibilityPermissionsDidChange(self)
         }
     }
 
@@ -149,6 +165,10 @@ final class UserConfiguration: NSObject {
     }
 
     func load() {
+        let hasAccessibilityPermissions = confirmAccessibilityPermissions()
+        if self.hasAccessibilityPermissions != hasAccessibilityPermissions {
+            self.hasAccessibilityPermissions = hasAccessibilityPermissions
+        }
         loadConfigurationFile()
         loadConfiguration()
     }
@@ -250,10 +270,28 @@ final class UserConfiguration: NSObject {
             }
         }
 
+        let injectedHandler: () -> Void = { [weak self] in
+            guard let `self` = self else {
+                return
+            }
+
+            let hasAccessibilityPermissions = self.confirmAccessibilityPermissions()
+
+            if self.hasAccessibilityPermissions != hasAccessibilityPermissions {
+                self.hasAccessibilityPermissions = hasAccessibilityPermissions
+            }
+
+            guard hasAccessibilityPermissions else {
+                return
+            }
+
+            handler()
+        }
+
         hotKeyRegistrar.registerHotKey(
             with: commandKeyString,
             modifiers: commandFlags,
-            handler: handler,
+            handler: injectedHandler,
             defaultsKey: commandKey,
             override: override
         )
@@ -289,20 +327,22 @@ final class UserConfiguration: NSObject {
             return false
         }
 
+        let useIdentifiersAsBlacklist = floatingBundleIdentifiersIsBlacklist()
+
         for floatingBundleIdentifier in floatingBundleIdentifiers {
             if floatingBundleIdentifier.contains("*") {
                 let sanitizedIdentifier = floatingBundleIdentifier.replacingOccurrences(of: "*", with: "")
                 if runningApplication.bundleIdentifier?.hasPrefix(sanitizedIdentifier) == true {
-                    return true
+                    return useIdentifiersAsBlacklist
                 }
             } else {
                 if floatingBundleIdentifier == runningApplication.bundleIdentifier {
-                    return true
+                    return useIdentifiersAsBlacklist
                 }
             }
         }
 
-        return false
+        return !useIdentifiersAsBlacklist
     }
 
     func ignoreMenuBar() -> Bool {
@@ -325,6 +365,14 @@ final class UserConfiguration: NSObject {
         storage.set(!focusFollowsMouse(), forKey: ConfigurationKey.focusFollowsMouse.rawValue)
     }
 
+    func mouseSwapsWindows() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.mouseSwapsWindows.rawValue)
+    }
+
+    func mouseResizesWindows() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.mouseResizesWindows.rawValue)
+    }
+
     func enablesLayoutHUD() -> Bool {
         return storage.bool(forKey: ConfigurationKey.layoutHUD.rawValue)
     }
@@ -345,8 +393,20 @@ final class UserConfiguration: NSObject {
         return storage.bool(forKey: ConfigurationKey.windowMargins.rawValue)
     }
 
+    func windowMinimumHeight() -> CGFloat {
+        return CGFloat(storage.float(forKey: ConfigurationKey.windowMinimumHeight.rawValue))
+    }
+
+    func windowMinimumWidth() -> CGFloat {
+        return CGFloat(storage.float(forKey: ConfigurationKey.windowMinimumWidth.rawValue))
+    }
+
     func windowResizeStep() -> CGFloat {
         return CGFloat(storage.float(forKey: ConfigurationKey.windowResizeStep.rawValue) / 100.0)
+    }
+
+    func floatingBundleIdentifiersIsBlacklist() -> Bool {
+        return storage.bool(forKey: ConfigurationKey.floatingBundleIdentifiersIsBlacklist.rawValue)
     }
 
     func floatingBundleIdentifiers() -> [String] {
@@ -364,5 +424,15 @@ final class UserConfiguration: NSObject {
 
     func shouldSendCrashReports() -> Bool {
         return storage.bool(forKey: ConfigurationKey.sendCrashReports.rawValue)
+    }
+}
+
+extension UserConfiguration {
+    @discardableResult func confirmAccessibilityPermissions() -> Bool {
+        let options = [
+            kAXTrustedCheckOptionPrompt.takeRetainedValue() as String: true
+        ]
+
+        return AXIsProcessTrustedWithOptions(options as CFDictionary)
     }
 }

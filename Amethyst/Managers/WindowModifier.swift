@@ -450,8 +450,9 @@ extension WindowManager: WindowMover {
 
         windows[windowIndex] = otherWindow
         windows[otherWindowIndex] = window
+        let theChange = WindowChange.windowSwap(window: window, otherWindow: otherWindow)
 
-        markAllScreensForReflowWithChange(.windowSwap(window: window, otherWindow: otherWindow))
+        markAllScreensForReflowWithChange(theChange)
     }
 }
 

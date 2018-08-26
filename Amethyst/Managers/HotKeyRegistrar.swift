@@ -25,7 +25,7 @@ extension HotKeyManager: HotKeyRegistrar {
 
         // If a command is specified, set it as the default shortcut
         if let string = string, let modifiers = modifiers {
-            if let keyCodes = stringToKeyCodes[string.lowercased()], keyCodes.count > 0 {
+            if let keyCodes = stringToKeyCodes[string.lowercased()], !keyCodes.isEmpty {
                 let shortcut = MASShortcut(keyCode: UInt(keyCodes[0]), modifierFlags: modifiers)
                 MASShortcutBinder.shared().registerDefaultShortcuts([ defaultsKey: shortcut as Any ])
             } else {

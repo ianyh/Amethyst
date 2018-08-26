@@ -9,6 +9,7 @@
 import Cocoa
 import Foundation
 import Silica
+import RxSwift
 
 protocol FocusFollowsMouseManagerDelegate: class {
     func windowsForFocusFollowsMouse() -> [SIWindow]
@@ -18,17 +19,34 @@ final class FocusFollowsMouseManager {
     weak var delegate: FocusFollowsMouseManagerDelegate?
 
     private let userConfiguration: UserConfiguration
-    private var mouseMovedEventHandler: Any?
+
+    private let disposeBag = DisposeBag()
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
-        mouseMovedEventHandler = NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { event in
-            self.focusWindowWithMouseMovedEvent(event)
-        }
+
+        // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
+        UserDefaults.standard.rx.observe(Bool.self, ConfigurationKey.focusFollowsMouse.rawValue)
+            .distinctUntilChanged { $0 == $1 }
+            .scan(nil) { [unowned self] existingHandler, followingIsDesired -> Any? in
+                if let handler = existingHandler {
+                    NSEvent.removeMonitor(handler)
+                    return nil
+                } else if followingIsDesired! {
+                    return NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { [unowned self] event in
+                        self.focusWindowWithMouseMovedEvent(event)
+                    }
+                } else {
+                    return nil
+                }
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
     }
 
     private func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
         guard userConfiguration.focusFollowsMouse() else {
+            LogManager.log?.warning("Subscribed to mouse move events that we are ignoring")
             return
         }
 
@@ -37,7 +55,7 @@ final class FocusFollowsMouseManager {
         }
 
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
-        mousePoint.y = NSScreen.main!.frame.size.height - mousePoint.y
+        mousePoint.y = NSScreen.globalHeight() - mousePoint.y
 
         if let focusedWindow = SIWindow.focused() {
             // If the point is already in the frame of the focused window do nothing.

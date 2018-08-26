@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13122.19" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13122.19"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,6 +19,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="uP9-ch-b7n"/>
+                <menuItem title="Disable" id="rjJ-w4-5Ht">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="toggleGlobalTiling:" target="494" id="3aM-9U-hWx"/>
+                    </connections>
+                </menuItem>
                 <menuItem title="Start Amethyst on Login" id="549">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -51,18 +57,20 @@
                     </connections>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="-179" y="92"/>
         </menu>
         <customObject id="494" customClass="AppDelegate" customModule="Amethyst" customModuleProvider="target">
             <connections>
                 <outlet property="preferencesWindowController" destination="0fi-bi-huz" id="dfn-JC-QBQ"/>
                 <outlet property="startAtLoginMenuItem" destination="549" id="551"/>
                 <outlet property="statusItemMenu" destination="536" id="547"/>
+                <outlet property="toggleGlobalTilingMenuItem" destination="rjJ-w4-5Ht" id="4Dq-e8-R1M"/>
                 <outlet property="versionMenuItem" destination="bNZ-Ry-Q4Q" id="jXC-pY-N2a"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="pO4-7U-3HA" customClass="PreferencesWindow" customModule="Amethyst" customModuleProvider="target">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
             <rect key="contentRect" x="446" y="472" width="480" height="270"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
@@ -70,13 +78,40 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
+            <toolbar key="toolbar" implicitIdentifier="2383369F-98A6-4420-8EFE-319DB9588C53" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="5oI-m4-akz">
+                <allowedToolbarItems>
+                    <toolbarItem implicitItemIdentifier="D4FDE95C-2F3E-4C93-8777-9FBAD1EDB613" explicitItemIdentifier="general" label="General" paletteLabel="General" image="NSPreferencesGeneral" selectable="YES" id="WV2-G9-AL4">
+                        <connections>
+                            <action selector="selectPane:" target="0fi-bi-huz" id="bq3-bL-T4h"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="04C17AAF-5F6B-422F-8592-E8AA78DEB9C7" explicitItemIdentifier="shortcuts" label="Shortcuts" paletteLabel="Shortcuts" tag="1" image="toolbar-icon-shortcuts" selectable="YES" id="j0a-87-Yvz">
+                        <connections>
+                            <action selector="selectPane:" target="0fi-bi-huz" id="9kO-ms-dfq"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="A7FE5E71-A3DC-43B8-92B2-5CF107F2DB2F" explicitItemIdentifier="floating" label="Floating" paletteLabel="Floating" tag="-1" image="toolbar-icon-floating" selectable="YES" id="QEp-pN-Lz9">
+                        <connections>
+                            <action selector="selectPane:" target="0fi-bi-huz" id="WEg-vF-5FE"/>
+                        </connections>
+                    </toolbarItem>
+                </allowedToolbarItems>
+                <defaultToolbarItems>
+                    <toolbarItem reference="WV2-G9-AL4"/>
+                    <toolbarItem reference="j0a-87-Yvz"/>
+                    <toolbarItem reference="QEp-pN-Lz9"/>
+                </defaultToolbarItems>
+                <connections>
+                    <outlet property="delegate" destination="0fi-bi-huz" id="zer-Uh-aco"/>
+                </connections>
+            </toolbar>
             <connections>
                 <outlet property="closeMenuItem" destination="qQS-B4-nPy" id="4g6-N2-DxV"/>
                 <outlet property="delegate" destination="494" id="OGF-zj-QHD"/>
             </connections>
             <point key="canvasLocation" x="606" y="152"/>
         </window>
-        <customObject id="0fi-bi-huz" userLabel="Preferences Window Controller" customClass="CCNPreferencesWindowController">
+        <customObject id="0fi-bi-huz" userLabel="Preferences Window Controller" customClass="PreferencesWindowController" customModule="Amethyst" customModuleProvider="target">
             <connections>
                 <outlet property="window" destination="pO4-7U-3HA" id="9gm-N1-3ZQ"/>
             </connections>
@@ -88,4 +123,9 @@
             <point key="canvasLocation" x="560" y="-126"/>
         </menu>
     </objects>
+    <resources>
+        <image name="NSPreferencesGeneral" width="32" height="32"/>
+        <image name="toolbar-icon-floating" width="32" height="32"/>
+        <image name="toolbar-icon-shortcuts" width="32" height="32"/>
+    </resources>
 </document>

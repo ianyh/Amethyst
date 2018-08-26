@@ -7,7 +7,6 @@
 //
 
 import CCNLaunchAtLoginItem
-import CCNPreferencesWindowController
 import CoreServices
 import Crashlytics
 import Fabric
@@ -18,7 +17,7 @@ import Sparkle
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var loginItem: CCNLaunchAtLoginItem?
-    @IBOutlet var preferencesWindowController: CCNPreferencesWindowController?
+    @IBOutlet var preferencesWindowController: PreferencesWindowController?
 
     fileprivate var windowManager: WindowManager?
     private var hotKeyManager: HotKeyManager?
@@ -27,6 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var statusItemMenu: NSMenu?
     @IBOutlet var versionMenuItem: NSMenuItem?
     @IBOutlet var startAtLoginMenuItem: NSMenuItem?
+    @IBOutlet var toggleGlobalTilingMenuItem: NSMenuItem?
 
     private var isFirstLaunch = true
 
@@ -65,14 +65,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         #endif
 
-        preferencesWindowController?.centerToolbarItems = false
-        preferencesWindowController?.allowsVibrancy = true
         preferencesWindowController?.window?.level = .floating
-        let preferencesViewControllers = [
-            GeneralPreferencesViewController(),
-            ShortcutsPreferencesViewController()
-        ]
-        preferencesWindowController?.setPreferencesViewControllers(preferencesViewControllers)
 
         windowManager = WindowManager(userConfiguration: UserConfiguration.shared)
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
@@ -94,9 +87,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem?.highlightMode = true
 
         versionMenuItem?.title = "Version \(shortVersion) (\(version))"
+        toggleGlobalTilingMenuItem?.title = "Disable"
 
         loginItem = CCNLaunchAtLoginItem(for: Bundle.main)
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .onState : .offState)
+        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -109,12 +103,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func toggleStartAtLogin(_ sender: AnyObject) {
-        if startAtLoginMenuItem?.state == .offState {
+        if startAtLoginMenuItem?.state == .off {
             loginItem?.activate()
         } else {
             loginItem?.deActivate()
         }
-        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .onState : .offState)
+        startAtLoginMenuItem?.state = (loginItem!.isActive() ? .on : .off)
+    }
+
+    @IBAction func toggleGlobalTiling(_ sender: AnyObject) {
+        UserConfiguration.shared.tilingEnabled = !UserConfiguration.shared.tilingEnabled
+        windowManager?.markAllScreensForReflowWithChange(.unknown)
     }
 
     @IBAction func relaunch(_ sender: AnyObject) {
@@ -138,7 +137,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             alert.runModal()
         }
 
-        preferencesWindowController?.showPreferencesWindow()
+        preferencesWindowController?.showWindow(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     @IBAction func checkForUpdates(_ sender: AnyObject) {
@@ -159,10 +159,16 @@ extension AppDelegate: UserConfigurationDelegate {
         var statusItemImage: NSImage?
         if UserConfiguration.shared.tilingEnabled == true {
             statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
+            toggleGlobalTilingMenuItem?.title = "Disable"
         } else {
             statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem-disabled"))
+            toggleGlobalTilingMenuItem?.title = "Enable"
         }
         statusItemImage?.isTemplate = true
         statusItem?.image = statusItemImage
+    }
+
+    func configurationAccessibilityPermissionsDidChange(_ userConfiguration: UserConfiguration) {
+        windowManager?.reevaluateWindows()
     }
 }

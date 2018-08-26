@@ -190,6 +190,7 @@
         "key": "x"
     },
     "floating": [],
+    "floating-is-blacklist": true,
     "float-small-windows": true,
     "mouse-follows-focus": false,
     "focus-follows-mouse": false,
@@ -198,6 +199,8 @@
     "window-margin-size": 0,
     "window-resize-step": 5,
     "window-margins": false,
+    "window-minimum-height": 0,
+    "window-minimum-width": 0,
     "ignore-menu-bar": false,
     "use-canary-build": false,
     "new-windows-to-main": false,

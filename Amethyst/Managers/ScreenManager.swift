@@ -19,6 +19,8 @@ final class ScreenManager: NSObject {
     let screenIdentifier: String
     fileprivate weak var delegate: ScreenManagerDelegate?
     private let userConfiguration: UserConfiguration
+    public var onReflowInitiation: (() -> Void)?
+    public var onReflowCompletion: (() -> Void)?
 
     var currentSpaceIdentifier: String? {
         willSet {
@@ -63,7 +65,7 @@ final class ScreenManager: NSObject {
             }
         }
     }
-    private var currentLayout: Layout? {
+    var currentLayout: Layout? {
         guard !layouts.isEmpty else {
             return nil
         }
@@ -79,6 +81,8 @@ final class ScreenManager: NSObject {
         self.screenIdentifier = screenIdentifier
         self.delegate = delegate
         self.userConfiguration = userConfiguration
+        self.onReflowInitiation = nil
+        self.onReflowCompletion = nil
 
         currentLayoutIndexBySpaceIdentifier = [:]
         layoutsBySpaceIdentifier = [:]
@@ -89,6 +93,10 @@ final class ScreenManager: NSObject {
         super.init()
 
         layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
+    }
+
+    deinit {
+        self.onReflowCompletion = nil
     }
 
     func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
@@ -123,10 +131,18 @@ final class ScreenManager: NSObject {
             return
         }
 
-        let windows = delegate?.activeWindowsForScreenManager(self) ?? []
+        let windows = (delegate?.activeWindowsForScreenManager(self) ?? [])
         changingSpace = false
-        reflowOperation = currentLayout?.reflow(windows, on: screen)
-        OperationQueue.main.addOperation(reflowOperation!)
+
+        let reflowOperation = currentLayout?.reflow(windows, on: screen)
+        reflowOperation?.onReflowCompletion = { [unowned self] in
+            // propagate the completion handler if we have one
+            self.onReflowCompletion?()
+        }
+        onReflowInitiation?()
+        if let reflowOperation = reflowOperation {
+            reflowOperation.enqueue(OperationQueue.main)
+        }
     }
 
     func updateCurrentLayout(_ updater: (Layout) -> Void) {

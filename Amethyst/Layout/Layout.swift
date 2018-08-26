@@ -13,42 +13,102 @@ protocol WindowActivityCache {
     func windowIsActive(_ window: SIWindow) -> Bool
 }
 
+enum UnconstrainedDimension: Int {
+    case horizontal
+    case vertical
+}
+
+// Some window resizes reflect valid adjustments to the frame layout.
+// Some window resizes would not be allowed due to hard constraints.
+// This struct defines what adjustments to a particular window frame are allowed
+//  and tracks its size as a proportion of available space (for use in resize calculations)
+struct ResizeRules {
+    let isMain: Bool
+    let unconstrainedDimension: UnconstrainedDimension
+    let scaleFactor: CGFloat    // the scale factor for the unconstrained dimension
+
+    // given a new frame, decide which dimension will be honored and return its size
+    func scaledDimension(_ frame: CGRect, negatePadding: Bool) -> CGFloat {
+        let dimension: CGFloat = {
+            switch unconstrainedDimension {
+            case .horizontal: return frame.width
+            case .vertical: return frame.height
+            }
+        }()
+
+        let padding = UserConfiguration.shared.windowMargins() ? UserConfiguration.shared.windowMarginSize() : 0
+        return negatePadding ? dimension + padding : dimension
+    }
+}
+
 struct FrameAssignment {
     let frame: CGRect
     let window: SIWindow
     let focused: Bool
     let screenFrame: CGRect
+    let resizeRules: ResizeRules
 
-    fileprivate func perform() {
-        var padding = UserConfiguration.shared.windowMarginSize()
-        var finalFrame = frame
+    // the final frame is the desired frame, but shrunk to provide desired padding
+    var finalFrame: CGRect {
+        var ret = frame
+        let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
 
         if UserConfiguration.shared.windowMargins() {
-            padding = floor(padding / 2)
-
-            finalFrame.origin.x += padding
-            finalFrame.origin.y += padding
-            finalFrame.size.width -= 2 * padding
-            finalFrame.size.height -= 2 * padding
+            ret.origin.x += padding
+            ret.origin.y += padding
+            ret.size.width -= 2 * padding
+            ret.size.height -= 2 * padding
         }
 
-        var finalPosition = finalFrame.origin
+        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
+        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
 
-        // Just resize the window
-        finalFrame.origin = window.frame().origin
-        window.setFrame(finalFrame)
+        if windowMinimumWidth > ret.size.width {
+            ret.origin.x -= ((windowMinimumWidth - ret.size.width) / 2)
+            ret.size.width = windowMinimumWidth
+        }
 
+        if windowMinimumHeight > ret.size.height {
+            ret.origin.y -= ((windowMinimumHeight - ret.size.height) / 2)
+            ret.size.height = windowMinimumHeight
+        }
+
+        return ret
+    }
+
+    // Given a window frame and based on resizeRules, determine what the main pane ratio would be
+    // this accounts for multiple main windows and primary vs non-primary being resized
+    func impliedMainPaneRatio(windowFrame: CGRect) -> CGFloat {
+        let oldDimension = resizeRules.scaledDimension(frame, negatePadding: false)
+        let newDimension = resizeRules.scaledDimension(windowFrame, negatePadding: true)
+        let implied =  (newDimension / oldDimension) / resizeRules.scaleFactor
+        return resizeRules.isMain ? implied : 1 - implied
+    }
+
+    fileprivate func perform() {
+        var finalFrame = self.finalFrame
+        var finalOrigin = finalFrame.origin
+
+        // If this is the focused window then we need to shift it to be on screen regardless of size
+        // We call this "window peeking" (this line here to aid in text search)
         if focused {
-            finalFrame.size = CGSize(width: max(window.frame().size.width, finalFrame.size.width), height: max(window.frame().size.height, finalFrame.size.height))
-            if !screenFrame.contains(finalFrame) {
-                finalPosition.x = min(finalPosition.x, screenFrame.maxX - finalFrame.size.width)
-                finalPosition.y = min(finalPosition.y, screenFrame.maxY - finalFrame.size.height)
-            }
+            // Just resize the window first to see what the dimensions end up being
+            // Sometimes applications have internal window requirements that are not exposed to us directly
+            finalFrame.origin = window.frame().origin
+            window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
+
+            // With the real height we can update the frame to account for the current size
+            finalFrame.size = CGSize(
+                width: max(window.frame().width, finalFrame.width),
+                height: max(window.frame().height, finalFrame.height)
+            )
+            finalOrigin.x = max(screenFrame.minX, min(finalOrigin.x, screenFrame.maxX - finalFrame.size.width))
+            finalOrigin.y = max(screenFrame.minY, min(finalOrigin.y, screenFrame.maxY - finalFrame.size.height))
         }
 
         // Move the window to its final frame
-        finalFrame.origin = finalPosition
-        window.setFrame(finalFrame)
+        finalFrame.origin = finalOrigin
+        window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
     }
 }
 
@@ -56,12 +116,43 @@ class ReflowOperation: Operation {
     let screen: NSScreen
     let windows: [SIWindow]
     let frameAssigner: FrameAssigner
+    public var onReflowCompletion: (() -> Void)?
 
     init(screen: NSScreen, windows: [SIWindow], frameAssigner: FrameAssigner) {
         self.screen = screen
         self.windows = windows
         self.frameAssigner = frameAssigner
+        self.onReflowCompletion = nil
         super.init()
+        makeCompletionBlock(nil)
+    }
+
+    private func makeCompletionBlock(_ aBlock: (() -> Void)?) {
+        super.completionBlock = { [unowned self] in
+            aBlock?()
+            guard !self.isCancelled else { return }
+            self.onReflowCompletion?()
+        }
+    }
+
+    public func enqueue(_ aQueue: OperationQueue) {
+        aQueue.addOperation(self)
+    }
+
+    // Carve out a separate completion block for reflow stuff.
+    // It will always fire after any existing completion block
+    // UNLESS the operation completed by being cancelled.
+    override public var completionBlock: (() -> Void)? {
+        get {
+            return super.completionBlock
+        }
+        set {
+            makeCompletionBlock(newValue)
+        }
+    }
+
+    deinit {
+        self.onReflowCompletion = nil
     }
 }
 
@@ -104,6 +195,19 @@ extension NSScreen {
             frame.size.height -= 2 * padding
         }
 
+        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
+        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
+
+        if windowMinimumWidth > frame.size.width {
+            frame.origin.x -= (windowMinimumWidth - frame.size.width) / 2
+            frame.size.width = windowMinimumWidth
+        }
+
+        if windowMinimumHeight > frame.size.height {
+            frame.origin.y -= (windowMinimumHeight - frame.size.height) / 2
+            frame.size.height = windowMinimumHeight
+        }
+
         return frame
     }
 }
@@ -115,13 +219,34 @@ protocol Layout {
     var windowActivityCache: WindowActivityCache { get }
 
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment?
 }
 
 protocol PanedLayout {
+    var mainPaneRatio: CGFloat { get }
+    func recommendMainPaneRawRatio(rawRatio: CGFloat)
     func shrinkMainPane()
     func expandMainPane()
     func increaseMainPaneCount()
     func decreaseMainPaneCount()
+}
+
+extension PanedLayout {
+    func recommendMainPaneRatio(_ ratio: CGFloat) {
+        guard 0 <= ratio && ratio <= 1 else {
+            LogManager.log?.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
+            return recommendMainPaneRawRatio(rawRatio: max(min(ratio, 1), 0))
+        }
+        recommendMainPaneRawRatio(rawRatio: ratio)
+    }
+
+    func expandMainPane() {
+        recommendMainPaneRatio(mainPaneRatio + UserConfiguration.shared.windowResizeStep())
+    }
+
+    func shrinkMainPane() {
+        recommendMainPaneRatio(mainPaneRatio - UserConfiguration.shared.windowResizeStep())
+    }
 }
 
 protocol StatefulLayout {

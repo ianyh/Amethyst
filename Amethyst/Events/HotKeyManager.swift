@@ -38,7 +38,7 @@ final class HotKeyManager: NSObject {
     private static func keyCodeForNumber(_ number: NSNumber) -> AMKeyCode {
         let string = "\(number)"
 
-        guard string.characters.count > 0 else {
+        guard !string.characters.isEmpty else {
             return AMKeyCodeInvalid
         }
 
@@ -321,6 +321,8 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Swap focused window clockwise", CommandKey.swapCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window with main window", CommandKey.swapMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Force windows to be reevaluated", CommandKey.reevaluateWindows.rawValue])
+        hotKeyNameToDefaultsKey.append(["Throw focused window to space left", CommandKey.throwSpaceLeft.rawValue])
+        hotKeyNameToDefaultsKey.append(["Throw focused window to space right", CommandKey.throwSpaceRight.rawValue])
 
         (1...10).forEach { spaceNumber in
             let name = "Throw focused window to space \(spaceNumber)"
