@@ -223,6 +223,7 @@ private class ObserveApplicationNotifications {
                 } else {
                     windowManager.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
                 }
+                windowManager.screenManager(for: screen)?.lastFocusedWindow = focusedWindow
             }
 
             application.observeNotification(kAXApplicationActivatedNotification as CFString!, with: application) { _ in
