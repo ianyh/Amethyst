@@ -10,11 +10,12 @@ import Foundation
 import Silica
 
 extension SIApplication {
-    func floating() -> Bool {
+
+    func windowWithTitleShouldFloat(_ windowTitle: String) -> Bool {
         guard let runningApplication = NSRunningApplication(processIdentifier: processIdentifier()) else {
             return true
         }
 
-        return UserConfiguration.shared.runningApplicationShouldFloat(runningApplication)
+        return UserConfiguration.shared.runningApplication(runningApplication, shouldFloatWindowWithTitle: windowTitle)
     }
 }
