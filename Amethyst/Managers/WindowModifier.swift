@@ -294,6 +294,12 @@ extension ScreenFocuser {
             return
         }
 
+        // If the previous focus has been tracked, then focus the window that had the focus before.
+        if let previouslyFocused = screenManager.lastFocusedWindow {
+            previouslyFocused.am_focusWindow()
+            return
+        }
+
         let windows = self.windows(on: screenManager.screen)
 
         // If there are no windows on the screen focus the screen directly

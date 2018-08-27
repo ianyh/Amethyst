@@ -17,6 +17,9 @@ protocol ScreenManagerDelegate: class {
 final class ScreenManager: NSObject {
     var screen: NSScreen
     let screenIdentifier: String
+    /// The last window that has been focused on the screen. This value is updated by the notification observations in
+    /// `ObserveApplicationNotifications`.
+    public internal(set) var lastFocusedWindow: SIWindow?
     fileprivate weak var delegate: ScreenManagerDelegate?
     private let userConfiguration: UserConfiguration
     public var onReflowInitiation: (() -> Void)?
