@@ -571,7 +571,7 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
             return
         }
 
-        if application.floating() {
+        if let windowTitle = window.title(), application.windowWithTitleShouldFloat(windowTitle) {
             floatingMap[window.windowID()] = true
         } else {
             floatingMap[window.windowID()] = window.shouldFloat()

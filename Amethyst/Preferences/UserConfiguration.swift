@@ -391,40 +391,54 @@ final class UserConfiguration: NSObject {
         storage.set(layoutStrings as Any?, forKey: .layouts)
     }
 
-    func runningApplicationShouldFloat(_ runningApplication: BundleIdentifiable) -> Bool {
-        guard let floatingBundleIdentifiers = storage.object(forKey: .floatingBundleIdentifiers) as? [String] else {
+    func runningApplication(_ runningApplication: BundleIdentifiable, shouldFloatWindowWithTitle title: String) -> Bool {
+        guard let floatingBundle = runningApplicationFloatingBundle(runningApplication) else {
             return false
         }
 
         let useIdentifiersAsBlacklist = floatingBundleIdentifiersIsBlacklist()
 
-        for floatingBundleIdentifier in floatingBundleIdentifiers {
-            if floatingBundleIdentifier.contains("*") {
+        guard !floatingBundle.windowTitles.isEmpty else {
+            return useIdentifiersAsBlacklist
+        }
+
+        guard floatingBundle.windowTitles.contains(title) else {
+            return !useIdentifiersAsBlacklist
+        }
+
+        return useIdentifiersAsBlacklist
+    }
+
+    func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
+        let floatingBundles = self.floatingBundles()
+
+        for floatingBundle in floatingBundles {
+            if floatingBundle.id.contains("*") {
                 do {
                     guard let bundleIdentifier = runningApplication.bundleIdentifier else {
                         continue
                     }
 
-                    let pattern = floatingBundleIdentifier
+                    let pattern = floatingBundle.id
                         .replacingOccurrences(of: ".", with: "\\.")
                         .replacingOccurrences(of: "*", with: ".*")
                     let regex = try NSRegularExpression(pattern: "^\(pattern)$", options: [])
                     let fullRange = NSRange(location: 0, length: bundleIdentifier.count)
 
                     if regex.firstMatch(in: bundleIdentifier, options: [], range: fullRange) != nil {
-                        return useIdentifiersAsBlacklist
+                        return floatingBundle
                     }
                 } catch {
                     continue
                 }
             } else {
-                if floatingBundleIdentifier == runningApplication.bundleIdentifier {
-                    return useIdentifiersAsBlacklist
+                if floatingBundle.id == runningApplication.bundleIdentifier {
+                    return floatingBundle
                 }
             }
         }
 
-        return !useIdentifiersAsBlacklist
+        return nil
     }
 
     func ignoreMenuBar() -> Bool {
