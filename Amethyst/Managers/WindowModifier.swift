@@ -295,7 +295,7 @@ extension ScreenFocuser {
         }
 
         // If the previous focus has been tracked, then focus the window that had the focus before.
-        if let previouslyFocused = screenManager.lastFocusedWindow {
+        if let previouslyFocused = screenManager.lastFocusedWindow, previouslyFocused.isOnScreen() {
             previouslyFocused.am_focusWindow()
             return
         }
