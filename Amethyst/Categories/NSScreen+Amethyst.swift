@@ -36,9 +36,21 @@ extension NSScreen {
         return String(managedDisplay.takeRetainedValue())
     }
 
+    /// Returns the screen's frame translated to Quartz' coordinate system: The screen's frame (and bounds and so on)
+    /// are in cocoa coordinates which are used for views. This coordinate space differs from from Quartz coordinate
+    /// space which is used for events.
+    /// See https://stackoverflow.com/a/19887161 for details.
+    func cgRect() -> CGRect {
+        guard let primaryScreen = NSScreen.screens.first else {
+            return CGRect(origin: frame.origin, size: frame.size)
+        }
+        return CGRect(x: frame.origin.x, y: primaryScreen.frame.maxY - self.frame.maxY,
+                      width: frame.width, height: frame.height)
+    }
+
     func focusScreen() {
-        let screenFrame = self.frame
-        let mouseCursorPoint = NSPoint(x: screenFrame.midX, y: screenFrame.midY)
+        let frame = cgRect()
+        let mouseCursorPoint = CGPoint(x: frame.midX, y: frame.midY)
         let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left)
         mouseMoveEvent?.flags = CGEventFlags(rawValue: 0)
         mouseMoveEvent?.post(tap: .cghidEventTap)
