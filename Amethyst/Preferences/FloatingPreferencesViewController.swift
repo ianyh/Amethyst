@@ -234,3 +234,31 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
         return count != 0
     }
 }
+
+@objc(ApplicationSelectedTransformer) class ApplicationSelectedTransformer: ValueTransformer {
+    override class func transformedValueClass() -> AnyClass {
+        return NSNumber.self
+    }
+
+    override func transformedValue(_ value: Any?) -> Any? {
+        guard let index = value as? Int else {
+            return false
+        }
+
+        return index != NSNotFound
+    }
+}
+
+@objc(NoApplicationSelectedTransformer) class NoApplicationSelectedTransformer: ValueTransformer {
+    override class func transformedValueClass() -> AnyClass {
+        return NSNumber.self
+    }
+
+    override func transformedValue(_ value: Any?) -> Any? {
+        guard let index = value as? Int else {
+            return false
+        }
+
+        return index == NSNotFound
+    }
+}
