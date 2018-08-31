@@ -90,14 +90,21 @@ Layouts can also be enabled/disabled to control whether they appear in the cycle
 > the full width of the screen), and the other pane is on the bottom.
 > If either pane has more than one window, that pane will split into columns
 > instead of rows.
-* *3Column-Middle*
-> A three-column layout, with one main pane in the center (extending the full
-> height of the screen) and two other panes, one on each side of the main pane.
+* *3Column-Left*
+> A three-column version of *Tall*, with one main pane on the left (extending
+> the full height of the screen) and two other panes, one in the middle and
+> one on the right.
 > Like *Tall*, if any pane has more than one window, that pane will be split
 > into rows.
 > You can control how many windows are in the main pane as usual; other windows
-> will be assigned as evenly as possible between the left and the right pane.
+> will be assigned as evenly as possible between the other two panes.
+* *3Column-Middle*
+> Exactly like *3Column-Left*, but the main pane is in the middle, with the
+> other panes on either side.
 > (In previous versions of Amethyst, this layout was known as *Middle-Wide*.)
+* *3Column-Right*
+> Exactly like *3Column-Left*, but the main pane is on the right, with the
+> other panes in the middle and on the left.
 * *Widescreen-Tall*
 > This mode is like *Tall*, but if there are multiple windows in the main pane,
 > the main pane splits into columns rather than rows.
@@ -107,7 +114,7 @@ Layouts can also be enabled/disabled to control whether they appear in the cycle
 > remaining windows stacked into the final column.
 > Other layouts that work well on very wide screens include any that allow for
 > more than two columns (to take advantage of the screen width), such as
-> *3Column-Middle* or *Column*.
+> any of the *3Column-&ast;* layouts, or *Column*.
 * *Fullscreen*
 > In this layout, the currently focused window takes up the entire screen, and
 > the other windows are not visible at all.
