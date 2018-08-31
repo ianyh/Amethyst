@@ -9,21 +9,9 @@
 import Cocoa
 import Foundation
 
-class ManualFloatingBundleID: NSObject {
-    @objc dynamic var id: String = ""
-    @objc dynamic var windowTitles: [String] = []
-}
-
 final class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
-    private var floatingBundles: [FloatingBundle] = [] {
-        didSet {
-            guard let arrayController = arrayController else {
-                return
-            }
-
-            arrayController.remove(contentsOf: arrayController.arrangedObjects as! [Any])
-            arrayController.add(contentsOf: floatingBundles)
-        }
+    private var floatingBundles: [FloatingBundle] {
+        return arrayController.arrangedObjects as! [FloatingBundle]
     }
 
     @IBOutlet var floatingTableView: NSTableView!
@@ -41,7 +29,7 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        floatingBundles = UserConfiguration.shared.floatingBundles()
+        arrayController?.add(contentsOf: UserConfiguration.shared.floatingBundles())
         arrayController?.setSelectionIndexes(IndexSet())
     }
 
@@ -117,10 +105,8 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
     }
 
     private func addFloatingApplicationBundleIdentifier(_ bundleIdentifier: String) {
-        var floatingBundles = self.floatingBundles
         let floatingBundle = FloatingBundle(id: bundleIdentifier, windowTitles: [])
-        floatingBundles.append(floatingBundle)
-        self.floatingBundles = floatingBundles
+        arrayController.addObject(floatingBundle)
 
         UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
     }
@@ -134,7 +120,7 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
             return
         }
 
-        floatingBundles.remove(at: floatingTableView.selectedRow)
+        arrayController.remove(atArrangedObjectIndex: floatingTableView.selectedRow)
 
         UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
     }
@@ -173,7 +159,10 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
 
         let title = windowTitles[windowTitlesTableView.selectedRow]
         let updatedBundle = FloatingBundle(id: id, windowTitles: windowTitles.filter { $0 != title })
-        floatingBundles.index { $0.id == id }.flatMap { floatingBundles[$0] = updatedBundle }
+        floatingBundles.index { $0.id == id }.flatMap { index in
+            arrayController.remove(atArrangedObjectIndex: index)
+            arrayController.insert(updatedBundle, atArrangedObjectIndex: index)
+        }
 
         UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
     }
@@ -186,7 +175,10 @@ final class FloatingPreferencesViewController: NSViewController, NSTableViewData
         }
 
         let updatedBundle = FloatingBundle(id: id, windowTitles: windowTitles + [title])
-        floatingBundles.index { $0.id == id }.flatMap { floatingBundles[$0] = updatedBundle }
+        floatingBundles.index { $0.id == id }.flatMap { index in
+            arrayController.remove(atArrangedObjectIndex: index)
+            arrayController.insert(updatedBundle, atArrangedObjectIndex: index)
+        }
 
         UserConfiguration.shared.setFloatingBundles(self.floatingBundles)
     }

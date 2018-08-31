@@ -304,7 +304,7 @@
         <userDefaultsController id="XhK-Tn-zrU"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <userDefaultsController representsSharedInstance="YES" id="N2H-cZ-f1m"/>
-        <arrayController id="1St-Zh-cQw" userLabel="Floating Bundles Array Controller"/>
+        <arrayController preservesSelection="NO" id="1St-Zh-cQw" userLabel="Floating Bundles Array Controller"/>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
