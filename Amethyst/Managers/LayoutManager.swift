@@ -18,7 +18,7 @@ enum LayoutManager {
         case "wide":
             return WideLayout(windowActivityCache: windowActivityCache)
         case "middle-wide":
-            return MiddleWideLayout(windowActivityCache: windowActivityCache)
+            return ThreeColumnMiddleLayout(windowActivityCache: windowActivityCache)
         case "fullscreen":
             return FullscreenLayout(windowActivityCache: windowActivityCache)
         case "column":
@@ -41,7 +41,7 @@ enum LayoutManager {
             TallLayout.self,
             TallRightLayout.self,
             WideLayout.self,
-            MiddleWideLayout.self,
+            ThreeColumnMiddleLayout.self,
             FullscreenLayout.self,
             ColumnLayout.self,
             RowLayout.self,

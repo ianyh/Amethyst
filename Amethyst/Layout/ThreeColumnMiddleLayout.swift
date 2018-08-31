@@ -1,5 +1,5 @@
 //
-//  MiddleWideLayout.swift
+//  ThreeColumnMiddleLayout.swift
 //  Amethyst
 //
 //  Created by Ian Ynda-Hummel on 12/15/15.
@@ -8,10 +8,10 @@
 
 import Silica
 
-final class MiddleWideReflowOperation: ReflowOperation {
-    private let layout: MiddleWideLayout
+final class ThreeColumnMiddleReflowOperation: ReflowOperation {
+    private let layout: ThreeColumnMiddleLayout
 
-    init(screen: NSScreen, windows: [SIWindow], layout: MiddleWideLayout, frameAssigner: FrameAssigner) {
+    init(screen: NSScreen, windows: [SIWindow], layout: ThreeColumnMiddleLayout, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -104,9 +104,9 @@ final class MiddleWideReflowOperation: ReflowOperation {
     }
 }
 
-final class MiddleWideLayout: Layout {
-    static var layoutName: String { return "Middle Wide" }
-    static var layoutKey: String { return "middle-wide" }
+final class ThreeColumnMiddleLayout: Layout {
+    static var layoutName: String { return "3Column Middle" }
+    static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
 
     let windowActivityCache: WindowActivityCache
 
@@ -118,15 +118,15 @@ final class MiddleWideLayout: Layout {
     }
 
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
-        return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
+        return ThreeColumnMiddleReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
 
     func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return MiddleWideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
+        return ThreeColumnMiddleReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 
-extension MiddleWideLayout: PanedLayout {
+extension ThreeColumnMiddleLayout: PanedLayout {
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
@@ -140,4 +140,4 @@ extension MiddleWideLayout: PanedLayout {
     }
 }
 
-extension MiddleWideLayout: FrameAssigner {}
+extension ThreeColumnMiddleLayout: FrameAssigner {}
