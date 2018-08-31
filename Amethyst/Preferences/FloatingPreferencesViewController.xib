@@ -272,7 +272,11 @@
                                     </textField>
                                 </subviews>
                                 <connections>
-                                    <binding destination="1St-Zh-cQw" name="hidden" keyPath="selectionIndex" id="sgI-Uc-ZhH"/>
+                                    <binding destination="1St-Zh-cQw" name="hidden" keyPath="selectionIndex" id="4VF-CB-HXz">
+                                        <dictionary key="options">
+                                            <string key="NSValueTransformerName">NoApplicationSelectedTransformer</string>
+                                        </dictionary>
+                                    </binding>
                                 </connections>
                             </customView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c4Z-Xi-U9f">
@@ -284,9 +288,9 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
-                                    <binding destination="1St-Zh-cQw" name="hidden" keyPath="selectionIndex" id="csc-Xg-AgK">
+                                    <binding destination="1St-Zh-cQw" name="hidden" keyPath="selectionIndex" id="Jom-By-RNh">
                                         <dictionary key="options">
-                                            <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                            <string key="NSValueTransformerName">ApplicationSelectedTransformer</string>
                                         </dictionary>
                                     </binding>
                                 </connections>
