@@ -312,8 +312,8 @@ final class UserConfiguration: NSObject {
         modifier2 = modifierFlagsForStrings(mod2Strings)
     }
 
-    static func constructLayoutKeyString(_ layoutString: String) -> String {
-        return "select-\(layoutString)-layout"
+    static func constructLayoutKeyString(_ layoutKey: String) -> String {
+        return "select-\(layoutKey)-layout"
     }
 
     func constructCommand(for hotKeyRegistrar: HotKeyRegistrar, commandKey: String, handler: @escaping HotKeyHandler) {
@@ -388,13 +388,13 @@ final class UserConfiguration: NSObject {
         }
     }
 
-    func layoutStrings() -> [String] {
-        let layoutStrings = storage.array(forKey: .layouts) as? [String]
-        return layoutStrings ?? []
+    func layoutKeys() -> [String] {
+        let layoutKeys = storage.array(forKey: .layouts) as? [String]
+        return layoutKeys ?? []
     }
 
-    func setLayoutStrings(_ layoutStrings: [String]) {
-        storage.set(layoutStrings as Any?, forKey: .layouts)
+    func setLayoutKeys(_ layoutKeys: [String]) {
+        storage.set(layoutKeys as Any?, forKey: .layouts)
     }
 
     func runningApplication(_ runningApplication: BundleIdentifiable, shouldFloatWindowWithTitle title: String) -> Bool {

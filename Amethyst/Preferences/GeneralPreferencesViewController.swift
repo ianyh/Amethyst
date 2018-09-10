@@ -10,7 +10,7 @@ import Cocoa
 import Foundation
 
 final class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
-    private var layouts: [String] = []
+    private var layoutKeys: [String] = []
 
     @IBOutlet var layoutsTableView: NSTableView?
 
@@ -24,7 +24,7 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        layouts = UserConfiguration.shared.layoutStrings()
+        layoutKeys = UserConfiguration.shared.layoutKeys()
 
         layoutsTableView?.reloadData()
     }
@@ -32,8 +32,10 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
     @IBAction func addLayout(_ sender: NSButton) {
         let layoutMenu = NSMenu(title: "")
 
-        for layoutString in LayoutManager.availableLayoutStrings() {
-            let menuItem = NSMenuItem(title: layoutString, action: #selector(addLayoutString(_:)), keyEquivalent: "")
+        for (layoutKey, layoutName) in LayoutManager.availableLayoutStrings() {
+            let menuItem = NSMenuItem(title: layoutKey, action: #selector(addLayoutString(_:)), keyEquivalent: "")
+            menuItem.attributedTitle = NSAttributedString(string: layoutName)
+            menuItem.title = layoutKey
             menuItem.target = self
             menuItem.action = #selector(addLayoutString(_:))
 
@@ -59,27 +61,27 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
     }
 
     @IBAction func addLayoutString(_ sender: NSMenuItem) {
-        var layouts = self.layouts
-        layouts.append(sender.title)
-        self.layouts = layouts
+        var layoutKeys = self.layoutKeys
+        layoutKeys.append(sender.title)
+        self.layoutKeys = layoutKeys
 
-        UserConfiguration.shared.setLayoutStrings(self.layouts)
+        UserConfiguration.shared.setLayoutKeys(self.layoutKeys)
 
         layoutsTableView?.reloadData()
     }
 
     @IBAction func removeLayout(_ sender: AnyObject) {
-        guard let selectedRow = layoutsTableView?.selectedRow, selectedRow < self.layouts.count, selectedRow != NSTableView.noRowSelectedIndex else { return }
+        guard let selectedRow = layoutsTableView?.selectedRow, selectedRow < self.layoutKeys.count, selectedRow != NSTableView.noRowSelectedIndex else { return }
 
-        layouts.remove(at: selectedRow)
+        layoutKeys.remove(at: selectedRow)
 
-        UserConfiguration.shared.setLayoutStrings(layouts)
+        UserConfiguration.shared.setLayoutKeys(layoutKeys)
 
         layoutsTableView?.reloadData()
     }
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return layouts.count
+        return layoutKeys.count
     }
 
     func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
@@ -87,6 +89,6 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
             return nil
         }
 
-        return layouts[row]
+        return LayoutManager.layoutNameForKey(layoutKeys[row])
     }
 }
