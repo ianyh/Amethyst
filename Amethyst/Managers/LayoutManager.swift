@@ -9,8 +9,8 @@
 import Foundation
 
 enum LayoutManager {
-    static func layoutForKey(_ layoutString: String, with windowActivityCache: WindowActivityCache) -> Layout? {
-        switch layoutString {
+    static func layoutForKey(_ layoutKey: String, with windowActivityCache: WindowActivityCache) -> Layout? {
+        switch layoutKey {
         case "tall":
             return TallLayout(windowActivityCache: windowActivityCache)
         case "tall-right":
@@ -40,7 +40,39 @@ enum LayoutManager {
         }
     }
 
-    static func availableLayoutStrings() -> [String] {
+    static func layoutNameForKey(_ layoutKey: String) -> String? {
+        switch layoutKey {
+        case "tall":
+            return TallLayout.layoutName
+        case "tall-right":
+            return TallRightLayout.layoutName
+        case "wide":
+            return WideLayout.layoutName
+        case "3column-left":
+            return ThreeColumnLeftLayout.layoutName
+        case "middle-wide":
+            return ThreeColumnMiddleLayout.layoutName
+        case "3column-right":
+            return ThreeColumnRightLayout.layoutName
+        case "fullscreen":
+            return FullscreenLayout.layoutName
+        case "column":
+            return ColumnLayout.layoutName
+        case "row":
+            return RowLayout.layoutName
+        case "floating":
+            return FloatingLayout.layoutName
+        case "widescreen-tall":
+            return WidescreenTallLayout.layoutName
+        case "bsp":
+            return BinarySpacePartitioningLayout.layoutName
+        default:
+            return nil
+        }
+    }
+
+    // Returns a list of (key, name) pairs
+    static func availableLayoutStrings() -> [(key: String, name: String)] {
         let layoutClasses: [Layout.Type] = [
             TallLayout.self,
             TallRightLayout.self,
@@ -56,14 +88,14 @@ enum LayoutManager {
             BinarySpacePartitioningLayout.self
         ]
 
-        return layoutClasses.map { $0.layoutKey }
+        return layoutClasses.map { ($0.layoutKey, $0.layoutName) }
     }
 
     static func layoutsWithConfiguration(_ userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout] {
-        let layoutStrings: [String] = userConfiguration.layoutStrings()
-        let layouts = layoutStrings.map { layoutString -> Layout? in
-            guard let layout = LayoutManager.layoutForKey(layoutString, with: windowActivityCache) else {
-                log.warning("Unrecognized layout string \(layoutString)")
+        let layoutKeys: [String] = userConfiguration.layoutKeys()
+        let layouts = layoutKeys.map { layoutKey -> Layout? in
+            guard let layout = LayoutManager.layoutForKey(layoutKey, with: windowActivityCache) else {
+                log.warning("Unrecognized layout key \(layoutKey)")
                 return nil
             }
 

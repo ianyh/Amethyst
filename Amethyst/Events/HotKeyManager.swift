@@ -191,9 +191,9 @@ final class HotKeyManager: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
-        LayoutManager.availableLayoutStrings().forEach { layoutString in
-            self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutString)) {
-                windowManager.focusedScreenManager()?.selectLayout(layoutString)
+        LayoutManager.availableLayoutStrings().forEach { (layoutKey, _) in
+            self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
+                windowManager.focusedScreenManager()?.selectLayout(layoutKey)
             }
         }
     }
@@ -341,9 +341,9 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
 
-        for layoutString in LayoutManager.availableLayoutStrings() {
-            let commandName = "Select \(layoutString) layout"
-            let commandKey = "select-\(layoutString)-layout"
+        for (layoutKey, layoutName) in LayoutManager.availableLayoutStrings() {
+            let commandName = "Select \(layoutName) layout"
+            let commandKey = "select-\(layoutKey)-layout"
             hotKeyNameToDefaultsKey.append([commandName, commandKey])
         }
 
