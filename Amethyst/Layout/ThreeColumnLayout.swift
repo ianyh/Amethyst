@@ -53,7 +53,8 @@ internal struct TriplePaneArrangement {
         // calculate how many are in each type
         let mainPaneCount = min(numWindows, numMainPane)
         let nonMainCount: UInt = numWindows - mainPaneCount
-        let tertiaryPaneCount = nonMainCount >> 1   // divide by 2. we do tertiary first so that a single window results in a zero here
+        // we do tertiary first because a single window produces a zero in integer division by 2
+        let tertiaryPaneCount = nonMainCount >> 1
         let secondaryPaneCount = nonMainCount - tertiaryPaneCount
         self.paneCount = [.main: mainPaneCount, .secondary: secondaryPaneCount, .tertiary: tertiaryPaneCount]
 
@@ -135,7 +136,8 @@ internal struct TriplePaneArrangement {
 final class ThreeColumnReflowOperation: ReflowOperation {
     private let layout: ThreeColumnLayout & MainColumnSpecifier
 
-    fileprivate init(screen: NSScreen, windows: [SIWindow], layout: ThreeColumnLayout & MainColumnSpecifier & FrameAssigner) {
+    fileprivate init(screen: NSScreen, windows: [SIWindow],
+                     layout: ThreeColumnLayout & MainColumnSpecifier & FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: layout)
     }
@@ -224,12 +226,16 @@ internal protocol MainColumnSpecifier {
 }
 
 extension MainColumnSpecifier where Self: ThreeColumnLayout & Layout {
-    internal func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    private func reflow3columns(_ windows: [SIWindow], on screen: NSScreen) -> ThreeColumnReflowOperation {
         return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self)
     }
 
+    internal func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+        return reflow3columns(windows, on: screen)
+    }
+
     internal func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self).frameAssignments().first { $0.window == window }
+        return reflow3columns(windows, on: screen).frameAssignments().first { $0.window == window }
     }
 }
 
