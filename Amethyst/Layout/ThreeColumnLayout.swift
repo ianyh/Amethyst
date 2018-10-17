@@ -10,130 +10,134 @@
 
 import Silica
 
-private enum Column {
+// we'd like to hide these structures and enums behind fileprivate, but
+// https://bugs.swift.org/browse/SR-47
+
+internal enum Column {
     case left
     case middle
     case right
 }
 
-private enum Pane {
+internal enum Pane {
     case main
     case secondary
     case tertiary
 }
 
-private struct PaneArrangement {
-    let mainPane: Column  // which Column is the main Pane
+internal struct TriplePaneArrangement {
 
-    let mainPaneCount: UInt  // how many windows in the main Pane
-    let secondaryPaneCount: UInt  // how many windows in the secondary Pane
-    let tertiaryPaneCount: UInt  // how many windows in the tertiary Pane
+    let paneCount: [Pane: UInt]            // number of windows in pane
+    let paneWindowHeight: [Pane: CGFloat]  // height of windows in pane
+    let paneWindowWidth: [Pane: CGFloat]   // width of windows in pane
+    let panePosition: [Pane: Column]       // how panes relate to columns
+    let columnDesignation: [Column: Pane]  // how columns relate to panes
 
-    let screenHeight: CGFloat  // total height of the screen
-    let mainWindowHeight: CGFloat  // height of each window in the main Pane
-    let secondaryWindowHeight: CGFloat  // height of each window in the secondary Pane
-    let tertiaryWindowHeight: CGFloat  // height of each window in the tertiary Pane
-
-    let screenWidth: CGFloat  // total width of the screen
-    let mainWindowWidth: CGFloat  // width of each window in the main Pane
-    let nonMainWindowWidth: CGFloat  // width of each window in the secondary or tertiary Pane
-
-    init(mainPane: Column,  // which Column is the main Pane
-         numWindows: UInt,  // how many windows total
-         numMainPane: UInt,  // how many windows in the main Pane
-         screenHeight: CGFloat,  // total height of the screen
-         screenWidth: CGFloat,  // total width of the screen
+    init(mainPane: Column,    // which Column is the main Pane
+         numWindows: UInt,    // how many windows total
+         numMainPane: UInt,   // how many windows in the main Pane
+         screenSize: CGSize,  // total size of the screen
          mainPaneRatio: CGFloat
     ) {
-        self.mainPane = mainPane
-        self.mainPaneCount = min(numWindows, numMainPane)
-        let nonMainCount: UInt = numWindows - self.mainPaneCount
-        self.secondaryPaneCount = nonMainCount >> 1
-        self.tertiaryPaneCount = nonMainCount - self.secondaryPaneCount
-        self.screenHeight = screenHeight
-        self.screenWidth = screenWidth
-        self.mainWindowHeight = round(screenHeight / CGFloat(self.mainPaneCount))
-        self.secondaryWindowHeight = self.secondaryPaneCount > 0 ? round(screenHeight / CGFloat(self.secondaryPaneCount)) : 0.0
-        self.tertiaryWindowHeight = self.tertiaryPaneCount > 0 ? round(screenHeight / CGFloat(self.tertiaryPaneCount)) : 0.0
-        if self.tertiaryPaneCount > 0 {
-            self.mainWindowWidth = round(self.screenWidth * mainPaneRatio)
-            self.nonMainWindowWidth = round((self.screenWidth - self.mainWindowWidth) / 2)
-        } else if self.secondaryPaneCount > 0 {
-            // has a secondary pane, but no tertiary pane
-            self.mainWindowWidth = round(self.screenWidth * mainPaneRatio)
-            self.nonMainWindowWidth = self.screenWidth - self.mainWindowWidth
-        } else {
-            // has only a main pane
-            self.mainWindowWidth = self.screenWidth
-            self.nonMainWindowWidth = 0.0
+        // forward and reverse mapping of columns to their designations
+        self.panePosition = {
+            switch mainPane {
+            case .left:   return [.main: .left, .secondary: .middle, .tertiary: .right]
+            case .middle: return [.main: .middle, .secondary: .left, .tertiary: .right]
+            case .right:  return [.main: .right, .secondary: .left, .tertiary: .middle]
+            }
+        }()
+        // swap keys and values for reverse lookup
+        self.columnDesignation = Dictionary(uniqueKeysWithValues: panePosition.map({ ($1, $0) }))
+
+        // calculate how many are in each type
+        let mainPaneCount = min(numWindows, numMainPane)
+        let nonMainCount: UInt = numWindows - mainPaneCount
+        let tertiaryPaneCount = nonMainCount >> 1   // divide by 2. we do tertiary first so that a single window results in a zero here
+        let secondaryPaneCount = nonMainCount - tertiaryPaneCount
+        self.paneCount = [.main: mainPaneCount, .secondary: secondaryPaneCount, .tertiary: tertiaryPaneCount]
+
+        // calculate heights
+        let screenHeight = screenSize.height
+        self.paneWindowHeight = [
+            .main: round(screenHeight / CGFloat(mainPaneCount)),
+            .secondary: secondaryPaneCount == 0 ? 0.0 : round(screenHeight / CGFloat(secondaryPaneCount)),
+            .tertiary: tertiaryPaneCount == 0 ? 0.0 : round(screenHeight / CGFloat(tertiaryPaneCount))
+        ]
+
+        // calculate widths
+        let screenWidth = screenSize.width
+        let mainWindowWidth = secondaryPaneCount == 0 ? screenWidth : round(screenWidth * mainPaneRatio)
+        let nonMainWindowWidth = round((screenWidth - mainWindowWidth) / 2)
+        self.paneWindowWidth = [
+            .main: mainWindowWidth,
+            .secondary: nonMainWindowWidth,
+            .tertiary: nonMainWindowWidth
+        ]
+   }
+
+    func count(_ pane: Pane) -> UInt {
+        return paneCount[pane]!
+    }
+
+    func height(_ pane: Pane) -> CGFloat {
+        return paneWindowHeight[pane]!
+    }
+
+    func width(_ pane: Pane) -> CGFloat {
+        return paneWindowWidth[pane]!
+    }
+
+    func firstIndex(_ pane: Pane) -> UInt {
+        switch pane {
+        case .main: return 0
+        case .secondary: return count(.main)
+        case .tertiary: return count(.main) + count(.secondary)
         }
+    }
+
+    func pane(ofIndex windowIndex: UInt) -> Pane {
+        if windowIndex >= firstIndex(.tertiary) {
+            return .tertiary
+        }
+        if windowIndex >= firstIndex(.secondary) {
+            return .secondary
+        }
+        return .main
     }
 
     // Given a window index, which Pane does it belong to, and which index within that Pane
     func coordinates(at windowIndex: UInt) -> (Pane, UInt) {
-        // main windows are indexes [0, mainPaneCount)
-        // secondary windows are indexes [mainPaneCount, mainPaneCount + secondaryPaneCount)
-        // tertiary windows are indexes [mainPaneCount + secondaryPaneCount, ...)
-        if windowIndex < mainPaneCount {
-            return (Pane.main, windowIndex)
-        } else if windowIndex >= (mainPaneCount + secondaryPaneCount) {
-            return (Pane.tertiary, windowIndex - mainPaneCount - secondaryPaneCount)
-        } else {
-            return (Pane.secondary, windowIndex - mainPaneCount)
-        }
+        let pane = self.pane(ofIndex: windowIndex)
+        return (pane, windowIndex - firstIndex(pane))
     }
 
     // Get the (height, width) dimensions for a window in the given Pane
-    func windowDimensions(for pane: Pane) -> (CGFloat, CGFloat) {
-        switch pane {
-        case .main: return (mainWindowHeight, mainWindowWidth)
-        case .secondary: return (secondaryWindowHeight, nonMainWindowWidth)
-        case .tertiary: return (tertiaryWindowHeight, nonMainWindowWidth)
-        }
+    func windowDimensions(inPane pane: Pane) -> (CGFloat, CGFloat) {
+        return (height(pane), width(pane))
     }
 
     // Get the Column assignment for the given Pane
-    func column(for pane: Pane) -> Column {
-        switch mainPane {
-        case .left:
-            switch pane {
-            case .main: return Column.left
-            case .secondary: return Column.middle
-            case .tertiary: return Column.right
-            }
-        case .middle:
-            switch pane {
-            case .main: return Column.middle
-            case .secondary: return Column.left
-            case .tertiary: return Column.right
-            }
-        case .right:
-            switch pane {
-            case .main: return Column.right
-            case .secondary: return Column.left
-            case .tertiary: return Column.middle
-            }
-        }
+    func column(ofPane pane: Pane) -> Column {
+        return panePosition[pane]!
+    }
+
+    func pane(ofColumn column: Column) -> Pane {
+        return columnDesignation[column]!
     }
 
     // Get the column widths in the order (left, middle, right)
     func widthsLeftToRight() -> (CGFloat, CGFloat, CGFloat) {
-        switch mainPane {
-        case .left: return (mainWindowWidth, nonMainWindowWidth, nonMainWindowWidth)
-        case .middle: return (nonMainWindowWidth, mainWindowWidth, nonMainWindowWidth)
-        case .right: return (nonMainWindowWidth, nonMainWindowWidth, mainWindowWidth)
-        }
+        return (width(pane(ofColumn: .left)), width(pane(ofColumn: .middle)), width(pane(ofColumn: .right)))
     }
 }
 
 final class ThreeColumnReflowOperation: ReflowOperation {
-    private let layout: ThreeColumnLayout
-    private let mainIs: Column
+    private let layout: ThreeColumnLayout & MainColumnSpecifier
 
-    fileprivate init(screen: NSScreen, windows: [SIWindow], layout: ThreeColumnLayout, frameAssigner: FrameAssigner, mainIs: Column) {
+    fileprivate init(screen: NSScreen, windows: [SIWindow], layout: ThreeColumnLayout & MainColumnSpecifier & FrameAssigner) {
         self.layout = layout
-        self.mainIs = mainIs
-        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
+        super.init(screen: screen, windows: windows, frameAssigner: layout)
     }
 
     func frameAssignments() -> [FrameAssignment] {
@@ -142,11 +146,10 @@ final class ThreeColumnReflowOperation: ReflowOperation {
         }
 
         let screenFrame = screen.adjustedFrame()
-        let paneArrangement = PaneArrangement(mainPane: mainIs,
+        let paneArrangement = TriplePaneArrangement(mainPane: layout.mainColumn,
                                               numWindows: UInt(windows.count),
                                               numMainPane: UInt(layout.mainPaneCount),
-                                              screenHeight: screenFrame.height,
-                                              screenWidth: screenFrame.width,
+                                              screenSize: screenFrame.size,
                                               mainPaneRatio: layout.mainPaneRatio)
 
         let focusedWindow = SIWindow.focused()
@@ -158,29 +161,34 @@ final class ThreeColumnReflowOperation: ReflowOperation {
 
             let (pane, paneIndex) = paneArrangement.coordinates(at: windowIndex)
 
-            let (windowHeight, windowWidth): (CGFloat, CGFloat) = paneArrangement.windowDimensions(for: pane)
-            let column: Column = paneArrangement.column(for: pane)
+            let (windowHeight, windowWidth): (CGFloat, CGFloat) = paneArrangement.windowDimensions(inPane: pane)
+            let column: Column = paneArrangement.column(ofPane: pane)
 
             let (leftPaneWidth, middlePaneWidth, _): (CGFloat, CGFloat, CGFloat) = paneArrangement.widthsLeftToRight()
 
-            let xorigin: CGFloat = {
+            let xorigin: CGFloat = screenFrame.origin.x + {
                 switch column {
-                case .left: return screenFrame.origin.x
-                case .middle: return screenFrame.origin.x + leftPaneWidth
-                case .right: return screenFrame.origin.x + leftPaneWidth + middlePaneWidth
+                case .left: return 0.0
+                case .middle: return leftPaneWidth
+                case .right: return leftPaneWidth + middlePaneWidth
                 }
             }()
 
-            let scaleFactor: CGFloat = (screenFrame.width / windowWidth)
+            let scaleFactor: CGFloat = screenFrame.width / {
+                if pane == .main {
+                    return paneArrangement.width(.main)
+                }
+                return paneArrangement.width(.secondary) + paneArrangement.width(.tertiary)
+            }()
 
             windowFrame.origin.x = xorigin
             windowFrame.origin.y = screenFrame.origin.y + (windowHeight * CGFloat(paneIndex))
             windowFrame.size.width = windowWidth
             windowFrame.size.height = windowHeight
 
-            let isTertiaryMain = (paneArrangement.tertiaryPaneCount > 0 ? pane == Pane.main : pane != Pane.main)
+            let isMain = windowIndex < paneArrangement.firstIndex(.secondary)
 
-            let resizeRules = ResizeRules(isMain: isTertiaryMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
+            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
@@ -199,57 +207,57 @@ final class ThreeColumnReflowOperation: ReflowOperation {
 }
 
 // not an actual Layout, just a base class for the three actual Layouts below
-class ThreeColumnLayout: WindowActivityCache {
+internal class ThreeColumnLayout {
     let windowActivityCache: WindowActivityCache
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
     }
 
-    func windowIsActive(_ window: SIWindow) -> Bool {
-        return windowActivityCache.windowIsActive(window)
-    }
-
     fileprivate var mainPaneCount: Int = 1
     fileprivate(set) var mainPaneRatio: CGFloat = 0.5
 }
 
-final class ThreeColumnLeftLayout: ThreeColumnLayout, Layout {
+// DRY up the layouts since they differ only in what counts as their "main" column
+internal protocol MainColumnSpecifier {
+    var mainColumn: Column { get }
+}
+
+extension MainColumnSpecifier where Self: ThreeColumnLayout & Layout {
+    internal func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self)
+    }
+
+    internal func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self).frameAssignments().first { $0.window == window }
+    }
+}
+
+// implement the three variants
+final class ThreeColumnLeftLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
     static var layoutName: String { return "3Column Left" }
     static var layoutKey: String { return "3column-left" }
-
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self, mainIs: Column.left)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self, mainIs: Column.left).frameAssignments().first { $0.window == window }
-    }
+    internal let mainColumn = Column.left
 }
 
-final class ThreeColumnMiddleLayout: ThreeColumnLayout, Layout {
+final class ThreeColumnMiddleLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
     static var layoutName: String { return "3Column Middle" }
     static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
-
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self, mainIs: Column.middle)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self, mainIs: Column.middle).frameAssignments().first { $0.window == window }
-    }
+    internal let mainColumn = Column.middle
 }
 
-final class ThreeColumnRightLayout: ThreeColumnLayout, Layout {
+final class ThreeColumnRightLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
     static var layoutName: String { return "3Column Right" }
     static var layoutKey: String { return "3column-right" }
+    internal let mainColumn = Column.right
+}
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self, mainIs: Column.right)
-    }
+// extend all ThreeColumnLayouts with other necessary functionality: PanedLayout, WindowActivityCache, FrameAssigner
+extension ThreeColumnLayout: FrameAssigner {}
 
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self, mainIs: Column.right).frameAssignments().first { $0.window == window }
+extension ThreeColumnLayout: WindowActivityCache {
+    func windowIsActive(_ window: SIWindow) -> Bool {
+        return windowActivityCache.windowIsActive(window)
     }
 }
 
@@ -266,5 +274,3 @@ extension ThreeColumnLayout: PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 }
-
-extension ThreeColumnLayout: FrameAssigner {}
