@@ -8,7 +8,7 @@
 
 import Silica
 
-final class WidescreenTallReflowOperation: ReflowOperation {
+final class WidescreenTallReflowOperation: ReflowOperation, FrameReflower {
     let layout: WidescreenTallLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: WidescreenTallLayout, frameAssigner: FrameAssigner) {
@@ -76,7 +76,7 @@ final class WidescreenTallReflowOperation: ReflowOperation {
     }
 }
 
-final class WidescreenTallLayout: Layout {
+final class WidescreenTallLayout: Layout, FramedLayout {
     static var layoutName: String { return "Widescreen Tall" }
     static var layoutKey: String { return "widescreen-tall" }
 
@@ -89,7 +89,7 @@ final class WidescreenTallLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
         return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
 

@@ -140,7 +140,7 @@ func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
     return lhs.windowID == rhs.windowID
 }
 
-final class BinarySpacePartitioningReflowOperation: ReflowOperation {
+final class BinarySpacePartitioningReflowOperation: ReflowOperation, FrameReflower {
     private typealias TraversalNode = (node: TreeNode, frame: CGRect)
     private let rootNode: TreeNode
 
@@ -233,7 +233,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
     }
 }
 
-final class BinarySpacePartitioningLayout: Layout {
+final class BinarySpacePartitioningLayout: Layout, FramedLayout {
     static var layoutName: String { return "Binary Space Partitioning" }
     static var layoutKey: String { return "bsp" }
 
@@ -246,11 +246,10 @@ final class BinarySpacePartitioningLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
         if !windows.isEmpty && !rootNode.valid {
             constructInitialTreeWithWindows(windows)
         }
-
         return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self)
     }
 

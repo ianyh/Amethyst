@@ -133,7 +133,7 @@ internal struct TriplePaneArrangement {
     }
 }
 
-final class ThreeColumnReflowOperation: ReflowOperation {
+final class ThreeColumnReflowOperation: ReflowOperation, FrameReflower {
     private let layout: ThreeColumnLayout & MainColumnSpecifier
 
     fileprivate init(screen: NSScreen, windows: [SIWindow],
@@ -230,29 +230,29 @@ extension MainColumnSpecifier where Self: ThreeColumnLayout & Layout {
         return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self)
     }
 
-    internal func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    internal func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
         return reflow3columns(windows, on: screen)
     }
 
     internal func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return reflow3columns(windows, on: screen).frameAssignments().first { $0.window == window }
+        return reflowFrames(windows, on: screen).frameAssignments().first { $0.window == window }
     }
 }
 
 // implement the three variants
-final class ThreeColumnLeftLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
+final class ThreeColumnLeftLayout: ThreeColumnLayout, MainColumnSpecifier, Layout, FramedLayout {
     static var layoutName: String { return "3Column Left" }
     static var layoutKey: String { return "3column-left" }
     internal let mainColumn = Column.left
 }
 
-final class ThreeColumnMiddleLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
+final class ThreeColumnMiddleLayout: ThreeColumnLayout, MainColumnSpecifier, Layout, FramedLayout {
     static var layoutName: String { return "3Column Middle" }
     static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
     internal let mainColumn = Column.middle
 }
 
-final class ThreeColumnRightLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
+final class ThreeColumnRightLayout: ThreeColumnLayout, MainColumnSpecifier, Layout, FramedLayout {
     static var layoutName: String { return "3Column Right" }
     static var layoutKey: String { return "3column-right" }
     internal let mainColumn = Column.right
