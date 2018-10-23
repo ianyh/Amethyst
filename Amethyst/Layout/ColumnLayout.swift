@@ -8,7 +8,7 @@
 
 import Silica
 
-final class ColumnReflowOperation: ReflowOperation {
+final class ColumnReflowOperation: ReflowOperation, FrameReflower {
     let layout: ColumnLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: ColumnLayout, frameAssigner: FrameAssigner) {
@@ -69,7 +69,7 @@ final class ColumnReflowOperation: ReflowOperation {
     }
 }
 
-final class ColumnLayout: Layout {
+final class ColumnLayout: Layout, FramedLayout {
     static var layoutName: String { return "Column" }
     static var layoutKey: String { return "column" }
 
@@ -81,7 +81,7 @@ final class ColumnLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
         return ColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
 

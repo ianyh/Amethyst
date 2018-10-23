@@ -454,6 +454,8 @@ extension WindowManager: WindowMover {
             return
         }
 
+        guard windowIndex != otherWindowIndex else { return }
+
         windows[windowIndex] = otherWindow
         windows[otherWindowIndex] = window
         let theChange = WindowChange.windowSwap(window: window, otherWindow: otherWindow)

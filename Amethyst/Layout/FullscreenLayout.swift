@@ -8,7 +8,7 @@
 
 import Silica
 
-final class FullscreenReflowOperation: ReflowOperation {
+final class FullscreenReflowOperation: ReflowOperation, FrameReflower {
     private let layout: FullscreenLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: FullscreenLayout, frameAssigner: FrameAssigner) {
@@ -33,7 +33,7 @@ final class FullscreenReflowOperation: ReflowOperation {
     }
 }
 
-final class FullscreenLayout: Layout {
+final class FullscreenLayout: Layout, FramedLayout {
     static var layoutName: String { return "Fullscreen" }
     static var layoutKey: String { return "fullscreen" }
 
@@ -43,7 +43,7 @@ final class FullscreenLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
         return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
 

@@ -8,7 +8,7 @@
 
 import Silica
 
-final class TallReflowOperation: ReflowOperation {
+final class TallReflowOperation: ReflowOperation, FrameReflower {
     let layout: TallLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: TallLayout, frameAssigner: FrameAssigner) {
@@ -73,7 +73,8 @@ final class TallReflowOperation: ReflowOperation {
     }
 }
 
-final class TallLayout: Layout {
+final class TallLayout: Layout, FramedLayout {
+
     static var layoutName: String { return "Tall" }
     static var layoutKey: String { return "tall" }
 
@@ -86,7 +87,7 @@ final class TallLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
         return TallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
 

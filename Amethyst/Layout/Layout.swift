@@ -156,6 +156,11 @@ class ReflowOperation: Operation {
     }
 }
 
+// a reflow operation that organizes frames
+protocol FrameReflower {
+    func frameAssignments() -> [FrameAssignment]
+}
+
 protocol FrameAssigner: WindowActivityCache {
     func performFrameAssignments(_ frameAssignments: [FrameAssignment])
 }
@@ -264,4 +269,24 @@ protocol StatefulLayout {
     func updateWithChange(_ windowChange: WindowChange)
     func nextWindowIDCounterClockwise() -> CGWindowID?
     func nextWindowIDClockwise() -> CGWindowID?
+}
+
+// a layout whose reflow operation is a FrameReflower
+protocol FramedLayout {
+    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> (ReflowOperation & FrameReflower)
+}
+
+extension FramedLayout {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+        return reflowFrames(windows, on: screen)
+    }
+}
+
+// use existing groundwork in layouts / reflowOperations in order to get the window from an assigned frame
+extension FramedLayout {
+    func windowAtPoint(_ point: CGPoint, of windows: [SIWindow], on screen: NSScreen) -> SIWindow? {
+        let assignments = reflowFrames(windows, on: screen).frameAssignments()
+        guard let assignment = assignments.first(where: { $0.frame.contains(point) }) else { return nil }
+        return assignment.window
+    }
 }

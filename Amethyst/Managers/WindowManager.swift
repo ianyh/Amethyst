@@ -132,9 +132,7 @@ class MouseStateKeeper {
     // Execute an action that was initiated by the observer and completed by the state keeper
     func swapDraggedWindowWithDropzone(_ draggedWindow: SIWindow) {
         guard let delegate = self.delegate else { return }
-        guard let screen = draggedWindow.screen() else {
-            return
-        }
+        guard let screen = draggedWindow.screen() else { return }
 
         let windows = delegate.windows(on: screen)
 
@@ -142,6 +140,12 @@ class MouseStateKeeper {
         let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
         let unflippedY = NSScreen.globalHeight() - flippedPointerLocation.y + screen.frameIncludingDockAndMenu().origin.y
         let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
+
+        if let framedLayout = delegate.focusedScreenManager()?.currentLayout as? FramedLayout {
+            if let framedWindow = framedLayout.windowAtPoint(pointerLocation, of: windows, on: screen) {
+                return delegate.switchWindow(draggedWindow, with: framedWindow)
+            }
+        }
 
         // Ignore if there is no window at that point
         guard let secondWindow = SIWindow.alternateWindowForScreenAtPoint(pointerLocation, withWindows: windows, butNot: draggedWindow) else {
