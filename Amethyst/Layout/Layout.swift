@@ -208,10 +208,16 @@ extension NSScreen {
             frame.size.height = windowMinimumHeight
         }
 
-        frame.origin.x += UserConfiguration.shared.screenPaddingLeft()
-        frame.origin.y += UserConfiguration.shared.screenPaddingTop()
-        frame.size.width -= UserConfiguration.shared.screenPaddingRight()
-        frame.size.height -= UserConfiguration.shared.screenPaddingBottom()
+        let paddingTop = UserConfiguration.shared.screenPaddingTop()
+        let paddingBottom = UserConfiguration.shared.screenPaddingBottom()
+        let paddingLeft = UserConfiguration.shared.screenPaddingLeft()
+        let paddingRight = UserConfiguration.shared.screenPaddingRight()
+        frame.origin.y += paddingTop
+        frame.origin.x += paddingLeft
+        // subtract the right padding, and also any amount that we pushed the frame to the left with the left padding
+        frame.size.width -= (paddingRight + paddingLeft)
+        // subtract the bottom padding, and also any amount that we pushed the frame down with the top padding
+        frame.size.height -= (paddingBottom + paddingTop)
 
         return frame
     }
