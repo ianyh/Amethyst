@@ -204,5 +204,9 @@
     "ignore-menu-bar": false,
     "use-canary-build": false,
     "new-windows-to-main": false,
-    "send-crash-reports": false
+    "send-crash-reports": false,
+    "screen-padding-top": 0,
+    "screen-padding-bottom": 0,
+    "screen-padding-left": 0,
+    "screen-padding-right": 0,
 }

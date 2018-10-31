@@ -74,6 +74,10 @@ enum ConfigurationKey: String {
     case newWindowsToMain = "new-windows-to-main"
     case sendCrashReports = "send-crash-reports"
     case windowResizeStep = "window-resize-step"
+    case screenPaddingLeft = "screen-padding-left"
+    case screenPaddingRight = "screen-padding-right"
+    case screenPaddingTop = "screen-padding-top"
+    case screenPaddingBottom = "screen-padding-bottom"
 
     static var defaultsKeys: [ConfigurationKey] {
         return [
@@ -94,7 +98,11 @@ enum ConfigurationKey: String {
             .windowMinimumHeight,
             .windowMinimumWidth,
             .sendCrashReports,
-            .windowResizeStep
+            .windowResizeStep,
+            .screenPaddingLeft,
+            .screenPaddingRight,
+            .screenPaddingTop,
+            .screenPaddingBottom
         ]
     }
 }
@@ -512,6 +520,22 @@ final class UserConfiguration: NSObject {
 
     func windowResizeStep() -> CGFloat {
         return CGFloat(storage.float(forKey: .windowResizeStep) / 100.0)
+    }
+
+    func screenPaddingTop() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingTop))
+    }
+
+    func screenPaddingBottom() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingBottom))
+    }
+
+    func screenPaddingLeft() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingLeft))
+    }
+
+    func screenPaddingRight() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingRight))
     }
 
     func floatingBundleIdentifiersIsBlacklist() -> Bool {
