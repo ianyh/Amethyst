@@ -208,6 +208,11 @@ extension NSScreen {
             frame.size.height = windowMinimumHeight
         }
 
+        frame.origin.x += UserConfiguration.shared.screenPaddingLeft()
+        frame.origin.y += UserConfiguration.shared.screenPaddingTop()
+        frame.size.width -= UserConfiguration.shared.screenPaddingRight()
+        frame.size.height -= UserConfiguration.shared.screenPaddingBottom()
+
         return frame
     }
 }
