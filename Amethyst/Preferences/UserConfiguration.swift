@@ -392,21 +392,34 @@ final class UserConfiguration: NSObject {
     }
 
     func runningApplication(_ runningApplication: BundleIdentifiable, shouldFloatWindowWithTitle title: String) -> Bool {
-        guard let floatingBundle = runningApplicationFloatingBundle(runningApplication) else {
-            return false
-        }
-
         let useIdentifiersAsBlacklist = floatingBundleIdentifiersIsBlacklist()
 
-        guard !floatingBundle.windowTitles.isEmpty else {
-            return useIdentifiersAsBlacklist
-        }
-
-        guard floatingBundle.windowTitles.contains(title) else {
+        // If the application is in the floating list we need to continue to check title
+        // Otherwise
+        //   - Blacklist means not floating
+        //   - Whitelist menas floating
+        guard let floatingBundle = runningApplicationFloatingBundle(runningApplication) else {
             return !useIdentifiersAsBlacklist
         }
 
-        return useIdentifiersAsBlacklist
+        // If the window list is empty then all windows are included in the list
+        //   - Blacklist means floating
+        //   - Whitelist means not floating
+        if floatingBundle.windowTitles.isEmpty {
+            return useIdentifiersAsBlacklist
+        }
+
+        // If the title matches it is included
+        //   - Blacklist means floating
+        //   - Whitelist means not floating
+        if floatingBundle.windowTitles.contains(title) {
+            return useIdentifiersAsBlacklist
+        }
+
+        // Otherwise the window is not included
+        //   - Blacklist means not floating
+        //   - Whitelist means floating
+        return !useIdentifiersAsBlacklist
     }
 
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
