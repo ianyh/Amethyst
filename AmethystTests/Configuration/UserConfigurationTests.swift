@@ -33,7 +33,7 @@ fileprivate final class TestConfigurationStorage: ConfigurationStorage {
     func stringArray(forKey key: ConfigurationKey) -> [String]? {
         return storage[key] as? [String]
     }
-    
+
     func set(_ value: Any?, forKey key: ConfigurationKey) {
         storage[key] = value
     }
@@ -47,7 +47,7 @@ final class UserConfigurationTests: QuickSpec {
     private class TestHotKeyRegistrar: HotKeyRegistrar {
         private(set) var keyString: String?
         private(set) var modifiers: AMModifierFlags?
-        private(set) var handler: (() -> ())?
+        private(set) var handler: (() -> Void)?
         private(set) var defaultsKey: String?
         private(set) var override: Bool?
 
@@ -127,11 +127,11 @@ final class UserConfigurationTests: QuickSpec {
                     configuration.configuration = JSON(localConfiguration)
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
-                    
+
                     let registrar = TestHotKeyRegistrar()
-                    
+
                     configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
-                    
+
                     expect(registrar.override).to(beTrue())
                 }
             }
@@ -173,9 +173,9 @@ final class UserConfigurationTests: QuickSpec {
                     configuration.configuration = JSON([:])
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
-                    
+
                     let registrar = TestHotKeyRegistrar()
-                    
+
                     configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
 
                     expect(configuration.defaultConfiguration?["test"]["key"].string).to(equal("1"))
@@ -199,9 +199,9 @@ final class UserConfigurationTests: QuickSpec {
                 configuration.configuration = JSON(localConfiguration)
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
-                
+
                 let registrar = TestHotKeyRegistrar()
-                
+
                 expect {
                     configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
                 }.toNot(throwError())
@@ -226,7 +226,7 @@ final class UserConfigurationTests: QuickSpec {
             it("floats for exact matches") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
-                
+
                 storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
                 storage.set(["test.test.Test"], forKey: .floatingBundleIdentifiers)
 
@@ -240,70 +240,70 @@ final class UserConfigurationTests: QuickSpec {
             it("floats for wildcard matches") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
-                
+
                 storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
                 storage.set(["test.test.*"], forKey: .floatingBundleIdentifiers)
-                
+
                 let bundleIdentifiable = TestBundleIdentifiable()
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                
+
                 expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
             }
-            
+
             it("floats for prefixed wildcard matches") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
-                
+
                 storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
                 storage.set(["*.Test"], forKey: .floatingBundleIdentifiers)
-                
+
                 let bundleIdentifiable = TestBundleIdentifiable()
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                
+
                 expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
             }
-            
+
             it("floats for inline wildcard matches") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
-                
+
                 storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
                 storage.set(["test.*.Test"], forKey: .floatingBundleIdentifiers)
-                
+
                 let bundleIdentifiable = TestBundleIdentifiable()
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.foo.Test"
-                
+
                 expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
             }
 
             it("does not float for exact mismatches") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
-                
+
                 storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
                 storage.set(["test.test.Other"], forKey: .floatingBundleIdentifiers)
-                
+
                 let bundleIdentifiable = TestBundleIdentifiable()
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                
+
                 expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
             }
 
             it("does not float for wildcard mismatches") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
-                
+
                 storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
                 storage.set(["test.other.*"], forKey: .floatingBundleIdentifiers)
-                
+
                 let bundleIdentifiable = TestBundleIdentifiable()
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                
+
                 expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
             }
 
@@ -312,73 +312,74 @@ final class UserConfigurationTests: QuickSpec {
                     let storage = TestConfigurationStorage()
                     let configuration = UserConfiguration(storage: storage)
                     let floatingBundle = FloatingBundle(id: "test.test.Test", windowTitles: ["test"])
-                    
+
                     storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
                     configuration.setFloatingBundles([floatingBundle])
-                    
+
                     let bundleIdentifiable = TestBundleIdentifiable()
                     let title = "test"
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                    
+
                     expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
                 }
-                
+
                 it("does not float for a matching application with no specified window titles") {
                     let storage = TestConfigurationStorage()
                     let configuration = UserConfiguration(storage: storage)
-                    
+
                     storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
                     storage.set(["test.test.Test"], forKey: .floatingBundleIdentifiers)
-                    
+
                     let bundleIdentifiable = TestBundleIdentifiable()
                     let title = UUID().uuidString
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                    
+
                     expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
                 }
-                
+
                 it("floats for no specified applications") {
                     let storage = TestConfigurationStorage()
                     let configuration = UserConfiguration(storage: storage)
-                    
+
                     storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
                     storage.set([], forKey: .floatingBundleIdentifiers)
-                    
+
                     let bundleIdentifiable = TestBundleIdentifiable()
                     let title = UUID().uuidString
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                    
-                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
+
+                    let float = configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)
+                    expect(float).to(beTrue())
                 }
             }
-            
+
             context("specified window titles") {
                 it("only float windows with titles") {
                     let storage = TestConfigurationStorage()
                     let configuration = UserConfiguration(storage: storage)
                     let floatingBundle = FloatingBundle(id: "test.test.Test", windowTitles: ["test1"])
-                    
+
                     storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
                     configuration.setFloatingBundles([floatingBundle])
-                    
+
                     let bundleIdentifiable = TestBundleIdentifiable()
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                    
+
                     expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test1")).to(beTrue())
                     expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test2")).to(beFalse())
                 }
-                
+
                 it("only allow windows with titles") {
                     let storage = TestConfigurationStorage()
                     let configuration = UserConfiguration(storage: storage)
                     let floatingBundle = FloatingBundle(id: "test.test.Test", windowTitles: ["test1"])
-                    
+
                     storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
                     configuration.setFloatingBundles([floatingBundle])
-                    
+
                     let bundleIdentifiable = TestBundleIdentifiable()
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
-                    
+
                     expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test1")).to(beFalse())
                     expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test2")).to(beTrue())
                 }
@@ -433,9 +434,9 @@ final class UserConfigurationTests: QuickSpec {
                         "tall"
                     ]
                 ]
-                
+
                 storage.set(existingLayouts, forKey: .layouts)
-                
+
                 expect(configuration.layoutStrings()).to(equal(existingLayouts))
                 configuration.configuration = JSON(localConfiguration)
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
@@ -443,7 +444,7 @@ final class UserConfigurationTests: QuickSpec {
                 expect(configuration.layoutStrings()).to(equal(localConfiguration["layouts"]))
             }
         }
-        
+
         describe("floating bundles") {
             describe("returned") {
                 it("handles both strings and objects") {
@@ -459,9 +460,9 @@ final class UserConfigurationTests: QuickSpec {
                         ],
                         "test.test.3"
                     ]
-                    
+
                     storage.set(bundlesData, forKey: .floatingBundleIdentifiers)
-                    
+
                     let bundles = configuration.floatingBundles()
                     let expectedBundles = [
                         FloatingBundle(id: "test.test.1", windowTitles: []),
@@ -472,7 +473,7 @@ final class UserConfigurationTests: QuickSpec {
                     expect(bundles).to(equal(expectedBundles))
                 }
             }
-            
+
             describe("set") {
                 it("assigns bundles") {
                     let storage = TestConfigurationStorage()
@@ -482,9 +483,9 @@ final class UserConfigurationTests: QuickSpec {
                         FloatingBundle(id: "test.test.2", windowTitles: ["dialog"]),
                         FloatingBundle(id: "test.test.3", windowTitles: [])
                     ]
-                    
+
                     configuration.setFloatingBundles(bundles)
-                    
+
                     let bundlesData = storage.array(forKey: .floatingBundleIdentifiers).flatMap { JSON($0) }
                     let expectedBundlesData: JSON = JSON([
                         [
