@@ -306,6 +306,51 @@ final class UserConfigurationTests: QuickSpec {
                 
                 expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
             }
+
+            context("as whitelist") {
+                it("does not float for a matching window title") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    let floatingBundle = FloatingBundle(id: "test.test.Test", windowTitles: ["test"])
+                    
+                    storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
+                    configuration.setFloatingBundles([floatingBundle])
+                    
+                    let bundleIdentifiable = TestBundleIdentifiable()
+                    let title = "test"
+                    bundleIdentifiable.bundleIdentifier = "test.test.Test"
+                    
+                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
+                }
+                
+                it("does not float for a matching application with no specified window titles") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    
+                    storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
+                    storage.set(["test.test.Test"], forKey: .floatingBundleIdentifiers)
+                    
+                    let bundleIdentifiable = TestBundleIdentifiable()
+                    let title = UUID().uuidString
+                    bundleIdentifiable.bundleIdentifier = "test.test.Test"
+                    
+                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
+                }
+                
+                it("floats for no specified applications") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    
+                    storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
+                    storage.set([], forKey: .floatingBundleIdentifiers)
+                    
+                    let bundleIdentifiable = TestBundleIdentifiable()
+                    let title = UUID().uuidString
+                    bundleIdentifiable.bundleIdentifier = "test.test.Test"
+                    
+                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
+                }
+            }
             
             context("specified window titles") {
                 it("only float windows with titles") {
