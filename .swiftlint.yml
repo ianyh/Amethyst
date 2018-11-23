@@ -7,6 +7,7 @@ disabled_rules:
     - variable_name_min_length
 included:
     - Amethyst
+    - AmethystTests
 line_length: 200
 file_length: 500
 type_body_length: 400
