@@ -3,9 +3,6 @@ platform :osx, '10.12'
 use_frameworks!
 
 target 'Amethyst' do
-  pod 'Fabric'
-  pod 'Crashlytics'
-
   pod 'Cartography'
   pod 'Log'
   pod 'LoginServiceKit', :git => 'https://github.com/Clipy/LoginServiceKit.git'
