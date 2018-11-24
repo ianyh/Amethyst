@@ -9,5 +9,5 @@
 import Log
 
 enum LogManager {
-    internal(set) static var log: Logger? = Logger()
+    static var log: Logger? = Logger()
 }

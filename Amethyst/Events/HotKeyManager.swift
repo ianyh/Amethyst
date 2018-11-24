@@ -38,11 +38,11 @@ final class HotKeyManager: NSObject {
     private static func keyCodeForNumber(_ number: NSNumber) -> AMKeyCode {
         let string = "\(number)"
 
-        guard !string.characters.isEmpty else {
+        guard !string.isEmpty else {
             return AMKeyCodeInvalid
         }
 
-        switch string.characters.last! {
+        switch string.last! {
         case "1":
             return kVK_ANSI_1
         case "2":
@@ -220,25 +220,17 @@ final class HotKeyManager: NSObject {
 
         for keyCode in (0..<AMKeyCodeInvalid) {
             switch keyCode {
-            case kVK_ANSI_Keypad0:
-                fallthrough
-            case kVK_ANSI_Keypad1:
-                fallthrough
-            case kVK_ANSI_Keypad2:
-                fallthrough
-            case kVK_ANSI_Keypad3:
-                fallthrough
-            case kVK_ANSI_Keypad4:
-                fallthrough
-            case kVK_ANSI_Keypad5:
-                fallthrough
-            case kVK_ANSI_Keypad6:
-                fallthrough
-            case kVK_ANSI_Keypad7:
-                fallthrough
-            case kVK_ANSI_Keypad8:
-                fallthrough
-            case kVK_ANSI_Keypad9:
+            case
+            kVK_ANSI_Keypad0,
+            kVK_ANSI_Keypad1,
+            kVK_ANSI_Keypad2,
+            kVK_ANSI_Keypad3,
+            kVK_ANSI_Keypad4,
+            kVK_ANSI_Keypad5,
+            kVK_ANSI_Keypad6,
+            kVK_ANSI_Keypad7,
+            kVK_ANSI_Keypad8,
+            kVK_ANSI_Keypad9:
                 continue
             default:
                 break

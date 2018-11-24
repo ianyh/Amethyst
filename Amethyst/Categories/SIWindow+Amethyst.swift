@@ -127,7 +127,7 @@ extension SIWindow {
                 continue
             }
 
-            guard let windowTitle = windowDescription[kCGWindowName as String] as? String, windowTitle == window.string(forKey: kAXTitleAttribute as CFString!) else {
+            guard let windowTitle = windowDescription[kCGWindowName as String] as? String, windowTitle == window.string(forKey: kAXTitleAttribute as CFString) else {
                 continue
             }
 
@@ -156,7 +156,7 @@ extension SIWindow {
             return false
         }
 
-        guard let subrole = string(forKey: kAXSubroleAttribute as CFString!), subrole == kAXStandardWindowSubrole as String else {
+        guard let subrole = string(forKey: kAXSubroleAttribute as CFString), subrole == kAXStandardWindowSubrole as String else {
             return false
         }
 

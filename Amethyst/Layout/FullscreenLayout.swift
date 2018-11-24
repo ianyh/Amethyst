@@ -17,7 +17,6 @@ final class FullscreenReflowOperation: ReflowOperation {
     }
 
     func frameAssignments() -> [FrameAssignment] {
-        let window: SIWindow
         let screenFrame = screen.adjustedFrame()
         return windows.map { window in
             let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
