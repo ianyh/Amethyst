@@ -1,8 +1,5 @@
 PODS:
   - Cartography (3.1.0)
-  - Crashlytics (3.11.1):
-    - Fabric (~> 1.8.1)
-  - Fabric (1.8.2)
   - Log (1.0)
   - LoginServiceKit (2.0.2)
   - MASShortcut (2.3.3)
@@ -27,8 +24,6 @@ PODS:
 
 DEPENDENCIES:
   - Cartography
-  - Crashlytics
-  - Fabric
   - Log
   - LoginServiceKit (from `https://github.com/Clipy/LoginServiceKit.git`)
   - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
@@ -44,8 +39,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Cartography
-    - Crashlytics
-    - Fabric
     - Log
     - Nimble
     - Quick
@@ -77,8 +70,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Cartography: 1988b7578871a56c036e7af17195cb2190edf18c
-  Crashlytics: ca7ab4bc304aa216bdc2e4c1a96389ee77252203
-  Fabric: d2b22f443ba195d8a7cc204da230977c72733b40
   Log: 5e368c9528db07517d18d2d04ff5fe2b6f5a1e21
   LoginServiceKit: 5b4736234dc4cc96d786d8cd83e43b9ce5e7f1ca
   MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
@@ -92,6 +83,6 @@ SPEC CHECKSUMS:
   Sparkle: 48999e7ee032f05ca05e28451eadf4af8ede6b44
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 8d8694d5ad941d409725179100bc621d4522b3da
+PODFILE CHECKSUM: 36067e79d69a9d1d70e01903af79b9b0a5be4b61
 
 COCOAPODS: 1.6.0.beta.2
