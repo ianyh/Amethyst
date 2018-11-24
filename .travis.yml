@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode10
+osx_image: xcode10.1
 xcode_workspace: Amethyst.xcworkspace
 xcode_scheme: Amethyst
 script: set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | bundle exec xcpretty
