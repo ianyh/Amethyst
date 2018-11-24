@@ -77,7 +77,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let version = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
         let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-        let statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
+        let statusItemImage = NSImage(named: "icon-statusitem")
         statusItemImage?.isTemplate = true
 
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -156,10 +156,10 @@ extension AppDelegate: UserConfigurationDelegate {
     func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration) {
         var statusItemImage: NSImage?
         if UserConfiguration.shared.tilingEnabled == true {
-            statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
+            statusItemImage = NSImage(named: "icon-statusitem")
             toggleGlobalTilingMenuItem?.title = "Disable"
         } else {
-            statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem-disabled"))
+            statusItemImage = NSImage(named: "icon-statusitem-disabled")
             toggleGlobalTilingMenuItem?.title = "Enable"
         }
         statusItemImage?.isTemplate = true

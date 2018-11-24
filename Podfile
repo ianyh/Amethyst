@@ -6,7 +6,7 @@ target 'Amethyst' do
   pod 'Fabric'
   pod 'Crashlytics'
 
-  pod 'Cartography', '~> 1.1.0'
+  pod 'Cartography'
   pod 'Log'
   pod 'LoginServiceKit', :git => 'https://github.com/Clipy/LoginServiceKit.git'
   pod 'MASShortcut', git: 'https://github.com/ianyh/MASShortcut'
@@ -21,13 +21,5 @@ target 'Amethyst' do
     inherit! :search_paths
     pod 'Nimble'
     pod 'Quick'
-  end
-
-  post_install do |installer|
-    installer.pods_project.targets.each do |target|
-      target.build_configurations.each do |config|
-        config.build_settings['SWIFT_VERSION'] = '3.2'
-      end
-    end
   end
 end
