@@ -91,7 +91,7 @@ final class ScreenManager: NSObject {
         layoutsBySpaceIdentifier = [:]
         currentLayoutIndex = 0
 
-        layoutNameWindowController = LayoutNameWindowController(windowNibName: NSNib.Name(rawValue: "LayoutNameWindow"))
+        layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
 
         super.init()
 

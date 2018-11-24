@@ -70,6 +70,6 @@ enum LayoutManager {
             return layout
         }
 
-        return layouts.flatMap { $0 }
+        return layouts.compactMap { $0 }
     }
 }
