@@ -72,7 +72,6 @@ enum ConfigurationKey: String {
     case layoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case useCanaryBuild = "use-canary-build"
     case newWindowsToMain = "new-windows-to-main"
-    case sendCrashReports = "send-crash-reports"
     case windowResizeStep = "window-resize-step"
     case screenPaddingLeft = "screen-padding-left"
     case screenPaddingRight = "screen-padding-right"
@@ -97,7 +96,6 @@ enum ConfigurationKey: String {
             .windowMarginSize,
             .windowMinimumHeight,
             .windowMinimumWidth,
-            .sendCrashReports,
             .windowResizeStep,
             .screenPaddingLeft,
             .screenPaddingRight,
@@ -565,10 +563,6 @@ final class UserConfiguration: NSObject {
 
     func sendNewWindowsToMainPane() -> Bool {
         return storage.bool(forKey: .newWindowsToMain)
-    }
-
-    func shouldSendCrashReports() -> Bool {
-        return storage.bool(forKey: .sendCrashReports)
     }
 }
 
