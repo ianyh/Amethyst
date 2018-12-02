@@ -6,7 +6,7 @@ target 'Amethyst' do
   pod 'Cartography'
   pod 'Log'
   pod 'LoginServiceKit', :git => 'https://github.com/Clipy/LoginServiceKit.git'
-  pod 'MASShortcut', git: 'https://github.com/ianyh/MASShortcut'
+  pod 'MASShortcut'
   pod 'RxCocoa', '= 4.3.1'
   pod 'RxSwift', '= 4.3.1'
   pod 'RxSwiftExt', '= 3.3.0'
