@@ -2,7 +2,7 @@ PODS:
   - Cartography (3.1.0)
   - Log (1.0)
   - LoginServiceKit (2.0.2)
-  - MASShortcut (2.3.3)
+  - MASShortcut (2.3.6)
   - Nimble (7.3.1)
   - Quick (1.3.2)
   - RxCocoa (4.3.1):
@@ -20,7 +20,7 @@ DEPENDENCIES:
   - Cartography
   - Log
   - LoginServiceKit (from `https://github.com/Clipy/LoginServiceKit.git`)
-  - MASShortcut (from `https://github.com/ianyh/MASShortcut`)
+  - MASShortcut
   - Nimble
   - Quick
   - RxCocoa (= 4.3.1)
@@ -34,6 +34,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Cartography
     - Log
+    - MASShortcut
     - Nimble
     - Quick
     - RxCocoa
@@ -45,8 +46,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   LoginServiceKit:
     :git: https://github.com/Clipy/LoginServiceKit.git
-  MASShortcut:
-    :git: https://github.com/ianyh/MASShortcut
   Silica:
     :git: https://github.com/ianyh/Silica
 
@@ -54,9 +53,6 @@ CHECKOUT OPTIONS:
   LoginServiceKit:
     :commit: 79c9d6d2cc25dc238e6044245bebdc8253a786f2
     :git: https://github.com/Clipy/LoginServiceKit.git
-  MASShortcut:
-    :commit: 0964e89cb52c99fb9e7a02f21127d01ca82b0c8f
-    :git: https://github.com/ianyh/MASShortcut
   Silica:
     :commit: c0562c6b8bef24ccc18260ee3cd1a0bc0b24832b
     :git: https://github.com/ianyh/Silica
@@ -65,7 +61,7 @@ SPEC CHECKSUMS:
   Cartography: 1988b7578871a56c036e7af17195cb2190edf18c
   Log: 5e368c9528db07517d18d2d04ff5fe2b6f5a1e21
   LoginServiceKit: 5b4736234dc4cc96d786d8cd83e43b9ce5e7f1ca
-  MASShortcut: 38a76c9ea927de770c0a97ae28b15d18d6268b24
+  MASShortcut: 9c215e8a8a78f3d01ce56da48e2730ab66b538fa
   Nimble: 04f732da099ea4d153122aec8c2a88fd0c7219ae
   Quick: 2623cb30d7a7f41ca62f684f679586558f483d46
   RxCocoa: 78763c7b07d02455598d9fc3c1ad091a28b73635
@@ -75,6 +71,6 @@ SPEC CHECKSUMS:
   Sparkle: 48999e7ee032f05ca05e28451eadf4af8ede6b44
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: bf0ff76300764bb3350680e7a7976f8e1d70a9cb
+PODFILE CHECKSUM: 6fdbf4e2b834ddb19309d4ddf8604f24bf3c1b72
 
 COCOAPODS: 1.6.0.beta.2
