@@ -478,7 +478,6 @@
         </customView>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <userDefaultsController id="XhK-Tn-zrU"/>
-        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <userDefaultsController representsSharedInstance="YES" id="N2H-cZ-f1m"/>
     </objects>
     <resources>
