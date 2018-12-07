@@ -10,11 +10,6 @@ else
     printf "WARNING: Xcode $OUR_XCODE is used to develop this project.\n"
 fi
 
-# Check for swiftlint
-printf "Checking for swiftlint: "
-swiftlint version >/dev/null 2>&1 || { printf >&2 "nope!\nswiftlint must be installed. Try running:\n\tbrew install swiftlint\n"; exit 1; }
-printf "found!\n"
-
 # Check for installed ruby version
 printf "Checking for rbenv: "
 if rbenv version >/dev/null 2>&1 ; then
@@ -38,12 +33,10 @@ fi
 # Install CocoaPods via bundler
 printf "Checking for bundler: "
 bundle version >/dev/null 2>&1 || { printf >&2 "nope!\nbundler must be installed. Try running:\n\tgem install bundler\n"; exit 1; }
-printf "\nInstalling CocoaPods via bundler:\n"
-bundle install
-bundle exec pod --version >/dev/null 2>&1 || { echo >&2 "CocoaPods failed to install! You might want to open an issue for this: https://github.com/ianyh/Amethyst/issues/new"; exit 1; }
-
+printf "\nChecking for CocoaPods:\n"
+pod --version > /dev/nul 2>&1 || { printf >&2 "nope!\nCocoaPods must be installed. Try running:\n\tgem install cocoapods\n"; exit 1; }
 # Install pods
 printf "Installing Pods:\n"
-bundle exec pod install
+pod install
 
 printf "\n\nDone! Now you can open Amethyst.xcworkspace and build\n"
