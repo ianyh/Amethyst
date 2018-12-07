@@ -34,7 +34,7 @@ fi
 printf "Checking for bundler: "
 bundle version >/dev/null 2>&1 || { printf >&2 "nope!\nbundler must be installed. Try running:\n\tgem install bundler\n"; exit 1; }
 printf "\nChecking for CocoaPods:\n"
-pod --version > /dev/nul 2>&1 || { printf >&2 "nope!\nCocoaPods must be installed. Try running:\n\tgem install cocoapods\n"; exit 1; }
+pod --version > /dev/null 2>&1 || { printf >&2 "nope!\nCocoaPods must be installed. Try running:\n\tgem install cocoapods\n"; exit 1; }
 # Install pods
 printf "Installing Pods:\n"
 pod install
