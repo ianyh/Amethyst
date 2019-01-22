@@ -140,7 +140,7 @@ func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
     return lhs.windowID == rhs.windowID
 }
 
-final class BinarySpacePartitioningReflowOperation: ReflowOperation, FrameReflower {
+final class BinarySpacePartitioningReflowOperation: ReflowOperation {
     private typealias TraversalNode = (node: TreeNode, frame: CGRect)
     private let rootNode: TreeNode
 
@@ -149,7 +149,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation, FrameReflow
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    func frameAssignments() -> [FrameAssignment] {
+    override func frameAssignments() -> [FrameAssignment]? {
         guard !windows.isEmpty else {
             return []
         }
@@ -223,17 +223,9 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation, FrameReflow
 
         return ret
     }
-
-    override func main() {
-        guard !isCancelled else {
-            return
-        }
-
-        frameAssigner.performFrameAssignments(frameAssignments())
-    }
 }
 
-final class BinarySpacePartitioningLayout: Layout, FramedLayout {
+final class BinarySpacePartitioningLayout: Layout {
     static var layoutName: String { return "Binary Space Partitioning" }
     static var layoutKey: String { return "bsp" }
 
@@ -246,15 +238,11 @@ final class BinarySpacePartitioningLayout: Layout, FramedLayout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         if !windows.isEmpty && !rootNode.valid {
             constructInitialTreeWithWindows(windows)
         }
         return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 
     private func constructInitialTreeWithWindows(_ windows: [SIWindow]) {

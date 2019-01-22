@@ -8,7 +8,7 @@
 
 import Silica
 
-final class TallReflowOperation: ReflowOperation, FrameReflower {
+final class TallReflowOperation: ReflowOperation {
     let layout: TallLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: TallLayout, frameAssigner: FrameAssigner) {
@@ -16,7 +16,7 @@ final class TallReflowOperation: ReflowOperation, FrameReflower {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    func frameAssignments() -> [FrameAssignment] {
+    override func frameAssignments() -> [FrameAssignment]? {
         guard !windows.isEmpty else {
             return []
         }
@@ -63,18 +63,9 @@ final class TallReflowOperation: ReflowOperation, FrameReflower {
             return assignments
         }
     }
-
-    override func main() {
-        guard !isCancelled else {
-            return
-        }
-
-        frameAssigner.performFrameAssignments(frameAssignments())
-    }
 }
 
-final class TallLayout: Layout, FramedLayout {
-
+final class TallLayout: Layout {
     static var layoutName: String { return "Tall" }
     static var layoutKey: String { return "tall" }
 
@@ -87,12 +78,8 @@ final class TallLayout: Layout, FramedLayout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return TallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return TallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 

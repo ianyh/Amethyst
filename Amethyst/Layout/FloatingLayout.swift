@@ -8,8 +8,6 @@
 
 import Silica
 
-final class FloatingReflowOperation: ReflowOperation {}
-
 final class FloatingLayout: Layout {
     static var layoutName: String { return "Floating" }
     static var layoutKey: String { return "floating" }
@@ -20,11 +18,7 @@ final class FloatingLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
-        return FloatingReflowOperation(screen: screen, windows: windows, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return nil
     }
 
