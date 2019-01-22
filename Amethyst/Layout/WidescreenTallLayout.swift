@@ -8,7 +8,7 @@
 
 import Silica
 
-final class WidescreenTallReflowOperation: ReflowOperation, FrameReflower {
+final class WidescreenTallReflowOperation: ReflowOperation {
     let layout: WidescreenTallLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: WidescreenTallLayout, frameAssigner: FrameAssigner) {
@@ -16,7 +16,7 @@ final class WidescreenTallReflowOperation: ReflowOperation, FrameReflower {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    func frameAssignments() -> [FrameAssignment] {
+    override func frameAssignments() -> [FrameAssignment]? {
         if windows.count == 0 {
             return []
         }
@@ -65,18 +65,9 @@ final class WidescreenTallReflowOperation: ReflowOperation, FrameReflower {
             return assignments
         }
     }
-
-    override func main() {
-
-        if isCancelled {
-            return
-        }
-
-        frameAssigner.performFrameAssignments(frameAssignments())
-    }
 }
 
-final class WidescreenTallLayout: Layout, FramedLayout {
+final class WidescreenTallLayout: Layout {
     static var layoutName: String { return "Widescreen Tall" }
     static var layoutKey: String { return "widescreen-tall" }
 
@@ -89,12 +80,8 @@ final class WidescreenTallLayout: Layout, FramedLayout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 

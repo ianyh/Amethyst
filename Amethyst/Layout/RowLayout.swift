@@ -8,7 +8,7 @@
 
 import Silica
 
-final class RowReflowOperation: ReflowOperation, FrameReflower {
+final class RowReflowOperation: ReflowOperation {
     let layout: RowLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: RowLayout, frameAssigner: FrameAssigner) {
@@ -16,7 +16,7 @@ final class RowReflowOperation: ReflowOperation, FrameReflower {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    func frameAssignments() -> [FrameAssignment] {
+    override func frameAssignments() -> [FrameAssignment]? {
         guard !windows.isEmpty else {
             return []
         }
@@ -66,17 +66,9 @@ final class RowReflowOperation: ReflowOperation, FrameReflower {
             return assignments
         }
     }
-
-    override func main() {
-        guard !isCancelled else {
-            return
-        }
-
-        layout.performFrameAssignments(frameAssignments())
-    }
 }
 
-final class RowLayout: Layout, FramedLayout {
+final class RowLayout: Layout {
     static var layoutName: String { return "Row" }
     static var layoutKey: String { return "row" }
 
@@ -89,12 +81,8 @@ final class RowLayout: Layout, FramedLayout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 

@@ -141,8 +141,8 @@ class MouseStateKeeper {
         let unflippedY = NSScreen.globalHeight() - flippedPointerLocation.y + screen.frameIncludingDockAndMenu().origin.y
         let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
 
-        if let framedLayout = delegate.focusedScreenManager()?.currentLayout as? FramedLayout {
-            if let framedWindow = framedLayout.windowAtPoint(pointerLocation, of: windows, on: screen) {
+        if let layout = delegate.focusedScreenManager()?.currentLayout {
+            if let framedWindow = layout.windowAtPoint(pointerLocation, of: windows, on: screen) {
                 return delegate.switchWindow(draggedWindow, with: framedWindow)
             }
         }

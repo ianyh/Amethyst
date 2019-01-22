@@ -8,7 +8,7 @@
 
 import Silica
 
-final class FullscreenReflowOperation: ReflowOperation, FrameReflower {
+final class FullscreenReflowOperation: ReflowOperation {
     private let layout: FullscreenLayout
 
     init(screen: NSScreen, windows: [SIWindow], layout: FullscreenLayout, frameAssigner: FrameAssigner) {
@@ -16,24 +16,16 @@ final class FullscreenReflowOperation: ReflowOperation, FrameReflower {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    func frameAssignments() -> [FrameAssignment] {
+    override func frameAssignments() -> [FrameAssignment]? {
         let screenFrame = screen.adjustedFrame()
         return windows.map { window in
             let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
             return FrameAssignment(frame: screenFrame, window: window, focused: false, screenFrame: screenFrame, resizeRules: resizeRules)
         }
     }
-
-    override func main() {
-        guard !isCancelled else {
-            return
-        }
-
-        frameAssigner.performFrameAssignments(frameAssignments())
-    }
 }
 
-final class FullscreenLayout: Layout, FramedLayout {
+final class FullscreenLayout: Layout {
     static var layoutName: String { return "Fullscreen" }
     static var layoutKey: String { return "fullscreen" }
 
@@ -43,12 +35,8 @@ final class FullscreenLayout: Layout, FramedLayout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflowFrames(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation & FrameReflower {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 
