@@ -63,7 +63,7 @@ enum LayoutManager {
         let layoutStrings: [String] = userConfiguration.layoutStrings()
         let layouts = layoutStrings.map { layoutString -> Layout? in
             guard let layout = LayoutManager.layoutForKey(layoutString, with: windowActivityCache) else {
-                LogManager.log?.warning("Unrecognized layout string \(layoutString)")
+                log.warning("Unrecognized layout string \(layoutString)")
                 return nil
             }
 

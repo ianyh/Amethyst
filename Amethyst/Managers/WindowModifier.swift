@@ -416,7 +416,7 @@ extension WindowManager: WindowMover {
         }
 
         guard let currentSpace = currentSpaceForScreen(screen) else {
-            LogManager.log?.warning("Could not find a space for screen: \(screenIdentifier)")
+            log.warning("Could not find a space for screen: \(screenIdentifier)")
             return []
         }
 

@@ -105,7 +105,7 @@ final class ScreenManager: NSObject {
     func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
         reflowOperation?.cancel()
 
-        LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
+        log.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
 
         if let statefulLayout = currentLayout as? StatefulLayout {
             statefulLayout.updateWithChange(windowChange)

@@ -412,12 +412,12 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
         if NSScreen.screensHaveSeparateSpaces {
             for screenDictionary in screenDictionaries {
                 guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
-                    LogManager.log?.error("Could not identify screen with info: \(screenDictionary)")
+                    log.error("Could not identify screen with info: \(screenDictionary)")
                     continue
                 }
 
                 guard let screenManager = screenManagersCache[screenIdentifier] else {
-                    LogManager.log?.error("Screen with identifier not managed: \(screenIdentifier)")
+                    log.error("Screen with identifier not managed: \(screenIdentifier)")
                     continue
                 }
 
@@ -572,7 +572,7 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
         }
 
         guard let application = applicationWithProcessIdentifier(window.processIdentifier()) else {
-            LogManager.log?.error("Tried to add a window without an application")
+            log.error("Tried to add a window without an application")
             return
         }
 
