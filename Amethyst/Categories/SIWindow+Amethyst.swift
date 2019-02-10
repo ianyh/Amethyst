@@ -129,7 +129,14 @@ extension SIWindow {
                 continue
             }
 
-            guard let windowTitle = windowDescription[kCGWindowName as String] as? String, windowTitle == window.string(forKey: kAXTitleAttribute as CFString) else {
+            guard let describedTitle = windowDescription[kCGWindowName as String] as? String else {
+                continue
+            }
+
+            let describedOwner = windowDescription[kCGWindowOwnerName as String] as? String
+            let describedOwnedTitle = describedOwner.flatMap { "\(describedTitle) - \($0)" }
+
+            guard describedTitle == window.title() || describedOwnedTitle == window.title() else {
                 continue
             }
 
