@@ -29,16 +29,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         if ProcessInfo.processInfo.arguments.index(of: "--log") == nil {
-            LogManager.log?.minLevel = .warning
+            log.minLevel = .warning
         } else {
-            LogManager.log?.minLevel = .trace
+            log.minLevel = .trace
         }
 
         #if DEBUG
-            LogManager.log?.minLevel = .trace
+            log.minLevel = .trace
         #endif
 
-        LogManager.log?.info("Logging is enabled")
+        log.info("Logging is enabled")
 
         UserConfiguration.shared.delegate = self
         UserConfiguration.shared.load()

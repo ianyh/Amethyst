@@ -50,12 +50,14 @@ extension SIWindow {
     static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
+            log.debug("nothing")
             return nil
         }
 
         let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: ids, withDescriptions: windowDescriptions)
 
         guard !windowsAtPoint.isEmpty else {
+            log.debug("no windows at point")
             return nil
         }
 

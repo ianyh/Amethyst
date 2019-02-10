@@ -46,7 +46,7 @@ final class FocusFollowsMouseManager {
 
     private func focusWindowWithMouseMovedEvent(_ event: NSEvent) {
         guard userConfiguration.focusFollowsMouse() else {
-            LogManager.log?.warning("Subscribed to mouse move events that we are ignoring")
+            log.warning("Subscribed to mouse move events that we are ignoring")
             return
         }
 

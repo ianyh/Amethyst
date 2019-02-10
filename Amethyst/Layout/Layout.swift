@@ -179,7 +179,7 @@ extension FrameAssigner {
         }
 
         for frameAssignment in frameAssignments {
-            LogManager.log?.debug("Frame Assignment: \(frameAssignment)")
+            log.debug("Frame Assignment: \(frameAssignment)")
             frameAssignment.perform()
         }
     }
@@ -268,7 +268,7 @@ protocol PanedLayout {
 extension PanedLayout {
     func recommendMainPaneRatio(_ ratio: CGFloat) {
         guard 0 <= ratio && ratio <= 1 else {
-            LogManager.log?.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
+            log.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
             return recommendMainPaneRawRatio(rawRatio: max(min(ratio, 1), 0))
         }
         recommendMainPaneRawRatio(rawRatio: ratio)

@@ -8,6 +8,4 @@
 
 import Log
 
-enum LogManager {
-    static var log: Logger? = Logger()
-}
+let log: Logger! = Logger()
