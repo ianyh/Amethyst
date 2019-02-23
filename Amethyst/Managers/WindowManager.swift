@@ -159,167 +159,211 @@ class MouseStateKeeper {
 // handling references to the window manager and mouse state.  The observers themselves
 // react to mouse / accessibility state by either changing window positions or updating
 // the mouse state based on new information
-private class ObserveApplicationNotifications {
+private struct ObserveApplicationNotifications {
     enum Error: Swift.Error {
         case failed
     }
 
-    fileprivate let application: SIApplication
-    fileprivate let windowManager: WindowManager
-    fileprivate let mouse: MouseStateKeeper
+    private enum Notification {
+        case created
+        case windowDeminiaturized
+        case applicationHidden
+        case applicationShown
+        case focusedWindowChanged
+        case applicationActivated
+        case windowMoved
+        case windowResized
 
-    init(application: SIApplication, windowManager: WindowManager) {
-        self.application = application
-        self.windowManager = windowManager
-        mouse = windowManager.mouseStateKeeper
+        var string: String {
+            switch self {
+            case .created:
+                return kAXCreatedNotification
+            case .windowDeminiaturized:
+                return kAXWindowDeminiaturizedNotification
+            case .applicationHidden:
+                return kAXApplicationHiddenNotification
+            case .applicationShown:
+                return kAXApplicationShownNotification
+            case .focusedWindowChanged:
+                return kAXFocusedWindowChangedNotification
+            case .applicationActivated:
+                return kAXApplicationActivatedNotification
+            case .windowMoved:
+                return kAXWindowMovedNotification
+            case .windowResized:
+                return kAXWindowResizedNotification
+            }
+        }
     }
 
-    fileprivate func addObservers() -> Observable<Bool> {
-        return _addObservers().retry(.exponentialDelayed(maxCount: 4, initial: 0.1, multiplier: 2))
+    init() {}
+
+    fileprivate func addObservers(application: SIApplication, windowManager: WindowManager) -> Observable<Void> {
+        return _addObservers(application, windowManager).retry(.exponentialDelayed(maxCount: 4, initial: 0.1, multiplier: 2))
     }
 
-    private func _addObservers() -> Observable<Bool> {
-        let application = self.application
-        let windowManager = self.windowManager
+    private func _addObservers(_ application: SIApplication, _ windowManager: WindowManager) -> Observable<Void> {
+        let notifications: [Notification] = [
+            .created,
+            .windowDeminiaturized,
+            .applicationHidden,
+            .applicationShown,
+            .focusedWindowChanged,
+            .applicationActivated,
+            .windowMoved,
+            .windowResized
+        ]
 
-        return Observable.create { observer in
-            var success: Bool = false
-
-            success = application.observeNotification(kAXCreatedNotification as CFString, with: application) { accessibilityElement in
-                guard let window = accessibilityElement as? SIWindow else {
-                    return
+        return Observable.from(notifications)
+            .scan([]) { [weak application, weak windowManager] observed, notification -> [Notification] in
+                guard let application = application, let windowManager = windowManager else {
+                    throw Error.failed
                 }
-                windowManager.addWindow(window)
+
+                do {
+                    try self.addObserver(for: notification, application: application, windowManager: windowManager)
+                } catch {
+                    log.error("Failed to add observer \(notification) on application \(application.title() ?? "<unknown>")")
+                    self.removeObservers(notifications: observed, application: application)
+                    throw error
+                }
+
+                return observed + [notification]
+            }
+            .map { _ in }
+    }
+
+    private func addObserver(for notification: Notification, application: SIApplication, windowManager: WindowManager) throws {
+        let success = application.observe(notification: notification.string, with: application) { [weak application, weak windowManager] element in
+            guard let application = application, let windowManager = windowManager else {
+                return
             }
 
-            guard success else {
-                observer.on(.error(Error.failed))
-                return Disposables.create()
+            self.handle(notification: notification, element: element, application: application, windowManager: windowManager)
+        }
+
+        guard success else {
+            throw Error.failed
+        }
+    }
+
+    private func removeObservers(notifications: [Notification], application: SIApplication) {
+        notifications.forEach { application.unobserveNotification($0.string as CFString, with: application) }
+    }
+
+    private func handle(notification: Notification, element: SIAccessibilityElement, application: SIApplication, windowManager: WindowManager) {
+        switch notification {
+        case .created:
+            guard let window = element as? SIWindow else {
+                return
+            }
+            windowManager.addWindow(window)
+        case .windowDeminiaturized:
+            guard let window = element as? SIWindow else {
+                return
+            }
+            windowManager.addWindow(window)
+        case .applicationHidden:
+            guard let window = element as? SIWindow else {
+                return
+            }
+            windowManager.removeWindow(window)
+        case .applicationShown:
+            guard let window = element as? SIWindow else {
+                return
+            }
+            windowManager.addWindow(window)
+        case .focusedWindowChanged:
+            guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+                return
+            }
+            if windowManager.windows.index(of: focusedWindow) == nil {
+                windowManager.markScreenForReflow(screen, withChange: .unknown)
+            } else {
+                windowManager.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
+            }
+            windowManager.screenManager(for: screen)?.lastFocusedWindow = focusedWindow
+        case .applicationActivated:
+            NSObject.cancelPreviousPerformRequests(
+                withTarget: windowManager,
+                selector: #selector(WindowManager.applicationActivated(_:)),
+                object: nil
+            )
+            windowManager.perform(#selector(WindowManager.applicationActivated(_:)), with: nil, afterDelay: 0.2)
+        case .windowMoved:
+            guard windowManager.userConfiguration.mouseSwapsWindows() else {
+                return
             }
 
-            application.observeNotification(kAXWindowDeminiaturizedNotification as CFString, with: application) { accessibilityElement in
-                guard let window = accessibilityElement as? SIWindow else {
-                    return
-                }
-                windowManager.addWindow(window)
+            guard let movedWindow = element as? SIWindow else {
+                return
             }
 
-            application.observeNotification(kAXApplicationHiddenNotification as CFString, with: application) { accessibilityElement in
-                guard let window = accessibilityElement as? SIWindow else {
+            guard let screen = movedWindow.screen(),
+                windowManager.activeWindows(on: screen).contains(movedWindow) else {
                     return
-                }
-                windowManager.removeWindow(window)
             }
 
-            application.observeNotification(kAXApplicationShownNotification as CFString, with: application) { accessibilityElement in
-                guard let window = accessibilityElement as? SIWindow else {
-                    return
-                }
-                windowManager.addWindow(window)
+            switch windowManager.mouseStateKeeper.state {
+            case .dragging:
+                // be aware of last reflow time, again to prevent race condition
+                guard let delegate = windowManager.mouseStateKeeper.delegate else { break }
+                let reflowEndInterval = Date().timeIntervalSince(delegate.lastReflowTime)
+                guard reflowEndInterval > windowManager.mouseStateKeeper.dragRaceThresholdSeconds else { break }
+
+                // record window and wait for mouse up
+                windowManager.mouseStateKeeper.state = .moving(window: movedWindow)
+            case let .doneDragging(lmbUpMoment):
+                windowManager.mouseStateKeeper.state = .pointing // flip state first to prevent race condition
+
+                // if mouse button recently came up, assume window move is related
+                let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
+                guard dragEndInterval < windowManager.mouseStateKeeper.dragRaceThresholdSeconds else { break }
+
+                windowManager.mouseStateKeeper.swapDraggedWindowWithDropzone(movedWindow)
+            default:
+                break
+            }
+        case .windowResized:
+            guard windowManager.userConfiguration.mouseResizesWindows() else {
+                return
             }
 
-            application.observeNotification(kAXFocusedWindowChangedNotification as CFString, with: application) { _ in
-                guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
-                    return
-                }
-                if windowManager.windows.index(of: focusedWindow) == nil {
-                    windowManager.markScreenForReflow(screen, withChange: .unknown)
-                } else {
-                    windowManager.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
-                }
-                windowManager.screenManager(for: screen)?.lastFocusedWindow = focusedWindow
+            guard let resizedWindow = element as? SIWindow else {
+                return
             }
 
-            application.observeNotification(kAXApplicationActivatedNotification as CFString, with: application) { _ in
-                NSObject.cancelPreviousPerformRequests(
-                    withTarget: windowManager,
-                    selector: #selector(WindowManager.applicationActivated(_:)),
-                    object: nil
-                )
-                windowManager.perform(#selector(WindowManager.applicationActivated(_:)), with: nil, afterDelay: 0.2)
+            guard let screen = resizedWindow.screen(),
+                windowManager.activeWindows(on: screen).contains(resizedWindow) else {
+                    return
             }
 
-            application.observeNotification(kAXWindowMovedNotification as CFString, with: application) { accessibilityElement in
-                guard windowManager.userConfiguration.mouseSwapsWindows() else {
+            guard let screenManager = windowManager.focusedScreenManager(),
+                let layout = screenManager.currentLayout as? Layout & PanedLayout,
+                let oldFrame = layout.assignedFrame(resizedWindow, of: windowManager.activeWindowsForScreenManager(screenManager), on: screen) else {
                     return
-                }
-
-                guard let movedWindow = accessibilityElement as? SIWindow else {
-                    return
-                }
-
-                guard let screen = movedWindow.screen(),
-                    windowManager.activeWindows(on: screen).contains(movedWindow) else {
-                    return
-                }
-
-                switch self.mouse.state {
-                case .dragging:
-                    // be aware of last reflow time, again to prevent race condition
-                    guard let delegate = self.mouse.delegate else { break }
-                    let reflowEndInterval = Date().timeIntervalSince(delegate.lastReflowTime)
-                    guard reflowEndInterval > self.mouse.dragRaceThresholdSeconds else { break }
-
-                    // record window and wait for mouse up
-                    self.mouse.state = .moving(window: movedWindow)
-                case let .doneDragging(lmbUpMoment):
-                    self.mouse.state = .pointing // flip state first to prevent race condition
-
-                    // if mouse button recently came up, assume window move is related
-                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
-                    guard dragEndInterval < self.mouse.dragRaceThresholdSeconds else { break }
-
-                    self.mouse.swapDraggedWindowWithDropzone(movedWindow)
-                default:
-                    break
-                }
             }
 
-            application.observeNotification(kAXWindowResizedNotification as CFString, with: application) { accessibilityElement in
-                guard windowManager.userConfiguration.mouseResizesWindows() else {
-                    return
-                }
+            let ratio = oldFrame.impliedMainPaneRatio(windowFrame: resizedWindow.frame())
 
-                guard let resizedWindow = accessibilityElement as? SIWindow else {
-                    return
-                }
-
-                guard let screen = resizedWindow.screen(),
-                    windowManager.activeWindows(on: screen).contains(resizedWindow) else {
-                        return
-                }
-
-                guard let screenManager = windowManager.focusedScreenManager(),
-                    let layout = screenManager.currentLayout as? Layout & PanedLayout,
-                    let oldFrame = layout.assignedFrame(resizedWindow, of: windowManager.activeWindowsForScreenManager(screenManager), on: screen) else {
-                        return
-                }
-
-                let ratio = oldFrame.impliedMainPaneRatio(windowFrame: resizedWindow.frame())
-
-                switch self.mouse.state {
-                case .dragging, .resizing:
-                    // record window and wait for mouse up
-                    self.mouse.state = .resizing(screen: screen, ratio: ratio)
-                case let .doneDragging(lmbUpMoment):
-                    // if mouse button recently came up, assume window resize is related
-                    let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
-                    if dragEndInterval < self.mouse.dragRaceThresholdSeconds {
-                        self.mouse.state = .pointing // flip state first to prevent race condition
-                        windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
-                            if let panedLayout = layout as? PanedLayout {
-                                panedLayout.recommendMainPaneRatio(ratio)
-                            }
+            switch windowManager.mouseStateKeeper.state {
+            case .dragging, .resizing:
+                // record window and wait for mouse up
+                windowManager.mouseStateKeeper.state = .resizing(screen: screen, ratio: ratio)
+            case let .doneDragging(lmbUpMoment):
+                // if mouse button recently came up, assume window resize is related
+                let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
+                if dragEndInterval < windowManager.mouseStateKeeper.dragRaceThresholdSeconds {
+                    windowManager.mouseStateKeeper.state = .pointing // flip state first to prevent race condition
+                    windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+                        if let panedLayout = layout as? PanedLayout {
+                            panedLayout.recommendMainPaneRatio(ratio)
                         }
                     }
-                default:
-                    break
                 }
-
+            default:
+                break
             }
-            observer.on(.next(true))
-            observer.on(.completed)
-            return Disposables.create()
         }
     }
 }
@@ -509,9 +553,7 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
             return
         }
 
-        let applicationObservers = ObserveApplicationNotifications(application: application, windowManager: self)
-
-        applicationObservers.addObservers()
+        ObserveApplicationNotifications().addObservers(application: application, windowManager: self)
             .subscribe(
                 onCompleted: { [weak self] in
                     guard let strongSelf = self else { return }
