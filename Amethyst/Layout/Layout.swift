@@ -239,6 +239,8 @@ protocol Layout {
 
     var windowActivityCache: WindowActivityCache { get }
 
+    init(windowActivityCache: WindowActivityCache)
+
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation?
 }
 
