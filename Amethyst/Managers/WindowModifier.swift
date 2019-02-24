@@ -109,6 +109,25 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
         windowToFocus.am_focusWindow()
     }
 
+    func moveFocusToMain() {
+        guard let focusedWindow = SIWindow.focused() else {
+            focusScreen(at: 0)
+            return
+        }
+
+        guard let screen = focusedWindow.screen() else {
+            return
+        }
+
+        let windows = self.windows(on: screen)
+
+        guard !windows.isEmpty else {
+            return
+        }
+
+        windows[0].am_focusWindow()
+    }
+
     func swapFocusedWindowToMain() {
         guard let focusedWindow = SIWindow.focused(), !windowIsFloating(focusedWindow), let screen = focusedWindow.screen() else {
             return

@@ -101,6 +101,10 @@
         "mod": "mod1",
         "key": "k"
     },
+    "focus-main": {
+        "mod": "mod1",
+        "key": "m"
+    },
     "swap-screen-ccw": {
         "mod": "mod2",
         "key": "h"
