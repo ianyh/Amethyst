@@ -57,6 +57,7 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 * `mod1 + .` - decrease the number of windows in the main pane
 * `mod1 + j` - focus the next window counterclockwise
 * `mod1 + k` - focus the next window clockwise
+* `mod1 + m` - focus the main window
 * `mod2 + j` - move the focused window one space counterclockwise
 * `mod2 + k` - move the focused window one space clockwise
 * `mod2 + h` - move the focused window one window counterclockwise
