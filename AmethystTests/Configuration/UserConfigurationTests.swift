@@ -414,10 +414,10 @@ final class UserConfigurationTests: QuickSpec {
 
                 storage.set(existingLayouts, forKey: .layouts)
 
-                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                expect(configuration.layoutKeys()).to(equal(existingLayouts))
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()
-                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                expect(configuration.layoutKeys()).to(equal(existingLayouts))
             }
 
             it("local configuration does override existing configuration") {
@@ -437,11 +437,11 @@ final class UserConfigurationTests: QuickSpec {
 
                 storage.set(existingLayouts, forKey: .layouts)
 
-                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                expect(configuration.layoutKeys()).to(equal(existingLayouts))
                 configuration.configuration = JSON(localConfiguration)
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()
-                expect(configuration.layoutStrings()).to(equal(localConfiguration["layouts"]))
+                expect(configuration.layoutKeys()).to(equal(localConfiguration["layouts"]))
             }
         }
 
