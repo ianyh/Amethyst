@@ -117,6 +117,10 @@ final class HotKeyManager: NSObject {
             windowManager.moveFocusClockwise()
         }
 
+        constructCommandWithCommandKey(CommandKey.focusMain.rawValue) {
+            windowManager.moveFocusToMain()
+        }
+
         constructCommandWithCommandKey(CommandKey.swapScreenCCW.rawValue) {
             windowManager.swapFocusedWindowScreenCounterClockwise()
         }
@@ -307,6 +311,7 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Decrease main pane count", CommandKey.decreaseMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus counter clockwise", CommandKey.focusCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus clockwise", CommandKey.focusCW.rawValue])
+        hotKeyNameToDefaultsKey.append(["Move focus to main window", CommandKey.focusMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window to counter clockwise screen", CommandKey.swapScreenCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window to clockwise screen", CommandKey.swapScreenCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window counter clockwise", CommandKey.swapCCW.rawValue])
