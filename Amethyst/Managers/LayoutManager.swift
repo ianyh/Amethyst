@@ -10,84 +10,32 @@ import Foundation
 
 enum LayoutManager {
     static func layoutForKey(_ layoutKey: String, with windowActivityCache: WindowActivityCache) -> Layout? {
-        switch layoutKey {
-        case "tall":
-            return TallLayout(windowActivityCache: windowActivityCache)
-        case "tall-right":
-            return TallRightLayout(windowActivityCache: windowActivityCache)
-        case "wide":
-            return WideLayout(windowActivityCache: windowActivityCache)
-        case "3column-left":
-            return ThreeColumnLeftLayout(windowActivityCache: windowActivityCache)
-        case "middle-wide":
-            return ThreeColumnMiddleLayout(windowActivityCache: windowActivityCache)
-        case "3column-right":
-            return ThreeColumnRightLayout(windowActivityCache: windowActivityCache)
-        case "fullscreen":
-            return FullscreenLayout(windowActivityCache: windowActivityCache)
-        case "column":
-            return ColumnLayout(windowActivityCache: windowActivityCache)
-        case "row":
-            return RowLayout(windowActivityCache: windowActivityCache)
-        case "floating":
-            return FloatingLayout(windowActivityCache: windowActivityCache)
-        case "widescreen-tall":
-            return WidescreenTallLayout(windowActivityCache: windowActivityCache)
-        case "bsp":
-            return BinarySpacePartitioningLayout(windowActivityCache: windowActivityCache)
-        default:
-            return nil
-        }
+        return layoutByKey[layoutKey]?.init(windowActivityCache: windowActivityCache)
     }
 
     static func layoutNameForKey(_ layoutKey: String) -> String? {
-        switch layoutKey {
-        case "tall":
-            return TallLayout.layoutName
-        case "tall-right":
-            return TallRightLayout.layoutName
-        case "wide":
-            return WideLayout.layoutName
-        case "3column-left":
-            return ThreeColumnLeftLayout.layoutName
-        case "middle-wide":
-            return ThreeColumnMiddleLayout.layoutName
-        case "3column-right":
-            return ThreeColumnRightLayout.layoutName
-        case "fullscreen":
-            return FullscreenLayout.layoutName
-        case "column":
-            return ColumnLayout.layoutName
-        case "row":
-            return RowLayout.layoutName
-        case "floating":
-            return FloatingLayout.layoutName
-        case "widescreen-tall":
-            return WidescreenTallLayout.layoutName
-        case "bsp":
-            return BinarySpacePartitioningLayout.layoutName
-        default:
-            return nil
-        }
+        return layoutByKey[layoutKey]?.layoutName
     }
+
+    static var layoutClasses: [Layout.Type] = [
+        TallLayout.self,
+        TallRightLayout.self,
+        WideLayout.self,
+        ThreeColumnLeftLayout.self,
+        ThreeColumnMiddleLayout.self,
+        ThreeColumnRightLayout.self,
+        FullscreenLayout.self,
+        ColumnLayout.self,
+        RowLayout.self,
+        FloatingLayout.self,
+        WidescreenTallLayout.self,
+        BinarySpacePartitioningLayout.self
+    ]
+
+    static var layoutByKey: [String: Layout.Type] = Dictionary(uniqueKeysWithValues: zip( layoutClasses.map { ($0.layoutKey) }, layoutClasses ))
 
     // Returns a list of (key, name) pairs
     static func availableLayoutStrings() -> [(key: String, name: String)] {
-        let layoutClasses: [Layout.Type] = [
-            TallLayout.self,
-            TallRightLayout.self,
-            WideLayout.self,
-            ThreeColumnLeftLayout.self,
-            ThreeColumnMiddleLayout.self,
-            ThreeColumnRightLayout.self,
-            FullscreenLayout.self,
-            ColumnLayout.self,
-            RowLayout.self,
-            FloatingLayout.self,
-            WidescreenTallLayout.self,
-            BinarySpacePartitioningLayout.self
-        ]
-
         return layoutClasses.map { ($0.layoutKey, $0.layoutName) }
     }
 
