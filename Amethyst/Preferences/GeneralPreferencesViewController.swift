@@ -33,9 +33,8 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
         let layoutMenu = NSMenu(title: "")
 
         for (layoutKey, layoutName) in LayoutManager.availableLayoutStrings() {
-            let menuItem = NSMenuItem(title: layoutKey, action: #selector(addLayoutString(_:)), keyEquivalent: "")
-            menuItem.attributedTitle = NSAttributedString(string: layoutName)
-            menuItem.title = layoutKey
+            let menuItem = NSMenuItem(title: layoutName, action: #selector(addLayoutString(_:)), keyEquivalent: "")
+            menuItem.representedObject = layoutKey
             menuItem.target = self
             menuItem.action = #selector(addLayoutString(_:))
 
@@ -61,8 +60,10 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
     }
 
     @IBAction func addLayoutString(_ sender: NSMenuItem) {
+        guard let layoutKey: String = sender.representedObject as? String else { return }
+
         var layoutKeys = self.layoutKeys
-        layoutKeys.append(sender.title)
+        layoutKeys.append(layoutKey)
         self.layoutKeys = layoutKeys
 
         UserConfiguration.shared.setLayoutKeys(self.layoutKeys)
