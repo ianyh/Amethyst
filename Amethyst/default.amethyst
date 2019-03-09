@@ -213,4 +213,5 @@
     "screen-padding-bottom": 0,
     "screen-padding-left": 0,
     "screen-padding-right": 0,
+    "debug-layout-info": false
 }
