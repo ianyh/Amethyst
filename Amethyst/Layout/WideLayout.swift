@@ -65,14 +65,14 @@ private final class WideReflowOperation: ReflowOperation {
     }
 }
 
-final class WideLayout: Layout {
+final class WideLayout: PanedLayout {
     static var layoutName: String { return "Wide" }
     static var layoutKey: String { return "wide" }
 
     let windowActivityCache: WindowActivityCache
 
-    fileprivate var mainPaneCount: Int = 1
-    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -81,9 +81,7 @@ final class WideLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return WideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
-}
 
-extension WideLayout: PanedLayout {
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }

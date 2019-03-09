@@ -73,8 +73,8 @@ final class WidescreenTallLayout: Layout {
 
     let windowActivityCache: WindowActivityCache
 
-    fileprivate var mainPaneCount: Int = 1
-    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache

@@ -227,6 +227,7 @@ final class ScreenManager: NSObject {
         )
 
         layoutNameWindow.layoutNameField?.stringValue = currentLayout.flatMap({ type(of: $0).layoutName }) ?? "None"
+        layoutNameWindow.layoutDescriptionLabel?.stringValue = currentLayout?.layoutDescription ?? ""
         layoutNameWindow.setFrameOrigin(NSPointFromCGPoint(windowOrigin))
 
         layoutNameWindowController.showWindow(self)

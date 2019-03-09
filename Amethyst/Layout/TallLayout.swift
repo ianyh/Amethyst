@@ -65,14 +65,14 @@ final class TallReflowOperation: ReflowOperation {
     }
 }
 
-final class TallLayout: Layout {
+final class TallLayout: PanedLayout {
     static var layoutName: String { return "Tall" }
     static var layoutKey: String { return "tall" }
 
     let windowActivityCache: WindowActivityCache
 
-    fileprivate var mainPaneCount: Int = 1
-    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -81,9 +81,7 @@ final class TallLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return TallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
-}
 
-extension TallLayout: PanedLayout {
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
