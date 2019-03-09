@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0900"
+   LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "NO"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "75847467C6D5A625D45DC8B05C3F853F"
+               BlueprintIdentifier = "548F0EEFF9A36D0C02BBA2376B71DBA8"
                BuildableName = "Pods_Amethyst.framework"
                BlueprintName = "Pods-Amethyst"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -42,7 +42,7 @@
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F4EC363BF222A75BBDE9D8AE885EAA12"
+               BlueprintIdentifier = "3019C8AA6A281FB052FE1AA3A903A949"
                BuildableName = "Pods_AmethystTests.framework"
                BlueprintName = "Pods-AmethystTests"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">

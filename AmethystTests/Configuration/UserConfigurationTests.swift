@@ -414,10 +414,10 @@ final class UserConfigurationTests: QuickSpec {
 
                 storage.set(existingLayouts, forKey: .layouts)
 
-                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                expect(configuration.layoutKeys()).to(equal(existingLayouts))
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()
-                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                expect(configuration.layoutKeys()).to(equal(existingLayouts))
             }
 
             it("local configuration does override existing configuration") {
@@ -437,11 +437,74 @@ final class UserConfigurationTests: QuickSpec {
 
                 storage.set(existingLayouts, forKey: .layouts)
 
-                expect(configuration.layoutStrings()).to(equal(existingLayouts))
+                expect(configuration.layoutKeys()).to(equal(existingLayouts))
                 configuration.configuration = JSON(localConfiguration)
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()
-                expect(configuration.layoutStrings()).to(equal(localConfiguration["layouts"]))
+                expect(configuration.layoutKeys()).to(equal(localConfiguration["layouts"]))
+            }
+        }
+
+        describe("floating bundles") {
+            describe("returned") {
+                it("handles both strings and objects") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    let bundlesData: [Any] = [
+                        "test.test.1",
+                        [
+                            "id": "test.test.2",
+                            "window-titles": [
+                                "dialog"
+                            ]
+                        ],
+                        "test.test.3"
+                    ]
+
+                    storage.set(bundlesData, forKey: .floatingBundleIdentifiers)
+
+                    let bundles = configuration.floatingBundles()
+                    let expectedBundles = [
+                        FloatingBundle(id: "test.test.1", windowTitles: []),
+                        FloatingBundle(id: "test.test.2", windowTitles: ["dialog"]),
+                        FloatingBundle(id: "test.test.3", windowTitles: [])
+                    ]
+                    expect(bundles.count).to(equal(3))
+                    expect(bundles).to(equal(expectedBundles))
+                }
+            }
+
+            describe("set") {
+                it("assigns bundles") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    let bundles = [
+                        FloatingBundle(id: "test.test.1", windowTitles: []),
+                        FloatingBundle(id: "test.test.2", windowTitles: ["dialog"]),
+                        FloatingBundle(id: "test.test.3", windowTitles: [])
+                    ]
+
+                    configuration.setFloatingBundles(bundles)
+
+                    let bundlesData = storage.array(forKey: .floatingBundleIdentifiers).flatMap { JSON($0) }
+                    let expectedBundlesData: JSON = JSON([
+                        [
+                            "id": "test.test.1",
+                            "window-titles": []
+                        ],
+                        [
+                            "id": "test.test.2",
+                            "window-titles": [
+                                "dialog"
+                            ]
+                        ],
+                        [
+                            "id": "test.test.3",
+                            "window-titles": []
+                        ]
+                    ])
+                    expect(bundlesData).to(equal(expectedBundlesData))
+                }
             }
         }
 

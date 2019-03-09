@@ -16,7 +16,7 @@ final class RowReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    func frameAssignments() -> [FrameAssignment] {
+    override func frameAssignments() -> [FrameAssignment]? {
         guard !windows.isEmpty else {
             return []
         }
@@ -66,14 +66,6 @@ final class RowReflowOperation: ReflowOperation {
             return assignments
         }
     }
-
-    override func main() {
-        guard !isCancelled else {
-            return
-        }
-
-        layout.performFrameAssignments(frameAssignments())
-    }
 }
 
 final class RowLayout: Layout {
@@ -89,12 +81,8 @@ final class RowLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 }
 

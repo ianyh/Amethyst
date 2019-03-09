@@ -17,6 +17,9 @@ protocol ScreenManagerDelegate: class {
 final class ScreenManager: NSObject {
     var screen: NSScreen
     let screenIdentifier: String
+    /// The last window that has been focused on the screen. This value is updated by the notification observations in
+    /// `ObserveApplicationNotifications`.
+    public internal(set) var lastFocusedWindow: SIWindow?
     fileprivate weak var delegate: ScreenManagerDelegate?
     private let userConfiguration: UserConfiguration
     public var onReflowInitiation: (() -> Void)?
@@ -88,7 +91,7 @@ final class ScreenManager: NSObject {
         layoutsBySpaceIdentifier = [:]
         currentLayoutIndex = 0
 
-        layoutNameWindowController = LayoutNameWindowController(windowNibName: NSNib.Name(rawValue: "LayoutNameWindow"))
+        layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
 
         super.init()
 
@@ -102,7 +105,7 @@ final class ScreenManager: NSObject {
     func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
         reflowOperation?.cancel()
 
-        LogManager.log?.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
+        log.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
 
         if let statefulLayout = currentLayout as? StatefulLayout {
             statefulLayout.updateWithChange(windowChange)
@@ -126,7 +129,7 @@ final class ScreenManager: NSObject {
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
             !isFullscreen &&
-            !CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier as CGSManagedDisplay!)
+            !CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier as CFString)
         else {
             return
         }

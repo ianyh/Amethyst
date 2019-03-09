@@ -72,8 +72,11 @@ enum ConfigurationKey: String {
     case layoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case useCanaryBuild = "use-canary-build"
     case newWindowsToMain = "new-windows-to-main"
-    case sendCrashReports = "send-crash-reports"
     case windowResizeStep = "window-resize-step"
+    case screenPaddingLeft = "screen-padding-left"
+    case screenPaddingRight = "screen-padding-right"
+    case screenPaddingTop = "screen-padding-top"
+    case screenPaddingBottom = "screen-padding-bottom"
 
     static var defaultsKeys: [ConfigurationKey] {
         return [
@@ -93,8 +96,11 @@ enum ConfigurationKey: String {
             .windowMarginSize,
             .windowMinimumHeight,
             .windowMinimumWidth,
-            .sendCrashReports,
-            .windowResizeStep
+            .windowResizeStep,
+            .screenPaddingLeft,
+            .screenPaddingRight,
+            .screenPaddingTop,
+            .screenPaddingBottom
         ]
     }
 }
@@ -108,6 +114,7 @@ enum CommandKey: String {
     case decreaseMain = "decrease-main"
     case focusCCW = "focus-ccw"
     case focusCW = "focus-cw"
+    case focusMain = "focus-main"
     case swapScreenCCW = "swap-screen-ccw"
     case swapScreenCW = "swap-screen-cw"
     case swapCCW = "swap-ccw"
@@ -227,7 +234,7 @@ final class UserConfiguration: NSObject {
             case "command":
                 flags = flags | NSEvent.ModifierFlags.command.rawValue
             default:
-                LogManager.log?.warning("Unrecognized modifier string: \(modifierString)")
+                log.warning("Unrecognized modifier string: \(modifierString)")
             }
         }
         return flags
@@ -280,7 +287,7 @@ final class UserConfiguration: NSObject {
             configuration = jsonForConfig(at: amethystConfigPath)
 
             if configuration == nil {
-                LogManager.log?.error("error loading configuration")
+                log.error("error loading configuration")
 
                 let alert = NSAlert()
                 alert.alertStyle = .critical
@@ -291,7 +298,7 @@ final class UserConfiguration: NSObject {
 
         defaultConfiguration = jsonForConfig(at: defaultAmethystConfigPath ?? "")
         if defaultConfiguration == nil {
-            LogManager.log?.error("error loading default configuration")
+            log.error("error loading default configuration")
 
             let alert = NSAlert()
             alert.alertStyle = .critical
@@ -306,8 +313,8 @@ final class UserConfiguration: NSObject {
         modifier2 = modifierFlagsForStrings(mod2Strings)
     }
 
-    static func constructLayoutKeyString(_ layoutString: String) -> String {
-        return "select-\(layoutString)-layout"
+    static func constructLayoutKeyString(_ layoutKey: String) -> String {
+        return "select-\(layoutKey)-layout"
     }
 
     func constructCommand(for hotKeyRegistrar: HotKeyRegistrar, commandKey: String, handler: @escaping HotKeyHandler) {
@@ -334,7 +341,7 @@ final class UserConfiguration: NSObject {
             case "mod2":
                 commandFlags = modifier2
             default:
-                LogManager.log?.warning("Unknown modifier string: \(modifierString)")
+                log.warning("Unknown modifier string: \(modifierString)")
                 return
             }
         }
@@ -377,18 +384,18 @@ final class UserConfiguration: NSObject {
         case "mod2":
             return modifier2!
         default:
-            LogManager.log?.warning("Unknown modifier string: \(modifierString)")
+            log.warning("Unknown modifier string: \(modifierString)")
             return modifier1!
         }
     }
 
-    func layoutStrings() -> [String] {
-        let layoutStrings = storage.array(forKey: .layouts) as? [String]
-        return layoutStrings ?? []
+    func layoutKeys() -> [String] {
+        let layoutKeys = storage.array(forKey: .layouts) as? [String]
+        return layoutKeys ?? []
     }
 
-    func setLayoutStrings(_ layoutStrings: [String]) {
-        storage.set(layoutStrings as Any?, forKey: .layouts)
+    func setLayoutKeys(_ layoutKeys: [String]) {
+        storage.set(layoutKeys as Any?, forKey: .layouts)
     }
 
     func runningApplication(_ runningApplication: BundleIdentifiable, shouldFloatWindowWithTitle title: String) -> Bool {
@@ -514,6 +521,22 @@ final class UserConfiguration: NSObject {
         return CGFloat(storage.float(forKey: .windowResizeStep) / 100.0)
     }
 
+    func screenPaddingTop() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingTop))
+    }
+
+    func screenPaddingBottom() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingBottom))
+    }
+
+    func screenPaddingLeft() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingLeft))
+    }
+
+    func screenPaddingRight() -> CGFloat {
+        return CGFloat(storage.float(forKey: .screenPaddingRight))
+    }
+
     func floatingBundleIdentifiersIsBlacklist() -> Bool {
         return storage.bool(forKey: .floatingBundleIdentifiersIsBlacklist)
     }
@@ -541,10 +564,6 @@ final class UserConfiguration: NSObject {
 
     func sendNewWindowsToMainPane() -> Bool {
         return storage.bool(forKey: .newWindowsToMain)
-    }
-
-    func shouldSendCrashReports() -> Bool {
-        return storage.bool(forKey: .sendCrashReports)
     }
 }
 

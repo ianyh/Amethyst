@@ -7,8 +7,6 @@
 //
 
 import CoreServices
-import Crashlytics
-import Fabric
 import Foundation
 import LoginServiceKit
 import RxCocoa
@@ -31,16 +29,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         if ProcessInfo.processInfo.arguments.index(of: "--log") == nil {
-            LogManager.log?.minLevel = .warning
+            log.minLevel = .warning
         } else {
-            LogManager.log?.minLevel = .trace
+            log.minLevel = .trace
         }
 
         #if DEBUG
-            LogManager.log?.minLevel = .trace
+            log.minLevel = .trace
         #endif
 
-        LogManager.log?.info("Logging is enabled")
+        log.info("Logging is enabled")
 
         UserConfiguration.shared.delegate = self
         UserConfiguration.shared.load()
@@ -55,13 +53,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }()!
 
             SUUpdater.shared().feedURL = URL(string: appcastURLString)
-
-            if let fabricData = Bundle.main.infoDictionary?["Fabric"] as? [String: AnyObject], fabricData["APIKey"] != nil {
-                if UserConfiguration.shared.shouldSendCrashReports() {
-                    LogManager.log?.info("Crash reporting enabled")
-                    Fabric.with([Crashlytics.self])
-                }
-            }
         #endif
 
         preferencesWindowController?.window?.level = .floating
@@ -77,7 +68,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         let version = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
         let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
-        let statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
+        let statusItemImage = NSImage(named: "icon-statusitem")
         statusItemImage?.isTemplate = true
 
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
@@ -156,10 +147,10 @@ extension AppDelegate: UserConfigurationDelegate {
     func configurationGlobalTilingDidChange(_ userConfiguration: UserConfiguration) {
         var statusItemImage: NSImage?
         if UserConfiguration.shared.tilingEnabled == true {
-            statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem"))
+            statusItemImage = NSImage(named: "icon-statusitem")
             toggleGlobalTilingMenuItem?.title = "Disable"
         } else {
-            statusItemImage = NSImage(named: NSImage.Name(rawValue: "icon-statusitem-disabled"))
+            statusItemImage = NSImage(named: "icon-statusitem-disabled")
             toggleGlobalTilingMenuItem?.title = "Enable"
         }
         statusItemImage?.isTemplate = true

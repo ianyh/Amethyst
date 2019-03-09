@@ -12,6 +12,7 @@ line_length: 200
 file_length: 500
 type_body_length: 400
 cyclomatic_complexity: 15
+large_tuple: 3
 identifier_name:
     excluded:
         - id

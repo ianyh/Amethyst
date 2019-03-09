@@ -29,7 +29,7 @@ extension HotKeyManager: HotKeyRegistrar {
                 let shortcut = MASShortcut(keyCode: UInt(keyCodes[0]), modifierFlags: modifiers)
                 MASShortcutBinder.shared().registerDefaultShortcuts([ defaultsKey: shortcut as Any ])
             } else {
-                LogManager.log?.warning("String \"\(string)\" does not map to any keycodes")
+                log.warning("String \"\(string)\" does not map to any keycodes")
             }
         }
 

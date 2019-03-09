@@ -57,7 +57,7 @@ final class TreeNode {
 
     func removeWindowID(_ windowID: CGWindowID) {
         guard let node = findWindowID(windowID) else {
-            LogManager.log?.error("Trying to remove window not in tree")
+            log.error("Trying to remove window not in tree")
             return
         }
 
@@ -149,7 +149,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    func frameAssignments() -> [FrameAssignment] {
+    override func frameAssignments() -> [FrameAssignment]? {
         guard !windows.isEmpty else {
             return []
         }
@@ -172,7 +172,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
 
             if let windowID = traversalNode.node.windowID {
                 guard let window = windowIDMap[windowID] else {
-                    LogManager.log?.warning("Could not find window for ID: \(windowID)")
+                    log.warning("Could not find window for ID: \(windowID)")
                     continue
                 }
 
@@ -181,7 +181,7 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
                 ret.append(frameAssignment)
             } else {
                 guard let left = traversalNode.node.left, let right = traversalNode.node.right else {
-                    LogManager.log?.error("Encountered an invalid node")
+                    log.error("Encountered an invalid node")
                     continue
                 }
 
@@ -223,14 +223,6 @@ final class BinarySpacePartitioningReflowOperation: ReflowOperation {
 
         return ret
     }
-
-    override func main() {
-        guard !isCancelled else {
-            return
-        }
-
-        frameAssigner.performFrameAssignments(frameAssignments())
-    }
 }
 
 final class BinarySpacePartitioningLayout: Layout {
@@ -246,16 +238,11 @@ final class BinarySpacePartitioningLayout: Layout {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation {
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         if !windows.isEmpty && !rootNode.valid {
             constructInitialTreeWithWindows(windows)
         }
-
         return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self)
-    }
-
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
-        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: self).frameAssignments().first { $0.window == window }
     }
 
     private func constructInitialTreeWithWindows(_ windows: [SIWindow]) {
@@ -274,19 +261,19 @@ extension BinarySpacePartitioningLayout: StatefulLayout {
         switch windowChange {
         case let .add(window):
             guard rootNode.findWindowID(window.windowID()) == nil else {
-                LogManager.log?.warning("Trying to add a window already in the tree")
+                log.warning("Trying to add a window already in the tree")
                 return
             }
 
             if let insertionPoint = lastKnownFocusedWindowID, window.windowID() != insertionPoint {
-                LogManager.log?.info("insert \(window) - \(window.windowID()) at point: \(insertionPoint)")
+                log.info("insert \(window) - \(window.windowID()) at point: \(insertionPoint)")
                 rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint)
             } else {
-                LogManager.log?.info("insert \(window) - \(window.windowID()) at end")
+                log.info("insert \(window) - \(window.windowID()) at end")
                 rootNode.insertWindowIDAtEnd(window.windowID())
             }
         case let .remove(window):
-            LogManager.log?.info("remove: \(window) - \(window.windowID())")
+            log.info("remove: \(window) - \(window.windowID())")
             rootNode.removeWindowID(window.windowID())
         case let .focusChanged(window):
             lastKnownFocusedWindowID = window.windowID()
@@ -295,7 +282,7 @@ extension BinarySpacePartitioningLayout: StatefulLayout {
             let otherWindowID = otherWindow.windowID()
 
             guard let windowNode = rootNode.findWindowID(windowID), let otherWindowNode = rootNode.findWindowID(otherWindowID) else {
-                LogManager.log?.error("Tried to perform an unbalanced window swap: \(windowID) <-> \(otherWindowID)")
+                log.error("Tried to perform an unbalanced window swap: \(windowID) <-> \(otherWindowID)")
                 return
             }
 

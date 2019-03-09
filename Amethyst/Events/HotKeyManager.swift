@@ -38,11 +38,11 @@ final class HotKeyManager: NSObject {
     private static func keyCodeForNumber(_ number: NSNumber) -> AMKeyCode {
         let string = "\(number)"
 
-        guard !string.characters.isEmpty else {
+        guard !string.isEmpty else {
             return AMKeyCodeInvalid
         }
 
-        switch string.characters.last! {
+        switch string.last! {
         case "1":
             return kVK_ANSI_1
         case "2":
@@ -117,6 +117,10 @@ final class HotKeyManager: NSObject {
             windowManager.moveFocusClockwise()
         }
 
+        constructCommandWithCommandKey(CommandKey.focusMain.rawValue) {
+            windowManager.moveFocusToMain()
+        }
+
         constructCommandWithCommandKey(CommandKey.swapScreenCCW.rawValue) {
             windowManager.swapFocusedWindowScreenCounterClockwise()
         }
@@ -187,9 +191,9 @@ final class HotKeyManager: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
-        LayoutManager.availableLayoutStrings().forEach { layoutString in
-            self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutString)) {
-                windowManager.focusedScreenManager()?.selectLayout(layoutString)
+        LayoutManager.availableLayoutStrings().forEach { (layoutKey, _) in
+            self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
+                windowManager.focusedScreenManager()?.selectLayout(layoutKey)
             }
         }
     }
@@ -220,25 +224,17 @@ final class HotKeyManager: NSObject {
 
         for keyCode in (0..<AMKeyCodeInvalid) {
             switch keyCode {
-            case kVK_ANSI_Keypad0:
-                fallthrough
-            case kVK_ANSI_Keypad1:
-                fallthrough
-            case kVK_ANSI_Keypad2:
-                fallthrough
-            case kVK_ANSI_Keypad3:
-                fallthrough
-            case kVK_ANSI_Keypad4:
-                fallthrough
-            case kVK_ANSI_Keypad5:
-                fallthrough
-            case kVK_ANSI_Keypad6:
-                fallthrough
-            case kVK_ANSI_Keypad7:
-                fallthrough
-            case kVK_ANSI_Keypad8:
-                fallthrough
-            case kVK_ANSI_Keypad9:
+            case
+            kVK_ANSI_Keypad0,
+            kVK_ANSI_Keypad1,
+            kVK_ANSI_Keypad2,
+            kVK_ANSI_Keypad3,
+            kVK_ANSI_Keypad4,
+            kVK_ANSI_Keypad5,
+            kVK_ANSI_Keypad6,
+            kVK_ANSI_Keypad7,
+            kVK_ANSI_Keypad8,
+            kVK_ANSI_Keypad9:
                 continue
             default:
                 break
@@ -315,6 +311,7 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Decrease main pane count", CommandKey.decreaseMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus counter clockwise", CommandKey.focusCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus clockwise", CommandKey.focusCW.rawValue])
+        hotKeyNameToDefaultsKey.append(["Move focus to main window", CommandKey.focusMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window to counter clockwise screen", CommandKey.swapScreenCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window to clockwise screen", CommandKey.swapScreenCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window counter clockwise", CommandKey.swapCCW.rawValue])
@@ -344,9 +341,9 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
 
-        for layoutString in LayoutManager.availableLayoutStrings() {
-            let commandName = "Select \(layoutString) layout"
-            let commandKey = "select-\(layoutString)-layout"
+        for (layoutKey, layoutName) in LayoutManager.availableLayoutStrings() {
+            let commandName = "Select \(layoutName) layout"
+            let commandKey = "select-\(layoutKey)-layout"
             hotKeyNameToDefaultsKey.append([commandName, commandKey])
         }
 

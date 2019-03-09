@@ -109,6 +109,25 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
         windowToFocus.am_focusWindow()
     }
 
+    func moveFocusToMain() {
+        guard let focusedWindow = SIWindow.focused() else {
+            focusScreen(at: 0)
+            return
+        }
+
+        guard let screen = focusedWindow.screen() else {
+            return
+        }
+
+        let windows = self.windows(on: screen)
+
+        guard !windows.isEmpty else {
+            return
+        }
+
+        windows[0].am_focusWindow()
+    }
+
     func swapFocusedWindowToMain() {
         guard let focusedWindow = SIWindow.focused(), !windowIsFloating(focusedWindow), let screen = focusedWindow.screen() else {
             return
@@ -294,6 +313,12 @@ extension ScreenFocuser {
             return
         }
 
+        // If the previous focus has been tracked, then focus the window that had the focus before.
+        if let previouslyFocused = screenManager.lastFocusedWindow, previouslyFocused.isOnScreen() {
+            previouslyFocused.am_focusWindow()
+            return
+        }
+
         let windows = self.windows(on: screenManager.screen)
 
         // If there are no windows on the screen focus the screen directly
@@ -410,7 +435,7 @@ extension WindowManager: WindowMover {
         }
 
         guard let currentSpace = currentSpaceForScreen(screen) else {
-            LogManager.log?.warning("Could not find a space for screen: \(screenIdentifier)")
+            log.warning("Could not find a space for screen: \(screenIdentifier)")
             return []
         }
 
@@ -447,6 +472,8 @@ extension WindowManager: WindowMover {
         guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
             return
         }
+
+        guard windowIndex != otherWindowIndex else { return }
 
         windows[windowIndex] = otherWindow
         windows[otherWindowIndex] = window

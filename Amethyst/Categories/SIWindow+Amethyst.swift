@@ -50,12 +50,14 @@ extension SIWindow {
     static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
+            log.debug("nothing")
             return nil
         }
 
         let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: ids, withDescriptions: windowDescriptions)
 
         guard !windowsAtPoint.isEmpty else {
+            log.debug("no windows at point")
             return nil
         }
 
@@ -127,7 +129,14 @@ extension SIWindow {
                 continue
             }
 
-            guard let windowTitle = windowDescription[kCGWindowName as String] as? String, windowTitle == window.string(forKey: kAXTitleAttribute as CFString!) else {
+            guard let describedTitle = windowDescription[kCGWindowName as String] as? String else {
+                continue
+            }
+
+            let describedOwner = windowDescription[kCGWindowOwnerName as String] as? String
+            let describedOwnedTitle = describedOwner.flatMap { "\(describedTitle) - \($0)" }
+
+            guard describedTitle == window.title() || describedOwnedTitle == window.title() else {
                 continue
             }
 
@@ -156,7 +165,7 @@ extension SIWindow {
             return false
         }
 
-        guard let subrole = string(forKey: kAXSubroleAttribute as CFString!), subrole == kAXStandardWindowSubrole as String else {
+        guard let subrole = string(forKey: kAXSubroleAttribute as CFString), subrole == kAXStandardWindowSubrole as String else {
             return false
         }
 

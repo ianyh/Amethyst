@@ -135,8 +135,18 @@ class ReflowOperation: Operation {
         }
     }
 
+    public func frameAssignments() -> [FrameAssignment]? {
+        return nil
+    }
+
     public func enqueue(_ aQueue: OperationQueue) {
         aQueue.addOperation(self)
+    }
+
+    override func main() {
+        guard !isCancelled else { return }
+        guard let assignments = frameAssignments() else { return }
+        frameAssigner.performFrameAssignments(assignments)
     }
 
     // Carve out a separate completion block for reflow stuff.
@@ -169,7 +179,7 @@ extension FrameAssigner {
         }
 
         for frameAssignment in frameAssignments {
-            LogManager.log?.debug("Frame Assignment: \(frameAssignment)")
+            log.debug("Frame Assignment: \(frameAssignment)")
             frameAssignment.perform()
         }
     }
@@ -208,6 +218,17 @@ extension NSScreen {
             frame.size.height = windowMinimumHeight
         }
 
+        let paddingTop = UserConfiguration.shared.screenPaddingTop()
+        let paddingBottom = UserConfiguration.shared.screenPaddingBottom()
+        let paddingLeft = UserConfiguration.shared.screenPaddingLeft()
+        let paddingRight = UserConfiguration.shared.screenPaddingRight()
+        frame.origin.y += paddingTop
+        frame.origin.x += paddingLeft
+        // subtract the right padding, and also any amount that we pushed the frame to the left with the left padding
+        frame.size.width -= (paddingRight + paddingLeft)
+        // subtract the bottom padding, and also any amount that we pushed the frame down with the top padding
+        frame.size.height -= (paddingBottom + paddingTop)
+
         return frame
     }
 }
@@ -218,8 +239,23 @@ protocol Layout {
 
     var windowActivityCache: WindowActivityCache { get }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment?
+    init(windowActivityCache: WindowActivityCache)
+
+    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation?
+}
+
+extension Layout {
+    func frameAssignments(_ windows: [SIWindow], on screen: NSScreen) -> [FrameAssignment]? {
+        return reflow(windows, on: screen)?.frameAssignments()
+    }
+
+    func windowAtPoint(_ point: CGPoint, of windows: [SIWindow], on screen: NSScreen) -> SIWindow? {
+        return frameAssignments(windows, on: screen)?.first(where: { $0.frame.contains(point) })?.window
+    }
+
+    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+        return frameAssignments(windows, on: screen)?.first { $0.window == window }
+    }
 }
 
 protocol PanedLayout {
@@ -234,7 +270,7 @@ protocol PanedLayout {
 extension PanedLayout {
     func recommendMainPaneRatio(_ ratio: CGFloat) {
         guard 0 <= ratio && ratio <= 1 else {
-            LogManager.log?.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
+            log.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
             return recommendMainPaneRawRatio(rawRatio: max(min(ratio, 1), 0))
         }
         recommendMainPaneRawRatio(rawRatio: ratio)
