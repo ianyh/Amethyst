@@ -173,6 +173,7 @@ private struct ObserveApplicationNotifications {
         case applicationActivated
         case windowMoved
         case windowResized
+        case mainWindowChanged
 
         var string: String {
             switch self {
@@ -192,6 +193,8 @@ private struct ObserveApplicationNotifications {
                 return kAXWindowMovedNotification
             case .windowResized:
                 return kAXWindowResizedNotification
+            case .mainWindowChanged:
+                return kAXMainWindowChangedNotification
             }
         }
     }
@@ -211,7 +214,8 @@ private struct ObserveApplicationNotifications {
             .focusedWindowChanged,
             .applicationActivated,
             .windowMoved,
-            .windowResized
+            .windowResized,
+            .mainWindowChanged
         ]
 
         return Observable.from(notifications)
@@ -257,7 +261,7 @@ private struct ObserveApplicationNotifications {
             guard let window = element as? SIWindow else {
                 return
             }
-            windowManager.addWindow(window)
+            windowManager.swapInTab(window: window)
         case .windowDeminiaturized:
             guard let window = element as? SIWindow else {
                 return
@@ -277,12 +281,13 @@ private struct ObserveApplicationNotifications {
             guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
                 return
             }
+            windowManager.lastFocusDate = Date()
             if windowManager.windows.index(of: focusedWindow) == nil {
                 windowManager.markScreenForReflow(screen, withChange: .unknown)
             } else {
                 windowManager.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
+                windowManager.screenManager(for: screen)?.lastFocusedWindow = focusedWindow
             }
-            windowManager.screenManager(for: screen)?.lastFocusedWindow = focusedWindow
         case .applicationActivated:
             NSObject.cancelPreviousPerformRequests(
                 withTarget: windowManager,
@@ -364,6 +369,11 @@ private struct ObserveApplicationNotifications {
             default:
                 break
             }
+        case .mainWindowChanged:
+            guard let window = element as? SIWindow else {
+                return
+            }
+            windowManager.swapInTab(window: window)
         }
     }
 }
@@ -385,6 +395,8 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
     public private(set) var lastReflowTime: Date
 
     private let disposeBag = DisposeBag()
+
+    var lastFocusDate: Date?
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
@@ -746,6 +758,66 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
         for screenManager in screenManagers {
             screenManager.displayLayoutHUD()
         }
+    }
+
+    func swapInTab(window: SIWindow) {
+        guard let screen = window.screen() else {
+            return
+        }
+
+        // We do this to avoid triggering tab swapping when just switching focus between apps.
+        // If the window's app is not running by this point then it's not a tab switch.
+        guard let runningApp = NSRunningApplication(processIdentifier: window.processIdentifier()), runningApp.isActive else {
+            return
+        }
+
+        // We take the windows that are being tracked so we can properly detect when a tab switch is a new tab.
+        let applicationWindows = windows.filter { $0.processIdentifier() == window.processIdentifier() }
+
+        for existingWindow in applicationWindows {
+            guard existingWindow != window else {
+                continue
+            }
+
+            let didLeaveScreen = windowIsActive(existingWindow) && !existingWindow.isOnScreen()
+            let isInvalid = existingWindow.windowID() == kCGNullWindowID
+
+            // The window needs to have either left the screen and therefore is being replaced
+            // or be invalid and therefore being removed and can be replaced.
+            guard didLeaveScreen || isInvalid else {
+                continue
+            }
+
+            // We need to tolerate a bit more height because a window that goes from untabbed to tabbed can change
+            // the height of the titlebar (e.g., Terminal)
+            let tolerance = CGRect(x: 10, y: 10, width: 10, height: 30)
+            let isApproximatelyInFrame = existingWindow.frame().approximatelyEqual(to: window.frame(), within: tolerance)
+
+            // If the window is in the same position and is going off screen it is likely a tab being replaced
+            guard isApproximatelyInFrame || isInvalid else {
+                continue
+            }
+
+            // We have to make sure that we haven't had a focus change too recently as that could mean
+            // the window is already active, but just became focused by swapping window focus.
+            // The time is in seconds, and too long a time ends up with quick switches triggering tabs to incorrectly
+            // swap.
+            if let lastFocusChange = lastFocusDate, abs(lastFocusChange.timeIntervalSinceNow) < 0.1 && !isInvalid {
+                continue
+            }
+
+            // Add the new window to be tracked, swap it with the existing window, regenerate cache to account
+            // for the change, and then reflow.
+            addWindow(window)
+            switchWindow(existingWindow, with: window)
+            regenerateActiveIDCache()
+            markScreenForReflow(screen, withChange: .unknown)
+
+            return
+        }
+
+        // If we've reached this point we haven't found any tab to switch out, but this window could still be new.
+        addWindow(window)
     }
 }
 
