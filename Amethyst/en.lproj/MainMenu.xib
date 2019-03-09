@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -69,7 +69,7 @@
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="pO4-7U-3HA" customClass="PreferencesWindow" customModule="Amethyst" customModuleProvider="target">
+        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="pO4-7U-3HA" customClass="PreferencesWindow" customModule="Amethyst" customModuleProvider="target">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <windowPositionMask key="initialPositionMask" topStrut="YES"/>
             <rect key="contentRect" x="446" y="472" width="480" height="270"/>
@@ -95,11 +95,19 @@
                             <action selector="selectPane:" target="0fi-bi-huz" id="WEg-vF-5FE"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="319E6DB9-3D79-40BF-95A2-B84B5236FF8B" explicitItemIdentifier="debug" label="Debug" paletteLabel="Debug" tag="-1" image="NSAdvanced" selectable="YES" id="KUo-2v-ywG">
+                        <size key="minSize" width="32" height="32"/>
+                        <size key="maxSize" width="32" height="32"/>
+                        <connections>
+                            <action selector="selectPane:" target="0fi-bi-huz" id="aNs-0B-bfi"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="WV2-G9-AL4"/>
                     <toolbarItem reference="j0a-87-Yvz"/>
                     <toolbarItem reference="QEp-pN-Lz9"/>
+                    <toolbarItem reference="KUo-2v-ywG"/>
                 </defaultToolbarItems>
                 <connections>
                     <outlet property="delegate" destination="0fi-bi-huz" id="zer-Uh-aco"/>
@@ -124,6 +132,7 @@
         </menu>
     </objects>
     <resources>
+        <image name="NSAdvanced" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
         <image name="toolbar-icon-floating" width="32" height="32"/>
         <image name="toolbar-icon-shortcuts" width="32" height="32"/>
