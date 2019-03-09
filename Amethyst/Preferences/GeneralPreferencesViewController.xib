@@ -576,8 +576,8 @@
             </subviews>
             <point key="canvasLocation" x="561" y="314"/>
         </customView>
-        <userDefaultsController id="XhK-Tn-zrU"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <userDefaultsController id="XhK-Tn-zrU"/>
         <userDefaultsController representsSharedInstance="YES" id="N2H-cZ-f1m"/>
     </objects>
     <resources>
