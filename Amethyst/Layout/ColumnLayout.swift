@@ -61,13 +61,13 @@ final class ColumnReflowOperation: ReflowOperation {
     }
 }
 
-final class ColumnLayout: Layout {
+final class ColumnLayout: PanedLayout {
     static var layoutName: String { return "Column" }
     static var layoutKey: String { return "column" }
 
     let windowActivityCache: WindowActivityCache
-    fileprivate var mainPaneCount: Int = 1
-    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -76,9 +76,7 @@ final class ColumnLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return ColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
-}
 
-extension ColumnLayout: PanedLayout {
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }

@@ -12,6 +12,8 @@ final class FloatingLayout: Layout {
     static var layoutName: String { return "Floating" }
     static var layoutKey: String { return "floating" }
 
+    var layoutDescription: String { return "" }
+
     let windowActivityCache: WindowActivityCache
 
     init(windowActivityCache: WindowActivityCache) {

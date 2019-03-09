@@ -68,14 +68,14 @@ final class RowReflowOperation: ReflowOperation {
     }
 }
 
-final class RowLayout: Layout {
+final class RowLayout: PanedLayout {
     static var layoutName: String { return "Row" }
     static var layoutKey: String { return "row" }
 
     let windowActivityCache: WindowActivityCache
 
-    fileprivate var mainPaneCount: Int = 1
-    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
 
     init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
@@ -84,9 +84,7 @@ final class RowLayout: Layout {
     func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
         return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
     }
-}
 
-extension RowLayout: PanedLayout {
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
