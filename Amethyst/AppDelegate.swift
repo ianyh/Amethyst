@@ -12,6 +12,7 @@ import LoginServiceKit
 import RxCocoa
 import RxSwift
 import Sparkle
+import SwiftyBeaver
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var preferencesWindowController: PreferencesWindowController?
@@ -28,17 +29,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var isFirstLaunch = true
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        if ProcessInfo.processInfo.arguments.index(of: "--log") == nil {
-            log.minLevel = .warning
-        } else {
-            log.minLevel = .trace
-        }
-
         #if DEBUG
-            log.minLevel = .trace
+            log.addDestination(ConsoleDestination())
         #endif
 
         log.info("Logging is enabled")
+        log.debug("Debug logging is enabled")
 
         UserConfiguration.shared.delegate = self
         UserConfiguration.shared.load()

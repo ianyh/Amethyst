@@ -6,6 +6,6 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
-import Log
+import SwiftyBeaver
 
-let log: Logger! = Logger()
+let log = SwiftyBeaver.self
