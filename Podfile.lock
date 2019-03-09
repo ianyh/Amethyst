@@ -2,7 +2,7 @@ PODS:
   - Cartography (3.1.0)
   - LoginServiceKit (2.0.2)
   - MASShortcut (2.3.6)
-  - Nimble (7.3.1)
+  - Nimble (8.0.1)
   - Quick (1.3.2)
   - RxCocoa (4.3.1):
     - RxSwift (~> 4.0)
@@ -61,7 +61,7 @@ SPEC CHECKSUMS:
   Cartography: 1988b7578871a56c036e7af17195cb2190edf18c
   LoginServiceKit: 5b4736234dc4cc96d786d8cd83e43b9ce5e7f1ca
   MASShortcut: 9c215e8a8a78f3d01ce56da48e2730ab66b538fa
-  Nimble: 04f732da099ea4d153122aec8c2a88fd0c7219ae
+  Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
   Quick: 2623cb30d7a7f41ca62f684f679586558f483d46
   RxCocoa: 78763c7b07d02455598d9fc3c1ad091a28b73635
   RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4

@@ -10,6 +10,15 @@ import ApplicationServices
 import Foundation
 import Silica
 
+extension CGRect {
+    func approximatelyEqual(to otherRect: CGRect, within tolerance: CGRect) -> Bool {
+        return abs(origin.x - otherRect.origin.x) < tolerance.origin.x &&
+        abs(origin.y - otherRect.origin.y) < tolerance.origin.y &&
+        abs(width - otherRect.width) < tolerance.width &&
+        abs(height - otherRect.height) < tolerance.height
+    }
+}
+
 extension SIWindow {
     // convert SIWindow objects to CGWindowIDs.
     // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
