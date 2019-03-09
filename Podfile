@@ -4,7 +4,6 @@ use_frameworks!
 
 target 'Amethyst' do
   pod 'Cartography'
-  pod 'Log'
   pod 'LoginServiceKit', :git => 'https://github.com/Clipy/LoginServiceKit.git'
   pod 'MASShortcut'
   pod 'RxCocoa', '= 4.3.1'
@@ -12,6 +11,7 @@ target 'Amethyst' do
   pod 'RxSwiftExt', '= 3.3.0'
   pod 'Silica', git: 'https://github.com/ianyh/Silica'
   pod 'Sparkle'
+  pod 'SwiftyBeaver'
   pod 'SwiftyJSON', '~> 3.1'
 
   target 'AmethystTests' do

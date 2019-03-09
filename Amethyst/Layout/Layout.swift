@@ -179,7 +179,7 @@ extension FrameAssigner {
         }
 
         for frameAssignment in frameAssignments {
-            log.debug("Frame Assignment: \(frameAssignment)")
+//            log.debug("Frame Assignment: \(frameAssignment)")
             frameAssignment.perform()
         }
     }
