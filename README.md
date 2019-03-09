@@ -6,9 +6,9 @@ Amethyst
 [![Open Source Helpers](https://www.codetriage.com/ianyh/amethyst/badges/users.svg)](https://www.codetriage.com/ianyh/amethyst)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
-Tiling window manager for macOS along the lines of [xmonad](http://xmonad.org/).
+Tiling window manager for macOS along the lines of [xmonad](https://xmonad.org/).
 
-![Windows](http://ianyh.com/amethyst/images/windows.png)
+![Windows](https://ianyh.com/amethyst/images/windows.png)
 
 A quick screencast of basic functionality can be found [here](https://youtu.be/boPilhScpkY). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
 
@@ -28,7 +28,7 @@ Using Amethyst
 
 Amethyst must be given permissions to use the accessibility APIs under the Privacy tab of the Security & Privacy preferences pane as shown below.
 
-![Accessibility permissions](http://ianyh.com/amethyst/images/accessibility-window.png)
+![Accessibility permissions](https://ianyh.com/amethyst/images/accessibility-window.png)
 
 Keyboard Shortcuts
 ------------------
@@ -173,7 +173,7 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 [n]`. Amethyst is only able to send a window to the `n`th space if the shortcut
 `ctrl + n` is enabled.
 
-![Mission Control keyboard shortcuts](http://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
+![Mission Control keyboard shortcuts](https://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
 
 Amethyst currently supports sending windows to up to 10 spaces, despite macOS' limit of 16 spaces per display.
 
@@ -205,17 +205,17 @@ Amethyst is free and always will be. That said, a couple of people have expresse
 * [Southern Poverty Law Center](https://www.splcenter.org/)
 * [National Resources Defense Council](https://www.nrdc.org/)
 * [International Refugee Assistance Project](https://refugeerights.org/)
-* [NAACP Legal Defense Fund](http://www.naacpldf.org/)
-* [The Trevor Project](http://www.thetrevorproject.org/)
-* [Mexican American Legal Defense Fund](http://maldef.org/)
+* [NAACP Legal Defense Fund](https://www.naacpldf.org/)
+* [The Trevor Project](https://www.thetrevorproject.org/)
+* [Mexican American Legal Defense Fund](https://www.maldef.org/)
 * [ProPublica](https://www.propublica.org/)
 
 And a bunch of technology-oriented ones:
 
 * [National Center for Women & Information Technology](https://www.ncwit.org/donate)
-* [girls who code](http://girlswhocode.com/get-involved/)
+* [girls who code](https://girlswhocode.com/get-involved/)
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
-* [Trans*H4CK](http://www.transhack.org/donate/)
-* [Black Girls CODE](http://www.blackgirlscode.com/)
+* [Trans*H4CK](https://www.transhack.org/donate/)
+* [Black Girls CODE](https://www.blackgirlscode.com/)
 
 Alternatively, I have a Patreon page set up [here](https://www.patreon.com/ianyh). Any proceeds will be donated to one of the above organizations. 
