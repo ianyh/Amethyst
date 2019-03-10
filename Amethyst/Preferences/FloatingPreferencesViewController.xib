@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
-        <capability name="box content view" minToolsVersion="7.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,13 +28,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" id="0sm-tb-Rkn">
-                                <rect key="frame" x="0.0" y="0.0" width="187" height="228"/>
+                                <rect key="frame" x="0.0" y="0.0" width="187" height="204"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn identifier="" editable="NO" width="184" minWidth="40" maxWidth="1000" id="IPH-Pg-lu9">
+                                    <tableColumn editable="NO" width="184" minWidth="40" maxWidth="1000" id="IPH-Pg-lu9">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -61,6 +60,7 @@
                         </subviews>
                         <nil key="backgroundColor"/>
                     </clipView>
+                    <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="25"/>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="IwH-cx-YkX">
                         <rect key="frame" x="-7" y="-14" width="0.0" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -70,6 +70,15 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
+                <box fixedFrame="YES" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="KqU-3F-KwY" userLabel="Add/Remove Background">
+                    <rect key="frame" x="22" y="21" width="175" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <view key="contentView" ambiguous="YES" id="Olz-Y5-zJj">
+                        <rect key="frame" x="0.0" y="0.0" width="175" height="25"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                </box>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZH0-nz-Yiv" userLabel="Add App ID">
                     <rect key="frame" x="22" y="22" width="27" height="23"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -177,13 +186,13 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" id="a4Q-Mp-SKh">
-                                                    <rect key="frame" x="0.0" y="0.0" width="271" height="127"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="271" height="103"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                     <tableColumns>
-                                                        <tableColumn identifier="" editable="NO" width="268" minWidth="40" maxWidth="1000" id="GgL-D9-Ium">
+                                                        <tableColumn editable="NO" width="268" minWidth="40" maxWidth="1000" id="GgL-D9-Ium">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -208,6 +217,7 @@
                                             </subviews>
                                             <nil key="backgroundColor"/>
                                         </clipView>
+                                        <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="25"/>
                                         <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="SVJ-m0-CnG">
                                             <rect key="frame" x="1" y="-14" width="0.0" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
@@ -217,6 +227,15 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
                                     </scrollView>
+                                    <box fixedFrame="YES" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="8B5-OE-QRo">
+                                        <rect key="frame" x="23" y="71" width="175" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                        <view key="contentView" ambiguous="YES" id="8kR-Vl-8St">
+                                            <rect key="frame" x="0.0" y="0.0" width="175" height="25"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                        <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </box>
                                     <customView focusRingType="none" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIY-NG-cWh">
                                         <rect key="frame" x="20" y="70" width="273" height="129"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
