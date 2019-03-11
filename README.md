@@ -35,14 +35,14 @@ Keyboard Shortcuts
 
 Amethyst uses two modifier combinations.
 
-| Shortcut | Description |
+| Default Shortcut | Description |
 |---|---|
 | `mod1` | `option + shift` |
 | `mod2` | `ctrl + option + shift` |
 
 And defines the following commands, mostly a mapping to xmonad key combinations.
 
-| Shortcut | Description |
+| Default Shortcut | Description |
 |---|---|
 | `mod1 + space` | Cycle layout forward |
 | `mod2 + space` | Cycle layout backwards |
