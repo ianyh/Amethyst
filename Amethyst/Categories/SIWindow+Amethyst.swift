@@ -19,12 +19,26 @@ extension CGRect {
     }
 }
 
-extension SIWindow {
-    // convert SIWindow objects to CGWindowIDs.
+struct WindowsInformation<Window: WindowType> {
+    let ids: Set<CGWindowID>
+    let descriptions: WindowDescriptions?
+
+    init?(windows: [AnyWindow<Window>]) {
+        guard let descriptions = WindowDescriptions(options: .optionOnScreenOnly, windowID: CGWindowID(0)) else {
+            return nil
+        }
+
+        self.ids = Set(windows.map { $0.windowID() })
+        self.descriptions = descriptions
+    }
+}
+
+extension WindowsInformation {
+    // convert Window objects to CGWindowIDs.
     // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
-    fileprivate static func windowInformation(_ windows: [SIWindow]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
+    fileprivate static func windowInformation(_ windows: [AnyWindow<Window>]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
         let ids = Set(windows.map { $0.windowID() })
-        return (IDs: ids, descriptions: windowDescriptions(.optionOnScreenOnly, windowID: CGWindowID(0)))
+        return (IDs: ids, descriptions: WindowDescriptions(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.descriptions)
     }
 
     fileprivate static func onScreenWindowsAtPoint(_ point: CGPoint,
@@ -56,7 +70,7 @@ extension SIWindow {
     }
 
     // if there are several windows at a given screen point, take the top one
-    static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
+    static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [AnyWindow<Window>]) -> AnyWindow<Window>? {
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
             return nil
@@ -79,13 +93,13 @@ extension SIWindow {
                 continue
             }
 
-            guard let windowsAboveWindow = SIWindow.windowDescriptions(.optionOnScreenAboveWindow, windowID: windowID.uint32Value) else {
+            guard let windowsAboveWindow = WindowDescriptions(options: .optionOnScreenAboveWindow, windowID: windowID.uint32Value) else {
                 continue
             }
 
-            if windowsAboveWindow.count < minCount {
+            if windowsAboveWindow.descriptions.count < minCount {
                 windowToFocus = windowDescription
-                minCount = windowsAboveWindow.count
+                minCount = windowsAboveWindow.descriptions.count
             }
         }
 
@@ -97,7 +111,7 @@ extension SIWindow {
     }
 
     // get the first window at a certain point, excluding one specific window from consideration
-    static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow], butNot ignoreWindow: SIWindow?) -> SIWindow? {
+    static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [AnyWindow<Window>], butNot ignoreWindow: AnyWindow<Window>?) -> AnyWindow<Window>? {
         // only consider windows on this screen
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
@@ -108,7 +122,7 @@ extension SIWindow {
 
         for windowDescription in windowsAtPoint {
             if let window = windowInWindows(windows, withCGWindowDescription: windowDescription) {
-                if window != ignoreWindow {
+                if let ignored = ignoreWindow, window != ignored {
                     return window
                 }
             }
@@ -117,14 +131,14 @@ extension SIWindow {
         return nil
     }
 
-    // find a window based on its window description within an array of SIWindow objects
-    static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
+    // find a window based on its window description within an array of Window objects
+    static func windowInWindows(_ windows: [AnyWindow<Window>], withCGWindowDescription windowDescription: [String: AnyObject]) -> AnyWindow<Window>? {
         let potentialWindows = windows.filter {
             guard let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
                 return false
             }
 
-            guard windowOwnerProcessIdentifier.int32Value == $0.processIdentifier() else {
+            guard windowOwnerProcessIdentifier.int32Value == $0.pid() else {
                 return false
             }
 
@@ -155,82 +169,5 @@ extension SIWindow {
 
             return describedTitle == $0.title() || describedOwnedTitle == $0.title()
         }
-    }
-
-    // return an array of dictionaries of window information for all windows relative to windowID
-    // if windowID is 0, this will return all window information
-    static func windowDescriptions(_ options: CGWindowListOption, windowID: CGWindowID) -> [[String: AnyObject]]? {
-        guard let cfWindowDescriptions = CGWindowListCopyWindowInfo(options, windowID) else {
-            return nil
-        }
-
-        guard let windowDescriptions = cfWindowDescriptions as NSArray as? [[String: AnyObject]] else {
-            return nil
-        }
-
-        return windowDescriptions
-    }
-
-    func shouldBeManaged() -> Bool {
-        guard isMovable() else {
-            return false
-        }
-
-        guard let subrole = string(forKey: kAXSubroleAttribute as CFString), subrole == kAXStandardWindowSubrole as String else {
-            return false
-        }
-
-        return true
-    }
-
-    func shouldFloat() -> Bool {
-        let userConfiguration = UserConfiguration.shared
-        let frame = self.frame()
-
-        if userConfiguration.floatSmallWindows() && frame.size.width < 500 && frame.size.height < 500 {
-            return true
-        }
-
-        return false
-    }
-
-    func moveScaled(to screen: NSScreen) {
-        let screenFrame = screen.frameWithoutDockOrMenu()
-        let currentFrame = frame()
-        var scaledFrame = currentFrame
-
-        if scaledFrame.width > screenFrame.width {
-            scaledFrame.size.width = screenFrame.width
-        }
-
-        if scaledFrame.height > screenFrame.height {
-            scaledFrame.size.height = screenFrame.height
-        }
-
-        if scaledFrame != currentFrame {
-            setFrame(scaledFrame)
-        }
-
-        move(to: screen)
-    }
-
-    @discardableResult func am_focusWindow() -> Bool {
-        guard self.focus() else {
-            return false
-        }
-
-        guard UserConfiguration.shared.mouseFollowsFocus() else {
-            return true
-        }
-
-        let windowFrame = frame()
-        let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
-        guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
-            return true
-        }
-        mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
-        mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
-
-        return true
     }
 }

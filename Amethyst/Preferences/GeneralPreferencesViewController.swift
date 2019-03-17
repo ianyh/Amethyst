@@ -8,6 +8,7 @@
 
 import Cocoa
 import Foundation
+import Silica
 
 final class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var layoutKeys: [String] = []
@@ -32,7 +33,7 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
     @IBAction func addLayout(_ sender: NSButton) {
         let layoutMenu = NSMenu(title: "")
 
-        for (layoutKey, layoutName) in LayoutManager.availableLayoutStrings() {
+        for (layoutKey, layoutName) in LayoutManager<AXWindow>.availableLayoutStrings() {
             let menuItem = NSMenuItem(title: layoutName, action: #selector(addLayoutString(_:)), keyEquivalent: "")
             menuItem.representedObject = layoutKey
             menuItem.target = self
@@ -90,6 +91,6 @@ final class GeneralPreferencesViewController: NSViewController, NSTableViewDataS
             return nil
         }
 
-        return LayoutManager.layoutNameForKey(layoutKeys[row])
+        return LayoutManager<AXWindow>.layoutNameForKey(layoutKeys[row])
     }
 }

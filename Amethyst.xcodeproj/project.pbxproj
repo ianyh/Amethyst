@@ -35,6 +35,8 @@
 		402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F01742E41A00D1C936 /* Credits.rtf */; };
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
+		4046EFCF2236019400113067 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFCE2236019400113067 /* Window.swift */; };
+		4046EFD12238949900113067 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFD02238949900113067 /* Application.swift */; };
 		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
 		404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */; };
 		4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */; };
@@ -127,6 +129,8 @@
 		402DB6F11742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		402DB6F71742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		4046EFCE2236019400113067 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
+		4046EFD02238949900113067 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
 		404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayoutTests.swift; sourceTree = "<group>"; };
 		4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindowController.swift; sourceTree = "<group>"; };
@@ -285,6 +289,7 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				4046EFCD2236018400113067 /* Model */,
 				401BC8AA1CE8F82700F89B3F /* Managers */,
 				4008E724190C4D9D0049E2F6 /* Preferences */,
 				40B392831814977D009A296B /* View */,
@@ -309,6 +314,15 @@
 				40E705D7176EAD7800850DA6 /* default.amethyst */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4046EFCD2236018400113067 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4046EFCE2236019400113067 /* Window.swift */,
+				4046EFD02238949900113067 /* Application.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		404BE9CF1CFBDEFD00D6C537 /* Layout */ = {
@@ -668,6 +682,7 @@
 			files = (
 				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
+				4046EFD12238949900113067 /* Application.swift in Sources */,
 				4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
 				409645B31CEE8D950042F459 /* LogManager.swift in Sources */,
@@ -677,6 +692,7 @@
 				401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
 				401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */,
+				4046EFCF2236019400113067 /* Window.swift in Sources */,
 				401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */,
 				401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,

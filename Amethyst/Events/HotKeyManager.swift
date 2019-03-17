@@ -8,6 +8,7 @@
 
 import Foundation
 import MASShortcut
+import Silica
 
 // Type for defining key code.
 typealias AMKeyCode = Int
@@ -21,7 +22,7 @@ private let AMKeyCodeInvalid: AMKeyCode = 0xFF
 
 typealias HotKeyHandler = () -> Void
 
-final class HotKeyManager: NSObject {
+final class HotKeyManager<Application: ApplicationType>: NSObject {
     private let userConfiguration: UserConfiguration
 
     private(set) lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
@@ -68,17 +69,20 @@ final class HotKeyManager: NSObject {
         }
     }
 
-    func setUpWithWindowManager(_ windowManager: WindowManager, configuration: UserConfiguration) {
+    func setUpWithWindowManager(_ windowManager: WindowManager<Application>, configuration: UserConfiguration) {
         constructCommandWithCommandKey(CommandKey.cycleLayoutForward.rawValue) {
-            windowManager.focusedScreenManager()?.cycleLayoutForward()
+            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            screenManager?.cycleLayoutForward()
         }
 
         constructCommandWithCommandKey(CommandKey.cycleLayoutBackward.rawValue) {
-            windowManager.focusedScreenManager()?.cycleLayoutBackward()
+            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            screenManager?.cycleLayoutBackward()
         }
 
         constructCommandWithCommandKey(CommandKey.shrinkMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.shrinkMainPane()
                 }
@@ -86,7 +90,8 @@ final class HotKeyManager: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.expandMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.expandMainPane()
                 }
@@ -94,7 +99,8 @@ final class HotKeyManager: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.increaseMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.increaseMainPaneCount()
                 }
@@ -102,7 +108,8 @@ final class HotKeyManager: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.decreaseMain.rawValue) {
-            windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
+            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.decreaseMainPaneCount()
                 }
@@ -191,9 +198,10 @@ final class HotKeyManager: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
-        LayoutManager.availableLayoutStrings().forEach { (layoutKey, _) in
+        LayoutManager<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
-                windowManager.focusedScreenManager()?.selectLayout(layoutKey)
+                let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+                screenManager?.selectLayout(layoutKey)
             }
         }
     }
@@ -341,7 +349,7 @@ final class HotKeyManager: NSObject {
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
 
-        for (layoutKey, layoutName) in LayoutManager.availableLayoutStrings() {
+        for (layoutKey, layoutName) in LayoutManager<Application.Window>.availableLayoutStrings() {
             let commandName = "Select \(layoutName) layout"
             let commandKey = "select-\(layoutKey)-layout"
             hotKeyNameToDefaultsKey.append([commandName, commandKey])

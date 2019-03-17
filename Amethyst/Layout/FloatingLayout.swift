@@ -8,22 +8,13 @@
 
 import Silica
 
-final class FloatingLayout: Layout {
-    static var layoutName: String { return "Floating" }
-    static var layoutKey: String { return "floating" }
+final class FloatingLayout<Window: WindowType>: Layout<Window> {
+    override static var layoutName: String { return "Floating" }
+    override static var layoutKey: String { return "floating" }
 
-    var layoutDescription: String { return "" }
+    override var layoutDescription: String { return "" }
 
-    let windowActivityCache: WindowActivityCache
-
-    init(windowActivityCache: WindowActivityCache) {
-        self.windowActivityCache = windowActivityCache
-    }
-
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
         return nil
     }
-
 }
-
-extension FloatingLayout: FrameAssigner {}

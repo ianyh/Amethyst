@@ -8,15 +8,15 @@
 
 import Silica
 
-final class FullscreenReflowOperation: ReflowOperation {
-    private let layout: FullscreenLayout
+final class FullscreenReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+    private let layout: FullscreenLayout<Window>
 
-    init(screen: NSScreen, windows: [SIWindow], layout: FullscreenLayout, frameAssigner: FrameAssigner) {
+    init(screen: NSScreen, windows: [AnyWindow<Window>], layout: FullscreenLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func frameAssignments() -> [FrameAssignment]? {
+    override func frameAssignments() -> [FrameAssignment<Window>]? {
         let screenFrame = screen.adjustedFrame()
         return windows.map { window in
             let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
@@ -25,21 +25,14 @@ final class FullscreenReflowOperation: ReflowOperation {
     }
 }
 
-final class FullscreenLayout: Layout {
-    static var layoutName: String { return "Fullscreen" }
-    static var layoutKey: String { return "fullscreen" }
+final class FullscreenLayout<Window: WindowType>: Layout<Window> {
+    override static var layoutName: String { return "Fullscreen" }
+    override static var layoutKey: String { return "fullscreen" }
 
-    var layoutDescription: String { return "" }
+    override var layoutDescription: String { return "" }
 
-    let windowActivityCache: WindowActivityCache
-
-    init(windowActivityCache: WindowActivityCache) {
-        self.windowActivityCache = windowActivityCache
-    }
-
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
-        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+        let assigner = Assigner(windowActivityCache: windowActivityCache)
+        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
 }
-
-extension FullscreenLayout: FrameAssigner {}
