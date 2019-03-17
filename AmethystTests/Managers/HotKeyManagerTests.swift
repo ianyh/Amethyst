@@ -9,12 +9,13 @@
 @testable import Amethyst
 import Nimble
 import Quick
+import Silica
 
 final class HotKeyManagerTests: QuickSpec {
     override func spec() {
         describe("hotKeyNameToDefaultsKey") {
             it("has the right number of screens") {
-                let keyMapping = HotKeyManager.hotKeyNameToDefaultsKey()
+                let keyMapping = HotKeyManager<SIApplication>.hotKeyNameToDefaultsKey()
                 let screenCommands = keyMapping.filter { $0[1].hasPrefix(CommandKey.focusScreenPrefix.rawValue) }
                 expect(screenCommands.count).to(equal(4))
             }

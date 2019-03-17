@@ -26,7 +26,6 @@ internal enum Pane {
 }
 
 internal struct TriplePaneArrangement {
-
     let paneCount: [Pane: UInt]            // number of windows in pane
     let paneWindowHeight: [Pane: CGFloat]  // height of windows in pane
     let paneWindowWidth: [Pane: CGFloat]   // width of windows in pane
@@ -133,30 +132,27 @@ internal struct TriplePaneArrangement {
     }
 }
 
-final class ThreeColumnReflowOperation: ReflowOperation {
-    private let layout: ThreeColumnLayout & MainColumnSpecifier
+final class ThreeColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+    private let layout: ThreeColumnLayout<Window>
 
-    fileprivate init(screen: NSScreen, windows: [SIWindow],
-                     layout: ThreeColumnLayout & MainColumnSpecifier & FrameAssigner) {
+    fileprivate init(screen: NSScreen, windows: [AnyWindow<Window>], layout: ThreeColumnLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
-        super.init(screen: screen, windows: windows, frameAssigner: layout)
+        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func frameAssignments() -> [FrameAssignment]? {
+    override func frameAssignments() -> [FrameAssignment<Window>]? {
         guard !windows.isEmpty else {
             return []
         }
 
         let screenFrame = screen.adjustedFrame()
-        let paneArrangement = TriplePaneArrangement(mainPane: layout.mainColumn,
+        let paneArrangement = TriplePaneArrangement(mainPane: type(of: layout).mainColumn,
                                               numWindows: UInt(windows.count),
                                               numMainPane: UInt(layout.mainPaneCount),
                                               screenSize: screenFrame.size,
                                               mainPaneRatio: layout.mainPaneRatio)
 
-        let focusedWindow = SIWindow.focused()
-
-        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let windowIndex: UInt = UInt(frameAssignments.count)
@@ -191,7 +187,7 @@ final class ThreeColumnReflowOperation: ReflowOperation {
             let isMain = windowIndex < paneArrangement.firstIndex(.secondary)
 
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isFocused(), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
 
@@ -201,17 +197,15 @@ final class ThreeColumnReflowOperation: ReflowOperation {
 }
 
 // not an actual Layout, just a base class for the three actual Layouts below
-internal class ThreeColumnLayout {
-    class var layoutName: String { return "" }
-    class var layoutKey: String { return "" }
-
-    let windowActivityCache: WindowActivityCache
+class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
+    class var mainColumn: Column { fatalError("Must be implemented by subclass") }
 
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
 
-    required init(windowActivityCache: WindowActivityCache) {
-        self.windowActivityCache = windowActivityCache
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+        let assigner = Assigner(windowActivityCache: windowActivityCache)
+        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
 }
 
@@ -229,44 +223,21 @@ extension ThreeColumnLayout {
     }
 }
 
-internal protocol MainColumnSpecifier {
-    var mainColumn: Column { get }
-}
-
-extension MainColumnSpecifier where Self: ThreeColumnLayout {
-    private func reflow3columns(_ windows: [SIWindow], on screen: NSScreen) -> ThreeColumnReflowOperation {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self)
-    }
-
-    internal func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
-        return reflow3columns(windows, on: screen)
-    }
-}
-
 // implement the three variants
-final class ThreeColumnLeftLayout: ThreeColumnLayout, PanedLayout, MainColumnSpecifier {
+final class ThreeColumnLeftLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Left" }
     override static var layoutKey: String { return "3column-left" }
-    internal let mainColumn = Column.left
+    override static var mainColumn: Column { return .left }
 }
 
-final class ThreeColumnMiddleLayout: ThreeColumnLayout, PanedLayout, MainColumnSpecifier {
+final class ThreeColumnMiddleLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Middle" }
     override static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
-    internal let mainColumn = Column.middle
+    override static var mainColumn: Column { return .middle }
 }
 
-final class ThreeColumnRightLayout: ThreeColumnLayout, PanedLayout, MainColumnSpecifier {
+final class ThreeColumnRightLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Right" }
     override static var layoutKey: String { return "3column-right" }
-    internal let mainColumn = Column.right
-}
-
-// extend all ThreeColumnLayouts with other necessary functionality: PanedLayout, WindowActivityCache, FrameAssigner
-extension ThreeColumnLayout: FrameAssigner {}
-
-extension ThreeColumnLayout: WindowActivityCache {
-    func windowIsActive(_ window: SIWindow) -> Bool {
-        return windowActivityCache.windowIsActive(window)
-    }
+    override static var mainColumn: Column { return .right }
 }

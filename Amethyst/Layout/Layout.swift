@@ -10,7 +10,7 @@ import Foundation
 import Silica
 
 protocol WindowActivityCache {
-    func windowIsActive(_ window: SIWindow) -> Bool
+    func windowIsActive<Window: WindowType>(_ window: AnyWindow<Window>) -> Bool
 }
 
 enum UnconstrainedDimension: Int {
@@ -41,9 +41,9 @@ struct ResizeRules {
     }
 }
 
-struct FrameAssignment {
+struct FrameAssignment<Window: WindowType> {
     let frame: CGRect
-    let window: SIWindow
+    let window: AnyWindow<Window>
     let focused: Bool
     let screenFrame: CGRect
     let resizeRules: ResizeRules
@@ -112,35 +112,20 @@ struct FrameAssignment {
     }
 }
 
-class ReflowOperation: Operation {
+class ReflowOperation<Window: WindowType>: Operation {
     let screen: NSScreen
-    let windows: [SIWindow]
+    let windows: [AnyWindow<Window>]
     let frameAssigner: FrameAssigner
-    public var onReflowCompletion: (() -> Void)?
 
-    init(screen: NSScreen, windows: [SIWindow], frameAssigner: FrameAssigner) {
+    init(screen: NSScreen, windows: [AnyWindow<Window>], frameAssigner: FrameAssigner) {
         self.screen = screen
         self.windows = windows
         self.frameAssigner = frameAssigner
-        self.onReflowCompletion = nil
         super.init()
-        makeCompletionBlock(nil)
     }
 
-    private func makeCompletionBlock(_ aBlock: (() -> Void)?) {
-        super.completionBlock = { [unowned self] in
-            aBlock?()
-            guard !self.isCancelled else { return }
-            self.onReflowCompletion?()
-        }
-    }
-
-    public func frameAssignments() -> [FrameAssignment]? {
+    public func frameAssignments() -> [FrameAssignment<Window>]? {
         return nil
-    }
-
-    public func enqueue(_ aQueue: OperationQueue) {
-        aQueue.addOperation(self)
     }
 
     override func main() {
@@ -148,47 +133,14 @@ class ReflowOperation: Operation {
         guard let assignments = frameAssignments() else { return }
         frameAssigner.performFrameAssignments(assignments)
     }
-
-    // Carve out a separate completion block for reflow stuff.
-    // It will always fire after any existing completion block
-    // UNLESS the operation completed by being cancelled.
-    override public var completionBlock: (() -> Void)? {
-        get {
-            return super.completionBlock
-        }
-        set {
-            makeCompletionBlock(newValue)
-        }
-    }
-
-    deinit {
-        self.onReflowCompletion = nil
-    }
 }
 
-protocol FrameAssigner: WindowActivityCache {
-    func performFrameAssignments(_ frameAssignments: [FrameAssignment])
-}
+protocol FrameAssigner {
+    var windowActivityCache: WindowActivityCache { get }
 
-extension FrameAssigner {
-    func performFrameAssignments(_ frameAssignments: [FrameAssignment]) {
-        for frameAssignment in frameAssignments {
-            if !windowIsActive(frameAssignment.window) {
-                return
-            }
-        }
+    init(windowActivityCache: WindowActivityCache)
 
-        for frameAssignment in frameAssignments {
-//            log.debug("Frame Assignment: \(frameAssignment)")
-            frameAssignment.perform()
-        }
-    }
-}
-
-extension FrameAssigner where Self: Layout {
-    func windowIsActive(_ window: SIWindow) -> Bool {
-        return windowActivityCache.windowIsActive(window)
-    }
+    func performFrameAssignments<Window: WindowType>(_ frameAssignments: [FrameAssignment<Window>])
 }
 
 extension NSScreen {
@@ -233,34 +185,42 @@ extension NSScreen {
     }
 }
 
-protocol Layout {
-    static var layoutName: String { get }
-    static var layoutKey: String { get }
+class Layout<Window: WindowType> {
+    class var layoutName: String { fatalError("Must be implemented by subclass") }
+    class var layoutKey: String { fatalError("Must be implemented by subclass") }
 
-    var layoutDescription: String { get }
+    var layoutDescription: String { return "" }
 
-    var windowActivityCache: WindowActivityCache { get }
+    let windowActivityCache: WindowActivityCache
 
-    init(windowActivityCache: WindowActivityCache)
+    required init(windowActivityCache: WindowActivityCache) {
+        self.windowActivityCache = windowActivityCache
+    }
 
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation?
+    func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+        fatalError("Must be implemented by subclass")
+    }
 }
 
 extension Layout {
-    func frameAssignments(_ windows: [SIWindow], on screen: NSScreen) -> [FrameAssignment]? {
-        return reflow(windows, on: screen)?.frameAssignments()
+    func frameAssignments(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> [FrameAssignment<Window>]? {
+        guard let reflowOperation = reflow(windows, on: screen) as? ReflowOperation<Window> else {
+            return nil
+        }
+
+        return reflowOperation.frameAssignments()
     }
 
-    func windowAtPoint(_ point: CGPoint, of windows: [SIWindow], on screen: NSScreen) -> SIWindow? {
+    func windowAtPoint(_ point: CGPoint, of windows: [AnyWindow<Window>], on screen: NSScreen) -> AnyWindow<Window>? {
         return frameAssignments(windows, on: screen)?.first(where: { $0.frame.contains(point) })?.window
     }
 
-    func assignedFrame(_ window: SIWindow, of windows: [SIWindow], on screen: NSScreen) -> FrameAssignment? {
+    func assignedFrame(_ window: AnyWindow<Window>, of windows: [AnyWindow<Window>], on screen: NSScreen) -> FrameAssignment<Window>? {
         return frameAssignments(windows, on: screen)?.first { $0.window == window }
     }
 }
 
-protocol PanedLayout: Layout {
+protocol PanedLayout {
     var mainPaneRatio: CGFloat { get }
     var mainPaneCount: Int { get }
     func recommendMainPaneRawRatio(rawRatio: CGFloat)
@@ -292,8 +252,33 @@ extension PanedLayout {
     }
 }
 
-protocol StatefulLayout: Layout {
-    func updateWithChange(_ windowChange: WindowChange)
-    func nextWindowIDCounterClockwise() -> CGWindowID?
-    func nextWindowIDClockwise() -> CGWindowID?
+class StatefulLayout<Window: WindowType>: Layout<Window> {
+    func updateWithChange(_ windowChange: WindowChange<Window>) {
+        fatalError("Must be implemented by subclass")
+    }
+
+    func nextWindowIDCounterClockwise() -> CGWindowID? {
+        fatalError("Must be implemented by subclass")
+    }
+
+    func nextWindowIDClockwise() -> CGWindowID? {
+        fatalError("Must be implemented by subclass")
+    }
+}
+
+struct Assigner: FrameAssigner {
+    let windowActivityCache: WindowActivityCache
+
+    func performFrameAssignments<Window: WindowType>(_ frameAssignments: [FrameAssignment<Window>]) {
+        for frameAssignment in frameAssignments {
+            if !windowActivityCache.windowIsActive(frameAssignment.window) {
+                return
+            }
+        }
+
+        for frameAssignment in frameAssignments {
+//            log.debug("Frame Assignment: \(frameAssignment)")
+            frameAssignment.perform()
+        }
+    }
 }

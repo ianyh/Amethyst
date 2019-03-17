@@ -8,15 +8,15 @@
 
 import Silica
 
-final class ColumnReflowOperation: ReflowOperation {
-    let layout: ColumnLayout
+final class ColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+    let layout: ColumnLayout<Window>
 
-    init(screen: NSScreen, windows: [SIWindow], layout: ColumnLayout, frameAssigner: FrameAssigner) {
+    init(screen: NSScreen, windows: [AnyWindow<Window>], layout: ColumnLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func frameAssignments() -> [FrameAssignment]? {
+    override func frameAssignments() -> [FrameAssignment<Window>]? {
         guard !windows.isEmpty else {
             return []
         }
@@ -29,9 +29,7 @@ final class ColumnReflowOperation: ReflowOperation {
         let mainPaneWindowWidth = round(screenFrame.width * (hasSecondaryPane ? CGFloat(layout.mainPaneRatio) : 1.0))
         let secondaryPaneWindowWidth = hasSecondaryPane ? round((screenFrame.width - mainPaneWindowWidth) / CGFloat(secondaryPaneCount)) : 0.0
 
-        let focusedWindow = SIWindow.focused()
-
-        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
             var assignments = frameAssignments
             var windowFrame: CGRect = .zero
             let isMain = frameAssignments.count < mainPaneCount
@@ -52,7 +50,7 @@ final class ColumnReflowOperation: ReflowOperation {
             }
 
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isFocused(), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
 
@@ -61,21 +59,12 @@ final class ColumnReflowOperation: ReflowOperation {
     }
 }
 
-final class ColumnLayout: PanedLayout {
-    static var layoutName: String { return "Column" }
-    static var layoutKey: String { return "column" }
+final class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+    override static var layoutName: String { return "Column" }
+    override static var layoutKey: String { return "column" }
 
-    let windowActivityCache: WindowActivityCache
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
-
-    init(windowActivityCache: WindowActivityCache) {
-        self.windowActivityCache = windowActivityCache
-    }
-
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
-        return ColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
-    }
 
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
@@ -88,6 +77,9 @@ final class ColumnLayout: PanedLayout {
     func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
-}
 
-extension ColumnLayout: FrameAssigner {}
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+        let assigner = Assigner(windowActivityCache: windowActivityCache)
+        return ColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
+    }
+}

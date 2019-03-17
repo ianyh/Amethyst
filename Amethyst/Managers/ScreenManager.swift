@@ -10,16 +10,16 @@ import Foundation
 import Silica
 
 protocol ScreenManagerDelegate: class {
-    func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow]
-    func windowIsActive(_ window: SIWindow) -> Bool
+    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [AnyWindow<Window>]
+    func windowIsActive<Window: WindowType>(_ window: AnyWindow<Window>) -> Bool
 }
 
-final class ScreenManager: NSObject {
+final class ScreenManager<Window: WindowType>: NSObject {
     var screen: NSScreen
     let screenIdentifier: String
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
-    public internal(set) var lastFocusedWindow: SIWindow?
+    public internal(set) var lastFocusedWindow: AnyWindow<Window>?
     fileprivate weak var delegate: ScreenManagerDelegate?
     private let userConfiguration: UserConfiguration
     public var onReflowInitiation: (() -> Void)?
@@ -56,11 +56,11 @@ final class ScreenManager: NSObject {
     var isFullscreen = false
 
     private var reflowTimer: Timer?
-    private var reflowOperation: ReflowOperation?
+    private var reflowOperation: Operation?
 
-    private var layouts: [Layout] = []
+    private var layouts: [Layout<Window>] = []
     private var currentLayoutIndexBySpaceIdentifier: [String: Int] = [:]
-    private var layoutsBySpaceIdentifier: [String: [Layout]] = [:]
+    private var layoutsBySpaceIdentifier: [String: [Layout<Window>]] = [:]
     private var currentLayoutIndex: Int {
         didSet {
             if !self.changingSpace || userConfiguration.enablesLayoutHUDOnSpaceChange() {
@@ -68,7 +68,7 @@ final class ScreenManager: NSObject {
             }
         }
     }
-    var currentLayout: Layout? {
+    var currentLayout: Layout<Window>? {
         guard !layouts.isEmpty else {
             return nil
         }
@@ -102,7 +102,7 @@ final class ScreenManager: NSObject {
         self.onReflowCompletion = nil
     }
 
-    func setNeedsReflowWithWindowChange(_ windowChange: WindowChange) {
+    func setNeedsReflowWithWindowChange(_ windowChange: WindowChange<Window>) {
         reflowOperation?.cancel()
 
         log.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
@@ -124,7 +124,7 @@ final class ScreenManager: NSObject {
         }
     }
 
-    private func reflow(_ change: WindowChange) {
+    private func reflow(_ change: WindowChange<Window>) {
         guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
@@ -137,17 +137,20 @@ final class ScreenManager: NSObject {
         changingSpace = false
 
         let reflowOperation = currentLayout?.reflow(windows, on: screen)
-        reflowOperation?.onReflowCompletion = { [unowned self] in
-            // propagate the completion handler if we have one
-            self.onReflowCompletion?()
+        reflowOperation?.completionBlock = { [weak self, weak reflowOperation] in
+            guard let isCancelled = reflowOperation?.isCancelled, !isCancelled else {
+                return
+            }
+
+            self?.onReflowCompletion?()
         }
         onReflowInitiation?()
         if let reflowOperation = reflowOperation {
-            reflowOperation.enqueue(OperationQueue.main)
+            OperationQueue.main.addOperation(reflowOperation)
         }
     }
 
-    func updateCurrentLayout(_ updater: (Layout) -> Void) {
+    func updateCurrentLayout(_ updater: (Layout<Window>) -> Void) {
         guard let layout = currentLayout else {
             return
         }
@@ -189,11 +192,11 @@ final class ScreenManager: NSObject {
     }
 
     func nextWindowIDCounterClockwise() -> CGWindowID? {
-        guard let statefulLayout = currentLayout as? StatefulLayout else {
+        guard let layout = currentLayout as? StatefulLayout else {
             return nil
         }
 
-        return statefulLayout.nextWindowIDCounterClockwise()
+        return layout.nextWindowIDCounterClockwise()
     }
 
     func nextWindowIDClockwise() -> CGWindowID? {
@@ -238,13 +241,13 @@ final class ScreenManager: NSObject {
 }
 
 extension ScreenManager: WindowActivityCache {
-    func windowIsActive(_ window: SIWindow) -> Bool {
+    func windowIsActive<Window: WindowType>(_ window: AnyWindow<Window>) -> Bool {
         return delegate?.windowIsActive(window) ?? false
     }
 }
 
 extension WindowManager: ScreenManagerDelegate {
-    func activeWindowsForScreenManager(_ screenManager: ScreenManager) -> [SIWindow] {
-        return activeWindows(on: screenManager.screen)
+    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [AnyWindow<Window>] {
+        return activeWindows(on: screenManager.screen) as! [AnyWindow<Window>]
     }
 }

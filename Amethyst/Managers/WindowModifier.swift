@@ -11,14 +11,15 @@ import Foundation
 import Silica
 
 protocol WindowMover {
-    func screenManager(at screenIndex: Int) -> ScreenManager?
-    func screenManager(for screen: NSScreen) -> ScreenManager?
+    associatedtype Window: WindowType
+    func screenManager(at screenIndex: Int) -> ScreenManager<Window>?
+    func screenManager(for screen: NSScreen) -> ScreenManager<Window>?
     func screenManagerIndex(for screen: NSScreen) -> Int?
-    func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange)
-    func windows(on screen: NSScreen) -> [SIWindow]
-    func activeWindows(on screen: NSScreen) -> [SIWindow]
-    func windowIsFloating(_ window: SIWindow) -> Bool
-    func switchWindow(_ window: SIWindow, with otherWindow: SIWindow)
+    func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange<Window>)
+    func windows(on screen: NSScreen) -> [AnyWindow<Window>]
+    func activeWindows(on screen: NSScreen) -> [AnyWindow<Window>]
+    func windowIsFloating(_ window: AnyWindow<Window>) -> Bool
+    func switchWindow(_ window: AnyWindow<Window>, with otherWindow: AnyWindow<Window>)
 }
 
 protocol SingleScreenWindowMover: WindowMover {
@@ -50,7 +51,7 @@ protocol ScreenFocuser: WindowMover {
 
 extension SingleScreenWindowMover where Self: ScreenFocuser {
     func moveFocusCounterClockwise() {
-        guard let focusedWindow = SIWindow.focused() else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused() else {
             focusScreen(at: 0)
             return
         }
@@ -65,7 +66,7 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
             return
         }
 
-        let windowToFocus: SIWindow = { () -> SIWindow in
+        let windowToFocus = { () -> AnyWindow<Window> in
             if let nextWindowID = self.screenManager(for: screen)?.nextWindowIDCounterClockwise() {
                 let windowToFocusIndex = windows.index { $0.windowID() == nextWindowID } ?? 0
                 return windows[windowToFocusIndex]
@@ -76,11 +77,11 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
             }
         }()
 
-        windowToFocus.am_focusWindow()
+        windowToFocus.focus()
     }
 
     func moveFocusClockwise() {
-        guard let focusedWindow = SIWindow.focused() else {
+        guard let focusedWindow = AnyWindow<Window>.currentlyFocused() else {
             focusScreen(at: 0)
             return
         }
@@ -95,7 +96,7 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
             return
         }
 
-        let windowToFocus: SIWindow = { () -> SIWindow in
+        let windowToFocus = { () -> AnyWindow<Window> in
             if let nextWindowID = self.screenManager(for: screen)?.nextWindowIDClockwise() {
                 let windowToFocusIndex = windows.index { $0.windowID() == nextWindowID } ?? 0
                 return windows[windowToFocusIndex]
@@ -106,11 +107,11 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
             }
         }()
 
-        windowToFocus.am_focusWindow()
+        windowToFocus.focus()
     }
 
     func moveFocusToMain() {
-        guard let focusedWindow = SIWindow.focused() else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused() else {
             focusScreen(at: 0)
             return
         }
@@ -125,11 +126,11 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
             return
         }
 
-        windows[0].am_focusWindow()
+        windows[0].focus()
     }
 
     func swapFocusedWindowToMain() {
-        guard let focusedWindow = SIWindow.focused(), !windowIsFloating(focusedWindow), let screen = focusedWindow.screen() else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), !windowIsFloating(focusedWindow), let screen = focusedWindow.screen() else {
             return
         }
 
@@ -148,11 +149,11 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
         default:
             switchWindow(focusedWindow, with: windows[0])
         }
-        focusedWindow.am_focusWindow()
+        focusedWindow.focus()
     }
 
     func swapFocusedWindowCounterClockwise() {
-        guard let focusedWindow = SIWindow.focused(), !windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), !windowIsFloating(focusedWindow) else {
             focusScreen(at: 0)
             return
         }
@@ -170,11 +171,11 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
         let windowToSwapWith = windows[(focusedWindowIndex == 0 ? windows.count - 1 : focusedWindowIndex - 1)]
 
         switchWindow(focusedWindow, with: windowToSwapWith)
-        focusedWindow.am_focusWindow()
+        focusedWindow.focus()
     }
 
     func swapFocusedWindowClockwise() {
-        guard let focusedWindow = SIWindow.focused(), !windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), !windowIsFloating(focusedWindow) else {
             focusScreen(at: 0)
             return
         }
@@ -192,13 +193,13 @@ extension SingleScreenWindowMover where Self: ScreenFocuser {
         let windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count]
 
         switchWindow(focusedWindow, with: windowToSwapWith)
-        focusedWindow.am_focusWindow()
+        focusedWindow.focus()
     }
 }
 
 extension CrossScreenWindowMover {
     func throwToScreenAtIndex(_ screenIndex: Int) {
-        guard let screenManager = screenManager(at: screenIndex), let focusedWindow = SIWindow.focused() else {
+        guard let screenManager = screenManager(at: screenIndex), let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused() else {
             return
         }
 
@@ -210,13 +211,13 @@ extension CrossScreenWindowMover {
         markScreenForReflow(screen, withChange: .remove(window: focusedWindow))
         focusedWindow.moveScaled(to: screenManager.screen)
         markScreenForReflow(screenManager.screen, withChange: .unknown)
-        focusedWindow.am_focusWindow()
+        focusedWindow.focus()
     }
 }
 
 extension CrossScreenWindowMover where Self: ScreenFocuser {
     func swapFocusedWindowScreenClockwise() {
-        guard let focusedWindow = SIWindow.focused(), !windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), !windowIsFloating(focusedWindow) else {
             focusScreen(at: 0)
             return
         }
@@ -237,7 +238,7 @@ extension CrossScreenWindowMover where Self: ScreenFocuser {
     }
 
     func swapFocusedWindowScreenCounterClockwise() {
-        guard let focusedWindow = SIWindow.focused(), !windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), !windowIsFloating(focusedWindow) else {
             focusScreen(at: 0)
             return
         }
@@ -260,13 +261,13 @@ extension CrossScreenWindowMover where Self: ScreenFocuser {
 
 extension CrossSpaceWindowMover {
     func pushFocusedWindowToSpace(_ space: UInt) {
-        guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
 
         markScreenForReflow(screen, withChange: .remove(window: focusedWindow))
         focusedWindow.move(toSpace: space)
-        focusedWindow.am_focusWindow()
+        focusedWindow.focus()
 
         // *gags*
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -309,13 +310,13 @@ extension ScreenFocuser {
         }
 
         // Do nothing if the screen is already focused
-        if let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen(), screen == screenManager.screen {
+        if let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), let screen = focusedWindow.screen(), screen == screenManager.screen {
             return
         }
 
         // If the previous focus has been tracked, then focus the window that had the focus before.
         if let previouslyFocused = screenManager.lastFocusedWindow, previouslyFocused.isOnScreen() {
-            previouslyFocused.am_focusWindow()
+            previouslyFocused.focus()
             return
         }
 
@@ -331,13 +332,13 @@ extension ScreenFocuser {
         let screenCenter = NSPointToCGPoint(NSPoint(x: screenManager.screen.frame.midX, y: screenManager.screen.frame.midY))
 
         // If there is no window at that point just focus the screen directly
-        guard let topWindow = SIWindow.topWindowForScreenAtPoint(screenCenter, withWindows: windows) ?? windows.first else {
+        guard let topWindow = WindowsInformation.topWindowForScreenAtPoint(screenCenter, withWindows: windows) ?? windows.first else {
             screenManager.screen.focusScreen()
             return
         }
 
         // Otherwise focus the topmost window
-        topWindow.am_focusWindow()
+        topWindow.focus()
     }
 }
 
@@ -369,7 +370,7 @@ extension WindowManager: CrossSpaceWindowMover {
     }
 
     func spacesForFocusedScreen() -> [CGSSpaceID]? {
-        guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), let screen = focusedWindow.screen() else {
             return nil
         }
 
@@ -397,7 +398,7 @@ extension WindowManager: CrossSpaceWindowMover {
     }
 
     func currentFocusedSpace() -> CGSSpaceID? {
-        guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
+        guard let focusedWindow: AnyWindow<Window> = AnyWindow.currentlyFocused(), let screen = focusedWindow.screen() else {
             return nil
         }
 
@@ -406,11 +407,11 @@ extension WindowManager: CrossSpaceWindowMover {
 }
 
 extension WindowManager: WindowMover {
-    func screenManager(for screen: NSScreen) -> ScreenManager? {
+    func screenManager(for screen: NSScreen) -> ScreenManager<Window>? {
         return screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 
-    func screenManager(at screenIndex: Int) -> ScreenManager? {
+    func screenManager(at screenIndex: Int) -> ScreenManager<Window>? {
         guard screenIndex < screenManagers.count else {
             return nil
         }
@@ -421,7 +422,7 @@ extension WindowManager: WindowMover {
         return screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 
-    func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange) {
+    func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange<Window>) {
         screenManagers
             .filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }
             .forEach { screenManager in
@@ -429,7 +430,7 @@ extension WindowManager: WindowMover {
             }
     }
 
-    func windows(on screen: NSScreen) -> [SIWindow] {
+    func windows(on screen: NSScreen) -> [AnyWindow<Window>] {
         guard let screenIdentifier = screen.screenIdentifier() else {
             return []
         }
@@ -458,17 +459,17 @@ extension WindowManager: WindowMover {
         return screenWindows
     }
 
-    func activeWindows(on screen: NSScreen) -> [SIWindow] {
+    func activeWindows(on screen: NSScreen) -> [AnyWindow<Window>] {
         return windows(on: screen).filter { window in
             return window.shouldBeManaged() && !windowIsFloating(window)
         }
     }
 
-    func windowIsFloating(_ window: SIWindow) -> Bool {
+    func windowIsFloating(_ window: AnyWindow<Window>) -> Bool {
         return floatingMap[window.windowID()] ?? false
     }
 
-    func switchWindow(_ window: SIWindow, with otherWindow: SIWindow) {
+    func switchWindow(_ window: AnyWindow<Window>, with otherWindow: AnyWindow<Window>) {
         guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
             return
         }
@@ -477,7 +478,7 @@ extension WindowManager: WindowMover {
 
         windows[windowIndex] = otherWindow
         windows[otherWindowIndex] = window
-        let theChange = WindowChange.windowSwap(window: window, otherWindow: otherWindow)
+        let theChange: WindowChange<Window> = .windowSwap(window: window, otherWindow: otherWindow)
 
         markAllScreensForReflowWithChange(theChange)
     }
