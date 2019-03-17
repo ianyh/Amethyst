@@ -15,7 +15,7 @@ A quick screencast of basic functionality can be found [here](https://youtu.be/b
 Getting Amethyst
 ================
 
-Amethyst is available for direct download on the [releases page](https://github.com/ianyh/Amethyst/releases) or using [homebrew cask](https://github.com/caskroom/homebrew-cask).
+Amethyst is available for direct download on the [releases page](https://github.com/ianyh/Amethyst/releases) or using [homebrew cask](https://github.com/Homebrew/homebrew-cask).
 
 ```
 brew cask install amethyst
