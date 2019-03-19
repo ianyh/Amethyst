@@ -13,7 +13,7 @@ import SwiftyJSON
 
 extension NSScreen {
     static func screenDescriptions() -> [JSON]? {
-        guard let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(_CGSDefaultConnection())?.takeRetainedValue() else {
+        guard let cfScreenDescriptions = CGSCopyManagedDisplaySpaces(CGSMainConnectionID())?.takeRetainedValue() else {
             return nil
         }
         guard let screenDescriptions = cfScreenDescriptions as NSArray as? [[String: AnyObject]] else {
@@ -30,7 +30,7 @@ extension NSScreen {
     }
 
     func screenIdentifier() -> String? {
-        guard let managedDisplay = CGSCopyBestManagedDisplayForRect(_CGSDefaultConnection(), frameIncludingDockAndMenu()) else {
+        guard let managedDisplay = CGSCopyBestManagedDisplayForRect(CGSMainConnectionID(), frameIncludingDockAndMenu()) else {
             return nil
         }
         return String(managedDisplay.takeRetainedValue())

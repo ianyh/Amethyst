@@ -128,8 +128,7 @@ final class ScreenManager: NSObject {
         guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
-            !isFullscreen &&
-            !CGSManagedDisplayIsAnimating(_CGSDefaultConnection(), screenIdentifier as CFString)
+            !isFullscreen
         else {
             return
         }
