@@ -9,7 +9,7 @@ target 'Amethyst' do
   pod 'RxCocoa', '= 4.3.1'
   pod 'RxSwift', '= 4.3.1'
   pod 'RxSwiftExt', '= 3.3.0'
-  pod 'Silica', git: 'https://github.com/ianyh/Silica'
+  pod 'Silica', git: 'https://github.com/ianyh/Silica', submodules: true
   pod 'Sparkle'
   pod 'SwiftyBeaver'
   pod 'SwiftyJSON', '~> 3.1'

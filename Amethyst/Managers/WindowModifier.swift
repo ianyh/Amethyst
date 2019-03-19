@@ -36,8 +36,8 @@ protocol CrossScreenWindowMover: WindowMover {
 }
 
 protocol CrossSpaceWindowMover: WindowMover {
-    func currentFocusedSpace() -> CGSSpace?
-    func spacesForFocusedScreen() -> [CGSSpace]?
+    func currentFocusedSpace() -> CGSSpaceID?
+    func spacesForFocusedScreen() -> [CGSSpaceID]?
 
     func pushFocusedWindowToSpace(_ space: UInt)
     func pushFocusedWindowToSpaceLeft()
@@ -342,7 +342,7 @@ extension ScreenFocuser {
 }
 
 extension WindowManager: CrossSpaceWindowMover {
-    func spacesForScreen(_ screen: NSScreen) -> [CGSSpace]? {
+    func spacesForScreen(_ screen: NSScreen) -> [CGSSpaceID]? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
@@ -355,20 +355,20 @@ extension WindowManager: CrossSpaceWindowMover {
                     continue
                 }
 
-                return screenDescription["Spaces"].array?.map { $0["ManagedSpaceID"].uInt64Value }
+                return screenDescription["Spaces"].array?.map { $0["ManagedSpaceID"].intValue }
             }
         } else {
             guard let spaceDescriptions = screenDescriptions.first?["Spaces"].array else {
                 return nil
             }
 
-            return spaceDescriptions.map { $0["ManagedSpaceID"].uInt64Value }
+            return spaceDescriptions.map { $0["ManagedSpaceID"].intValue }
         }
 
         return nil
     }
 
-    func spacesForFocusedScreen() -> [CGSSpace]? {
+    func spacesForFocusedScreen() -> [CGSSpaceID]? {
         guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
             return nil
         }
@@ -376,7 +376,7 @@ extension WindowManager: CrossSpaceWindowMover {
         return spacesForScreen(screen)
     }
 
-    func currentSpaceForScreen(_ screen: NSScreen) -> CGSSpace? {
+    func currentSpaceForScreen(_ screen: NSScreen) -> CGSSpaceID? {
         guard let screenDescriptions = NSScreen.screenDescriptions(), let screenIdentifier = screen.screenIdentifier() else {
             return nil
         }
@@ -387,16 +387,16 @@ extension WindowManager: CrossSpaceWindowMover {
                     continue
                 }
 
-                return screenDescription["Current Space"]["ManagedSpaceID"].uInt64Value
+                return screenDescription["Current Space"]["ManagedSpaceID"].intValue
             }
         } else {
-            return screenDescriptions.first?["Current Space"]["ManagedSpaceID"].uInt64Value
+            return screenDescriptions.first?["Current Space"]["ManagedSpaceID"].intValue
         }
 
         return nil
     }
 
-    func currentFocusedSpace() -> CGSSpace? {
+    func currentFocusedSpace() -> CGSSpaceID? {
         guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
             return nil
         }
@@ -442,11 +442,11 @@ extension WindowManager: WindowMover {
         let screenWindows = windows.filter { window in
             let windowIDsArray = [NSNumber(value: window.windowID() as UInt32)] as NSArray
 
-            guard let spaces = CGSCopySpacesForWindows(_CGSDefaultConnection(), CGSSpaceSelector(7), windowIDsArray)?.takeRetainedValue() else {
+            guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
                 return false
             }
 
-            let space = (spaces as NSArray as? [NSNumber])?.first?.uint64Value
+            let space = (spaces as NSArray as? [NSNumber])?.first?.intValue
 
             guard let windowScreen = window.screen(), space == currentSpace else {
                 return false
