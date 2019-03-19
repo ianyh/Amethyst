@@ -4,7 +4,6 @@ disabled_rules:
     - statement_position
     - force_cast
     - force_try
-    - variable_name_min_length
 included:
     - Amethyst
     - AmethystTests
