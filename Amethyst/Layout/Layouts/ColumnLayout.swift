@@ -78,7 +78,7 @@ final class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 
-    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return ColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }

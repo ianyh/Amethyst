@@ -1,5 +1,5 @@
 //
-//  TallLayout.swift
+//  TallRightLayout.swift
 //  Amethyst
 //
 //  Created by Ian Ynda-Hummel on 12/14/15.
@@ -8,10 +8,10 @@
 
 import Silica
 
-final class TallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
-    let layout: TallLayout<Window>
+final class TallRightReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+    let layout: TallRightLayout<Window>
 
-    init(screen: NSScreen, windows: [AnyWindow<Window>], layout: TallLayout<Window>, frameAssigner: FrameAssigner) {
+    init(screen: NSScreen, windows: [AnyWindow<Window>], layout: TallRightLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -33,22 +33,22 @@ final class TallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
         let mainPaneWindowWidth = round(screenFrame.size.width * (hasSecondaryPane ? CGFloat(layout.mainPaneRatio) : 1.0))
         let secondaryPaneWindowWidth = screenFrame.size.width - mainPaneWindowWidth
 
-        return windows.reduce([]) { acc, window -> [FrameAssignment<Window>] in
-            var assignments = acc
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
+            var assignments = frameAssignments
             var windowFrame = CGRect.zero
-            let isMain = acc.count < mainPaneCount
+            let isMain = frameAssignments.count < mainPaneCount
             var scaleFactor: CGFloat
 
             if isMain {
                 scaleFactor = screenFrame.size.width / mainPaneWindowWidth
-                windowFrame.origin.x = screenFrame.origin.x
-                windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * CGFloat(acc.count))
+                windowFrame.origin.x = screenFrame.origin.x + secondaryPaneWindowWidth
+                windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * CGFloat(frameAssignments.count))
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = mainPaneWindowHeight
             } else {
                 scaleFactor = screenFrame.size.width / secondaryPaneWindowWidth
-                windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth
-                windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(acc.count - mainPaneCount))
+                windowFrame.origin.x = screenFrame.origin.x
+                windowFrame.origin.y = screenFrame.maxY - (secondaryPaneWindowHeight * CGFloat(frameAssignments.count - mainPaneCount + 1))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
@@ -63,11 +63,9 @@ final class TallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     }
 }
 
-final class TallLayout<Window: WindowType>: Layout<Window>, PanedLayout {
-    override static var layoutName: String { return "Tall" }
-    override static var layoutKey: String { return "tall" }
-
-    override var layoutDescription: String { return "" }
+final class TallRightLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+    override static var layoutName: String { return "Tall Right" }
+    override static var layoutKey: String { return "tall-right" }
 
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
@@ -84,8 +82,8 @@ final class TallLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 
-    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
-        return TallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
+        return TallRightReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
 }

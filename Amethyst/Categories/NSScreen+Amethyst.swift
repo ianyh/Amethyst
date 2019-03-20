@@ -43,4 +43,44 @@ extension NSScreen {
         mouseMoveEvent?.flags = CGEventFlags(rawValue: 0)
         mouseMoveEvent?.post(tap: .cghidEventTap)
     }
+
+    func adjustedFrame() -> CGRect {
+        var frame = UserConfiguration.shared.ignoreMenuBar() ? frameIncludingDockAndMenu() : frameWithoutDockOrMenu()
+
+        if UserConfiguration.shared.windowMargins() {
+            /* Inset for producing half of the full padding around screen as collapse only adds half of it to all windows */
+            let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
+
+            frame.origin.x += padding
+            frame.origin.y += padding
+            frame.size.width -= 2 * padding
+            frame.size.height -= 2 * padding
+        }
+
+        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
+        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
+
+        if windowMinimumWidth > frame.size.width {
+            frame.origin.x -= (windowMinimumWidth - frame.size.width) / 2
+            frame.size.width = windowMinimumWidth
+        }
+
+        if windowMinimumHeight > frame.size.height {
+            frame.origin.y -= (windowMinimumHeight - frame.size.height) / 2
+            frame.size.height = windowMinimumHeight
+        }
+
+        let paddingTop = UserConfiguration.shared.screenPaddingTop()
+        let paddingBottom = UserConfiguration.shared.screenPaddingBottom()
+        let paddingLeft = UserConfiguration.shared.screenPaddingLeft()
+        let paddingRight = UserConfiguration.shared.screenPaddingRight()
+        frame.origin.y += paddingTop
+        frame.origin.x += paddingLeft
+        // subtract the right padding, and also any amount that we pushed the frame to the left with the left padding
+        frame.size.width -= (paddingRight + paddingLeft)
+        // subtract the bottom padding, and also any amount that we pushed the frame down with the top padding
+        frame.size.height -= (paddingBottom + paddingTop)
+
+        return frame
+    }
 }

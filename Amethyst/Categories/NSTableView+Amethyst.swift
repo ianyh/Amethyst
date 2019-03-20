@@ -9,7 +9,5 @@
 import Cocoa
 
 extension NSTableView {
-
     static let noRowSelectedIndex = -1
-
 }

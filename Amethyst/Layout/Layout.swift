@@ -9,232 +9,174 @@
 import Foundation
 import Silica
 
+/// Interface for determining activity of windows.
 protocol WindowActivityCache {
+    /**
+     - Parameters:
+        - window: The window to check for activity.
+     
+     - Returns: `true` if the window is currently known to be active and `false` otherwise.
+     */
     func windowIsActive<Window: WindowType>(_ window: AnyWindow<Window>) -> Bool
 }
 
-enum UnconstrainedDimension: Int {
-    case horizontal
-    case vertical
-}
-
-// Some window resizes reflect valid adjustments to the frame layout.
-// Some window resizes would not be allowed due to hard constraints.
-// This struct defines what adjustments to a particular window frame are allowed
-//  and tracks its size as a proportion of available space (for use in resize calculations)
-struct ResizeRules {
-    let isMain: Bool
-    let unconstrainedDimension: UnconstrainedDimension
-    let scaleFactor: CGFloat    // the scale factor for the unconstrained dimension
-
-    // given a new frame, decide which dimension will be honored and return its size
-    func scaledDimension(_ frame: CGRect, negatePadding: Bool) -> CGFloat {
-        let dimension: CGFloat = {
-            switch unconstrainedDimension {
-            case .horizontal: return frame.width
-            case .vertical: return frame.height
-            }
-        }()
-
-        let padding = UserConfiguration.shared.windowMargins() ? UserConfiguration.shared.windowMarginSize() : 0
-        return negatePadding ? dimension + padding : dimension
-    }
-}
-
-struct FrameAssignment<Window: WindowType> {
-    let frame: CGRect
-    let window: AnyWindow<Window>
-    let focused: Bool
-    let screenFrame: CGRect
-    let resizeRules: ResizeRules
-
-    // the final frame is the desired frame, but shrunk to provide desired padding
-    var finalFrame: CGRect {
-        var ret = frame
-        let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
-
-        if UserConfiguration.shared.windowMargins() {
-            ret.origin.x += padding
-            ret.origin.y += padding
-            ret.size.width -= 2 * padding
-            ret.size.height -= 2 * padding
-        }
-
-        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
-        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
-
-        if windowMinimumWidth > ret.size.width {
-            ret.origin.x -= ((windowMinimumWidth - ret.size.width) / 2)
-            ret.size.width = windowMinimumWidth
-        }
-
-        if windowMinimumHeight > ret.size.height {
-            ret.origin.y -= ((windowMinimumHeight - ret.size.height) / 2)
-            ret.size.height = windowMinimumHeight
-        }
-
-        return ret
-    }
-
-    // Given a window frame and based on resizeRules, determine what the main pane ratio would be
-    // this accounts for multiple main windows and primary vs non-primary being resized
-    func impliedMainPaneRatio(windowFrame: CGRect) -> CGFloat {
-        let oldDimension = resizeRules.scaledDimension(frame, negatePadding: false)
-        let newDimension = resizeRules.scaledDimension(windowFrame, negatePadding: true)
-        let implied =  (newDimension / oldDimension) / resizeRules.scaleFactor
-        return resizeRules.isMain ? implied : 1 - implied
-    }
-
-    fileprivate func perform() {
-        var finalFrame = self.finalFrame
-        var finalOrigin = finalFrame.origin
-
-        // If this is the focused window then we need to shift it to be on screen regardless of size
-        // We call this "window peeking" (this line here to aid in text search)
-        if focused {
-            // Just resize the window first to see what the dimensions end up being
-            // Sometimes applications have internal window requirements that are not exposed to us directly
-            finalFrame.origin = window.frame().origin
-            window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
-
-            // With the real height we can update the frame to account for the current size
-            finalFrame.size = CGSize(
-                width: max(window.frame().width, finalFrame.width),
-                height: max(window.frame().height, finalFrame.height)
-            )
-            finalOrigin.x = max(screenFrame.minX, min(finalOrigin.x, screenFrame.maxX - finalFrame.size.width))
-            finalOrigin.y = max(screenFrame.minY, min(finalOrigin.y, screenFrame.maxY - finalFrame.size.height))
-        }
-
-        // Move the window to its final frame
-        finalFrame.origin = finalOrigin
-        window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
-    }
-}
-
-class ReflowOperation<Window: WindowType>: Operation {
-    let screen: NSScreen
-    let windows: [AnyWindow<Window>]
-    let frameAssigner: FrameAssigner
-
-    init(screen: NSScreen, windows: [AnyWindow<Window>], frameAssigner: FrameAssigner) {
-        self.screen = screen
-        self.windows = windows
-        self.frameAssigner = frameAssigner
-        super.init()
-    }
-
-    public func frameAssignments() -> [FrameAssignment<Window>]? {
-        return nil
-    }
-
-    override func main() {
-        guard !isCancelled else { return }
-        guard let assignments = frameAssignments() else { return }
-        frameAssigner.performFrameAssignments(assignments)
-    }
-}
-
-protocol FrameAssigner {
-    var windowActivityCache: WindowActivityCache { get }
-
-    init(windowActivityCache: WindowActivityCache)
-
-    func performFrameAssignments<Window: WindowType>(_ frameAssignments: [FrameAssignment<Window>])
-}
-
-extension NSScreen {
-    func adjustedFrame() -> CGRect {
-        var frame = UserConfiguration.shared.ignoreMenuBar() ? frameIncludingDockAndMenu() : frameWithoutDockOrMenu()
-
-        if UserConfiguration.shared.windowMargins() {
-            /* Inset for producing half of the full padding around screen as collapse only adds half of it to all windows */
-            let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
-
-            frame.origin.x += padding
-            frame.origin.y += padding
-            frame.size.width -= 2 * padding
-            frame.size.height -= 2 * padding
-        }
-
-        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
-        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
-
-        if windowMinimumWidth > frame.size.width {
-            frame.origin.x -= (windowMinimumWidth - frame.size.width) / 2
-            frame.size.width = windowMinimumWidth
-        }
-
-        if windowMinimumHeight > frame.size.height {
-            frame.origin.y -= (windowMinimumHeight - frame.size.height) / 2
-            frame.size.height = windowMinimumHeight
-        }
-
-        let paddingTop = UserConfiguration.shared.screenPaddingTop()
-        let paddingBottom = UserConfiguration.shared.screenPaddingBottom()
-        let paddingLeft = UserConfiguration.shared.screenPaddingLeft()
-        let paddingRight = UserConfiguration.shared.screenPaddingRight()
-        frame.origin.y += paddingTop
-        frame.origin.x += paddingLeft
-        // subtract the right padding, and also any amount that we pushed the frame to the left with the left padding
-        frame.size.width -= (paddingRight + paddingLeft)
-        // subtract the bottom padding, and also any amount that we pushed the frame down with the top padding
-        frame.size.height -= (paddingBottom + paddingTop)
-
-        return frame
-    }
-}
-
+/**
+ A base class for specific layout algorithms defining size and position of windows.
+ 
+ - Requires:
+ Specific layouts must subclass and override the following properties and methods:
+ - `layoutName`
+ - `layoutKey`
+ - `reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation?`
+ 
+ Subclasses can optionally override `layoutDescription` to provide debugging information for the layout state.
+ 
+ - Note:
+ Usage of a layout object requires specifying a `WindowType` parameter.
+ */
 class Layout<Window: WindowType> {
+    /// The display name of the layout.
     class var layoutName: String { fatalError("Must be implemented by subclass") }
+
+    /// The configuration key of the layout.
     class var layoutKey: String { fatalError("Must be implemented by subclass") }
 
+    /// The debug description of the layout.
     var layoutDescription: String { return "" }
 
+    /// The cache to check for window activity.
     let windowActivityCache: WindowActivityCache
 
+    /**
+     - Parameters:
+        - windowActivityCache: Cache to check for window activity.
+     */
     required init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
     }
 
-    func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+    /**
+     Takes an array of windows and generates an operation for assigning frames to those windows.
+     
+     - Parameters:
+        - windows: The windows to apply the layout algorithm to.
+        - screen: The screen on which those windows should reside.
+     
+     - Returns:
+     An `Operation` object that performs frame assignments.
+     */
+    func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
         fatalError("Must be implemented by subclass")
     }
 }
 
+/// MARK: Window Querying
 extension Layout {
+    /**
+     Takes a list of windows and a screen and returns the assignments that would be performed.
+     
+     - Parameters:
+         - windows: The windows to apply the layout algorithm to.
+         - screen: The screen on which those windows should reside.
+     
+     - Returns:
+     The assignments that would be performed given those windows on that screen.
+     */
     func frameAssignments(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> [FrameAssignment<Window>]? {
-        guard let reflowOperation = reflow(windows, on: screen) as? ReflowOperation<Window> else {
-            return nil
-        }
-
-        return reflowOperation.frameAssignments()
+        return reflow(windows, on: screen)?.frameAssignments()
     }
 
+    /**
+     Determines what window the layout would put at a given point.
+     
+     - Parameters:
+         - point: The point to test for location.
+         - windows: The windows to apply the layout algorithm to.
+         - screen: The screen on which those windows should reside.
+     
+     - Returns:
+     The window that the layout would intend to put at `point`.
+     
+     - Note: This does not necessarily correspond to the final position of the window as windows do not necessarily take the exact frame the layout provides.
+     */
     func windowAtPoint(_ point: CGPoint, of windows: [AnyWindow<Window>], on screen: NSScreen) -> AnyWindow<Window>? {
         return frameAssignments(windows, on: screen)?.first(where: { $0.frame.contains(point) })?.window
     }
 
+    /**
+     Determines what frame the layout would apply to a given window.
+     
+     - Parameters:
+         - window: The window to test for frame.
+         - windows: The windows to apply the layout algorithm to.
+         - screen: The screen on which those windows should reside.
+     
+     - Returns:
+     The `FrameAssignment` object defining the size and location that the layout would assign to `window`.
+     
+     - Note: This does not necessarily correspond to the final frame of the window as windows do not necessarily take the exact frame the layout provides.
+     */
     func assignedFrame(_ window: AnyWindow<Window>, of windows: [AnyWindow<Window>], on screen: NSScreen) -> FrameAssignment<Window>? {
         return frameAssignments(windows, on: screen)?.first { $0.window == window }
     }
 }
 
+/**
+ A particular kind of layout that organizes windows into a main pane and any number of sub-panes.
+ 
+ - Note:
+ The definition is intentionally somewhat layout. This is more intended to demonstrate the expected interface for a fairly common paradigm in Amethyst layouts.
+ */
 protocol PanedLayout {
+    /**
+     The ratio of the size of the main pane to the size of the sub-panes.
+     
+     - Requires:
+     The value must be between 0 and 1, inclusive.
+     */
     var mainPaneRatio: CGFloat { get }
+
+    /// The number of windows that make up the main pane.
     var mainPaneCount: Int { get }
+
+    /**
+     Takes a direct recommendation for a change in ratio.
+     
+     - Parameters:
+        - rawRatio: The ratio recommended by the caller.
+     
+     - Requires:
+     `rawRatio` must be a valid ratio.
+     
+     - Note: This method should generally be reserved for internal use by the layout.
+     */
     func recommendMainPaneRawRatio(rawRatio: CGFloat)
+
+    /// Reduces the visual footprint of the main pane relative to the sub-panes.
     func shrinkMainPane()
+
+    /// Increases the visual footprint of the main pane relative to the sub-panes.
     func expandMainPane()
+
+    /// Increases the number of windows that make up the main pane.
     func increaseMainPaneCount()
+
+    /// Decreases the number of windows that make up the main pane.
     func decreaseMainPaneCount()
 }
 
 extension PanedLayout {
+    /// The default debug layout description for paned layouts. It describes the ratio and number of main pane windows.
     var layoutDescription: String {
         return "(\(mainPaneRatio), \(mainPaneCount))"
     }
 
+    /**
+     Takes a recommendation for a change in ratio, but can modify the ratio to adjust for internal state.
+     
+     - Parameters:
+        - ratio: The ratio recommended by the caller.
+     */
     func recommendMainPaneRatio(_ ratio: CGFloat) {
         guard 0 <= ratio && ratio <= 1 else {
             log.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
@@ -243,42 +185,56 @@ extension PanedLayout {
         recommendMainPaneRawRatio(rawRatio: ratio)
     }
 
+    /// The default behavior of main pane expansion that simply recommends an increase in ratio by the configured resize step.
     func expandMainPane() {
         recommendMainPaneRatio(mainPaneRatio + UserConfiguration.shared.windowResizeStep())
     }
 
+    /// The default behavior of main pane shrinking that simply recommends a decrease in ratio by the configured resize step.
     func shrinkMainPane() {
         recommendMainPaneRatio(mainPaneRatio - UserConfiguration.shared.windowResizeStep())
     }
 }
 
+/**
+ A base class for specific layout algorithms that maintain internal state for defining size and position of windows.
+ 
+ - Requires:
+ Specific layouts must subclass and override the following properties and methods:
+ - `updateWithChange(_ windowChange: WindowChange<Window>)`
+ - `nextWindowIDCounterClockwise() -> CGWindowID?`
+ - `nextWindowIDClockwise() -> CGWindowID?`
+ 
+ Notably, the latter two are necessary for the window manager to determine flow of windows. By default layouts are a simple linear list, but more complex layouts may have different logic.
+ */
 class StatefulLayout<Window: WindowType>: Layout<Window> {
+    /**
+     Updates internal state of the layout based on a window change.
+     
+     - Parameters:
+        - windowChange: A `WindowChange`.
+     */
     func updateWithChange(_ windowChange: WindowChange<Window>) {
         fatalError("Must be implemented by subclass")
     }
 
+    /**
+     Determines the window that is before the current window.
+     
+     - Returns:
+     The ID of the window before the current window.
+     */
     func nextWindowIDCounterClockwise() -> CGWindowID? {
         fatalError("Must be implemented by subclass")
     }
 
+    /**
+     Determines the window that is after the current window.
+     
+     - Returns:
+     The ID of the window after the current window.
+     */
     func nextWindowIDClockwise() -> CGWindowID? {
         fatalError("Must be implemented by subclass")
-    }
-}
-
-struct Assigner: FrameAssigner {
-    let windowActivityCache: WindowActivityCache
-
-    func performFrameAssignments<Window: WindowType>(_ frameAssignments: [FrameAssignment<Window>]) {
-        for frameAssignment in frameAssignments {
-            if !windowActivityCache.windowIsActive(frameAssignment.window) {
-                return
-            }
-        }
-
-        for frameAssignment in frameAssignments {
-//            log.debug("Frame Assignment: \(frameAssignment)")
-            frameAssignment.perform()
-        }
     }
 }

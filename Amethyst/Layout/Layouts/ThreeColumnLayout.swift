@@ -203,7 +203,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
 
-    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
