@@ -9,32 +9,94 @@
 import Foundation
 import Silica
 
+/**
+ Final subclass of the Silica `SIWindow`.
+ 
+ A final class is necessary for satisfying the `focusedWindow()` requirement in the `WindowType` protocol. Otherwise, as `SIWindow` is not final, the type system does not know how to constrain `Self`.
+ */
+final class AXWindow: SIWindow {}
+
+/// Generic protocol for objects acting as windows in the system.
 protocol WindowType: Equatable {
+    /// Returns the currently focused window of its type.
     static func currentlyFocused() -> Self?
 
+    /// Returns the window's ID
     func windowID() -> CGWindowID
+
+    /// Returns the window's current frame.
     func frame() -> CGRect
+
+    /// Returns the screen, if any, that the window is currently on.
     func screen() -> NSScreen?
+
+    /**
+     Sets the frame of the window with an error threshold for what constitutes a new frame.
+     
+     The tolerance for error is necessary as for performance reasons we avoid performing unnecessary frame assignments, but some windows (e.g., Terminal's windows) have some constraints on their size such that `frame` and `window.frame()` will differ by some small amount even if `frame` has been applied before. We want to treat that frame as equivalent if it is close enough so that we get the performance benefit.
+     
+     - Parameters:
+         - frame: The frame to apply.
+         - threshold: The error tolerance for what constitutes a new frame.
+     */
+
     func setFrame(_ frame: CGRect, withThreshold threshold: CGSize)
+
+    /// Whether or not the window is currently holding focus.
     func isFocused() -> Bool
+
+    /// The process ID of the process that owns the window.
     func pid() -> pid_t
+
+    /**
+     The title of the window.
+     
+     - Note: Windows do not necessarily have titles so this can be `nil`.
+     */
     func title() -> String?
+
+    /// Whether or not the window should actually be managed by Amethyst.
     func shouldBeManaged() -> Bool
+
+    /// Whether or not the window should float by default.
     func shouldFloat() -> Bool
+
+    /// Whether or not the window is currently active.
     func isActive() -> Bool
 
+    /**
+     Focuses the window.
+     
+     - Returns:
+     `true` if the window was successfully focused, `false` otherwise.
+     */
     @discardableResult func focus() -> Bool
+
+    /**
+     Moves the window to a screen.
+     
+     This method takes into account the dimensions of the screen to ensure that the window actually fits onto it.
+     
+     - Parameters:
+        - screen: The screen to move the window to.
+     */
     func moveScaled(to screen: NSScreen)
+
+    /// Whether or not the window is currently on any screen.
     func isOnScreen() -> Bool
+
+    /**
+     Moves the window to a space.
+     
+     - Parameters:
+        - space: The index of the space.
+     */
     func move(toSpace space: UInt)
 }
 
-extension WindowType where Self: AXWindow {
-    func pid() -> pid_t {
-        return processIdentifier()
-    }
-}
-
+/**
+ A type-erased container for a window.
+ */
 final class AnyWindow<Window: WindowType>: WindowType {
     let internalWindow: Window
 
@@ -100,12 +162,13 @@ struct WindowDescriptions {
     }
 }
 
-// A final class is necessary for satisfying the focusedWindow() requirement in the WindowType protocol
-final class AXWindow: SIWindow {}
-
 extension AXWindow: WindowType {
     static func currentlyFocused() -> AXWindow? {
         return SIWindow.focused().flatMap { AXWindow(axElement: $0.axElementRef) }
+    }
+
+    func pid() -> pid_t {
+        return processIdentifier()
     }
 
     func shouldBeManaged() -> Bool {

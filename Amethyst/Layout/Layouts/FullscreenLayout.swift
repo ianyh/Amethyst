@@ -31,7 +31,7 @@ final class FullscreenLayout<Window: WindowType>: Layout<Window> {
 
     override var layoutDescription: String { return "" }
 
-    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }

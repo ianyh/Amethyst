@@ -312,7 +312,7 @@ final class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Wi
         return orderedIDs[nextWindowIndex]
     }
 
-    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation? {
+    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
         if !windows.isEmpty && !rootNode.valid {
             constructInitialTreeWithWindows(windows)
         }
