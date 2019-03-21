@@ -1,5 +1,5 @@
 //
-//  SIWindow+Amethyst.swift
+//  WindowsInformation.swift
 //  Amethyst
 //
 //  Created by Ian Ynda-Hummel on 5/15/16.

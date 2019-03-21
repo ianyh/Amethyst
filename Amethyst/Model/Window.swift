@@ -129,7 +129,6 @@ extension AXWindow: WindowType {
         return SIWindow.focused().flatMap { AXWindow(axElement: $0.axElementRef) }
     }
 
-    /// Returns the process ID of the process that owns the window.
     func pid() -> pid_t {
         return processIdentifier()
     }
@@ -151,7 +150,6 @@ extension AXWindow: WindowType {
         return true
     }
 
-    /// Whether or not the window should float by default.
     func shouldFloat() -> Bool {
         let userConfiguration = UserConfiguration.shared
         let frame = self.frame()
@@ -163,7 +161,6 @@ extension AXWindow: WindowType {
         return false
     }
 
-    /// Whether or not the window is currently holding focus.
     func isFocused() -> Bool {
         guard let focused = AXWindow.focused() else {
             return false
@@ -200,14 +197,6 @@ extension AXWindow: WindowType {
         return true
     }
 
-    /**
-     Moves the window to a screen.
-     
-     This method takes into account the dimensions of the screen to ensure that the window actually fits onto it.
-     
-     - Parameters:
-     - screen: The screen to move the window to.
-     */
     func moveScaled(to screen: NSScreen) {
         let screenFrame = screen.frameWithoutDockOrMenu()
         let currentFrame = frame()
