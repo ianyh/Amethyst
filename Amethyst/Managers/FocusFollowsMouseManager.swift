@@ -13,7 +13,7 @@ import RxSwift
 
 protocol FocusFollowsMouseManagerDelegate: class {
     associatedtype Window: WindowType
-    func windowsForFocusFollowsMouse() -> [AnyWindow<Window>]
+    func windowsForFocusFollowsMouse() -> [Window]
 }
 
 final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
@@ -62,14 +62,14 @@ final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate>
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
         mousePoint.y = NSScreen.globalHeight() - mousePoint.y + screen.frameIncludingDockAndMenu().origin.y
 
-        if let focusedWindow: AnyWindow<Delegate.Window> = AnyWindow.currentlyFocused() {
+        if let focusedWindow: Delegate.Window = Delegate.Window.currentlyFocused() {
             // If the point is already in the frame of the focused window do nothing.
             guard !focusedWindow.frame().contains(mousePoint) else {
                 return
             }
         }
 
-        guard let topWindow: AnyWindow<Delegate.Window> = WindowsInformation.topWindowForScreenAtPoint(mousePoint, withWindows: windows) else {
+        guard let topWindow: Delegate.Window = WindowsInformation.topWindowForScreenAtPoint(mousePoint, withWindows: windows) else {
             return
         }
 
@@ -78,7 +78,7 @@ final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate>
 }
 
 extension WindowManager: FocusFollowsMouseManagerDelegate {
-    func windowsForFocusFollowsMouse() -> [AnyWindow<Application.Window>] {
+    func windowsForFocusFollowsMouse() -> [Application.Window] {
         return windows
     }
 }

@@ -135,7 +135,7 @@ internal struct TriplePaneArrangement {
 final class ThreeColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     private let layout: ThreeColumnLayout<Window>
 
-    fileprivate init(screen: NSScreen, windows: [AnyWindow<Window>], layout: ThreeColumnLayout<Window>, frameAssigner: FrameAssigner) {
+    fileprivate init(screen: NSScreen, windows: [Window], layout: ThreeColumnLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -203,7 +203,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
 
-    override func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }

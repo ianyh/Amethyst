@@ -63,7 +63,7 @@ struct FrameAssignment<Window: WindowType> {
     let frame: CGRect
 
     /// The window that will be moved and sized.
-    let window: AnyWindow<Window>
+    let window: Window
 
     /// Whether or not the window is currently taking focus.
     let focused: Bool
@@ -209,7 +209,7 @@ class ReflowOperation<Window: WindowType>: Operation {
     let screen: NSScreen
 
     /// The screen on which the windows are being laid out.
-    let windows: [AnyWindow<Window>]
+    let windows: [Window]
 
     /// The `FrameAssigner` responsible for performing assignments.
     let frameAssigner: FrameAssigner
@@ -220,7 +220,7 @@ class ReflowOperation<Window: WindowType>: Operation {
          - windows: The screen on which the windows are being laid out.
          - frameAssigner: The `FrameAssigner` responsible for performing assignments.
      */
-    init(screen: NSScreen, windows: [AnyWindow<Window>], frameAssigner: FrameAssigner) {
+    init(screen: NSScreen, windows: [Window], frameAssigner: FrameAssigner) {
         self.screen = screen
         self.windows = windows
         self.frameAssigner = frameAssigner

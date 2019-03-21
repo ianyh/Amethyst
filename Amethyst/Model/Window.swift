@@ -9,13 +9,6 @@
 import Foundation
 import Silica
 
-/**
- Final subclass of the Silica `SIWindow`.
- 
- A final class is necessary for satisfying the `focusedWindow()` requirement in the `WindowType` protocol. Otherwise, as `SIWindow` is not final, the type system does not know how to constrain `Self`.
- */
-final class AXWindow: SIWindow {}
-
 /// Generic protocol for objects acting as windows in the system.
 protocol WindowType: Equatable {
     /// Returns the currently focused window of its type.
@@ -94,61 +87,16 @@ protocol WindowType: Equatable {
     func move(toSpace space: UInt)
 }
 
-/**
- A type-erased container for a window.
- */
-final class AnyWindow<Window: WindowType>: WindowType {
-    let internalWindow: Window
-
-    static func == (lhs: AnyWindow<Window>, rhs: AnyWindow<Window>) -> Bool {
-        return lhs.internalWindow == rhs.internalWindow
-    }
-
-    static func currentlyFocused() -> AnyWindow<Window>? {
-        return Window.currentlyFocused().flatMap { AnyWindow($0) }
-    }
-
-    init(_ window: Window) {
-        self.internalWindow = window
-    }
-
-    func windowID() -> CGWindowID { return internalWindow.windowID() }
-    func frame() -> CGRect { return internalWindow.frame() }
-    func screen() -> NSScreen? { return internalWindow.screen() }
-    func setFrame(_ frame: CGRect, withThreshold threshold: CGSize) { internalWindow.setFrame(frame, withThreshold: threshold) }
-    func isFocused() -> Bool { return internalWindow.isFocused() }
-    func pid() -> pid_t { return internalWindow.pid() }
-    func title() -> String? { return internalWindow.title() }
-    func shouldBeManaged() -> Bool { return internalWindow.shouldBeManaged() }
-    func shouldFloat() -> Bool { return internalWindow.shouldFloat() }
-    func isActive() -> Bool { return internalWindow.isActive() }
-
-    @discardableResult func focus() -> Bool {
-        return internalWindow.focus()
-    }
-
-    func moveScaled(to screen: NSScreen) {
-        internalWindow.moveScaled(to: screen)
-    }
-
-    func isOnScreen() -> Bool {
-        return internalWindow.isOnScreen()
-    }
-
-    func move(toSpace space: UInt) {
-        internalWindow.move(toSpace: space)
-    }
-}
-
-func != <Window: WindowType>(lhs: Window, rhs: Window) -> Bool {
-    return !(lhs == rhs)
-}
-
+/// Windows info as taken from the underlying system.
 struct WindowDescriptions {
+    /// An array of dictionaries of window information
     let descriptions: [[String: AnyObject]]
 
-    // return an array of dictionaries of window information for all windows relative to windowID
-    // if windowID is 0, this will return all window information
+    /**
+     - Parameters:
+         - options: Any options for getting info.
+         - windowID: ID of window to find windows relative to. 0 gets all windows.
+     */
     init?(options: CGWindowListOption, windowID: CGWindowID) {
         guard let cfWindowDescriptions = CGWindowListCopyWindowInfo(options, windowID) else {
             return nil
@@ -162,15 +110,35 @@ struct WindowDescriptions {
     }
 }
 
+/**
+ Final subclass of the Silica `SIWindow`.
+ 
+ A final class is necessary for satisfying the `focusedWindow()` requirement in the `WindowType` protocol. Otherwise, as `SIWindow` is not final, the type system does not know how to constrain `Self`.
+ */
+final class AXWindow: SIWindow {}
+
+/// Conformance of `AXWindow` as an Amethyst window.
 extension AXWindow: WindowType {
+    /**
+     Returns the currently focused window.
+     
+     - Returns:
+     The currently focused window as an `AXWindow`.
+     */
     static func currentlyFocused() -> AXWindow? {
         return SIWindow.focused().flatMap { AXWindow(axElement: $0.axElementRef) }
     }
 
+    /// Returns the process ID of the process that owns the window.
     func pid() -> pid_t {
         return processIdentifier()
     }
 
+    /**
+     Whether or not the window should actually be managed by Amethyst.
+     
+     In this case the window must be movable and be a standard window.
+     */
     func shouldBeManaged() -> Bool {
         guard isMovable() else {
             return false
@@ -183,6 +151,7 @@ extension AXWindow: WindowType {
         return true
     }
 
+    /// Whether or not the window should float by default.
     func shouldFloat() -> Bool {
         let userConfiguration = UserConfiguration.shared
         let frame = self.frame()
@@ -194,6 +163,7 @@ extension AXWindow: WindowType {
         return false
     }
 
+    /// Whether or not the window is currently holding focus.
     func isFocused() -> Bool {
         guard let focused = AXWindow.focused() else {
             return false
@@ -202,6 +172,14 @@ extension AXWindow: WindowType {
         return isEqual(to: focused)
     }
 
+    /**
+     Focuses the window.
+     
+     This handles focusing and also moves the cursor to the window's frame if mouse-follows-focus is enabled.
+     
+     - Returns:
+     `true` if the window was successfully focused, `false` otherwise.
+     */
     @discardableResult override func focus() -> Bool {
         guard super.focus() else {
             return false
@@ -222,6 +200,14 @@ extension AXWindow: WindowType {
         return true
     }
 
+    /**
+     Moves the window to a screen.
+     
+     This method takes into account the dimensions of the screen to ensure that the window actually fits onto it.
+     
+     - Parameters:
+     - screen: The screen to move the window to.
+     */
     func moveScaled(to screen: NSScreen) {
         let screenFrame = screen.frameWithoutDockOrMenu()
         let currentFrame = frame()
