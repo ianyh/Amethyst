@@ -23,7 +23,7 @@ struct WindowsInformation<Window: WindowType> {
     let ids: Set<CGWindowID>
     let descriptions: WindowDescriptions?
 
-    init?(windows: [AnyWindow<Window>]) {
+    init?(windows: [Window]) {
         guard let descriptions = WindowDescriptions(options: .optionOnScreenOnly, windowID: CGWindowID(0)) else {
             return nil
         }
@@ -36,7 +36,7 @@ struct WindowsInformation<Window: WindowType> {
 extension WindowsInformation {
     // convert Window objects to CGWindowIDs.
     // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
-    fileprivate static func windowInformation(_ windows: [AnyWindow<Window>]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
+    fileprivate static func windowInformation(_ windows: [Window]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
         let ids = Set(windows.map { $0.windowID() })
         return (IDs: ids, descriptions: WindowDescriptions(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.descriptions)
     }
@@ -70,7 +70,7 @@ extension WindowsInformation {
     }
 
     // if there are several windows at a given screen point, take the top one
-    static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [AnyWindow<Window>]) -> AnyWindow<Window>? {
+    static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [Window]) -> Window? {
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
             return nil
@@ -111,7 +111,7 @@ extension WindowsInformation {
     }
 
     // get the first window at a certain point, excluding one specific window from consideration
-    static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [AnyWindow<Window>], butNot ignoreWindow: AnyWindow<Window>?) -> AnyWindow<Window>? {
+    static func alternateWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [Window], butNot ignoreWindow: Window?) -> Window? {
         // only consider windows on this screen
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
@@ -132,7 +132,7 @@ extension WindowsInformation {
     }
 
     // find a window based on its window description within an array of Window objects
-    static func windowInWindows(_ windows: [AnyWindow<Window>], withCGWindowDescription windowDescription: [String: AnyObject]) -> AnyWindow<Window>? {
+    static func windowInWindows(_ windows: [Window], withCGWindowDescription windowDescription: [String: AnyObject]) -> Window? {
         let potentialWindows = windows.filter {
             guard let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
                 return false

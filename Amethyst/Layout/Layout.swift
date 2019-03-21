@@ -17,7 +17,7 @@ protocol WindowActivityCache {
      
      - Returns: `true` if the window is currently known to be active and `false` otherwise.
      */
-    func windowIsActive<Window: WindowType>(_ window: AnyWindow<Window>) -> Bool
+    func windowIsActive<Window: WindowType>(_ window: Window) -> Bool
 }
 
 /**
@@ -27,7 +27,7 @@ protocol WindowActivityCache {
  Specific layouts must subclass and override the following properties and methods:
  - `layoutName`
  - `layoutKey`
- - `reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> Operation?`
+ - `reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<<Window>?`
  
  Subclasses can optionally override `layoutDescription` to provide debugging information for the layout state.
  
@@ -65,7 +65,7 @@ class Layout<Window: WindowType> {
      - Returns:
      An `Operation` object that performs frame assignments.
      */
-    func reflow(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> ReflowOperation<Window>? {
+    func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
         fatalError("Must be implemented by subclass")
     }
 }
@@ -82,7 +82,7 @@ extension Layout {
      - Returns:
      The assignments that would be performed given those windows on that screen.
      */
-    func frameAssignments(_ windows: [AnyWindow<Window>], on screen: NSScreen) -> [FrameAssignment<Window>]? {
+    func frameAssignments(_ windows: [Window], on screen: NSScreen) -> [FrameAssignment<Window>]? {
         return reflow(windows, on: screen)?.frameAssignments()
     }
 
@@ -99,7 +99,7 @@ extension Layout {
      
      - Note: This does not necessarily correspond to the final position of the window as windows do not necessarily take the exact frame the layout provides.
      */
-    func windowAtPoint(_ point: CGPoint, of windows: [AnyWindow<Window>], on screen: NSScreen) -> AnyWindow<Window>? {
+    func windowAtPoint(_ point: CGPoint, of windows: [Window], on screen: NSScreen) -> Window? {
         return frameAssignments(windows, on: screen)?.first(where: { $0.frame.contains(point) })?.window
     }
 
@@ -116,7 +116,7 @@ extension Layout {
      
      - Note: This does not necessarily correspond to the final frame of the window as windows do not necessarily take the exact frame the layout provides.
      */
-    func assignedFrame(_ window: AnyWindow<Window>, of windows: [AnyWindow<Window>], on screen: NSScreen) -> FrameAssignment<Window>? {
+    func assignedFrame(_ window: Window, of windows: [Window], on screen: NSScreen) -> FrameAssignment<Window>? {
         return frameAssignments(windows, on: screen)?.first { $0.window == window }
     }
 }

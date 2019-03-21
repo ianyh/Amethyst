@@ -15,14 +15,14 @@ protocol ApplicationType: Equatable {
     init(runningApplication: NSRunningApplication)
 
     func title() -> String?
-    func windows() -> [AnyWindow<Window>]
+    func windows() -> [Window]
     func pid() -> pid_t
     func windowWithTitleShouldFloat(_ windowTitle: String) -> Bool
     func dropWindowsCache()
     func observe(notification: String, handler: @escaping SIAXNotificationHandler) -> Bool
-    func observe(notification: String, window: AnyWindow<Window>, handler: @escaping SIAXNotificationHandler) -> Bool
+    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> Bool
     func unobserve(notification: String)
-    func unobserve(notification: String, window: AnyWindow<Window>)
+    func unobserve(notification: String, window: Window)
 }
 
 class AnyApplication<Application: ApplicationType>: ApplicationType {
@@ -46,7 +46,7 @@ class AnyApplication<Application: ApplicationType>: ApplicationType {
         return internalApplication.title()
     }
 
-    func windows() -> [AnyWindow<Window>] {
+    func windows() -> [Window] {
         return internalApplication.windows()
     }
 
@@ -66,7 +66,7 @@ class AnyApplication<Application: ApplicationType>: ApplicationType {
         return internalApplication.observe(notification: notification, handler: handler)
     }
 
-    func observe(notification: String, window: AnyWindow<Application.Window>, handler: @escaping SIAXNotificationHandler) -> Bool {
+    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> Bool {
         return internalApplication.observe(notification: notification, window: window, handler: handler)
     }
 
@@ -74,7 +74,7 @@ class AnyApplication<Application: ApplicationType>: ApplicationType {
         internalApplication.unobserve(notification: notification)
     }
 
-    func unobserve(notification: String, window: AnyWindow<Application.Window>) {
+    func unobserve(notification: String, window: Window) {
         internalApplication.unobserve(notification: notification, window: window)
     }
 }
@@ -86,14 +86,9 @@ func != <Application: ApplicationType>(lhs: Application, rhs: Application) -> Bo
 extension SIApplication: ApplicationType {
     typealias Window = AXWindow
 
-    func windows() -> [AnyWindow<Window>] {
-        let axWindows: [Window] = self.windows()
-        return axWindows.map { AnyWindow($0) }
-    }
-
-    private func windows() -> [AXWindow] {
-        let siWindows: [SIWindow] = self.windows()
-        return siWindows.map { AXWindow(axElement: $0.axElementRef) }
+    func windows() -> [Window] {
+        let axWindows: [SIWindow] = self.windows()
+        return axWindows.map { Window(axElement: $0.axElementRef) }
     }
 
     func pid() -> pid_t {
@@ -104,15 +99,15 @@ extension SIApplication: ApplicationType {
         return observeNotification(notification as CFString, with: self, handler: handler)
     }
 
-    func observe(notification: String, window: AnyWindow<Window>, handler: @escaping SIAXNotificationHandler) -> Bool {
-        return observeNotification(notification as CFString, with: window.internalWindow, handler: handler)
+    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> Bool {
+        return observeNotification(notification as CFString, with: window, handler: handler)
     }
 
     func unobserve(notification: String) {
         unobserveNotification(notification as CFString, with: self)
     }
 
-    func unobserve(notification: String, window: AnyWindow<AXWindow>) {
-        unobserveNotification(notification as CFString, with: window.internalWindow)
+    func unobserve(notification: String, window: Window) {
+        unobserveNotification(notification as CFString, with: window)
     }
 }

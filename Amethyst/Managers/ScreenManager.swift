@@ -10,8 +10,8 @@ import Foundation
 import Silica
 
 protocol ScreenManagerDelegate: class {
-    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [AnyWindow<Window>]
-    func windowIsActive<Window: WindowType>(_ window: AnyWindow<Window>) -> Bool
+    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [Window]
+    func windowIsActive<Window: WindowType>(_ window: Window) -> Bool
 }
 
 final class ScreenManager<Window: WindowType>: NSObject {
@@ -241,13 +241,13 @@ final class ScreenManager<Window: WindowType>: NSObject {
 }
 
 extension ScreenManager: WindowActivityCache {
-    func windowIsActive<Window: WindowType>(_ window: AnyWindow<Window>) -> Bool {
+    func windowIsActive<Window: WindowType>(_ window: Window) -> Bool {
         return delegate?.windowIsActive(window) ?? false
     }
 }
 
 extension WindowManager: ScreenManagerDelegate {
-    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [AnyWindow<Window>] {
-        return activeWindows(on: screenManager.screen) as! [AnyWindow<Window>]
+    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [Window] {
+        return activeWindows(on: screenManager.screen) as! [Window]
     }
 }
