@@ -14,6 +14,16 @@ protocol WindowType: Equatable {
     /// Returns the currently focused window of its type.
     static func currentlyFocused() -> Self?
 
+    /**
+     Initialize a window based on a Silica element,
+     
+     Many of the accessibility APIs handle elements directly, so we need a way to convert those elements into a general window type. This is not necessarily meaningful in all cases — tests, for example, may provide window types that do not correspond to actual elements.
+     
+     - Parameters:
+        - element: The element representing a window.
+     */
+    init(element: SIAccessibilityElement)
+
     /// Returns the window's ID
     func windowID() -> CGWindowID
 
@@ -127,6 +137,10 @@ extension AXWindow: WindowType {
      */
     static func currentlyFocused() -> AXWindow? {
         return SIWindow.focused().flatMap { AXWindow(axElement: $0.axElementRef) }
+    }
+
+    convenience init(element: SIAccessibilityElement) {
+        self.init(axElement: element.axElementRef)
     }
 
     func pid() -> pid_t {
