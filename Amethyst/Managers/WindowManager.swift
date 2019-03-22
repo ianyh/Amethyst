@@ -136,6 +136,8 @@ class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
 // react to mouse / accessibility state by either changing window positions or updating
 // the mouse state based on new information
 private struct ObserveApplicationNotifications<Application: ApplicationType> {
+    typealias Window = Application.Window
+
     enum Error: Swift.Error {
         case failed
     }
@@ -215,9 +217,11 @@ private struct ObserveApplicationNotifications<Application: ApplicationType> {
 
     private func addObserver(for notification: Notification, application: AnyApplication<Application>, windowManager: WindowManager<Application>) throws {
         let success = application.observe(notification: notification.string) { [weak application, weak windowManager] element in
-            guard let application = application, let windowManager = windowManager, let window = element as? Application.Window else {
+            guard let application = application, let windowManager = windowManager else {
                 return
             }
+
+            let window = Window(element: element)
 
             self.handle(notification: notification, window: window, application: application, windowManager: windowManager)
         }
@@ -233,11 +237,7 @@ private struct ObserveApplicationNotifications<Application: ApplicationType> {
 }
 
 extension ObserveApplicationNotifications {
-    private func handle(notification: Notification, window: Application.Window, application: AnyApplication<Application>, windowManager: WindowManager<Application>) {}
-}
-
-extension ObserveApplicationNotifications where Application.Window == AXWindow {
-    private func handle(notification: Notification, window: Application.Window, application: AnyApplication<Application>, windowManager: WindowManager<Application>) {
+    private func handle(notification: Notification, window: Window, application: AnyApplication<Application>, windowManager: WindowManager<Application>) {
         switch notification {
         case .created:
             windowManager.swapInTab(window: window)
@@ -848,16 +848,11 @@ extension WindowManager {
         }
 
         application.observe(notification: kAXUIElementDestroyedNotification, window: window) { element in
-            guard let window = element as? Window else {
-                return
-            }
+            let window = Window(element: element)
             self.removeWindow(window)
         }
         application.observe(notification: kAXWindowMiniaturizedNotification, window: window) { element in
-            guard let siWindow = element as? Window else {
-                return
-            }
-            let window = siWindow
+            let window = Window(element: element)
 
             self.removeWindow(window)
 
