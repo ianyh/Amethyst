@@ -29,6 +29,8 @@
 		401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B71CE9279E00F89B3F /* WindowModifier.swift */; };
 		401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */; };
 		401C35AF2241BBDD0019ED07 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35AE2241BBDD0019ED07 /* ReflowOperation.swift */; };
+		401C35B12244626E0019ED07 /* ApplicationObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B02244626E0019ED07 /* ApplicationObservation.swift */; };
+		401C35B32244650F0019ED07 /* MouseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B22244650F0019ED07 /* MouseState.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
@@ -120,6 +122,8 @@
 		401BC8B71CE9279E00F89B3F /* WindowModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowModifier.swift; sourceTree = "<group>"; };
 		401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusFollowsMouseManager.swift; sourceTree = "<group>"; };
 		401C35AE2241BBDD0019ED07 /* ReflowOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
+		401C35B02244626E0019ED07 /* ApplicationObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationObservation.swift; sourceTree = "<group>"; };
+		401C35B22244650F0019ED07 /* MouseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseState.swift; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -339,8 +343,10 @@
 			isa = PBXGroup;
 			children = (
 				4046EFD02238949900113067 /* Application.swift */,
+				401C35B02244626E0019ED07 /* ApplicationObservation.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
+				401C35B22244650F0019ED07 /* MouseState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -715,6 +721,7 @@
 				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
 				401BC8B61CE9259000F89B3F /* LayoutManager.swift in Sources */,
 				4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */,
+				401C35B12244626E0019ED07 /* ApplicationObservation.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
@@ -727,6 +734,7 @@
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */,
 				401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */,
+				401C35B32244650F0019ED07 /* MouseState.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
 				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,
 			);
