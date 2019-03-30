@@ -170,7 +170,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     func focusedScreenManager<Window>() -> ScreenManager<Window>? {
-        guard let focusedWindow: Window = Window.currentlyFocused() else {
+        guard let focusedWindow = Window.currentlyFocused() else {
             return nil
         }
         for screenManager in screenManagers {
@@ -270,7 +270,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     func toggleFloatForFocusedWindow() {
-        guard let focusedWindow: Window = Window.currentlyFocused() else {
+        guard let focusedWindow = Window.currentlyFocused() else {
             return
         }
 
@@ -359,7 +359,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     @objc func applicationActivated(_ sender: AnyObject) {
-        guard let focusedWindow: Window = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
+        guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
         markScreenForReflow(screen, withChange: .unknown)

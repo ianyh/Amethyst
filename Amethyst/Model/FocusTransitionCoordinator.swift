@@ -45,7 +45,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
     }
 
     func moveFocusCounterClockwise() {
-        guard let focusedWindow: Window = Window.currentlyFocused() else {
+        guard let focusedWindow = Window.currentlyFocused() else {
             focusScreen(at: 0)
             return
         }
@@ -105,7 +105,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
     }
 
     func moveFocusToMain() {
-        guard let focusedWindow: Window = Window.currentlyFocused() else {
+        guard let focusedWindow = Window.currentlyFocused() else {
             focusScreen(at: 0)
             return
         }
@@ -129,7 +129,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
         }
 
         // Do nothing if the screen is already focused
-        if let focusedWindow: Window = Window.currentlyFocused(), let focusedScreen = focusedWindow.screen(), focusedScreen == screen {
+        if let focusedWindow = Window.currentlyFocused(), let focusedScreen = focusedWindow.screen(), focusedScreen == screen {
             return
         }
 

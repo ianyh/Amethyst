@@ -245,7 +245,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
         case .applicationShown:
             delegate?.application(application, didAddWindow: window)
         case .focusedWindowChanged:
-            guard let focusedWindow: Window = Window.currentlyFocused() else {
+            guard let focusedWindow = Window.currentlyFocused() else {
                 return
             }
             delegate?.application(application, didFocusWindow: focusedWindow)

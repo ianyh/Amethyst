@@ -37,7 +37,7 @@ struct SpacesInformation<Window: WindowType> {
     }
 
     static func spacesForFocusedScreen() -> [CGSSpaceID]? {
-        guard let focusedWindow: Window = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
+        guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return nil
         }
 
@@ -65,7 +65,7 @@ struct SpacesInformation<Window: WindowType> {
     }
 
     static func currentFocusedSpace() -> CGSSpaceID? {
-        guard let focusedWindow: Window = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
+        guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return nil
         }
 
