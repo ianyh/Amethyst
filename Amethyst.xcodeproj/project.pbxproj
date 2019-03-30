@@ -56,6 +56,7 @@
 		4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */; };
 		40637073224EF9B20081299D /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637072224EF9B20081299D /* Change.swift */; };
 		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
+		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
@@ -156,6 +157,7 @@
 		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
 		40637072224EF9B20081299D /* Change.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Change.swift; sourceTree = "<group>"; };
 		40637074224EFED70081299D /* CGInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGInfo.swift; sourceTree = "<group>"; };
+		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		40AF71D920BB348300F58EA9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -231,13 +233,16 @@
 		401BC8AA1CE8F82700F89B3F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
-				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
+				401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */,
+				401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */,
 				401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */,
 				401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */,
 				401BC8B51CE9259000F89B3F /* LayoutManager.swift */,
-				401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */,
 				409645B21CEE8D950042F459 /* LogManager.swift */,
+				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
+				40637076224F0EFF0081299D /* Screens.swift */,
+				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
+				401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -351,11 +356,9 @@
 				401C35B02244626E0019ED07 /* ApplicationObservation.swift */,
 				40637074224EFED70081299D /* CGInfo.swift */,
 				40637072224EF9B20081299D /* Change.swift */,
-				401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */,
 				401C35B22244650F0019ED07 /* MouseState.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
-				401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -749,6 +752,7 @@
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
 				40637075224EFED70081299D /* CGInfo.swift in Sources */,
 				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,
+				40637077224F0EFF0081299D /* Screens.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
