@@ -117,35 +117,35 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.focusCCW.rawValue) {
-            windowManager.moveFocusCounterClockwise()
+            windowManager.focusTransitionCoordinator.moveFocusCounterClockwise()
         }
 
         constructCommandWithCommandKey(CommandKey.focusCW.rawValue) {
-            windowManager.moveFocusClockwise()
+            windowManager.focusTransitionCoordinator.moveFocusClockwise()
         }
 
         constructCommandWithCommandKey(CommandKey.focusMain.rawValue) {
-            windowManager.moveFocusToMain()
+            windowManager.focusTransitionCoordinator.moveFocusToMain()
         }
 
         constructCommandWithCommandKey(CommandKey.swapScreenCCW.rawValue) {
-            windowManager.swapFocusedWindowScreenCounterClockwise()
+            windowManager.windowTransitionCoordinator.swapFocusedWindowScreenCounterClockwise()
         }
 
         constructCommandWithCommandKey(CommandKey.swapScreenCW.rawValue) {
-            windowManager.swapFocusedWindowScreenClockwise()
+            windowManager.windowTransitionCoordinator.swapFocusedWindowScreenClockwise()
         }
 
         constructCommandWithCommandKey(CommandKey.swapCCW.rawValue) {
-            windowManager.swapFocusedWindowCounterClockwise()
+            windowManager.windowTransitionCoordinator.swapFocusedWindowCounterClockwise()
         }
 
         constructCommandWithCommandKey(CommandKey.swapCW.rawValue) {
-            windowManager.swapFocusedWindowClockwise()
+            windowManager.windowTransitionCoordinator.swapFocusedWindowClockwise()
         }
 
         constructCommandWithCommandKey(CommandKey.swapMain.rawValue) {
-            windowManager.swapFocusedWindowToMain()
+            windowManager.windowTransitionCoordinator.swapFocusedWindowToMain()
         }
 
         constructCommandWithCommandKey(CommandKey.displayCurrentLayout.rawValue) {
@@ -157,11 +157,11 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
             let throwCommandKey = "\(CommandKey.throwScreenPrefix.rawValue)-\(screenNumber)"
 
             self.constructCommandWithCommandKey(focusCommandKey) {
-                windowManager.focusScreen(at: screenNumber - 1)
+                windowManager.focusTransitionCoordinator.focusScreen(at: screenNumber - 1)
             }
 
             self.constructCommandWithCommandKey(throwCommandKey) {
-                windowManager.throwToScreenAtIndex(screenNumber - 1)
+                windowManager.windowTransitionCoordinator.throwToScreenAtIndex(screenNumber - 1)
             }
         }
 
@@ -169,16 +169,16 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
             let commandKey = "\(CommandKey.throwSpacePrefix.rawValue)-\(spaceNumber)"
 
             self.constructCommandWithCommandKey(commandKey) {
-                windowManager.pushFocusedWindowToSpace(UInt(spaceNumber))
+                windowManager.windowTransitionCoordinator.pushFocusedWindowToSpace(UInt(spaceNumber))
             }
         }
 
         constructCommandWithCommandKey(CommandKey.throwSpaceLeft.rawValue) {
-            windowManager.pushFocusedWindowToSpaceLeft()
+            windowManager.windowTransitionCoordinator.pushFocusedWindowToSpaceLeft()
         }
 
         constructCommandWithCommandKey(CommandKey.throwSpaceRight.rawValue) {
-            windowManager.pushFocusedWindowToSpaceRight()
+            windowManager.windowTransitionCoordinator.pushFocusedWindowToSpaceRight()
         }
 
         constructCommandWithCommandKey(CommandKey.toggleFloat.rawValue) {

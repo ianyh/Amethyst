@@ -11,8 +11,6 @@ import Foundation
 import Silica
 
 enum WindowTransition<Window: WindowType> {
-    case addWindow(_ window: Window)
-    case removeWindow(_ window: Window)
     case switchWindows(_ window1: Window, _ window2: Window)
     case moveWindowToScreen(_ window: Window, screen: NSScreen)
     case moveWindowToSpaceAtIndex(_ window: Window, spaceIndex: UInt)
@@ -22,26 +20,35 @@ enum WindowTransition<Window: WindowType> {
 protocol WindowTransitionTarget: class {
     associatedtype Window: WindowType
 
+    var windowActivityCache: WindowActivityCache { get }
+    var windows: [Window] { get }
+
     func executeTransition(_ transition: WindowTransition<Window>)
 
-    func activeWindows(on screen: NSScreen) -> [Window]
-    func windowIsFloating(_ window: Window) -> Bool
     func screen(at index: Int) -> NSScreen?
     func nextScreenIndexClockwise(from screen: NSScreen) -> Int
     func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int
 }
 
+extension WindowTransitionTarget {
+    func activeWindows(on screen: NSScreen) -> [Window] {
+        return windowActivityCache.windows(windows, on: screen).filter { window in
+            return window.shouldBeManaged() && !self.windowActivityCache.windowIsFloating(window)
+        }
+    }
+}
+
 class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     typealias Window = Target.Window
 
-    weak var target: Target!
+    private(set) weak var target: Target!
 
     init(target: Target) {
         self.target = target
     }
 
     func swapFocusedWindowToMain() {
-        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowIsFloating(focusedWindow), let screen = focusedWindow.screen() else {
+        guard let focusedWindow = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow), let screen = focusedWindow.screen() else {
             return
         }
 
@@ -63,7 +70,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowCounterClockwise() {
-        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }
@@ -84,7 +91,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowClockwise() {
-        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }
@@ -119,7 +126,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowScreenClockwise() {
-        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }
@@ -136,7 +143,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowScreenCounterClockwise() {
-        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow: Window = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }
@@ -153,7 +160,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func pushFocusedWindowToSpace(_ space: UInt) {
-        guard let focusedWindow: Window = Window.currentlyFocused(), let _ = focusedWindow.screen() else {
+        guard let focusedWindow: Window = Window.currentlyFocused(), focusedWindow.screen() != nil else {
             return
         }
 

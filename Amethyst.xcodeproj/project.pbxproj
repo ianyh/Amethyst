@@ -26,7 +26,6 @@
 		401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */; };
 		401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */; };
 		401BC8B61CE9259000F89B3F /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B51CE9259000F89B3F /* LayoutManager.swift */; };
-		401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B71CE9279E00F89B3F /* WindowModifier.swift */; };
 		401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */; };
 		401C35AF2241BBDD0019ED07 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35AE2241BBDD0019ED07 /* ReflowOperation.swift */; };
 		401C35B12244626E0019ED07 /* ApplicationObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B02244626E0019ED07 /* ApplicationObservation.swift */; };
@@ -122,7 +121,6 @@
 		401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfigurationTests.swift; sourceTree = "<group>"; };
 		401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyRegistrar.swift; sourceTree = "<group>"; };
 		401BC8B51CE9259000F89B3F /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
-		401BC8B71CE9279E00F89B3F /* WindowModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowModifier.swift; sourceTree = "<group>"; };
 		401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusFollowsMouseManager.swift; sourceTree = "<group>"; };
 		401C35AE2241BBDD0019ED07 /* ReflowOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
 		401C35B02244626E0019ED07 /* ApplicationObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationObservation.swift; sourceTree = "<group>"; };
@@ -232,7 +230,6 @@
 			isa = PBXGroup;
 			children = (
 				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
-				401BC8B71CE9279E00F89B3F /* WindowModifier.swift */,
 				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
 				401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */,
 				401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */,
@@ -352,10 +349,10 @@
 				401C35B02244626E0019ED07 /* ApplicationObservation.swift */,
 				401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */,
 				401C35B22244650F0019ED07 /* MouseState.swift */,
+				401C35B8224863690019ED07 /* SpacesInformation.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
 				401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */,
-				401C35B8224863690019ED07 /* SpacesInformation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -745,7 +742,6 @@
 				40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */,
-				401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */,
 				401C35B32244650F0019ED07 /* MouseState.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
 				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,

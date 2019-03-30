@@ -9,9 +9,8 @@
 import Foundation
 import Silica
 
-protocol ScreenManagerDelegate: class {
+protocol ScreenManagerDelegate: class, WindowActivityCache {
     func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [Window]
-    func windowIsActive<Window: WindowType>(_ window: Window) -> Bool
 }
 
 final class ScreenManager<Window: WindowType>: NSObject {
@@ -124,7 +123,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
         }
     }
 
-    private func reflow(_ change: WindowChange<Window>) {
+    private func reflow(_ event: WindowChange<Window>) {
         guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
@@ -243,6 +242,10 @@ final class ScreenManager<Window: WindowType>: NSObject {
 extension ScreenManager: WindowActivityCache {
     func windowIsActive<Window: WindowType>(_ window: Window) -> Bool {
         return delegate?.windowIsActive(window) ?? false
+    }
+
+    func windowIsFloating<Window>(_ window: Window) -> Bool where Window: WindowType {
+        return delegate?.windowIsFloating(window) ?? false
     }
 }
 

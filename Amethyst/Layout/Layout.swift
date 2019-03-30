@@ -18,6 +18,14 @@ protocol WindowActivityCache {
      - Returns: `true` if the window is currently known to be active and `false` otherwise.
      */
     func windowIsActive<Window: WindowType>(_ window: Window) -> Bool
+
+    /**
+     - Parameters:
+         - window: The window to floating state for.
+     
+     - Returns: `true` if the window is currently floating and `false` otherwise.
+     */
+    func windowIsFloating<Window: WindowType>(_ window: Window) -> Bool
 }
 
 /**

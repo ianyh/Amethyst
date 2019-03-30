@@ -18,13 +18,21 @@ enum FocusTransition<Window: WindowType> {
 protocol FocusTransitionTarget: class {
     associatedtype Window: WindowType
 
+    var windowActivityCache: WindowActivityCache { get }
+    var windows: [Window] { get }
+
     func executeTransition(_ transition: FocusTransition<Window>)
 
-    func windows(on screen: NSScreen) -> [Window]
     func lastFocusedWindow(on screen: NSScreen) -> Window?
     func screen(at index: Int) -> NSScreen?
     func nextWindowIDClockwise(on screen: NSScreen) -> CGWindowID?
     func nextWindowIDCounterClockwise(on screen: NSScreen) -> CGWindowID?
+}
+
+extension FocusTransitionTarget {
+    func cachedWindows(on screen: NSScreen) -> [Window] {
+        return windowActivityCache.windows(windows, on: screen)
+    }
 }
 
 class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
@@ -46,7 +54,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows(on: screen)
+        let windows = target.cachedWindows(on: screen)
 
         guard !windows.isEmpty else {
             return
@@ -76,7 +84,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows(on: screen)
+        let windows = target.cachedWindows(on: screen)
 
         guard !windows.isEmpty else {
             return
@@ -106,7 +114,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows(on: screen)
+        let windows = target.cachedWindows(on: screen)
 
         guard !windows.isEmpty else {
             return
@@ -131,7 +139,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows(on: screen)
+        let windows = target.cachedWindows(on: screen)
 
         // If there are no windows on the screen focus the screen directly
         guard !windows.isEmpty else {
@@ -152,3 +160,5 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
         target.executeTransition(.focusWindow(topWindow))
     }
 }
+
+extension FocusTransitionCoordinator {}
