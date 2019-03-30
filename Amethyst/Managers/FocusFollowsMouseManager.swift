@@ -17,13 +17,14 @@ protocol FocusFollowsMouseManagerDelegate: class {
 }
 
 final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
-    weak var delegate: Delegate?
+    weak var delegate: Delegate!
 
     private let userConfiguration: UserConfiguration
 
     private let disposeBag = DisposeBag()
 
-    init(userConfiguration: UserConfiguration) {
+    init(delegate: Delegate, userConfiguration: UserConfiguration) {
+        self.delegate = delegate
         self.userConfiguration = userConfiguration
 
         // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
@@ -62,14 +63,14 @@ final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate>
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
         mousePoint.y = NSScreen.globalHeight() - mousePoint.y + screen.frameIncludingDockAndMenu().origin.y
 
-        if let focusedWindow: Delegate.Window = Delegate.Window.currentlyFocused() {
+        if let focusedWindow = Delegate.Window.currentlyFocused() {
             // If the point is already in the frame of the focused window do nothing.
             guard !focusedWindow.frame().contains(mousePoint) else {
                 return
             }
         }
 
-        guard let topWindow: Delegate.Window = WindowsInformation.topWindowForScreenAtPoint(mousePoint, withWindows: windows) else {
+        guard let topWindow = WindowsInformation.topWindowForScreenAtPoint(mousePoint, withWindows: windows) else {
             return
         }
 

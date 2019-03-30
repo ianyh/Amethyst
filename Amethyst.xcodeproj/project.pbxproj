@@ -32,7 +32,6 @@
 		401C35B32244650F0019ED07 /* MouseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B22244650F0019ED07 /* MouseState.swift */; };
 		401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */; };
 		401C35B7224831470019ED07 /* FocusTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */; };
-		401C35B9224863690019ED07 /* SpacesInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B8224863690019ED07 /* SpacesInformation.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
@@ -55,6 +54,8 @@
 		4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD341C1FA62500DB612B /* WideLayout.swift */; };
 		4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD361C1FA83300DB612B /* RowLayout.swift */; };
 		4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */; };
+		40637073224EF9B20081299D /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637072224EF9B20081299D /* Change.swift */; };
+		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
@@ -127,7 +128,6 @@
 		401C35B22244650F0019ED07 /* MouseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseState.swift; sourceTree = "<group>"; };
 		401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowTransitionCoordinator.swift; sourceTree = "<group>"; };
 		401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTransitionCoordinator.swift; sourceTree = "<group>"; };
-		401C35B8224863690019ED07 /* SpacesInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesInformation.swift; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -154,6 +154,8 @@
 		4062AD341C1FA62500DB612B /* WideLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WideLayout.swift; sourceTree = "<group>"; };
 		4062AD361C1FA83300DB612B /* RowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowLayout.swift; sourceTree = "<group>"; };
 		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
+		40637072224EF9B20081299D /* Change.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Change.swift; sourceTree = "<group>"; };
+		40637074224EFED70081299D /* CGInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGInfo.swift; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		40AF71D920BB348300F58EA9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -347,9 +349,10 @@
 			children = (
 				4046EFD02238949900113067 /* Application.swift */,
 				401C35B02244626E0019ED07 /* ApplicationObservation.swift */,
+				40637074224EFED70081299D /* CGInfo.swift */,
+				40637072224EF9B20081299D /* Change.swift */,
 				401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */,
 				401C35B22244650F0019ED07 /* MouseState.swift */,
-				401C35B8224863690019ED07 /* SpacesInformation.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
 				401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */,
@@ -719,6 +722,7 @@
 				401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */,
 				401C35AF2241BBDD0019ED07 /* ReflowOperation.swift in Sources */,
 				401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */,
+				40637073224EF9B20081299D /* Change.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
 				4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */,
@@ -732,7 +736,6 @@
 				401C35B7224831470019ED07 /* FocusTransitionCoordinator.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
-				401C35B9224863690019ED07 /* SpacesInformation.swift in Sources */,
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
 				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
@@ -744,6 +747,7 @@
 				40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */,
 				401C35B32244650F0019ED07 /* MouseState.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
+				40637075224EFED70081299D /* CGInfo.swift in Sources */,
 				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

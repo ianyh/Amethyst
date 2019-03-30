@@ -97,29 +97,6 @@ protocol WindowType: Equatable {
     func move(toSpace space: UInt)
 }
 
-/// Windows info as taken from the underlying system.
-struct WindowDescriptions {
-    /// An array of dictionaries of window information
-    let descriptions: [[String: AnyObject]]
-
-    /**
-     - Parameters:
-         - options: Any options for getting info.
-         - windowID: ID of window to find windows relative to. 0 gets all windows.
-     */
-    init?(options: CGWindowListOption, windowID: CGWindowID) {
-        guard let cfWindowDescriptions = CGWindowListCopyWindowInfo(options, windowID) else {
-            return nil
-        }
-
-        guard let windowDescriptions = cfWindowDescriptions as? [[String: AnyObject]] else {
-            return nil
-        }
-
-        self.descriptions = windowDescriptions
-    }
-}
-
 /**
  Final subclass of the Silica `SIWindow`.
  

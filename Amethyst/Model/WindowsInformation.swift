@@ -25,7 +25,7 @@ extension WindowActivityCache {
             return []
         }
 
-        guard let currentSpace = SpacesInformation<Window>.currentSpaceForScreen(screen) else {
+        guard let currentSpace = CGSpacesInfo<Window>.currentSpaceForScreen(screen) else {
             log.warning("Could not find a space for screen: \(screenIdentifier)")
             return []
         }
@@ -52,10 +52,10 @@ extension WindowActivityCache {
 
 struct WindowsInformation<Window: WindowType> {
     let ids: Set<CGWindowID>
-    let descriptions: WindowDescriptions?
+    let descriptions: CGWindowsInfo?
 
     init?(windows: [Window]) {
-        guard let descriptions = WindowDescriptions(options: .optionOnScreenOnly, windowID: CGWindowID(0)) else {
+        guard let descriptions = CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0)) else {
             return nil
         }
 
@@ -69,7 +69,7 @@ extension WindowsInformation {
     // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
     fileprivate static func windowInformation(_ windows: [Window]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
         let ids = Set(windows.map { $0.windowID() })
-        return (IDs: ids, descriptions: WindowDescriptions(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.descriptions)
+        return (IDs: ids, descriptions: CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.descriptions)
     }
 
     fileprivate static func onScreenWindowsAtPoint(_ point: CGPoint,
@@ -124,7 +124,7 @@ extension WindowsInformation {
                 continue
             }
 
-            guard let windowsAboveWindow = WindowDescriptions(options: .optionOnScreenAboveWindow, windowID: windowID.uint32Value) else {
+            guard let windowsAboveWindow = CGWindowsInfo(options: .optionOnScreenAboveWindow, windowID: windowID.uint32Value) else {
                 continue
             }
 

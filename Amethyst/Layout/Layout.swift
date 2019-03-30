@@ -222,7 +222,7 @@ class StatefulLayout<Window: WindowType>: Layout<Window> {
      - Parameters:
         - windowChange: A `WindowChange`.
      */
-    func updateWithChange(_ windowChange: WindowChange<Window>) {
+    func updateWithChange(_ windowChange: Change<Window>) {
         fatalError("Must be implemented by subclass")
     }
 
