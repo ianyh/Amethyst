@@ -244,7 +244,7 @@ final class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Wi
         }
     }
 
-    override func updateWithChange(_ windowChange: WindowChange<Window>) {
+    override func updateWithChange(_ windowChange: Change<Window>) {
         switch windowChange {
         case let .add(window):
             guard rootNode.findWindowID(window.windowID()) == nil else {

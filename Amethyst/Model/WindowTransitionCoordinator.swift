@@ -168,7 +168,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func pushFocusedWindowToSpaceLeft() {
-        guard let currentFocusedSpace = SpacesInformation<Window>.currentFocusedSpace(), let spaces = SpacesInformation<Window>.spacesForFocusedScreen() else {
+        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(), let spaces = CGSpacesInfo<Window>.spacesForFocusedScreen() else {
             return
         }
 
@@ -180,7 +180,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func pushFocusedWindowToSpaceRight() {
-        guard let currentFocusedSpace = SpacesInformation<Window>.currentFocusedSpace(), let spaces = SpacesInformation<Window>.spacesForFocusedScreen() else {
+        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(), let spaces = CGSpacesInfo<Window>.spacesForFocusedScreen() else {
             return
         }
 

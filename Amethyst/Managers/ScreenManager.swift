@@ -19,7 +19,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
     public internal(set) var lastFocusedWindow: Window?
-    fileprivate weak var delegate: ScreenManagerDelegate?
+    private weak var delegate: ScreenManagerDelegate?
     private let userConfiguration: UserConfiguration
     public var onReflowInitiation: (() -> Void)?
     public var onReflowCompletion: (() -> Void)?
@@ -101,7 +101,11 @@ final class ScreenManager<Window: WindowType>: NSObject {
         self.onReflowCompletion = nil
     }
 
-    func setNeedsReflowWithWindowChange(_ windowChange: WindowChange<Window>) {
+    func setNeedsReflowWithWindowChange(_ windowChange: Change<Window>) {
+        if case let .add(window) = windowChange {
+            lastFocusedWindow = window
+        }
+
         reflowOperation?.cancel()
 
         log.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
@@ -123,7 +127,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
         }
     }
 
-    private func reflow(_ event: WindowChange<Window>) {
+    private func reflow(_ event: Change<Window>) {
         guard currentSpaceIdentifier != nil &&
             currentLayoutIndex < layouts.count &&
             userConfiguration.tilingEnabled &&
@@ -236,6 +240,15 @@ final class ScreenManager<Window: WindowType>: NSObject {
 
     @objc func hideLayoutHUD(_ sender: AnyObject) {
         layoutNameWindowController.close()
+    }
+}
+
+extension ScreenManager: Comparable {
+    static func < (lhs: ScreenManager<Window>, rhs: ScreenManager<Window>) -> Bool {
+        let originX1 = lhs.screen.frameWithoutDockOrMenu().origin.x
+        let originX2 = rhs.screen.frameWithoutDockOrMenu().origin.x
+
+        return originX1 < originX2
     }
 }
 

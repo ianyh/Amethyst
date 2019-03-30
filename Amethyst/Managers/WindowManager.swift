@@ -13,45 +13,29 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-enum WindowChange<Window: WindowType> {
-    case add(window: Window)
-    case remove(window: Window)
-    case focusChanged(window: Window)
-    case windowSwap(window: Window, otherWindow: Window)
-    case unknown
-}
-
 final class WindowManager<Application: ApplicationType>: NSObject {
     typealias Window = Application.Window
 
-    private var applications: [AnyApplication<Application>] = []
-    private(set) lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
-    var windows: [Window] = []
-    fileprivate let userConfiguration: UserConfiguration
-
-    private(set) var screenManagers: [ScreenManager<Window>] = []
-    private var screenManagersCache: [String: ScreenManager<Window>] = [:]
-
-    private let focusFollowsMouseManager: FocusFollowsMouseManager<WindowManager<Application>>
-
-    fileprivate private(set) var activeIDCache: Set<CGWindowID> = Set()
-    private(set) var floatingMap: [CGWindowID: Bool] = [:]
-    private(set) var lastReflowTime: Date
-
+    private(set) var windows: [Window] = []
     private(set) lazy var windowTransitionCoordinator = WindowTransitionCoordinator(target: self)
     private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self)
 
-    private let disposeBag = DisposeBag()
+    private var applications: [AnyApplication<Application>] = []
+    private var screenManagers: [ScreenManager<Window>] = []
+    private var screenManagersCache: [String: ScreenManager<Window>] = [:]
+    private var activeIDCache: Set<CGWindowID> = Set()
+    private var floatingMap: [CGWindowID: Bool] = [:]
+    private var lastReflowTime = Date()
+    private var lastFocusDate: Date?
 
-    var lastFocusDate: Date?
+    private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
+    private lazy var focusFollowsMouseManager = FocusFollowsMouseManager(delegate: self, userConfiguration: self.userConfiguration)
+    private let userConfiguration: UserConfiguration
+    private let disposeBag = DisposeBag()
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
-        self.focusFollowsMouseManager = FocusFollowsMouseManager(userConfiguration: userConfiguration)
-        lastReflowTime = Date()
         super.init()
-
-        focusFollowsMouseManager.delegate = self
 
         addWorkspaceNotificationObserver(NSWorkspace.didLaunchApplicationNotification, selector: #selector(applicationDidLaunch(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didTerminateApplicationNotification, selector: #selector(applicationDidTerminate(_:)))
@@ -81,38 +65,19 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     private func regenerateActiveIDCache() {
-        var activeIDCache: Set<CGWindowID> = Set()
-
-        defer {
-            self.activeIDCache = activeIDCache
-        }
-
-        guard let windowDescriptions = WindowDescriptions(options: .optionOnScreenOnly, windowID: CGWindowID(0)) else {
-            return
-        }
-
-        for windowDescription in windowDescriptions.descriptions {
-            guard let windowID = windowDescription[kCGWindowNumber as String] as? NSNumber else {
-                continue
-            }
-
-            activeIDCache.insert(CGWindowID(windowID.uint64Value))
-        }
-    }
-
-    private func spaceIdentifier(from screenDictionary: JSON) -> String? {
-        return screenDictionary["Current Space"]["uuid"].string
+        let windowDescriptions = CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))
+        activeIDCache = windowDescriptions?.activeIDs() ?? Set()
     }
 
     fileprivate func assignCurrentSpaceIdentifiers() {
         regenerateActiveIDCache()
 
-        guard let screenDictionaries = NSScreen.screenDescriptions() else {
+        guard let screensInfo = CGScreensInfo() else {
             return
         }
 
         if NSScreen.screensHaveSeparateSpaces {
-            for screenDictionary in screenDictionaries {
+            for screenDictionary in screensInfo.descriptions {
                 guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
                     log.error("Could not identify screen with info: \(screenDictionary)")
                     continue
@@ -123,7 +88,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
                     continue
                 }
 
-                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
                     continue
                 }
 
@@ -131,36 +96,15 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             }
         } else {
             for screenManager in screenManagers {
-                let screenDictionary = screenDictionaries[0]
+                let screenDictionary = screensInfo.descriptions[0]
 
-                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
                     continue
                 }
 
                 screenManager.currentSpaceIdentifier = spaceIdentifier
             }
         }
-    }
-
-    private func screenManagerForCGWindowDescription(_ description: [String: AnyObject]) -> ScreenManager<Window>? {
-        let windowFrameDictionary = description[kCGWindowBounds as String] as! [String: Any]
-        let windowFrame = CGRect(dictionaryRepresentation: windowFrameDictionary as CFDictionary)!
-
-        var lastVolume: CGFloat = 0
-        var lastScreenManager: ScreenManager<Window>?
-
-        for screenManager in screenManagers {
-            let screenFrame = screenManager.screen.frameIncludingDockAndMenu()
-            let intersection = windowFrame.intersection(screenFrame)
-            let volume = intersection.size.width * intersection.size.height
-
-            if volume > lastVolume {
-                lastVolume = volume
-                lastScreenManager = screenManager
-            }
-        }
-
-        return lastScreenManager
     }
 
     func preferencesDidClose() {
@@ -252,8 +196,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     fileprivate func remove(window: Window) {
-        let change: WindowChange<Window> = .remove(window: window)
-        markAllScreensForReflowWithChange(change)
+        markAllScreensForReflowWithChange(.remove(window: window))
 
         let application = applicationWithProcessIdentifier(window.pid())
         application?.unobserve(notification: kAXUIElementDestroyedNotification, window: window)
@@ -276,7 +219,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
 
         for window in windows {
             if let screen = window.screen(), window == focusedWindow {
-                let windowChange: WindowChange = windowIsFloating(window) ? .add(window: window) : .remove(window: window)
+                let windowChange: Change = windowIsFloating(window) ? .add(window: window) : .remove(window: window)
                 floatingMap[window.windowID()] = !windowIsFloating(window)
                 markScreenForReflow(screen, withChange: windowChange)
                 return
@@ -287,7 +230,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             return
         }
 
-        let windowChange: WindowChange<Window> = .add(window: focusedWindow)
+        let windowChange: Change<Window> = .add(window: focusedWindow)
         add(window: focusedWindow)
         floatingMap[focusedWindow.windowID()] = false
         markScreenForReflow(screen, withChange: windowChange)
@@ -325,28 +268,22 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         }
 
         // Window managers are sorted by screen position along the x-axis.
-        screenManagers.sort { screenManager1, screenManager2 -> Bool in
-            let originX1 = screenManager1.screen.frameWithoutDockOrMenu().origin.x
-            let originX2 = screenManager2.screen.frameWithoutDockOrMenu().origin.x
-
-            return originX1 < originX2
-        }
-
-        self.screenManagers = screenManagers
+        // See `ScreenManager`'s `Comparable` conformance
+        self.screenManagers = screenManagers.sorted()
 
         assignCurrentSpaceIdentifiers()
         markAllScreensForReflowWithChange(.unknown)
     }
 
-    func markScreenForReflow(_ screen: NSScreen, withChange change: WindowChange<Window>) {
+    func markScreenForReflow(_ screen: NSScreen, withChange change: Change<Window>) {
         screenManagers
             .filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }
             .forEach { screenManager in
                 screenManager.setNeedsReflowWithWindowChange(change)
-        }
+            }
     }
 
-    func markAllScreensForReflowWithChange(_ windowChange: WindowChange<Window>) {
+    func markAllScreensForReflowWithChange(_ windowChange: Change<Window>) {
         for screenManager in screenManagers {
             screenManager.setNeedsReflowWithWindowChange(windowChange)
         }
@@ -496,7 +433,7 @@ extension WindowManager {
             return
         }
 
-        let windowChange: WindowChange = windowIsFloating(window) ? .unknown : .add(window: window)
+        let windowChange: Change = windowIsFloating(window) ? .unknown : .add(window: window)
         markScreenForReflow(screen, withChange: windowChange)
     }
 
@@ -626,7 +563,6 @@ extension WindowManager: ApplicationObservationDelegate {
             markScreenForReflow(screen, withChange: .unknown)
         } else {
             markScreenForReflow(screen, withChange: .focusChanged(window: window))
-            screenManager(for: screen)?.lastFocusedWindow = window
         }
     }
 
