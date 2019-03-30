@@ -21,8 +21,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self)
 
     private var applications: [AnyApplication<Application>] = []
-    private var screenManagers: [ScreenManager<Window>] = []
-    private var screenManagersCache: [String: ScreenManager<Window>] = [:]
+    private let screens = Screens()
     private var activeIDCache: Set<CGWindowID> = Set()
     private var floatingMap: [CGWindowID: Bool] = [:]
     private var lastReflowTime = Date()
@@ -51,7 +50,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         )
 
         reevaluateWindows()
-        updateScreenManagers()
+        screens.updateScreenManagers(windowManager: self)
     }
 
     deinit {
@@ -69,42 +68,26 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         activeIDCache = windowDescriptions?.activeIDs() ?? Set()
     }
 
-    fileprivate func assignCurrentSpaceIdentifiers() {
-        regenerateActiveIDCache()
-
-        guard let screensInfo = CGScreensInfo() else {
-            return
+    func screenManager(screen: NSScreen, screenID: String) -> ScreenManager<Window> {
+        let screenManager = ScreenManager<Window>(
+            screen: screen,
+            screenIdentifier: screenID,
+            delegate: self,
+            userConfiguration: userConfiguration
+        )
+        screenManager.onReflowInitiation = { [weak self] in
+            self?.mouseStateKeeper.handleReflowEvent()
+        }
+        screenManager.onReflowCompletion = { [weak self] in
+            // This handler will be executed by the Operation, in a queue.  Although async
+            // (and although the docs say that it executes in a separate thread), I consider
+            // this to be thread safe, at least safe enough, because we always want the
+            // latest time that a reflow took place.
+            self?.mouseStateKeeper.handleReflowEvent()
+            self?.lastReflowTime = Date()
         }
 
-        if NSScreen.screensHaveSeparateSpaces {
-            for screenDictionary in screensInfo.descriptions {
-                guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
-                    log.error("Could not identify screen with info: \(screenDictionary)")
-                    continue
-                }
-
-                guard let screenManager = screenManagersCache[screenIdentifier] else {
-                    log.error("Screen with identifier not managed: \(screenIdentifier)")
-                    continue
-                }
-
-                guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
-                    continue
-                }
-
-                screenManager.currentSpaceIdentifier = spaceIdentifier
-            }
-        } else {
-            for screenManager in screenManagers {
-                let screenDictionary = screensInfo.descriptions[0]
-
-                guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
-                    continue
-                }
-
-                screenManager.currentSpaceIdentifier = spaceIdentifier
-            }
-        }
+        return screenManager
     }
 
     func preferencesDidClose() {
@@ -114,19 +97,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     func focusedScreenManager<Window>() -> ScreenManager<Window>? {
-        guard let focusedWindow = Window.currentlyFocused() else {
-            return nil
-        }
-        for screenManager in screenManagers {
-            guard let typedScreenManager = screenManager as? ScreenManager<Window> else {
-                continue
-            }
-
-            if typedScreenManager.screen.screenIdentifier() == focusedWindow.screen()?.screenIdentifier() {
-                return typedScreenManager
-            }
-        }
-        return nil
+        return screens.focusedScreenManager()
     }
 
     fileprivate func applicationWithProcessIdentifier(_ processIdentifier: pid_t) -> AnyApplication<Application>? {
@@ -236,61 +207,16 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         markScreenForReflow(screen, withChange: windowChange)
     }
 
-    fileprivate func updateScreenManagers() {
-        var screenManagers: [ScreenManager<Window>] = []
-
-        for screen in NSScreen.screens {
-            guard let screenIdentifier = screen.screenIdentifier() else {
-                continue
-            }
-
-            var screenManager = screenManagersCache[screenIdentifier]
-
-            if screenManager == nil {
-                screenManager = ScreenManager(screen: screen, screenIdentifier: screenIdentifier, delegate: self, userConfiguration: userConfiguration)
-                screenManager!.onReflowInitiation = { [weak self] in
-                    self?.mouseStateKeeper.handleReflowEvent()
-                }
-                screenManager!.onReflowCompletion = { [weak self] in
-                    // This handler will be executed by the Operation, in a queue.  Although async
-                    // (and although the docs say that it executes in a separate thread), I consider
-                    // this to be thread safe, at least safe enough, because we always want the
-                    // latest time that a reflow took place.
-                    self?.mouseStateKeeper.handleReflowEvent()
-                    self?.lastReflowTime = Date()
-                }
-                screenManagersCache[screenIdentifier] = screenManager
-            }
-
-            screenManager!.screen = screen
-
-            screenManagers.append(screenManager!)
-        }
-
-        // Window managers are sorted by screen position along the x-axis.
-        // See `ScreenManager`'s `Comparable` conformance
-        self.screenManagers = screenManagers.sorted()
-
-        assignCurrentSpaceIdentifiers()
-        markAllScreensForReflowWithChange(.unknown)
-    }
-
     func markScreenForReflow(_ screen: NSScreen, withChange change: Change<Window>) {
-        screenManagers
-            .filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }
-            .forEach { screenManager in
-                screenManager.setNeedsReflowWithWindowChange(change)
-            }
+        screens.markScreenForReflow(screen, withChange: change)
     }
 
     func markAllScreensForReflowWithChange(_ windowChange: Change<Window>) {
-        for screenManager in screenManagers {
-            screenManager.setNeedsReflowWithWindowChange(windowChange)
-        }
+        screens.markAllScreensForReflowWithChange(windowChange)
     }
 
     func displayCurrentLayout() {
-        for screenManager in screenManagers {
+        for screenManager in screens.screenManagers {
             screenManager.displayLayoutHUD()
         }
     }
@@ -346,7 +272,8 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
-        assignCurrentSpaceIdentifiers()
+        regenerateActiveIDCache()
+        screens.assignCurrentSpaceIdentifiers()
 
         for runningApplication in NSWorkspace.shared.runningApplications {
             guard runningApplication.isManageable else {
@@ -369,7 +296,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     @objc func screenParametersDidChange(_ notification: Notification) {
-        updateScreenManagers()
+        screens.updateScreenManagers(windowManager: self)
     }
 }
 
@@ -660,19 +587,19 @@ extension WindowManager {
     }
 
     func screenManager(at screenIndex: Int) -> ScreenManager<Window>? {
-        guard screenIndex > -1 && screenIndex < screenManagers.count else {
+        guard screenIndex > -1 && screenIndex < screens.screenManagers.count else {
             return nil
         }
 
-        return screenManagers[screenIndex]
+        return screens.screenManagers[screenIndex]
     }
 
     func screenManager(for screen: NSScreen) -> ScreenManager<Window>? {
-        return screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+        return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 
     func screenManagerIndex(for screen: NSScreen) -> Int? {
-        return screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+        return screens.screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 }
 
@@ -709,7 +636,7 @@ extension WindowManager: WindowTransitionTarget {
                 self.markScreenForReflow(screen, withChange: .add(window: window))
             }
         case .resetFocus:
-            if let screen = screenManagers.first?.screen {
+            if let screen = screens.screenManagers.first?.screen {
                 executeTransition(.focusScreen(screen))
             }
         }
@@ -720,7 +647,7 @@ extension WindowManager: WindowTransitionTarget {
             return -1
         }
 
-        return (screenManagerIndex + 1) % (screenManagers.count)
+        return (screenManagerIndex + 1) % (screens.screenManagers.count)
     }
 
     func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int {
@@ -728,7 +655,7 @@ extension WindowManager: WindowTransitionTarget {
             return -1
         }
 
-        return (screenManagerIndex == 0 ? screenManagers.count - 1 : screenManagerIndex - 1)
+        return (screenManagerIndex == 0 ? screens.screenManagers.count - 1 : screenManagerIndex - 1)
     }
 }
 
@@ -745,7 +672,7 @@ extension WindowManager: FocusTransitionTarget {
     }
 
     func lastFocusedWindow(on screen: NSScreen) -> Window? {
-        return screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }?.lastFocusedWindow
+        return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }?.lastFocusedWindow
     }
 
     func nextWindowIDClockwise(on screen: NSScreen) -> CGWindowID? {
