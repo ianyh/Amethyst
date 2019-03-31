@@ -41,8 +41,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
                 return
             }
 
-            changingSpace = true
-            currentLayoutIndex = currentLayoutIndexBySpaceIdentifier[spaceIdentifier] ?? 0
+            setCurrentLayoutIndex(currentLayoutIndexBySpaceIdentifier[spaceIdentifier] ?? 0, changingSpace: true)
 
             if let layouts = layoutsBySpaceIdentifier[spaceIdentifier] {
                 self.layouts = layouts
@@ -60,13 +59,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
     private var layouts: [Layout<Window>] = []
     private var currentLayoutIndexBySpaceIdentifier: [String: Int] = [:]
     private var layoutsBySpaceIdentifier: [String: [Layout<Window>]] = [:]
-    private var currentLayoutIndex: Int {
-        didSet {
-            if !self.changingSpace || userConfiguration.enablesLayoutHUDOnSpaceChange() {
-                self.displayLayoutHUD()
-            }
-        }
-    }
+    private var currentLayoutIndex: Int
     var currentLayout: Layout<Window>? {
         guard !layouts.isEmpty else {
             return nil
@@ -75,8 +68,6 @@ final class ScreenManager<Window: WindowType>: NSObject {
     }
 
     private let layoutNameWindowController: LayoutNameWindowController
-
-    private var changingSpace: Bool = false
 
     init(screen: NSScreen, screenIdentifier: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
         self.screen = screen
@@ -114,30 +105,17 @@ final class ScreenManager<Window: WindowType>: NSObject {
             statefulLayout.updateWithChange(windowChange)
         }
 
-        if changingSpace {
-            // The 0.4 is disgustingly tied to the space change animation time.
-            // This should get burned to the ground when space changes don't rely on the mouse click trick.
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(UInt64(0.4) * NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
-                self.reflow(windowChange)
-            }
-        } else {
-            DispatchQueue.main.async {
-                self.reflow(windowChange)
-            }
+        DispatchQueue.main.async {
+            self.reflow(windowChange)
         }
     }
 
     private func reflow(_ event: Change<Window>) {
-        guard currentSpaceIdentifier != nil &&
-            currentLayoutIndex < layouts.count &&
-            userConfiguration.tilingEnabled &&
-            !isFullscreen
-        else {
+        guard currentSpaceIdentifier != nil && userConfiguration.tilingEnabled && !isFullscreen else {
             return
         }
 
         let windows = (delegate?.activeWindowsForScreenManager(self) ?? [])
-        changingSpace = false
 
         let reflowOperation = currentLayout?.reflow(windows, on: screen)
         reflowOperation?.completionBlock = { [weak self, weak reflowOperation] in
@@ -162,12 +140,12 @@ final class ScreenManager<Window: WindowType>: NSObject {
     }
 
     func cycleLayoutForward() {
-        currentLayoutIndex = (currentLayoutIndex + 1) % layouts.count
+        setCurrentLayoutIndex((currentLayoutIndex + 1) % layouts.count)
         setNeedsReflowWithWindowChange(.unknown)
     }
 
     func cycleLayoutBackward() {
-        currentLayoutIndex = (currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1
+        setCurrentLayoutIndex((currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1)
         setNeedsReflowWithWindowChange(.unknown)
     }
 
@@ -176,8 +154,22 @@ final class ScreenManager<Window: WindowType>: NSObject {
             return
         }
 
-        currentLayoutIndex = layoutIndex
+        setCurrentLayoutIndex(layoutIndex)
         setNeedsReflowWithWindowChange(.unknown)
+    }
+
+    private func setCurrentLayoutIndex(_ index: Int, changingSpace: Bool = false) {
+        guard (0..<layouts.count).contains(index) else {
+            return
+        }
+
+        currentLayoutIndex = index
+
+        guard !changingSpace || userConfiguration.enablesLayoutHUDOnSpaceChange() else {
+            return
+        }
+
+        displayLayoutHUD()
     }
 
     func shrinkMainPane() {
