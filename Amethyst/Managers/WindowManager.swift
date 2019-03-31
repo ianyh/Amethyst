@@ -625,16 +625,13 @@ extension WindowManager: WindowTransitionTarget {
             markScreenForReflow(screen, withChange: .add(window: window))
             window.focus()
         case let .moveWindowToSpaceAtIndex(window, spaceIndex):
-            if let screen = window.screen() {
-                markScreenForReflow(screen, withChange: .remove(window: window))
+            guard let screen = window.screen(), let spaces = CGSpacesInfo<Window>.spacesForScreen(screen), spaceIndex < spaces.count else {
+                return
             }
-            window.move(toSpace: spaceIndex)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                guard let screen = window.screen() else {
-                    return
-                }
-                self.markScreenForReflow(screen, withChange: .add(window: window))
-            }
+
+            let targetSpace = spaces[spaceIndex]
+            markScreenForReflow(screen, withChange: .remove(window: window))
+            window.move(toSpace: targetSpace)
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
                 executeTransition(.focusScreen(screen))

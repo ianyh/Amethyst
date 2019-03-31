@@ -169,7 +169,7 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
             let commandKey = "\(CommandKey.throwSpacePrefix.rawValue)-\(spaceNumber)"
 
             self.constructCommandWithCommandKey(commandKey) {
-                windowManager.windowTransitionCoordinator.pushFocusedWindowToSpace(UInt(spaceNumber))
+                windowManager.windowTransitionCoordinator.pushFocusedWindowToSpace(spaceNumber - 1)
             }
         }
 
