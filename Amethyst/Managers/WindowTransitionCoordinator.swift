@@ -13,7 +13,7 @@ import Silica
 enum WindowTransition<Window: WindowType> {
     case switchWindows(_ window1: Window, _ window2: Window)
     case moveWindowToScreen(_ window: Window, screen: NSScreen)
-    case moveWindowToSpaceAtIndex(_ window: Window, spaceIndex: UInt)
+    case moveWindowToSpaceAtIndex(_ window: Window, spaceIndex: Int)
     case resetFocus
 }
 
@@ -159,7 +159,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
         target.executeTransition(.moveWindowToScreen(focusedWindow, screen: nextScreen))
     }
 
-    func pushFocusedWindowToSpace(_ space: UInt) {
+    func pushFocusedWindowToSpace(_ space: Int) {
         guard let focusedWindow = Window.currentlyFocused(), focusedWindow.screen() != nil else {
             return
         }
@@ -176,7 +176,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        pushFocusedWindowToSpace(UInt(index))
+        pushFocusedWindowToSpace(index - 1)
     }
 
     func pushFocusedWindowToSpaceRight() {
@@ -184,10 +184,10 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.index(of: currentFocusedSpace), index - 2 < spaces.count else {
+        guard let index = spaces.index(of: currentFocusedSpace), index + 1 < spaces.count else {
             return
         }
 
-        pushFocusedWindowToSpace(UInt(index + 2))
+        pushFocusedWindowToSpace(index + 1)
     }
 }

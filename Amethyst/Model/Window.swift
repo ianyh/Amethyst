@@ -95,6 +95,14 @@ protocol WindowType: Equatable {
         - space: The index of the space.
      */
     func move(toSpace space: UInt)
+
+    /**
+     Moves the window to a space.
+     
+     - Parameters:
+         - spaceID: The id of the space.
+     */
+    func move(toSpace spaceID: CGSSpaceID)
 }
 
 /**
@@ -206,5 +214,12 @@ extension AXWindow: WindowType {
         }
 
         move(to: screen)
+    }
+
+    func move(toSpace spaceID: CGSSpaceID) {
+        let currentSpace = CGSGetActiveSpace(CGSMainConnectionID())
+        let ids = [windowID()]
+        CGSRemoveWindowsFromSpaces(CGSMainConnectionID(), ids as CFArray, [currentSpace] as CFArray)
+        CGSAddWindowsToSpaces(CGSMainConnectionID(), ids as CFArray, [spaceID] as CFArray)
     }
 }
