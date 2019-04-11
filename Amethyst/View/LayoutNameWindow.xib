@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,7 +13,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="1" customClass="LayoutNameWindow" customModule="Amethyst" customModuleProvider="target">
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" releasedWhenClosed="NO" animationBehavior="default" id="1" customClass="LayoutNameWindow" customModule="Amethyst" customModuleProvider="target">
             <windowStyleMask key="styleMask" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="285" height="64"/>
@@ -24,7 +24,7 @@
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YXF-Df-V9n">
                         <rect key="frame" x="-2" y="20" width="289" height="24"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="WEZ-6u-WYA">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Layout Name" id="WEZ-6u-WYA">
                             <font key="font" metaFont="system" size="20"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -35,9 +35,27 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="amethyst" id="Iyr-W5-Usa"/>
                     </imageView>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UBl-Tk-jEi" userLabel="Layout Description Field">
+                        <rect key="frame" x="-2" y="4" width="289" height="14"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Layout Description" id="fnu-hV-9uY">
+                            <font key="font" metaFont="smallSystem"/>
+                            <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="UXh-pR-GPs" name="hidden" keyPath="values.debug-layout-info" id="aEw-Xh-xc7">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </textField>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="UBl-Tk-jEi" secondAttribute="trailing" id="6cm-LY-dVx"/>
+                    <constraint firstItem="UBl-Tk-jEi" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="JzF-eQ-sRc"/>
                     <constraint firstAttribute="trailing" secondItem="YXF-Df-V9n" secondAttribute="trailing" id="T51-1f-4oF"/>
+                    <constraint firstAttribute="bottom" secondItem="UBl-Tk-jEi" secondAttribute="bottom" constant="4" id="g4h-XK-qFX"/>
                     <constraint firstItem="YXF-Df-V9n" firstAttribute="centerY" secondItem="2" secondAttribute="centerY" id="sgp-Bu-Qj5"/>
                     <constraint firstItem="YXF-Df-V9n" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="zfm-cP-4Z0"/>
                 </constraints>
@@ -45,10 +63,12 @@
             <connections>
                 <outlet property="containerView" destination="2" id="ZO9-Uz-ux8"/>
                 <outlet property="contentView" destination="2" id="9oa-GD-j63"/>
+                <outlet property="layoutDescriptionLabel" destination="UBl-Tk-jEi" id="OAb-DD-628"/>
                 <outlet property="layoutNameField" destination="YXF-Df-V9n" id="KfT-Yb-Yh3"/>
             </connections>
             <point key="canvasLocation" x="255.5" y="295"/>
         </window>
+        <userDefaultsController representsSharedInstance="YES" id="UXh-pR-GPs"/>
     </objects>
     <resources>
         <image name="amethyst" width="32" height="32"/>

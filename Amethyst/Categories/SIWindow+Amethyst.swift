@@ -10,6 +10,15 @@ import ApplicationServices
 import Foundation
 import Silica
 
+extension CGRect {
+    func approximatelyEqual(to otherRect: CGRect, within tolerance: CGRect) -> Bool {
+        return abs(origin.x - otherRect.origin.x) < tolerance.origin.x &&
+        abs(origin.y - otherRect.origin.y) < tolerance.origin.y &&
+        abs(width - otherRect.width) < tolerance.width &&
+        abs(height - otherRect.height) < tolerance.height
+    }
+}
+
 extension SIWindow {
     // convert SIWindow objects to CGWindowIDs.
     // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
@@ -50,14 +59,12 @@ extension SIWindow {
     static func topWindowForScreenAtPoint(_ point: CGPoint, withWindows windows: [SIWindow]) -> SIWindow? {
         let (ids, maybeWindowDescriptions) = windowInformation(windows)
         guard let windowDescriptions = maybeWindowDescriptions, !windowDescriptions.isEmpty else {
-            log.debug("nothing")
             return nil
         }
 
         let windowsAtPoint = onScreenWindowsAtPoint(point, withIDs: ids, withDescriptions: windowDescriptions)
 
         guard !windowsAtPoint.isEmpty else {
-            log.debug("no windows at point")
             return nil
         }
 
@@ -112,38 +119,42 @@ extension SIWindow {
 
     // find a window based on its window description within an array of SIWindow objects
     static func windowInWindows(_ windows: [SIWindow], withCGWindowDescription windowDescription: [String: AnyObject]) -> SIWindow? {
-        for window in windows {
-            guard
-                let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber, windowOwnerProcessIdentifier.int32Value == window.processIdentifier()
-            else {
-                continue
+        let potentialWindows = windows.filter {
+            guard let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
+                return false
+            }
+
+            guard windowOwnerProcessIdentifier.int32Value == $0.processIdentifier() else {
+                return false
             }
 
             guard let boundsDictionary = windowDescription[kCGWindowBounds as String] as? [String: Any] else {
-                continue
+                return false
             }
 
             let windowFrame = CGRect(dictionaryRepresentation: boundsDictionary as CFDictionary)!
 
-            guard windowFrame.equalTo(window.frame()) else {
-                continue
+            guard windowFrame.equalTo($0.frame()) else {
+                return false
             }
 
+            return true
+        }
+
+        guard potentialWindows.count > 1 else {
+            return potentialWindows.first
+        }
+
+        return potentialWindows.first {
             guard let describedTitle = windowDescription[kCGWindowName as String] as? String else {
-                continue
+                return false
             }
 
             let describedOwner = windowDescription[kCGWindowOwnerName as String] as? String
             let describedOwnedTitle = describedOwner.flatMap { "\(describedTitle) - \($0)" }
 
-            guard describedTitle == window.title() || describedOwnedTitle == window.title() else {
-                continue
-            }
-
-            return window
+            return describedTitle == $0.title() || describedOwnedTitle == $0.title()
         }
-
-        return nil
     }
 
     // return an array of dictionaries of window information for all windows relative to windowID

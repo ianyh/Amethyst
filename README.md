@@ -6,16 +6,16 @@ Amethyst
 [![Open Source Helpers](https://www.codetriage.com/ianyh/amethyst/badges/users.svg)](https://www.codetriage.com/ianyh/amethyst)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
-Tiling window manager for macOS along the lines of [xmonad](http://xmonad.org/).
+Tiling window manager for macOS along the lines of [xmonad](https://xmonad.org/).
 
-![Windows](http://ianyh.com/amethyst/images/windows.png)
+![Windows](https://ianyh.com/amethyst/images/windows.png)
 
 A quick screencast of basic functionality can be found [here](https://youtu.be/boPilhScpkY). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
 
 Getting Amethyst
 ================
 
-Amethyst is available for direct download on the [releases page](https://github.com/ianyh/Amethyst/releases) or using [homebrew cask](https://github.com/caskroom/homebrew-cask).
+Amethyst is available for direct download on the [releases page](https://github.com/ianyh/Amethyst/releases) or using [homebrew cask](https://github.com/Homebrew/homebrew-cask).
 
 ```
 brew cask install amethyst
@@ -28,65 +28,69 @@ Using Amethyst
 
 Amethyst must be given permissions to use the accessibility APIs under the Privacy tab of the Security & Privacy preferences pane as shown below.
 
-![Accessibility permissions](http://ianyh.com/amethyst/images/accessibility-window.png)
+![Accessibility permissions](https://ianyh.com/amethyst/images/accessibility-window.png)
 
 Keyboard Shortcuts
 ------------------
 
 Amethyst uses two modifier combinations.
 
-* `mod1` - `option + shift`
-* `mod2` - `ctrl + option + shift`
+| Default Shortcut | Description |
+|---|---|
+| `mod1` | `option + shift` |
+| `mod2` | `ctrl + option + shift` |
 
 And defines the following commands, mostly a mapping to xmonad key combinations.
 
-* `mod1 + space` - Cycle layout forward
-* `mod2 + space` - Cycle layout backwards
-* `mod1 + h` - Shrink the main pane
-* `mod1 + l` - Expand the main pane
-* `mod1 + ,` - Increase main pane count
-* `mod1 + .` - Decrease main pane count
-* `mod1 + j` - Move focus counter clockwise
-* `mod1 + k` - Move focus clockwise
-* `mod2 + h` - Swap focused window to counter clockwise screen
-* `mod2 + l` - Swap focused window to clockwise screen
-* `mod2 + j` - Swap focused window counter clockwise
-* `mod2 + k` - Swap focused window clockwise
-* `mod1 + enter` - Swap focused window with main window
-* `mod1 + z` - Force windows to be reevalulated
-* `mod2 + left` - Throw focused window to space left
-* `mod2 + right` - Throw focused window to space right
-* `mod2 + 1` - Throw focused window to space 1
-* `mod2 + 2` - Throw focused window to space 2
-* `mod2 + 3` - Throw focused window to space 3
-* `mod2 + 4` - Throw focused window to space 4
-* `mod2 + 5` - Throw focused window to space 5
-* `mod2 + 6` - Throw focused window to space 6
-* `mod2 + 7` - Throw focused window to space 7
-* `mod2 + 8` - Throw focused window to space 8
-* `mod2 + 9` - Throw focused window to space 9
-* `mod2 + 0` - Throw focused window to space 10
-* `mod1 + w` - Focus Screen 1
-* `mod2 + w` - Throw focused window to screen 1
-* `mod1 + e` - Focus Screen 2
-* `mod2 + e` - Throw focused window to screen 2
-* `mod1 + r` - Focus Screen 3
-* `mod2 + r` - Throw focused window to screen 3
-* `mod1 + q` - Focus Screen 4
-* `mod2 + q` - Throw focused window to screen 4
-* `mod1 + t` - Toggle float for focused window
-* `mod1 + i` - Display current layout
-* `mod2 + t` - Toggle global tiling
-* `mod1 + a` - Select tall layout
-* `none` - Select tall-right layout
-* `mod1 + s` - Select wide layout
-* `none` - Select middle-wide layout
-* `mod1 + d` - Select fullscreen layout
-* `mod1 + f` - Select column layout
-* `none` - Select row layout
-* `none` - Select floating layout
-* `none` - Select widescreen-tall layout
-* `none` - Select bsp layout
+| Default Shortcut | Description |
+|---|---|
+| `mod1 + space` | Cycle layout forward |
+| `mod2 + space` | Cycle layout backwards |
+| `mod1 + h` | Shrink the main pane |
+| `mod1 + l` | Expand the main pane |
+| `mod1 + ,` | Increase main pane count |
+| `mod1 + .` | Decrease main pane count |
+| `mod1 + j` | Move focus counter clockwise |
+| `mod1 + k` | Move focus clockwise |
+| `mod2 + h` | Swap focused window to counter clockwise screen |
+| `mod2 + l` | Swap focused window to clockwise screen |
+| `mod2 + j` | Swap focused window counter clockwise |
+| `mod2 + k` | Swap focused window clockwise |
+| `mod1 + enter` | Swap focused window with main window |
+| `mod1 + z` | Force windows to be reevalulated |
+| `mod2 + left` | Throw focused window to space left |
+| `mod2 + right` | Throw focused window to space right |
+| `mod2 + 1` | Throw focused window to space 1 |
+| `mod2 + 2` | Throw focused window to space 2 |
+| `mod2 + 3` | Throw focused window to space 3 |
+| `mod2 + 4` | Throw focused window to space 4 |
+| `mod2 + 5` | Throw focused window to space 5 |
+| `mod2 + 6` | Throw focused window to space 6 |
+| `mod2 + 7` | Throw focused window to space 7 |
+| `mod2 + 8` | Throw focused window to space 8 |
+| `mod2 + 9` | Throw focused window to space 9 |
+| `mod2 + 0` | Throw focused window to space 10 |
+| `mod1 + w` | Focus Screen 1 |
+| `mod2 + w` | Throw focused window to screen 1 |
+| `mod1 + e` | Focus Screen 2 |
+| `mod2 + e` | Throw focused window to screen 2 |
+| `mod1 + r` | Focus Screen 3 |
+| `mod2 + r` | Throw focused window to screen 3 |
+| `mod1 + q` | Focus Screen 4 |
+| `mod2 + q` | Throw focused window to screen 4 |
+| `mod1 + t` | Toggle float for focused window |
+| `mod1 + i` | Display current layout |
+| `mod2 + t` | Toggle global tiling |
+| `mod1 + a` | Select tall layout |
+| `none` | Select tall-right layout |
+| `mod1 + s` | Select wide layout |
+| `none` | Select middle-wide layout |
+| `mod1 + d` | Select fullscreen layout |
+| `mod1 + f` | Select column layout |
+| `none` | Select row layout |
+| `none` | Select floating layout |
+| `none` | Select widescreen-tall layout |
+| `none` | Select bsp layout |
 
 Available Layouts
 -----------------
@@ -173,7 +177,7 @@ of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
 [n]`. Amethyst is only able to send a window to the `n`th space if the shortcut
 `ctrl + n` is enabled.
 
-![Mission Control keyboard shortcuts](http://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
+![Mission Control keyboard shortcuts](https://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
 
 Amethyst currently supports sending windows to up to 10 spaces, despite macOS' limit of 16 spaces per display.
 
@@ -205,17 +209,17 @@ Amethyst is free and always will be. That said, a couple of people have expresse
 * [Southern Poverty Law Center](https://www.splcenter.org/)
 * [National Resources Defense Council](https://www.nrdc.org/)
 * [International Refugee Assistance Project](https://refugeerights.org/)
-* [NAACP Legal Defense Fund](http://www.naacpldf.org/)
-* [The Trevor Project](http://www.thetrevorproject.org/)
-* [Mexican American Legal Defense Fund](http://maldef.org/)
+* [NAACP Legal Defense Fund](https://www.naacpldf.org/)
+* [The Trevor Project](https://www.thetrevorproject.org/)
+* [Mexican American Legal Defense Fund](https://www.maldef.org/)
 * [ProPublica](https://www.propublica.org/)
 
 And a bunch of technology-oriented ones:
 
 * [National Center for Women & Information Technology](https://www.ncwit.org/donate)
-* [girls who code](http://girlswhocode.com/get-involved/)
+* [girls who code](https://girlswhocode.com/get-involved/)
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
-* [Trans*H4CK](http://www.transhack.org/donate/)
-* [Black Girls CODE](http://www.blackgirlscode.com/)
+* [Trans*H4CK](https://www.transhack.org/donate/)
+* [Black Girls CODE](https://www.blackgirlscode.com/)
 
 Alternatively, I have a Patreon page set up [here](https://www.patreon.com/ianyh). Any proceeds will be donated to one of the above organizations. 

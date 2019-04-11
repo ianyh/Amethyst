@@ -30,6 +30,8 @@ class PreferencesWindowController: NSWindowController {
             contentViewController = ShortcutsPreferencesViewController()
         case "floating":
             contentViewController = FloatingPreferencesViewController()
+        case "debug":
+            contentViewController = DebugPreferencesViewController()
         default:
             break
         }

@@ -77,33 +77,10 @@ enum ConfigurationKey: String {
     case screenPaddingRight = "screen-padding-right"
     case screenPaddingTop = "screen-padding-top"
     case screenPaddingBottom = "screen-padding-bottom"
-
-    static var defaultsKeys: [ConfigurationKey] {
-        return [
-            .layouts,
-            .floatingBundleIdentifiers,
-            .floatingBundleIdentifiersIsBlacklist,
-            .ignoreMenuBar,
-            .floatSmallWindows,
-            .mouseFollowsFocus,
-            .focusFollowsMouse,
-            .mouseSwapsWindows,
-            .mouseResizesWindows,
-            .layoutHUD,
-            .layoutHUDOnSpaceChange,
-            .useCanaryBuild,
-            .windowMargins,
-            .windowMarginSize,
-            .windowMinimumHeight,
-            .windowMinimumWidth,
-            .windowResizeStep,
-            .screenPaddingLeft,
-            .screenPaddingRight,
-            .screenPaddingTop,
-            .screenPaddingBottom
-        ]
-    }
+    case debugLayoutInfo = "debug-layout-info"
 }
+
+extension ConfigurationKey: CaseIterable {}
 
 enum CommandKey: String {
     case cycleLayoutForward = "cycle-layout"
@@ -250,7 +227,7 @@ final class UserConfiguration: NSObject {
     }
 
     func loadConfiguration() {
-        for key in ConfigurationKey.defaultsKeys {
+        for key in ConfigurationKey.allCases {
             let value = configuration?[key.rawValue]
             let defaultValue = defaultConfiguration?[key.rawValue]
             let existingValue = storage.object(forKey: key)

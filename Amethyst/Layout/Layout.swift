@@ -179,7 +179,7 @@ extension FrameAssigner {
         }
 
         for frameAssignment in frameAssignments {
-            log.debug("Frame Assignment: \(frameAssignment)")
+//            log.debug("Frame Assignment: \(frameAssignment)")
             frameAssignment.perform()
         }
     }
@@ -237,6 +237,8 @@ protocol Layout {
     static var layoutName: String { get }
     static var layoutKey: String { get }
 
+    var layoutDescription: String { get }
+
     var windowActivityCache: WindowActivityCache { get }
 
     init(windowActivityCache: WindowActivityCache)
@@ -258,8 +260,9 @@ extension Layout {
     }
 }
 
-protocol PanedLayout {
+protocol PanedLayout: Layout {
     var mainPaneRatio: CGFloat { get }
+    var mainPaneCount: Int { get }
     func recommendMainPaneRawRatio(rawRatio: CGFloat)
     func shrinkMainPane()
     func expandMainPane()
@@ -268,6 +271,10 @@ protocol PanedLayout {
 }
 
 extension PanedLayout {
+    var layoutDescription: String {
+        return "(\(mainPaneRatio), \(mainPaneCount))"
+    }
+
     func recommendMainPaneRatio(_ ratio: CGFloat) {
         guard 0 <= ratio && ratio <= 1 else {
             log.warning("tried to setMainPaneRatio out of range [0-1]:  \(ratio)")
@@ -285,7 +292,7 @@ extension PanedLayout {
     }
 }
 
-protocol StatefulLayout {
+protocol StatefulLayout: Layout {
     func updateWithChange(_ windowChange: WindowChange)
     func nextWindowIDCounterClockwise() -> CGWindowID?
     func nextWindowIDClockwise() -> CGWindowID?

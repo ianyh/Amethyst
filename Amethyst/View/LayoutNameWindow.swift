@@ -12,6 +12,7 @@ import QuartzCore
 
 final class LayoutNameWindow: NSWindow {
     @IBOutlet weak var layoutNameField: NSTextField?
+    @IBOutlet weak var layoutDescriptionLabel: NSTextField?
 
     @IBOutlet override var contentView: NSView? {
         didSet {

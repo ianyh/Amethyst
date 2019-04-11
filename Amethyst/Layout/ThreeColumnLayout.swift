@@ -202,60 +202,20 @@ final class ThreeColumnReflowOperation: ReflowOperation {
 
 // not an actual Layout, just a base class for the three actual Layouts below
 internal class ThreeColumnLayout {
+    class var layoutName: String { return "" }
+    class var layoutKey: String { return "" }
+
     let windowActivityCache: WindowActivityCache
 
-    init(windowActivityCache: WindowActivityCache) {
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
+
+    required init(windowActivityCache: WindowActivityCache) {
         self.windowActivityCache = windowActivityCache
     }
-
-    fileprivate var mainPaneCount: Int = 1
-    fileprivate(set) var mainPaneRatio: CGFloat = 0.5
 }
 
-// DRY up the layouts since they differ only in what counts as their "main" column
-internal protocol MainColumnSpecifier {
-    var mainColumn: Column { get }
-}
-
-extension MainColumnSpecifier where Self: ThreeColumnLayout & Layout {
-    private func reflow3columns(_ windows: [SIWindow], on screen: NSScreen) -> ThreeColumnReflowOperation {
-        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self)
-    }
-
-    internal func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
-        return reflow3columns(windows, on: screen)
-    }
-}
-
-// implement the three variants
-final class ThreeColumnLeftLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
-    static var layoutName: String { return "3Column Left" }
-    static var layoutKey: String { return "3column-left" }
-    internal let mainColumn = Column.left
-}
-
-final class ThreeColumnMiddleLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
-    static var layoutName: String { return "3Column Middle" }
-    static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
-    internal let mainColumn = Column.middle
-}
-
-final class ThreeColumnRightLayout: ThreeColumnLayout, MainColumnSpecifier, Layout {
-    static var layoutName: String { return "3Column Right" }
-    static var layoutKey: String { return "3column-right" }
-    internal let mainColumn = Column.right
-}
-
-// extend all ThreeColumnLayouts with other necessary functionality: PanedLayout, WindowActivityCache, FrameAssigner
-extension ThreeColumnLayout: FrameAssigner {}
-
-extension ThreeColumnLayout: WindowActivityCache {
-    func windowIsActive(_ window: SIWindow) -> Bool {
-        return windowActivityCache.windowIsActive(window)
-    }
-}
-
-extension ThreeColumnLayout: PanedLayout {
+extension ThreeColumnLayout {
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
         mainPaneRatio = rawRatio
     }
@@ -266,5 +226,47 @@ extension ThreeColumnLayout: PanedLayout {
 
     func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
+    }
+}
+
+internal protocol MainColumnSpecifier {
+    var mainColumn: Column { get }
+}
+
+extension MainColumnSpecifier where Self: ThreeColumnLayout {
+    private func reflow3columns(_ windows: [SIWindow], on screen: NSScreen) -> ThreeColumnReflowOperation {
+        return ThreeColumnReflowOperation(screen: screen, windows: windows, layout: self)
+    }
+
+    internal func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
+        return reflow3columns(windows, on: screen)
+    }
+}
+
+// implement the three variants
+final class ThreeColumnLeftLayout: ThreeColumnLayout, PanedLayout, MainColumnSpecifier {
+    override static var layoutName: String { return "3Column Left" }
+    override static var layoutKey: String { return "3column-left" }
+    internal let mainColumn = Column.left
+}
+
+final class ThreeColumnMiddleLayout: ThreeColumnLayout, PanedLayout, MainColumnSpecifier {
+    override static var layoutName: String { return "3Column Middle" }
+    override static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
+    internal let mainColumn = Column.middle
+}
+
+final class ThreeColumnRightLayout: ThreeColumnLayout, PanedLayout, MainColumnSpecifier {
+    override static var layoutName: String { return "3Column Right" }
+    override static var layoutKey: String { return "3column-right" }
+    internal let mainColumn = Column.right
+}
+
+// extend all ThreeColumnLayouts with other necessary functionality: PanedLayout, WindowActivityCache, FrameAssigner
+extension ThreeColumnLayout: FrameAssigner {}
+
+extension ThreeColumnLayout: WindowActivityCache {
+    func windowIsActive(_ window: SIWindow) -> Bool {
+        return windowActivityCache.windowIsActive(window)
     }
 }

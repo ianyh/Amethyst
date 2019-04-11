@@ -229,6 +229,8 @@ final class BinarySpacePartitioningLayout: Layout {
     static var layoutName: String { return "Binary Space Partitioning" }
     static var layoutKey: String { return "bsp" }
 
+    var layoutDescription: String { return "\(lastKnownFocusedWindowID.debugDescription)" }
+
     let windowActivityCache: WindowActivityCache
 
     fileprivate var rootNode = TreeNode()

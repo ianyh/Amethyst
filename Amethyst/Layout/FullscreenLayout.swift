@@ -29,6 +29,8 @@ final class FullscreenLayout: Layout {
     static var layoutName: String { return "Fullscreen" }
     static var layoutKey: String { return "fullscreen" }
 
+    var layoutDescription: String { return "" }
+
     let windowActivityCache: WindowActivityCache
 
     init(windowActivityCache: WindowActivityCache) {
