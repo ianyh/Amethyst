@@ -18,7 +18,7 @@ PODS:
   - Silica (0.3)
   - Sparkle (1.21.3)
   - SwiftyBeaver (1.7.0)
-  - SwiftyJSON (3.1.4)
+  - SwiftyJSON (4.2.0)
 
 DEPENDENCIES:
   - Cartography
@@ -32,7 +32,7 @@ DEPENDENCIES:
   - Silica (from `https://github.com/ianyh/Silica`)
   - Sparkle
   - SwiftyBeaver
-  - SwiftyJSON (~> 3.1)
+  - SwiftyJSON (= 4.2.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -75,8 +75,8 @@ SPEC CHECKSUMS:
   Silica: 91ca1ed3a115c6999eadbd17f51283b166b5eab2
   Sparkle: 3f75576db8b0265adef36c43249d747f22d0b708
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
-  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: fe2a6b7e6724dc397e7829b468f07c8dd0c00a53
+PODFILE CHECKSUM: f89e8028233831225f2aab3c5498295a303a13cf
 
 COCOAPODS: 1.6.1
