@@ -253,7 +253,7 @@ final class UserConfiguration: NSObject {
             return nil
         }
 
-        return JSON(data: data)
+        return try? JSON(data: data)
     }
 
     private func loadConfigurationFile() {
