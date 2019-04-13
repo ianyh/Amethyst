@@ -3,17 +3,21 @@ PODS:
   - LoginServiceKit (2.0.2)
   - MASShortcut (2.3.6)
   - Nimble (8.0.1)
-  - Quick (1.3.2)
-  - RxCocoa (4.3.1):
+  - Quick (2.0.0)
+  - RxCocoa (4.5.0):
+    - RxSwift (>= 4.4.2, ~> 4.4)
+  - RxSwift (4.5.0)
+  - RxSwiftExt (3.4.0):
+    - RxSwiftExt/Core (= 3.4.0)
+    - RxSwiftExt/RxCocoa (= 3.4.0)
+  - RxSwiftExt/Core (3.4.0):
     - RxSwift (~> 4.0)
-  - RxSwift (4.3.1)
-  - RxSwiftExt (3.3.0):
-    - RxSwiftExt/Core (= 3.3.0)
-  - RxSwiftExt/Core (3.3.0):
-    - RxSwift (~> 4.0)
+  - RxSwiftExt/RxCocoa (3.4.0):
+    - RxCocoa (~> 4.0)
+    - RxSwiftExt/Core
   - Silica (0.3)
   - Sparkle (1.21.3)
-  - SwiftyBeaver (1.6.1)
+  - SwiftyBeaver (1.7.0)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
@@ -22,9 +26,9 @@ DEPENDENCIES:
   - MASShortcut
   - Nimble
   - Quick
-  - RxCocoa (= 4.3.1)
-  - RxSwift (= 4.3.1)
-  - RxSwiftExt (= 3.3.0)
+  - RxCocoa
+  - RxSwift
+  - RxSwiftExt
   - Silica (from `https://github.com/ianyh/Silica`)
   - Sparkle
   - SwiftyBeaver
@@ -64,15 +68,15 @@ SPEC CHECKSUMS:
   LoginServiceKit: 5b4736234dc4cc96d786d8cd83e43b9ce5e7f1ca
   MASShortcut: 9c215e8a8a78f3d01ce56da48e2730ab66b538fa
   Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
-  Quick: 2623cb30d7a7f41ca62f684f679586558f483d46
-  RxCocoa: 78763c7b07d02455598d9fc3c1ad091a28b73635
-  RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
-  RxSwiftExt: 81afb48ab0602f503147417baeb3989d64c7687d
+  Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
+  RxCocoa: cbf70265dc65a981d4ac982e513c10cf23df24a0
+  RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
+  RxSwiftExt: 01f8ecbeeb355698e9c75365ebe908b00dacf45d
   Silica: 91ca1ed3a115c6999eadbd17f51283b166b5eab2
   Sparkle: 3f75576db8b0265adef36c43249d747f22d0b708
-  SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
+  SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: d0e49fc47229865c882863988514a83867db448c
+PODFILE CHECKSUM: fe2a6b7e6724dc397e7829b468f07c8dd0c00a53
 
 COCOAPODS: 1.6.1

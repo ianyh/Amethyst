@@ -6,9 +6,9 @@ target 'Amethyst' do
   pod 'Cartography'
   pod 'LoginServiceKit', :git => 'https://github.com/Clipy/LoginServiceKit.git'
   pod 'MASShortcut'
-  pod 'RxCocoa', '= 4.3.1'
-  pod 'RxSwift', '= 4.3.1'
-  pod 'RxSwiftExt', '= 3.3.0'
+  pod 'RxCocoa'
+  pod 'RxSwift'
+  pod 'RxSwiftExt'
   pod 'Silica', git: 'https://github.com/ianyh/Silica', submodules: true
   pod 'Sparkle'
   pod 'SwiftyBeaver'
