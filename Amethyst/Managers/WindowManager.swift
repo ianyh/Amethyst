@@ -13,399 +13,28 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-enum WindowChange {
-    case add(window: SIWindow)
-    case remove(window: SIWindow)
-    case focusChanged(window: SIWindow)
-    case windowSwap(window: SIWindow, otherWindow: SIWindow)
-    case unknown
-}
+final class WindowManager<Application: ApplicationType>: NSObject {
+    typealias Window = Application.Window
 
-// These are the possible actions that the mouse might be taking (that we care about).
-//  We use this enum to convey some information about the window that the mouse
-//  might be interacting with.
-enum MouseState {
-    case pointing
-    case clicking
-    case dragging
-    case moving(window: SIWindow)
-    case resizing(screen: NSScreen, ratio: CGFloat)
-    case doneDragging(atTime: Date)
-}
+    private(set) var windows: [Window] = []
+    private(set) lazy var windowTransitionCoordinator = WindowTransitionCoordinator(target: self)
+    private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self)
 
-// MouseStateKeeper will need a few things to do its job effectively
-protocol MouseStateKeeperDelegate: class {
-    func focusedScreenManager() -> ScreenManager?
-    func windows(on screen: NSScreen) -> [SIWindow]
-    func switchWindow(_ window: SIWindow, with otherWindow: SIWindow)
-    var lastReflowTime: Date { get }
-}
+    private var applications: [AnyApplication<Application>] = []
+    private let screens = Screens()
+    private var activeIDCache: Set<CGWindowID> = Set()
+    private var floatingMap: [CGWindowID: Bool] = [:]
+    private var lastReflowTime = Date()
+    private var lastFocusDate: Date?
 
-// MouseStateKeeper exists because we need a single shared mouse state between all
-//  SIApplications being observed.  This class captures the state and coordinates
-//  any Amethyst reflow actions that are required in response to mouse events.
-// Note that some actions may be initiated here and some actions may be completed
-//  here; we don't know whether the mouse event stream or the accessibility event
-//  stream will fire first.
-// This class by itself can only understand clicking, dragging, and "pointing"
-//  (no mouse buttons down).  The SIApplication observers are able to augment that
-//  understanding of state by "upgrading" a drag action to a "window move" or a
-//  "window resize" event since those observers will have proper context.
-class MouseStateKeeper {
-    public let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
-    public var state: MouseState
-    weak var delegate: MouseStateKeeperDelegate?
-    private var monitor: Any?
-
-    init() {
-        state = .pointing
-        let mouseEventsToWatch: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseUp, .leftMouseDragged]
-        monitor = NSEvent.addGlobalMonitorForEvents(matching: mouseEventsToWatch, handler: self.handleMouseEvent)
-    }
-
-    deinit {
-        guard let oldMonitor = monitor else { return }
-        NSEvent.removeMonitor(oldMonitor)
-    }
-
-    // Update our understanding of the current state unless an observer has already
-    // done it for us.  mouseUp events take precedence over anything an observer had
-    // found -- you can't be dragging or resizing with a mouse button up, even if
-    // you're using the "3 finger drag" accessibility option, where no physical button
-    // is being pressed.
-    func handleMouseEvent(anEvent: NSEvent) {
-        switch anEvent.type {
-        case .leftMouseDown:
-            self.state = .clicking
-        case .leftMouseDragged:
-            switch self.state {
-            case .moving, .resizing:
-            break // ignore - we have what we need
-            case .pointing, .clicking, .dragging, .doneDragging:
-                self.state = .dragging
-            }
-
-        case .leftMouseUp:
-            switch self.state {
-            case .dragging:
-                // assume window move event will come shortly after
-                self.state = .doneDragging(atTime: Date())
-            case let .moving(draggedWindow):
-                self.state = .pointing // flip state first to prevent race condition
-                self.swapDraggedWindowWithDropzone(draggedWindow)
-            case let .resizing(_, ratio):
-                self.state = .pointing
-                self.resizeFrameToDraggedWindowBorder(ratio)
-            case .doneDragging:
-                self.state = .doneDragging(atTime: Date()) // reset the clock I guess
-            case .pointing, .clicking:
-                self.state = .pointing
-            }
-
-        default: ()
-        }
-
-    }
-
-    // React to a reflow event.  Typically this means that any window we were dragging
-    // is no longer valid and should be de-correlated from the mouse
-    func handleReflowEvent() {
-        switch self.state {
-        case .doneDragging:
-            self.state = .pointing // remove associated timestamp
-        case .moving:
-            self.state = .dragging // remove associated window
-        default: ()
-        }
-    }
-
-    // Execute an action that was initiated by the observer and completed by the state keeper
-    func resizeFrameToDraggedWindowBorder(_ ratio: CGFloat) {
-        guard let delegate = self.delegate else { return }
-        delegate.focusedScreenManager()?.updateCurrentLayout { layout in
-            if let panedLayout = layout as? PanedLayout {
-                panedLayout.recommendMainPaneRatio(ratio)
-            }
-        }
-    }
-
-    // Execute an action that was initiated by the observer and completed by the state keeper
-    func swapDraggedWindowWithDropzone(_ draggedWindow: SIWindow) {
-        guard let delegate = self.delegate else { return }
-        guard let screen = draggedWindow.screen() else { return }
-
-        let windows = delegate.windows(on: screen)
-
-        // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
-        let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
-        let unflippedY = NSScreen.globalHeight() - flippedPointerLocation.y + screen.frameIncludingDockAndMenu().origin.y
-        let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
-
-        if let layout = delegate.focusedScreenManager()?.currentLayout {
-            if let framedWindow = layout.windowAtPoint(pointerLocation, of: windows, on: screen) {
-                return delegate.switchWindow(draggedWindow, with: framedWindow)
-            }
-        }
-
-        // Ignore if there is no window at that point
-        guard let secondWindow = SIWindow.alternateWindowForScreenAtPoint(pointerLocation, withWindows: windows, butNot: draggedWindow) else {
-            return
-        }
-        delegate.switchWindow(draggedWindow, with: secondWindow)
-    }
-}
-
-// This class sets up accessibility API event subscriptions for a given SIApplication,
-// handling references to the window manager and mouse state.  The observers themselves
-// react to mouse / accessibility state by either changing window positions or updating
-// the mouse state based on new information
-private struct ObserveApplicationNotifications {
-    enum Error: Swift.Error {
-        case failed
-    }
-
-    private enum Notification {
-        case created
-        case windowDeminiaturized
-        case applicationHidden
-        case applicationShown
-        case focusedWindowChanged
-        case applicationActivated
-        case windowMoved
-        case windowResized
-        case mainWindowChanged
-
-        var string: String {
-            switch self {
-            case .created:
-                return kAXCreatedNotification
-            case .windowDeminiaturized:
-                return kAXWindowDeminiaturizedNotification
-            case .applicationHidden:
-                return kAXApplicationHiddenNotification
-            case .applicationShown:
-                return kAXApplicationShownNotification
-            case .focusedWindowChanged:
-                return kAXFocusedWindowChangedNotification
-            case .applicationActivated:
-                return kAXApplicationActivatedNotification
-            case .windowMoved:
-                return kAXWindowMovedNotification
-            case .windowResized:
-                return kAXWindowResizedNotification
-            case .mainWindowChanged:
-                return kAXMainWindowChangedNotification
-            }
-        }
-    }
-
-    init() {}
-
-    fileprivate func addObservers(application: SIApplication, windowManager: WindowManager) -> Observable<Void> {
-        return _addObservers(application, windowManager).retry(.exponentialDelayed(maxCount: 4, initial: 0.1, multiplier: 2))
-    }
-
-    private func _addObservers(_ application: SIApplication, _ windowManager: WindowManager) -> Observable<Void> {
-        let notifications: [Notification] = [
-            .created,
-            .windowDeminiaturized,
-            .applicationHidden,
-            .applicationShown,
-            .focusedWindowChanged,
-            .applicationActivated,
-            .windowMoved,
-            .windowResized,
-            .mainWindowChanged
-        ]
-
-        return Observable.from(notifications)
-            .scan([]) { [weak application, weak windowManager] observed, notification -> [Notification] in
-                guard let application = application, let windowManager = windowManager else {
-                    throw Error.failed
-                }
-
-                do {
-                    try self.addObserver(for: notification, application: application, windowManager: windowManager)
-                } catch {
-                    log.error("Failed to add observer \(notification) on application \(application.title() ?? "<unknown>")")
-                    self.removeObservers(notifications: observed, application: application)
-                    throw error
-                }
-
-                return observed + [notification]
-            }
-            .map { _ in }
-    }
-
-    private func addObserver(for notification: Notification, application: SIApplication, windowManager: WindowManager) throws {
-        let success = application.observe(notification: notification.string, with: application) { [weak application, weak windowManager] element in
-            guard let application = application, let windowManager = windowManager else {
-                return
-            }
-
-            self.handle(notification: notification, element: element, application: application, windowManager: windowManager)
-        }
-
-        guard success else {
-            throw Error.failed
-        }
-    }
-
-    private func removeObservers(notifications: [Notification], application: SIApplication) {
-        notifications.forEach { application.unobserveNotification($0.string as CFString, with: application) }
-    }
-
-    private func handle(notification: Notification, element: SIAccessibilityElement, application: SIApplication, windowManager: WindowManager) {
-        switch notification {
-        case .created:
-            guard let window = element as? SIWindow else {
-                return
-            }
-            windowManager.swapInTab(window: window)
-        case .windowDeminiaturized:
-            guard let window = element as? SIWindow else {
-                return
-            }
-            windowManager.addWindow(window)
-        case .applicationHidden:
-            guard let window = element as? SIWindow else {
-                return
-            }
-            windowManager.removeWindow(window)
-        case .applicationShown:
-            guard let window = element as? SIWindow else {
-                return
-            }
-            windowManager.addWindow(window)
-        case .focusedWindowChanged:
-            guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
-                return
-            }
-            windowManager.lastFocusDate = Date()
-            if windowManager.windows.index(of: focusedWindow) == nil {
-                windowManager.markScreenForReflow(screen, withChange: .unknown)
-            } else {
-                windowManager.markScreenForReflow(screen, withChange: .focusChanged(window: focusedWindow))
-                windowManager.screenManager(for: screen)?.lastFocusedWindow = focusedWindow
-            }
-        case .applicationActivated:
-            NSObject.cancelPreviousPerformRequests(
-                withTarget: windowManager,
-                selector: #selector(WindowManager.applicationActivated(_:)),
-                object: nil
-            )
-            windowManager.perform(#selector(WindowManager.applicationActivated(_:)), with: nil, afterDelay: 0.2)
-        case .windowMoved:
-            guard windowManager.userConfiguration.mouseSwapsWindows() else {
-                return
-            }
-
-            guard let movedWindow = element as? SIWindow else {
-                return
-            }
-
-            guard let screen = movedWindow.screen(),
-                windowManager.activeWindows(on: screen).contains(movedWindow) else {
-                    return
-            }
-
-            switch windowManager.mouseStateKeeper.state {
-            case .dragging:
-                // be aware of last reflow time, again to prevent race condition
-                guard let delegate = windowManager.mouseStateKeeper.delegate else { break }
-                let reflowEndInterval = Date().timeIntervalSince(delegate.lastReflowTime)
-                guard reflowEndInterval > windowManager.mouseStateKeeper.dragRaceThresholdSeconds else { break }
-
-                // record window and wait for mouse up
-                windowManager.mouseStateKeeper.state = .moving(window: movedWindow)
-            case let .doneDragging(lmbUpMoment):
-                windowManager.mouseStateKeeper.state = .pointing // flip state first to prevent race condition
-
-                // if mouse button recently came up, assume window move is related
-                let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
-                guard dragEndInterval < windowManager.mouseStateKeeper.dragRaceThresholdSeconds else { break }
-
-                windowManager.mouseStateKeeper.swapDraggedWindowWithDropzone(movedWindow)
-            default:
-                break
-            }
-        case .windowResized:
-            guard windowManager.userConfiguration.mouseResizesWindows() else {
-                return
-            }
-
-            guard let resizedWindow = element as? SIWindow else {
-                return
-            }
-
-            guard let screen = resizedWindow.screen(),
-                windowManager.activeWindows(on: screen).contains(resizedWindow) else {
-                    return
-            }
-
-            guard let screenManager = windowManager.focusedScreenManager(),
-                let layout = screenManager.currentLayout as? Layout & PanedLayout,
-                let oldFrame = layout.assignedFrame(resizedWindow, of: windowManager.activeWindowsForScreenManager(screenManager), on: screen) else {
-                    return
-            }
-
-            let ratio = oldFrame.impliedMainPaneRatio(windowFrame: resizedWindow.frame())
-
-            switch windowManager.mouseStateKeeper.state {
-            case .dragging, .resizing:
-                // record window and wait for mouse up
-                windowManager.mouseStateKeeper.state = .resizing(screen: screen, ratio: ratio)
-            case let .doneDragging(lmbUpMoment):
-                // if mouse button recently came up, assume window resize is related
-                let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
-                if dragEndInterval < windowManager.mouseStateKeeper.dragRaceThresholdSeconds {
-                    windowManager.mouseStateKeeper.state = .pointing // flip state first to prevent race condition
-                    windowManager.focusedScreenManager()?.updateCurrentLayout { layout in
-                        if let panedLayout = layout as? PanedLayout {
-                            panedLayout.recommendMainPaneRatio(ratio)
-                        }
-                    }
-                }
-            default:
-                break
-            }
-        case .mainWindowChanged:
-            guard let window = element as? SIWindow else {
-                return
-            }
-            windowManager.swapInTab(window: window)
-        }
-    }
-}
-
-final class WindowManager: NSObject, MouseStateKeeperDelegate {
-    private var applications: [SIApplication] = []
-    private(set) var mouseStateKeeper = MouseStateKeeper()
-    var windows: [SIWindow] = []
-    fileprivate let userConfiguration: UserConfiguration
-
-    private(set) var screenManagers: [ScreenManager] = []
-    private var screenManagersCache: [String: ScreenManager] = [:]
-
-    private let focusFollowsMouseManager: FocusFollowsMouseManager
-
-    fileprivate private(set) var activeIDCache: Set<CGWindowID> = Set()
-    private(set) var floatingMap: [CGWindowID: Bool] = [:]
-
-    public private(set) var lastReflowTime: Date
-
+    private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
+    private lazy var focusFollowsMouseManager = FocusFollowsMouseManager(delegate: self, userConfiguration: self.userConfiguration)
+    private let userConfiguration: UserConfiguration
     private let disposeBag = DisposeBag()
-
-    var lastFocusDate: Date?
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
-        self.focusFollowsMouseManager = FocusFollowsMouseManager(userConfiguration: userConfiguration)
-        lastReflowTime = Date()
         super.init()
-
-        mouseStateKeeper.delegate = self
-        focusFollowsMouseManager.delegate = self
 
         addWorkspaceNotificationObserver(NSWorkspace.didLaunchApplicationNotification, selector: #selector(applicationDidLaunch(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didTerminateApplicationNotification, selector: #selector(applicationDidTerminate(_:)))
@@ -421,7 +50,7 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
         )
 
         reevaluateWindows()
-        updateScreenManagers()
+        screens.updateScreenManagers(windowManager: self)
     }
 
     deinit {
@@ -435,92 +64,246 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
     }
 
     private func regenerateActiveIDCache() {
-        var activeIDCache: Set<CGWindowID> = Set()
-
-        defer {
-            self.activeIDCache = activeIDCache
-        }
-
-        guard let windowDescriptions = SIWindow.windowDescriptions(.optionOnScreenOnly, windowID: CGWindowID(0)) else {
-            return
-        }
-
-        for windowDescription in windowDescriptions {
-            guard let windowID = windowDescription[kCGWindowNumber as String] as? NSNumber else {
-                continue
-            }
-
-            activeIDCache.insert(CGWindowID(windowID.uint64Value))
-        }
+        let windowDescriptions = CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))
+        activeIDCache = windowDescriptions?.activeIDs() ?? Set()
     }
 
-    private func spaceIdentifier(from screenDictionary: JSON) -> String? {
-        return screenDictionary["Current Space"]["uuid"].string
-    }
-
-    fileprivate func assignCurrentSpaceIdentifiers() {
-        regenerateActiveIDCache()
-
-        guard let screenDictionaries = NSScreen.screenDescriptions() else {
-            return
+    func screenManager(screen: NSScreen, screenID: String) -> ScreenManager<Window> {
+        let screenManager = ScreenManager<Window>(
+            screen: screen,
+            screenIdentifier: screenID,
+            delegate: self,
+            userConfiguration: userConfiguration
+        )
+        screenManager.onReflowInitiation = { [weak self] in
+            self?.mouseStateKeeper.handleReflowEvent()
+        }
+        screenManager.onReflowCompletion = { [weak self] in
+            // This handler will be executed by the Operation, in a queue.  Although async
+            // (and although the docs say that it executes in a separate thread), I consider
+            // this to be thread safe, at least safe enough, because we always want the
+            // latest time that a reflow took place.
+            self?.mouseStateKeeper.handleReflowEvent()
+            self?.lastReflowTime = Date()
         }
 
-        if NSScreen.screensHaveSeparateSpaces {
-            for screenDictionary in screenDictionaries {
-                guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
-                    log.error("Could not identify screen with info: \(screenDictionary)")
-                    continue
-                }
-
-                guard let screenManager = screenManagersCache[screenIdentifier] else {
-                    log.error("Screen with identifier not managed: \(screenIdentifier)")
-                    continue
-                }
-
-                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
-                    continue
-                }
-
-                screenManager.currentSpaceIdentifier = spaceIdentifier
-            }
-        } else {
-            for screenManager in screenManagers {
-                let screenDictionary = screenDictionaries[0]
-
-                guard let spaceIdentifier = spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
-                    continue
-                }
-
-                screenManager.currentSpaceIdentifier = spaceIdentifier
-            }
-        }
-    }
-
-    private func screenManagerForCGWindowDescription(_ description: [String: AnyObject]) -> ScreenManager? {
-        let windowFrameDictionary = description[kCGWindowBounds as String] as! [String: Any]
-        let windowFrame = CGRect(dictionaryRepresentation: windowFrameDictionary as CFDictionary)!
-
-        var lastVolume: CGFloat = 0
-        var lastScreenManager: ScreenManager?
-
-        for screenManager in screenManagers {
-            let screenFrame = screenManager.screen.frameIncludingDockAndMenu()
-            let intersection = windowFrame.intersection(screenFrame)
-            let volume = intersection.size.width * intersection.size.height
-
-            if volume > lastVolume {
-                lastVolume = volume
-                lastScreenManager = screenManager
-            }
-        }
-
-        return lastScreenManager
+        return screenManager
     }
 
     func preferencesDidClose() {
         DispatchQueue.main.async {
-            self.focusScreen(at: 0)
+            self.focusTransitionCoordinator.focusScreen(at: 0)
         }
+    }
+
+    func focusedScreenManager<Window>() -> ScreenManager<Window>? {
+        return screens.focusedScreenManager()
+    }
+
+    fileprivate func applicationWithProcessIdentifier(_ processIdentifier: pid_t) -> AnyApplication<Application>? {
+        for application in applications {
+            if application.pid() == processIdentifier {
+                return application
+            }
+        }
+
+        return nil
+    }
+
+    fileprivate func add(application: AnyApplication<Application>) {
+        guard !applications.contains(application) else {
+            for window in application.windows() {
+                add(window: window)
+            }
+            return
+        }
+
+        ApplicationObservation(application: application, delegate: self)
+            .addObservers()
+            .subscribe(
+                onCompleted: { [weak self] in
+                    guard let strongSelf = self else { return }
+
+                    strongSelf.applications.append(application)
+
+                    for window in application.windows() {
+                        strongSelf.add(window: window)
+                    }
+                }
+            )
+            .disposed(by: disposeBag)
+    }
+
+    fileprivate func remove(application: AnyApplication<Application>) {
+        for window in application.windows() {
+            remove(window: window)
+        }
+        guard let applicationIndex = applications.index(of: application) else {
+            return
+        }
+        applications.remove(at: applicationIndex)
+    }
+
+    fileprivate func activate(application: AnyApplication<Application>) {
+        for window in windows {
+            if window.pid() == application.pid() {
+                guard let screen = window.screen() else {
+                    return
+                }
+                markScreenForReflow(screen, withChange: .unknown)
+            }
+        }
+    }
+
+    fileprivate func deactivate(application: AnyApplication<Application>) {
+        for window in windows {
+            if window.pid() == application.pid() {
+                guard let screen = window.screen() else {
+                    return
+                }
+                markScreenForReflow(screen, withChange: .unknown)
+            }
+        }
+    }
+
+    fileprivate func remove(window: Window) {
+        markAllScreensForReflowWithChange(.remove(window: window))
+
+        let application = applicationWithProcessIdentifier(window.pid())
+        application?.unobserve(notification: kAXUIElementDestroyedNotification, window: window)
+        application?.unobserve(notification: kAXWindowMiniaturizedNotification, window: window)
+        application?.unobserve(notification: kAXWindowDeminiaturizedNotification, window: window)
+
+        regenerateActiveIDCache()
+
+        guard let windowIndex = windows.index(of: window) else {
+            return
+        }
+
+        windows.remove(at: windowIndex)
+    }
+
+    func toggleFloatForFocusedWindow() {
+        guard let focusedWindow = Window.currentlyFocused() else {
+            return
+        }
+
+        for window in windows {
+            if let screen = window.screen(), window == focusedWindow {
+                let windowChange: Change = windowIsFloating(window) ? .add(window: window) : .remove(window: window)
+                floatingMap[window.windowID()] = !windowIsFloating(window)
+                markScreenForReflow(screen, withChange: windowChange)
+                return
+            }
+        }
+
+        guard let screen = focusedWindow.screen() else {
+            return
+        }
+
+        let windowChange: Change<Window> = .add(window: focusedWindow)
+        add(window: focusedWindow)
+        floatingMap[focusedWindow.windowID()] = false
+        markScreenForReflow(screen, withChange: windowChange)
+    }
+
+    func markScreenForReflow(_ screen: NSScreen, withChange change: Change<Window>) {
+        screens.markScreenForReflow(screen, withChange: change)
+    }
+
+    func markAllScreensForReflowWithChange(_ windowChange: Change<Window>) {
+        screens.markAllScreensForReflowWithChange(windowChange)
+    }
+
+    func displayCurrentLayout() {
+        for screenManager in screens.screenManagers {
+            screenManager.displayLayoutHUD()
+        }
+    }
+
+    @objc func applicationActivated(_ sender: AnyObject) {
+        guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
+            return
+        }
+        markScreenForReflow(screen, withChange: .unknown)
+    }
+
+    @objc func applicationDidLaunch(_ notification: Notification) {
+        guard let launchedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+        add(runningApplication: launchedApplication)
+    }
+
+    @objc func applicationDidTerminate(_ notification: Notification) {
+        guard let terminatedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+
+        guard let application = applicationWithProcessIdentifier(terminatedApplication.processIdentifier) else {
+            return
+        }
+
+        remove(application: application)
+    }
+
+    @objc func applicationDidHide(_ notification: Notification) {
+        guard let hiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+
+        guard let application = applicationWithProcessIdentifier(hiddenApplication.processIdentifier) else {
+            return
+        }
+
+        deactivate(application: application)
+    }
+
+    @objc func applicationDidUnhide(_ notification: Notification) {
+        guard let unhiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+
+        guard let application = applicationWithProcessIdentifier(unhiddenApplication.processIdentifier) else {
+            return
+        }
+
+        activate(application: application)
+    }
+
+    @objc func activeSpaceDidChange(_ notification: Notification) {
+        regenerateActiveIDCache()
+        screens.assignCurrentSpaceIdentifiers()
+
+        for runningApplication in NSWorkspace.shared.runningApplications {
+            guard runningApplication.isManageable else {
+                continue
+            }
+
+            let processIdentifier = runningApplication.processIdentifier
+            guard let application = applicationWithProcessIdentifier(processIdentifier) else {
+                continue
+            }
+
+            application.dropWindowsCache()
+
+            for window in application.windows() {
+                add(window: window)
+            }
+        }
+
+        markAllScreensForReflowWithChange(.unknown)
+    }
+
+    @objc func screenParametersDidChange(_ notification: Notification) {
+        screens.updateScreenManagers(windowManager: self)
+    }
+}
+
+extension WindowManager {
+    func add(runningApplication: NSRunningApplication) {
+        let application = AnyApplication(Application(runningApplication: runningApplication))
+        add(application: application)
     }
 
     func reevaluateWindows() {
@@ -529,90 +312,12 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
                 continue
             }
 
-            let application = SIApplication(runningApplication: runningApplication)
-            addApplication(application)
+            add(runningApplication: runningApplication)
         }
         markAllScreensForReflowWithChange(.unknown)
     }
 
-    func focusedScreenManager() -> ScreenManager? {
-        guard let focusedWindow = SIWindow.focused() else {
-            return nil
-        }
-        for screenManager in screenManagers {
-            if screenManager.screen.screenIdentifier() == focusedWindow.screen()?.screenIdentifier() {
-                return screenManager
-            }
-        }
-        return nil
-    }
-
-    fileprivate func applicationWithProcessIdentifier(_ processIdentifier: pid_t) -> SIApplication? {
-        for application in applications {
-            if application.processIdentifier() == processIdentifier {
-                return application
-            }
-        }
-
-        return nil
-    }
-
-    fileprivate func addApplication(_ application: SIApplication) {
-        guard !applications.contains(application) else {
-            for window in application.windows() as! [SIWindow] {
-                addWindow(window)
-            }
-            return
-        }
-
-        ObserveApplicationNotifications().addObservers(application: application, windowManager: self)
-            .subscribe(
-                onCompleted: { [weak self] in
-                    guard let strongSelf = self else { return }
-
-                    strongSelf.applications.append(application)
-
-                    for window in application.windows() as! [SIWindow] {
-                        strongSelf.addWindow(window)
-                    }
-                }
-            )
-            .disposed(by: disposeBag)
-    }
-
-    fileprivate func removeApplication(_ application: SIApplication) {
-        for window in application.windows() as! [SIWindow] {
-            removeWindow(window)
-        }
-        guard let applicationIndex = applications.index(of: application) else {
-            return
-        }
-        applications.remove(at: applicationIndex)
-    }
-
-    fileprivate func activateApplication(_ application: SIApplication) {
-        for window in windows {
-            if window.processIdentifier() == application.processIdentifier() {
-                guard let screen = window.screen() else {
-                    return
-                }
-                markScreenForReflow(screen, withChange: .unknown)
-            }
-        }
-    }
-
-    fileprivate func deactivateApplication(_ application: SIApplication) {
-        for window in windows {
-            if window.processIdentifier() == application.processIdentifier() {
-                guard let screen = window.screen() else {
-                    return
-                }
-                markScreenForReflow(screen, withChange: .unknown)
-            }
-        }
-    }
-
-    fileprivate func addWindow(_ window: SIWindow) {
+    func add(window: Window) {
         guard !windows.contains(window) && window.shouldBeManaged() else {
             return
         }
@@ -625,7 +330,7 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
             windows.append(window)
         }
 
-        guard let application = applicationWithProcessIdentifier(window.processIdentifier()) else {
+        guard let application = applicationWithProcessIdentifier(window.pid()) else {
             log.error("Tried to add a window without an application")
             return
         }
@@ -636,17 +341,14 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
             floatingMap[window.windowID()] = window.shouldFloat()
         }
 
-        application.observeNotification(kAXUIElementDestroyedNotification as CFString, with: window) { element in
-            guard let window = element as? SIWindow else {
-                return
-            }
-            self.removeWindow(window)
+        application.observe(notification: kAXUIElementDestroyedNotification, window: window) { element in
+            let window = Window(element: element)
+            self.remove(window: window)
         }
-        application.observeNotification(kAXWindowMiniaturizedNotification as CFString, with: window) { element in
-            guard let window = element as? SIWindow else {
-                return
-            }
-            self.removeWindow(window)
+        application.observe(notification: kAXWindowMiniaturizedNotification, window: window) { element in
+            let window = Window(element: element)
+
+            self.remove(window: window)
 
             guard let screen = window.screen() else {
                 return
@@ -658,121 +360,23 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
             return
         }
 
-        let windowChange: WindowChange = windowIsFloating(window) ? .unknown : .add(window: window)
+        let windowChange: Change = windowIsFloating(window) ? .unknown : .add(window: window)
         markScreenForReflow(screen, withChange: windowChange)
     }
 
-    fileprivate func removeWindow(_ window: SIWindow) {
-        markAllScreensForReflowWithChange(.remove(window: window))
-
-        let application = applicationWithProcessIdentifier(window.processIdentifier())
-        application?.unobserveNotification(kAXUIElementDestroyedNotification as CFString, with: window)
-        application?.unobserveNotification(kAXWindowMiniaturizedNotification as CFString, with: window)
-        application?.unobserveNotification(kAXWindowDeminiaturizedNotification as CFString, with: window)
-
-        regenerateActiveIDCache()
-
-        guard let windowIndex = windows.index(of: window) else {
-            return
-        }
-
-        windows.remove(at: windowIndex)
-    }
-
-    func toggleFloatForFocusedWindow() {
-        guard let focusedWindow = SIWindow.focused() else {
-            return
-        }
-
-        for window in windows {
-            if let screen = window.screen(), window == focusedWindow {
-                let windowChange: WindowChange = windowIsFloating(window) ? .add(window: window) : .remove(window: window)
-                floatingMap[window.windowID()] = !windowIsFloating(window)
-                markScreenForReflow(screen, withChange: windowChange)
-                return
-            }
-        }
-
-        guard let screen = focusedWindow.screen() else {
-            return
-        }
-
-        let windowChange: WindowChange = .add(window: focusedWindow)
-        addWindow(focusedWindow)
-        floatingMap[focusedWindow.windowID()] = false
-        markScreenForReflow(screen, withChange: windowChange)
-    }
-
-    fileprivate func updateScreenManagers() {
-        var screenManagers: [ScreenManager] = []
-
-        for screen in NSScreen.screens {
-            guard let screenIdentifier = screen.screenIdentifier() else {
-                continue
-            }
-
-            var screenManager = screenManagersCache[screenIdentifier]
-
-            if screenManager == nil {
-                screenManager = ScreenManager(screen: screen, screenIdentifier: screenIdentifier, delegate: self, userConfiguration: userConfiguration)
-                screenManager!.onReflowInitiation = { [weak self] in
-                    self?.mouseStateKeeper.handleReflowEvent()
-                }
-                screenManager!.onReflowCompletion = { [weak self] in
-                    // This handler will be executed by the Operation, in a queue.  Although async
-                    // (and although the docs say that it executes in a separate thread), I consider
-                    // this to be thread safe, at least safe enough, because we always want the
-                    // latest time that a reflow took place.
-                    self?.mouseStateKeeper.handleReflowEvent()
-                    self?.lastReflowTime = Date()
-                }
-                screenManagersCache[screenIdentifier] = screenManager
-            }
-
-            screenManager!.screen = screen
-
-            screenManagers.append(screenManager!)
-        }
-
-        // Window managers are sorted by screen position along the x-axis.
-        screenManagers.sort { screenManager1, screenManager2 -> Bool in
-            let originX1 = screenManager1.screen.frameWithoutDockOrMenu().origin.x
-            let originX2 = screenManager2.screen.frameWithoutDockOrMenu().origin.x
-
-            return originX1 < originX2
-        }
-
-        self.screenManagers = screenManagers
-
-        assignCurrentSpaceIdentifiers()
-        markAllScreensForReflowWithChange(.unknown)
-    }
-
-    func markAllScreensForReflowWithChange(_ windowChange: WindowChange) {
-        for screenManager in screenManagers {
-            screenManager.setNeedsReflowWithWindowChange(windowChange)
-        }
-    }
-
-    func displayCurrentLayout() {
-        for screenManager in screenManagers {
-            screenManager.displayLayoutHUD()
-        }
-    }
-
-    func swapInTab(window: SIWindow) {
+    func swapInTab(window: Window) {
         guard let screen = window.screen() else {
             return
         }
 
         // We do this to avoid triggering tab swapping when just switching focus between apps.
         // If the window's app is not running by this point then it's not a tab switch.
-        guard let runningApp = NSRunningApplication(processIdentifier: window.processIdentifier()), runningApp.isActive else {
+        guard let runningApp = NSRunningApplication(processIdentifier: window.pid()), runningApp.isActive else {
             return
         }
 
         // We take the windows that are being tracked so we can properly detect when a tab switch is a new tab.
-        let applicationWindows = windows.filter { $0.processIdentifier() == window.processIdentifier() }
+        let applicationWindows = windows.filter { $0.pid() == window.pid() }
 
         for existingWindow in applicationWindows {
             guard existingWindow != window else {
@@ -808,8 +412,8 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
 
             // Add the new window to be tracked, swap it with the existing window, regenerate cache to account
             // for the change, and then reflow.
-            addWindow(window)
-            switchWindow(existingWindow, with: window)
+            add(window: window)
+            executeTransition(.switchWindows(existingWindow, window))
             regenerateActiveIDCache()
             markScreenForReflow(screen, withChange: .unknown)
 
@@ -817,92 +421,262 @@ final class WindowManager: NSObject, MouseStateKeeperDelegate {
         }
 
         // If we've reached this point we haven't found any tab to switch out, but this window could still be new.
-        addWindow(window)
-    }
-}
-
-extension WindowManager {
-    @objc func applicationActivated(_ sender: AnyObject) {
-        guard let focusedWindow = SIWindow.focused(), let screen = focusedWindow.screen() else {
-            return
-        }
-        markScreenForReflow(screen, withChange: .unknown)
-    }
-
-    @objc func applicationDidLaunch(_ notification: Notification) {
-        guard let launchedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-        let application = SIApplication(runningApplication: launchedApplication)
-        addApplication(application)
-    }
-
-    @objc func applicationDidTerminate(_ notification: Notification) {
-        guard let terminatedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-
-        guard let application = applicationWithProcessIdentifier(terminatedApplication.processIdentifier) else {
-            return
-        }
-
-        removeApplication(application)
-    }
-
-    @objc func applicationDidHide(_ notification: Notification) {
-        guard let hiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-
-        guard let application = applicationWithProcessIdentifier(hiddenApplication.processIdentifier) else {
-            return
-        }
-
-        deactivateApplication(application)
-    }
-
-    @objc func applicationDidUnhide(_ notification: Notification) {
-        guard let unhiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-
-        guard let application = applicationWithProcessIdentifier(unhiddenApplication.processIdentifier) else {
-            return
-        }
-
-        activateApplication(application)
-    }
-
-    @objc func activeSpaceDidChange(_ notification: Notification) {
-        assignCurrentSpaceIdentifiers()
-
-        for runningApplication in NSWorkspace.shared.runningApplications {
-            guard runningApplication.isManageable else {
-                continue
-            }
-
-            let processIdentifier = runningApplication.processIdentifier
-            guard let application = applicationWithProcessIdentifier(processIdentifier) else {
-                continue
-            }
-
-            application.dropWindowsCache()
-
-            for window in application.windows() as! [SIWindow] {
-                addWindow(window)
-            }
-        }
-
-        markAllScreensForReflowWithChange(.unknown)
-    }
-
-    @objc func screenParametersDidChange(_ notification: Notification) {
-        updateScreenManagers()
+        add(window: window)
     }
 }
 
 extension WindowManager: WindowActivityCache {
-    func windowIsActive(_ window: SIWindow) -> Bool {
+    func windowIsActive<W: WindowType>(_ window: W) -> Bool {
         return window.isActive() && activeIDCache.contains(window.windowID())
+    }
+
+    func windowIsFloating<Window: WindowType>(_ window: Window) -> Bool {
+        return floatingMap[window.windowID()] ?? false
+    }
+}
+
+extension WindowManager: MouseStateKeeperDelegate {
+    func recommendMainPaneRatio(_ ratio: CGFloat) {
+        guard let screenManager: ScreenManager<Window> = focusedScreenManager() else { return }
+
+        screenManager.updateCurrentLayout { layout in
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.recommendMainPaneRatio(ratio)
+            }
+        }
+    }
+
+    func swapDraggedWindowWithDropzone(_ draggedWindow: Application.Window) {
+        guard let screen = draggedWindow.screen() else { return }
+
+        let windows: [Window] = self.windows(self.windows, on: screen)
+
+        // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
+        let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
+        let unflippedY = NSScreen.globalHeight() - flippedPointerLocation.y + screen.frameIncludingDockAndMenu().origin.y
+        let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
+
+        if let screenManager: ScreenManager<Window> = focusedScreenManager(), let layout = screenManager.currentLayout {
+            if let framedWindow = layout.windowAtPoint(pointerLocation, of: windows, on: screen) {
+                executeTransition(.switchWindows(draggedWindow, framedWindow))
+                return
+            }
+        }
+
+        // Ignore if there is no window at that point
+        guard let secondWindow = WindowsInformation.alternateWindowForScreenAtPoint(pointerLocation, withWindows: windows, butNot: draggedWindow) else {
+            return
+        }
+        executeTransition(.switchWindows(draggedWindow, secondWindow))
+    }
+}
+
+extension WindowManager: ApplicationObservationDelegate {
+    func application(_ application: AnyApplication<Application>, didAddWindow window: Application.Window) {
+        add(window: window)
+    }
+
+    func application(_ application: AnyApplication<Application>, didRemoveWindow window: Application.Window) {
+        remove(window: window)
+    }
+
+    func application(_ application: AnyApplication<Application>, didFocusWindow window: Application.Window) {
+        guard let screen = window.screen() else {
+            return
+        }
+
+        lastFocusDate = Date()
+        if windows.index(of: window) == nil {
+            markScreenForReflow(screen, withChange: .unknown)
+        } else {
+            markScreenForReflow(screen, withChange: .focusChanged(window: window))
+        }
+    }
+
+    func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Application.Window) {
+        swapInTab(window: window)
+    }
+
+    func application(_ application: AnyApplication<Application>, didMoveWindow window: Application.Window) {
+        guard userConfiguration.mouseSwapsWindows() else {
+            return
+        }
+
+        guard let screen = window.screen(), activeWindows(on: screen).contains(window) else {
+            return
+        }
+
+        switch mouseStateKeeper.state {
+        case .dragging:
+            // be aware of last reflow time, again to prevent race condition
+            let reflowEndInterval = Date().timeIntervalSince(lastReflowTime)
+            guard reflowEndInterval > mouseStateKeeper.dragRaceThresholdSeconds else { break }
+
+            // record window and wait for mouse up
+            mouseStateKeeper.state = .moving(window: window)
+        case let .doneDragging(lmbUpMoment):
+            mouseStateKeeper.state = .pointing // flip state first to prevent race condition
+
+            // if mouse button recently came up, assume window move is related
+            let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
+            guard dragEndInterval < mouseStateKeeper.dragRaceThresholdSeconds else { break }
+
+            mouseStateKeeper.swapDraggedWindowWithDropzone(window)
+        default:
+            break
+        }
+    }
+
+    func application(_ application: AnyApplication<Application>, didResizeWindow window: Application.Window) {
+        guard userConfiguration.mouseResizesWindows() else {
+            return
+        }
+
+        guard let screen = window.screen(), activeWindows(on: screen).contains(window) else {
+            return
+        }
+
+        guard
+            let screenManager: ScreenManager<Application.Window> = focusedScreenManager(),
+            let layout = screenManager.currentLayout,
+            layout is PanedLayout,
+            let oldFrame = layout.assignedFrame(window, of: activeWindowsForScreenManager(screenManager), on: screen)
+        else {
+            return
+        }
+
+        let ratio = oldFrame.impliedMainPaneRatio(windowFrame: window.frame())
+
+        switch mouseStateKeeper.state {
+        case .dragging, .resizing:
+            // record window and wait for mouse up
+            mouseStateKeeper.state = .resizing(screen: screen, ratio: ratio)
+        case let .doneDragging(lmbUpMoment):
+            // if mouse button recently came up, assume window resize is related
+            let dragEndInterval = Date().timeIntervalSince(lmbUpMoment)
+            if dragEndInterval < mouseStateKeeper.dragRaceThresholdSeconds {
+                mouseStateKeeper.state = .pointing // flip state first to prevent race condition
+
+                if let screenManager: ScreenManager<Application.Window> = focusedScreenManager() {
+                    screenManager.updateCurrentLayout { layout in
+                        if let panedLayout = layout as? PanedLayout {
+                            panedLayout.recommendMainPaneRatio(ratio)
+                        }
+                    }
+                }
+            }
+        default:
+            break
+        }
+    }
+
+    func applicationDidActivate(_ application: AnyApplication<Application>) {
+        NSObject.cancelPreviousPerformRequests(
+            withTarget: self,
+            selector: #selector(applicationActivated(_:)),
+            object: nil
+        )
+        perform(#selector(applicationActivated(_:)), with: nil, afterDelay: 0.2)
+    }
+}
+
+// MARK: Transition Coordination
+extension WindowManager {
+    func screen(at index: Int) -> NSScreen? {
+        return screenManager(at: index)?.screen
+    }
+
+    func screenManager(at screenIndex: Int) -> ScreenManager<Window>? {
+        guard screenIndex > -1 && screenIndex < screens.screenManagers.count else {
+            return nil
+        }
+
+        return screens.screenManagers[screenIndex]
+    }
+
+    func screenManager(for screen: NSScreen) -> ScreenManager<Window>? {
+        return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+    }
+
+    func screenManagerIndex(for screen: NSScreen) -> Int? {
+        return screens.screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+    }
+}
+
+extension WindowManager: WindowTransitionTarget {
+    func executeTransition(_ transition: WindowTransition<Window>) {
+        switch transition {
+        case let .switchWindows(window, otherWindow):
+            guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
+                return
+            }
+
+            guard windowIndex != otherWindowIndex else { return }
+
+            windows[windowIndex] = otherWindow
+            windows[otherWindowIndex] = window
+
+            markAllScreensForReflowWithChange(.windowSwap(window: window, otherWindow: otherWindow))
+        case let .moveWindowToScreen(window, screen):
+            if let currentScreen = window.screen() {
+                markScreenForReflow(currentScreen, withChange: .remove(window: window))
+            }
+            window.moveScaled(to: screen)
+            markScreenForReflow(screen, withChange: .add(window: window))
+            window.focus()
+        case let .moveWindowToSpaceAtIndex(window, spaceIndex):
+            guard let screen = window.screen(), let spaces = CGSpacesInfo<Window>.spacesForScreen(screen), spaceIndex < spaces.count else {
+                return
+            }
+
+            let targetSpace = spaces[spaceIndex]
+            markScreenForReflow(screen, withChange: .remove(window: window))
+            window.move(toSpace: targetSpace)
+        case .resetFocus:
+            if let screen = screens.screenManagers.first?.screen {
+                executeTransition(.focusScreen(screen))
+            }
+        }
+    }
+
+    func nextScreenIndexClockwise(from screen: NSScreen) -> Int {
+        guard let screenManagerIndex = self.screenManagerIndex(for: screen) else {
+            return -1
+        }
+
+        return (screenManagerIndex + 1) % (screens.screenManagers.count)
+    }
+
+    func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int {
+        guard let screenManagerIndex = self.screenManagerIndex(for: screen) else {
+            return -1
+        }
+
+        return (screenManagerIndex == 0 ? screens.screenManagers.count - 1 : screenManagerIndex - 1)
+    }
+}
+
+extension WindowManager: FocusTransitionTarget {
+    var windowActivityCache: WindowActivityCache { return self }
+
+    func executeTransition(_ transition: FocusTransition<Window>) {
+        switch transition {
+        case let .focusWindow(window):
+            window.focus()
+        case let .focusScreen(screen):
+            screen.focusScreen()
+        }
+    }
+
+    func lastFocusedWindow(on screen: NSScreen) -> Window? {
+        return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }?.lastFocusedWindow
+    }
+
+    func nextWindowIDClockwise(on screen: NSScreen) -> CGWindowID? {
+        return screenManager(for: screen)?.nextWindowIDClockwise()
+    }
+
+    func nextWindowIDCounterClockwise(on screen: NSScreen) -> CGWindowID? {
+        return screenManager(for: screen)?.nextWindowIDCounterClockwise()
     }
 }

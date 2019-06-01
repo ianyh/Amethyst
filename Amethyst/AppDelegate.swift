@@ -11,14 +11,15 @@ import Foundation
 import LoginServiceKit
 import RxCocoa
 import RxSwift
+import Silica
 import Sparkle
 import SwiftyBeaver
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var preferencesWindowController: PreferencesWindowController?
 
-    fileprivate var windowManager: WindowManager?
-    private var hotKeyManager: HotKeyManager?
+    fileprivate var windowManager: WindowManager<SIApplication>?
+    private var hotKeyManager: HotKeyManager<SIApplication>?
 
     fileprivate var statusItem: NSStatusItem?
     @IBOutlet var statusItemMenu: NSMenu?

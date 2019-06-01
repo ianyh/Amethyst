@@ -22,12 +22,16 @@
 		401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */; };
 		401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */; };
 		401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */; };
-		401BC8A81CE8E94000F89B3F /* SIWindow+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A71CE8E94000F89B3F /* SIWindow+Amethyst.swift */; };
+		401BC8A81CE8E94000F89B3F /* WindowsInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */; };
 		401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */; };
 		401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */; };
 		401BC8B61CE9259000F89B3F /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B51CE9259000F89B3F /* LayoutManager.swift */; };
-		401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B71CE9279E00F89B3F /* WindowModifier.swift */; };
 		401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */; };
+		401C35AF2241BBDD0019ED07 /* ReflowOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35AE2241BBDD0019ED07 /* ReflowOperation.swift */; };
+		401C35B12244626E0019ED07 /* ApplicationObservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B02244626E0019ED07 /* ApplicationObservation.swift */; };
+		401C35B32244650F0019ED07 /* MouseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B22244650F0019ED07 /* MouseState.swift */; };
+		401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */; };
+		401C35B7224831470019ED07 /* FocusTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
@@ -35,6 +39,8 @@
 		402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F01742E41A00D1C936 /* Credits.rtf */; };
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
+		4046EFCF2236019400113067 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFCE2236019400113067 /* Window.swift */; };
+		4046EFD12238949900113067 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFD02238949900113067 /* Application.swift */; };
 		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
 		404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */; };
 		4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */; };
@@ -48,6 +54,9 @@
 		4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD341C1FA62500DB612B /* WideLayout.swift */; };
 		4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD361C1FA83300DB612B /* RowLayout.swift */; };
 		4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */; };
+		40637073224EF9B20081299D /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637072224EF9B20081299D /* Change.swift */; };
+		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
+		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
@@ -108,14 +117,18 @@
 		401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesViewController.swift; sourceTree = "<group>"; };
 		401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralPreferencesViewController.swift; sourceTree = "<group>"; };
 		401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindow.swift; sourceTree = "<group>"; };
-		401BC8A71CE8E94000F89B3F /* SIWindow+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SIWindow+Amethyst.swift"; sourceTree = "<group>"; };
+		401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowsInformation.swift; sourceTree = "<group>"; };
 		401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfigurationTests.swift; sourceTree = "<group>"; };
 		401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyRegistrar.swift; sourceTree = "<group>"; };
 		401BC8B51CE9259000F89B3F /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
-		401BC8B71CE9279E00F89B3F /* WindowModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowModifier.swift; sourceTree = "<group>"; };
 		401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusFollowsMouseManager.swift; sourceTree = "<group>"; };
+		401C35AE2241BBDD0019ED07 /* ReflowOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflowOperation.swift; sourceTree = "<group>"; };
+		401C35B02244626E0019ED07 /* ApplicationObservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationObservation.swift; sourceTree = "<group>"; };
+		401C35B22244650F0019ED07 /* MouseState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MouseState.swift; sourceTree = "<group>"; };
+		401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowTransitionCoordinator.swift; sourceTree = "<group>"; };
+		401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTransitionCoordinator.swift; sourceTree = "<group>"; };
 		4029C4F01C112478001E4788 /* Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Layout.swift; sourceTree = "<group>"; };
 		402DB6DE1742E41A00D1C936 /* Amethyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Amethyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		402DB6E11742E41A00D1C936 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -127,6 +140,8 @@
 		402DB6F11742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		402DB6F71742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		4046EFCE2236019400113067 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
+		4046EFD02238949900113067 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
 		404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayoutTests.swift; sourceTree = "<group>"; };
 		4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindowController.swift; sourceTree = "<group>"; };
@@ -140,6 +155,9 @@
 		4062AD341C1FA62500DB612B /* WideLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WideLayout.swift; sourceTree = "<group>"; };
 		4062AD361C1FA83300DB612B /* RowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowLayout.swift; sourceTree = "<group>"; };
 		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
+		40637072224EF9B20081299D /* Change.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Change.swift; sourceTree = "<group>"; };
+		40637074224EFED70081299D /* CGInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGInfo.swift; sourceTree = "<group>"; };
+		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		40AF71D920BB348300F58EA9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -215,14 +233,16 @@
 		401BC8AA1CE8F82700F89B3F /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
-				401BC8B71CE9279E00F89B3F /* WindowModifier.swift */,
-				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
+				401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */,
+				401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */,
 				401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */,
 				401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */,
 				401BC8B51CE9259000F89B3F /* LayoutManager.swift */,
-				401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */,
 				409645B21CEE8D950042F459 /* LogManager.swift */,
+				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
+				40637076224F0EFF0081299D /* Screens.swift */,
+				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
+				401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -234,6 +254,23 @@
 			);
 			name = Preferences;
 			path = Configuration;
+			sourceTree = "<group>";
+		};
+		401C35AD2241BA760019ED07 /* Layouts */ = {
+			isa = PBXGroup;
+			children = (
+				4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */,
+				404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */,
+				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
+				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
+				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
+				4062AD361C1FA83300DB612B /* RowLayout.swift */,
+				4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */,
+				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
+				4062AD341C1FA62500DB612B /* WideLayout.swift */,
+				4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */,
+			);
+			path = Layouts;
 			sourceTree = "<group>";
 		};
 		402DB6D51742E41A00D1C936 = {
@@ -285,6 +322,7 @@
 		402DB6E71742E41A00D1C936 /* Amethyst */ = {
 			isa = PBXGroup;
 			children = (
+				4046EFCD2236018400113067 /* Model */,
 				401BC8AA1CE8F82700F89B3F /* Managers */,
 				4008E724190C4D9D0049E2F6 /* Preferences */,
 				40B392831814977D009A296B /* View */,
@@ -311,6 +349,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4046EFCD2236018400113067 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4046EFD02238949900113067 /* Application.swift */,
+				401C35B02244626E0019ED07 /* ApplicationObservation.swift */,
+				40637074224EFED70081299D /* CGInfo.swift */,
+				40637072224EF9B20081299D /* Change.swift */,
+				401C35B22244650F0019ED07 /* MouseState.swift */,
+				4046EFCE2236019400113067 /* Window.swift */,
+				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		404BE9CF1CFBDEFD00D6C537 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,17 +382,9 @@
 		40B337E11745CE340001D8FC /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */,
-				404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */,
-				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
-				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
-				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
+				401C35AD2241BA760019ED07 /* Layouts */,
 				4029C4F01C112478001E4788 /* Layout.swift */,
-				4062AD361C1FA83300DB612B /* RowLayout.swift */,
-				4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */,
-				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
-				4062AD341C1FA62500DB612B /* WideLayout.swift */,
-				4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */,
+				401C35AE2241BBDD0019ED07 /* ReflowOperation.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -349,7 +393,6 @@
 			isa = PBXGroup;
 			children = (
 				4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */,
-				401BC8A71CE8E94000F89B3F /* SIWindow+Amethyst.swift */,
 				4006CF891CDFF695004CA512 /* SIApplication+Amethyst.swift */,
 				4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */,
 				1A4B46EA20AA7717003D5110 /* NSTableView+Amethyst.swift */,
@@ -401,12 +444,10 @@
 			buildPhases = (
 				E34C4A6A727DE0AFB6BBB5AF /* [CP] Check Pods Manifest.lock */,
 				4058C4701C4C4F9E00B19D26 /* Lint */,
-				408D394419C7C2B90001981F /* Add Fabric Key */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
 				40986B961CAAC38E0030C711 /* Embed Frameworks */,
-				408D394519C7C3C40001981F /* Clear Fabric Key */,
 				750B569899B97539BABA6794 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -546,34 +587,6 @@
 			shellPath = /bin/sh;
 			shellScript = "swiftlint autocorrect\nswiftlint\n";
 		};
-		408D394419C7C2B90001981F /* Add Fabric Key */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Add Fabric Key";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    /usr/libexec/PlistBuddy -c \"Add Fabric:APIKey string '$CRASHLYTICS_API_KEY'\" Amethyst/Amethyst-Info.plist || true\nfi\n";
-		};
-		408D394519C7C3C40001981F /* Clear Fabric Key */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Clear Fabric Key";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "source ./bin/CrashlyticsKeys.sh\nif [ -n \"$CRASHLYTICS_API_KEY\" -a -n \"$CRASHLYTICS_APP_KEY\" ]; then\n    ${PODS_ROOT}/Fabric/run $CRASHLYTICS_API_KEY $CRASHLYTICS_APP_KEY\n    /usr/libexec/PlistBuddy -c \"Delete Fabric:APIKey\" Amethyst/Amethyst-Info.plist\nfi\n";
-		};
 		5F614FD7D7D45AE86AE5C749 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -615,6 +628,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxSwiftExt/RxSwiftExt.framework",
 				"${BUILT_PRODUCTS_DIR}/Silica/Silica.framework",
 				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
@@ -630,6 +644,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwiftExt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Silica.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
@@ -669,6 +684,7 @@
 			files = (
 				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
 				402DB6EE1742E41A00D1C936 /* main.m in Sources */,
+				4046EFD12238949900113067 /* Application.swift in Sources */,
 				4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
 				409645B31CEE8D950042F459 /* LogManager.swift in Sources */,
@@ -678,9 +694,13 @@
 				401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
 				401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */,
+				4046EFCF2236019400113067 /* Window.swift in Sources */,
 				401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */,
+				401C35AF2241BBDD0019ED07 /* ReflowOperation.swift in Sources */,
 				401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */,
+				40637073224EF9B20081299D /* Change.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
+				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
 				4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */,
 				404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */,
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
@@ -688,20 +708,24 @@
 				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
 				401BC8B61CE9259000F89B3F /* LayoutManager.swift in Sources */,
 				4006CF8A1CDFF695004CA512 /* SIApplication+Amethyst.swift in Sources */,
+				401C35B12244626E0019ED07 /* ApplicationObservation.swift in Sources */,
+				401C35B7224831470019ED07 /* FocusTransitionCoordinator.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
 				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
-				401BC8A81CE8E94000F89B3F /* SIWindow+Amethyst.swift in Sources */,
+				401BC8A81CE8E94000F89B3F /* WindowsInformation.swift in Sources */,
 				401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */,
 				401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */,
 				40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */,
-				401BC8B81CE9279E00F89B3F /* WindowModifier.swift in Sources */,
+				401C35B32244650F0019ED07 /* MouseState.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
+				40637075224EFED70081299D /* CGInfo.swift in Sources */,
 				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,
+				40637077224F0EFF0081299D /* Screens.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

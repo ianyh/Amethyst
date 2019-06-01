@@ -4,11 +4,12 @@ disabled_rules:
     - statement_position
     - force_cast
     - force_try
-    - variable_name_min_length
 included:
     - Amethyst
     - AmethystTests
-line_length: 200
+line_length:
+    warning: 200
+    ignores_comments: true
 file_length: 500
 type_body_length: 400
 cyclomatic_complexity: 15

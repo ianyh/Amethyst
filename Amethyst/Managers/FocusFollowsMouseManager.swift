@@ -12,17 +12,19 @@ import Silica
 import RxSwift
 
 protocol FocusFollowsMouseManagerDelegate: class {
-    func windowsForFocusFollowsMouse() -> [SIWindow]
+    associatedtype Window: WindowType
+    func windowsForFocusFollowsMouse() -> [Window]
 }
 
-final class FocusFollowsMouseManager {
-    weak var delegate: FocusFollowsMouseManagerDelegate?
+final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
+    weak var delegate: Delegate!
 
     private let userConfiguration: UserConfiguration
 
     private let disposeBag = DisposeBag()
 
-    init(userConfiguration: UserConfiguration) {
+    init(delegate: Delegate, userConfiguration: UserConfiguration) {
+        self.delegate = delegate
         self.userConfiguration = userConfiguration
 
         // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
@@ -61,23 +63,23 @@ final class FocusFollowsMouseManager {
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
         mousePoint.y = NSScreen.globalHeight() - mousePoint.y + screen.frameIncludingDockAndMenu().origin.y
 
-        if let focusedWindow = SIWindow.focused() {
+        if let focusedWindow = Delegate.Window.currentlyFocused() {
             // If the point is already in the frame of the focused window do nothing.
             guard !focusedWindow.frame().contains(mousePoint) else {
                 return
             }
         }
 
-        guard let topWindow = SIWindow.topWindowForScreenAtPoint(mousePoint, withWindows: windows) else {
+        guard let topWindow = WindowsInformation.topWindowForScreenAtPoint(mousePoint, withWindows: windows) else {
             return
         }
 
-        topWindow.am_focusWindow()
+        topWindow.focus()
     }
 }
 
 extension WindowManager: FocusFollowsMouseManagerDelegate {
-    func windowsForFocusFollowsMouse() -> [SIWindow] {
+    func windowsForFocusFollowsMouse() -> [Application.Window] {
         return windows
     }
 }

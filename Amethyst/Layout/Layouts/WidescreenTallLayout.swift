@@ -8,15 +8,15 @@
 
 import Silica
 
-final class WidescreenTallReflowOperation: ReflowOperation {
-    let layout: WidescreenTallLayout
+final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+    let layout: WidescreenTallLayout<Window>
 
-    init(screen: NSScreen, windows: [SIWindow], layout: WidescreenTallLayout, frameAssigner: FrameAssigner) {
+    init(screen: NSScreen, windows: [Window], layout: WidescreenTallLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
 
-    override func frameAssignments() -> [FrameAssignment]? {
+    override func frameAssignments() -> [FrameAssignment<Window>]? {
         if windows.count == 0 {
             return []
         }
@@ -34,9 +34,7 @@ final class WidescreenTallReflowOperation: ReflowOperation {
         let mainPaneWindowWidth = CGFloat(round(screenFrame.size.width * CGFloat(hasSecondaryPane ? self.layout.mainPaneRatio : 1))) / CGFloat(mainPaneCount)
         let secondaryPaneWindowWidth = screenFrame.width - mainPaneWindowWidth * CGFloat(mainPaneCount)
 
-        let focusedWindow = SIWindow.focused()
-
-        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let windowIndex = frameAssignments.count
@@ -58,7 +56,7 @@ final class WidescreenTallReflowOperation: ReflowOperation {
             }
 
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isEqual(to: focusedWindow), screenFrame: screenFrame, resizeRules: resizeRules)
+            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isFocused(), screenFrame: screenFrame, resizeRules: resizeRules)
 
             assignments.append(frameAssignment)
 
@@ -67,21 +65,16 @@ final class WidescreenTallReflowOperation: ReflowOperation {
     }
 }
 
-final class WidescreenTallLayout: Layout {
-    static var layoutName: String { return "Widescreen Tall" }
-    static var layoutKey: String { return "widescreen-tall" }
-
-    let windowActivityCache: WindowActivityCache
+final class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
+    override static var layoutName: String { return "Widescreen Tall" }
+    override static var layoutKey: String { return "widescreen-tall" }
 
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
 
-    init(windowActivityCache: WindowActivityCache) {
-        self.windowActivityCache = windowActivityCache
-    }
-
-    func reflow(_ windows: [SIWindow], on screen: NSScreen) -> ReflowOperation? {
-        return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: self)
+    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+        let assigner = Assigner(windowActivityCache: windowActivityCache)
+        return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
 }
 
@@ -98,5 +91,3 @@ extension WidescreenTallLayout: PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 }
-
-extension WidescreenTallLayout: FrameAssigner {}

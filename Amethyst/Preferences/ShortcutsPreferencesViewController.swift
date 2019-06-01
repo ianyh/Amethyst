@@ -9,6 +9,7 @@
 import Cocoa
 import Foundation
 import MASShortcut
+import Silica
 
 final class ShortcutsPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var hotKeyNameToDefaultsKey: [[String]] = []
@@ -22,7 +23,7 @@ final class ShortcutsPreferencesViewController: NSViewController, NSTableViewDat
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        hotKeyNameToDefaultsKey = HotKeyManager.hotKeyNameToDefaultsKey()
+        hotKeyNameToDefaultsKey = HotKeyManager<SIApplication>.hotKeyNameToDefaultsKey()
         tableView?.reloadData()
     }
 
