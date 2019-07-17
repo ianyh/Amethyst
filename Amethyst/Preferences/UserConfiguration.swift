@@ -93,6 +93,8 @@ enum CommandKey: String {
     case focusCCW = "focus-ccw"
     case focusCW = "focus-cw"
     case focusMain = "focus-main"
+    case focusScreenCCW = "focus-screen-ccw"
+    case focusScreenCW = "focus-screen-cw"
     case swapScreenCCW = "swap-screen-ccw"
     case swapScreenCW = "swap-screen-cw"
     case swapCCW = "swap-ccw"
