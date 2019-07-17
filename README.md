@@ -53,6 +53,8 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `mod1 + .` | Decrease main pane count |
 | `mod1 + j` | Move focus counter clockwise |
 | `mod1 + k` | Move focus clockwise |
+| `mod1 + p` | Move focus to counter clockwise screen |
+| `mod1 + n` | Move focus to clockwise screen |
 | `mod2 + h` | Swap focused window to counter clockwise screen |
 | `mod2 + l` | Swap focused window to clockwise screen |
 | `mod2 + j` | Swap focused window counter clockwise |
