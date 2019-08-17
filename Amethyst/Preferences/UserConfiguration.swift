@@ -543,7 +543,7 @@ final class UserConfiguration: NSObject {
     func sendNewWindowsToMainPane() -> Bool {
         return storage.bool(forKey: .newWindowsToMain)
     }
-    
+
     func followWindowsThrownBetweenSpaces() -> Bool {
         return storage.bool(forKey: .followSpaceThrownWindows)
     }
