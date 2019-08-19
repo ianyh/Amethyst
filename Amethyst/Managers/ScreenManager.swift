@@ -93,8 +93,12 @@ final class ScreenManager<Window: WindowType>: NSObject {
     }
 
     func setNeedsReflowWithWindowChange(_ windowChange: Change<Window>) {
-        if case let .focusChanged(window) = windowChange {
+        switch windowChange {
+        case let .focusChanged(window):
             lastFocusedWindow = window
+        case .remove:
+            lastFocusedWindow = nil
+        default: ()
         }
 
         reflowOperation?.cancel()
