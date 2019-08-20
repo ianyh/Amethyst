@@ -165,7 +165,7 @@ extension AXWindow: WindowType {
             return false
         }
 
-        return isEqual(to: focused)
+        return focused.windowID() == self.windowID()
     }
 
     /**

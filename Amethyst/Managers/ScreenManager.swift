@@ -124,6 +124,21 @@ final class ScreenManager<Window: WindowType>: NSObject {
             }
 
             self?.onReflowCompletion?()
+            // If this reflow was caused by a window swap, re-focus the window
+            // so that mouse follows focus is respected if it is set
+            switch event {
+            case let .windowSwap(first, second):
+                if first.isFocused() {
+                    first.focus()
+                } else if second.isFocused() {
+                    second.focus()
+                }
+            case let .add(window):
+                if window.isFocused() {
+                    window.focus()
+                }
+            default: ()
+            }
         }
         onReflowInitiation?()
         if let reflowOperation = reflowOperation {
