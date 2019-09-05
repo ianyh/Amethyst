@@ -44,6 +44,9 @@ final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<W
             if isMain {
                 scaleFactor = CGFloat(screenFrame.size.width / mainPaneWindowWidth) / CGFloat(mainPaneCount)
                 windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * CGFloat(windowIndex)
+                if type(of: layout).right {
+                    windowFrame.origin.x += secondaryPaneWindowWidth
+                }
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = mainPaneWindowHeight
@@ -53,6 +56,9 @@ final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<W
                 windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(windowIndex - mainPaneCount))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
+                if type(of: layout).right {
+                    windowFrame.origin.x = 0
+                }
             }
 
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
@@ -65,10 +71,8 @@ final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<W
     }
 }
 
-final class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
-    override static var layoutName: String { return "Widescreen Tall" }
-    override static var layoutKey: String { return "widescreen-tall" }
-
+class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
+    class var right: Bool { fatalError("Must be implemented by subclass") }
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
 
@@ -90,4 +94,16 @@ extension WidescreenTallLayout: PanedLayout {
     func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
+}
+
+final class WidescreenTallLayoutRight<Window: WindowType>: WidescreenTallLayout<Window> {
+    override class var right: Bool { return false }
+    override static var layoutName: String { return "Widescreen Tall" }
+    override static var layoutKey: String { return "widescreen-tall" }
+}
+
+final class WidescreenTallLayoutLeft<Window: WindowType>: WidescreenTallLayout<Window> {
+    override class var right: Bool { return true }
+    override static var layoutName: String { return "Widescreen Tall Right" }
+    override static var layoutKey: String { return "widescreen-tall-right" }
 }
