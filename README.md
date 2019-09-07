@@ -2,7 +2,7 @@ Amethyst
 ========
 
 [![Join the chat at https://gitter.im/ianyh/Amethyst](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ianyh/Amethyst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://api.travis-ci.org/ianyh/Amethyst.svg?branch=development)](https://travis-ci.org/ianyh/Amethyst)
+[![Build Status](https://travis-ci.com/ianyh/Amethyst.svg?branch=development)](https://travis-ci.com/ianyh/Amethyst)
 [![Open Source Helpers](https://www.codetriage.com/ianyh/amethyst/badges/users.svg)](https://www.codetriage.com/ianyh/amethyst)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
