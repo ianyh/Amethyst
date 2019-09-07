@@ -15,7 +15,7 @@ PODS:
   - RxSwiftExt/RxCocoa (3.4.0):
     - RxCocoa (~> 4.0)
     - RxSwiftExt/Core
-  - Silica (0.3)
+  - Silica (0.3.1)
   - Sparkle (1.21.3)
   - SwiftyBeaver (1.7.0)
   - SwiftyJSON (4.2.0)
@@ -59,7 +59,7 @@ CHECKOUT OPTIONS:
     :commit: 79c9d6d2cc25dc238e6044245bebdc8253a786f2
     :git: https://github.com/Clipy/LoginServiceKit.git
   Silica:
-    :commit: f4dac8a0856e5f421a4635c3acadb68699e30803
+    :commit: 208242f9c176ca8ba12739aa3e838f4a1f80b595
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
@@ -72,11 +72,11 @@ SPEC CHECKSUMS:
   RxCocoa: cbf70265dc65a981d4ac982e513c10cf23df24a0
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   RxSwiftExt: 01f8ecbeeb355698e9c75365ebe908b00dacf45d
-  Silica: 91ca1ed3a115c6999eadbd17f51283b166b5eab2
+  Silica: 1964824e14b9e2b1a07b402316ab24b0409c58b1
   Sparkle: 3f75576db8b0265adef36c43249d747f22d0b708
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
 PODFILE CHECKSUM: f89e8028233831225f2aab3c5498295a303a13cf
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.6.2

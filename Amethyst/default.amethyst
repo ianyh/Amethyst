@@ -208,6 +208,7 @@
     "ignore-menu-bar": false,
     "use-canary-build": false,
     "new-windows-to-main": false,
+    "follow-space-thrown-windows": true,
     "send-crash-reports": false,
     "screen-padding-top": 0,
     "screen-padding-bottom": 0,

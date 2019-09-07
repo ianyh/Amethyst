@@ -72,6 +72,7 @@ enum ConfigurationKey: String {
     case layoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case useCanaryBuild = "use-canary-build"
     case newWindowsToMain = "new-windows-to-main"
+    case followSpaceThrownWindows = "follow-space-thrown-windows"
     case windowResizeStep = "window-resize-step"
     case screenPaddingLeft = "screen-padding-left"
     case screenPaddingRight = "screen-padding-right"
@@ -541,6 +542,10 @@ final class UserConfiguration: NSObject {
 
     func sendNewWindowsToMainPane() -> Bool {
         return storage.bool(forKey: .newWindowsToMain)
+    }
+
+    func followWindowsThrownBetweenSpaces() -> Bool {
+        return storage.bool(forKey: .followSpaceThrownWindows)
     }
 }
 

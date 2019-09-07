@@ -221,5 +221,9 @@ extension AXWindow: WindowType {
         let ids = [windowID()]
         CGSRemoveWindowsFromSpaces(CGSMainConnectionID(), ids as CFArray, [currentSpace] as CFArray)
         CGSAddWindowsToSpaces(CGSMainConnectionID(), ids as CFArray, [spaceID] as CFArray)
+
+        if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
+            focus()
+        }
     }
 }
