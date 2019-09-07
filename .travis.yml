@@ -6,3 +6,6 @@ before_install:
  - bundle install
  - pod repo update
 script: set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | bundle exec xcpretty
+branches:
+  only:
+    - development
