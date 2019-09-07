@@ -154,22 +154,6 @@ This mode makes all windows "floating", allowing you to move and resize them as 
 
 This layout does not have a main pane in the way that other layouts do. When adding windows, any given pane can be split evenly into two panes along whatever axis is longer. This is recursive such that pane A can be split in the middle into pane A on the left and pane B on the right; pane B can then be split into pane B on top and pane C on bottom; pane C can then be split into pane C on the left and pane D on the right; and so on.
 
-Setting Up Spaces Support
--------------------------
-
-Spaces are, unfortunately, not supported right out of the box. To enable it you
-must activate Mission Control's keyboard shortcuts for switching to specific
-Desktops, as Mac OS X calls them. This option is in the Keyboard Shortcuts tab
-of the Keyboard preferences pane. The shortcuts will be of the form `ctrl +
-[n]`. Amethyst is only able to send a window to the `n`th space if the shortcut
-`ctrl + n` is enabled.
-
-![Mission Control keyboard shortcuts](https://ianyh.com/amethyst/images/missioncontrol-shortcuts.png)
-
-Amethyst currently supports sending windows to up to 10 spaces, despite macOS' limit of 16 spaces per display.
-
-_Important note_: You will probably want to disable `Automatically rearrange Spaces based on most recent use` (found under Mission Control in System Preferences). This setting is enabled by default, and will cause your Spaces to swap places based on use. This makes keyboard navigation between Spaces unpredictable.
-
 Contributing
 ============
 
