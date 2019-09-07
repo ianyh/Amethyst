@@ -221,5 +221,3 @@ And a bunch of technology-oriented ones:
 * [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
 * [Trans*H4CK](https://www.transhack.org/donate/)
 * [Black Girls CODE](https://www.blackgirlscode.com/)
-
-Alternatively, I have a Patreon page set up [here](https://www.patreon.com/ianyh). Any proceeds will be donated to one of the above organizations. 
