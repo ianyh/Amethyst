@@ -12,7 +12,7 @@ import Silica
 extension SIApplication {
     func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> DefaultFloat {
         guard let runningApplication = NSRunningApplication(processIdentifier: processIdentifier()) else {
-            return .notFloating
+            return .floating
         }
 
         return UserConfiguration.shared.runningApplication(runningApplication, byDefaultFloatsForTitle: windowTitle)
