@@ -193,7 +193,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                 do {
                     try self.addObserver(for: notification)
                 } catch {
-                    log.error("Failed to add observer \(notification) on application \(self.application.title() ?? "<unknown>")")
+                    log.error("Failed to add observer \(notification) on application \(self.application.title() ?? "<unknown>") (\(self.application.pid()))")
                     self.removeObservers(notifications: observed)
                     throw error
                 }
