@@ -220,7 +220,7 @@ final class UserConfigurationTests: QuickSpec {
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
+                expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.notFloating))
             }
 
             it("floats for exact matches") {
@@ -234,7 +234,7 @@ final class UserConfigurationTests: QuickSpec {
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
+                expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.floating))
             }
 
             it("floats for wildcard matches") {
@@ -248,7 +248,7 @@ final class UserConfigurationTests: QuickSpec {
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
+                expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.floating))
             }
 
             it("floats for prefixed wildcard matches") {
@@ -262,7 +262,7 @@ final class UserConfigurationTests: QuickSpec {
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
+                expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.floating))
             }
 
             it("floats for inline wildcard matches") {
@@ -276,7 +276,7 @@ final class UserConfigurationTests: QuickSpec {
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.foo.Test"
 
-                expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beTrue())
+                expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.floating))
             }
 
             it("does not float for exact mismatches") {
@@ -290,7 +290,7 @@ final class UserConfigurationTests: QuickSpec {
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
+                expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.notFloating))
             }
 
             it("does not float for wildcard mismatches") {
@@ -304,7 +304,7 @@ final class UserConfigurationTests: QuickSpec {
                 let title = UUID().uuidString
                 bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
+                expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.notFloating))
             }
 
             context("as whitelist") {
@@ -320,7 +320,7 @@ final class UserConfigurationTests: QuickSpec {
                     let title = "test"
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.notFloating))
                 }
 
                 it("does not float for a matching application with no specified window titles") {
@@ -334,7 +334,7 @@ final class UserConfigurationTests: QuickSpec {
                     let title = UUID().uuidString
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)).to(beFalse())
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)).to(equal(.notFloating))
                 }
 
                 it("floats for no specified applications") {
@@ -348,8 +348,8 @@ final class UserConfigurationTests: QuickSpec {
                     let title = UUID().uuidString
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                    let float = configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: title)
-                    expect(float).to(beTrue())
+                    let float = configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: title)
+                    expect(float).to(equal(.floating))
                 }
             }
 
@@ -365,8 +365,8 @@ final class UserConfigurationTests: QuickSpec {
                     let bundleIdentifiable = TestBundleIdentifiable()
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test1")).to(beTrue())
-                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test2")).to(beFalse())
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "test1")).to(equal(.floating))
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "test2")).to(equal(.notFloating))
                 }
 
                 it("only allow windows with titles") {
@@ -380,8 +380,47 @@ final class UserConfigurationTests: QuickSpec {
                     let bundleIdentifiable = TestBundleIdentifiable()
                     bundleIdentifiable.bundleIdentifier = "test.test.Test"
 
-                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test1")).to(beFalse())
-                    expect(configuration.runningApplication(bundleIdentifiable, shouldFloatWindowWithTitle: "test2")).to(beTrue())
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "test1")).to(equal(.notFloating))
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "test2")).to(equal(.floating))
+                }
+
+                it("treats empty and nil titles as unreliable") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+                    let floatingBundle = FloatingBundle(id: "test.test.Test", windowTitles: ["test1"])
+
+                    storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                    configuration.setFloatingBundles([floatingBundle])
+
+                    let bundleIdentifiable = TestBundleIdentifiable()
+                    bundleIdentifiable.bundleIdentifier = "test.test.Test"
+
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "")).to(equal(.unreliable(.notFloating)))
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: nil)).to(equal(.unreliable(.notFloating)))
+
+                    storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
+
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "")).to(equal(.unreliable(.floating)))
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: nil)).to(equal(.unreliable(.floating)))
+                }
+
+                it("treats empty and nil titles as reliable if no title would match anyway") {
+                    let storage = TestConfigurationStorage()
+                    let configuration = UserConfiguration(storage: storage)
+
+                    storage.set(true, forKey: .floatingBundleIdentifiersIsBlacklist)
+                    configuration.setFloatingBundles([])
+
+                    let bundleIdentifiable = TestBundleIdentifiable()
+                    bundleIdentifiable.bundleIdentifier = "test.test.Test"
+
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "")).to(equal(.notFloating))
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: nil)).to(equal(.notFloating))
+
+                    storage.set(false, forKey: .floatingBundleIdentifiersIsBlacklist)
+
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: "")).to(equal(.floating))
+                    expect(configuration.runningApplication(bundleIdentifiable, byDefaultFloatsForTitle: nil)).to(equal(.floating))
                 }
             }
         }

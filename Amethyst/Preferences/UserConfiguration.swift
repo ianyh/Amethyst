@@ -9,6 +9,16 @@
 import Foundation
 import SwiftyJSON
 
+indirect enum DefaultFloat: Equatable {
+    case floating
+    case notFloating
+    case unreliable(DefaultFloat)
+
+    fileprivate static func from(_ bool: Bool) -> DefaultFloat {
+        return bool ? .floating : .notFloating
+    }
+}
+
 protocol ConfigurationStorage {
     func object(forKey key: ConfigurationKey) -> Any?
     func array(forKey key: ConfigurationKey) -> [Any]?
@@ -378,7 +388,7 @@ final class UserConfiguration: NSObject {
         storage.set(layoutKeys as Any?, forKey: .layouts)
     }
 
-    func runningApplication(_ runningApplication: BundleIdentifiable, shouldFloatWindowWithTitle title: String) -> Bool {
+    func runningApplication(_ runningApplication: BundleIdentifiable, byDefaultFloatsForTitle title: String?) -> DefaultFloat {
         let useIdentifiersAsBlacklist = floatingBundleIdentifiersIsBlacklist()
 
         // If the application is in the floating list we need to continue to check title
@@ -386,27 +396,39 @@ final class UserConfiguration: NSObject {
         //   - Blacklist means not floating
         //   - Whitelist menas floating
         guard let floatingBundle = runningApplicationFloatingBundle(runningApplication) else {
-            return !useIdentifiersAsBlacklist
+            return DefaultFloat.from(!useIdentifiersAsBlacklist)
         }
 
         // If the window list is empty then all windows are included in the list
         //   - Blacklist means floating
         //   - Whitelist means not floating
         if floatingBundle.windowTitles.isEmpty {
-            return useIdentifiersAsBlacklist
+            return DefaultFloat.from(useIdentifiersAsBlacklist)
+        }
+
+        // If the title is nil then we cannot make a determinitation so we fall back to the default
+        guard let title = title else {
+            return .unreliable(DefaultFloat.from(!useIdentifiersAsBlacklist))
         }
 
         // If the title matches it is included
         //   - Blacklist means floating
         //   - Whitelist means not floating
         if floatingBundle.windowTitles.contains(title) {
-            return useIdentifiersAsBlacklist
+            return DefaultFloat.from(useIdentifiersAsBlacklist)
         }
 
         // Otherwise the window is not included
         //   - Blacklist means not floating
         //   - Whitelist means floating
-        return !useIdentifiersAsBlacklist
+        let defaultFloat = DefaultFloat.from(!useIdentifiersAsBlacklist)
+
+        // If the title is empty the window could still be loading
+        if title.isEmpty {
+            return .unreliable(defaultFloat)
+        }
+
+        return defaultFloat
     }
 
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
