@@ -41,8 +41,11 @@ protocol ApplicationType: Equatable {
      
      - Parameters:
          - windowTitle: The window title to test.
+     
+     - Note:
+     We can receive an unreliable result. It is up to the caller to determine whether or not that result is good enough.
      */
-    func windowWithTitleShouldFloat(_ windowTitle: String) -> Bool
+    func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> DefaultFloat
 
     /// Clears the internal cache of application windows.
     func dropWindowsCache()
@@ -138,8 +141,8 @@ class AnyApplication<Application: ApplicationType>: ApplicationType {
         return internalApplication.pid()
     }
 
-    func windowWithTitleShouldFloat(_ windowTitle: String) -> Bool {
-        return internalApplication.windowWithTitleShouldFloat(windowTitle)
+    func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> DefaultFloat {
+        return internalApplication.defaultFloatForWindowWithTitle(windowTitle)
     }
 
     func dropWindowsCache() {

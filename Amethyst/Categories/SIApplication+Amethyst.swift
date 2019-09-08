@@ -10,12 +10,12 @@ import Foundation
 import Silica
 
 extension SIApplication {
-    func windowWithTitleShouldFloat(_ windowTitle: String) -> Bool {
+    func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> DefaultFloat {
         guard let runningApplication = NSRunningApplication(processIdentifier: processIdentifier()) else {
-            return true
+            return .notFloating
         }
 
-        return UserConfiguration.shared.runningApplication(runningApplication, shouldFloatWindowWithTitle: windowTitle)
+        return UserConfiguration.shared.runningApplication(runningApplication, byDefaultFloatsForTitle: windowTitle)
     }
 
     func observe(notification: String, with accessibilityElement: SIAccessibilityElement, handler: @escaping SIAXNotificationHandler) -> Bool {
