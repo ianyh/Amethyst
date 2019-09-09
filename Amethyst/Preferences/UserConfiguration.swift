@@ -9,10 +9,9 @@
 import Foundation
 import SwiftyJSON
 
-indirect enum DefaultFloat: Equatable {
+enum DefaultFloat: Equatable {
     case floating
     case notFloating
-    case unreliable(DefaultFloat)
 
     fileprivate static func from(_ bool: Bool) -> DefaultFloat {
         return bool ? .floating : .notFloating
@@ -388,7 +387,7 @@ final class UserConfiguration: NSObject {
         storage.set(layoutKeys as Any?, forKey: .layouts)
     }
 
-    func runningApplication(_ runningApplication: BundleIdentifiable, byDefaultFloatsForTitle title: String?) -> DefaultFloat {
+    func runningApplication(_ runningApplication: BundleIdentifiable, byDefaultFloatsForTitle title: String?) -> Reliable<DefaultFloat> {
         let useIdentifiersAsBlacklist = floatingBundleIdentifiersIsBlacklist()
 
         // If the application is in the floating list we need to continue to check title
@@ -396,14 +395,14 @@ final class UserConfiguration: NSObject {
         //   - Blacklist means not floating
         //   - Whitelist menas floating
         guard let floatingBundle = runningApplicationFloatingBundle(runningApplication) else {
-            return DefaultFloat.from(!useIdentifiersAsBlacklist)
+            return .reliable(DefaultFloat.from(!useIdentifiersAsBlacklist))
         }
 
         // If the window list is empty then all windows are included in the list
         //   - Blacklist means floating
         //   - Whitelist means not floating
         if floatingBundle.windowTitles.isEmpty {
-            return DefaultFloat.from(useIdentifiersAsBlacklist)
+            return .reliable(DefaultFloat.from(useIdentifiersAsBlacklist))
         }
 
         // If the title is nil then we cannot make a determinitation so we fall back to the default
@@ -415,7 +414,7 @@ final class UserConfiguration: NSObject {
         //   - Blacklist means floating
         //   - Whitelist means not floating
         if floatingBundle.windowTitles.contains(title) {
-            return DefaultFloat.from(useIdentifiersAsBlacklist)
+            return .reliable(DefaultFloat.from(useIdentifiersAsBlacklist))
         }
 
         // Otherwise the window is not included
@@ -428,7 +427,7 @@ final class UserConfiguration: NSObject {
             return .unreliable(defaultFloat)
         }
 
-        return defaultFloat
+        return .reliable(defaultFloat)
     }
 
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
