@@ -327,19 +327,14 @@ extension WindowManager {
             return
         }
 
-        let defaultFloat = application.defaultFloatForWindowWithTitle(window.title())
-        switch defaultFloat {
+        switch application.defaultFloatForWindowWithTitle(window.title()) {
         case .unreliable where retries > 0:
             return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                 self.add(window: window, retries: retries - 1)
             }
-        case .floating, .unreliable(.floating):
+        case .reliable(.floating), .unreliable(.floating):
             floatingMap[window.windowID()] = true
-        case .notFloating, .unreliable(.notFloating):
-            floatingMap[window.windowID()] = false
-        case .unreliable(.unreliable):
-            // Uh, what?
-            log.error("Reached nested unreliability")
+        case .reliable(.notFloating), .unreliable(.notFloating):
             floatingMap[window.windowID()] = false
         }
 
