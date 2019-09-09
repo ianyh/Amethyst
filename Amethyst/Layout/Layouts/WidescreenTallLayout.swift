@@ -44,7 +44,7 @@ final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<W
             if isMain {
                 scaleFactor = CGFloat(screenFrame.size.width / mainPaneWindowWidth) / CGFloat(mainPaneCount)
                 windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * CGFloat(windowIndex)
-                if type(of: layout).right {
+                if type(of: layout).isRight {
                     windowFrame.origin.x += secondaryPaneWindowWidth
                 }
                 windowFrame.origin.y = screenFrame.origin.y
@@ -56,7 +56,7 @@ final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<W
                 windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(windowIndex - mainPaneCount))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
-                if type(of: layout).right {
+                if type(of: layout).isRight {
                     windowFrame.origin.x = 0
                 }
             }
@@ -72,7 +72,7 @@ final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<W
 }
 
 class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
-    class var right: Bool { fatalError("Must be implemented by subclass") }
+    class var isRight: Bool { fatalError("Must be implemented by subclass") }
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
 
@@ -97,13 +97,13 @@ extension WidescreenTallLayout: PanedLayout {
 }
 
 final class WidescreenTallLayoutRight<Window: WindowType>: WidescreenTallLayout<Window> {
-    override class var right: Bool { return false }
+    override class var isRight: Bool { return false }
     override static var layoutName: String { return "Widescreen Tall" }
     override static var layoutKey: String { return "widescreen-tall" }
 }
 
 final class WidescreenTallLayoutLeft<Window: WindowType>: WidescreenTallLayout<Window> {
-    override class var right: Bool { return true }
+    override class var isRight: Bool { return true }
     override static var layoutName: String { return "Widescreen Tall Right" }
     override static var layoutKey: String { return "widescreen-tall-right" }
 }
