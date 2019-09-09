@@ -115,22 +115,32 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        if UserConfiguration.shared.hasCustomConfiguration() {
-            let alert = NSAlert()
-            alert.alertStyle = .warning
-            alert.messageText = "Warning"
-            alert.informativeText = "You have a .amethyst file, which can override in-app preferences. You may encounter unexpected behavior."
-            alert.runModal()
-        }
-
         preferencesWindowController?.showWindow(nil)
         NSApp.activate(ignoringOtherApps: true)
+
+        presentDotfileWarningIfNecessary()
     }
 
     @IBAction func checkForUpdates(_ sender: AnyObject) {
         #if RELEASE
             SUUpdater.shared().checkForUpdates(sender)
         #endif
+    }
+
+    private func presentDotfileWarningIfNecessary() {
+        let shouldWarn = !UserDefaults.standard.bool(forKey: "disable-dotfile-conflict-warning")
+        if shouldWarn && UserConfiguration.shared.hasCustomConfiguration() {
+            let alert = NSAlert()
+            alert.alertStyle = .warning
+            alert.messageText = "Warning"
+            alert.informativeText = "You have a .amethyst file, which can override in-app preferences. You may encounter unexpected behavior."
+            alert.showsSuppressionButton = true
+            alert.runModal()
+
+            if alert.suppressionButton?.state == .on {
+                UserDefaults.standard.set(true, forKey: "disable-dotfile-conflict-warning")
+            }
+        }
     }
 }
 
