@@ -57,7 +57,7 @@ final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<W
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
                 if type(of: layout).isRight {
-                    windowFrame.origin.x = 0
+                    windowFrame.origin.x = screenFrame.origin.x
                 }
             }
 
