@@ -257,6 +257,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         }
 
         deactivate(application: application)
+        application.dropWindowsCache()
     }
 
     @objc func applicationDidUnhide(_ notification: Notification) {
@@ -268,6 +269,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             return
         }
 
+        application.dropWindowsCache()
         activate(application: application)
     }
 
