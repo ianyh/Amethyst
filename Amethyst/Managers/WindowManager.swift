@@ -637,8 +637,9 @@ extension WindowManager: WindowTransitionTarget {
             }
 
             let targetSpace = spaces[spaceIndex]
+
             markScreenForReflow(screen, withChange: .remove(window: window))
-            window.move(toSpace: targetSpace)
+            window.move(toSpace: targetSpace.id)
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
                 executeTransition(.focusScreen(screen))
