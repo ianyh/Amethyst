@@ -68,7 +68,7 @@ struct CGScreensInfo {
 }
 
 struct CGSpacesInfo<Window: WindowType> {
-    static func spacesForScreen(_ screen: NSScreen) -> [CGSSpaceID]? {
+    static func spacesForScreen(_ screen: NSScreen) -> [Space]? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
@@ -81,20 +81,28 @@ struct CGSpacesInfo<Window: WindowType> {
                     continue
                 }
 
-                return screenDescription["Spaces"].array?.map { $0["ManagedSpaceID"].intValue }
+                return screenDescription["Spaces"].array?.map { json -> Space in
+                    let id: CGSSpaceID = json["ManagedSpaceID"].intValue
+                    let type = CGSSpaceType(rawValue: json["type"].uInt32Value)
+                    return Space(id: id, type: type)
+                }
             }
         } else {
             guard let spaceDescriptions = screenDescriptions.first?["Spaces"].array else {
                 return nil
             }
 
-            return spaceDescriptions.map { $0["ManagedSpaceID"].intValue }
+            return spaceDescriptions.map { json -> Space in
+                let id: CGSSpaceID = json["ManagedSpaceID"].intValue
+                let type = CGSSpaceType(rawValue: json["type"].uInt32Value)
+                return Space(id: id, type: type)
+            }
         }
 
         return nil
     }
 
-    static func spacesForFocusedScreen() -> [CGSSpaceID]? {
+    static func spacesForFocusedScreen() -> [Space]? {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return nil
         }
@@ -102,8 +110,12 @@ struct CGSpacesInfo<Window: WindowType> {
         return spacesForScreen(screen)
     }
 
-    static func currentSpaceForScreen(_ screen: NSScreen) -> CGSSpaceID? {
+    static func currentSpaceForScreen(_ screen: NSScreen) -> Space? {
         guard let screenDescriptions = NSScreen.screenDescriptions(), let screenIdentifier = screen.screenIdentifier() else {
+            return nil
+        }
+
+        guard screenDescriptions.count > 0 else {
             return nil
         }
 
@@ -113,16 +125,20 @@ struct CGSpacesInfo<Window: WindowType> {
                     continue
                 }
 
-                return screenDescription["Current Space"]["ManagedSpaceID"].intValue
+                let id: CGSSpaceID = screenDescription["Current Space"]["ManagedSpaceID"].intValue
+                let type = CGSSpaceType(rawValue: screenDescription["Current Space"]["type"].uInt32Value)
+                return Space(id: id, type: type)
             }
         } else {
-            return screenDescriptions.first?["Current Space"]["ManagedSpaceID"].intValue
+            let id: CGSSpaceID = screenDescriptions[0]["Current Space"]["ManagedSpaceID"].intValue
+            let type = CGSSpaceType(rawValue: screenDescriptions[0]["Current Space"]["type"].uInt32Value)
+            return Space(id: id, type: type)
         }
 
         return nil
     }
 
-    static func currentFocusedSpace() -> CGSSpaceID? {
+    static func currentFocusedSpace() -> Space? {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return nil
         }

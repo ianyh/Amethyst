@@ -13,6 +13,7 @@
 		4006CF8C1CDFF743004CA512 /* NSScreen+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */; };
 		4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */; };
 		4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */; };
+		400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A5E9C2327350C00F0A2C3 /* Space.swift */; };
 		40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */; };
 		40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */; };
 		40111CCD22342CF3003D20BD /* DebugPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */; };
@@ -108,6 +109,7 @@
 		4006CF8B1CDFF743004CA512 /* NSScreen+Amethyst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSScreen+Amethyst.swift"; sourceTree = "<group>"; };
 		4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfiguration.swift; sourceTree = "<group>"; };
+		400A5E9C2327350C00F0A2C3 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIWindow+AmethystTests.swift"; sourceTree = "<group>"; };
 		40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPreferencesViewController.swift; sourceTree = "<group>"; };
 		40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugPreferencesViewController.xib; sourceTree = "<group>"; };
@@ -357,9 +359,10 @@
 				40637074224EFED70081299D /* CGInfo.swift */,
 				40637072224EF9B20081299D /* Change.swift */,
 				401C35B22244650F0019ED07 /* MouseState.swift */,
+				400540F12325CDF4004B8656 /* Reliability.swift */,
+				400A5E9C2327350C00F0A2C3 /* Space.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
-				400540F12325CDF4004B8656 /* Reliability.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -717,6 +720,7 @@
 				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
 				401BC8A81CE8E94000F89B3F /* WindowsInformation.swift in Sources */,
 				401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */,
+				400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */,
 				401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */,
 				40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
