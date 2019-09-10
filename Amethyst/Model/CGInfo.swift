@@ -68,38 +68,41 @@ struct CGScreensInfo {
 }
 
 struct CGSpacesInfo<Window: WindowType> {
-    static func spacesForScreen(_ screen: NSScreen) -> [Space]? {
+    static func spacesForScreen(_ screen: NSScreen, includeOnlyUserSpaces: Bool = false) -> [Space]? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
 
+        guard !screenDescriptions.isEmpty else {
+            return nil
+        }
+
         let screenIdentifier = screen.screenIdentifier()
+        let spaces: [Space]?
 
         if NSScreen.screensHaveSeparateSpaces {
-            for screenDescription in screenDescriptions {
-                guard screenDescription["Display Identifier"].string == screenIdentifier else {
-                    continue
+            spaces = screenDescriptions
+                .first { $0["Display Identifier"].string == screenIdentifier }
+                .flatMap { screenDescription -> [Space]? in
+                    return screenDescription["Spaces"].array?.map { json -> Space in
+                        let id: CGSSpaceID = json["ManagedSpaceID"].intValue
+                        let type = CGSSpaceType(rawValue: json["type"].uInt32Value)
+                        return Space(id: id, type: type)
+                    }
                 }
-
-                return screenDescription["Spaces"].array?.map { json -> Space in
-                    let id: CGSSpaceID = json["ManagedSpaceID"].intValue
-                    let type = CGSSpaceType(rawValue: json["type"].uInt32Value)
-                    return Space(id: id, type: type)
-                }
-            }
         } else {
-            guard let spaceDescriptions = screenDescriptions.first?["Spaces"].array else {
-                return nil
-            }
-
-            return spaceDescriptions.map { json -> Space in
+            spaces = screenDescriptions[0]["Spaces"].arrayValue.map { json -> Space in
                 let id: CGSSpaceID = json["ManagedSpaceID"].intValue
                 let type = CGSSpaceType(rawValue: json["type"].uInt32Value)
                 return Space(id: id, type: type)
             }
         }
 
-        return nil
+        if includeOnlyUserSpaces {
+            return spaces?.filter { $0.type == CGSSpaceTypeUser }
+        }
+
+        return spaces
     }
 
     static func spacesForFocusedScreen() -> [Space]? {
