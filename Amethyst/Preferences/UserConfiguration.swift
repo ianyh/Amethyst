@@ -405,7 +405,7 @@ final class UserConfiguration: NSObject {
             return .reliable(DefaultFloat.from(useIdentifiersAsBlacklist))
         }
 
-        // If the title is nil then we cannot make a determinitation so we fall back to the default
+        // If the title is `nil` then we cannot make a determination so we fall back to the default. However, we have to treat this value as unreliable as the window could have just been created and be in the process of loading.
         guard let title = title else {
             return .unreliable(DefaultFloat.from(!useIdentifiersAsBlacklist))
         }
@@ -422,7 +422,7 @@ final class UserConfiguration: NSObject {
         //   - Whitelist means floating
         let defaultFloat = DefaultFloat.from(!useIdentifiersAsBlacklist)
 
-        // If the title is empty the window could still be loading
+        // If the title is empty the window could have just been created and in the process of loading. Our float determination could still be correct, but to account for the potential change we mark it as unreliable.
         if title.isEmpty {
             return .unreliable(defaultFloat)
         }
