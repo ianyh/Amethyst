@@ -17,7 +17,7 @@ extension WindowManager {
         init() {}
 
         func assignCurrentSpaceIdentifiers() {
-            guard let screensInfo = CGScreensInfo() else {
+            guard let screensInfo = CGScreensInfo<Window>() else {
                 return
             }
 
@@ -33,21 +33,23 @@ extension WindowManager {
                         continue
                     }
 
-                    guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                    let space = CGSpacesInfo<Window>.space(fromScreenDescription: screenDictionary)
+
+                    guard screenManager.currentSpace != space else {
                         continue
                     }
 
-                    screenManager.currentSpaceIdentifier = spaceIdentifier
+                    screenManager.currentSpace = space
                 }
             } else {
                 for screenManager in screenManagers {
-                    let screenDictionary = screensInfo.descriptions[0]
+                    let space = CGSpacesInfo<Window>.space(fromScreenDescription: screensInfo.descriptions[0])
 
-                    guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                    guard screenManager.currentSpace != space else {
                         continue
                     }
 
-                    screenManager.currentSpaceIdentifier = spaceIdentifier
+                    screenManager.currentSpace = space
                 }
             }
         }
