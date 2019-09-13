@@ -24,34 +24,33 @@ final class ScreenManager<Window: WindowType>: NSObject {
     public var onReflowInitiation: (() -> Void)?
     public var onReflowCompletion: (() -> Void)?
 
-    var currentSpaceIdentifier: String? {
+    var currentSpace: Space? {
         willSet {
-            guard let spaceIdentifier = currentSpaceIdentifier else {
+            guard let space = currentSpace else {
                 return
             }
 
-            currentLayoutIndexBySpaceIdentifier[spaceIdentifier] = currentLayoutIndex
+            currentLayoutIndexBySpaceIdentifier[space.uuid] = currentLayoutIndex
         }
         didSet {
             defer {
                 setNeedsReflowWithWindowChange(.unknown)
             }
 
-            guard let spaceIdentifier = currentSpaceIdentifier else {
+            guard let space = currentSpace else {
                 return
             }
 
-            setCurrentLayoutIndex(currentLayoutIndexBySpaceIdentifier[spaceIdentifier] ?? 0, changingSpace: true)
+            setCurrentLayoutIndex(currentLayoutIndexBySpaceIdentifier[space.uuid] ?? 0, changingSpace: true)
 
-            if let layouts = layoutsBySpaceIdentifier[spaceIdentifier] {
+            if let layouts = layoutsBySpaceIdentifier[space.uuid] {
                 self.layouts = layouts
             } else {
                 self.layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
-                layoutsBySpaceIdentifier[spaceIdentifier] = layouts
+                layoutsBySpaceIdentifier[space.uuid] = layouts
             }
         }
     }
-    var isFullscreen = false
 
     private var reflowTimer: Timer?
     private var reflowOperation: Operation?
@@ -122,7 +121,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
     }
 
     private func reflow(_ event: Change<Window>) {
-        guard currentSpaceIdentifier != nil && userConfiguration.tilingEnabled && !isFullscreen else {
+        guard userConfiguration.tilingEnabled, currentSpace?.type == CGSSpaceTypeUser else {
             return
         }
 
@@ -214,7 +213,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
     }
 
     func displayLayoutHUD() {
-        guard userConfiguration.enablesLayoutHUD() else {
+        guard userConfiguration.enablesLayoutHUD(), currentSpace?.type == CGSSpaceTypeUser else {
             return
         }
 
