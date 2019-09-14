@@ -8,7 +8,7 @@
 
 import Silica
 
-final class FullscreenReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class FullscreenReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     private let layout: FullscreenLayout<Window>
 
     init(screen: NSScreen, windows: [Window], layout: FullscreenLayout<Window>, frameAssigner: FrameAssigner) {
@@ -25,7 +25,7 @@ final class FullscreenReflowOperation<Window: WindowType>: ReflowOperation<Windo
     }
 }
 
-final class FullscreenLayout<Window: WindowType>: Layout<Window> {
+class FullscreenLayout<Window: WindowType>: Layout<Window> {
     override static var layoutName: String { return "Fullscreen" }
     override static var layoutKey: String { return "fullscreen" }
 

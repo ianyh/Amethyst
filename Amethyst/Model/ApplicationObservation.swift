@@ -202,7 +202,9 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
      */
     private func addObserver(for notification: Notification) throws {
         let success = application.observe(notification: notification.string) { element in
-            let window = Window(element: element)
+            guard let window = Window(element: element) else {
+                return
+            }
 
             self.handle(notification: notification, window: window)
         }
