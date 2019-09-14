@@ -39,7 +39,7 @@ extension WindowActivityCache {
 
             let space = (spaces as NSArray as? [NSNumber])?.first?.intValue
 
-            guard let windowScreen = window.screen(), space == currentSpace else {
+            guard let windowScreen = window.screen(), currentSpace.id == space else {
                 return false
             }
 

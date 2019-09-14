@@ -41,8 +41,11 @@ protocol ApplicationType: Equatable {
      
      - Parameters:
          - windowTitle: The window title to test.
+     
+     - Note:
+     We can receive an unreliable result. It is up to the caller to determine whether or not that result is good enough.
      */
-    func windowWithTitleShouldFloat(_ windowTitle: String) -> Bool
+    func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> Reliable<DefaultFloat>
 
     /// Clears the internal cache of application windows.
     func dropWindowsCache()
@@ -138,8 +141,8 @@ class AnyApplication<Application: ApplicationType>: ApplicationType {
         return internalApplication.pid()
     }
 
-    func windowWithTitleShouldFloat(_ windowTitle: String) -> Bool {
-        return internalApplication.windowWithTitleShouldFloat(windowTitle)
+    func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> Reliable<DefaultFloat> {
+        return internalApplication.defaultFloatForWindowWithTitle(windowTitle)
     }
 
     func dropWindowsCache() {
@@ -191,5 +194,17 @@ extension SIApplication: ApplicationType {
 
     func unobserve(notification: String, window: Window) {
         unobserveNotification(notification as CFString, with: window)
+    }
+
+    func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> Reliable<DefaultFloat> {
+        guard let runningApplication = NSRunningApplication(processIdentifier: processIdentifier()) else {
+            return .reliable(.floating)
+        }
+
+        return UserConfiguration.shared.runningApplication(runningApplication, byDefaultFloatsForTitle: windowTitle)
+    }
+
+    private func observe(notification: String, with accessibilityElement: SIAccessibilityElement, handler: @escaping SIAXNotificationHandler) -> Bool {
+        return observeNotification(notification as CFString, with: accessibilityElement, handler: handler)
     }
 }

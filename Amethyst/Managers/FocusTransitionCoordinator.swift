@@ -27,6 +27,8 @@ protocol FocusTransitionTarget: class {
     func screen(at index: Int) -> NSScreen?
     func nextWindowIDClockwise(on screen: NSScreen) -> CGWindowID?
     func nextWindowIDCounterClockwise(on screen: NSScreen) -> CGWindowID?
+    func nextScreenIndexClockwise(from screen: NSScreen) -> Int
+    func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int
 }
 
 extension FocusTransitionTarget {
@@ -158,6 +160,22 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
 
         // Otherwise focus the topmost window
         target.executeTransition(.focusWindow(topWindow))
+    }
+
+    func moveFocusScreenCounterClockwise() {
+        guard let focusedScreen = Window.currentlyFocused()?.screen() else {
+            return
+        }
+
+        focusScreen(at: target.nextScreenIndexCounterClockwise(from: focusedScreen))
+    }
+
+    func moveFocusScreenClockwise() {
+        guard let focusedScreen = Window.currentlyFocused()?.screen() else {
+            return
+        }
+
+        focusScreen(at: target.nextScreenIndexClockwise(from: focusedScreen))
     }
 }
 

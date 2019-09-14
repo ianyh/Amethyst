@@ -128,6 +128,14 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
             windowManager.focusTransitionCoordinator.moveFocusToMain()
         }
 
+        constructCommandWithCommandKey(CommandKey.focusScreenCCW.rawValue) {
+            windowManager.focusTransitionCoordinator.moveFocusScreenCounterClockwise()
+        }
+
+        constructCommandWithCommandKey(CommandKey.focusScreenCW.rawValue) {
+            windowManager.focusTransitionCoordinator.moveFocusScreenClockwise()
+        }
+
         constructCommandWithCommandKey(CommandKey.swapScreenCCW.rawValue) {
             windowManager.windowTransitionCoordinator.swapFocusedWindowScreenCounterClockwise()
         }
@@ -320,6 +328,8 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Move focus counter clockwise", CommandKey.focusCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus clockwise", CommandKey.focusCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus to main window", CommandKey.focusMain.rawValue])
+        hotKeyNameToDefaultsKey.append(["Move focus to counter clockwise screen", CommandKey.focusScreenCCW.rawValue])
+        hotKeyNameToDefaultsKey.append(["Move focus to clockwise screen", CommandKey.focusScreenCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window to counter clockwise screen", CommandKey.swapScreenCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window to clockwise screen", CommandKey.swapScreenCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Swap focused window counter clockwise", CommandKey.swapCCW.rawValue])

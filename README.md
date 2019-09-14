@@ -5,7 +5,7 @@ Amethyst
 [![Build Status](https://travis-ci.com/ianyh/Amethyst.svg?branch=development)](https://travis-ci.com/ianyh/Amethyst)
 [![Open Source Helpers](https://www.codetriage.com/ianyh/amethyst/badges/users.svg)](https://www.codetriage.com/ianyh/amethyst)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
-![Twitter Follow](https://img.shields.io/twitter/follow/amethystwm?style=social)
+[![Twitter Follow](https://img.shields.io/twitter/follow/amethystwm?style=social)](https://twitter.com/amethystwm)
 
 Tiling window manager for macOS along the lines of [xmonad](https://xmonad.org/).
 
@@ -53,6 +53,8 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `mod1 + .` | Decrease main pane count |
 | `mod1 + j` | Move focus counter clockwise |
 | `mod1 + k` | Move focus clockwise |
+| `mod1 + p` | Move focus to counter clockwise screen |
+| `mod1 + n` | Move focus to clockwise screen |
 | `mod2 + h` | Swap focused window to counter clockwise screen |
 | `mod2 + l` | Swap focused window to clockwise screen |
 | `mod2 + j` | Swap focused window counter clockwise |

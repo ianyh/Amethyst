@@ -45,6 +45,14 @@
         "mod": "mod1",
         "key": "f"
     },
+    "focus-screen-ccw": {
+        "mod": "mod1",
+        "key": "p"
+    },
+    "focus-screen-cw": {
+        "mod": "mod1",
+        "key": "n"
+    },
     "focus-screen-1": {
         "mod": "mod1",
         "key": "w"

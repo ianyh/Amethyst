@@ -257,6 +257,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         }
 
         deactivate(application: application)
+        application.dropWindowsCache()
     }
 
     @objc func applicationDidUnhide(_ notification: Notification) {
@@ -268,6 +269,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             return
         }
 
+        application.dropWindowsCache()
         activate(application: application)
     }
 
@@ -317,9 +319,25 @@ extension WindowManager {
         markAllScreensForReflowWithChange(.unknown)
     }
 
-    func add(window: Window) {
+    private func add(window: Window, retries: Int = 5) {
         guard !windows.contains(window) && window.shouldBeManaged() else {
             return
+        }
+
+        guard let application = applicationWithProcessIdentifier(window.pid()) else {
+            log.error("Tried to add a window without an application")
+            return
+        }
+
+        switch application.defaultFloatForWindowWithTitle(window.title()) {
+        case .unreliable where retries > 0:
+            return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.add(window: window, retries: retries - 1)
+            }
+        case .reliable(.floating), .unreliable(.floating):
+            floatingMap[window.windowID()] = true
+        case .reliable(.notFloating), .unreliable(.notFloating):
+            floatingMap[window.windowID()] = false
         }
 
         regenerateActiveIDCache()
@@ -328,17 +346,6 @@ extension WindowManager {
             windows.insert(window, at: 0)
         } else {
             windows.append(window)
-        }
-
-        guard let application = applicationWithProcessIdentifier(window.pid()) else {
-            log.error("Tried to add a window without an application")
-            return
-        }
-
-        if let windowTitle = window.title(), application.windowWithTitleShouldFloat(windowTitle) {
-            floatingMap[window.windowID()] = true
-        } else {
-            floatingMap[window.windowID()] = window.shouldFloat()
         }
 
         application.observe(notification: kAXUIElementDestroyedNotification, window: window) { element in
@@ -625,13 +632,18 @@ extension WindowManager: WindowTransitionTarget {
             markScreenForReflow(screen, withChange: .add(window: window))
             window.focus()
         case let .moveWindowToSpaceAtIndex(window, spaceIndex):
-            guard let screen = window.screen(), let spaces = CGSpacesInfo<Window>.spacesForScreen(screen), spaceIndex < spaces.count else {
+            guard
+                let screen = window.screen(),
+                let spaces = CGSpacesInfo<Window>.spacesForScreen(screen, includeOnlyUserSpaces: true),
+                spaceIndex < spaces.count
+            else {
                 return
             }
 
             let targetSpace = spaces[spaceIndex]
+
             markScreenForReflow(screen, withChange: .remove(window: window))
-            window.move(toSpace: targetSpace)
+            window.move(toSpace: targetSpace.id)
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
                 executeTransition(.focusScreen(screen))
