@@ -63,6 +63,8 @@
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
 		40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */; };
 		40AF71DE20BB401400F58EA9 /* FloatingPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */; };
+		40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */; };
+		40B0D14B232D944C0021E0A7 /* TestWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B0D14A232D944C0021E0A7 /* TestWindow.swift */; };
 		40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* LayoutNameWindow.xib */; };
 		40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C1357B1F202AEE00FF9FA7 /* PreferencesWindow.swift */; };
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
@@ -165,6 +167,8 @@
 		40AF71D920BB348300F58EA9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPreferencesViewController.swift; sourceTree = "<group>"; };
 		40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingPreferencesViewController.xib; sourceTree = "<group>"; };
+		40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenLayoutTests.swift; sourceTree = "<group>"; };
+		40B0D14A232D944C0021E0A7 /* TestWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWindow.swift; sourceTree = "<group>"; };
 		40B3927B1814967F009A296B /* LayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LayoutNameWindow.xib; sourceTree = "<group>"; };
 		40C1357B1F202AEE00FF9FA7 /* PreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindow.swift; sourceTree = "<group>"; };
 		40C3F91A1BD1B22E00F58660 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -371,6 +375,7 @@
 			isa = PBXGroup;
 			children = (
 				404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */,
+				40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -381,6 +386,24 @@
 				4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */,
 			);
 			path = Managers;
+			sourceTree = "<group>";
+		};
+		40B0D148232D942B0021E0A7 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				4085824A1EA673950075A2C3 /* Managers */,
+				404BE9CF1CFBDEFD00D6C537 /* Layout */,
+				401BC8AB1CE8F84500F89B3F /* Preferences */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		40B0D149232D94410021E0A7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				40B0D14A232D944C0021E0A7 /* TestWindow.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		40B337E11745CE340001D8FC /* Layout */ = {
@@ -417,10 +440,9 @@
 		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
 			isa = PBXGroup;
 			children = (
+				40B0D149232D94410021E0A7 /* Model */,
+				40B0D148232D942B0021E0A7 /* Tests */,
 				40111CC7223370E1003D20BD /* Categories */,
-				4085824A1EA673950075A2C3 /* Managers */,
-				404BE9CF1CFBDEFD00D6C537 /* Layout */,
-				401BC8AB1CE8F84500F89B3F /* Preferences */,
 				40D95B4B1C6E2ED800AAF433 /* Info.plist */,
 				401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */,
 			);
@@ -740,6 +762,8 @@
 				401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */,
 				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
+				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
+				40B0D14B232D944C0021E0A7 /* TestWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -349,11 +349,15 @@ extension WindowManager {
         }
 
         application.observe(notification: kAXUIElementDestroyedNotification, window: window) { element in
-            let window = Window(element: element)
+            guard let window = Window(element: element) else {
+                return
+            }
             self.remove(window: window)
         }
         application.observe(notification: kAXWindowMiniaturizedNotification, window: window) { element in
-            let window = Window(element: element)
+            guard let window = Window(element: element) else {
+                return
+            }
 
             self.remove(window: window)
 
