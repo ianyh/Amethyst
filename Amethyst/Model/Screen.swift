@@ -36,7 +36,7 @@ protocol ScreenType: Equatable {
     func frameWithoutDockOrMenu() -> CGRect
 
     /// The opaque idenfitifer for the screen in the underlying graphics system.
-    func screenIdentifier() -> String?
+    func screenID() -> String?
 
     /// Raises the window to the foreground.
     func focusScreen()
@@ -109,7 +109,7 @@ struct AMScreen: ScreenType {
         return screen.frameWithoutDockOrMenu()
     }
 
-    func screenIdentifier() -> String? {
+    func screenID() -> String? {
         guard let managedDisplay = CGSCopyBestManagedDisplayForRect(CGSMainConnectionID(), frameIncludingDockAndMenu()) else {
             return nil
         }

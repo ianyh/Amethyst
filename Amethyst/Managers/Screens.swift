@@ -23,13 +23,13 @@ extension WindowManager {
 
             if Screen.screensHaveSeparateSpaces {
                 for screenDictionary in screensInfo.descriptions {
-                    guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
+                    guard let screenID = screenDictionary["Display Identifier"].string else {
                         log.error("Could not identify screen with info: \(screenDictionary)")
                         continue
                     }
 
-                    guard let screenManager = screenManagersCache[screenIdentifier] else {
-                        log.error("Screen with identifier not managed: \(screenIdentifier)")
+                    guard let screenManager = screenManagersCache[screenID] else {
+                        log.error("Screen with identifier not managed: \(screenID)")
                         continue
                     }
 
@@ -63,7 +63,7 @@ extension WindowManager {
                     continue
                 }
 
-                if typedScreenManager.screen.screenIdentifier() == focusedWindow.screen()?.screenIdentifier() {
+                if typedScreenManager.screen.screenID() == focusedWindow.screen()?.screenID() {
                     return typedScreenManager
                 }
             }
@@ -74,14 +74,14 @@ extension WindowManager {
             var screenManagers: [ScreenManager<Window>] = []
 
             for screen in Screen.availableScreens {
-                guard let screenIdentifier = screen.screenIdentifier() else {
+                guard let screenID = screen.screenID() else {
                     continue
                 }
 
-                let screenManager = screenManagersCache[screenIdentifier] ?? windowManager.screenManager(screen: screen, screenID: screenIdentifier)
+                let screenManager = screenManagersCache[screenID] ?? windowManager.screenManager(screen: screen, screenID: screenID)
                 screenManager.screen = screen
 
-                screenManagersCache[screenIdentifier] = screenManager
+                screenManagersCache[screenID] = screenManager
 
                 screenManagers.append(screenManager)
             }
@@ -96,7 +96,7 @@ extension WindowManager {
 
         func markScreenForReflow(_ screen: Screen, withChange change: Change<Window>) {
             screenManagers
-                .filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+                .filter { $0.screen.screenID() == screen.screenID() }
                 .forEach { screenManager in
                     screenManager.setNeedsReflowWithWindowChange(change)
             }

@@ -17,7 +17,7 @@ class ScreenManager<Window: WindowType>: NSObject {
     typealias Screen = Window.Screen
 
     var screen: Screen
-    let screenIdentifier: String
+    let screenID: String
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
     public internal(set) var lastFocusedWindow: Window?
@@ -70,9 +70,9 @@ class ScreenManager<Window: WindowType>: NSObject {
 
     private let layoutNameWindowController: LayoutNameWindowController
 
-    init(screen: Screen, screenIdentifier: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
+    init(screen: Screen, screenID: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
         self.screen = screen
-        self.screenIdentifier = screenIdentifier
+        self.screenID = screenID
         self.delegate = delegate
         self.userConfiguration = userConfiguration
         self.onReflowInitiation = nil
@@ -111,7 +111,7 @@ class ScreenManager<Window: WindowType>: NSObject {
 
         reflowOperation?.cancel()
 
-        log.debug("Screen: \(screenIdentifier) -- Window Change: \(windowChange)")
+        log.debug("Screen: \(screenID) -- Window Change: \(windowChange)")
 
         if let statefulLayout = currentLayout as? StatefulLayout {
             statefulLayout.updateWithChange(windowChange)

@@ -81,12 +81,12 @@ struct CGSpacesInfo<Window: WindowType> {
             return nil
         }
 
-        let screenIdentifier = screen.screenIdentifier()
+        let screenID = screen.screenID()
         let spaces: [Space]?
 
         if Screen.screensHaveSeparateSpaces {
             spaces = screenDescriptions
-                .first { $0["Display Identifier"].string == screenIdentifier }
+                .first { $0["Display Identifier"].string == screenID }
                 .flatMap { screenDescription -> [Space]? in
                     return screenDescription["Spaces"].array?.map { space(fromSpaceDescription: $0) }
                 }
@@ -110,7 +110,7 @@ struct CGSpacesInfo<Window: WindowType> {
     }
 
     static func currentSpaceForScreen(_ screen: Screen) -> Space? {
-        guard let screenDescriptions = Screen.screenDescriptions(), let screenIdentifier = screen.screenIdentifier() else {
+        guard let screenDescriptions = Screen.screenDescriptions(), let screenID = screen.screenID() else {
             return nil
         }
 
@@ -120,7 +120,7 @@ struct CGSpacesInfo<Window: WindowType> {
 
         if Screen.screensHaveSeparateSpaces {
             for screenDescription in screenDescriptions {
-                guard screenDescription["Display Identifier"].string == screenIdentifier else {
+                guard screenDescription["Display Identifier"].string == screenID else {
                     continue
                 }
 

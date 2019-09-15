@@ -36,7 +36,7 @@ final class TestScreen: ScreenType {
         return internalFrame
     }
 
-    func screenIdentifier() -> String? {
+    func screenID() -> String? {
         return id
     }
 
