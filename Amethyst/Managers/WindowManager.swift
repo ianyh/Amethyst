@@ -101,9 +101,9 @@ class WindowManager<Application: ApplicationType>: NSObject {
         return screens.focusedScreenManager()
     }
 
-    fileprivate func applicationWithProcessIdentifier(_ processIdentifier: pid_t) -> AnyApplication<Application>? {
+    fileprivate func applicationWithPID(_ pid: pid_t) -> AnyApplication<Application>? {
         for application in applications {
-            if application.pid() == processIdentifier {
+            if application.pid() == pid {
                 return application
             }
         }
@@ -170,7 +170,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
     fileprivate func remove(window: Window) {
         markAllScreensForReflowWithChange(.remove(window: window))
 
-        let application = applicationWithProcessIdentifier(window.pid())
+        let application = applicationWithPID(window.pid())
         application?.unobserve(notification: kAXUIElementDestroyedNotification, window: window)
         application?.unobserve(notification: kAXWindowMiniaturizedNotification, window: window)
         application?.unobserve(notification: kAXWindowDeminiaturizedNotification, window: window)
@@ -241,7 +241,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
             return
         }
 
-        guard let application = applicationWithProcessIdentifier(terminatedApplication.processIdentifier) else {
+        guard let application = applicationWithPID(terminatedApplication.processIdentifier) else {
             return
         }
 
@@ -253,7 +253,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
             return
         }
 
-        guard let application = applicationWithProcessIdentifier(hiddenApplication.processIdentifier) else {
+        guard let application = applicationWithPID(hiddenApplication.processIdentifier) else {
             return
         }
 
@@ -266,7 +266,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
             return
         }
 
-        guard let application = applicationWithProcessIdentifier(unhiddenApplication.processIdentifier) else {
+        guard let application = applicationWithPID(unhiddenApplication.processIdentifier) else {
             return
         }
 
@@ -283,8 +283,8 @@ class WindowManager<Application: ApplicationType>: NSObject {
                 continue
             }
 
-            let processIdentifier = runningApplication.processIdentifier
-            guard let application = applicationWithProcessIdentifier(processIdentifier) else {
+            let pid = runningApplication.processIdentifier
+            guard let application = applicationWithPID(pid) else {
                 continue
             }
 
@@ -325,7 +325,7 @@ extension WindowManager {
             return
         }
 
-        guard let application = applicationWithProcessIdentifier(window.pid()) else {
+        guard let application = applicationWithPID(window.pid()) else {
             log.error("Tried to add a window without an application")
             return
         }
