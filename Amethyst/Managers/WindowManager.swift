@@ -15,6 +15,7 @@ import SwiftyJSON
 
 final class WindowManager<Application: ApplicationType>: NSObject {
     typealias Window = Application.Window
+    typealias Screen = Window.Screen
 
     private(set) var windows: [Window] = []
     private(set) lazy var windowTransitionCoordinator = WindowTransitionCoordinator(target: self)
@@ -68,7 +69,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         activeIDCache = windowDescriptions?.activeIDs() ?? Set()
     }
 
-    func screenManager(screen: NSScreen, screenID: String) -> ScreenManager<Window> {
+    func screenManager(screen: Screen, screenID: String) -> ScreenManager<Window> {
         let screenManager = ScreenManager<Window>(
             screen: screen,
             screenIdentifier: screenID,
@@ -207,7 +208,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         markScreenForReflow(screen, withChange: windowChange)
     }
 
-    func markScreenForReflow(_ screen: NSScreen, withChange change: Change<Window>) {
+    func markScreenForReflow(_ screen: Screen, withChange change: Change<Window>) {
         screens.markScreenForReflow(screen, withChange: change)
     }
 
@@ -548,7 +549,7 @@ extension WindowManager: ApplicationObservationDelegate {
         }
 
         guard
-            let screenManager: ScreenManager<Application.Window> = focusedScreenManager(),
+            let screenManager: ScreenManager<Window> = focusedScreenManager(),
             let layout = screenManager.currentLayout,
             layout is PanedLayout,
             let oldFrame = layout.assignedFrame(window, of: activeWindowsForScreenManager(screenManager), on: screen)
@@ -568,7 +569,7 @@ extension WindowManager: ApplicationObservationDelegate {
             if dragEndInterval < mouseStateKeeper.dragRaceThresholdSeconds {
                 mouseStateKeeper.state = .pointing // flip state first to prevent race condition
 
-                if let screenManager: ScreenManager<Application.Window> = focusedScreenManager() {
+                if let screenManager: ScreenManager<Window> = focusedScreenManager() {
                     screenManager.updateCurrentLayout { layout in
                         if let panedLayout = layout as? PanedLayout {
                             panedLayout.recommendMainPaneRatio(ratio)
@@ -593,7 +594,7 @@ extension WindowManager: ApplicationObservationDelegate {
 
 // MARK: Transition Coordination
 extension WindowManager {
-    func screen(at index: Int) -> NSScreen? {
+    func screen(at index: Int) -> Screen? {
         return screenManager(at: index)?.screen
     }
 
@@ -605,11 +606,11 @@ extension WindowManager {
         return screens.screenManagers[screenIndex]
     }
 
-    func screenManager(for screen: NSScreen) -> ScreenManager<Window>? {
+    func screenManager(for screen: Screen) -> ScreenManager<Window>? {
         return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 
-    func screenManagerIndex(for screen: NSScreen) -> Int? {
+    func screenManagerIndex(for screen: Screen) -> Int? {
         return screens.screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
     }
 }
@@ -655,7 +656,7 @@ extension WindowManager: WindowTransitionTarget {
         }
     }
 
-    func nextScreenIndexClockwise(from screen: NSScreen) -> Int {
+    func nextScreenIndexClockwise(from screen: Screen) -> Int {
         guard let screenManagerIndex = self.screenManagerIndex(for: screen) else {
             return -1
         }
@@ -663,7 +664,7 @@ extension WindowManager: WindowTransitionTarget {
         return (screenManagerIndex + 1) % (screens.screenManagers.count)
     }
 
-    func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int {
+    func nextScreenIndexCounterClockwise(from screen: Screen) -> Int {
         guard let screenManagerIndex = self.screenManagerIndex(for: screen) else {
             return -1
         }
@@ -684,15 +685,15 @@ extension WindowManager: FocusTransitionTarget {
         }
     }
 
-    func lastFocusedWindow(on screen: NSScreen) -> Window? {
+    func lastFocusedWindow(on screen: Screen) -> Window? {
         return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }?.lastFocusedWindow
     }
 
-    func nextWindowIDClockwise(on screen: NSScreen) -> CGWindowID? {
+    func nextWindowIDClockwise(on screen: Screen) -> CGWindowID? {
         return screenManager(for: screen)?.nextWindowIDClockwise()
     }
 
-    func nextWindowIDCounterClockwise(on screen: NSScreen) -> CGWindowID? {
+    func nextWindowIDCounterClockwise(on screen: Screen) -> CGWindowID? {
         return screenManager(for: screen)?.nextWindowIDCounterClockwise()
     }
 }

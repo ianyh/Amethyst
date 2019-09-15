@@ -15,11 +15,12 @@ import Silica
  We use this enum to convey some information about the window that the mouse might be interacting with.
  */
 enum MouseState<Window: WindowType> {
+    typealias Screen = Window.Screen
     case pointing
     case clicking
     case dragging
     case moving(window: Window)
-    case resizing(screen: NSScreen, ratio: CGFloat)
+    case resizing(screen: Screen, ratio: CGFloat)
     case doneDragging(atTime: Date)
 }
 
@@ -94,7 +95,6 @@ class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
 
         default: ()
         }
-
     }
 
     // React to a reflow event.  Typically this means that any window we were dragging

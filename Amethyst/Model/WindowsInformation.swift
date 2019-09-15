@@ -20,7 +20,7 @@ extension CGRect {
 }
 
 extension WindowActivityCache {
-    func windows<Window: WindowType>(_ windows: [Window], on screen: NSScreen) -> [Window] {
+    func windows<Window: WindowType>(_ windows: [Window], on screen: Window.Screen) -> [Window] {
         guard let screenIdentifier = screen.screenIdentifier() else {
             return []
         }

@@ -52,6 +52,8 @@ struct CGWindowsInfo {
 }
 
 struct CGScreensInfo<Window: WindowType> {
+    typealias Screen = Window.Screen
+
     let descriptions: [JSON]
 
     init?() {
@@ -68,7 +70,9 @@ struct CGScreensInfo<Window: WindowType> {
 }
 
 struct CGSpacesInfo<Window: WindowType> {
-    static func spacesForScreen(_ screen: NSScreen, includeOnlyUserSpaces: Bool = false) -> [Space]? {
+    typealias Screen = Window.Screen
+
+    static func spacesForScreen(_ screen: Screen, includeOnlyUserSpaces: Bool = false) -> [Space]? {
         guard let screenDescriptions = NSScreen.screenDescriptions() else {
             return nil
         }
@@ -105,7 +109,7 @@ struct CGSpacesInfo<Window: WindowType> {
         return spacesForScreen(screen)
     }
 
-    static func currentSpaceForScreen(_ screen: NSScreen) -> Space? {
+    static func currentSpaceForScreen(_ screen: Screen) -> Space? {
         guard let screenDescriptions = NSScreen.screenDescriptions(), let screenIdentifier = screen.screenIdentifier() else {
             return nil
         }

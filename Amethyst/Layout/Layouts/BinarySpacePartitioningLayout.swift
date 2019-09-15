@@ -144,7 +144,7 @@ final class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOp
     private typealias TraversalNode = (node: TreeNode, frame: CGRect)
     private let rootNode: TreeNode
 
-    init(screen: NSScreen, windows: [Window], rootNode: TreeNode, frameAssigner: FrameAssigner) {
+    init(screen: Screen, windows: [Window], rootNode: TreeNode, frameAssigner: FrameAssigner) {
         self.rootNode = rootNode
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -312,7 +312,7 @@ final class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Wi
         return orderedIDs[nextWindowIndex]
     }
 
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
         if !windows.isEmpty && !rootNode.valid {
             constructInitialTreeWithWindows(windows)
         }
