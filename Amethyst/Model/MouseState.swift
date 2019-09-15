@@ -41,8 +41,8 @@ protocol MouseStateKeeperDelegate: class {
 This class by itself can only understand clicking, dragging, and "pointing" (no mouse buttons down). The SIApplication observers are able to augment that understanding of state by "upgrading" a drag action to a "window move" or a "window resize" event since those observers will have proper context.
  */
 class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
-    public let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
-    public var state: MouseState<Delegate.Window>
+    let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
+    var state: MouseState<Delegate.Window>
     private(set) weak var delegate: Delegate?
     private var monitor: Any?
 
