@@ -458,7 +458,7 @@ extension WindowManager: MouseStateKeeperDelegate {
         }
     }
 
-    func swapDraggedWindowWithDropzone(_ draggedWindow: Application.Window) {
+    func swapDraggedWindowWithDropzone(_ draggedWindow: Window) {
         guard let screen = draggedWindow.screen() else { return }
 
         let windows: [Window] = self.windows(self.windows, on: screen)
@@ -484,15 +484,15 @@ extension WindowManager: MouseStateKeeperDelegate {
 }
 
 extension WindowManager: ApplicationObservationDelegate {
-    func application(_ application: AnyApplication<Application>, didAddWindow window: Application.Window) {
+    func application(_ application: AnyApplication<Application>, didAddWindow window: Window) {
         add(window: window)
     }
 
-    func application(_ application: AnyApplication<Application>, didRemoveWindow window: Application.Window) {
+    func application(_ application: AnyApplication<Application>, didRemoveWindow window: Window) {
         remove(window: window)
     }
 
-    func application(_ application: AnyApplication<Application>, didFocusWindow window: Application.Window) {
+    func application(_ application: AnyApplication<Application>, didFocusWindow window: Window) {
         guard let screen = window.screen() else {
             return
         }
@@ -505,11 +505,11 @@ extension WindowManager: ApplicationObservationDelegate {
         }
     }
 
-    func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Application.Window) {
+    func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
         swapInTab(window: window)
     }
 
-    func application(_ application: AnyApplication<Application>, didMoveWindow window: Application.Window) {
+    func application(_ application: AnyApplication<Application>, didMoveWindow window: Window) {
         guard userConfiguration.mouseSwapsWindows() else {
             return
         }
@@ -539,7 +539,7 @@ extension WindowManager: ApplicationObservationDelegate {
         }
     }
 
-    func application(_ application: AnyApplication<Application>, didResizeWindow window: Application.Window) {
+    func application(_ application: AnyApplication<Application>, didResizeWindow window: Window) {
         guard userConfiguration.mouseResizesWindows() else {
             return
         }
@@ -615,6 +615,7 @@ extension WindowManager {
     }
 }
 
+// MARK: Window Transition
 extension WindowManager: WindowTransitionTarget {
     func executeTransition(_ transition: WindowTransition<Window>) {
         switch transition {
@@ -673,6 +674,7 @@ extension WindowManager: WindowTransitionTarget {
     }
 }
 
+// MARK: Focus Transition
 extension WindowManager: FocusTransitionTarget {
     var windowActivityCache: WindowActivityCache { return self }
 
