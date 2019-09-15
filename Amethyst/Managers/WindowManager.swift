@@ -17,14 +17,12 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
 
-    private(set) var windows: [Window] = []
     private(set) lazy var windowTransitionCoordinator = WindowTransitionCoordinator(target: self)
     private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self)
 
     private var applications: [AnyApplication<Application>] = []
     private let screens = Screens()
-    private var activeIDCache: Set<CGWindowID> = Set()
-    private var floatingMap: [CGWindowID: Bool] = [:]
+    let windows = Windows()
     private var lastReflowTime = Date()
     private var lastFocusDate: Date?
 
@@ -62,11 +60,6 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     private func addWorkspaceNotificationObserver(_ name: NSNotification.Name, selector: Selector) {
         let workspaceNotificationCenter = NSWorkspace.shared.notificationCenter
         workspaceNotificationCenter.addObserver(self, selector: selector, name: name, object: nil)
-    }
-
-    private func regenerateActiveIDCache() {
-        let windowDescriptions = CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))
-        activeIDCache = windowDescriptions?.activeIDs() ?? Set()
     }
 
     func screenManager(screen: Screen) -> ScreenManager<WindowManager<Application>> {
@@ -145,25 +138,11 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
-        for window in windows {
-            if window.pid() == application.pid() {
-                guard let screen = window.screen() else {
-                    return
-                }
-                markScreenForReflow(screen, withChange: .unknown)
-            }
-        }
+        markAllScreensForReflowWithChange(.unknown)
     }
 
     fileprivate func deactivate(application: AnyApplication<Application>) {
-        for window in windows {
-            if window.pid() == application.pid() {
-                guard let screen = window.screen() else {
-                    return
-                }
-                markScreenForReflow(screen, withChange: .unknown)
-            }
-        }
+        markAllScreensForReflowWithChange(.unknown)
     }
 
     fileprivate func remove(window: Window) {
@@ -174,36 +153,25 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         application?.unobserve(notification: kAXWindowMiniaturizedNotification, window: window)
         application?.unobserve(notification: kAXWindowDeminiaturizedNotification, window: window)
 
-        regenerateActiveIDCache()
-
-        guard let windowIndex = windows.index(of: window) else {
-            return
-        }
-
-        windows.remove(at: windowIndex)
+        windows.regenerateActiveIDCache()
+        windows.remove(window: window)
     }
 
     func toggleFloatForFocusedWindow() {
-        guard let focusedWindow = Window.currentlyFocused() else {
+        guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
 
-        for window in windows {
-            if let screen = window.screen(), window == focusedWindow {
-                let windowChange: Change = windowIsFloating(window) ? .add(window: window) : .remove(window: window)
-                floatingMap[window.windowID()] = !windowIsFloating(window)
-                markScreenForReflow(screen, withChange: windowChange)
-                return
-            }
-        }
-
-        guard let screen = focusedWindow.screen() else {
+        guard windows.windows(onScreen: screen).contains(focusedWindow) else {
+            let windowChange: Change<Window> = .add(window: focusedWindow)
+            add(window: focusedWindow)
+            windows.setFloating(false, forWindow: focusedWindow)
+            markScreenForReflow(screen, withChange: windowChange)
             return
         }
 
-        let windowChange: Change<Window> = .add(window: focusedWindow)
-        add(window: focusedWindow)
-        floatingMap[focusedWindow.windowID()] = false
+        let windowChange: Change = windows.isWindowFloating(focusedWindow) ? .add(window: focusedWindow) : .remove(window: focusedWindow)
+        windows.setFloating(!windows.isWindowFloating(focusedWindow), forWindow: focusedWindow)
         markScreenForReflow(screen, withChange: windowChange)
     }
 
@@ -274,7 +242,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
-        regenerateActiveIDCache()
+        windows.regenerateActiveIDCache()
         screens.updateSpaces()
 
         for runningApplication in NSWorkspace.shared.runningApplications {
@@ -320,7 +288,11 @@ extension WindowManager {
     }
 
     private func add(window: Window, retries: Int = 5) {
-        guard !windows.contains(window) && window.shouldBeManaged() else {
+        guard !windows.isWindowTracked(window) else {
+            return
+        }
+
+        guard window.shouldBeManaged() else {
             return
         }
 
@@ -335,18 +307,12 @@ extension WindowManager {
                 self.add(window: window, retries: retries - 1)
             }
         case .reliable(.floating), .unreliable(.floating):
-            floatingMap[window.windowID()] = true
+            windows.setFloating(true, forWindow: window)
         case .reliable(.notFloating), .unreliable(.notFloating):
-            floatingMap[window.windowID()] = false
+            windows.setFloating(false, forWindow: window)
         }
 
-        regenerateActiveIDCache()
-
-        if userConfiguration.sendNewWindowsToMainPane() {
-            windows.insert(window, at: 0)
-        } else {
-            windows.append(window)
-        }
+        windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
 
         application.observe(notification: kAXUIElementDestroyedNotification, window: window) { element in
             guard let window = Window(element: element) else {
@@ -387,7 +353,7 @@ extension WindowManager {
         }
 
         // We take the windows that are being tracked so we can properly detect when a tab switch is a new tab.
-        let applicationWindows = windows.filter { $0.pid() == window.pid() }
+        let applicationWindows = windows.windows(forApplicationWithPID: window.pid())
 
         for existingWindow in applicationWindows {
             guard existingWindow != window else {
@@ -425,7 +391,7 @@ extension WindowManager {
             // for the change, and then reflow.
             add(window: window)
             executeTransition(.switchWindows(existingWindow, window))
-            regenerateActiveIDCache()
+            windows.regenerateActiveIDCache()
             markScreenForReflow(screen, withChange: .unknown)
 
             return
@@ -438,11 +404,11 @@ extension WindowManager {
 
 extension WindowManager: WindowActivityCache {
     func windowIsActive<W: WindowType>(_ window: W) -> Bool {
-        return window.isActive() && activeIDCache.contains(window.windowID())
+        return windows.isWindowActive(window as! Window)
     }
 
-    func windowIsFloating<Window: WindowType>(_ window: Window) -> Bool {
-        return floatingMap[window.windowID()] ?? false
+    func windowIsFloating<W: WindowType>(_ window: W) -> Bool {
+        return windows.isWindowFloating(window as! Window)
     }
 }
 
@@ -460,7 +426,7 @@ extension WindowManager: MouseStateKeeperDelegate {
     func swapDraggedWindowWithDropzone(_ draggedWindow: Window) {
         guard let screen = draggedWindow.screen() else { return }
 
-        let windows: [Window] = self.windows(self.windows, on: screen)
+        let windows: [Window] = self.windows.windows(onScreen: screen)
 
         // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
         let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
@@ -482,6 +448,7 @@ extension WindowManager: MouseStateKeeperDelegate {
     }
 }
 
+// MARK: ApplicationObservationDelegate
 extension WindowManager: ApplicationObservationDelegate {
     func application(_ application: AnyApplication<Application>, didAddWindow window: Window) {
         add(window: window)
@@ -497,7 +464,8 @@ extension WindowManager: ApplicationObservationDelegate {
         }
 
         lastFocusDate = Date()
-        if windows.index(of: window) == nil {
+
+        if !windows.isWindowTracked(window) {
             markScreenForReflow(screen, withChange: .unknown)
         } else {
             markScreenForReflow(screen, withChange: .focusChanged(window: window))
@@ -619,14 +587,9 @@ extension WindowManager: WindowTransitionTarget {
     func executeTransition(_ transition: WindowTransition<Window>) {
         switch transition {
         case let .switchWindows(window, otherWindow):
-            guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
+            guard windows.swap(window: window, withWindow: otherWindow) else {
                 return
             }
-
-            guard windowIndex != otherWindowIndex else { return }
-
-            windows[windowIndex] = otherWindow
-            windows[otherWindowIndex] = window
 
             markAllScreensForReflowWithChange(.windowSwap(window: window, otherWindow: otherWindow))
         case let .moveWindowToScreen(window, screen):
@@ -675,8 +638,6 @@ extension WindowManager: WindowTransitionTarget {
 
 // MARK: Focus Transition
 extension WindowManager: FocusTransitionTarget {
-    var windowActivityCache: WindowActivityCache { return self }
-
     func executeTransition(_ transition: FocusTransition<Window>) {
         switch transition {
         case let .focusWindow(window):

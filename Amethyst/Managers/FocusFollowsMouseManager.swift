@@ -12,12 +12,13 @@ import Silica
 import RxSwift
 
 protocol FocusFollowsMouseManagerDelegate: class {
-    associatedtype Window: WindowType
-    func windowsForFocusFollowsMouse() -> [Window]
+    associatedtype Application: ApplicationType
+    var windows: WindowManager<Application>.Windows { get }
 }
 
 class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
-    typealias Screen = Delegate.Window.Screen
+    typealias Window = Delegate.Application.Window
+    typealias Screen = Window.Screen
 
     weak var delegate: Delegate!
 
@@ -54,18 +55,18 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
             return
         }
 
-        guard let windows = delegate?.windowsForFocusFollowsMouse() else {
+        guard let screen = Screen.availableScreens.first(where: { $0.frameIncludingDockAndMenu().contains(event.locationInWindow) }) else {
             return
         }
 
-        guard let screen = Screen.availableScreens.first(where: { $0.frameIncludingDockAndMenu().contains(event.locationInWindow) }) else {
+        guard let windows = delegate?.windows.windows(onScreen: screen) else {
             return
         }
 
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
         mousePoint.y = Screen.globalHeight() - mousePoint.y + screen.frameIncludingDockAndMenu().origin.y
 
-        if let focusedWindow = Delegate.Window.currentlyFocused() {
+        if let focusedWindow = Window.currentlyFocused() {
             // If the point is already in the frame of the focused window do nothing.
             guard !focusedWindow.frame().contains(mousePoint) else {
                 return
@@ -80,8 +81,4 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
     }
 }
 
-extension WindowManager: FocusFollowsMouseManagerDelegate {
-    func windowsForFocusFollowsMouse() -> [Application.Window] {
-        return windows
-    }
-}
+extension WindowManager: FocusFollowsMouseManagerDelegate {}

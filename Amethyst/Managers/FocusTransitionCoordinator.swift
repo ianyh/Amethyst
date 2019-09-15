@@ -17,11 +17,11 @@ enum FocusTransition<Window: WindowType> {
 }
 
 protocol FocusTransitionTarget: class {
-    associatedtype Window: WindowType
+    associatedtype Application: ApplicationType
+    typealias Window = Application.Window
     typealias Screen = Window.Screen
 
-    var windowActivityCache: WindowActivityCache { get }
-    var windows: [Window] { get }
+    var windows: WindowManager<Application>.Windows { get }
 
     func executeTransition(_ transition: FocusTransition<Window>)
 
@@ -31,12 +31,6 @@ protocol FocusTransitionTarget: class {
     func nextWindowIDCounterClockwise(on screen: Screen) -> CGWindowID?
     func nextScreenIndexClockwise(from screen: Screen) -> Int
     func nextScreenIndexCounterClockwise(from screen: Screen) -> Int
-}
-
-extension FocusTransitionTarget {
-    func cachedWindows(on screen: Screen) -> [Window] {
-        return windowActivityCache.windows(windows, on: screen)
-    }
 }
 
 class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
@@ -59,7 +53,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -89,7 +83,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -119,7 +113,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -144,7 +138,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows.windows(onScreen: screen)
 
         // If there are no windows on the screen focus the screen directly
         guard !windows.isEmpty else {
