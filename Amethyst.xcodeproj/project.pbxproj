@@ -61,6 +61,7 @@
 		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
+		40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A7AEA6232ECF3000E79964 /* Windows.swift */; };
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
 		40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */; };
 		40AF71DE20BB401400F58EA9 /* FloatingPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */; };
@@ -166,6 +167,7 @@
 		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		40A7AEA6232ECF3000E79964 /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
 		40AF71D920BB348300F58EA9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPreferencesViewController.swift; sourceTree = "<group>"; };
 		40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingPreferencesViewController.xib; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
 				40637076224F0EFF0081299D /* Screens.swift */,
 				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
+				40A7AEA6232ECF3000E79964 /* Windows.swift */,
 				401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */,
 			);
 			path = Managers;
@@ -730,6 +733,7 @@
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
 				4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */,
+				40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */,
 				404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */,
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
 				4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */,
