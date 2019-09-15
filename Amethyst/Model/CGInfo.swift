@@ -57,7 +57,7 @@ struct CGScreensInfo<Window: WindowType> {
     let descriptions: [JSON]
 
     init?() {
-        guard let descriptions = NSScreen.screenDescriptions() else {
+        guard let descriptions = Screen.screenDescriptions() else {
             return nil
         }
 
@@ -73,7 +73,7 @@ struct CGSpacesInfo<Window: WindowType> {
     typealias Screen = Window.Screen
 
     static func spacesForScreen(_ screen: Screen, includeOnlyUserSpaces: Bool = false) -> [Space]? {
-        guard let screenDescriptions = NSScreen.screenDescriptions() else {
+        guard let screenDescriptions = Screen.screenDescriptions() else {
             return nil
         }
 
@@ -84,7 +84,7 @@ struct CGSpacesInfo<Window: WindowType> {
         let screenIdentifier = screen.screenIdentifier()
         let spaces: [Space]?
 
-        if NSScreen.screensHaveSeparateSpaces {
+        if Screen.screensHaveSeparateSpaces {
             spaces = screenDescriptions
                 .first { $0["Display Identifier"].string == screenIdentifier }
                 .flatMap { screenDescription -> [Space]? in
@@ -110,7 +110,7 @@ struct CGSpacesInfo<Window: WindowType> {
     }
 
     static func currentSpaceForScreen(_ screen: Screen) -> Space? {
-        guard let screenDescriptions = NSScreen.screenDescriptions(), let screenIdentifier = screen.screenIdentifier() else {
+        guard let screenDescriptions = Screen.screenDescriptions(), let screenIdentifier = screen.screenIdentifier() else {
             return nil
         }
 
@@ -118,7 +118,7 @@ struct CGSpacesInfo<Window: WindowType> {
             return nil
         }
 
-        if NSScreen.screensHaveSeparateSpaces {
+        if Screen.screensHaveSeparateSpaces {
             for screenDescription in screenDescriptions {
                 guard screenDescription["Display Identifier"].string == screenIdentifier else {
                     continue

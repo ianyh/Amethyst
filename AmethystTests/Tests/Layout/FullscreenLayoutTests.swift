@@ -19,14 +19,21 @@ class FullscreenLayoutTests: QuickSpec {
     }()
 
     override func spec() {
+        afterEach {
+            TestScreen.availableScreens = []
+        }
+
         describe("layout") {
             it("makes all windows fullscreen") {
+                let screen = TestScreen()
+                TestScreen.availableScreens = [screen]
+
                 let window1 = TestWindow(element: nil)!
                 let window2 = TestWindow(element: nil)!
                 let window3 = TestWindow(element: nil)!
                 let layout = FullscreenLayout<TestWindow>(windowActivityCache: self)
                 let fullscreenOperation = FullscreenReflowOperation(
-                    screen: NSScreen.main!,
+                    screen: screen,
                     windows: [window1, window2, window3],
                     layout: layout,
                     frameAssigner: Assigner(windowActivityCache: self)
@@ -39,9 +46,9 @@ class FullscreenLayoutTests: QuickSpec {
                     }
                 }
 
-                expect(window1.frame()).to(equal(NSScreen.main!.adjustedFrame()))
-                expect(window2.frame()).to(equal(NSScreen.main!.adjustedFrame()))
-                expect(window3.frame()).to(equal(NSScreen.main!.adjustedFrame()))
+                expect(window1.frame()).to(equal(screen.adjustedFrame()))
+                expect(window2.frame()).to(equal(screen.adjustedFrame()))
+                expect(window3.frame()).to(equal(screen.adjustedFrame()))
             }
         }
     }

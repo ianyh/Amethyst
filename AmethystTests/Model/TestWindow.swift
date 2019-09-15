@@ -11,6 +11,8 @@ import Foundation
 import Silica
 
 class TestWindow: WindowType {
+    typealias Screen = TestScreen
+
     private let element: SIAccessibilityElement?
     private let id: CGWindowID = CGWindowID(Int.random(in: 1...1000))
     private var _frame: CGRect = .zero

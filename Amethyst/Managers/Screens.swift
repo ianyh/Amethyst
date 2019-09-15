@@ -21,7 +21,7 @@ extension WindowManager {
                 return
             }
 
-            if NSScreen.screensHaveSeparateSpaces {
+            if Screen.screensHaveSeparateSpaces {
                 for screenDictionary in screensInfo.descriptions {
                     guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
                         log.error("Could not identify screen with info: \(screenDictionary)")
