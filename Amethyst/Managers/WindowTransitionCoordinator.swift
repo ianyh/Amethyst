@@ -121,7 +121,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
         }
 
         // If the window is already on the screen do nothing.
-        guard let focusedScreen = focusedWindow.screen(), focusedScreen.screenIdentifier() != screen.screenIdentifier() else {
+        guard let focusedScreen = focusedWindow.screen(), focusedScreen.screenID() != screen.screenID() else {
             return
         }
 

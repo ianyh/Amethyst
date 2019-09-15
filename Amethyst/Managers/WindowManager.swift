@@ -72,7 +72,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
     func screenManager(screen: Screen, screenID: String) -> ScreenManager<Window> {
         let screenManager = ScreenManager<Window>(
             screen: screen,
-            screenIdentifier: screenID,
+            screenID: screenID,
             delegate: self,
             userConfiguration: userConfiguration
         )
@@ -607,11 +607,11 @@ extension WindowManager {
     }
 
     func screenManager(for screen: Screen) -> ScreenManager<Window>? {
-        return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+        return screens.screenManagers.first { $0.screen.screenID() == screen.screenID() }
     }
 
     func screenManagerIndex(for screen: Screen) -> Int? {
-        return screens.screenManagers.index { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+        return screens.screenManagers.index { $0.screen.screenID() == screen.screenID() }
     }
 }
 
@@ -686,7 +686,7 @@ extension WindowManager: FocusTransitionTarget {
     }
 
     func lastFocusedWindow(on screen: Screen) -> Window? {
-        return screens.screenManagers.first { $0.screen.screenIdentifier() == screen.screenIdentifier() }?.lastFocusedWindow
+        return screens.screenManagers.first { $0.screen.screenID() == screen.screenID() }?.lastFocusedWindow
     }
 
     func nextWindowIDClockwise(on screen: Screen) -> CGWindowID? {
