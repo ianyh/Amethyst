@@ -51,7 +51,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
         )
 
         reevaluateWindows()
-        screens.updateScreenManagers(windowManager: self)
+        screens.updateScreens(windowManager: self)
     }
 
     deinit {
@@ -69,10 +69,9 @@ class WindowManager<Application: ApplicationType>: NSObject {
         activeIDCache = windowDescriptions?.activeIDs() ?? Set()
     }
 
-    func screenManager(screen: Screen, screenID: String) -> ScreenManager<Window> {
+    func screenManager(screen: Screen) -> ScreenManager<Window> {
         let screenManager = ScreenManager<Window>(
             screen: screen,
-            screenID: screenID,
             delegate: self,
             userConfiguration: userConfiguration
         )
@@ -276,7 +275,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
         regenerateActiveIDCache()
-        screens.assignCurrentSpaceIdentifiers()
+        screens.updateSpaces()
 
         for runningApplication in NSWorkspace.shared.runningApplications {
             guard runningApplication.isManageable else {
@@ -299,7 +298,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     @objc func screenParametersDidChange(_ notification: Notification) {
-        screens.updateScreenManagers(windowManager: self)
+        screens.updateScreens(windowManager: self)
     }
 }
 

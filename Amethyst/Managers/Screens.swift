@@ -16,7 +16,7 @@ extension WindowManager {
 
         init() {}
 
-        func assignCurrentSpaceIdentifiers() {
+        func updateSpaces() {
             guard let screensInfo = CGScreensInfo<Window>() else {
                 return
             }
@@ -35,21 +35,21 @@ extension WindowManager {
 
                     let space = CGSpacesInfo<Window>.space(fromScreenDescription: screenDictionary)
 
-                    guard screenManager.currentSpace != space else {
+                    guard screenManager.space != space else {
                         continue
                     }
 
-                    screenManager.currentSpace = space
+                    screenManager.updateSpace(to: space)
                 }
             } else {
                 for screenManager in screenManagers {
                     let space = CGSpacesInfo<Window>.space(fromScreenDescription: screensInfo.descriptions[0])
 
-                    guard screenManager.currentSpace != space else {
+                    guard screenManager.space != space else {
                         continue
                     }
 
-                    screenManager.currentSpace = space
+                    screenManager.updateSpace(to: space)
                 }
             }
         }
@@ -70,7 +70,7 @@ extension WindowManager {
             return nil
         }
 
-        func updateScreenManagers(windowManager: WindowManager) {
+        func updateScreens(windowManager: WindowManager) {
             var screenManagers: [ScreenManager<Window>] = []
 
             for screen in Screen.availableScreens {
@@ -78,8 +78,8 @@ extension WindowManager {
                     continue
                 }
 
-                let screenManager = screenManagersCache[screenID] ?? windowManager.screenManager(screen: screen, screenID: screenID)
-                screenManager.screen = screen
+                let screenManager = screenManagersCache[screenID] ?? windowManager.screenManager(screen: screen)
+                screenManager.updateScreen(to: screen)
 
                 screenManagersCache[screenID] = screenManager
 
@@ -90,7 +90,7 @@ extension WindowManager {
             // See `ScreenManager`'s `Comparable` conformance
             self.screenManagers = screenManagers.sorted()
 
-            assignCurrentSpaceIdentifiers()
+            updateSpaces()
             markAllScreensForReflowWithChange(.unknown)
         }
 

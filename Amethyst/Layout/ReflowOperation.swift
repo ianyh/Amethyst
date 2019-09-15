@@ -238,7 +238,7 @@ class ReflowOperation<Window: WindowType>: Operation {
      - Note:
      This can return `nil` if there are no assignments to be made.
      */
-    public func frameAssignments() -> [FrameAssignment<Window>]? {
+    func frameAssignments() -> [FrameAssignment<Window>]? {
         return nil
     }
 
