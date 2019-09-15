@@ -22,7 +22,7 @@ private let AMKeyCodeInvalid: AMKeyCode = 0xFF
 
 typealias HotKeyHandler = () -> Void
 
-final class HotKeyManager<Application: ApplicationType>: NSObject {
+class HotKeyManager<Application: ApplicationType>: NSObject {
     private let userConfiguration: UserConfiguration
 
     private(set) lazy var stringToKeyCodes: [String: [AMKeyCode]] = {

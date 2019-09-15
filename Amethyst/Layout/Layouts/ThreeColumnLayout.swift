@@ -13,19 +13,19 @@ import Silica
 // we'd like to hide these structures and enums behind fileprivate, but
 // https://bugs.swift.org/browse/SR-47
 
-internal enum Column {
+enum Column {
     case left
     case middle
     case right
 }
 
-internal enum Pane {
+enum Pane {
     case main
     case secondary
     case tertiary
 }
 
-internal struct TriplePaneArrangement {
+struct TriplePaneArrangement {
     let paneCount: [Pane: UInt]            // number of windows in pane
     let paneWindowHeight: [Pane: CGFloat]  // height of windows in pane
     let paneWindowWidth: [Pane: CGFloat]   // width of windows in pane
@@ -132,7 +132,7 @@ internal struct TriplePaneArrangement {
     }
 }
 
-final class ThreeColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class ThreeColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     private let layout: ThreeColumnLayout<Window>
 
     fileprivate init(screen: Screen, windows: [Window], layout: ThreeColumnLayout<Window>, frameAssigner: FrameAssigner) {
@@ -224,19 +224,19 @@ extension ThreeColumnLayout {
 }
 
 // implement the three variants
-final class ThreeColumnLeftLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
+class ThreeColumnLeftLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Left" }
     override static var layoutKey: String { return "3column-left" }
     override static var mainColumn: Column { return .left }
 }
 
-final class ThreeColumnMiddleLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
+class ThreeColumnMiddleLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Middle" }
     override static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
     override static var mainColumn: Column { return .middle }
 }
 
-final class ThreeColumnRightLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
+class ThreeColumnRightLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Right" }
     override static var layoutKey: String { return "3column-right" }
     override static var mainColumn: Column { return .right }

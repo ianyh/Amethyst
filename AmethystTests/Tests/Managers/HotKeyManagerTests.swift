@@ -11,7 +11,7 @@ import Nimble
 import Quick
 import Silica
 
-final class HotKeyManagerTests: QuickSpec {
+class HotKeyManagerTests: QuickSpec {
     override func spec() {
         describe("hotKeyNameToDefaultsKey") {
             it("has the right number of screens") {

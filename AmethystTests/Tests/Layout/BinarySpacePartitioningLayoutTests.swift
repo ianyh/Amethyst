@@ -11,7 +11,7 @@ import Quick
 
 @testable import Amethyst
 
-final class BinarySpacePartitioningLayoutTests: QuickSpec {
+class BinarySpacePartitioningLayoutTests: QuickSpec {
     override func spec() {
         describe("TreeNode") {
             describe("finding") {

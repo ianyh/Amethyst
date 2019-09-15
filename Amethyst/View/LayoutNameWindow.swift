@@ -10,7 +10,7 @@ import Cocoa
 import Foundation
 import QuartzCore
 
-final class LayoutNameWindow: NSWindow {
+class LayoutNameWindow: NSWindow {
     @IBOutlet weak var layoutNameField: NSTextField?
     @IBOutlet weak var layoutDescriptionLabel: NSTextField?
 

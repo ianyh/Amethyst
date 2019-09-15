@@ -8,7 +8,7 @@
 
 import Silica
 
-final class TreeNode {
+class TreeNode {
     weak var parent: TreeNode?
     var left: TreeNode?
     var right: TreeNode?
@@ -140,7 +140,7 @@ func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
     return lhs.windowID == rhs.windowID
 }
 
-final class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     private typealias TraversalNode = (node: TreeNode, frame: CGRect)
     private let rootNode: TreeNode
 
@@ -225,14 +225,14 @@ final class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOp
     }
 }
 
-final class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> {
+class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> {
     override static var layoutName: String { return "Binary Space Partitioning" }
     override static var layoutKey: String { return "bsp" }
 
     override var layoutDescription: String { return "\(lastKnownFocusedWindowID.debugDescription)" }
 
-    fileprivate var rootNode = TreeNode()
-    fileprivate var lastKnownFocusedWindowID: CGWindowID?
+    private var rootNode = TreeNode()
+    private var lastKnownFocusedWindowID: CGWindowID?
 
     private func constructInitialTreeWithWindows(_ windows: [Window]) {
         for window in windows {

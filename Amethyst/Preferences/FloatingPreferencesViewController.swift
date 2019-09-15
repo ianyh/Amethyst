@@ -9,7 +9,7 @@
 import Cocoa
 import Foundation
 
-final class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var floatingBundles: [FloatingBundle] {
         return arrayController.arrangedObjects as! [FloatingBundle]
     }

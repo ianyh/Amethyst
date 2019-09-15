@@ -11,7 +11,7 @@ import Foundation
 import MASShortcut
 import Silica
 
-final class ShortcutsPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+class ShortcutsPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var hotKeyNameToDefaultsKey: [[String]] = []
     @IBOutlet var tableView: NSTableView?
 

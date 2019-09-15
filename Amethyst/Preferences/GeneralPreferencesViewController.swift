@@ -10,7 +10,7 @@ import Cocoa
 import Foundation
 import Silica
 
-final class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
+class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource, NSTableViewDelegate {
     private var layoutKeys: [String] = []
 
     @IBOutlet var layoutsTableView: NSTableView?

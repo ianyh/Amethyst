@@ -38,7 +38,7 @@ class PreferencesWindowController: NSWindowController {
     }
 }
 
-final class PreferencesWindow: NSWindow {
+class PreferencesWindow: NSWindow {
     @IBOutlet var closeMenuItem: NSMenuItem?
 
     override func keyDown(with event: NSEvent) {
