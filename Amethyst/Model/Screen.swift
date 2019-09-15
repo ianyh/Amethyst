@@ -11,24 +11,48 @@ import Foundation
 import Silica
 import SwiftyJSON
 
+/// Generic protocol for objects acting as screens in the system.
 protocol ScreenType: Equatable {
+    /// The list of all the screens available to the system. This is assumed to be meaningfuly ordered such that the first screen is the primary screen.
     static var availableScreens: [Self] { get }
+    
+    /// If `true` this means that each screen has its own set of spaces. If `false` there is only one set of spaces shared by all screens.
     static var screensHaveSeparateSpaces: Bool { get }
+    
+    /**
+     Descriptions of all screens taken from the underlying graphics system.
+     
+     These are used to correlate information from multiple sources.
+     */
     static func screenDescriptions() -> [JSON]?
+    
+    /**
+     The total height of all screens taking relative layout into account.
+     
+     Depending on the arrangement of multiple screens, it is possible to get a height that is larger than any of the individual screens. This function looks at each display frame's y-coordinates to calculate that height.
+     */
     static func globalHeight() -> CGFloat
 
+    /// The raw frame of the screen.
     var frame: NSRect { get }
+    
+    /// The frame adjusted for app modifiers; e.g., window margins.
     func adjustedFrame() -> CGRect
+    
+    /// The frame adjusted to contain both the dock and the status menu.
     func frameIncludingDockAndMenu() -> CGRect
+    
+    /// The frame adjusted such that the dock and menu are not included.
     func frameWithoutDockOrMenu() -> CGRect
+    
+    /// The opaque idenfitifer for the screen in the underlying graphics system.
     func screenIdentifier() -> String?
+    
+    /// Raises the window to the foreground.
     func focusScreen()
 }
 
 extension ScreenType {
-    // Depending on the arrangement of multiple monitors, it's possible to get a height that's larger
-    // than any of the individual screens.  This function looks at each display frame's Y coordinates
-    // to calculate that height
     static func globalHeight() -> CGFloat {
         return (availableScreens.map { $0.frame.maxY }.max() ?? 0) - (availableScreens.map { $0.frame.minY }.min() ?? 0)
     }
