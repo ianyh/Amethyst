@@ -73,7 +73,7 @@ extension WindowManager {
         func updateScreenManagers(windowManager: WindowManager) {
             var screenManagers: [ScreenManager<Window>] = []
 
-            for screen in NSScreen.screens {
+            for screen in Screen.availableScreens {
                 guard let screenIdentifier = screen.screenIdentifier() else {
                     continue
                 }
@@ -94,7 +94,7 @@ extension WindowManager {
             markAllScreensForReflowWithChange(.unknown)
         }
 
-        func markScreenForReflow(_ screen: NSScreen, withChange change: Change<Window>) {
+        func markScreenForReflow(_ screen: Screen, withChange change: Change<Window>) {
             screenManagers
                 .filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }
                 .forEach { screenManager in

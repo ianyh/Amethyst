@@ -11,27 +11,29 @@ import Foundation
 import Silica
 
 enum WindowTransition<Window: WindowType> {
+    typealias Screen = Window.Screen
     case switchWindows(_ window1: Window, _ window2: Window)
-    case moveWindowToScreen(_ window: Window, screen: NSScreen)
+    case moveWindowToScreen(_ window: Window, screen: Screen)
     case moveWindowToSpaceAtIndex(_ window: Window, spaceIndex: Int)
     case resetFocus
 }
 
 protocol WindowTransitionTarget: class {
     associatedtype Window: WindowType
+    typealias Screen = Window.Screen
 
     var windowActivityCache: WindowActivityCache { get }
     var windows: [Window] { get }
 
     func executeTransition(_ transition: WindowTransition<Window>)
 
-    func screen(at index: Int) -> NSScreen?
-    func nextScreenIndexClockwise(from screen: NSScreen) -> Int
-    func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int
+    func screen(at index: Int) -> Screen?
+    func nextScreenIndexClockwise(from screen: Screen) -> Int
+    func nextScreenIndexCounterClockwise(from screen: Screen) -> Int
 }
 
 extension WindowTransitionTarget {
-    func activeWindows(on screen: NSScreen) -> [Window] {
+    func activeWindows(on screen: Screen) -> [Window] {
         return windowActivityCache.windows(windows, on: screen).filter { window in
             return window.shouldBeManaged() && !self.windowActivityCache.windowIsFloating(window)
         }
@@ -40,6 +42,7 @@ extension WindowTransitionTarget {
 
 class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     typealias Window = Target.Window
+    typealias Screen = Window.Screen
 
     private(set) weak var target: Target!
 

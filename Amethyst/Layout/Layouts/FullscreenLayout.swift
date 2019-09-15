@@ -11,7 +11,7 @@ import Silica
 class FullscreenReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     private let layout: FullscreenLayout<Window>
 
-    init(screen: NSScreen, windows: [Window], layout: FullscreenLayout<Window>, frameAssigner: FrameAssigner) {
+    init(screen: Screen, windows: [Window], layout: FullscreenLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -31,7 +31,7 @@ class FullscreenLayout<Window: WindowType>: Layout<Window> {
 
     override var layoutDescription: String { return "" }
 
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }

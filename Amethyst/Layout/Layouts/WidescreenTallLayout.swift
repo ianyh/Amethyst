@@ -11,7 +11,7 @@ import Silica
 final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     let layout: WidescreenTallLayout<Window>
 
-    init(screen: NSScreen, windows: [Window], layout: WidescreenTallLayout<Window>, frameAssigner: FrameAssigner) {
+    init(screen: Screen, windows: [Window], layout: WidescreenTallLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -76,7 +76,7 @@ class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
     private(set) var mainPaneCount: Int = 1
     private(set) var mainPaneRatio: CGFloat = 0.5
 
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }

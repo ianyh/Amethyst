@@ -14,7 +14,7 @@ final class FloatingLayout<Window: WindowType>: Layout<Window> {
 
     override var layoutDescription: String { return "" }
 
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
         return nil
     }
 }

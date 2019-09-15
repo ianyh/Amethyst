@@ -14,7 +14,9 @@ protocol ScreenManagerDelegate: class, WindowActivityCache {
 }
 
 final class ScreenManager<Window: WindowType>: NSObject {
-    var screen: NSScreen
+    typealias Screen = Window.Screen
+
+    var screen: Screen
     let screenIdentifier: String
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
@@ -68,7 +70,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
 
     private let layoutNameWindowController: LayoutNameWindowController
 
-    init(screen: NSScreen, screenIdentifier: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
+    init(screen: Screen, screenIdentifier: String, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
         self.screen = screen
         self.screenIdentifier = screenIdentifier
         self.delegate = delegate
@@ -266,6 +268,6 @@ extension ScreenManager: WindowActivityCache {
 
 extension WindowManager: ScreenManagerDelegate {
     func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [Window] {
-        return activeWindows(on: screenManager.screen) as! [Window]
+        return activeWindows(on: screenManager.screen as! Screen) as! [Window]
     }
 }

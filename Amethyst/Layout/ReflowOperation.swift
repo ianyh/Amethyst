@@ -205,8 +205,10 @@ struct Assigner: FrameAssigner {
  Subclasses need not override `main()`, but if you do you _must_ call the `super` implementation.
  */
 class ReflowOperation<Window: WindowType>: Operation {
+    typealias Screen = Window.Screen
+
     /// The screen on which the windows are being laid out.
-    let screen: NSScreen
+    let screen: Screen
 
     /// The screen on which the windows are being laid out.
     let windows: [Window]
@@ -220,7 +222,7 @@ class ReflowOperation<Window: WindowType>: Operation {
          - windows: The screen on which the windows are being laid out.
          - frameAssigner: The `FrameAssigner` responsible for performing assignments.
      */
-    init(screen: NSScreen, windows: [Window], frameAssigner: FrameAssigner) {
+    init(screen: Screen, windows: [Window], frameAssigner: FrameAssigner) {
         self.screen = screen
         self.windows = windows
         self.frameAssigner = frameAssigner

@@ -31,7 +31,7 @@ class TestWindow: WindowType {
         return _frame
     }
 
-    func screen() -> NSScreen? {
+    func screen() -> Screen? {
         return nil
     }
 
@@ -67,7 +67,7 @@ class TestWindow: WindowType {
         return false
     }
 
-    func moveScaled(to screen: NSScreen) {
+    func moveScaled(to screen: Screen) {
 
     }
 

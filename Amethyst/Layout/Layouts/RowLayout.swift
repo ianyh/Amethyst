@@ -11,7 +11,7 @@ import Silica
 final class RowReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     let layout: RowLayout<Window>
 
-    init(screen: NSScreen, windows: [Window], layout: RowLayout<Window>, frameAssigner: FrameAssigner) {
+    init(screen: Screen, windows: [Window], layout: RowLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -85,7 +85,7 @@ final class RowLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return RowReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }

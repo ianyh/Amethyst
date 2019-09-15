@@ -11,6 +11,8 @@ import Silica
 
 /// Generic protocol for objects acting as windows in the system.
 protocol WindowType: Equatable {
+    associatedtype Screen: ScreenType
+
     /// Returns the currently focused window of its type.
     static func currentlyFocused() -> Self?
 
@@ -31,7 +33,7 @@ protocol WindowType: Equatable {
     func frame() -> CGRect
 
     /// Returns the screen, if any, that the window is currently on.
-    func screen() -> NSScreen?
+    func screen() -> Screen?
 
     /**
      Sets the frame of the window with an error threshold for what constitutes a new frame.
@@ -83,7 +85,7 @@ protocol WindowType: Equatable {
      - Parameters:
         - screen: The screen to move the window to.
      */
-    func moveScaled(to screen: NSScreen)
+    func moveScaled(to screen: Screen)
 
     /// Whether or not the window is currently on any screen.
     func isOnScreen() -> Bool
@@ -114,6 +116,8 @@ final class AXWindow: SIWindow {}
 
 /// Conformance of `AXWindow` as an Amethyst window.
 extension AXWindow: WindowType {
+    typealias Screen = AMScreen
+
     /**
      Returns the currently focused window.
      
@@ -130,6 +134,11 @@ extension AXWindow: WindowType {
         }
 
         self.init(axElement: axElementRef)
+    }
+
+    func screen() -> AMScreen? {
+        let nsScreen: NSScreen? = screen()
+        return nsScreen.flatMap { AMScreen(screen: $0) }
     }
 
     func pid() -> pid_t {
@@ -200,7 +209,7 @@ extension AXWindow: WindowType {
         return true
     }
 
-    func moveScaled(to screen: NSScreen) {
+    func moveScaled(to screen: Screen) {
         let screenFrame = screen.frameWithoutDockOrMenu()
         let currentFrame = frame()
         var scaledFrame = currentFrame
@@ -217,7 +226,7 @@ extension AXWindow: WindowType {
             setFrame(scaledFrame)
         }
 
-        move(to: screen)
+        move(to: screen.screen)
     }
 
     func move(toSpace spaceID: CGSSpaceID) {

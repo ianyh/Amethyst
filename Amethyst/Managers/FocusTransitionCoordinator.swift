@@ -11,34 +11,37 @@ import Foundation
 import Silica
 
 enum FocusTransition<Window: WindowType> {
+    typealias Screen = Window.Screen
     case focusWindow(_ window: Window)
-    case focusScreen(_ screen: NSScreen)
+    case focusScreen(_ screen: Screen)
 }
 
 protocol FocusTransitionTarget: class {
     associatedtype Window: WindowType
+    typealias Screen = Window.Screen
 
     var windowActivityCache: WindowActivityCache { get }
     var windows: [Window] { get }
 
     func executeTransition(_ transition: FocusTransition<Window>)
 
-    func lastFocusedWindow(on screen: NSScreen) -> Window?
-    func screen(at index: Int) -> NSScreen?
-    func nextWindowIDClockwise(on screen: NSScreen) -> CGWindowID?
-    func nextWindowIDCounterClockwise(on screen: NSScreen) -> CGWindowID?
-    func nextScreenIndexClockwise(from screen: NSScreen) -> Int
-    func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int
+    func lastFocusedWindow(on screen: Screen) -> Window?
+    func screen(at index: Int) -> Screen?
+    func nextWindowIDClockwise(on screen: Screen) -> CGWindowID?
+    func nextWindowIDCounterClockwise(on screen: Screen) -> CGWindowID?
+    func nextScreenIndexClockwise(from screen: Screen) -> Int
+    func nextScreenIndexCounterClockwise(from screen: Screen) -> Int
 }
 
 extension FocusTransitionTarget {
-    func cachedWindows(on screen: NSScreen) -> [Window] {
+    func cachedWindows(on screen: Screen) -> [Window] {
         return windowActivityCache.windows(windows, on: screen)
     }
 }
 
 class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
     typealias Window = Target.Window
+    typealias Screen = Window.Screen
 
     weak var target: Target!
 

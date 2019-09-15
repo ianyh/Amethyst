@@ -11,7 +11,7 @@ import Silica
 final class ColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     let layout: ColumnLayout<Window>
 
-    init(screen: NSScreen, windows: [Window], layout: ColumnLayout<Window>, frameAssigner: FrameAssigner) {
+    init(screen: Screen, windows: [Window], layout: ColumnLayout<Window>, frameAssigner: FrameAssigner) {
         self.layout = layout
         super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
     }
@@ -78,7 +78,7 @@ final class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
         let assigner = Assigner(windowActivityCache: windowActivityCache)
         return ColumnReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
