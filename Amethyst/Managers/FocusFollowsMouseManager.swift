@@ -58,7 +58,7 @@ final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate>
             return
         }
 
-        guard let screen = Screen.availableScreens.first(where: { $0.frame.contains(event.locationInWindow) }) else {
+        guard let screen = Screen.availableScreens.first(where: { $0.frameIncludingDockAndMenu().contains(event.locationInWindow) }) else {
             return
         }
 

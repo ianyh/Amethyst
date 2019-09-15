@@ -228,7 +228,7 @@ final class ScreenManager<Window: WindowType>: NSObject {
             return
         }
 
-        let screenFrame = screen.frame
+        let screenFrame = screen.frameIncludingDockAndMenu()
         let screenCenter = CGPoint(x: screenFrame.midX, y: screenFrame.midY)
         let windowOrigin = CGPoint(
             x: screenCenter.x - layoutNameWindow.frame.width / 2.0,

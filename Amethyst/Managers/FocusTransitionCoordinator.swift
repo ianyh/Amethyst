@@ -153,7 +153,10 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
         }
 
         // Otherwise find the topmost window on the screen
-        let screenCenter = NSPointToCGPoint(NSPoint(x: screen.frame.midX, y: screen.frame.midY))
+        let screenCenter = NSPointToCGPoint(NSPoint(
+            x: screen.frameIncludingDockAndMenu().midX,
+            y: screen.frameIncludingDockAndMenu().midY
+        ))
 
         // If there is no window at that point just focus the screen directly
         guard let topWindow = WindowsInformation.topWindowForScreenAtPoint(screenCenter, withWindows: windows) ?? windows.first else {

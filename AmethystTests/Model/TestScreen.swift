@@ -24,8 +24,6 @@ final class TestScreen: ScreenType {
         return CGRect(x: 0, y: 0, width: CGFloat.random(in: 500...2000), height: CGFloat.random(in: 500...2000))
     }()
 
-    var frame: NSRect { return NSRectFromCGRect(internalFrame) }
-
     func adjustedFrame() -> CGRect {
         return internalFrame
     }
