@@ -8,7 +8,7 @@
 
 import Silica
 
-final class TallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class TallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     let layout: TallLayout<Window>
 
     init(screen: Screen, windows: [Window], layout: TallLayout<Window>, frameAssigner: FrameAssigner) {
@@ -63,7 +63,7 @@ final class TallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     }
 }
 
-final class TallLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+class TallLayout<Window: WindowType>: Layout<Window>, PanedLayout {
     override static var layoutName: String { return "Tall" }
     override static var layoutKey: String { return "tall" }
 

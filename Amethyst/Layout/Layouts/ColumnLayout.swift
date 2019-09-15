@@ -8,7 +8,7 @@
 
 import Silica
 
-final class ColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class ColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     let layout: ColumnLayout<Window>
 
     init(screen: Screen, windows: [Window], layout: ColumnLayout<Window>, frameAssigner: FrameAssigner) {
@@ -59,7 +59,7 @@ final class ColumnReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     }
 }
 
-final class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
     override static var layoutName: String { return "Column" }
     override static var layoutKey: String { return "column" }
 

@@ -13,7 +13,7 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-final class WindowManager<Application: ApplicationType>: NSObject {
+class WindowManager<Application: ApplicationType>: NSObject {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
 

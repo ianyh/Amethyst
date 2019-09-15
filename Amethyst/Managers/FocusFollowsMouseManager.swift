@@ -16,7 +16,7 @@ protocol FocusFollowsMouseManagerDelegate: class {
     func windowsForFocusFollowsMouse() -> [Window]
 }
 
-final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
+class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
     typealias Screen = Delegate.Window.Screen
 
     weak var delegate: Delegate!

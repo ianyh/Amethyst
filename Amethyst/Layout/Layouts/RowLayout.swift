@@ -8,7 +8,7 @@
 
 import Silica
 
-final class RowReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class RowReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     let layout: RowLayout<Window>
 
     init(screen: Screen, windows: [Window], layout: RowLayout<Window>, frameAssigner: FrameAssigner) {
@@ -66,7 +66,7 @@ final class RowReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     }
 }
 
-final class RowLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+class RowLayout<Window: WindowType>: Layout<Window>, PanedLayout {
     override static var layoutName: String { return "Row" }
     override static var layoutKey: String { return "row" }
 

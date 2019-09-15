@@ -15,7 +15,7 @@ import Silica
 import Sparkle
 import SwiftyBeaver
 
-final class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var preferencesWindowController: PreferencesWindowController?
 
     fileprivate var windowManager: WindowManager<SIApplication>?

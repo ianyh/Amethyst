@@ -8,7 +8,7 @@
 
 import Silica
 
-final class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     let layout: WidescreenTallLayout<Window>
 
     init(screen: Screen, windows: [Window], layout: WidescreenTallLayout<Window>, frameAssigner: FrameAssigner) {
@@ -96,13 +96,13 @@ extension WidescreenTallLayout: PanedLayout {
     }
 }
 
-final class WidescreenTallLayoutRight<Window: WindowType>: WidescreenTallLayout<Window> {
+class WidescreenTallLayoutRight<Window: WindowType>: WidescreenTallLayout<Window> {
     override class var isRight: Bool { return false }
     override static var layoutName: String { return "Widescreen Tall" }
     override static var layoutKey: String { return "widescreen-tall" }
 }
 
-final class WidescreenTallLayoutLeft<Window: WindowType>: WidescreenTallLayout<Window> {
+class WidescreenTallLayoutLeft<Window: WindowType>: WidescreenTallLayout<Window> {
     override class var isRight: Bool { return true }
     override static var layoutName: String { return "Widescreen Tall Right" }
     override static var layoutKey: String { return "widescreen-tall-right" }

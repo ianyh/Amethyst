@@ -10,7 +10,7 @@ import Cartography
 import Foundation
 import MASShortcut
 
-final class ShortcutsPreferencesListItemView: NSView {
+class ShortcutsPreferencesListItemView: NSView {
     private(set) var nameLabel: NSTextField?
     private(set) var shortcutView: MASShortcutView?
 

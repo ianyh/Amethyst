@@ -13,7 +13,7 @@ protocol ScreenManagerDelegate: class, WindowActivityCache {
     func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [Window]
 }
 
-final class ScreenManager<Window: WindowType>: NSObject {
+class ScreenManager<Window: WindowType>: NSObject {
     typealias Screen = Window.Screen
 
     var screen: Screen

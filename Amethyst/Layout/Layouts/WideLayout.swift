@@ -8,7 +8,7 @@
 
 import Silica
 
-private final class WideReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+private class WideReflowOperation<Window: WindowType>: ReflowOperation<Window> {
     private let layout: WideLayout<Window>
 
     init(screen: Screen, windows: [Window], layout: WideLayout<Window>, frameAssigner: FrameAssigner) {
@@ -63,7 +63,7 @@ private final class WideReflowOperation<Window: WindowType>: ReflowOperation<Win
     }
 }
 
-final class WideLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+class WideLayout<Window: WindowType>: Layout<Window>, PanedLayout {
     override static var layoutName: String { return "Wide" }
     override static var layoutKey: String { return "wide" }
 

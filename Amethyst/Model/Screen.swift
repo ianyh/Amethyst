@@ -26,13 +26,6 @@ protocol ScreenType: Equatable {
      */
     static func screenDescriptions() -> [JSON]?
 
-    /**
-     The total height of all screens taking relative layout into account.
-     
-     Depending on the arrangement of multiple screens, it is possible to get a height that is larger than any of the individual screens. This function looks at each display frame's y-coordinates to calculate that height.
-     */
-    static func globalHeight() -> CGFloat
-
     /// The frame adjusted for app modifiers; e.g., window margins.
     func adjustedFrame() -> CGRect
 
@@ -50,6 +43,11 @@ protocol ScreenType: Equatable {
 }
 
 extension ScreenType {
+    /**
+     The total height of all screens taking relative layout into account.
+     
+     Depending on the arrangement of multiple screens, it is possible to get a height that is larger than any of the individual screens. This function looks at each display frame's y-coordinates to calculate that height.
+     */
     static func globalHeight() -> CGFloat {
         let maxY = availableScreens.map { $0.frameIncludingDockAndMenu().maxY }.max() ?? 0
         let minY = availableScreens.map { $0.frameIncludingDockAndMenu().minY }.min() ?? 0
