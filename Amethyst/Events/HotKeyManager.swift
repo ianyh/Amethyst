@@ -71,17 +71,17 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
 
     func setUpWithWindowManager(_ windowManager: WindowManager<Application>, configuration: UserConfiguration) {
         constructCommandWithCommandKey(CommandKey.cycleLayoutForward.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.cycleLayoutForward()
         }
 
         constructCommandWithCommandKey(CommandKey.cycleLayoutBackward.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.cycleLayoutBackward()
         }
 
         constructCommandWithCommandKey(CommandKey.shrinkMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.shrinkMainPane()
@@ -90,7 +90,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.expandMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.expandMainPane()
@@ -99,7 +99,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.increaseMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.increaseMainPaneCount()
@@ -108,7 +108,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.decreaseMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.decreaseMainPaneCount()
@@ -208,7 +208,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
 
         LayoutManager<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
-                let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+                let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
                 screenManager?.selectLayout(layoutKey)
             }
         }

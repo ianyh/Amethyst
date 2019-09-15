@@ -11,8 +11,8 @@ import Silica
 
 extension WindowManager {
     class Screens {
-        private(set) var screenManagers: [ScreenManager<Window>] = []
-        private var screenManagersCache: [String: ScreenManager<Window>] = [:]
+        private(set) var screenManagers: [ScreenManager<WindowManager<Application>>] = []
+        private var screenManagersCache: [String: ScreenManager<WindowManager<Application>>] = [:]
 
         init() {}
 
@@ -54,24 +54,20 @@ extension WindowManager {
             }
         }
 
-        func focusedScreenManager<Window>() -> ScreenManager<Window>? {
+        func focusedScreenManager() -> ScreenManager<WindowManager<Application>>? {
             guard let focusedWindow = Window.currentlyFocused() else {
                 return nil
             }
             for screenManager in screenManagers {
-                guard let typedScreenManager = screenManager as? ScreenManager<Window> else {
-                    continue
-                }
-
-                if typedScreenManager.screen.screenID() == focusedWindow.screen()?.screenID() {
-                    return typedScreenManager
+                if screenManager.screen.screenID() == focusedWindow.screen()?.screenID() {
+                    return screenManager
                 }
             }
             return nil
         }
 
         func updateScreens(windowManager: WindowManager) {
-            var screenManagers: [ScreenManager<Window>] = []
+            var screenManagers: [ScreenManager<WindowManager<Application>>] = []
 
             for screen in Screen.availableScreens {
                 guard let screenID = screen.screenID() else {
@@ -99,7 +95,7 @@ extension WindowManager {
                 .filter { $0.screen.screenID() == screen.screenID() }
                 .forEach { screenManager in
                     screenManager.setNeedsReflowWithWindowChange(change)
-            }
+                }
         }
 
         func markAllScreensForReflowWithChange(_ windowChange: Change<Window>) {

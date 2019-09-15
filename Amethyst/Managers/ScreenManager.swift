@@ -10,10 +10,12 @@ import Foundation
 import Silica
 
 protocol ScreenManagerDelegate: class, WindowActivityCache {
-    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [Window]
+    associatedtype Window: WindowType
+    func activeWindowsForScreenManager(_ screenManager: ScreenManager<Self>) -> [Window]
 }
 
-class ScreenManager<Window: WindowType>: NSObject {
+final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
+    typealias Window = Delegate.Window
     typealias Screen = Window.Screen
 
     private(set) var screen: Screen
@@ -22,7 +24,7 @@ class ScreenManager<Window: WindowType>: NSObject {
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
     private(set) var lastFocusedWindow: Window?
-    private weak var delegate: ScreenManagerDelegate?
+    private weak var delegate: Delegate?
     private let userConfiguration: UserConfiguration
     var onReflowInitiation: (() -> Void)?
     var onReflowCompletion: (() -> Void)?
@@ -42,7 +44,7 @@ class ScreenManager<Window: WindowType>: NSObject {
 
     private let layoutNameWindowController: LayoutNameWindowController
 
-    init(screen: Screen, delegate: ScreenManagerDelegate, userConfiguration: UserConfiguration) {
+    init(screen: Screen, delegate: Delegate, userConfiguration: UserConfiguration) {
         self.screen = screen
         self.delegate = delegate
         self.userConfiguration = userConfiguration
@@ -245,7 +247,7 @@ class ScreenManager<Window: WindowType>: NSObject {
 }
 
 extension ScreenManager: Comparable {
-    static func < (lhs: ScreenManager<Window>, rhs: ScreenManager<Window>) -> Bool {
+    static func < (lhs: ScreenManager<Delegate>, rhs: ScreenManager<Delegate>) -> Bool {
         let originX1 = lhs.screen.frameWithoutDockOrMenu().origin.x
         let originX2 = rhs.screen.frameWithoutDockOrMenu().origin.x
 
@@ -258,13 +260,13 @@ extension ScreenManager: WindowActivityCache {
         return delegate?.windowIsActive(window) ?? false
     }
 
-    func windowIsFloating<Window>(_ window: Window) -> Bool where Window: WindowType {
+    func windowIsFloating<Window: WindowType>(_ window: Window) -> Bool {
         return delegate?.windowIsFloating(window) ?? false
     }
 }
 
 extension WindowManager: ScreenManagerDelegate {
-    func activeWindowsForScreenManager<Window: WindowType>(_ screenManager: ScreenManager<Window>) -> [Window] {
-        return activeWindows(on: screenManager.screen as! Screen) as! [Window]
+    func activeWindowsForScreenManager(_ screenManager: ScreenManager<WindowManager<Application>>) -> [Window] {
+        return activeWindows(on: screenManager.screen)
     }
 }

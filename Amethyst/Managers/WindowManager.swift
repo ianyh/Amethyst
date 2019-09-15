@@ -13,7 +13,7 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-class WindowManager<Application: ApplicationType>: NSObject {
+final class WindowManager<Application: ApplicationType>: NSObject {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
 
@@ -69,8 +69,8 @@ class WindowManager<Application: ApplicationType>: NSObject {
         activeIDCache = windowDescriptions?.activeIDs() ?? Set()
     }
 
-    func screenManager(screen: Screen) -> ScreenManager<Window> {
-        let screenManager = ScreenManager<Window>(
+    func screenManager(screen: Screen) -> ScreenManager<WindowManager<Application>> {
+        let screenManager = ScreenManager<WindowManager<Application>>(
             screen: screen,
             delegate: self,
             userConfiguration: userConfiguration
@@ -96,7 +96,7 @@ class WindowManager<Application: ApplicationType>: NSObject {
         }
     }
 
-    func focusedScreenManager<Window>() -> ScreenManager<Window>? {
+    func focusedScreenManager() -> ScreenManager<WindowManager<Application>>? {
         return screens.focusedScreenManager()
     }
 
@@ -448,7 +448,7 @@ extension WindowManager: WindowActivityCache {
 
 extension WindowManager: MouseStateKeeperDelegate {
     func recommendMainPaneRatio(_ ratio: CGFloat) {
-        guard let screenManager: ScreenManager<Window> = focusedScreenManager() else { return }
+        guard let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager() else { return }
 
         screenManager.updateCurrentLayout { layout in
             if let panedLayout = layout as? PanedLayout {
@@ -467,7 +467,7 @@ extension WindowManager: MouseStateKeeperDelegate {
         let unflippedY = Screen.globalHeight() - flippedPointerLocation.y + screen.frameIncludingDockAndMenu().origin.y
         let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
 
-        if let screenManager: ScreenManager<Window> = focusedScreenManager(), let layout = screenManager.currentLayout {
+        if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(), let layout = screenManager.currentLayout {
             if let framedWindow = layout.windowAtPoint(pointerLocation, of: windows, on: screen) {
                 executeTransition(.switchWindows(draggedWindow, framedWindow))
                 return
@@ -548,7 +548,7 @@ extension WindowManager: ApplicationObservationDelegate {
         }
 
         guard
-            let screenManager: ScreenManager<Window> = focusedScreenManager(),
+            let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(),
             let layout = screenManager.currentLayout,
             layout is PanedLayout,
             let oldFrame = layout.assignedFrame(window, of: activeWindowsForScreenManager(screenManager), on: screen)
@@ -568,7 +568,7 @@ extension WindowManager: ApplicationObservationDelegate {
             if dragEndInterval < mouseStateKeeper.dragRaceThresholdSeconds {
                 mouseStateKeeper.state = .pointing // flip state first to prevent race condition
 
-                if let screenManager: ScreenManager<Window> = focusedScreenManager() {
+                if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager() {
                     screenManager.updateCurrentLayout { layout in
                         if let panedLayout = layout as? PanedLayout {
                             panedLayout.recommendMainPaneRatio(ratio)
@@ -597,7 +597,7 @@ extension WindowManager {
         return screenManager(at: index)?.screen
     }
 
-    func screenManager(at screenIndex: Int) -> ScreenManager<Window>? {
+    func screenManager(at screenIndex: Int) -> ScreenManager<WindowManager<Application>>? {
         guard screenIndex > -1 && screenIndex < screens.screenManagers.count else {
             return nil
         }
@@ -605,7 +605,7 @@ extension WindowManager {
         return screens.screenManagers[screenIndex]
     }
 
-    func screenManager(for screen: Screen) -> ScreenManager<Window>? {
+    func screenManager(for screen: Screen) -> ScreenManager<WindowManager<Application>>? {
         return screens.screenManagers.first { $0.screen.screenID() == screen.screenID() }
     }
 
