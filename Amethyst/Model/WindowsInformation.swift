@@ -165,11 +165,11 @@ extension WindowsInformation {
     // find a window based on its window description within an array of Window objects
     static func windowInWindows(_ windows: [Window], withCGWindowDescription windowDescription: [String: AnyObject]) -> Window? {
         let potentialWindows = windows.filter {
-            guard let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
+            guard let windowOwnerPID = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
                 return false
             }
 
-            guard windowOwnerProcessIdentifier.int32Value == $0.pid() else {
+            guard windowOwnerPID.int32Value == $0.pid() else {
                 return false
             }
 
