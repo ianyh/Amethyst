@@ -39,8 +39,15 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
 
     weak var target: Target!
 
-    init(target: Target) {
+    private let userConfiguration: UserConfiguration
+
+    private lazy var focusFollowsMouseManager: FocusFollowsMouseManager<FocusTransitionCoordinator<Target>> = {
+        return FocusFollowsMouseManager(delegate: self, userConfiguration: self.userConfiguration)
+    }()
+
+    init(target: Target, userConfiguration: UserConfiguration) {
         self.target = target
+        self.userConfiguration = userConfiguration
     }
 
     func moveFocusCounterClockwise() {
@@ -179,4 +186,10 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
     }
 }
 
-extension FocusTransitionCoordinator {}
+extension FocusTransitionCoordinator: FocusFollowsMouseManagerDelegate {
+    typealias Application = Target.Application
+
+    var windows: WindowManager<Application>.Windows {
+        return target.windows
+    }
+}

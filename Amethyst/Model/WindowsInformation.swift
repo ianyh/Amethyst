@@ -19,37 +19,6 @@ extension CGRect {
     }
 }
 
-extension WindowActivityCache {
-    func windows<Window: WindowType>(_ windows: [Window], on screen: Window.Screen) -> [Window] {
-        guard let screenID = screen.screenID() else {
-            return []
-        }
-
-        guard let currentSpace = CGSpacesInfo<Window>.currentSpaceForScreen(screen) else {
-            log.warning("Could not find a space for screen: \(screenID)")
-            return []
-        }
-
-        let screenWindows = windows.filter { window in
-            let windowIDsArray = [NSNumber(value: window.windowID() as UInt32)] as NSArray
-
-            guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
-                return false
-            }
-
-            let space = (spaces as NSArray as? [NSNumber])?.first?.intValue
-
-            guard let windowScreen = window.screen(), currentSpace.id == space else {
-                return false
-            }
-
-            return windowScreen.screenID() == screen.screenID() && self.windowIsActive(window)
-        }
-
-        return screenWindows
-    }
-}
-
 struct WindowsInformation<Window: WindowType> {
     let ids: Set<CGWindowID>
     let descriptions: CGWindowsInfo?
