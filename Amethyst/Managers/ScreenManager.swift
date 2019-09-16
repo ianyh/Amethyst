@@ -34,7 +34,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
     private var layouts: [Layout<Window>] = []
     private var currentLayoutIndexBySpaceUUID: [String: Int] = [:]
     private var layoutsBySpaceUUID: [String: [Layout<Window>]] = [:]
-    private var currentLayoutIndex: Int
+    private var currentLayoutIndex: Int = 0
     var currentLayout: Layout<Window>? {
         guard !layouts.isEmpty else {
             return nil
@@ -48,12 +48,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         self.screen = screen
         self.delegate = delegate
         self.userConfiguration = userConfiguration
-        self.onReflowInitiation = nil
-        self.onReflowCompletion = nil
-
-        currentLayoutIndexBySpaceUUID = [:]
-        layoutsBySpaceUUID = [:]
-        currentLayoutIndex = 0
 
         layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
 

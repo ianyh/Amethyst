@@ -18,7 +18,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     typealias Screen = Window.Screen
 
     private(set) lazy var windowTransitionCoordinator = WindowTransitionCoordinator(target: self)
-    private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self)
+    private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self, userConfiguration: self.userConfiguration)
 
     private var applications: [AnyApplication<Application>] = []
     private let screens = Screens()
@@ -27,7 +27,6 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     private var lastFocusDate: Date?
 
     private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
-    private lazy var focusFollowsMouseManager = FocusFollowsMouseManager(delegate: self, userConfiguration: self.userConfiguration)
     private let userConfiguration: UserConfiguration
     private let disposeBag = DisposeBag()
 
@@ -94,13 +93,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     fileprivate func applicationWithPID(_ pid: pid_t) -> AnyApplication<Application>? {
-        for application in applications {
-            if application.pid() == pid {
-                return application
-            }
-        }
-
-        return nil
+        return applications.first { $0.pid() == pid }
     }
 
     fileprivate func add(application: AnyApplication<Application>) {
@@ -115,12 +108,10 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             .addObservers()
             .subscribe(
                 onCompleted: { [weak self] in
-                    guard let strongSelf = self else { return }
-
-                    strongSelf.applications.append(application)
+                    self?.applications.append(application)
 
                     for window in application.windows() {
-                        strongSelf.add(window: window)
+                        self?.add(window: window)
                     }
                 }
             )

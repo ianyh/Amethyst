@@ -80,5 +80,3 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
         topWindow.focus()
     }
 }
-
-extension WindowManager: FocusFollowsMouseManagerDelegate {}
