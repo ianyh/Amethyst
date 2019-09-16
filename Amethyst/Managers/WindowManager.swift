@@ -253,7 +253,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             }
         }
 
-        markAllScreensForReflow(withChange: .unknown)
+        markAllScreensForReflow(withChange: .spaceChange)
     }
 
     @objc func screenParametersDidChange(_ notification: Notification) {

@@ -71,7 +71,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         }
 
         defer {
-            setNeedsReflowWithWindowChange(.unknown)
+            setNeedsReflowWithWindowChange(.spaceChange)
         }
 
         self.space = space
@@ -97,6 +97,8 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
                 lastFocusedWindow = nil
             }
         case .windowSwap:
+            break
+        case .spaceChange:
             break
         case .unknown:
             break
