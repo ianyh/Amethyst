@@ -94,13 +94,13 @@ extension WindowManager {
             screenManagers
                 .filter { $0.screen.screenID() == screen.screenID() }
                 .forEach { screenManager in
-                    screenManager.setNeedsReflowWithWindowChange(change)
+                    screenManager.setNeedsReflow(withWindowChange: change)
                 }
         }
 
         func markAllScreensForReflow(withChange windowChange: Change<Window>) {
             for screenManager in screenManagers {
-                screenManager.setNeedsReflowWithWindowChange(windowChange)
+                screenManager.setNeedsReflow(withWindowChange: windowChange)
             }
         }
     }
