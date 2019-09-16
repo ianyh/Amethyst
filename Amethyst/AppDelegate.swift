@@ -99,7 +99,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func toggleGlobalTiling(_ sender: AnyObject) {
         UserConfiguration.shared.tilingEnabled = !UserConfiguration.shared.tilingEnabled
-        windowManager?.markAllScreensForReflowWithChange(.unknown)
+        windowManager?.markAllScreensForReflow(withChange: .unknown)
     }
 
     @IBAction func relaunch(_ sender: AnyObject) {
