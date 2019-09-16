@@ -129,15 +129,15 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
-        markAllScreensForReflowWithChange(.unknown)
+        markAllScreensForReflow(withChange: .unknown)
     }
 
     fileprivate func deactivate(application: AnyApplication<Application>) {
-        markAllScreensForReflowWithChange(.unknown)
+        markAllScreensForReflow(withChange: .unknown)
     }
 
     fileprivate func remove(window: Window) {
-        markAllScreensForReflowWithChange(.remove(window: window))
+        markAllScreensForReflow(withChange: .remove(window: window))
 
         let application = applicationWithPID(window.pid())
         application?.unobserve(notification: kAXUIElementDestroyedNotification, window: window)
@@ -157,21 +157,21 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             let windowChange: Change<Window> = .add(window: focusedWindow)
             add(window: focusedWindow)
             windows.setFloating(false, forWindow: focusedWindow)
-            markScreenForReflow(screen, withChange: windowChange)
+            markScreen(screen, forReflowWithChange: windowChange)
             return
         }
 
         let windowChange: Change = windows.isWindowFloating(focusedWindow) ? .add(window: focusedWindow) : .remove(window: focusedWindow)
         windows.setFloating(!windows.isWindowFloating(focusedWindow), forWindow: focusedWindow)
-        markScreenForReflow(screen, withChange: windowChange)
+        markScreen(screen, forReflowWithChange: windowChange)
     }
 
-    func markScreenForReflow(_ screen: Screen, withChange change: Change<Window>) {
-        screens.markScreenForReflow(screen, withChange: change)
+    func markScreen(_ screen: Screen, forReflowWithChange change: Change<Window>) {
+        screens.markScreen(screen, forReflowWithChange: change)
     }
 
-    func markAllScreensForReflowWithChange(_ windowChange: Change<Window>) {
-        screens.markAllScreensForReflowWithChange(windowChange)
+    func markAllScreensForReflow(withChange windowChange: Change<Window>) {
+        screens.markAllScreensForReflow(withChange: windowChange)
     }
 
     func displayCurrentLayout() {
@@ -184,7 +184,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
-        markScreenForReflow(screen, withChange: .unknown)
+        markScreen(screen, forReflowWithChange: .unknown)
     }
 
     @objc func applicationDidLaunch(_ notification: Notification) {
@@ -253,7 +253,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             }
         }
 
-        markAllScreensForReflowWithChange(.unknown)
+        markAllScreensForReflow(withChange: .unknown)
     }
 
     @objc func screenParametersDidChange(_ notification: Notification) {
@@ -275,7 +275,7 @@ extension WindowManager {
 
             add(runningApplication: runningApplication)
         }
-        markAllScreensForReflowWithChange(.unknown)
+        markAllScreensForReflow(withChange: .unknown)
     }
 
     private func add(window: Window, retries: Int = 5) {
@@ -321,7 +321,7 @@ extension WindowManager {
             guard let screen = window.screen() else {
                 return
             }
-            self.markScreenForReflow(screen, withChange: .remove(window: window))
+            self.markScreen(screen, forReflowWithChange: .remove(window: window))
         }
 
         guard let screen = window.screen() else {
@@ -329,7 +329,7 @@ extension WindowManager {
         }
 
         let windowChange: Change = windowIsFloating(window) ? .unknown : .add(window: window)
-        markScreenForReflow(screen, withChange: windowChange)
+        markScreen(screen, forReflowWithChange: windowChange)
     }
 
     func swapInTab(window: Window) {
@@ -383,7 +383,7 @@ extension WindowManager {
             add(window: window)
             executeTransition(.switchWindows(existingWindow, window))
             windows.regenerateActiveIDCache()
-            markScreenForReflow(screen, withChange: .unknown)
+            markScreen(screen, forReflowWithChange: .unknown)
 
             return
         }
@@ -457,9 +457,9 @@ extension WindowManager: ApplicationObservationDelegate {
         lastFocusDate = Date()
 
         if !windows.isWindowTracked(window) {
-            markScreenForReflow(screen, withChange: .unknown)
+            markScreen(screen, forReflowWithChange: .unknown)
         } else {
-            markScreenForReflow(screen, withChange: .focusChanged(window: window))
+            markScreen(screen, forReflowWithChange: .focusChanged(window: window))
         }
     }
 
@@ -582,13 +582,13 @@ extension WindowManager: WindowTransitionTarget {
                 return
             }
 
-            markAllScreensForReflowWithChange(.windowSwap(window: window, otherWindow: otherWindow))
+            markAllScreensForReflow(withChange: .windowSwap(window: window, otherWindow: otherWindow))
         case let .moveWindowToScreen(window, screen):
             if let currentScreen = window.screen() {
-                markScreenForReflow(currentScreen, withChange: .remove(window: window))
+                markScreen(currentScreen, forReflowWithChange: .remove(window: window))
             }
             window.moveScaled(to: screen)
-            markScreenForReflow(screen, withChange: .add(window: window))
+            markScreen(screen, forReflowWithChange: .add(window: window))
             window.focus()
         case let .moveWindowToSpaceAtIndex(window, spaceIndex):
             guard
@@ -601,7 +601,7 @@ extension WindowManager: WindowTransitionTarget {
 
             let targetSpace = spaces[spaceIndex]
 
-            markScreenForReflow(screen, withChange: .remove(window: window))
+            markScreen(screen, forReflowWithChange: .remove(window: window))
             window.move(toSpace: targetSpace.id)
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
