@@ -71,7 +71,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         }
 
         defer {
-            setNeedsReflowWithWindowChange(.spaceChange)
+            setNeedsReflow(withWindowChange: .spaceChange)
         }
 
         self.space = space
@@ -86,7 +86,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         }
     }
 
-    func setNeedsReflowWithWindowChange(_ windowChange: Change<Window>) {
+    func setNeedsReflow(withWindowChange windowChange: Change<Window>) {
         switch windowChange {
         case let .add(window: window):
             lastFocusedWindow = window
@@ -143,17 +143,17 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
             return
         }
         updater(layout)
-        setNeedsReflowWithWindowChange(.unknown)
+        setNeedsReflow(withWindowChange: .unknown)
     }
 
     func cycleLayoutForward() {
         setCurrentLayoutIndex((currentLayoutIndex + 1) % layouts.count)
-        setNeedsReflowWithWindowChange(.unknown)
+        setNeedsReflow(withWindowChange: .unknown)
     }
 
     func cycleLayoutBackward() {
         setCurrentLayoutIndex((currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1)
-        setNeedsReflowWithWindowChange(.unknown)
+        setNeedsReflow(withWindowChange: .unknown)
     }
 
     func selectLayout(_ layoutString: String) {
@@ -162,7 +162,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         }
 
         setCurrentLayoutIndex(layoutIndex)
-        setNeedsReflowWithWindowChange(.unknown)
+        setNeedsReflow(withWindowChange: .unknown)
     }
 
     private func setCurrentLayoutIndex(_ index: Int, changingSpace: Bool = false) {
