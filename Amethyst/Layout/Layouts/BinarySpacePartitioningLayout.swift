@@ -140,92 +140,9 @@ func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
     return lhs.windowID == rhs.windowID
 }
 
-class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOperation<Window> {
-    private typealias TraversalNode = (node: TreeNode, frame: CGRect)
-    private let rootNode: TreeNode
-
-    init(screen: Screen, windows: [Window], rootNode: TreeNode, frameAssigner: FrameAssigner) {
-        self.rootNode = rootNode
-        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
-    }
-
-    override func frameAssignments() -> [FrameAssignment<Window>]? {
-        guard !windows.isEmpty else {
-            return []
-        }
-
-        let windowIDMap: [CGWindowID: Window] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: Window] in
-            var mutableWindowMap = windowMap
-            mutableWindowMap[window.windowID()] = window
-            return mutableWindowMap
-        }
-
-        let focusedWindow = Window.currentlyFocused()
-        let baseFrame = screen.adjustedFrame()
-        var ret: [FrameAssignment<Window>] = []
-        var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
-
-        while !traversalNodes.isEmpty {
-            let traversalNode = traversalNodes[0]
-
-            traversalNodes = [TraversalNode](traversalNodes.dropFirst(1))
-
-            if let windowID = traversalNode.node.windowID {
-                guard let window = windowIDMap[windowID] else {
-                    log.warning("Could not find window for ID: \(windowID)")
-                    continue
-                }
-
-                let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-                let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame, resizeRules: resizeRules)
-                ret.append(frameAssignment)
-            } else {
-                guard let left = traversalNode.node.left, let right = traversalNode.node.right else {
-                    log.error("Encountered an invalid node")
-                    continue
-                }
-
-                let frame = traversalNode.frame
-
-                if frame.width > frame.height {
-                    let leftFrame = CGRect(
-                        x: frame.origin.x,
-                        y: frame.origin.y,
-                        width: frame.width / 2.0,
-                        height: frame.height
-                    )
-                    let rightFrame = CGRect(
-                        x: frame.origin.x + frame.width / 2.0,
-                        y: frame.origin.y,
-                        width: frame.width / 2.0,
-                        height: frame.height
-                    )
-                    traversalNodes.append((node: left, frame: leftFrame))
-                    traversalNodes.append((node: right, frame: rightFrame))
-                } else {
-                    let topFrame = CGRect(
-                        x: frame.origin.x,
-                        y: frame.origin.y,
-                        width: frame.width,
-                        height: frame.height / 2.0
-                    )
-                    let bottomFrame = CGRect(
-                        x: frame.origin.x,
-                        y: frame.origin.y + frame.height / 2.0,
-                        width: frame.width,
-                        height: frame.height / 2.0
-                    )
-                    traversalNodes.append((node: left, frame: topFrame))
-                    traversalNodes.append((node: right, frame: bottomFrame))
-                }
-            }
-        }
-
-        return ret
-    }
-}
-
 class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> {
+    private typealias TraversalNode = (node: TreeNode, frame: CGRect)
+
     override static var layoutName: String { return "Binary Space Partitioning" }
     override static var layoutKey: String { return "bsp" }
 
@@ -234,13 +151,13 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
     private var rootNode = TreeNode()
     private var lastKnownFocusedWindowID: CGWindowID?
 
-    private func constructInitialTreeWithWindows(_ windows: [Window]) {
+    private func constructInitialTreeWithWindows(_ windows: [LayoutWindow]) {
         for window in windows {
-            guard rootNode.findWindowID(window.windowID()) == nil else {
+            guard rootNode.findWindowID(window.id) == nil else {
                 continue
             }
 
-            rootNode.insertWindowIDAtEnd(window.windowID())
+            rootNode.insertWindowIDAtEnd(window.id)
         }
     }
 
@@ -312,12 +229,85 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
         return orderedIDs[nextWindowIndex]
     }
 
-    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
-        if !windows.isEmpty && !rootNode.valid {
-            constructInitialTreeWithWindows(windows)
-        }
-        let assigner = Assigner(windowActivityCache: windowActivityCache)
-        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: assigner)
-    }
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+        let windows = windowSet.windows
 
+        guard !windows.isEmpty else {
+            return []
+        }
+
+        let windowIDMap: [CGWindowID: LayoutWindow] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: LayoutWindow] in
+            var mutableWindowMap = windowMap
+            mutableWindowMap[window.id] = window
+            return mutableWindowMap
+        }
+
+        let focusedWindow = Window.currentlyFocused()
+        let baseFrame = screen.adjustedFrame()
+        var ret: [FrameAssignment<Window>] = []
+        var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
+
+        while !traversalNodes.isEmpty {
+            let traversalNode = traversalNodes[0]
+
+            traversalNodes = [TraversalNode](traversalNodes.dropFirst(1))
+
+            if let windowID = traversalNode.node.windowID {
+                guard let window = windowIDMap[windowID] else {
+                    log.warning("Could not find window for ID: \(windowID)")
+                    continue
+                }
+
+                let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
+                let frameAssignment = FrameAssignment<Window>(
+                    frame: traversalNode.frame,
+                    window: window,
+                    focused: windowID == focusedWindow?.windowID(),
+                    screenFrame: baseFrame, resizeRules: resizeRules
+                )
+                ret.append(frameAssignment)
+            } else {
+                guard let left = traversalNode.node.left, let right = traversalNode.node.right else {
+                    log.error("Encountered an invalid node")
+                    continue
+                }
+
+                let frame = traversalNode.frame
+
+                if frame.width > frame.height {
+                    let leftFrame = CGRect(
+                        x: frame.origin.x,
+                        y: frame.origin.y,
+                        width: frame.width / 2.0,
+                        height: frame.height
+                    )
+                    let rightFrame = CGRect(
+                        x: frame.origin.x + frame.width / 2.0,
+                        y: frame.origin.y,
+                        width: frame.width / 2.0,
+                        height: frame.height
+                    )
+                    traversalNodes.append((node: left, frame: leftFrame))
+                    traversalNodes.append((node: right, frame: rightFrame))
+                } else {
+                    let topFrame = CGRect(
+                        x: frame.origin.x,
+                        y: frame.origin.y,
+                        width: frame.width,
+                        height: frame.height / 2.0
+                    )
+                    let bottomFrame = CGRect(
+                        x: frame.origin.x,
+                        y: frame.origin.y + frame.height / 2.0,
+                        width: frame.width,
+                        height: frame.height / 2.0
+                    )
+                    traversalNodes.append((node: left, frame: topFrame))
+                    traversalNodes.append((node: right, frame: bottomFrame))
+                }
+            }
+        }
+
+        return ret
+    }
 }

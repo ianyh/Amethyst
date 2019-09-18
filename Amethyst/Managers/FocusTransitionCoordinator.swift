@@ -21,12 +21,11 @@ protocol FocusTransitionTarget: class {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
 
-    var windows: WindowManager<Application>.Windows { get }
-
     func executeTransition(_ transition: FocusTransition<Window>)
 
     func lastFocusedWindow(on screen: Screen) -> Window?
     func screen(at index: Int) -> Screen?
+    func windows(onScreen screen: Screen) -> [Window]
     func nextWindowIDClockwise(on screen: Screen) -> CGWindowID?
     func nextWindowIDCounterClockwise(on screen: Screen) -> CGWindowID?
     func nextScreenIndexClockwise(from screen: Screen) -> Int
@@ -60,7 +59,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows.windows(onScreen: screen)
+        let windows = target.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -90,7 +89,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows.windows(onScreen: screen)
+        let windows = target.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -120,7 +119,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows.windows(onScreen: screen)
+        let windows = target.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -145,7 +144,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.windows.windows(onScreen: screen)
+        let windows = target.windows(onScreen: screen)
 
         // If there are no windows on the screen focus the screen directly
         guard !windows.isEmpty else {
@@ -187,9 +186,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
 }
 
 extension FocusTransitionCoordinator: FocusFollowsMouseManagerDelegate {
-    typealias Application = Target.Application
-
-    var windows: WindowManager<Application>.Windows {
-        return target.windows
+    func windows(onScreen screen: Screen) -> [Window] {
+        return target.windows(onScreen: screen)
     }
 }

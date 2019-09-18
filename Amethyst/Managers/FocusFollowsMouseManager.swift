@@ -12,12 +12,13 @@ import Silica
 import RxSwift
 
 protocol FocusFollowsMouseManagerDelegate: class {
-    associatedtype Application: ApplicationType
-    var windows: WindowManager<Application>.Windows { get }
+    associatedtype Window: WindowType
+    typealias Screen = Window.Screen
+    func windows(onScreen screen: Screen) -> [Window]
 }
 
 class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
-    typealias Window = Delegate.Application.Window
+    typealias Window = Delegate.Window
     typealias Screen = Window.Screen
 
     weak var delegate: Delegate!
@@ -59,7 +60,7 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
             return
         }
 
-        guard let windows = delegate?.windows.windows(onScreen: screen) else {
+        guard let windows = delegate?.windows(onScreen: screen) else {
             return
         }
 

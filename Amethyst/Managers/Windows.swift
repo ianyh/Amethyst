@@ -16,6 +16,11 @@ extension WindowManager {
         private var floatingMap: [CGWindowID: Bool] = [:]
 
         // MARK: Window Filters
+
+        func window(withWindowID windowID: CGWindowID) -> Window? {
+            return windows.first { $0.windowID() == windowID }
+        }
+
         func windows(forApplicationWithPID applicationPID: pid_t) -> [Window] {
             return windows.filter { $0.pid() == applicationPID }
         }
@@ -54,6 +59,7 @@ extension WindowManager {
         }
 
         // MARK: Adding and Removing
+
         func add(window: Window, atFront shouldInsertAtFront: Bool) {
             if shouldInsertAtFront {
                 windows.insert(window, at: 0)
@@ -86,6 +92,7 @@ extension WindowManager {
         }
 
         // MARK: Window States
+
         func isWindowTracked(_ window: Window) -> Bool {
             return windows.contains(window)
         }
@@ -105,6 +112,39 @@ extension WindowManager {
         func regenerateActiveIDCache() {
             let windowDescriptions = CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))
             activeIDCache = windowDescriptions?.activeIDs() ?? Set()
+        }
+
+        // MARK: Window Sets
+
+        func windowSet(forWindowsOnScreen screen: Screen) -> WindowSet<Window> {
+            return windowSet(forWindows: windows(onScreen: screen))
+        }
+
+        func windowSet(forActiveWindowsOnScreen screen: Screen) -> WindowSet<Window> {
+            return windowSet(forWindows: activeWindows(onScreen: screen))
+        }
+
+        func windowSet(forWindows windows: [Window]) -> WindowSet<Window> {
+            let layoutWindows = windows.map { LayoutWindow(id: $0.windowID(), frame: $0.frame()) }
+
+            return WindowSet<Window>(
+                windows: layoutWindows,
+                isWindowWithIDActive: { [weak self] windowID -> Bool in
+                    guard let window = self?.window(withWindowID: windowID) else {
+                        return false
+                    }
+                    return self?.isWindowActive(window) ?? false
+                },
+                isWindowWithIDFloating: { [weak self] windowID -> Bool in
+                    guard let window = self?.window(withWindowID: windowID) else {
+                        return false
+                    }
+                    return self?.isWindowFloating(window) ?? false
+                },
+                windowForID: { [weak self] windowID -> Window? in
+                    return self?.window(withWindowID: windowID)
+                }
+            )
         }
     }
 }
