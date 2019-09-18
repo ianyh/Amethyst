@@ -8,20 +8,33 @@
 
 import Silica
 
-class TallRightReflowOperation<Window: WindowType>: ReflowOperation<Window> {
-    let layout: TallRightLayout<Window>
+class TallRightLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+    override static var layoutName: String { return "Tall Right" }
+    override static var layoutKey: String { return "tall-right" }
 
-    init(screen: Screen, windows: [Window], layout: TallRightLayout<Window>, frameAssigner: FrameAssigner) {
-        self.layout = layout
-        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
+
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
-    override func frameAssignments() -> [FrameAssignment<Window>]? {
+    func increaseMainPaneCount() {
+        mainPaneCount += 1
+    }
+
+    func decreaseMainPaneCount() {
+        mainPaneCount = max(1, mainPaneCount - 1)
+    }
+
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+        let windows = windowSet.windows
+
         guard !windows.isEmpty else {
             return []
         }
 
-        let mainPaneCount = min(windows.count, layout.mainPaneCount)
+        let mainPaneCount = min(windows.count, self.mainPaneCount)
         let secondaryPaneCount = windows.count - mainPaneCount
         let hasSecondaryPane = secondaryPaneCount > 0
 
@@ -30,7 +43,7 @@ class TallRightReflowOperation<Window: WindowType>: ReflowOperation<Window> {
         let mainPaneWindowHeight = round(screenFrame.size.height / CGFloat(mainPaneCount))
         let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.size.height / CGFloat(secondaryPaneCount)) : 0.0
 
-        let mainPaneWindowWidth = round(screenFrame.size.width * (hasSecondaryPane ? CGFloat(layout.mainPaneRatio) : 1.0))
+        let mainPaneWindowWidth = round(screenFrame.size.width * (hasSecondaryPane ? CGFloat(mainPaneRatio) : 1.0))
         let secondaryPaneWindowWidth = screenFrame.size.width - mainPaneWindowWidth
 
         return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
@@ -54,36 +67,17 @@ class TallRightReflowOperation<Window: WindowType>: ReflowOperation<Window> {
             }
 
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isFocused(), screenFrame: screenFrame, resizeRules: resizeRules)
+            let frameAssignment = FrameAssignment<Window>(
+                frame: windowFrame,
+                window: window,
+                focused: windowSet.isWindowFloating(window),
+                screenFrame: screenFrame,
+                resizeRules: resizeRules
+            )
 
             assignments.append(frameAssignment)
 
             return assignments
         }
-    }
-}
-
-class TallRightLayout<Window: WindowType>: Layout<Window>, PanedLayout {
-    override static var layoutName: String { return "Tall Right" }
-    override static var layoutKey: String { return "tall-right" }
-
-    private(set) var mainPaneCount: Int = 1
-    private(set) var mainPaneRatio: CGFloat = 0.5
-
-    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
-        mainPaneRatio = rawRatio
-    }
-
-    func increaseMainPaneCount() {
-        mainPaneCount += 1
-    }
-
-    func decreaseMainPaneCount() {
-        mainPaneCount = max(1, mainPaneCount - 1)
-    }
-
-    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
-        let assigner = Assigner(windowActivityCache: windowActivityCache)
-        return TallRightReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
 }

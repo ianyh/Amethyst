@@ -369,10 +369,10 @@
 				40637072224EF9B20081299D /* Change.swift */,
 				401C35B22244650F0019ED07 /* MouseState.swift */,
 				400540F12325CDF4004B8656 /* Reliability.swift */,
+				40578C18232D9CC0006553A0 /* Screen.swift */,
 				400A5E9C2327350C00F0A2C3 /* Space.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
-				40578C18232D9CC0006553A0 /* Screen.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

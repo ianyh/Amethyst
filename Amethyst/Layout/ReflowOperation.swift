@@ -57,13 +57,56 @@ struct ResizeRules {
     }
 }
 
+struct LayoutWindow {
+    let id: CGWindowID
+    let frame: CGRect
+}
+
+struct WindowSet<Window: WindowType> {
+    let windows: [LayoutWindow]
+    private let isWindowWithIDActive: (CGWindowID) -> Bool
+    private let isWindowWithIDFloating: (CGWindowID) -> Bool
+    private let windowForID: (CGWindowID) -> Window?
+
+    init(
+        windows: [LayoutWindow],
+        isWindowWithIDActive: @escaping (CGWindowID) -> Bool,
+        isWindowWithIDFloating: @escaping (CGWindowID) -> Bool,
+        windowForID: @escaping (CGWindowID) -> Window?
+    ) {
+        self.windows = windows
+        self.isWindowWithIDActive = isWindowWithIDActive
+        self.isWindowWithIDFloating = isWindowWithIDFloating
+        self.windowForID = windowForID
+    }
+
+    func isWindowFloating(_ window: LayoutWindow) -> Bool {
+        return isWindowWithIDFloating(window.id)
+    }
+
+    func performFrameAssignments(_ frameAssignments: [FrameAssignment<Window>]) {
+        for frameAssignment in frameAssignments {
+            if !isWindowWithIDActive(frameAssignment.window.id) {
+                return
+            }
+        }
+
+        for frameAssignment in frameAssignments {
+            guard let window = windowForID(frameAssignment.window.id) else {
+                continue
+            }
+            frameAssignment.perform(withWindow: window)
+        }
+    }
+}
+
 /// Encapsulation of an assignment of a frame to a window.
 struct FrameAssignment<Window: WindowType> {
     /// The frame to apply to the window.
     let frame: CGRect
 
     /// The window that will be moved and sized.
-    let window: Window
+    let window: LayoutWindow
 
     /// Whether or not the window is currently taking focus.
     let focused: Bool
@@ -121,7 +164,7 @@ struct FrameAssignment<Window: WindowType> {
     }
 
     /// Perform the actual application of the frame to the window
-    func perform() {
+    fileprivate func perform(withWindow window: Window) {
         var finalFrame = self.finalFrame
         var finalOrigin = finalFrame.origin
 
@@ -148,53 +191,6 @@ struct FrameAssignment<Window: WindowType> {
     }
 }
 
-/// Protocol for entities that perform a set of frame assignments.
-protocol FrameAssigner {
-    /// The window activity cache to use when handling windows.
-    var windowActivityCache: WindowActivityCache { get }
-
-    /**
-     - Parameters:
-        - windowActivityCache: The cache to use when handling windows.
-     */
-    init(windowActivityCache: WindowActivityCache)
-
-    /**
-     Performs a set of frame assignments.
-     
-     - Parameters:
-        - frameAssignments: The set of frame assignments to perform.
-     */
-    func performFrameAssignments<Window: WindowType>(_ frameAssignments: [FrameAssignment<Window>])
-}
-
-/// Simple `FrameAssigner` that performs assignments if all windows are active.
-struct Assigner: FrameAssigner {
-    /// The cache to use to check for activity
-    let windowActivityCache: WindowActivityCache
-
-    /**
-     Performs a set of frame assignments.
-     
-     The assignments will be ignored if any of the windows are not active. This is to prevent race conditions between starting reflow operations and this method actually being called. If some windows have deactivated in that time then the assignments are no longer valid.
-     
-     - Parameters:
-        - frameAssignments: The set of frame assignments to perform.
-     */
-    func performFrameAssignments<Window: WindowType>(_ frameAssignments: [FrameAssignment<Window>]) {
-        for frameAssignment in frameAssignments {
-            if !windowActivityCache.windowIsActive(frameAssignment.window) {
-                return
-            }
-        }
-
-        for frameAssignment in frameAssignments {
-//            log.debug("Frame Assignment: \(frameAssignment)")
-            frameAssignment.perform()
-        }
-    }
-}
-
 /**
  A base class for specific layout operations that perform assignments according to their algorithm.
  
@@ -211,41 +207,28 @@ class ReflowOperation<Window: WindowType>: Operation {
     let screen: Screen
 
     /// The screen on which the windows are being laid out.
-    let windows: [Window]
+    let windowSet: WindowSet<Window>
 
-    /// The `FrameAssigner` responsible for performing assignments.
-    let frameAssigner: FrameAssigner
+    let layout: Layout<Window>
+
+    var windows: [LayoutWindow] { return windowSet.windows }
 
     /**
      - Parameters:
          - screen: The screen on which the windows are being laid out.
          - windows: The screen on which the windows are being laid out.
-         - frameAssigner: The `FrameAssigner` responsible for performing assignments.
      */
-    init(screen: Screen, windows: [Window], frameAssigner: FrameAssigner) {
+    init(screen: Screen, windowSet: WindowSet<Window>, layout: Layout<Window>) {
         self.screen = screen
-        self.windows = windows
-        self.frameAssigner = frameAssigner
+        self.windowSet = windowSet
+        self.layout = layout
         super.init()
-    }
-
-    /**
-     Determine the set of `FrameAssignment` objects that compose the operations satisfying the layout algorithm.
-     
-     - Returns:
-     A complete list of `FrameAssignments`.
-     
-     - Note:
-     This can return `nil` if there are no assignments to be made.
-     */
-    func frameAssignments() -> [FrameAssignment<Window>]? {
-        return nil
     }
 
     /// The main method of the `Operation`.
     override func main() {
         guard !isCancelled else { return }
-        guard let assignments = frameAssignments() else { return }
-        frameAssigner.performFrameAssignments(assignments)
+        guard let assignments = layout.frameAssignments(windowSet, on: screen) else { return }
+        windowSet.performFrameAssignments(assignments)
     }
 }

@@ -9,9 +9,9 @@
 import Foundation
 import Silica
 
-protocol ScreenManagerDelegate: class, WindowActivityCache {
+protocol ScreenManagerDelegate: class {
     associatedtype Window: WindowType
-    func activeWindowsForScreenManager(_ screenManager: ScreenManager<Self>) -> [Window]
+    func activeWindowSet(forScreenManager screenManager: ScreenManager<Self>) -> WindowSet<Window>
 }
 
 final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
@@ -53,7 +53,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
 
         super.init()
 
-        layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
+        layouts = LayoutManager.layoutsWithConfiguration(userConfiguration)
     }
 
     deinit {
@@ -81,7 +81,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         if let layouts = layoutsBySpaceUUID[space.uuid] {
             self.layouts = layouts
         } else {
-            self.layouts = LayoutManager.layoutsWithConfiguration(userConfiguration, windowActivityCache: self)
+            self.layouts = LayoutManager.layoutsWithConfiguration(userConfiguration)
             layoutsBySpaceUUID[space.uuid] = layouts
         }
     }
@@ -122,10 +122,16 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
             return
         }
 
-        let windows = (delegate?.activeWindowsForScreenManager(self) ?? [])
+        guard let windows = delegate?.activeWindowSet(forScreenManager: self) else {
+            return
+        }
 
-        let reflowOperation = currentLayout?.reflow(windows, on: screen)
-        reflowOperation?.completionBlock = { [weak self, weak reflowOperation] in
+        guard let layout = currentLayout else {
+            return
+        }
+
+        let reflowOperation = ReflowOperation(screen: screen, windowSet: windows, layout: layout)
+        reflowOperation.completionBlock = { [weak self, weak reflowOperation] in
             guard let isCancelled = reflowOperation?.isCancelled, !isCancelled else {
                 return
             }
@@ -133,9 +139,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
             self?.onReflowCompletion?()
         }
         onReflowInitiation?()
-        if let reflowOperation = reflowOperation {
-            OperationQueue.main.addOperation(reflowOperation)
-        }
+        OperationQueue.main.addOperation(reflowOperation)
     }
 
     func updateCurrentLayout(_ updater: (Layout<Window>) -> Void) {
@@ -251,18 +255,8 @@ extension ScreenManager: Comparable {
     }
 }
 
-extension ScreenManager: WindowActivityCache {
-    func windowIsActive<Window: WindowType>(_ window: Window) -> Bool {
-        return delegate?.windowIsActive(window) ?? false
-    }
-
-    func windowIsFloating<Window: WindowType>(_ window: Window) -> Bool {
-        return delegate?.windowIsFloating(window) ?? false
-    }
-}
-
 extension WindowManager: ScreenManagerDelegate {
-    func activeWindowsForScreenManager(_ screenManager: ScreenManager<WindowManager<Application>>) -> [Window] {
-        return activeWindows(on: screenManager.screen)
+    func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>) -> WindowSet<Window> {
+        return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen)
     }
 }

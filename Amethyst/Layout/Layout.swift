@@ -9,25 +9,6 @@
 import Foundation
 import Silica
 
-/// Interface for determining activity of windows.
-protocol WindowActivityCache {
-    /**
-     - Parameters:
-        - window: The window to check for activity.
-     
-     - Returns: `true` if the window is currently known to be active and `false` otherwise.
-     */
-    func windowIsActive<Window: WindowType>(_ window: Window) -> Bool
-
-    /**
-     - Parameters:
-         - window: The window to floating state for.
-     
-     - Returns: `true` if the window is currently floating and `false` otherwise.
-     */
-    func windowIsFloating<Window: WindowType>(_ window: Window) -> Bool
-}
-
 /**
  A base class for specific layout algorithms defining size and position of windows.
  
@@ -35,7 +16,6 @@ protocol WindowActivityCache {
  Specific layouts must subclass and override the following properties and methods:
  - `layoutName`
  - `layoutKey`
- - `reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<<Window>?`
  
  Subclasses can optionally override `layoutDescription` to provide debugging information for the layout state.
  
@@ -54,34 +34,8 @@ class Layout<Window: WindowType> {
     /// The debug description of the layout.
     var layoutDescription: String { return "" }
 
-    /// The cache to check for window activity.
-    let windowActivityCache: WindowActivityCache
+    required init() {}
 
-    /**
-     - Parameters:
-        - windowActivityCache: Cache to check for window activity.
-     */
-    required init(windowActivityCache: WindowActivityCache) {
-        self.windowActivityCache = windowActivityCache
-    }
-
-    /**
-     Takes an array of windows and generates an operation for assigning frames to those windows.
-     
-     - Parameters:
-        - windows: The windows to apply the layout algorithm to.
-        - screen: The screen on which those windows should reside.
-     
-     - Returns:
-     An `Operation` object that performs frame assignments.
-     */
-    func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
-        fatalError("Must be implemented by subclass")
-    }
-}
-
-/// MARK: Window Querying
-extension Layout {
     /**
      Takes a list of windows and a screen and returns the assignments that would be performed.
      
@@ -92,10 +46,14 @@ extension Layout {
      - Returns:
      The assignments that would be performed given those windows on that screen.
      */
-    func frameAssignments(_ windows: [Window], on screen: Screen) -> [FrameAssignment<Window>]? {
-        return reflow(windows, on: screen)?.frameAssignments()
+    func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+        fatalError("Must be implemented by subclass")
     }
+}
 
+// MARK: Window Querying
+
+extension Layout {
     /**
      Determines what window the layout would put at a given point.
      
@@ -109,8 +67,8 @@ extension Layout {
      
      - Note: This does not necessarily correspond to the final position of the window as windows do not necessarily take the exact frame the layout provides.
      */
-    func windowAtPoint(_ point: CGPoint, of windows: [Window], on screen: Screen) -> Window? {
-        return frameAssignments(windows, on: screen)?.first(where: { $0.frame.contains(point) })?.window
+    func windowAtPoint(_ point: CGPoint, of windowSet: WindowSet<Window>, on screen: Screen) -> LayoutWindow? {
+        return frameAssignments(windowSet, on: screen)?.first(where: { $0.frame.contains(point) })?.window
     }
 
     /**
@@ -126,8 +84,8 @@ extension Layout {
      
      - Note: This does not necessarily correspond to the final frame of the window as windows do not necessarily take the exact frame the layout provides.
      */
-    func assignedFrame(_ window: Window, of windows: [Window], on screen: Screen) -> FrameAssignment<Window>? {
-        return frameAssignments(windows, on: screen)?.first { $0.window == window }
+    func assignedFrame(_ window: Window, of windowSet: WindowSet<Window>, on screen: Screen) -> FrameAssignment<Window>? {
+        return frameAssignments(windowSet, on: screen)?.first { $0.window.id == window.windowID() }
     }
 }
 

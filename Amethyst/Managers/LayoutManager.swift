@@ -9,8 +9,8 @@
 import Foundation
 
 enum LayoutManager<Window: WindowType> {
-    static func layoutForKey(_ layoutKey: String, with windowActivityCache: WindowActivityCache) -> Layout<Window>? {
-        return layoutByKey()[layoutKey]?.init(windowActivityCache: windowActivityCache)
+    static func layoutForKey(_ layoutKey: String) -> Layout<Window>? {
+        return layoutByKey()[layoutKey]?.init()
     }
 
     static func layoutNameForKey(_ layoutKey: String) -> String? {
@@ -44,10 +44,10 @@ enum LayoutManager<Window: WindowType> {
         return layoutClasses().map { ($0.layoutKey, $0.layoutName) }
     }
 
-    static func layoutsWithConfiguration(_ userConfiguration: UserConfiguration, windowActivityCache: WindowActivityCache) -> [Layout<Window>] {
+    static func layoutsWithConfiguration(_ userConfiguration: UserConfiguration) -> [Layout<Window>] {
         let layoutKeys: [String] = userConfiguration.layoutKeys()
         let layouts = layoutKeys.map { layoutKey -> Layout<Window>? in
-            guard let layout = LayoutManager.layoutForKey(layoutKey, with: windowActivityCache) else {
+            guard let layout = LayoutManager.layoutForKey(layoutKey) else {
                 log.warning("Unrecognized layout key \(layoutKey)")
                 return nil
             }

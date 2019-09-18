@@ -259,9 +259,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
     @objc func screenParametersDidChange(_ notification: Notification) {
         screens.updateScreens(windowManager: self)
     }
-}
 
-extension WindowManager {
     func add(runningApplication: NSRunningApplication) {
         let application = AnyApplication(Application(runningApplication: runningApplication))
         add(application: application)
@@ -303,6 +301,7 @@ extension WindowManager {
             windows.setFloating(false, forWindow: window)
         }
 
+        windows.regenerateActiveIDCache()
         windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
 
         application.observe(notification: kAXUIElementDestroyedNotification, window: window) { element in
@@ -328,7 +327,7 @@ extension WindowManager {
             return
         }
 
-        let windowChange: Change = windowIsFloating(window) ? .unknown : .add(window: window)
+        let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
         markScreen(screen, forReflowWithChange: windowChange)
     }
 
@@ -351,7 +350,7 @@ extension WindowManager {
                 continue
             }
 
-            let didLeaveScreen = windowIsActive(existingWindow) && !existingWindow.isOnScreen()
+            let didLeaveScreen = windows.isWindowActive(existingWindow) && !existingWindow.isOnScreen()
             let isInvalid = existingWindow.windowID() == kCGNullWindowID
 
             // The window needs to have either left the screen and therefore is being replaced
@@ -393,16 +392,6 @@ extension WindowManager {
     }
 }
 
-extension WindowManager: WindowActivityCache {
-    func windowIsActive<W: WindowType>(_ window: W) -> Bool {
-        return windows.isWindowActive(window as! Window)
-    }
-
-    func windowIsFloating<W: WindowType>(_ window: W) -> Bool {
-        return windows.isWindowFloating(window as! Window)
-    }
-}
-
 extension WindowManager: MouseStateKeeperDelegate {
     func recommendMainPaneRatio(_ ratio: CGFloat) {
         guard let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager() else { return }
@@ -425,7 +414,8 @@ extension WindowManager: MouseStateKeeperDelegate {
         let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
 
         if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(), let layout = screenManager.currentLayout {
-            if let framedWindow = layout.windowAtPoint(pointerLocation, of: windows, on: screen) {
+            let windowSet = self.windows.windowSet(forWindowsOnScreen: screen)
+            if let layoutWindow = layout.windowAtPoint(pointerLocation, of: windowSet, on: screen), let framedWindow = self.windows.window(withWindowID: layoutWindow.id) {
                 executeTransition(.switchWindows(draggedWindow, framedWindow))
                 return
             }
@@ -509,9 +499,12 @@ extension WindowManager: ApplicationObservationDelegate {
         guard
             let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(),
             let layout = screenManager.currentLayout,
-            layout is PanedLayout,
-            let oldFrame = layout.assignedFrame(window, of: activeWindowsForScreenManager(screenManager), on: screen)
+            layout is PanedLayout
         else {
+            return
+        }
+
+        guard let oldFrame = layout.assignedFrame(window, of: windows.windowSet(forActiveWindowsOnScreen: screen), on: screen) else {
             return
         }
 
@@ -610,6 +603,16 @@ extension WindowManager: WindowTransitionTarget {
         }
     }
 
+    func isWindowFloating(_ window: Window) -> Bool {
+        return windows.isWindowFloating(window)
+    }
+
+    func activeWindows(on screen: Screen) -> [Window] {
+        return windows.activeWindows(onScreen: screen).filter { window in
+            return window.shouldBeManaged() && !self.windows.isWindowFloating(window)
+        }
+    }
+
     func nextScreenIndexClockwise(from screen: Screen) -> Int {
         guard let screenManagerIndex = self.screenManagerIndex(for: screen) else {
             return -1
@@ -629,6 +632,10 @@ extension WindowManager: WindowTransitionTarget {
 
 // MARK: Focus Transition
 extension WindowManager: FocusTransitionTarget {
+    func windows(onScreen screen: Screen) -> [Window] {
+        return windows.activeWindows(onScreen: screen)
+    }
+
     func executeTransition(_ transition: FocusTransition<Window>) {
         switch transition {
         case let .focusWindow(window):

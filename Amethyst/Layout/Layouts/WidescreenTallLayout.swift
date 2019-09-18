@@ -8,20 +8,19 @@
 
 import Silica
 
-class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window> {
-    let layout: WidescreenTallLayout<Window>
+class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
+    class var isRight: Bool { fatalError("Must be implemented by subclass") }
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
 
-    init(screen: Screen, windows: [Window], layout: WidescreenTallLayout<Window>, frameAssigner: FrameAssigner) {
-        self.layout = layout
-        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
-    }
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+        let windows = windowSet.windows
 
-    override func frameAssignments() -> [FrameAssignment<Window>]? {
         if windows.count == 0 {
             return []
         }
 
-        let mainPaneCount = min(windows.count, layout.mainPaneCount)
+        let mainPaneCount = min(windows.count, self.mainPaneCount)
         let secondaryPaneCount = windows.count - mainPaneCount
 
         let hasSecondaryPane = secondaryPaneCount > 0
@@ -31,7 +30,7 @@ class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window>
         let mainPaneWindowHeight = screenFrame.height
         let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.height / CGFloat(secondaryPaneCount)) : 0.0
 
-        let mainPaneWindowWidth = CGFloat(round(screenFrame.size.width * CGFloat(hasSecondaryPane ? self.layout.mainPaneRatio : 1))) / CGFloat(mainPaneCount)
+        let mainPaneWindowWidth = CGFloat(round(screenFrame.size.width * CGFloat(hasSecondaryPane ? mainPaneRatio : 1))) / CGFloat(mainPaneCount)
         let secondaryPaneWindowWidth = screenFrame.width - mainPaneWindowWidth * CGFloat(mainPaneCount)
 
         return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
@@ -44,7 +43,7 @@ class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window>
             if isMain {
                 scaleFactor = CGFloat(screenFrame.size.width / mainPaneWindowWidth) / CGFloat(mainPaneCount)
                 windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * CGFloat(windowIndex)
-                if type(of: layout).isRight {
+                if type(of: self).isRight {
                     windowFrame.origin.x += secondaryPaneWindowWidth
                 }
                 windowFrame.origin.y = screenFrame.origin.y
@@ -56,29 +55,24 @@ class WidescreenTallReflowOperation<Window: WindowType>: ReflowOperation<Window>
                 windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(windowIndex - mainPaneCount))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
-                if type(of: layout).isRight {
+                if type(of: self).isRight {
                     windowFrame.origin.x = screenFrame.origin.x
                 }
             }
 
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isFocused(), screenFrame: screenFrame, resizeRules: resizeRules)
+            let frameAssignment = FrameAssignment<Window>(
+                frame: windowFrame,
+                window: window,
+                focused: windowSet.isWindowFloating(window),
+                screenFrame: screenFrame,
+                resizeRules: resizeRules
+            )
 
             assignments.append(frameAssignment)
 
             return assignments
         }
-    }
-}
-
-class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
-    class var isRight: Bool { fatalError("Must be implemented by subclass") }
-    private(set) var mainPaneCount: Int = 1
-    private(set) var mainPaneRatio: CGFloat = 0.5
-
-    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
-        let assigner = Assigner(windowActivityCache: windowActivityCache)
-        return WidescreenTallReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
 }
 

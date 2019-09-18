@@ -8,31 +8,17 @@
 
 import Silica
 
-class FullscreenReflowOperation<Window: WindowType>: ReflowOperation<Window> {
-    private let layout: FullscreenLayout<Window>
-
-    init(screen: Screen, windows: [Window], layout: FullscreenLayout<Window>, frameAssigner: FrameAssigner) {
-        self.layout = layout
-        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
-    }
-
-    override func frameAssignments() -> [FrameAssignment<Window>]? {
-        let screenFrame = screen.adjustedFrame()
-        return windows.map { window in
-            let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-            return FrameAssignment(frame: screenFrame, window: window, focused: false, screenFrame: screenFrame, resizeRules: resizeRules)
-        }
-    }
-}
-
 class FullscreenLayout<Window: WindowType>: Layout<Window> {
     override static var layoutName: String { return "Fullscreen" }
     override static var layoutKey: String { return "fullscreen" }
 
     override var layoutDescription: String { return "" }
 
-    override func reflow(_ windows: [Window], on screen: Screen) -> ReflowOperation<Window>? {
-        let assigner = Assigner(windowActivityCache: windowActivityCache)
-        return FullscreenReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+        let screenFrame = screen.adjustedFrame()
+        return windowSet.windows.map { window in
+            let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
+            return FrameAssignment<Window>(frame: screenFrame, window: window, focused: false, screenFrame: screenFrame, resizeRules: resizeRules)
+        }
     }
 }
