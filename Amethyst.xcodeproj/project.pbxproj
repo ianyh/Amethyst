@@ -16,6 +16,7 @@
 		40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */; };
 		40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */; };
 		40111CCD22342CF3003D20BD /* DebugPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */; };
+		401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */; };
 		401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8971CE7E45300F89B3F /* WindowManager.swift */; };
 		401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */; };
 		401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */; };
@@ -74,6 +75,8 @@
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
+		40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491D723367590007E0CCB /* RowLayoutTests.swift */; };
+		40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
 		9223AE552ADF6FEE4AFD33CB /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22CAB58F56F91369E2D69B06 /* Pods_Amethyst.framework */; };
@@ -116,6 +119,7 @@
 		40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIWindow+AmethystTests.swift"; sourceTree = "<group>"; };
 		40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPreferencesViewController.swift; sourceTree = "<group>"; };
 		40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugPreferencesViewController.xib; sourceTree = "<group>"; };
+		401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnLayoutTests.swift; sourceTree = "<group>"; };
 		401BC8971CE7E45300F89B3F /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotKeyManager.swift; path = ../Events/HotKeyManager.swift; sourceTree = "<group>"; };
 		401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutsPreferencesListItemView.swift; sourceTree = "<group>"; };
@@ -180,6 +184,8 @@
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; usesTabs = 0; };
+		40D491D723367590007E0CCB /* RowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowLayoutTests.swift; sourceTree = "<group>"; };
+		40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameAssignmentVerification.swift; sourceTree = "<group>"; };
 		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
@@ -381,7 +387,9 @@
 			isa = PBXGroup;
 			children = (
 				404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */,
+				401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */,
 				40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */,
+				40D491D723367590007E0CCB /* RowLayoutTests.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -400,6 +408,7 @@
 				4085824A1EA673950075A2C3 /* Managers */,
 				404BE9CF1CFBDEFD00D6C537 /* Layout */,
 				401BC8AB1CE8F84500F89B3F /* Preferences */,
+				40111CC7223370E1003D20BD /* Categories */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -407,8 +416,8 @@
 		40B0D149232D94410021E0A7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				40B0D14A232D944C0021E0A7 /* TestWindow.swift */,
 				40578C1A232DC607006553A0 /* TestScreen.swift */,
+				40B0D14A232D944C0021E0A7 /* TestWindow.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -443,12 +452,20 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		40D491D9233675E3007E0CCB /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		40D95B481C6E2ED800AAF433 /* AmethystTests */ = {
 			isa = PBXGroup;
 			children = (
+				40D491D9233675E3007E0CCB /* Helpers */,
 				40B0D149232D94410021E0A7 /* Model */,
 				40B0D148232D942B0021E0A7 /* Tests */,
-				40111CC7223370E1003D20BD /* Categories */,
 				40D95B4B1C6E2ED800AAF433 /* Info.plist */,
 				401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */,
 			);
@@ -766,12 +783,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */,
+				401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */,
 				401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */,
 				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
 				40B0D14B232D944C0021E0A7 /* TestWindow.swift in Sources */,
+				40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */,
+				40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
