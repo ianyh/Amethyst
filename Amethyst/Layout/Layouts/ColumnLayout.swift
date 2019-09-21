@@ -39,8 +39,9 @@ class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         let hasSecondaryPane = secondaryPaneCount > 0
 
         let screenFrame = screen.adjustedFrame()
-        let mainPaneWindowWidth = round(screenFrame.width * (hasSecondaryPane ? CGFloat(mainPaneRatio) : 1.0))
-        let secondaryPaneWindowWidth = hasSecondaryPane ? round((screenFrame.width - mainPaneWindowWidth) / CGFloat(secondaryPaneCount)) : 0.0
+        let mainPaneWidth = round(screenFrame.width * (hasSecondaryPane ? CGFloat(mainPaneRatio) : 1.0))
+        let mainPaneWindowWidth = round(mainPaneWidth / CGFloat(mainPaneCount))
+        let secondaryPaneWindowWidth = hasSecondaryPane ? round((screenFrame.width - mainPaneWidth) / CGFloat(secondaryPaneCount)) : 0.0
 
         return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
             var assignments = frameAssignments
@@ -56,7 +57,7 @@ class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
                 windowFrame.size.height = screenFrame.height
             } else {
                 scaleFactor = (screenFrame.width / secondaryPaneWindowWidth) / CGFloat(secondaryPaneCount)
-                windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * CGFloat(mainPaneCount)) + (secondaryPaneWindowWidth * CGFloat(frameAssignments.count - mainPaneCount))
+                windowFrame.origin.x = screenFrame.origin.x + mainPaneWidth + (secondaryPaneWindowWidth * CGFloat(frameAssignments.count - mainPaneCount))
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = screenFrame.height

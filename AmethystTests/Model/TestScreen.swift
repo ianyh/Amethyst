@@ -19,10 +19,16 @@ final class TestScreen: ScreenType {
     }
 
     private let id: String = UUID().uuidString
+    private let internalFrame: CGRect
 
-    lazy var internalFrame: CGRect = {
-        return CGRect(x: 0, y: 0, width: CGFloat.random(in: 500...2000), height: CGFloat.random(in: 500...2000))
-    }()
+    init(frame: CGRect) {
+        internalFrame = frame
+    }
+
+    convenience init() {
+        let frame = CGRect(x: 0, y: 0, width: CGFloat.random(in: 500...2000), height: CGFloat.random(in: 500...2000))
+        self.init(frame: frame)
+    }
 
     func adjustedFrame() -> CGRect {
         return internalFrame
