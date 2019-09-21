@@ -60,6 +60,7 @@ struct ResizeRules {
 struct LayoutWindow {
     let id: CGWindowID
     let frame: CGRect
+    let isFocused: Bool
 }
 
 struct WindowSet<Window: WindowType> {
@@ -78,6 +79,10 @@ struct WindowSet<Window: WindowType> {
         self.isWindowWithIDActive = isWindowWithIDActive
         self.isWindowWithIDFloating = isWindowWithIDFloating
         self.windowForID = windowForID
+    }
+
+    func isWindowActive(_ window: LayoutWindow) -> Bool {
+        return isWindowWithIDActive(window.id)
     }
 
     func isWindowFloating(_ window: LayoutWindow) -> Bool {
@@ -107,9 +112,6 @@ struct FrameAssignment<Window: WindowType> {
 
     /// The window that will be moved and sized.
     let window: LayoutWindow
-
-    /// Whether or not the window is currently taking focus.
-    let focused: Bool
 
     /// The frame of the screen being occupied.
     let screenFrame: CGRect
@@ -170,7 +172,7 @@ struct FrameAssignment<Window: WindowType> {
 
         // If this is the focused window then we need to shift it to be on screen regardless of size
         // We call this "window peeking" (this line here to aid in text search)
-        if focused {
+        if self.window.isFocused {
             // Just resize the window first to see what the dimensions end up being
             // Sometimes applications have internal window requirements that are not exposed to us directly
             finalFrame.origin = window.frame().origin

@@ -18,7 +18,7 @@ class FullscreenLayout<Window: WindowType>: Layout<Window> {
         let screenFrame = screen.adjustedFrame()
         return windowSet.windows.map { window in
             let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-            return FrameAssignment<Window>(frame: screenFrame, window: window, focused: false, screenFrame: screenFrame, resizeRules: resizeRules)
+            return FrameAssignment<Window>(frame: screenFrame, window: window, screenFrame: screenFrame, resizeRules: resizeRules)
         }
     }
 }

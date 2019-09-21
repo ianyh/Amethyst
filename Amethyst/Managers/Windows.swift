@@ -125,7 +125,9 @@ extension WindowManager {
         }
 
         func windowSet(forWindows windows: [Window]) -> WindowSet<Window> {
-            let layoutWindows = windows.map { LayoutWindow(id: $0.windowID(), frame: $0.frame()) }
+            let layoutWindows = windows.map {
+                LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: $0.isFocused())
+            }
 
             return WindowSet<Window>(
                 windows: layoutWindows,
