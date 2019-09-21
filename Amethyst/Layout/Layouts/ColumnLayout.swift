@@ -67,7 +67,6 @@ class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
             let frameAssignment = FrameAssignment<Window>(
                 frame: windowFrame,
                 window: window,
-                focused: windowSet.isWindowFloating(window),
                 screenFrame: screenFrame,
                 resizeRules: resizeRules
             )

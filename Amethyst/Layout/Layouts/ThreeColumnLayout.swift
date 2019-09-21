@@ -193,7 +193,6 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
             let frameAssignment = FrameAssignment<Window>(
                 frame: windowFrame,
                 window: window,
-                focused: windowSet.isWindowFloating(window),
                 screenFrame: screenFrame,
                 resizeRules: resizeRules
             )

@@ -262,7 +262,6 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
                 let frameAssignment = FrameAssignment<Window>(
                     frame: traversalNode.frame,
                     window: window,
-                    focused: windowID == focusedWindow?.windowID(),
                     screenFrame: baseFrame, resizeRules: resizeRules
                 )
                 ret.append(frameAssignment)
