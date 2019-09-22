@@ -1,0 +1,46 @@
+//
+//  FloatingLayoutTests.swift
+//  AmethystTests
+//
+//  Created by Ian Ynda-Hummel on 9/21/19.
+//  Copyright © 2019 Ian Ynda-Hummel. All rights reserved.
+//
+
+@testable import Amethyst
+import Nimble
+import Quick
+import Silica
+
+class FloatingLayoutTests: QuickSpec {
+    override func spec() {
+        afterEach {
+            TestScreen.availableScreens = []
+        }
+
+        describe("layout") {
+            it("generates no assignments") {
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.windowID() == id } }
+                )
+                let layout = FloatingLayout<TestWindow>()
+
+                expect(layout.frameAssignments(windowSet, on: screen)).to(beNil())
+            }
+        }
+    }
+}
