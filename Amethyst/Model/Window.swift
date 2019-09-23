@@ -179,8 +179,12 @@ extension AXWindow: WindowType {
         return false
     }
 
+    func isEqual(to rhs: AXWindow) -> Bool {
+        return self.windowID() == rhs.windowID()
+    }
+
     func isFocused() -> Bool {
-        guard let focused = AXWindow.focused() else {
+        guard let focused = AXWindow.currentlyFocused() else {
             return false
         }
 
