@@ -104,7 +104,6 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
         let windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count]
 
         target.executeTransition(.switchWindows(focusedWindow, windowToSwapWith))
-        focusedWindow.focus()
     }
 
     func throwToScreenAtIndex(_ screenIndex: Int) {
