@@ -80,6 +80,7 @@
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
 		9223AE552ADF6FEE4AFD33CB /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22CAB58F56F91369E2D69B06 /* Pods_Amethyst.framework */; };
+		CAFB47492364F0D300E8E34A /* TallStackLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFB47482364F0D300E8E34A /* TallStackLayout.swift */; };
 		D040B03B898E82BCE3E904B4 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A490D6DCEEB1686189A3E68 /* Pods_AmethystTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -193,6 +194,7 @@
 		72008CE845065114C6273699 /* Pods-Amethyst.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.debug.xcconfig"; sourceTree = "<group>"; };
 		766CDAA619AA11EF6A7F4842 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
 		B8CC0FBA515BB336B6CF4E47 /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
+		CAFB47482364F0D300E8E34A /* TallStackLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallStackLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +288,7 @@
 				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
 				4062AD341C1FA62500DB612B /* WideLayout.swift */,
 				4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */,
+				CAFB47482364F0D300E8E34A /* TallStackLayout.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
 				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
+				CAFB47492364F0D300E8E34A /* TallStackLayout.swift in Sources */,
 				401BC8A81CE8E94000F89B3F /* WindowsInformation.swift in Sources */,
 				401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */,
 				400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */,

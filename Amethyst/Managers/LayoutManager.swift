@@ -21,6 +21,7 @@ enum LayoutManager<Window: WindowType> {
         return [
             TallLayout.self,
             TallRightLayout.self,
+            TallStackLayout.self,
             WideLayout.self,
             ThreeColumnLeftLayout.self,
             ThreeColumnMiddleLayout.self,
