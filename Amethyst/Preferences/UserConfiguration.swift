@@ -120,6 +120,7 @@ enum CommandKey: String {
     case toggleTiling = "toggle-tiling"
     case reevaluateWindows = "reevaluate-windows"
     case toggleFocusFollowsMouse = "toggle-focus-follows-mouse"
+    case relaunchAmethyst = "relaunch-amethyst"
 }
 
 protocol UserConfigurationDelegate: AnyObject {
