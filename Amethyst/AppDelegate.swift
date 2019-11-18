@@ -55,7 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         preferencesWindowController?.window?.level = .floating
 
         windowManager = WindowManager(userConfiguration: UserConfiguration.shared)
-        hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
+        hotKeyManager = HotKeyManager(appDelegate: self, userConfiguration: UserConfiguration.shared)
 
         hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared)
     }
