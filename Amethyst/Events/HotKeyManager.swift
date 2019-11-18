@@ -24,13 +24,15 @@ typealias HotKeyHandler = () -> Void
 
 class HotKeyManager<Application: ApplicationType>: NSObject {
     private let userConfiguration: UserConfiguration
+    private weak var appDelegate: AppDelegate?
 
     private(set) lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
         return self.constructKeyCodeMap()
     }()
 
-    init(userConfiguration: UserConfiguration) {
+    init(appDelegate: AppDelegate, userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
+        self.appDelegate = appDelegate
         super.init()
         _ = constructKeyCodeMap()
         MASShortcutValidator.shared().allowAnyShortcutWithOptionModifier = true
@@ -206,6 +208,10 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
+        constructCommandWithCommandKey(CommandKey.relaunchAmethyst.rawValue) {
+            self.appDelegate?.relaunch(self)
+        }
+
         LayoutType<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
                 let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
@@ -364,6 +370,8 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             let commandKey = "select-\(layoutKey)-layout"
             hotKeyNameToDefaultsKey.append([commandName, commandKey])
         }
+
+        hotKeyNameToDefaultsKey.append(["Relaunch Amethyst", CommandKey.relaunchAmethyst.rawValue])
 
         return hotKeyNameToDefaultsKey
     }
