@@ -16,7 +16,7 @@ PODS:
     - RxCocoa (~> 4.0)
     - RxSwiftExt/Core
   - Silica (0.3.1)
-  - Sparkle (1.21.3)
+  - Sparkle (1.22.0)
   - SwiftyBeaver (1.7.0)
   - SwiftyJSON (4.2.0)
 
@@ -35,7 +35,7 @@ DEPENDENCIES:
   - SwiftyJSON (= 4.2.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Cartography
     - MASShortcut
     - Nimble
@@ -43,9 +43,10 @@ SPEC REPOS:
     - RxCocoa
     - RxSwift
     - RxSwiftExt
-    - Sparkle
     - SwiftyBeaver
     - SwiftyJSON
+  trunk:
+    - Sparkle
 
 EXTERNAL SOURCES:
   LoginServiceKit:
@@ -73,10 +74,10 @@ SPEC CHECKSUMS:
   RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   RxSwiftExt: 01f8ecbeeb355698e9c75365ebe908b00dacf45d
   Silica: 1964824e14b9e2b1a07b402316ab24b0409c58b1
-  Sparkle: 3f75576db8b0265adef36c43249d747f22d0b708
+  Sparkle: 593ac2e677c07bcb6c3b22d621240e7cbedaab57
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
 PODFILE CHECKSUM: f89e8028233831225f2aab3c5498295a303a13cf
 
-COCOAPODS: 1.6.2
+COCOAPODS: 1.8.0
