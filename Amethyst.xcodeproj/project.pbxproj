@@ -41,6 +41,7 @@
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		403E1A2A2337173600DB7B2A /* FloatingLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */; };
+		403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */; };
 		4046EFCF2236019400113067 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFCE2236019400113067 /* Window.swift */; };
 		4046EFD12238949900113067 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFD02238949900113067 /* Application.swift */; };
 		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
@@ -152,6 +153,7 @@
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		40378E22238F39B900D11E22 /* Amethyst.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Amethyst.entitlements; sourceTree = "<group>"; };
 		403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLayoutTests.swift; sourceTree = "<group>"; };
+		403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallLayoutTests.swift; sourceTree = "<group>"; };
 		4046EFCE2236019400113067 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		4046EFD02238949900113067 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 				403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */,
 				40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */,
 				40D491D723367590007E0CCB /* RowLayoutTests.swift */,
+				403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -789,6 +792,7 @@
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
 				40B0D14B232D944C0021E0A7 /* TestWindow.swift in Sources */,
 				40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */,
+				403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */,
 				40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
