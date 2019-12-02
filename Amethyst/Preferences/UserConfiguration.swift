@@ -167,7 +167,7 @@ class FloatingBundle: NSObject {
     }
 }
 
-final class UserConfiguration: NSObject {
+class UserConfiguration: NSObject {
     static let shared = UserConfiguration()
     private let storage: ConfigurationStorage
 

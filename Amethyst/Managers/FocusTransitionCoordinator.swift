@@ -11,39 +11,42 @@ import Foundation
 import Silica
 
 enum FocusTransition<Window: WindowType> {
+    typealias Screen = Window.Screen
     case focusWindow(_ window: Window)
-    case focusScreen(_ screen: NSScreen)
+    case focusScreen(_ screen: Screen)
 }
 
 protocol FocusTransitionTarget: class {
-    associatedtype Window: WindowType
-
-    var windowActivityCache: WindowActivityCache { get }
-    var windows: [Window] { get }
+    associatedtype Application: ApplicationType
+    typealias Window = Application.Window
+    typealias Screen = Window.Screen
 
     func executeTransition(_ transition: FocusTransition<Window>)
 
-    func lastFocusedWindow(on screen: NSScreen) -> Window?
-    func screen(at index: Int) -> NSScreen?
-    func nextWindowIDClockwise(on screen: NSScreen) -> CGWindowID?
-    func nextWindowIDCounterClockwise(on screen: NSScreen) -> CGWindowID?
-    func nextScreenIndexClockwise(from screen: NSScreen) -> Int
-    func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int
-}
-
-extension FocusTransitionTarget {
-    func cachedWindows(on screen: NSScreen) -> [Window] {
-        return windowActivityCache.windows(windows, on: screen)
-    }
+    func lastFocusedWindow(on screen: Screen) -> Window?
+    func screen(at index: Int) -> Screen?
+    func windows(onScreen screen: Screen) -> [Window]
+    func nextWindowIDClockwise(on screen: Screen) -> CGWindowID?
+    func nextWindowIDCounterClockwise(on screen: Screen) -> CGWindowID?
+    func nextScreenIndexClockwise(from screen: Screen) -> Int
+    func nextScreenIndexCounterClockwise(from screen: Screen) -> Int
 }
 
 class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
     typealias Window = Target.Window
+    typealias Screen = Window.Screen
 
     weak var target: Target!
 
-    init(target: Target) {
+    private let userConfiguration: UserConfiguration
+
+    private lazy var focusFollowsMouseManager: FocusFollowsMouseManager<FocusTransitionCoordinator<Target>> = {
+        return FocusFollowsMouseManager(delegate: self, userConfiguration: self.userConfiguration)
+    }()
+
+    init(target: Target, userConfiguration: UserConfiguration) {
         self.target = target
+        self.userConfiguration = userConfiguration
     }
 
     func moveFocusCounterClockwise() {
@@ -56,7 +59,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -86,7 +89,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -116,7 +119,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows(onScreen: screen)
 
         guard !windows.isEmpty else {
             return
@@ -141,7 +144,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        let windows = target.cachedWindows(on: screen)
+        let windows = target.windows(onScreen: screen)
 
         // If there are no windows on the screen focus the screen directly
         guard !windows.isEmpty else {
@@ -150,7 +153,10 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
         }
 
         // Otherwise find the topmost window on the screen
-        let screenCenter = NSPointToCGPoint(NSPoint(x: screen.frame.midX, y: screen.frame.midY))
+        let screenCenter = NSPointToCGPoint(NSPoint(
+            x: screen.frameIncludingDockAndMenu().midX,
+            y: screen.frameIncludingDockAndMenu().midY
+        ))
 
         // If there is no window at that point just focus the screen directly
         guard let topWindow = WindowsInformation.topWindowForScreenAtPoint(screenCenter, withWindows: windows) ?? windows.first else {
@@ -179,4 +185,8 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
     }
 }
 
-extension FocusTransitionCoordinator {}
+extension FocusTransitionCoordinator: FocusFollowsMouseManagerDelegate {
+    func windows(onScreen screen: Screen) -> [Window] {
+        return target.windows(onScreen: screen)
+    }
+}

@@ -12,4 +12,5 @@ import Silica
 struct Space: Equatable {
     let id: CGSSpaceID
     let type: CGSSpaceType
+    let uuid: String
 }

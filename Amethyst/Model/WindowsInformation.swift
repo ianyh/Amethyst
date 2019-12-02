@@ -19,37 +19,6 @@ extension CGRect {
     }
 }
 
-extension WindowActivityCache {
-    func windows<Window: WindowType>(_ windows: [Window], on screen: NSScreen) -> [Window] {
-        guard let screenIdentifier = screen.screenIdentifier() else {
-            return []
-        }
-
-        guard let currentSpace = CGSpacesInfo<Window>.currentSpaceForScreen(screen) else {
-            log.warning("Could not find a space for screen: \(screenIdentifier)")
-            return []
-        }
-
-        let screenWindows = windows.filter { window in
-            let windowIDsArray = [NSNumber(value: window.windowID() as UInt32)] as NSArray
-
-            guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
-                return false
-            }
-
-            let space = (spaces as NSArray as? [NSNumber])?.first?.intValue
-
-            guard let windowScreen = window.screen(), currentSpace.id == space else {
-                return false
-            }
-
-            return windowScreen.screenIdentifier() == screen.screenIdentifier() && self.windowIsActive(window)
-        }
-
-        return screenWindows
-    }
-}
-
 struct WindowsInformation<Window: WindowType> {
     let ids: Set<CGWindowID>
     let descriptions: CGWindowsInfo?
@@ -165,11 +134,11 @@ extension WindowsInformation {
     // find a window based on its window description within an array of Window objects
     static func windowInWindows(_ windows: [Window], withCGWindowDescription windowDescription: [String: AnyObject]) -> Window? {
         let potentialWindows = windows.filter {
-            guard let windowOwnerProcessIdentifier = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
+            guard let windowOwnerPID = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
                 return false
             }
 
-            guard windowOwnerProcessIdentifier.int32Value == $0.pid() else {
+            guard windowOwnerPID.int32Value == $0.pid() else {
                 return false
             }
 

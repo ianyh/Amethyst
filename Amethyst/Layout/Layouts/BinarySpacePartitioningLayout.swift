@@ -8,7 +8,7 @@
 
 import Silica
 
-final class TreeNode {
+class TreeNode {
     weak var parent: TreeNode?
     var left: TreeNode?
     var right: TreeNode?
@@ -140,23 +140,105 @@ func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
     return lhs.windowID == rhs.windowID
 }
 
-final class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOperation<Window> {
+class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> {
     private typealias TraversalNode = (node: TreeNode, frame: CGRect)
-    private let rootNode: TreeNode
 
-    init(screen: NSScreen, windows: [Window], rootNode: TreeNode, frameAssigner: FrameAssigner) {
-        self.rootNode = rootNode
-        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
+    override static var layoutName: String { return "Binary Space Partitioning" }
+    override static var layoutKey: String { return "bsp" }
+
+    override var layoutDescription: String { return "\(lastKnownFocusedWindowID.debugDescription)" }
+
+    private var rootNode = TreeNode()
+    private var lastKnownFocusedWindowID: CGWindowID?
+
+    private func constructInitialTreeWithWindows(_ windows: [LayoutWindow]) {
+        for window in windows {
+            guard rootNode.findWindowID(window.id) == nil else {
+                continue
+            }
+
+            rootNode.insertWindowIDAtEnd(window.id)
+        }
     }
 
-    override func frameAssignments() -> [FrameAssignment<Window>]? {
+    override func updateWithChange(_ windowChange: Change<Window>) {
+        switch windowChange {
+        case let .add(window):
+            guard rootNode.findWindowID(window.windowID()) == nil else {
+                log.warning("Trying to add a window already in the tree")
+                return
+            }
+
+            if let insertionPoint = lastKnownFocusedWindowID, window.windowID() != insertionPoint {
+                log.info("insert \(window) - \(window.windowID()) at point: \(insertionPoint)")
+                rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint)
+            } else {
+                log.info("insert \(window) - \(window.windowID()) at end")
+                rootNode.insertWindowIDAtEnd(window.windowID())
+            }
+        case let .remove(window):
+            log.info("remove: \(window) - \(window.windowID())")
+            rootNode.removeWindowID(window.windowID())
+        case let .focusChanged(window):
+            lastKnownFocusedWindowID = window.windowID()
+        case let .windowSwap(window, otherWindow):
+            let windowID = window.windowID()
+            let otherWindowID = otherWindow.windowID()
+
+            guard let windowNode = rootNode.findWindowID(windowID), let otherWindowNode = rootNode.findWindowID(otherWindowID) else {
+                log.error("Tried to perform an unbalanced window swap: \(windowID) <-> \(otherWindowID)")
+                return
+            }
+
+            windowNode.windowID = otherWindowID
+            otherWindowNode.windowID = windowID
+        case .spaceChange, .unknown:
+            break
+        }
+    }
+
+    override func nextWindowIDCounterClockwise() -> CGWindowID? {
+        guard let focusedWindow = Window.currentlyFocused() else {
+            return nil
+        }
+
+        let orderedIDs = rootNode.orderedWindowIDs()
+
+        guard let focusedWindowIndex = orderedIDs.index(of: focusedWindow.windowID()) else {
+            return nil
+        }
+
+        let nextWindowIndex = (focusedWindowIndex == 0 ? orderedIDs.count - 1 : focusedWindowIndex - 1)
+
+        return orderedIDs[nextWindowIndex]
+    }
+
+    override func nextWindowIDClockwise() -> CGWindowID? {
+        guard let focusedWindow = Window.currentlyFocused() else {
+            return nil
+        }
+
+        let orderedIDs = rootNode.orderedWindowIDs()
+
+        guard let focusedWindowIndex = orderedIDs.index(of: focusedWindow.windowID()) else {
+            return nil
+        }
+
+        let nextWindowIndex = (focusedWindowIndex == orderedIDs.count - 1 ? 0 : focusedWindowIndex + 1)
+
+        return orderedIDs[nextWindowIndex]
+    }
+
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+        let windows = windowSet.windows
+
         guard !windows.isEmpty else {
             return []
         }
 
-        let windowIDMap: [CGWindowID: Window] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: Window] in
+        let windowIDMap: [CGWindowID: LayoutWindow] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: LayoutWindow] in
             var mutableWindowMap = windowMap
-            mutableWindowMap[window.windowID()] = window
+            mutableWindowMap[window.id] = window
             return mutableWindowMap
         }
 
@@ -177,7 +259,11 @@ final class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOp
                 }
 
                 let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-                let frameAssignment = FrameAssignment(frame: traversalNode.frame, window: window, focused: windowID == focusedWindow?.windowID(), screenFrame: baseFrame, resizeRules: resizeRules)
+                let frameAssignment = FrameAssignment<Window>(
+                    frame: traversalNode.frame,
+                    window: window,
+                    screenFrame: baseFrame, resizeRules: resizeRules
+                )
                 ret.append(frameAssignment)
             } else {
                 guard let left = traversalNode.node.left, let right = traversalNode.node.right else {
@@ -223,101 +309,4 @@ final class BinarySpacePartitioningReflowOperation<Window: WindowType>: ReflowOp
 
         return ret
     }
-}
-
-final class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> {
-    override static var layoutName: String { return "Binary Space Partitioning" }
-    override static var layoutKey: String { return "bsp" }
-
-    override var layoutDescription: String { return "\(lastKnownFocusedWindowID.debugDescription)" }
-
-    fileprivate var rootNode = TreeNode()
-    fileprivate var lastKnownFocusedWindowID: CGWindowID?
-
-    private func constructInitialTreeWithWindows(_ windows: [Window]) {
-        for window in windows {
-            guard rootNode.findWindowID(window.windowID()) == nil else {
-                continue
-            }
-
-            rootNode.insertWindowIDAtEnd(window.windowID())
-        }
-    }
-
-    override func updateWithChange(_ windowChange: Change<Window>) {
-        switch windowChange {
-        case let .add(window):
-            guard rootNode.findWindowID(window.windowID()) == nil else {
-                log.warning("Trying to add a window already in the tree")
-                return
-            }
-
-            if let insertionPoint = lastKnownFocusedWindowID, window.windowID() != insertionPoint {
-                log.info("insert \(window) - \(window.windowID()) at point: \(insertionPoint)")
-                rootNode.insertWindowID(window.windowID(), atPoint: insertionPoint)
-            } else {
-                log.info("insert \(window) - \(window.windowID()) at end")
-                rootNode.insertWindowIDAtEnd(window.windowID())
-            }
-        case let .remove(window):
-            log.info("remove: \(window) - \(window.windowID())")
-            rootNode.removeWindowID(window.windowID())
-        case let .focusChanged(window):
-            lastKnownFocusedWindowID = window.windowID()
-        case let .windowSwap(window, otherWindow):
-            let windowID = window.windowID()
-            let otherWindowID = otherWindow.windowID()
-
-            guard let windowNode = rootNode.findWindowID(windowID), let otherWindowNode = rootNode.findWindowID(otherWindowID) else {
-                log.error("Tried to perform an unbalanced window swap: \(windowID) <-> \(otherWindowID)")
-                return
-            }
-
-            windowNode.windowID = otherWindowID
-            otherWindowNode.windowID = windowID
-        case .unknown:
-            break
-        }
-    }
-
-    override func nextWindowIDCounterClockwise() -> CGWindowID? {
-        guard let focusedWindow = Window.currentlyFocused() else {
-            return nil
-        }
-
-        let orderedIDs = rootNode.orderedWindowIDs()
-
-        guard let focusedWindowIndex = orderedIDs.index(of: focusedWindow.windowID()) else {
-            return nil
-        }
-
-        let nextWindowIndex = (focusedWindowIndex == 0 ? orderedIDs.count - 1 : focusedWindowIndex - 1)
-
-        return orderedIDs[nextWindowIndex]
-    }
-
-    override func nextWindowIDClockwise() -> CGWindowID? {
-        guard let focusedWindow = Window.currentlyFocused() else {
-            return nil
-        }
-
-        let orderedIDs = rootNode.orderedWindowIDs()
-
-        guard let focusedWindowIndex = orderedIDs.index(of: focusedWindow.windowID()) else {
-            return nil
-        }
-
-        let nextWindowIndex = (focusedWindowIndex == orderedIDs.count - 1 ? 0 : focusedWindowIndex + 1)
-
-        return orderedIDs[nextWindowIndex]
-    }
-
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
-        if !windows.isEmpty && !rootNode.valid {
-            constructInitialTreeWithWindows(windows)
-        }
-        let assigner = Assigner(windowActivityCache: windowActivityCache)
-        return BinarySpacePartitioningReflowOperation(screen: screen, windows: windows, rootNode: rootNode, frameAssigner: assigner)
-    }
-
 }

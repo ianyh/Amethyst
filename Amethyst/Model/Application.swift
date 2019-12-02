@@ -197,7 +197,7 @@ extension SIApplication: ApplicationType {
     }
 
     func defaultFloatForWindowWithTitle(_ windowTitle: String?) -> Reliable<DefaultFloat> {
-        guard let runningApplication = NSRunningApplication(processIdentifier: processIdentifier()) else {
+        guard let runningApplication = NSRunningApplication(processIdentifier: pid()) else {
             return .reliable(.floating)
         }
 

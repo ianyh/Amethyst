@@ -15,7 +15,7 @@ import Silica
 import Sparkle
 import SwiftyBeaver
 
-final class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var preferencesWindowController: PreferencesWindowController?
 
     fileprivate var windowManager: WindowManager<SIApplication>?
@@ -99,7 +99,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBAction func toggleGlobalTiling(_ sender: AnyObject) {
         UserConfiguration.shared.tilingEnabled = !UserConfiguration.shared.tilingEnabled
-        windowManager?.markAllScreensForReflowWithChange(.unknown)
+        windowManager?.markAllScreensForReflow(withChange: .unknown)
     }
 
     @IBAction func relaunch(_ sender: AnyObject) {

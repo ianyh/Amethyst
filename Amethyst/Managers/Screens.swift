@@ -11,75 +11,73 @@ import Silica
 
 extension WindowManager {
     class Screens {
-        private(set) var screenManagers: [ScreenManager<Window>] = []
-        private var screenManagersCache: [String: ScreenManager<Window>] = [:]
+        private(set) var screenManagers: [ScreenManager<WindowManager<Application>>] = []
+        private var screenManagersCache: [String: ScreenManager<WindowManager<Application>>] = [:]
 
         init() {}
 
-        func assignCurrentSpaceIdentifiers() {
-            guard let screensInfo = CGScreensInfo() else {
+        func updateSpaces() {
+            guard let screensInfo = CGScreensInfo<Window>() else {
                 return
             }
 
-            if NSScreen.screensHaveSeparateSpaces {
+            if Screen.screensHaveSeparateSpaces {
                 for screenDictionary in screensInfo.descriptions {
-                    guard let screenIdentifier = screenDictionary["Display Identifier"].string else {
+                    guard let screenID = screenDictionary["Display Identifier"].string else {
                         log.error("Could not identify screen with info: \(screenDictionary)")
                         continue
                     }
 
-                    guard let screenManager = screenManagersCache[screenIdentifier] else {
-                        log.error("Screen with identifier not managed: \(screenIdentifier)")
+                    guard let screenManager = screenManagersCache[screenID] else {
+                        log.error("Screen with identifier not managed: \(screenID)")
                         continue
                     }
 
-                    guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                    let space = CGSpacesInfo<Window>.space(fromScreenDescription: screenDictionary)
+
+                    guard screenManager.space != space else {
                         continue
                     }
 
-                    screenManager.currentSpaceIdentifier = spaceIdentifier
+                    screenManager.updateSpace(to: space)
                 }
             } else {
                 for screenManager in screenManagers {
-                    let screenDictionary = screensInfo.descriptions[0]
+                    let space = CGSpacesInfo<Window>.space(fromScreenDescription: screensInfo.descriptions[0])
 
-                    guard let spaceIdentifier = CGSpacesInfo<Window>.spaceIdentifier(from: screenDictionary), screenManager.currentSpaceIdentifier != spaceIdentifier else {
+                    guard screenManager.space != space else {
                         continue
                     }
 
-                    screenManager.currentSpaceIdentifier = spaceIdentifier
+                    screenManager.updateSpace(to: space)
                 }
             }
         }
 
-        func focusedScreenManager<Window>() -> ScreenManager<Window>? {
+        func focusedScreenManager() -> ScreenManager<WindowManager<Application>>? {
             guard let focusedWindow = Window.currentlyFocused() else {
                 return nil
             }
             for screenManager in screenManagers {
-                guard let typedScreenManager = screenManager as? ScreenManager<Window> else {
-                    continue
-                }
-
-                if typedScreenManager.screen.screenIdentifier() == focusedWindow.screen()?.screenIdentifier() {
-                    return typedScreenManager
+                if screenManager.screen.screenID() == focusedWindow.screen()?.screenID() {
+                    return screenManager
                 }
             }
             return nil
         }
 
-        func updateScreenManagers(windowManager: WindowManager) {
-            var screenManagers: [ScreenManager<Window>] = []
+        func updateScreens(windowManager: WindowManager) {
+            var screenManagers: [ScreenManager<WindowManager<Application>>] = []
 
-            for screen in NSScreen.screens {
-                guard let screenIdentifier = screen.screenIdentifier() else {
+            for screen in Screen.availableScreens {
+                guard let screenID = screen.screenID() else {
                     continue
                 }
 
-                let screenManager = screenManagersCache[screenIdentifier] ?? windowManager.screenManager(screen: screen, screenID: screenIdentifier)
-                screenManager.screen = screen
+                let screenManager = screenManagersCache[screenID] ?? windowManager.screenManager(screen: screen)
+                screenManager.updateScreen(to: screen)
 
-                screenManagersCache[screenIdentifier] = screenManager
+                screenManagersCache[screenID] = screenManager
 
                 screenManagers.append(screenManager)
             }
@@ -88,21 +86,21 @@ extension WindowManager {
             // See `ScreenManager`'s `Comparable` conformance
             self.screenManagers = screenManagers.sorted()
 
-            assignCurrentSpaceIdentifiers()
-            markAllScreensForReflowWithChange(.unknown)
+            updateSpaces()
+            markAllScreensForReflow(withChange: .unknown)
         }
 
-        func markScreenForReflow(_ screen: NSScreen, withChange change: Change<Window>) {
+        func markScreen(_ screen: Screen, forReflowWithChange change: Change<Window>) {
             screenManagers
-                .filter { $0.screen.screenIdentifier() == screen.screenIdentifier() }
+                .filter { $0.screen.screenID() == screen.screenID() }
                 .forEach { screenManager in
-                    screenManager.setNeedsReflowWithWindowChange(change)
-            }
+                    screenManager.setNeedsReflow(withWindowChange: change)
+                }
         }
 
-        func markAllScreensForReflowWithChange(_ windowChange: Change<Window>) {
+        func markAllScreensForReflow(withChange windowChange: Change<Window>) {
             for screenManager in screenManagers {
-                screenManager.setNeedsReflowWithWindowChange(windowChange)
+                screenManager.setNeedsReflow(withWindowChange: windowChange)
             }
         }
     }

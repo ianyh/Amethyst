@@ -11,35 +11,30 @@ import Foundation
 import Silica
 
 enum WindowTransition<Window: WindowType> {
+    typealias Screen = Window.Screen
     case switchWindows(_ window1: Window, _ window2: Window)
-    case moveWindowToScreen(_ window: Window, screen: NSScreen)
+    case moveWindowToScreen(_ window: Window, screen: Screen)
     case moveWindowToSpaceAtIndex(_ window: Window, spaceIndex: Int)
     case resetFocus
 }
 
 protocol WindowTransitionTarget: class {
-    associatedtype Window: WindowType
-
-    var windowActivityCache: WindowActivityCache { get }
-    var windows: [Window] { get }
+    associatedtype Application: ApplicationType
+    typealias Window = Application.Window
+    typealias Screen = Window.Screen
 
     func executeTransition(_ transition: WindowTransition<Window>)
 
-    func screen(at index: Int) -> NSScreen?
-    func nextScreenIndexClockwise(from screen: NSScreen) -> Int
-    func nextScreenIndexCounterClockwise(from screen: NSScreen) -> Int
-}
-
-extension WindowTransitionTarget {
-    func activeWindows(on screen: NSScreen) -> [Window] {
-        return windowActivityCache.windows(windows, on: screen).filter { window in
-            return window.shouldBeManaged() && !self.windowActivityCache.windowIsFloating(window)
-        }
-    }
+    func isWindowFloating(_ window: Window) -> Bool
+    func screen(at index: Int) -> Screen?
+    func activeWindows(on screen: Screen) -> [Window]
+    func nextScreenIndexClockwise(from screen: Screen) -> Int
+    func nextScreenIndexCounterClockwise(from screen: Screen) -> Int
 }
 
 class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     typealias Window = Target.Window
+    typealias Screen = Window.Screen
 
     private(set) weak var target: Target!
 
@@ -48,7 +43,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowToMain() {
-        guard let focusedWindow = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow), let screen = focusedWindow.screen() else {
+        guard let focusedWindow = Window.currentlyFocused(), !target.isWindowFloating(focusedWindow), let screen = focusedWindow.screen() else {
             return
         }
 
@@ -70,7 +65,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowCounterClockwise() {
-        guard let focusedWindow = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow = Window.currentlyFocused(), !target.isWindowFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }
@@ -91,7 +86,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowClockwise() {
-        guard let focusedWindow = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow = Window.currentlyFocused(), !target.isWindowFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }
@@ -109,7 +104,6 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
         let windowToSwapWith = windows[(focusedWindowIndex + 1) % windows.count]
 
         target.executeTransition(.switchWindows(focusedWindow, windowToSwapWith))
-        focusedWindow.focus()
     }
 
     func throwToScreenAtIndex(_ screenIndex: Int) {
@@ -118,7 +112,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
         }
 
         // If the window is already on the screen do nothing.
-        guard let focusedScreen = focusedWindow.screen(), focusedScreen.screenIdentifier() != screen.screenIdentifier() else {
+        guard let focusedScreen = focusedWindow.screen(), focusedScreen.screenID() != screen.screenID() else {
             return
         }
 
@@ -126,7 +120,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowScreenClockwise() {
-        guard let focusedWindow = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow = Window.currentlyFocused(), !target.isWindowFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }
@@ -143,7 +137,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func swapFocusedWindowScreenCounterClockwise() {
-        guard let focusedWindow = Window.currentlyFocused(), !target.windowActivityCache.windowIsFloating(focusedWindow) else {
+        guard let focusedWindow = Window.currentlyFocused(), !target.isWindowFloating(focusedWindow) else {
             target.executeTransition(.resetFocus)
             return
         }

@@ -11,18 +11,20 @@ import Silica
 
 /// Generic protocol for objects acting as windows in the system.
 protocol WindowType: Equatable {
+    associatedtype Screen: ScreenType
+
     /// Returns the currently focused window of its type.
     static func currentlyFocused() -> Self?
 
     /**
-     Initialize a window based on a Silica element,
+     Attempt to initialize a window based on a Silica element.
      
      Many of the accessibility APIs handle elements directly, so we need a way to convert those elements into a general window type. This is not necessarily meaningful in all cases — tests, for example, may provide window types that do not correspond to actual elements.
      
      - Parameters:
         - element: The element representing a window.
      */
-    init(element: SIAccessibilityElement)
+    init?(element: SIAccessibilityElement?)
 
     /// Returns the window's ID
     func windowID() -> CGWindowID
@@ -31,7 +33,7 @@ protocol WindowType: Equatable {
     func frame() -> CGRect
 
     /// Returns the screen, if any, that the window is currently on.
-    func screen() -> NSScreen?
+    func screen() -> Screen?
 
     /**
      Sets the frame of the window with an error threshold for what constitutes a new frame.
@@ -83,7 +85,7 @@ protocol WindowType: Equatable {
      - Parameters:
         - screen: The screen to move the window to.
      */
-    func moveScaled(to screen: NSScreen)
+    func moveScaled(to screen: Screen)
 
     /// Whether or not the window is currently on any screen.
     func isOnScreen() -> Bool
@@ -114,6 +116,8 @@ final class AXWindow: SIWindow {}
 
 /// Conformance of `AXWindow` as an Amethyst window.
 extension AXWindow: WindowType {
+    typealias Screen = AMScreen
+
     /**
      Returns the currently focused window.
      
@@ -124,8 +128,23 @@ extension AXWindow: WindowType {
         return SIWindow.focused().flatMap { AXWindow(axElement: $0.axElementRef) }
     }
 
-    convenience init(element: SIAccessibilityElement) {
-        self.init(axElement: element.axElementRef)
+    /**
+     The Silica initializer is not failable because it can always assume it has a reference to an ax element. The window type in general does not make that assumption and thus has a failable initializer. This just ports one into the other.
+     
+     - Parameters:
+        - element: The element representing a window.
+     */
+    convenience init?(element: SIAccessibilityElement?) {
+        guard let axElementRef = element?.axElementRef else {
+            return nil
+        }
+
+        self.init(axElement: axElementRef)
+    }
+
+    func screen() -> AMScreen? {
+        let nsScreen: NSScreen? = screen()
+        return nsScreen.flatMap { AMScreen(screen: $0) }
     }
 
     func pid() -> pid_t {
@@ -160,8 +179,12 @@ extension AXWindow: WindowType {
         return false
     }
 
+    func isEqual(to rhs: AXWindow) -> Bool {
+        return self.windowID() == rhs.windowID()
+    }
+
     func isFocused() -> Bool {
-        guard let focused = AXWindow.focused() else {
+        guard let focused = AXWindow.currentlyFocused() else {
             return false
         }
 
@@ -196,7 +219,7 @@ extension AXWindow: WindowType {
         return true
     }
 
-    func moveScaled(to screen: NSScreen) {
+    func moveScaled(to screen: Screen) {
         let screenFrame = screen.frameWithoutDockOrMenu()
         let currentFrame = frame()
         var scaledFrame = currentFrame
@@ -213,7 +236,7 @@ extension AXWindow: WindowType {
             setFrame(scaledFrame)
         }
 
-        move(to: screen)
+        move(to: screen.screen)
     }
 
     func move(toSpace spaceID: CGSSpaceID) {

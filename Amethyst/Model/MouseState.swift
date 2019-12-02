@@ -15,11 +15,12 @@ import Silica
  We use this enum to convey some information about the window that the mouse might be interacting with.
  */
 enum MouseState<Window: WindowType> {
+    typealias Screen = Window.Screen
     case pointing
     case clicking
     case dragging
     case moving(window: Window)
-    case resizing(screen: NSScreen, ratio: CGFloat)
+    case resizing(screen: Screen, ratio: CGFloat)
     case doneDragging(atTime: Date)
 }
 
@@ -40,8 +41,8 @@ protocol MouseStateKeeperDelegate: class {
 This class by itself can only understand clicking, dragging, and "pointing" (no mouse buttons down). The SIApplication observers are able to augment that understanding of state by "upgrading" a drag action to a "window move" or a "window resize" event since those observers will have proper context.
  */
 class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
-    public let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
-    public var state: MouseState<Delegate.Window>
+    let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
+    var state: MouseState<Delegate.Window>
     private(set) weak var delegate: Delegate?
     private var monitor: Any?
 
@@ -94,7 +95,6 @@ class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
 
         default: ()
         }
-
     }
 
     // React to a reflow event.  Typically this means that any window we were dragging

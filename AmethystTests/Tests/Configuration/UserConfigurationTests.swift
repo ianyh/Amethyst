@@ -11,7 +11,7 @@ import Nimble
 import Quick
 import SwiftyJSON
 
-fileprivate final class TestConfigurationStorage: ConfigurationStorage {
+private class TestConfigurationStorage: ConfigurationStorage {
     var storage: [ConfigurationKey: Any] = [:]
 
     func object(forKey key: ConfigurationKey) -> Any? {
@@ -43,7 +43,7 @@ fileprivate final class TestConfigurationStorage: ConfigurationStorage {
     }
 }
 
-final class UserConfigurationTests: QuickSpec {
+class UserConfigurationTests: QuickSpec {
     private class TestHotKeyRegistrar: HotKeyRegistrar {
         private(set) var keyString: String?
         private(set) var modifiers: AMModifierFlags?

@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "mac",
-      "filename" : "Artboard.png",
+      "filename" : "Floating Clouds.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
-      "filename" : "Artboard-@2x.png",
+      "filename" : "Floating Clouds@2x.png",
       "scale" : "2x"
     }
   ],

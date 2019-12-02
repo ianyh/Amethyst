@@ -22,7 +22,7 @@ private let AMKeyCodeInvalid: AMKeyCode = 0xFF
 
 typealias HotKeyHandler = () -> Void
 
-final class HotKeyManager<Application: ApplicationType>: NSObject {
+class HotKeyManager<Application: ApplicationType>: NSObject {
     private let userConfiguration: UserConfiguration
 
     private(set) lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
@@ -71,17 +71,17 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
 
     func setUpWithWindowManager(_ windowManager: WindowManager<Application>, configuration: UserConfiguration) {
         constructCommandWithCommandKey(CommandKey.cycleLayoutForward.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.cycleLayoutForward()
         }
 
         constructCommandWithCommandKey(CommandKey.cycleLayoutBackward.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.cycleLayoutBackward()
         }
 
         constructCommandWithCommandKey(CommandKey.shrinkMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.shrinkMainPane()
@@ -90,7 +90,7 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.expandMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.expandMainPane()
@@ -99,7 +99,7 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.increaseMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.increaseMainPaneCount()
@@ -108,7 +108,7 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.decreaseMain.rawValue) {
-            let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.updateCurrentLayout { layout in
                 if let panedLayout = layout as? PanedLayout {
                     panedLayout.decreaseMainPaneCount()
@@ -195,7 +195,7 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
 
         constructCommandWithCommandKey(CommandKey.toggleTiling.rawValue) {
             self.userConfiguration.tilingEnabled = !self.userConfiguration.tilingEnabled
-            windowManager.markAllScreensForReflowWithChange(.unknown)
+            windowManager.markAllScreensForReflow(withChange: .unknown)
         }
 
         constructCommandWithCommandKey(CommandKey.reevaluateWindows.rawValue) {
@@ -208,7 +208,7 @@ final class HotKeyManager<Application: ApplicationType>: NSObject {
 
         LayoutManager<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
-                let screenManager: ScreenManager<Application.Window>? = windowManager.focusedScreenManager()
+                let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
                 screenManager?.selectLayout(layoutKey)
             }
         }

@@ -8,26 +8,38 @@
 
 import Silica
 
-private final class WideReflowOperation<Window: WindowType>: ReflowOperation<Window> {
-    private let layout: WideLayout<Window>
+class WideLayout<Window: WindowType>: Layout<Window>, PanedLayout {
+    override static var layoutName: String { return "Wide" }
+    override static var layoutKey: String { return "wide" }
 
-    init(screen: NSScreen, windows: [Window], layout: WideLayout<Window>, frameAssigner: FrameAssigner) {
-        self.layout = layout
-        super.init(screen: screen, windows: windows, frameAssigner: frameAssigner)
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 0.5
+
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
+        mainPaneRatio = rawRatio
     }
 
-    override func frameAssignments() -> [FrameAssignment<Window>]? {
+    func increaseMainPaneCount() {
+        mainPaneCount += 1
+    }
+
+    func decreaseMainPaneCount() {
+        mainPaneCount = max(1, mainPaneCount - 1)
+    }
+
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+        let windows = windowSet.windows
+
         guard !windows.isEmpty else {
             return []
         }
 
-        let mainPaneCount = min(windows.count, layout.mainPaneCount)
         let secondaryPaneCount = windows.count - mainPaneCount
         let hasSecondaryPane = secondaryPaneCount > 0
 
         let screenFrame = screen.adjustedFrame()
 
-        let mainPaneWindowHeight = round(screenFrame.height * CGFloat(hasSecondaryPane ? layout.mainPaneRatio : 1))
+        let mainPaneWindowHeight = round(screenFrame.height * CGFloat(hasSecondaryPane ? mainPaneRatio : 1))
         let secondaryPaneWindowHeight = screenFrame.height - mainPaneWindowHeight
 
         let mainPaneWindowWidth = round(screenFrame.width / CGFloat(mainPaneCount))
@@ -54,36 +66,16 @@ private final class WideReflowOperation<Window: WindowType>: ReflowOperation<Win
             }
 
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .vertical, scaleFactor: scaleFactor)
-            let frameAssignment = FrameAssignment(frame: windowFrame, window: window, focused: window.isFocused(), screenFrame: screenFrame, resizeRules: resizeRules)
+            let frameAssignment = FrameAssignment<Window>(
+                frame: windowFrame,
+                window: window,
+                screenFrame: screenFrame,
+                resizeRules: resizeRules
+            )
 
             assignments.append(frameAssignment)
 
             return assignments
         }
-    }
-}
-
-final class WideLayout<Window: WindowType>: Layout<Window>, PanedLayout {
-    override static var layoutName: String { return "Wide" }
-    override static var layoutKey: String { return "wide" }
-
-    private(set) var mainPaneCount: Int = 1
-    private(set) var mainPaneRatio: CGFloat = 0.5
-
-    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
-        mainPaneRatio = rawRatio
-    }
-
-    func increaseMainPaneCount() {
-        mainPaneCount += 1
-    }
-
-    func decreaseMainPaneCount() {
-        mainPaneCount = max(1, mainPaneCount - 1)
-    }
-
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
-        let assigner = Assigner(windowActivityCache: windowActivityCache)
-        return WideReflowOperation(screen: screen, windows: windows, layout: self, frameAssigner: assigner)
     }
 }

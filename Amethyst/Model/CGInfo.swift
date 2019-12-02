@@ -51,25 +51,29 @@ struct CGWindowsInfo {
     }
 }
 
-struct CGScreensInfo {
+struct CGScreensInfo<Window: WindowType> {
+    typealias Screen = Window.Screen
+
     let descriptions: [JSON]
 
     init?() {
-        guard let descriptions = NSScreen.screenDescriptions() else {
+        guard let descriptions = Screen.screenDescriptions() else {
             return nil
         }
 
         self.descriptions = descriptions
     }
 
-    func spaceIdentifier(at index: Int) -> String? {
-        return descriptions[index]["Current Space"]["uuid"].string
+    func space(at index: Int) -> Space {
+        return CGSpacesInfo<Window>.space(fromScreenDescription: descriptions[index])
     }
 }
 
 struct CGSpacesInfo<Window: WindowType> {
-    static func spacesForScreen(_ screen: NSScreen, includeOnlyUserSpaces: Bool = false) -> [Space]? {
-        guard let screenDescriptions = NSScreen.screenDescriptions() else {
+    typealias Screen = Window.Screen
+
+    static func spacesForScreen(_ screen: Screen, includeOnlyUserSpaces: Bool = false) -> [Space]? {
+        guard let screenDescriptions = Screen.screenDescriptions() else {
             return nil
         }
 
@@ -77,25 +81,17 @@ struct CGSpacesInfo<Window: WindowType> {
             return nil
         }
 
-        let screenIdentifier = screen.screenIdentifier()
+        let screenID = screen.screenID()
         let spaces: [Space]?
 
-        if NSScreen.screensHaveSeparateSpaces {
+        if Screen.screensHaveSeparateSpaces {
             spaces = screenDescriptions
-                .first { $0["Display Identifier"].string == screenIdentifier }
+                .first { $0["Display Identifier"].string == screenID }
                 .flatMap { screenDescription -> [Space]? in
-                    return screenDescription["Spaces"].array?.map { json -> Space in
-                        let id: CGSSpaceID = json["ManagedSpaceID"].intValue
-                        let type = CGSSpaceType(rawValue: json["type"].uInt32Value)
-                        return Space(id: id, type: type)
-                    }
+                    return screenDescription["Spaces"].array?.map { space(fromSpaceDescription: $0) }
                 }
         } else {
-            spaces = screenDescriptions[0]["Spaces"].arrayValue.map { json -> Space in
-                let id: CGSSpaceID = json["ManagedSpaceID"].intValue
-                let type = CGSSpaceType(rawValue: json["type"].uInt32Value)
-                return Space(id: id, type: type)
-            }
+            spaces = screenDescriptions[0]["Spaces"].arrayValue.map { space(fromSpaceDescription: $0) }
         }
 
         if includeOnlyUserSpaces {
@@ -113,8 +109,8 @@ struct CGSpacesInfo<Window: WindowType> {
         return spacesForScreen(screen)
     }
 
-    static func currentSpaceForScreen(_ screen: NSScreen) -> Space? {
-        guard let screenDescriptions = NSScreen.screenDescriptions(), let screenIdentifier = screen.screenIdentifier() else {
+    static func currentSpaceForScreen(_ screen: Screen) -> Space? {
+        guard let screenDescriptions = Screen.screenDescriptions(), let screenID = screen.screenID() else {
             return nil
         }
 
@@ -122,20 +118,16 @@ struct CGSpacesInfo<Window: WindowType> {
             return nil
         }
 
-        if NSScreen.screensHaveSeparateSpaces {
+        if Screen.screensHaveSeparateSpaces {
             for screenDescription in screenDescriptions {
-                guard screenDescription["Display Identifier"].string == screenIdentifier else {
+                guard screenDescription["Display Identifier"].string == screenID else {
                     continue
                 }
 
-                let id: CGSSpaceID = screenDescription["Current Space"]["ManagedSpaceID"].intValue
-                let type = CGSSpaceType(rawValue: screenDescription["Current Space"]["type"].uInt32Value)
-                return Space(id: id, type: type)
+                return space(fromScreenDescription: screenDescription)
             }
         } else {
-            let id: CGSSpaceID = screenDescriptions[0]["Current Space"]["ManagedSpaceID"].intValue
-            let type = CGSSpaceType(rawValue: screenDescriptions[0]["Current Space"]["type"].uInt32Value)
-            return Space(id: id, type: type)
+            return space(fromScreenDescription: screenDescriptions[0])
         }
 
         return nil
@@ -149,7 +141,14 @@ struct CGSpacesInfo<Window: WindowType> {
         return currentSpaceForScreen(screen)
     }
 
-    static func spaceIdentifier(from screenDictionary: JSON) -> String? {
-        return screenDictionary["Current Space"]["uuid"].string
+    static func space(fromScreenDescription screenDictionary: JSON) -> Space {
+        return space(fromSpaceDescription: screenDictionary["Current Space"])
+    }
+
+    static func space(fromSpaceDescription spaceDictionary: JSON) -> Space {
+        let id: CGSSpaceID = spaceDictionary["ManagedSpaceID"].intValue
+        let type = CGSSpaceType(rawValue: spaceDictionary["type"].uInt32Value)
+        let uuid = spaceDictionary["uuid"].stringValue
+        return Space(id: id, type: type, uuid: uuid)
     }
 }

@@ -8,13 +8,13 @@
 
 import Silica
 
-final class FloatingLayout<Window: WindowType>: Layout<Window> {
+class FloatingLayout<Window: WindowType>: Layout<Window> {
     override static var layoutName: String { return "Floating" }
     override static var layoutKey: String { return "floating" }
 
     override var layoutDescription: String { return "" }
 
-    override func reflow(_ windows: [Window], on screen: NSScreen) -> ReflowOperation<Window>? {
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
         return nil
     }
 }

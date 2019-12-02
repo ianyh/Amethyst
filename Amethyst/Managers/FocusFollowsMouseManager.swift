@@ -13,10 +13,14 @@ import RxSwift
 
 protocol FocusFollowsMouseManagerDelegate: class {
     associatedtype Window: WindowType
-    func windowsForFocusFollowsMouse() -> [Window]
+    typealias Screen = Window.Screen
+    func windows(onScreen screen: Screen) -> [Window]
 }
 
-final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
+class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
+    typealias Window = Delegate.Window
+    typealias Screen = Window.Screen
+
     weak var delegate: Delegate!
 
     private let userConfiguration: UserConfiguration
@@ -52,18 +56,18 @@ final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate>
             return
         }
 
-        guard let windows = delegate?.windowsForFocusFollowsMouse() else {
+        guard let screen = Screen.availableScreens.first(where: { $0.frameIncludingDockAndMenu().contains(event.locationInWindow) }) else {
             return
         }
 
-        guard let screen = NSScreen.screens.first(where: { $0.frame.contains(event.locationInWindow) }) else {
+        guard let windows = delegate?.windows(onScreen: screen) else {
             return
         }
 
         var mousePoint = NSPointToCGPoint(event.locationInWindow)
-        mousePoint.y = NSScreen.globalHeight() - mousePoint.y + screen.frameIncludingDockAndMenu().origin.y
+        mousePoint.y = Screen.globalHeight() - mousePoint.y + screen.frameIncludingDockAndMenu().origin.y
 
-        if let focusedWindow = Delegate.Window.currentlyFocused() {
+        if let focusedWindow = Window.currentlyFocused() {
             // If the point is already in the frame of the focused window do nothing.
             guard !focusedWindow.frame().contains(mousePoint) else {
                 return
@@ -75,11 +79,5 @@ final class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate>
         }
 
         topWindow.focus()
-    }
-}
-
-extension WindowManager: FocusFollowsMouseManagerDelegate {
-    func windowsForFocusFollowsMouse() -> [Application.Window] {
-        return windows
     }
 }
