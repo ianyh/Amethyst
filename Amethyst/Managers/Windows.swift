@@ -52,7 +52,10 @@ extension WindowManager {
                     return false
                 }
 
-                return windowScreen.screenID() == screen.screenID() && self.isWindowActive(window)
+                let isActive = self.isWindowActive(window)
+                let isFloating = self.isWindowFloating(window)
+
+                return windowScreen.screenID() == screen.screenID() && isActive && !isFloating
             }
 
             return screenWindows
