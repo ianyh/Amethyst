@@ -29,7 +29,7 @@ class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        arrayController?.add(contentsOf: UserConfiguration.shared.floatingBundles())
+        arrayController?.content = UserConfiguration.shared.floatingBundles()
         arrayController?.setSelectionIndexes(IndexSet())
     }
 
