@@ -29,8 +29,8 @@ enum LayoutManager<Window: WindowType> {
             ColumnLayout.self,
             RowLayout.self,
             FloatingLayout.self,
-            WidescreenTallLayoutLeft.self,
             WidescreenTallLayoutRight.self,
+            WidescreenTallLayoutLeft.self,
             BinarySpacePartitioningLayout.self
         ]
     }

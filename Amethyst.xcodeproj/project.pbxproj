@@ -288,7 +288,6 @@
 		401C35AD2241BA760019ED07 /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */,
 				404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */,
 				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
 				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
@@ -296,6 +295,7 @@
 				4062AD361C1FA83300DB612B /* RowLayout.swift */,
 				4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */,
 				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
+				4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */,
 				4062AD341C1FA62500DB612B /* WideLayout.swift */,
 				4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */,
 			);

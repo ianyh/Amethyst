@@ -36,7 +36,7 @@ class WidescreenTallLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.windowID() == id } }
                 )
-                let layout = WidescreenTallLayoutRight<TestWindow>()
+                let layout = WidescreenTallLayoutLeft<TestWindow>()
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
 
                 expect(layout.mainPaneCount).to(equal(1))
@@ -72,7 +72,7 @@ class WidescreenTallLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.windowID() == id } }
                 )
-                let layout = WidescreenTallLayoutRight<TestWindow>()
+                let layout = WidescreenTallLayoutLeft<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
@@ -143,7 +143,7 @@ class WidescreenTallLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.windowID() == id } }
                 )
-                let layout = WidescreenTallLayoutRight<TestWindow>()
+                let layout = WidescreenTallLayoutLeft<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
@@ -213,7 +213,7 @@ class WidescreenTallLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.windowID() == id } }
                 )
-                let layout = WidescreenTallLayoutLeft<TestWindow>()
+                let layout = WidescreenTallLayoutRight<TestWindow>()
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
 
                 expect(layout.mainPaneCount).to(equal(1))
@@ -249,7 +249,7 @@ class WidescreenTallLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.windowID() == id } }
                 )
-                let layout = WidescreenTallLayoutLeft<TestWindow>()
+                let layout = WidescreenTallLayoutRight<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
@@ -320,7 +320,7 @@ class WidescreenTallLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.windowID() == id } }
                 )
-                let layout = WidescreenTallLayoutLeft<TestWindow>()
+                let layout = WidescreenTallLayoutRight<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
