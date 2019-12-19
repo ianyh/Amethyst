@@ -90,13 +90,13 @@ extension WidescreenTallLayout: PanedLayout {
     }
 }
 
-class WidescreenTallLayoutRight<Window: WindowType>: WidescreenTallLayout<Window> {
+class WidescreenTallLayoutLeft<Window: WindowType>: WidescreenTallLayout<Window> {
     override class var isRight: Bool { return false }
     override static var layoutName: String { return "Widescreen Tall" }
     override static var layoutKey: String { return "widescreen-tall" }
 }
 
-class WidescreenTallLayoutLeft<Window: WindowType>: WidescreenTallLayout<Window> {
+class WidescreenTallLayoutRight<Window: WindowType>: WidescreenTallLayout<Window> {
     override class var isRight: Bool { return true }
     override static var layoutName: String { return "Widescreen Tall Right" }
     override static var layoutKey: String { return "widescreen-tall-right" }
