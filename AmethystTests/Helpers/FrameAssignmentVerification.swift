@@ -16,7 +16,7 @@ extension RandomAccessCollection where Element == FrameAssignment<TestWindow>, I
     }
 
     func forWindows<C: RandomAccessCollection>(_ windows: C) -> [Element] where C.Element == TestWindow, C.Index == Index {
-        return filtered(byIDs: Array(windows).map { $0.windowID() }).sorted()
+        return filtered(byIDs: Array(windows).map { $0.windowID() })
     }
 
     func sorted() -> [FrameAssignment<TestWindow>] {
