@@ -30,15 +30,16 @@ class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
         let mainPaneWindowHeight = screenFrame.height
         let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.height / CGFloat(secondaryPaneCount)) : 0.0
 
-        let mainPaneWindowWidth = CGFloat(round(screenFrame.size.width * CGFloat(hasSecondaryPane ? mainPaneRatio : 1))) / CGFloat(mainPaneCount)
-        let secondaryPaneWindowWidth = screenFrame.width - mainPaneWindowWidth * CGFloat(mainPaneCount)
+        let mainPaneWidth = round(screenFrame.size.width * (hasSecondaryPane ? CGFloat(mainPaneRatio) : 1.0))
+        let mainPaneWindowWidth = round(mainPaneWidth / CGFloat(mainPaneCount))
+        let secondaryPaneWindowWidth = screenFrame.width - mainPaneWidth
 
         return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let windowIndex = frameAssignments.count
             let isMain = windowIndex < mainPaneCount
-            var scaleFactor: CGFloat
+            let scaleFactor: CGFloat
 
             if isMain {
                 scaleFactor = CGFloat(screenFrame.size.width / mainPaneWindowWidth) / CGFloat(mainPaneCount)
@@ -51,7 +52,7 @@ class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
                 windowFrame.size.height = mainPaneWindowHeight
             } else {
                 scaleFactor = CGFloat(screenFrame.size.width / secondaryPaneWindowWidth)
-                windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth * CGFloat(mainPaneCount)
+                windowFrame.origin.x = screenFrame.origin.x + mainPaneWidth
                 windowFrame.origin.y = screenFrame.origin.y + (secondaryPaneWindowHeight * CGFloat(windowIndex - mainPaneCount))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
