@@ -24,7 +24,7 @@ extension RandomAccessCollection where Element == FrameAssignment<TestWindow>, I
     }
 
     func verify(frames: [CGRect]) {
-        expect(self.count).to(equal(frames.count), description: "assignments and frames should be same length")
+        expect(self.count).to(equal(frames.count), description: "\(count) assignments, but \(frames.count) frames")
         zip(self, frames).forEach { assignment, frame in
             expect(assignment.frame).to(equal(frame))
         }
