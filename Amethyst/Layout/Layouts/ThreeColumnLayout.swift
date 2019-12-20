@@ -26,18 +26,30 @@ enum Pane {
 }
 
 struct TriplePaneArrangement {
-    let paneCount: [Pane: UInt]            // number of windows in pane
-    let paneWindowHeight: [Pane: CGFloat]  // height of windows in pane
-    let paneWindowWidth: [Pane: CGFloat]   // width of windows in pane
-    let panePosition: [Pane: Column]       // how panes relate to columns
-    let columnDesignation: [Column: Pane]  // how columns relate to panes
+    /// number of windows in pane
+    private let paneCount: [Pane: UInt]
 
-    init(mainPane: Column,    // which Column is the main Pane
-         numWindows: UInt,    // how many windows total
-         numMainPane: UInt,   // how many windows in the main Pane
-         screenSize: CGSize,  // total size of the screen
-         mainPaneRatio: CGFloat
-    ) {
+    /// height of windows in pane
+    private let paneWindowHeight: [Pane: CGFloat]
+
+    /// width of windows in pane
+    private let paneWindowWidth: [Pane: CGFloat]
+
+    // how panes relate to columns
+    private let panePosition: [Pane: Column]
+
+    /// how columns relate to panes
+    private let columnDesignation: [Column: Pane]
+
+    /**
+     - Parameters:
+        - mainPane: which Column is the main Pane
+        - numWindows: how many windows total
+        - numMainPane: how many windows in the main Pane
+        - screenSize: total size of the screen
+        - mainPaneRatio: ratio of the screen taken by main pane
+     */
+    init(mainPane: Column, numWindows: UInt, numMainPane: UInt, screenSize: CGSize, mainPaneRatio: CGFloat) {
         // forward and reverse mapping of columns to their designations
         self.panePosition = {
             switch mainPane {
@@ -106,18 +118,18 @@ struct TriplePaneArrangement {
         return .main
     }
 
-    // Given a window index, which Pane does it belong to, and which index within that Pane
+    /// Given a window index, which Pane does it belong to, and which index within that Pane
     func coordinates(at windowIndex: UInt) -> (Pane, UInt) {
         let pane = self.pane(ofIndex: windowIndex)
         return (pane, windowIndex - firstIndex(pane))
     }
 
-    // Get the (height, width) dimensions for a window in the given Pane
+    /// Get the (height, width) dimensions for a window in the given Pane
     func windowDimensions(inPane pane: Pane) -> (CGFloat, CGFloat) {
         return (height(pane), width(pane))
     }
 
-    // Get the Column assignment for the given Pane
+    /// Get the Column assignment for the given Pane
     func column(ofPane pane: Pane) -> Column {
         return panePosition[pane]!
     }
@@ -126,7 +138,7 @@ struct TriplePaneArrangement {
         return columnDesignation[column]!
     }
 
-    // Get the column widths in the order (left, middle, right)
+    /// Get the column widths in the order (left, middle, right)
     func widthsLeftToRight() -> (CGFloat, CGFloat, CGFloat) {
         return (width(pane(ofColumn: .left)), width(pane(ofColumn: .middle)), width(pane(ofColumn: .right)))
     }
@@ -219,6 +231,7 @@ extension ThreeColumnLayout {
 }
 
 // implement the three variants
+
 class ThreeColumnLeftLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Left" }
     override static var layoutKey: String { return "3column-left" }
@@ -227,7 +240,8 @@ class ThreeColumnLeftLayout<Window: WindowType>: ThreeColumnLayout<Window>, Pane
 
 class ThreeColumnMiddleLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Middle" }
-    override static var layoutKey: String { return "middle-wide" }  // for backwards compatibility with users who still have 'middle-wide' in their active layouts
+    // for backwards compatibility with users who still have 'middle-wide' in their active layouts
+    override static var layoutKey: String { return "middle-wide" }
     override static var mainColumn: Column { return .middle }
 }
 
