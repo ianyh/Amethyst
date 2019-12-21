@@ -283,6 +283,195 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                 }
             }
         }
+
+        describe("layout") {
+            it("splits into binary partitions") {
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.windowID() == id } }
+                )
+
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+                windows.forEach { layout.updateWithChange(.add(window: $0)) }
+
+                let assignments = layout.frameAssignments(windowSet, on: screen)!
+                assignments.verify(frames: [
+                    CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                    CGRect(x: 1000, y: 500, width: 500, height: 500),
+                    CGRect(x: 1500, y: 500, width: 500, height: 500)
+                ])
+            }
+
+            describe("adding windows") {
+                it("partitions the focused frame") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let windows = [
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!
+                    ]
+
+                    var layoutWindows = windows.map {
+                        LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: $0.isFocused())
+                    }
+                    var windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows.dropLast(),
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.windowID() == id } }
+                    )
+
+                    let layout = BinarySpacePartitioningLayout<TestWindow>()
+                    windows.dropLast().forEach { layout.updateWithChange(.add(window: $0)) }
+
+                    var assignments = layout.frameAssignments(windowSet, on: screen)!
+                    var expectedFrames = [
+                        CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                        CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    ]
+
+                    expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
+
+                    windows[1].isFocusedValue = true
+                    layoutWindows[1] = LayoutWindow(id: windows[1].windowID(), frame: windows[1].frame(), isFocused: windows[1].isFocused())
+                    layout.updateWithChange(.focusChanged(window: windows[1]))
+                    layout.updateWithChange(.add(window: windows.last!))
+
+                    windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows,
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.windowID() == id } }
+                    )
+
+                    assignments = layout.frameAssignments(windowSet, on: screen)!.sorted()
+                    expectedFrames = [
+                        CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                        CGRect(x: 1000, y: 0, width: 500, height: 500),
+                        CGRect(x: 1500, y: 0, width: 500, height: 500),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    ]
+
+                    expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
+                }
+
+                it("partitions the last frame if nothing is focused") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let windows = [
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!
+                    ]
+
+                    let layoutWindows = windows.map {
+                        LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: $0.isFocused())
+                    }
+                    var windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows.dropLast(),
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.windowID() == id } }
+                    )
+
+                    let layout = BinarySpacePartitioningLayout<TestWindow>()
+                    windows.dropLast().forEach { layout.updateWithChange(.add(window: $0)) }
+
+                    var assignments = layout.frameAssignments(windowSet, on: screen)!
+                    var expectedFrames = [
+                        CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                        CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    ]
+
+                    expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
+
+                    layout.updateWithChange(.add(window: windows.last!))
+
+                    windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows,
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.windowID() == id } }
+                    )
+
+                    assignments = layout.frameAssignments(windowSet, on: screen)!.sorted()
+                    expectedFrames = [
+                        CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                        CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        CGRect(x: 1000, y: 500, width: 500, height: 500),
+                        CGRect(x: 1500, y: 500, width: 500, height: 500)
+                    ]
+
+                    expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
+                }
+            }
+
+            describe("removing windows") {
+                it("expands the sibling") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let windows = [
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!
+                    ]
+                    let layoutWindows = windows.map {
+                        LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: false)
+                    }
+                    let windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows,
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.windowID() == id } }
+                    )
+
+                    let layout = BinarySpacePartitioningLayout<TestWindow>()
+                    windows.forEach { layout.updateWithChange(.add(window: $0)) }
+
+                    var assignments = layout.frameAssignments(windowSet, on: screen)!
+                    var expectedFrames = [
+                        CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                        CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        CGRect(x: 1000, y: 500, width: 500, height: 500),
+                        CGRect(x: 1500, y: 500, width: 500, height: 500)
+                    ]
+                    expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
+
+                    layout.updateWithChange(.remove(window: windows[1]))
+
+                    assignments = layout.frameAssignments(windowSet, on: screen)!
+                    expectedFrames = [
+                        CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                        CGRect(x: 1000, y: 0, width: 500, height: 1000),
+                        CGRect(x: 1500, y: 0, width: 500, height: 1000)
+                    ]
+                }
+            }
+        }
     }
 }
 

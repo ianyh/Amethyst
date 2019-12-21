@@ -158,6 +158,10 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             }
 
             rootNode.insertWindowIDAtEnd(window.id)
+
+            if window.isFocused {
+                lastKnownFocusedWindowID = window.id
+            }
         }
     }
 
@@ -175,6 +179,10 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             } else {
                 log.info("insert \(window) - \(window.windowID()) at end")
                 rootNode.insertWindowIDAtEnd(window.windowID())
+            }
+
+            if window.isFocused() {
+                lastKnownFocusedWindowID = window.windowID()
             }
         case let .remove(window):
             log.info("remove: \(window) - \(window.windowID())")
@@ -242,7 +250,6 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             return mutableWindowMap
         }
 
-        let focusedWindow = Window.currentlyFocused()
         let baseFrame = screen.adjustedFrame()
         var ret: [FrameAssignment<Window>] = []
         var traversalNodes: [TraversalNode] = [(node: rootNode, frame: baseFrame)]
