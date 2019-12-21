@@ -6,10 +6,9 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
+@testable import Amethyst
 import Nimble
 import Quick
-
-@testable import Amethyst
 
 class BinarySpacePartitioningLayoutTests: QuickSpec {
     override func spec() {
@@ -466,10 +465,43 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                     assignments = layout.frameAssignments(windowSet, on: screen)!
                     expectedFrames = [
                         CGRect(x: 0, y: 0, width: 1000, height: 1000),
-                        CGRect(x: 1000, y: 0, width: 500, height: 1000),
-                        CGRect(x: 1500, y: 0, width: 500, height: 1000)
+                        CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 500)
                     ]
+                    expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
                 }
+            }
+
+            it("constructs an initial tree if necessary") {
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.windowID() == id } }
+                )
+
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+
+                let assignments = layout.frameAssignments(windowSet, on: screen)!
+                let expectedFrames = [
+                    CGRect(x: 0, y: 0, width: 1000, height: 1000),
+                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                    CGRect(x: 1000, y: 500, width: 500, height: 500),
+                    CGRect(x: 1500, y: 500, width: 500, height: 500)
+                ]
+                expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
             }
         }
     }
