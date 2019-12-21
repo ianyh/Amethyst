@@ -244,6 +244,10 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             return []
         }
 
+        if rootNode.left == nil && rootNode.right == nil {
+            constructInitialTreeWithWindows(windows)
+        }
+
         let windowIDMap: [CGWindowID: LayoutWindow] = windows.reduce([:]) { (windowMap, window) -> [CGWindowID: LayoutWindow] in
             var mutableWindowMap = windowMap
             mutableWindowMap[window.id] = window
