@@ -16,6 +16,7 @@ class TestWindow: WindowType {
     private let element: SIAccessibilityElement?
     private let id: CGWindowID = CGWindowID(Int.random(in: 1...1000))
     private var _frame: CGRect = .zero
+    var isFocusedValue = false
 
     static func currentlyFocused() -> Self? {
         return nil
@@ -42,7 +43,7 @@ class TestWindow: WindowType {
     }
 
     func isFocused() -> Bool {
-        return false
+        return isFocusedValue
     }
 
     func pid() -> pid_t {
