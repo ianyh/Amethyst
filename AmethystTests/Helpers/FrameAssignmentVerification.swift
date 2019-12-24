@@ -11,12 +11,12 @@ import Foundation
 import Nimble
 
 extension RandomAccessCollection where Element == FrameAssignment<TestWindow>, Index == Int {
-    func filtered(byIDs ids: [CGWindowID]) -> [Element] {
+    func filtered(byIDs ids: [TestWindow.WindowID]) -> [Element] {
         return filter { ids.contains($0.window.id) }
     }
 
     func forWindows<C: RandomAccessCollection>(_ windows: C) -> [Element] where C.Element == TestWindow, C.Index == Index {
-        return filtered(byIDs: Array(windows).map { $0.windowID() })
+        return filtered(byIDs: Array(windows).map { $0.id() })
     }
 
     func sorted() -> [FrameAssignment<TestWindow>] {
