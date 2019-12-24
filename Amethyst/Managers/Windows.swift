@@ -13,12 +13,12 @@ extension WindowManager {
     class Windows {
         private(set) var windows: [Window] = []
         private var activeIDCache: Set<CGWindowID> = Set()
-        private var floatingMap: [CGWindowID: Bool] = [:]
+        private var floatingMap: [Window.WindowID: Bool] = [:]
 
         // MARK: Window Filters
 
-        func window(withWindowID windowID: CGWindowID) -> Window? {
-            return windows.first { $0.windowID() == windowID }
+        func window(withID id: Window.WindowID) -> Window? {
+            return windows.first { $0.id() == id }
         }
 
         func windows(forApplicationWithPID applicationPID: pid_t) -> [Window] {
@@ -40,7 +40,7 @@ extension WindowManager {
             }
 
             let screenWindows = windows.filter { window in
-                let windowIDsArray = [NSNumber(value: window.windowID() as UInt32)] as NSArray
+                let windowIDsArray = [NSNumber(value: window.cgID() as UInt32)] as NSArray
 
                 guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
                     return false
@@ -101,15 +101,15 @@ extension WindowManager {
         }
 
         func isWindowActive(_ window: Window) -> Bool {
-            return window.isActive() && activeIDCache.contains(window.windowID())
+            return window.isActive() && activeIDCache.contains(window.cgID())
         }
 
         func isWindowFloating(_ window: Window) -> Bool {
-            return floatingMap[window.windowID()] ?? false
+            return floatingMap[window.id()] ?? false
         }
 
         func setFloating(_ floating: Bool, forWindow window: Window) {
-            floatingMap[window.windowID()] = floating
+            floatingMap[window.id()] = floating
         }
 
         func regenerateActiveIDCache() {
@@ -128,26 +128,26 @@ extension WindowManager {
         }
 
         func windowSet(forWindows windows: [Window]) -> WindowSet<Window> {
-            let layoutWindows = windows.map {
-                LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: $0.isFocused())
+            let layoutWindows: [LayoutWindow<Window>] = windows.map {
+                LayoutWindow(id: $0.id(), frame: $0.frame(), isFocused: $0.isFocused())
             }
 
             return WindowSet<Window>(
                 windows: layoutWindows,
-                isWindowWithIDActive: { [weak self] windowID -> Bool in
-                    guard let window = self?.window(withWindowID: windowID) else {
+                isWindowWithIDActive: { [weak self] id -> Bool in
+                    guard let window = self?.window(withID: id) else {
                         return false
                     }
                     return self?.isWindowActive(window) ?? false
                 },
                 isWindowWithIDFloating: { [weak self] windowID -> Bool in
-                    guard let window = self?.window(withWindowID: windowID) else {
+                    guard let window = self?.window(withID: windowID) else {
                         return false
                     }
                     return self?.isWindowFloating(window) ?? false
                 },
                 windowForID: { [weak self] windowID -> Window? in
-                    return self?.window(withWindowID: windowID)
+                    return self?.window(withID: windowID)
                 }
             )
         }

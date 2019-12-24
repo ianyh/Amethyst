@@ -28,7 +28,7 @@ struct WindowsInformation<Window: WindowType> {
             return nil
         }
 
-        self.ids = Set(windows.map { $0.windowID() })
+        self.ids = Set(windows.map { $0.cgID() })
         self.descriptions = descriptions
     }
 }
@@ -37,7 +37,7 @@ extension WindowsInformation {
     // convert Window objects to CGWindowIDs.
     // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
     fileprivate static func windowInformation(_ windows: [Window]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
-        let ids = Set(windows.map { $0.windowID() })
+        let ids = Set(windows.map { $0.cgID() })
         return (IDs: ids, descriptions: CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.descriptions)
     }
 

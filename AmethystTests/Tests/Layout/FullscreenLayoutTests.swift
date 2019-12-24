@@ -30,13 +30,13 @@ class FullscreenLayoutTests: QuickSpec {
 
                 let windows = [TestWindow(element: nil)!, TestWindow(element: nil)!, TestWindow(element: nil)!]
                 let layoutWindows = windows.map {
-                    LayoutWindow(id: $0.windowID(), frame: $0.frame(), isFocused: false)
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
                 }
                 let windowSet = WindowSet<TestWindow>(
                     windows: layoutWindows,
                     isWindowWithIDActive: { _ in return true },
                     isWindowWithIDFloating: { _ in return false },
-                    windowForID: { id in return windows.first { $0.windowID() == id } }
+                    windowForID: { id in return windows.first { $0.id() == id } }
                 )
                 let layout = FullscreenLayout<TestWindow>()
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!

@@ -67,7 +67,7 @@ extension Layout {
      
      - Note: This does not necessarily correspond to the final position of the window as windows do not necessarily take the exact frame the layout provides.
      */
-    func windowAtPoint(_ point: CGPoint, of windowSet: WindowSet<Window>, on screen: Screen) -> LayoutWindow? {
+    func windowAtPoint(_ point: CGPoint, of windowSet: WindowSet<Window>, on screen: Screen) -> LayoutWindow<Window>? {
         return frameAssignments(windowSet, on: screen)?.first(where: { $0.frame.contains(point) })?.window
     }
 
@@ -85,7 +85,7 @@ extension Layout {
      - Note: This does not necessarily correspond to the final frame of the window as windows do not necessarily take the exact frame the layout provides.
      */
     func assignedFrame(_ window: Window, of windowSet: WindowSet<Window>, on screen: Screen) -> FrameAssignment<Window>? {
-        return frameAssignments(windowSet, on: screen)?.first { $0.window.id == window.windowID() }
+        return frameAssignments(windowSet, on: screen)?.first { $0.window.id == window.id() }
     }
 }
 
@@ -192,7 +192,7 @@ class StatefulLayout<Window: WindowType>: Layout<Window> {
      - Returns:
      The ID of the window before the current window.
      */
-    func nextWindowIDCounterClockwise() -> CGWindowID? {
+    func nextWindowIDCounterClockwise() -> Window.WindowID? {
         fatalError("Must be implemented by subclass")
     }
 
@@ -202,7 +202,7 @@ class StatefulLayout<Window: WindowType>: Layout<Window> {
      - Returns:
      The ID of the window after the current window.
      */
-    func nextWindowIDClockwise() -> CGWindowID? {
+    func nextWindowIDClockwise() -> Window.WindowID? {
         fatalError("Must be implemented by subclass")
     }
 }
