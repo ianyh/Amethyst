@@ -21,7 +21,7 @@ PODS:
   - Silica (0.3.1)
   - Sparkle (1.22.0)
   - SwiftyBeaver (1.8.4)
-  - SwiftyJSON (4.2.0)
+  - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
   - Cartography
@@ -35,11 +35,9 @@ DEPENDENCIES:
   - Silica (from `https://github.com/ianyh/Silica`)
   - Sparkle
   - SwiftyBeaver
-  - SwiftyJSON (= 4.2.0)
+  - SwiftyJSON
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - SwiftyJSON
   trunk:
     - Cartography
     - MASShortcut
@@ -51,6 +49,7 @@ SPEC REPOS:
     - RxSwiftExt
     - Sparkle
     - SwiftyBeaver
+    - SwiftyJSON
 
 EXTERNAL SOURCES:
   LoginServiceKit:
@@ -81,8 +80,8 @@ SPEC CHECKSUMS:
   Silica: 1964824e14b9e2b1a07b402316ab24b0409c58b1
   Sparkle: 593ac2e677c07bcb6c3b22d621240e7cbedaab57
   SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
-  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: f89e8028233831225f2aab3c5498295a303a13cf
+PODFILE CHECKSUM: e1bb1134d45f62f2ba4a65b449097c39753a7c89
 
 COCOAPODS: 1.8.4
