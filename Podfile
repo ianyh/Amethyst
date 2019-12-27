@@ -12,7 +12,7 @@ target 'Amethyst' do
   pod 'Silica', git: 'https://github.com/ianyh/Silica', submodules: true
   pod 'Sparkle'
   pod 'SwiftyBeaver'
-  pod 'SwiftyJSON', '= 4.2.0'
+  pod 'SwiftyJSON'
 
   target 'AmethystTests' do
     inherit! :search_paths
