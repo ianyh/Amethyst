@@ -27,9 +27,10 @@ protocol WindowType: Equatable {
      */
     init?(element: SIAccessibilityElement?)
 
+    /// Returns an opaque unique identifier for the window.
     func id() -> WindowID
 
-    /// Returns the window's ID
+    /// Returns the window's ID in the underlying window system.
     func cgID() -> CGWindowID
 
     /// Returns the window's current frame.
