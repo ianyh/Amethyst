@@ -211,17 +211,17 @@ class UserConfiguration: NSObject {
     }
 
     func modifierFlagsForStrings(_ modifierStrings: [String]) -> AMModifierFlags {
-        var flags: UInt = 0
+        var flags: NSEvent.ModifierFlags = []
         for modifierString in modifierStrings {
             switch modifierString {
             case "option":
-                flags = flags | NSEvent.ModifierFlags.option.rawValue
+                flags.insert(.option)
             case "shift":
-                flags = flags | NSEvent.ModifierFlags.shift.rawValue
+                flags.insert(.shift)
             case "control":
-                flags = flags | NSEvent.ModifierFlags.control.rawValue
+                flags.insert(.control)
             case "command":
-                flags = flags | NSEvent.ModifierFlags.command.rawValue
+                flags.insert(.command)
             default:
                 log.warning("Unrecognized modifier string: \(modifierString)")
             }
