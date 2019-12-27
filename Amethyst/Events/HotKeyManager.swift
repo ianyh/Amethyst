@@ -14,7 +14,7 @@ import Silica
 typealias AMKeyCode = Int
 
 // Type for defining modifier flags.
-typealias AMModifierFlags = UInt
+typealias AMModifierFlags = NSEvent.ModifierFlags
 
 // Specific key code defined to be invalid.
 // Can be used to identify if a returned key code is valid or not.
