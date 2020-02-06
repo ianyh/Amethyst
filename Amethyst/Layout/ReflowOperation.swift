@@ -57,23 +57,33 @@ struct ResizeRules {
     }
 }
 
-struct LayoutWindow {
-    let id: CGWindowID
+struct LayoutWindow<Window: WindowType>: Equatable {
+    let id: Window.WindowID
     let frame: CGRect
     let isFocused: Bool
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    init(id: Window.WindowID, frame: CGRect, isFocused: Bool) {
+        self.id = id
+        self.frame = frame
+        self.isFocused = isFocused
+    }
 }
 
 struct WindowSet<Window: WindowType> {
-    let windows: [LayoutWindow]
-    private let isWindowWithIDActive: (CGWindowID) -> Bool
-    private let isWindowWithIDFloating: (CGWindowID) -> Bool
-    private let windowForID: (CGWindowID) -> Window?
+    let windows: [LayoutWindow<Window>]
+    private let isWindowWithIDActive: (Window.WindowID) -> Bool
+    private let isWindowWithIDFloating: (Window.WindowID) -> Bool
+    private let windowForID: (Window.WindowID) -> Window?
 
     init(
-        windows: [LayoutWindow],
-        isWindowWithIDActive: @escaping (CGWindowID) -> Bool,
-        isWindowWithIDFloating: @escaping (CGWindowID) -> Bool,
-        windowForID: @escaping (CGWindowID) -> Window?
+        windows: [LayoutWindow<Window>],
+        isWindowWithIDActive: @escaping (Window.WindowID) -> Bool,
+        isWindowWithIDFloating: @escaping (Window.WindowID) -> Bool,
+        windowForID: @escaping (Window.WindowID) -> Window?
     ) {
         self.windows = windows
         self.isWindowWithIDActive = isWindowWithIDActive
@@ -81,11 +91,11 @@ struct WindowSet<Window: WindowType> {
         self.windowForID = windowForID
     }
 
-    func isWindowActive(_ window: LayoutWindow) -> Bool {
+    func isWindowActive(_ window: LayoutWindow<Window>) -> Bool {
         return isWindowWithIDActive(window.id)
     }
 
-    func isWindowFloating(_ window: LayoutWindow) -> Bool {
+    func isWindowFloating(_ window: LayoutWindow<Window>) -> Bool {
         return isWindowWithIDFloating(window.id)
     }
 
@@ -111,7 +121,7 @@ struct FrameAssignment<Window: WindowType> {
     let frame: CGRect
 
     /// The window that will be moved and sized.
-    let window: LayoutWindow
+    let window: LayoutWindow<Window>
 
     /// The frame of the screen being occupied.
     let screenFrame: CGRect
@@ -213,7 +223,7 @@ class ReflowOperation<Window: WindowType>: Operation {
 
     let layout: Layout<Window>
 
-    var windows: [LayoutWindow] { return windowSet.windows }
+    var windows: [LayoutWindow<Window>] { return windowSet.windows }
 
     /**
      - Parameters:

@@ -11,26 +11,30 @@ import Foundation
 import Nimble
 
 extension RandomAccessCollection where Element == FrameAssignment<TestWindow>, Index == Int {
-    typealias Window = TestWindow
-
-    func filtered(byIDs ids: [CGWindowID]) -> [Element] {
+    func filtered(byIDs ids: [TestWindow.WindowID]) -> [Element] {
         return filter { ids.contains($0.window.id) }
     }
 
-    func forWindows<C: RandomAccessCollection>(_ windows: C) -> [Element] where C.Element == Window, C.Index == Index {
-        let convertedWindows = Array(windows)
-        guard convertedWindows.count > 1 else {
-            return filtered(byIDs: [convertedWindows[0].windowID()]).sorted()
-        }
-        return filtered(byIDs: convertedWindows.map { $0.windowID() }).sorted()
+    func forWindows<C: RandomAccessCollection>(_ windows: C) -> [Element] where C.Element == TestWindow, C.Index == Index {
+        return filtered(byIDs: Array(windows).map { $0.id() })
     }
 
     func sorted() -> [FrameAssignment<TestWindow>] {
         return sorted { $0.frame.origin.x < $1.frame.origin.x }.sorted { $0.frame.origin.y < $1.frame.origin.y }
     }
 
+    func frames() -> [CGRect] {
+        return map { $0.frame }
+    }
+
+    func description(withExpectedFrames frames: [CGRect]) -> String {
+        return zip(self, frames).map { assignment, frame in
+            return "\(assignment.window.id):\n\tFrame: \(assignment.frame)\n\tExpected: \(frame)"
+        }.joined(separator: "\n")
+    }
+
     func verify(frames: [CGRect]) {
-        expect(self.count).to(equal(frames.count), description: "assignments and frames should be same length")
+        expect(self.count).to(equal(frames.count), description: "\(count) assignments, but \(frames.count) frames")
         zip(self, frames).forEach { assignment, frame in
             expect(assignment.frame).to(equal(frame))
         }

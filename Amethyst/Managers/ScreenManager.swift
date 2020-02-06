@@ -197,7 +197,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         panedLayout.expandMainPane()
     }
 
-    func nextWindowIDCounterClockwise() -> CGWindowID? {
+    func nextWindowIDCounterClockwise() -> Window.WindowID? {
         guard let layout = currentLayout as? StatefulLayout else {
             return nil
         }
@@ -205,7 +205,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         return layout.nextWindowIDCounterClockwise()
     }
 
-    func nextWindowIDClockwise() -> CGWindowID? {
+    func nextWindowIDClockwise() -> Window.WindowID? {
         guard let statefulLayout = currentLayout as? StatefulLayout else {
             return nil
         }

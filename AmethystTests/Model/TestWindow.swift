@@ -12,10 +12,13 @@ import Silica
 
 class TestWindow: WindowType {
     typealias Screen = TestScreen
+    typealias WindowID = String
 
     private let element: SIAccessibilityElement?
-    private let id: CGWindowID = CGWindowID(Int.random(in: 1...1000))
+    private let cgWindowID = CGWindowID(Int.random(in: 1...1000))
+    private let uuid = UUID().uuidString
     private var _frame: CGRect = .zero
+    var isFocusedValue = false
 
     static func currentlyFocused() -> Self? {
         return nil
@@ -25,8 +28,12 @@ class TestWindow: WindowType {
         self.element = element
     }
 
-    func windowID() -> CGWindowID {
-        return id
+    func id() -> WindowID {
+        return uuid
+    }
+
+    func cgID() -> CGWindowID {
+        return cgWindowID
     }
 
     func frame() -> CGRect {
@@ -42,7 +49,7 @@ class TestWindow: WindowType {
     }
 
     func isFocused() -> Bool {
-        return false
+        return isFocusedValue
     }
 
     func pid() -> pid_t {
@@ -86,6 +93,6 @@ class TestWindow: WindowType {
     }
 
     static func == (lhs: TestWindow, rhs: TestWindow) -> Bool {
-        return lhs.id == rhs.id
+        return lhs.id() == rhs.id()
     }
 }

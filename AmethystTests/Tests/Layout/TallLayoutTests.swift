@@ -1,5 +1,5 @@
 //
-//  RowLayoutTests.swift
+//  TallLayoutTests.swift
 //  AmethystTests
 //
 //  Created by Ian Ynda-Hummel on 9/21/19.
@@ -11,19 +11,18 @@ import Nimble
 import Quick
 import Silica
 
-class RowLayoutTests: QuickSpec {
+class TallLayoutTests: QuickSpec {
     override func spec() {
         afterEach {
             TestScreen.availableScreens = []
         }
 
         describe("layout") {
-            it("separates windows into rows in main pane and rows in secondary pane") {
+            it("separates into a main pane and a secondary pane") {
                 let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
                 TestScreen.availableScreens = [screen]
 
                 let windows = [
-                    TestWindow(element: nil)!,
                     TestWindow(element: nil)!,
                     TestWindow(element: nil)!,
                     TestWindow(element: nil)!
@@ -37,22 +36,21 @@ class RowLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
-                let layout = RowLayout<TestWindow>()
+                let layout = TallLayout<TestWindow>()
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
 
                 expect(layout.mainPaneCount).to(equal(1))
 
-                // The main pane is full width and the top half of the screen
                 let mainAssignment = frameAssignments.forWindows(windows[..<1])
                 let secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
-                mainAssignment.verify(frames: [CGRect(origin: .zero, size: CGSize(width: 2000, height: 500))])
-
-                let secondaryFrames = secondaryAssignments.enumerated().map { index, _ in
-                    return CGRect(x: 0, y: 500.0 + 166 * CGFloat(index), width: 2000, height: 166)
-                }
-
-                secondaryAssignments.verify(frames: secondaryFrames)
+                mainAssignment.verify(frames: [
+                    CGRect(origin: .zero, size: CGSize(width: 1000, height: 1000))
+                ])
+                secondaryAssignments.verify(frames: [
+                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                    CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                ])
             }
 
             it("increases and decreases windows in the main pane") {
@@ -74,7 +72,7 @@ class RowLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
-                let layout = RowLayout<TestWindow>()
+                let layout = TallLayout<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
@@ -83,13 +81,13 @@ class RowLayoutTests: QuickSpec {
                 var secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 2000, height: 500)
+                    CGRect(x: 0, y: 0, width: 1000, height: 1000)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 0, y: 500, width: 2000, height: 166),
-                    CGRect(x: 0, y: 666, width: 2000, height: 166),
-                    CGRect(x: 0, y: 832, width: 2000, height: 166)
+                    CGRect(x: 1000, y: 0, width: 1000, height: 333),
+                    CGRect(x: 1000, y: 333, width: 1000, height: 333),
+                    CGRect(x: 1000, y: 666, width: 1000, height: 333)
                 ])
 
                 layout.increaseMainPaneCount()
@@ -100,13 +98,13 @@ class RowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[2...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 2000, height: 250),
-                    CGRect(x: 0, y: 250, width: 2000, height: 250)
+                    CGRect(x: 0, y: 0, width: 1000, height: 500),
+                    CGRect(x: 0, y: 500, width: 1000, height: 500)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 0, y: 500, width: 2000, height: 250),
-                    CGRect(x: 0, y: 750, width: 2000, height: 250)
+                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                    CGRect(x: 1000, y: 500, width: 1000, height: 500)
                 ])
 
                 layout.increaseMainPaneCount()
@@ -117,13 +115,13 @@ class RowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[3...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 2000, height: 166),
-                    CGRect(x: 0, y: 166, width: 2000, height: 166),
-                    CGRect(x: 0, y: 332, width: 2000, height: 166)
+                    CGRect(x: 0, y: 0, width: 1000, height: 333),
+                    CGRect(x: 0, y: 333, width: 1000, height: 333),
+                    CGRect(x: 0, y: 666, width: 1000, height: 333)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 0, y: 498, width: 2000, height: 500)
+                    CGRect(x: 1000, y: 0, width: 1000, height: 1000)
                 ])
             }
 
@@ -132,7 +130,6 @@ class RowLayoutTests: QuickSpec {
                 TestScreen.availableScreens = [screen]
 
                 let windows = [
-                    TestWindow(element: nil)!,
                     TestWindow(element: nil)!,
                     TestWindow(element: nil)!,
                     TestWindow(element: nil)!
@@ -146,7 +143,7 @@ class RowLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
-                let layout = RowLayout<TestWindow>()
+                let layout = TallLayout<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
@@ -155,13 +152,12 @@ class RowLayoutTests: QuickSpec {
                 var secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 2000, height: 500)
+                    CGRect(x: 0, y: 0, width: 1000, height: 1000)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 0, y: 500, width: 2000, height: 166),
-                    CGRect(x: 0, y: 666, width: 2000, height: 166),
-                    CGRect(x: 0, y: 832, width: 2000, height: 166)
+                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                    CGRect(x: 1000, y: 500, width: 1000, height: 500)
                 ])
 
                 layout.recommendMainPaneRatio(0.75)
@@ -172,13 +168,12 @@ class RowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 2000, height: 750)
+                    CGRect(x: 0, y: 0, width: 1500, height: 1000)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 0, y: 750, width: 2000, height: 83),
-                    CGRect(x: 0, y: 833, width: 2000, height: 83),
-                    CGRect(x: 0, y: 916, width: 2000, height: 83)
+                    CGRect(x: 1500, y: 0, width: 500, height: 500),
+                    CGRect(x: 1500, y: 500, width: 500, height: 500)
                 ])
 
                 layout.recommendMainPaneRatio(0.25)
@@ -189,13 +184,12 @@ class RowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 2000, height: 250)
+                    CGRect(x: 0, y: 0, width: 500, height: 1000)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 0, y: 250, width: 2000, height: 250),
-                    CGRect(x: 0, y: 500, width: 2000, height: 250),
-                    CGRect(x: 0, y: 750, width: 2000, height: 250)
+                    CGRect(x: 500, y: 0, width: 1500, height: 500),
+                    CGRect(x: 500, y: 500, width: 1500, height: 500)
                 ])
             }
         }

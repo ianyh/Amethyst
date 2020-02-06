@@ -351,7 +351,7 @@ final class WindowManager<Application: ApplicationType>: NSObject {
             }
 
             let didLeaveScreen = windows.isWindowActive(existingWindow) && !existingWindow.isOnScreen()
-            let isInvalid = existingWindow.windowID() == kCGNullWindowID
+            let isInvalid = existingWindow.cgID() == kCGNullWindowID
 
             // The window needs to have either left the screen and therefore is being replaced
             // or be invalid and therefore being removed and can be replaced.
@@ -415,7 +415,7 @@ extension WindowManager: MouseStateKeeperDelegate {
 
         if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(), let layout = screenManager.currentLayout {
             let windowSet = self.windows.windowSet(forWindowsOnScreen: screen)
-            if let layoutWindow = layout.windowAtPoint(pointerLocation, of: windowSet, on: screen), let framedWindow = self.windows.window(withWindowID: layoutWindow.id) {
+            if let layoutWindow = layout.windowAtPoint(pointerLocation, of: windowSet, on: screen), let framedWindow = self.windows.window(withID: layoutWindow.id) {
                 executeTransition(.switchWindows(draggedWindow, framedWindow))
                 return
             }
@@ -649,11 +649,11 @@ extension WindowManager: FocusTransitionTarget {
         return screens.screenManagers.first { $0.screen.screenID() == screen.screenID() }?.lastFocusedWindow
     }
 
-    func nextWindowIDClockwise(on screen: Screen) -> CGWindowID? {
+    func nextWindowIDClockwise(on screen: Screen) -> Window.WindowID? {
         return screenManager(for: screen)?.nextWindowIDClockwise()
     }
 
-    func nextWindowIDCounterClockwise(on screen: Screen) -> CGWindowID? {
+    func nextWindowIDCounterClockwise(on screen: Screen) -> Window.WindowID? {
         return screenManager(for: screen)?.nextWindowIDCounterClockwise()
     }
 }

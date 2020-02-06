@@ -12,6 +12,7 @@ import Silica
 /// Generic protocol for objects acting as windows in the system.
 protocol WindowType: Equatable {
     associatedtype Screen: ScreenType
+    associatedtype WindowID: Hashable
 
     /// Returns the currently focused window of its type.
     static func currentlyFocused() -> Self?
@@ -26,8 +27,10 @@ protocol WindowType: Equatable {
      */
     init?(element: SIAccessibilityElement?)
 
+    func id() -> WindowID
+
     /// Returns the window's ID
-    func windowID() -> CGWindowID
+    func cgID() -> CGWindowID
 
     /// Returns the window's current frame.
     func frame() -> CGRect
@@ -113,10 +116,26 @@ protocol WindowType: Equatable {
  A final class is necessary for satisfying the `focusedWindow()` requirement in the `WindowType` protocol. Otherwise, as `SIWindow` is not final, the type system does not know how to constrain `Self`.
  */
 final class AXWindow: SIWindow {}
+final class AXWindowID: Hashable {
+    private let element: SIAccessibilityElement
+
+    static func == (lhs: AXWindowID, rhs: AXWindowID) -> Bool {
+        return lhs.element == rhs.element
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(element)
+    }
+
+    fileprivate init(element: SIAccessibilityElement) {
+        self.element = element
+    }
+}
 
 /// Conformance of `AXWindow` as an Amethyst window.
 extension AXWindow: WindowType {
     typealias Screen = AMScreen
+    typealias WindowID = AXWindowID
 
     /**
      Returns the currently focused window.
@@ -140,6 +159,14 @@ extension AXWindow: WindowType {
         }
 
         self.init(axElement: axElementRef)
+    }
+
+    func id() -> WindowID {
+        return AXWindowID(element: self)
+    }
+
+    func cgID() -> CGWindowID {
+        return windowID()
     }
 
     func screen() -> AMScreen? {
@@ -177,10 +204,6 @@ extension AXWindow: WindowType {
         }
 
         return false
-    }
-
-    func isEqual(to rhs: AXWindow) -> Bool {
-        return self.windowID() == rhs.windowID()
     }
 
     func isFocused() -> Bool {
@@ -241,7 +264,7 @@ extension AXWindow: WindowType {
 
     func move(toSpace spaceID: CGSSpaceID) {
         let currentSpace = CGSGetActiveSpace(CGSMainConnectionID())
-        let ids = [windowID()]
+        let ids = [cgID()]
         CGSRemoveWindowsFromSpaces(CGSMainConnectionID(), ids as CFArray, [currentSpace] as CFArray)
         CGSAddWindowsToSpaces(CGSMainConnectionID(), ids as CFArray, [spaceID] as CFArray)
 
