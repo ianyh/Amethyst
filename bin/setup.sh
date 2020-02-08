@@ -10,11 +10,6 @@ else
     printf "WARNING: Xcode $OUR_XCODE is used to develop this project.\n"
 fi
 
-# Check for swiftlint
-printf "Checking for swiftlint: "
-swiftlint version >/dev/null 2>&1 || { printf >&2 "nope!\nswiftlint must be installed. Try running:\n\tbrew install swiftlint\n"; exit 1; }
-printf "found!\n"
-
 # Check for installed ruby version
 printf "Checking for rbenv: "
 if rbenv version >/dev/null 2>&1 ; then
