@@ -95,13 +95,11 @@ class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource,
 
         return LayoutManager<AXWindow>.layoutNameForKey(layoutKeys[row])
     }
-    
-    
 
     func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
         if let dragData = info.draggingPasteboard.data(forType: .string),
             let rowString = String(bytes: dragData, encoding: .utf8),
-            let oldRow = Int(rowString){
+            let oldRow = Int(rowString) {
 
             layoutKeys.move(from: oldRow, to: oldRow < row ? row-1 : row)
             UserConfiguration.shared.setLayoutKeys(self.layoutKeys)
@@ -110,17 +108,15 @@ class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource,
         }
         return false
     }
-    
-    
-    
+
     func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
         if dropOperation == .above {
             return .move
         }
         return []
-       
+
     }
-    
+
     func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting? {
         let item = NSPasteboardItem()
         item.setString(String(row), forType: .string)
@@ -128,7 +124,7 @@ class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource,
     }
 }
 
-extension Array{
+extension Array {
     mutating func move(from oldIndex: Index, to newIndex: Index) {
         if oldIndex == newIndex { return }
         if abs(newIndex - oldIndex) == 1 { return self.swapAt(oldIndex, newIndex) }
