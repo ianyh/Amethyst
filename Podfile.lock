@@ -20,6 +20,7 @@ PODS:
     - RxSwiftExt/Core
   - Silica (0.3.1)
   - Sparkle (1.22.0)
+  - SwiftLint (0.38.2)
   - SwiftyBeaver (1.8.4)
   - SwiftyJSON (5.0.0)
 
@@ -34,6 +35,7 @@ DEPENDENCIES:
   - RxSwiftExt
   - Silica (from `https://github.com/ianyh/Silica`)
   - Sparkle
+  - SwiftLint
   - SwiftyBeaver
   - SwiftyJSON
 
@@ -48,6 +50,7 @@ SPEC REPOS:
     - RxSwift
     - RxSwiftExt
     - Sparkle
+    - SwiftLint
     - SwiftyBeaver
     - SwiftyJSON
 
@@ -79,9 +82,10 @@ SPEC CHECKSUMS:
   RxSwiftExt: 4ca80336f43c28f11a2825cdd2fc61dd6c044697
   Silica: 1964824e14b9e2b1a07b402316ab24b0409c58b1
   Sparkle: 593ac2e677c07bcb6c3b22d621240e7cbedaab57
+  SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
   SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: e1bb1134d45f62f2ba4a65b449097c39753a7c89
+PODFILE CHECKSUM: 772d8e704e23f7a7b256e4956b8d8e1cd4f79535
 
 COCOAPODS: 1.8.4

@@ -11,6 +11,7 @@ target 'Amethyst' do
   pod 'RxSwiftExt'
   pod 'Silica', git: 'https://github.com/ianyh/Silica', submodules: true
   pod 'Sparkle'
+  pod 'SwiftLint'
   pod 'SwiftyBeaver'
   pod 'SwiftyJSON'
 
