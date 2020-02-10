@@ -14,6 +14,8 @@ file_length: 500
 type_body_length: 400
 cyclomatic_complexity: 15
 large_tuple: 3
+nesting:
+    type_level: 2
 identifier_name:
     excluded:
         - id
