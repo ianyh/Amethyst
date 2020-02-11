@@ -22,8 +22,12 @@ import Silica
  - Note:
  Usage of a layout object requires specifying a `WindowType` parameter.
  */
-class Layout<Window: WindowType> {
+class Layout<Window: WindowType>: Codable {
     typealias Screen = Window.Screen
+
+    private enum CodingKeys: String, CodingKey {
+        case key
+    }
 
     /// The display name of the layout.
     class var layoutName: String { fatalError("Must be implemented by subclass") }
@@ -31,10 +35,21 @@ class Layout<Window: WindowType> {
     /// The configuration key of the layout.
     class var layoutKey: String { fatalError("Must be implemented by subclass") }
 
+    /// The configuration key of the layout.
+    var layoutKey: String { return type(of: self).layoutKey }
+
     /// The debug description of the layout.
     var layoutDescription: String { return "" }
 
     required init() {}
+
+    required init(from decoder: Decoder) throws {}
+
+    /// Base encoder for layouts; basically a noop.
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(layoutKey, forKey: .key)
+    }
 
     /**
      Takes a list of windows and a screen and returns the assignments that would be performed.

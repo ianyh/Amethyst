@@ -13,15 +13,19 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-final class WindowManager<Application: ApplicationType>: NSObject {
+final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
+
+    enum CodingKeys: String, CodingKey {
+        case screens
+    }
 
     private(set) lazy var windowTransitionCoordinator = WindowTransitionCoordinator(target: self)
     private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self, userConfiguration: self.userConfiguration)
 
     private var applications: [AnyApplication<Application>] = []
-    private let screens = Screens()
+    private let screens: Screens
     let windows = Windows()
     private var lastReflowTime = Date()
     private var lastFocusDate: Date?
@@ -32,8 +36,20 @@ final class WindowManager<Application: ApplicationType>: NSObject {
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
+        self.screens = Screens()
         super.init()
+        initialize()
+    }
 
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.screens = try values.decode(Screens.self, forKey: .screens)
+        self.userConfiguration = UserConfiguration.shared
+        super.init()
+        initialize()
+    }
+
+    private func initialize() {
         addWorkspaceNotificationObserver(NSWorkspace.didLaunchApplicationNotification, selector: #selector(applicationDidLaunch(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didTerminateApplicationNotification, selector: #selector(applicationDidTerminate(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didHideApplicationNotification, selector: #selector(applicationDidHide(_:)))
@@ -558,11 +574,11 @@ extension WindowManager {
     }
 
     func screenManager(for screen: Screen) -> ScreenManager<WindowManager<Application>>? {
-        return screens.screenManagers.first { $0.screen.screenID() == screen.screenID() }
+        return screens.screenManagers.first { $0.screen?.screenID() == screen.screenID() }
     }
 
     func screenManagerIndex(for screen: Screen) -> Int? {
-        return screens.screenManagers.index { $0.screen.screenID() == screen.screenID() }
+        return screens.screenManagers.index { $0.screen?.screenID() == screen.screenID() }
     }
 }
 
@@ -646,7 +662,7 @@ extension WindowManager: FocusTransitionTarget {
     }
 
     func lastFocusedWindow(on screen: Screen) -> Window? {
-        return screens.screenManagers.first { $0.screen.screenID() == screen.screenID() }?.lastFocusedWindow
+        return screens.screenManagers.first { $0.screen?.screenID() == screen.screenID() }?.lastFocusedWindow
     }
 
     func nextWindowIDClockwise(on screen: Screen) -> Window.WindowID? {

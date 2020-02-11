@@ -10,7 +10,11 @@ import Foundation
 import Silica
 
 extension WindowManager {
-    class Screens {
+    class Screens: Codable {
+        enum CodingKeys: String, CodingKey {
+            case screenManagersCache
+        }
+
         private(set) var screenManagers: [ScreenManager<WindowManager<Application>>] = []
         private var screenManagersCache: [String: ScreenManager<WindowManager<Application>>] = [:]
 
@@ -59,7 +63,7 @@ extension WindowManager {
                 return nil
             }
             for screenManager in screenManagers {
-                if screenManager.screen.screenID() == focusedWindow.screen()?.screenID() {
+                if screenManager.screen?.screenID() == focusedWindow.screen()?.screenID() {
                     return screenManager
                 }
             }
@@ -75,6 +79,7 @@ extension WindowManager {
                 }
 
                 let screenManager = screenManagersCache[screenID] ?? windowManager.screenManager(screen: screen)
+                screenManager.delegate = windowManager
                 screenManager.updateScreen(to: screen)
 
                 screenManagersCache[screenID] = screenManager
@@ -92,7 +97,7 @@ extension WindowManager {
 
         func markScreen(_ screen: Screen, forReflowWithChange change: Change<Window>) {
             screenManagers
-                .filter { $0.screen.screenID() == screen.screenID() }
+                .filter { $0.screen?.screenID() == screen.screenID() }
                 .forEach { screenManager in
                     screenManager.setNeedsReflow(withWindowChange: change)
                 }
