@@ -14,17 +14,22 @@ protocol ScreenManagerDelegate: class {
     func activeWindowSet(forScreenManager screenManager: ScreenManager<Self>) -> WindowSet<Window>
 }
 
-final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
+final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     typealias Window = Delegate.Window
     typealias Screen = Window.Screen
 
-    private(set) var screen: Screen
+    enum CodingKeys: String, CodingKey {
+        case layoutsBySpaceUUID
+    }
+
+    weak var delegate: Delegate?
+
+    private(set) var screen: Screen?
     private(set) var space: Space?
 
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
     private(set) var lastFocusedWindow: Window?
-    private weak var delegate: Delegate?
     private let userConfiguration: UserConfiguration
     var onReflowInitiation: (() -> Void)?
     var onReflowCompletion: (() -> Void)?
@@ -53,7 +58,47 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
 
         super.init()
 
-        layouts = LayoutManager.layoutsWithConfiguration(userConfiguration)
+        layouts = LayoutType.layoutsWithConfiguration(userConfiguration)
+    }
+
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        let layoutsBySpaceUUID = try values.decode([String: [[String: Data]]].self, forKey: .layoutsBySpaceUUID)
+
+        self.userConfiguration = UserConfiguration.shared
+        self.layoutsBySpaceUUID = layoutsBySpaceUUID.mapValues { keyedLayouts -> [Layout<Window>] in
+            return keyedLayouts.compactMap { layout in
+                guard let keyData = layout["key"], let key = String(data: keyData, encoding: .utf8) else {
+                    return nil
+                }
+
+                guard let data = layout["data"] else {
+                    return nil
+                }
+
+                do {
+                    return try LayoutType<Window>.decoded(data: data, key: key)
+                } catch {
+                    print(error)
+                }
+
+                return nil
+            }
+        }
+
+        layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var values = encoder.container(keyedBy: CodingKeys.self)
+        let layoutsBySpaceUUID = try self.layoutsBySpaceUUID.mapValues { layouts in
+            return try layouts.map { layout -> [String: Data] in
+                let layoutKey = layout.layoutKey.data(using: .utf8)!
+                let encodedLayout = try LayoutType.encoded(layout: layout)
+                return ["key": layoutKey, "data": encodedLayout]
+            }
+        }
+        try values.encode(layoutsBySpaceUUID, forKey: .layoutsBySpaceUUID)
     }
 
     deinit {
@@ -81,7 +126,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
         if let layouts = layoutsBySpaceUUID[space.uuid] {
             self.layouts = layouts
         } else {
-            self.layouts = LayoutManager.layoutsWithConfiguration(userConfiguration)
+            self.layouts = LayoutType.layoutsWithConfiguration(userConfiguration)
             layoutsBySpaceUUID[space.uuid] = layouts
         }
     }
@@ -106,7 +151,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
 
         reflowOperation?.cancel()
 
-        log.debug("Screen: \(screen.screenID() ?? "unknown") -- Window Change: \(windowChange)")
+        log.debug("Screen: \(screen?.screenID() ?? "unknown") -- Window Change: \(windowChange)")
 
         if let statefulLayout = currentLayout as? StatefulLayout {
             statefulLayout.updateWithChange(windowChange)
@@ -118,6 +163,10 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
     }
 
     private func reflow(_ event: Change<Window>) {
+        guard let screen = screen else {
+            return
+        }
+
         guard userConfiguration.tilingEnabled, space?.type == CGSSpaceTypeUser else {
             return
         }
@@ -214,6 +263,10 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
     }
 
     func displayLayoutHUD() {
+        guard let screen = screen else {
+            return
+        }
+
         guard userConfiguration.enablesLayoutHUD(), space?.type == CGSSpaceTypeUser else {
             return
         }
@@ -248,8 +301,12 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject {
 
 extension ScreenManager: Comparable {
     static func < (lhs: ScreenManager<Delegate>, rhs: ScreenManager<Delegate>) -> Bool {
-        let originX1 = lhs.screen.frameWithoutDockOrMenu().origin.x
-        let originX2 = rhs.screen.frameWithoutDockOrMenu().origin.x
+        guard let lhsScreen = lhs.screen, let rhsScreen = rhs.screen else {
+            return false
+        }
+
+        let originX1 = lhsScreen.frameWithoutDockOrMenu().origin.x
+        let originX2 = rhsScreen.frameWithoutDockOrMenu().origin.x
 
         return originX1 < originX2
     }
@@ -257,6 +314,6 @@ extension ScreenManager: Comparable {
 
 extension WindowManager: ScreenManagerDelegate {
     func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>) -> WindowSet<Window> {
-        return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen)
+        return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen!)
     }
 }

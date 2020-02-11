@@ -35,7 +35,7 @@ class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource,
     @IBAction func addLayout(_ sender: NSButton) {
         let layoutMenu = NSMenu(title: "")
 
-        for (layoutKey, layoutName) in LayoutManager<AXWindow>.availableLayoutStrings() {
+        for (layoutKey, layoutName) in LayoutType<AXWindow>.availableLayoutStrings() {
             let menuItem = NSMenuItem(title: layoutName, action: #selector(addLayoutString(_:)), keyEquivalent: "")
             menuItem.representedObject = layoutKey
             menuItem.target = self
@@ -93,7 +93,7 @@ class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource,
             return nil
         }
 
-        return LayoutManager<AXWindow>.layoutNameForKey(layoutKeys[row])
+        return LayoutType<AXWindow>.layoutNameForKey(layoutKeys[row])
     }
 
     func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
