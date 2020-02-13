@@ -84,6 +84,7 @@
 		40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491D723367590007E0CCB /* RowLayoutTests.swift */; };
 		40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
+		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
 		9223AE552ADF6FEE4AFD33CB /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22CAB58F56F91369E2D69B06 /* Pods_Amethyst.framework */; };
 		D040B03B898E82BCE3E904B4 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A490D6DCEEB1686189A3E68 /* Pods_AmethystTests.framework */; };
@@ -203,6 +204,7 @@
 		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
+		40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenManagerTests.swift; sourceTree = "<group>"; };
 		4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayout.swift; sourceTree = "<group>"; };
 		72008CE845065114C6273699 /* Pods-Amethyst.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.debug.xcconfig"; sourceTree = "<group>"; };
 		766CDAA619AA11EF6A7F4842 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Pods/Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 			isa = PBXGroup;
 			children = (
 				4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */,
+				40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -811,6 +814,7 @@
 				403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */,
 				4000DB10239CA07000365A0C /* WideLayoutTests.swift in Sources */,
 				40AB5BEB23AB182300E29346 /* WidescreenTallLayoutTests.swift in Sources */,
+				40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */,
 				40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */,
 				40AB5BED23AC3CF800E29346 /* ThreeColumnLayoutTests.swift in Sources */,
 				40AB5BE923AB0A2B00E29346 /* TallRightLayoutTests.swift in Sources */,

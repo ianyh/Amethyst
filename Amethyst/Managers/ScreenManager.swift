@@ -66,27 +66,48 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         let layoutsBySpaceUUID = try values.decode([String: [[String: Data]]].self, forKey: .layoutsBySpaceUUID)
 
         self.userConfiguration = UserConfiguration.shared
-        self.layoutsBySpaceUUID = layoutsBySpaceUUID.mapValues { keyedLayouts -> [Layout<Window>] in
-            return keyedLayouts.compactMap { layout in
-                guard let keyData = layout["key"], let key = String(data: keyData, encoding: .utf8) else {
-                    return nil
-                }
-
-                guard let data = layout["data"] else {
-                    return nil
-                }
-
-                do {
-                    return try LayoutType<Window>.decoded(data: data, key: key)
-                } catch {
-                    print(error)
-                }
-
-                return nil
-            }
+        self.layoutsBySpaceUUID = try layoutsBySpaceUUID.mapValues { keyedLayouts -> [Layout<Window>] in
+            return try ScreenManager<Delegate>.decodedLayouts(from: keyedLayouts, userConfiguration: UserConfiguration.shared)
         }
 
         layoutNameWindowController = LayoutNameWindowController(windowNibName: "LayoutNameWindow")
+    }
+
+    /**
+     Takes the list of layouts and inserts decoded layouts where appropriate.
+
+     - Parameters:
+        - encodedLayouts: A list of encoded layouts to be restored.
+        - userConfiguration: User configuration defining the list of layouts.
+     */
+    static func decodedLayouts(from encodedLayouts: [[String: Data]], userConfiguration: UserConfiguration) throws -> [Layout<Window>] {
+        let layouts: [Layout<Window>] = LayoutType.layoutsWithConfiguration(userConfiguration)
+        var decodedLayouts: [Layout<Window>] = encodedLayouts.compactMap { layout in
+            guard let keyData = layout["key"], let key = String(data: keyData, encoding: .utf8) else {
+                return nil
+            }
+
+            guard let data = layout["data"] else {
+                return nil
+            }
+
+            do {
+                return try LayoutType<Window>.decoded(data: data, key: key)
+            } catch {
+                print(error)
+            }
+
+            return nil
+        }
+
+        // Yes this is quadratic, but if your layout list is long enough for that to be significant what are you even doing?
+        return layouts.map { layout -> Layout<Window> in
+            guard let decodedLayoutIndex = decodedLayouts.firstIndex(where: { $0.layoutKey == layout.layoutKey }) else {
+                return layout
+            }
+
+            return decodedLayouts.remove(at: decodedLayoutIndex)
+        }
     }
 
     func encode(to encoder: Encoder) throws {

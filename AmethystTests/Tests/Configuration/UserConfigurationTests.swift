@@ -11,7 +11,7 @@ import Nimble
 import Quick
 import SwiftyJSON
 
-private class TestConfigurationStorage: ConfigurationStorage {
+class TestConfigurationStorage: ConfigurationStorage {
     var storage: [ConfigurationKey: Any] = [:]
 
     func object(forKey key: ConfigurationKey) -> Any? {
