@@ -277,6 +277,23 @@ class ThreeColumnLayoutTests: QuickSpec {
                     CGRect(x: 1250, y: 0, width: 750, height: 1000)
                 ])
             }
+
+            describe("coding") {
+                it("encodes and decodes") {
+                    let layout = ThreeColumnMiddleLayout<TestWindow>()
+                    layout.increaseMainPaneCount()
+                    layout.recommendMainPaneRatio(0.45)
+
+                    expect(layout.mainPaneCount).to(equal(2))
+                    expect(layout.mainPaneRatio).to(equal(0.45))
+
+                    let encodedLayout = try! JSONEncoder().encode(layout)
+                    let decodedLayout = try! JSONDecoder().decode(ThreeColumnMiddleLayout<TestWindow>.self, from: encodedLayout)
+
+                    expect(decodedLayout.mainPaneCount).to(equal(2))
+                    expect(decodedLayout.mainPaneRatio).to(equal(0.45))
+                }
+            }
         }
 
         describe("left layout") {
@@ -454,6 +471,23 @@ class ThreeColumnLayoutTests: QuickSpec {
                     CGRect(x: 1250, y: 0, width: 750, height: 1000)
                 ])
             }
+
+            describe("coding") {
+                it("encodes and decodes") {
+                    let layout = ThreeColumnLeftLayout<TestWindow>()
+                    layout.increaseMainPaneCount()
+                    layout.recommendMainPaneRatio(0.45)
+
+                    expect(layout.mainPaneCount).to(equal(2))
+                    expect(layout.mainPaneRatio).to(equal(0.45))
+
+                    let encodedLayout = try! JSONEncoder().encode(layout)
+                    let decodedLayout = try! JSONDecoder().decode(ThreeColumnLeftLayout<TestWindow>.self, from: encodedLayout)
+
+                    expect(decodedLayout.mainPaneCount).to(equal(2))
+                    expect(decodedLayout.mainPaneRatio).to(equal(0.45))
+                }
+            }
         }
 
         describe("right layout") {
@@ -630,6 +664,23 @@ class ThreeColumnLayoutTests: QuickSpec {
                     CGRect(x: 0, y: 0, width: 750, height: 1000),
                     CGRect(x: 750, y: 0, width: 750, height: 1000)
                 ])
+            }
+
+            describe("coding") {
+                it("encodes and decodes") {
+                    let layout = ThreeColumnRightLayout<TestWindow>()
+                    layout.increaseMainPaneCount()
+                    layout.recommendMainPaneRatio(0.45)
+
+                    expect(layout.mainPaneCount).to(equal(2))
+                    expect(layout.mainPaneRatio).to(equal(0.45))
+
+                    let encodedLayout = try! JSONEncoder().encode(layout)
+                    let decodedLayout = try! JSONDecoder().decode(ThreeColumnRightLayout<TestWindow>.self, from: encodedLayout)
+
+                    expect(decodedLayout.mainPaneCount).to(equal(2))
+                    expect(decodedLayout.mainPaneRatio).to(equal(0.45))
+                }
             }
         }
     }

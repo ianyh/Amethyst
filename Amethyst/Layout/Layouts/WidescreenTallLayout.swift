@@ -30,6 +30,12 @@ class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
         super.init()
     }
 
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(mainPaneCount, forKey: .mainPaneCount)
+        try container.encode(mainPaneRatio, forKey: .mainPaneRatio)
+    }
+
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
         let windows = windowSet.windows
 

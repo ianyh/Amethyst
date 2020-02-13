@@ -47,5 +47,15 @@ class FullscreenLayoutTests: QuickSpec {
                 }
             }
         }
+
+        describe("coding") {
+            it("encodes and decodes") {
+                let layout = FullscreenLayout<TestWindow>()
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                expect {
+                    try JSONDecoder().decode(FullscreenLayout<TestWindow>.self, from: encodedLayout)
+                }.toNot(throwError())
+            }
+        }
     }
 }
