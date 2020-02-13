@@ -42,5 +42,15 @@ class FloatingLayoutTests: QuickSpec {
                 expect(layout.frameAssignments(windowSet, on: screen)).to(beNil())
             }
         }
+
+        describe("coding") {
+            it("encodes and decodes") {
+                let layout = FloatingLayout<TestWindow>()
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                expect {
+                    try JSONDecoder().decode(FloatingLayout<TestWindow>.self, from: encodedLayout)
+                }.toNot(throwError())
+            }
+        }
     }
 }

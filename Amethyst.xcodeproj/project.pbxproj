@@ -411,9 +411,9 @@
 				40D491D723367590007E0CCB /* RowLayoutTests.swift */,
 				403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */,
 				40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */,
+				40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */,
 				4000DB0F239CA07000365A0C /* WideLayoutTests.swift */,
 				40AB5BEA23AB182300E29346 /* WidescreenTallLayoutTests.swift */,
-				40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";

@@ -199,5 +199,22 @@ class RowLayoutTests: QuickSpec {
                 ])
             }
         }
+
+        describe("coding") {
+            it("encodes and decodes") {
+                let layout = RowLayout<TestWindow>()
+                layout.increaseMainPaneCount()
+                layout.recommendMainPaneRatio(0.45)
+
+                expect(layout.mainPaneCount).to(equal(2))
+                expect(layout.mainPaneRatio).to(equal(0.45))
+
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let decodedLayout = try! JSONDecoder().decode(RowLayout<TestWindow>.self, from: encodedLayout)
+
+                expect(decodedLayout.mainPaneCount).to(equal(2))
+                expect(decodedLayout.mainPaneRatio).to(equal(0.45))
+            }
+        }
     }
 }
