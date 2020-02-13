@@ -281,6 +281,42 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                     expect(node.valid).to(beFalse())
                 }
             }
+
+            it("deep compares") {
+                let treeGenerator: () -> TreeNode<TestWindow> = {
+                    let rootNode = TreeNode<TestWindow>()
+                    let node1 = TreeNode<TestWindow>()
+                    let node2 = TreeNode<TestWindow>()
+                    let node3 = TreeNode<TestWindow>()
+                    let node4 = TreeNode<TestWindow>()
+
+                    node1.parent = rootNode
+                    node1.left = node2
+                    node1.right = node3
+
+                    node2.windowID = "0"
+                    node2.parent = node1
+
+                    node3.windowID = "1"
+                    node3.parent = node1
+
+                    node4.windowID = "2"
+                    node4.parent = rootNode
+
+                    rootNode.left = node4
+                    rootNode.right = node1
+
+                    return rootNode
+                }
+                let tree1 = treeGenerator()
+                let tree2 = treeGenerator()
+                let tree3 = treeGenerator()
+
+                tree3.right?.right?.windowID = "5"
+
+                expect(tree1 == tree2).to(beTrue())
+                expect(tree1 == tree3).to(beFalse())
+            }
         }
 
         describe("layout") {

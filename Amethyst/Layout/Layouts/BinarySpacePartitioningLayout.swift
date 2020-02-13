@@ -138,7 +138,7 @@ class TreeNode<Window: WindowType> {
 
 extension TreeNode: Equatable {
     static func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
-        return lhs.windowID == rhs.windowID
+        return lhs.windowID == rhs.windowID && lhs.left == rhs.left && lhs.right == rhs.right
     }
 }
 
