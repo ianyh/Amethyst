@@ -320,17 +320,10 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         windows.regenerateActiveIDCache()
         windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
 
-        application.observe(notification: kAXUIElementDestroyedNotification, window: window) { element in
-            guard let window = Window(element: element) else {
-                return
-            }
+        application.observe(notification: kAXUIElementDestroyedNotification, window: window) { _ in
             self.remove(window: window)
         }
-        application.observe(notification: kAXWindowMiniaturizedNotification, window: window) { element in
-            guard let window = Window(element: element) else {
-                return
-            }
-
+        application.observe(notification: kAXWindowMiniaturizedNotification, window: window) { _ in
             self.remove(window: window)
 
             guard let screen = window.screen() else {
