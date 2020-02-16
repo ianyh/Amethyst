@@ -540,6 +540,52 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                 expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
             }
         }
+
+        describe("coding") {
+            it("encodes and decodes") {
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+                let window = TestWindow(element: nil)!
+
+                layout.updateWithChange(.add(window: window))
+
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let decodedLayout = try! JSONDecoder().decode(BinarySpacePartitioningLayout<TestWindow>.self, from: encodedLayout)
+
+                expect(decodedLayout).to(equal(layout))
+            }
+
+            it("maintains the tree") {
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+                let windows = [TestWindow(element: nil)!, TestWindow(element: nil)!, TestWindow(element: nil)!]
+
+                layout.updateWithChange(.add(window: windows[0]))
+                layout.updateWithChange(.add(window: windows[1]))
+                layout.updateWithChange(.focusChanged(window: windows[0]))
+                layout.updateWithChange(.add(window: windows[2]))
+
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let decodedLayout = try! JSONDecoder().decode(BinarySpacePartitioningLayout<TestWindow>.self, from: encodedLayout)
+
+                expect(decodedLayout).to(equal(layout))
+
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+
+                let assignments = decodedLayout.frameAssignments(windowSet, on: screen)!.map { [$0.window.id: $0.frame] }
+                let expectedAssignments = layout.frameAssignments(windowSet, on: screen)!.map { [$0.window.id: $0.frame] }
+                expect(assignments).to(equal(expectedAssignments))
+            }
+        }
     }
 }
 

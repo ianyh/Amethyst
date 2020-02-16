@@ -171,6 +171,14 @@ extension SIApplication: ApplicationType {
     /// `SIApplication` uses `AXWindow` as its window type.
     typealias Window = AXWindow
 
+    convenience init?(pid: pid_t) {
+        guard let runningApplication = NSRunningApplication(processIdentifier: pid) else {
+            return nil
+        }
+
+        self.init(runningApplication: runningApplication)
+    }
+
     func windows() -> [Window] {
         let axWindows: [SIWindow] = self.windows()
         return axWindows.map { Window(axElement: $0.axElementRef) }

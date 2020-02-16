@@ -66,6 +66,16 @@ class Layout<Window: WindowType>: Codable {
     }
 }
 
+/// Errors occurring when decoding a layout
+enum LayoutDecodingError: Error {
+    /**
+     Something about the layout was structurally unsound.
+     
+     Notable example: bsp layout cannot recover if some windows are no longer present, so if we fail to decode a node the layout is no longer sound.
+     */
+    case invalidLayout
+}
+
 // MARK: Window Querying
 
 extension Layout {

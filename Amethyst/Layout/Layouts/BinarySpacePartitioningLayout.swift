@@ -8,13 +8,35 @@
 
 import Silica
 
-class TreeNode<Window: WindowType> {
+class TreeNode<Window: WindowType>: Codable {
     typealias WindowID = Window.WindowID
+
+    private enum CodingKeys: String, CodingKey {
+        case left
+        case right
+        case windowID
+    }
 
     weak var parent: TreeNode?
     var left: TreeNode?
     var right: TreeNode?
     var windowID: WindowID?
+
+    init() {}
+
+    required init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.left = try values.decodeIfPresent(TreeNode.self, forKey: .left)
+        self.right = try values.decodeIfPresent(TreeNode.self, forKey: .right)
+        self.windowID = try values.decodeIfPresent(WindowID.self, forKey: .windowID)
+
+        self.left?.parent = self
+        self.right?.parent = self
+
+        guard valid else {
+            throw LayoutDecodingError.invalidLayout
+        }
+    }
 
     var valid: Bool {
         return (left != nil && right != nil && windowID == nil) || (left == nil && right == nil && windowID != nil)
@@ -147,6 +169,10 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
 
     private typealias TraversalNode = (node: TreeNode<Window>, frame: CGRect)
 
+    private enum CodingKeys: String, CodingKey {
+        case rootNode
+    }
+
     override static var layoutName: String { return "Binary Space Partitioning" }
     override static var layoutKey: String { return "bsp" }
 
@@ -154,6 +180,21 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
 
     private var rootNode = TreeNode<Window>()
     private var lastKnownFocusedWindowID: WindowID?
+
+    required init() {
+        super.init()
+    }
+
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.rootNode = try container.decode(TreeNode<Window>.self, forKey: .rootNode)
+        super.init()
+    }
+
+    override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(rootNode, forKey: .rootNode)
+    }
 
     private func constructInitialTreeWithWindows(_ windows: [LayoutWindow<Window>]) {
         for window in windows {
@@ -323,5 +364,11 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
         }
 
         return ret
+    }
+}
+
+extension BinarySpacePartitioningLayout: Equatable {
+    static func == (lhs: BinarySpacePartitioningLayout<Window>, rhs: BinarySpacePartitioningLayout<Window>) -> Bool {
+        return lhs.rootNode == rhs.rootNode
     }
 }
