@@ -88,6 +88,7 @@ enum ConfigurationKey: String {
     case screenPaddingTop = "screen-padding-top"
     case screenPaddingBottom = "screen-padding-bottom"
     case debugLayoutInfo = "debug-layout-info"
+    case restoreLayoutsOnLaunch = "restore-layouts-on-launch"
 }
 
 extension ConfigurationKey: CaseIterable {}
@@ -569,6 +570,10 @@ class UserConfiguration: NSObject {
 
     func followWindowsThrownBetweenSpaces() -> Bool {
         return storage.bool(forKey: .followSpaceThrownWindows)
+    }
+
+    func restoreLayoutsOnLaunch() -> Bool {
+        return storage.bool(forKey: .restoreLayoutsOnLaunch)
     }
 }
 

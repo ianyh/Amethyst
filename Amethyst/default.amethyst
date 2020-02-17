@@ -222,5 +222,6 @@
     "screen-padding-bottom": 0,
     "screen-padding-left": 0,
     "screen-padding-right": 0,
-    "debug-layout-info": false
+    "debug-layout-info": false,
+    "restore-layouts-on-launch": true
 }

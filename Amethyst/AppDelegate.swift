@@ -56,7 +56,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         preferencesWindowController?.window?.level = .floating
 
-        if let encodedWindowManager = UserDefaults.standard.data(forKey: AppDelegate.windowManagerEncodingKey) {
+        if let encodedWindowManager = UserDefaults.standard.data(forKey: AppDelegate.windowManagerEncodingKey), UserConfiguration.shared.restoreLayoutsOnLaunch() {
             let decoder = JSONDecoder()
             windowManager = try? decoder.decode(WindowManager<SIApplication>.self, from: encodedWindowManager)
         }
