@@ -2,6 +2,7 @@
 
 # Check Xcode version (TODO: semver)
 OUR_XCODE=11.3
+OUR_RUBY=`cat .ruby-version | tr -d '\n'`
 printf "Checking if xcode-select points to the Xcode version we use ($OUR_XCODE): "
 if [ `xcodebuild -version | grep Xcode | awk '{print $2}'` = $OUR_XCODE ] ; then
     printf "found!\n"
@@ -14,15 +15,17 @@ fi
 printf "Checking for rbenv: "
 if rbenv version >/dev/null 2>&1 ; then
     printf "found!\n"
-    printf "Ensuring correct ruby version is installed:\n"
-    rbenv install -s
-    printf "Correct ruby version installed!\n"
-
+    printf "Ensuring correct ruby version ($OUR_RUBY) is installed:\n"
+    rbenv install -s $OUR_RUBY
+    eval "$(rbenv init -)"
+    ACTUAL_RUBY=`ruby -v | awk '{print $2}' | awk -Fp '{print $1}' | tr -d '\n'`
+    printf "Correct ruby version installed: $ACTUAL_RUBY\n"
+    gem install bundler
+    rbenv rehash
 else
     printf "nope!\n"
     ACTUAL=`ruby -v | awk '{print $2}' | awk -Fp '{print $1}' | tr -d '\n'`
-    EXPECTED=`cat .ruby-version | tr -d '\n'`
-    if [ $ACTUAL = $EXPECTED ] ; then
+    if [ $ACTUAL = $OUR_RUBY ] ; then
 	printf "Correct ruby version is already installed, without rbenv\n"
     else
 	printf "WARNING: You have ruby $ACTUAL, we want ruby $EXPECTED, and rbenv is not installed.\n"
