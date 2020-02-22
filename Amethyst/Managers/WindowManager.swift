@@ -249,9 +249,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     }
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
-        windows.regenerateActiveIDCache()
-        screens.updateSpaces()
-
         for runningApplication in NSWorkspace.shared.runningApplications {
             guard runningApplication.isManageable else {
                 continue
@@ -269,6 +266,8 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             }
         }
 
+        screens.updateSpaces()
+        windows.regenerateActiveIDCache()
         markAllScreensForReflow(withChange: .spaceChange)
     }
 
