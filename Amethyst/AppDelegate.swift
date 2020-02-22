@@ -62,9 +62,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         windowManager = windowManager ?? WindowManager(userConfiguration: UserConfiguration.shared)
-        hotKeyManager = HotKeyManager(appDelegate: self, userConfiguration: UserConfiguration.shared)
+        hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
-        hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared)
+        hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared, appDelegate: self)
     }
 
     override func awakeFromNib() {
