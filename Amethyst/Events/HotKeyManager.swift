@@ -24,15 +24,13 @@ typealias HotKeyHandler = () -> Void
 
 class HotKeyManager<Application: ApplicationType>: NSObject {
     private let userConfiguration: UserConfiguration
-    private weak var appDelegate: AppDelegate?
 
     private(set) lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
         return self.constructKeyCodeMap()
     }()
 
-    init(appDelegate: AppDelegate, userConfiguration: UserConfiguration) {
+    init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
-        self.appDelegate = appDelegate
         super.init()
         _ = constructKeyCodeMap()
         MASShortcutValidator.shared().allowAnyShortcutWithOptionModifier = true
@@ -71,7 +69,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
     }
 
-    func setUpWithWindowManager(_ windowManager: WindowManager<Application>, configuration: UserConfiguration) {
+    func setUpWithWindowManager(_ windowManager: WindowManager<Application>, configuration: UserConfiguration, appDelegate: AppDelegate) {
         constructCommandWithCommandKey(CommandKey.cycleLayoutForward.rawValue) {
             let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.cycleLayoutForward()
@@ -208,8 +206,8 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
-        constructCommandWithCommandKey(CommandKey.relaunchAmethyst.rawValue) {
-            self.appDelegate?.relaunch(self)
+        constructCommandWithCommandKey(CommandKey.relaunchAmethyst.rawValue) { [weak appDelegate] in
+            appDelegate?.relaunch(self)
         }
 
         LayoutType<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
