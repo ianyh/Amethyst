@@ -145,11 +145,11 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
-        markAllScreensForReflow(withChange: .unknown)
+        markAllScreensForReflow(withChange: .applicationActivate)
     }
 
     fileprivate func deactivate(application: AnyApplication<Application>) {
-        markAllScreensForReflow(withChange: .unknown)
+        markAllScreensForReflow(withChange: .applicationDeactivate)
     }
 
     fileprivate func remove(window: Window) {
