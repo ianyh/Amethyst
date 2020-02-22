@@ -83,7 +83,7 @@ class TallRightLayout<Window: WindowType>: Layout<Window>, PanedLayout {
             } else {
                 scaleFactor = screenFrame.size.width / secondaryPaneWindowWidth
                 windowFrame.origin.x = screenFrame.origin.x
-                windowFrame.origin.y = secondaryPaneWindowHeight * CGFloat(windows.count - (frameAssignments.count + 1))
+                windowFrame.origin.y = screenFrame.origin.y + secondaryPaneWindowHeight * CGFloat(windows.count - (frameAssignments.count + 1))
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
             }

@@ -138,6 +138,41 @@ class ThreeColumnLayoutTests: QuickSpec {
                 ])
             }
 
+            it("handles non-origin screens") {
+                let screen = TestScreen(frame: CGRect(x: 100, y: 100, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = ThreeColumnMiddleLayout<TestWindow>()
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(layout.mainPaneCount).to(equal(1))
+
+                let mainAssignment = frameAssignments.forWindows(windows[..<1])
+                let secondaryAssignments = frameAssignments.forWindows(windows[1...])
+
+                mainAssignment.verify(frames: [
+                    CGRect(x: 600, y: 100, width: 1000, height: 1000)
+                ])
+                secondaryAssignments.verify(frames: [
+                    CGRect(x: 100, y: 100, width: 500, height: 1000),
+                    CGRect(x: 1600, y: 100, width: 500, height: 1000)
+                ])
+            }
+
             it("increases and decreases windows in the main pane") {
                 let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
                 TestScreen.availableScreens = [screen]
@@ -332,6 +367,41 @@ class ThreeColumnLayoutTests: QuickSpec {
                 ])
             }
 
+            it("handles non-origin screen") {
+                let screen = TestScreen(frame: CGRect(x: 100, y: 100, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = ThreeColumnLeftLayout<TestWindow>()
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(layout.mainPaneCount).to(equal(1))
+
+                let mainAssignment = frameAssignments.forWindows(windows[..<1])
+                let secondaryAssignments = frameAssignments.forWindows(windows[1...])
+
+                mainAssignment.verify(frames: [
+                    CGRect(x: 100, y: 100, width: 1000, height: 1000)
+                ])
+                secondaryAssignments.verify(frames: [
+                    CGRect(x: 1100, y: 100, width: 500, height: 1000),
+                    CGRect(x: 1600, y: 100, width: 500, height: 1000)
+                ])
+            }
+
             it("increases and decreases windows in the main pane") {
                 let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
                 TestScreen.availableScreens = [screen]
@@ -523,6 +593,41 @@ class ThreeColumnLayoutTests: QuickSpec {
                 secondaryAssignments.verify(frames: [
                     CGRect(x: 0, y: 0, width: 500, height: 1000),
                     CGRect(x: 500, y: 0, width: 500, height: 1000)
+                ])
+            }
+
+            it("separates into a main pane and two secondary panes") {
+                let screen = TestScreen(frame: CGRect(x: 100, y: 100, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = ThreeColumnRightLayout<TestWindow>()
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(layout.mainPaneCount).to(equal(1))
+
+                let mainAssignment = frameAssignments.forWindows(windows[..<1])
+                let secondaryAssignments = frameAssignments.forWindows(windows[1...])
+
+                mainAssignment.verify(frames: [
+                    CGRect(x: 1100, y: 100, width: 1000, height: 1000)
+                ])
+                secondaryAssignments.verify(frames: [
+                    CGRect(x: 100, y: 100, width: 500, height: 1000),
+                    CGRect(x: 600, y: 100, width: 500, height: 1000)
                 ])
             }
 
