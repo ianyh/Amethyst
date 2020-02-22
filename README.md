@@ -61,6 +61,7 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `mod2 + k` | Swap focused window clockwise |
 | `mod1 + enter` | Swap focused window with main window |
 | `mod1 + z` | Force windows to be reevalulated |
+| `mod2 + z` | Relaunch Amethyst |
 | `mod2 + left` | Throw focused window to space left |
 | `mod2 + right` | Throw focused window to space right |
 | `mod2 + 1` | Throw focused window to space 1 |
