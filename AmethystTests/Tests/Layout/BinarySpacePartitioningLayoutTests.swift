@@ -352,6 +352,38 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                 ])
             }
 
+            it("handles non-origin screens") {
+                let screen = TestScreen(frame: CGRect(x: 100, y: 100, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+                windows.forEach { layout.updateWithChange(.add(window: $0)) }
+
+                let assignments = layout.frameAssignments(windowSet, on: screen)!
+                assignments.verify(frames: [
+                    CGRect(x: 100, y: 100, width: 1000, height: 1000),
+                    CGRect(x: 1100, y: 100, width: 1000, height: 500),
+                    CGRect(x: 1100, y: 600, width: 500, height: 500),
+                    CGRect(x: 1600, y: 600, width: 500, height: 500)
+                ])
+            }
+
             describe("adding windows") {
                 it("partitions the focused frame") {
                     let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
