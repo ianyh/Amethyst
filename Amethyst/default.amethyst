@@ -201,6 +201,10 @@
         "mod": "mod2",
         "key": "x"
     },
+    "relaunch-amethyst": {
+        "mod": "mod2",
+        "key": "z"
+    },
     "floating": [],
     "floating-is-blacklist": true,
     "float-small-windows": true,
