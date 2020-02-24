@@ -21,7 +21,6 @@ class GeneralPreferencesViewController: NSViewController, NSTableViewDataSource,
         layoutsTableView?.dataSource = self
         layoutsTableView?.delegate = self
         layoutsTableView?.registerForDraggedTypes([.string])
-
     }
 
     override func viewWillAppear() {
