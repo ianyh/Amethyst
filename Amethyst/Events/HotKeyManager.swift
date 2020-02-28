@@ -14,7 +14,7 @@ import Silica
 typealias AMKeyCode = Int
 
 // Type for defining modifier flags.
-typealias AMModifierFlags = UInt
+typealias AMModifierFlags = NSEvent.ModifierFlags
 
 // Specific key code defined to be invalid.
 // Can be used to identify if a returned key code is valid or not.
@@ -69,7 +69,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
     }
 
-    func setUpWithWindowManager(_ windowManager: WindowManager<Application>, configuration: UserConfiguration) {
+    func setUpWithWindowManager(_ windowManager: WindowManager<Application>, configuration: UserConfiguration, appDelegate: AppDelegate) {
         constructCommandWithCommandKey(CommandKey.cycleLayoutForward.rawValue) {
             let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
             screenManager?.cycleLayoutForward()
@@ -206,7 +206,11 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
-        LayoutManager<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
+        constructCommandWithCommandKey(CommandKey.relaunchAmethyst.rawValue) { [weak appDelegate] in
+            appDelegate?.relaunch(self)
+        }
+
+        LayoutType<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
                 let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
                 screenManager?.selectLayout(layoutKey)
@@ -359,11 +363,13 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
 
-        for (layoutKey, layoutName) in LayoutManager<Application.Window>.availableLayoutStrings() {
+        for (layoutKey, layoutName) in LayoutType<Application.Window>.availableLayoutStrings() {
             let commandName = "Select \(layoutName) layout"
             let commandKey = "select-\(layoutKey)-layout"
             hotKeyNameToDefaultsKey.append([commandName, commandKey])
         }
+
+        hotKeyNameToDefaultsKey.append(["Relaunch Amethyst", CommandKey.relaunchAmethyst.rawValue])
 
         return hotKeyNameToDefaultsKey
     }

@@ -281,6 +281,42 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                     expect(node.valid).to(beFalse())
                 }
             }
+
+            it("deep compares") {
+                let treeGenerator: () -> TreeNode<TestWindow> = {
+                    let rootNode = TreeNode<TestWindow>()
+                    let node1 = TreeNode<TestWindow>()
+                    let node2 = TreeNode<TestWindow>()
+                    let node3 = TreeNode<TestWindow>()
+                    let node4 = TreeNode<TestWindow>()
+
+                    node1.parent = rootNode
+                    node1.left = node2
+                    node1.right = node3
+
+                    node2.windowID = "0"
+                    node2.parent = node1
+
+                    node3.windowID = "1"
+                    node3.parent = node1
+
+                    node4.windowID = "2"
+                    node4.parent = rootNode
+
+                    rootNode.left = node4
+                    rootNode.right = node1
+
+                    return rootNode
+                }
+                let tree1 = treeGenerator()
+                let tree2 = treeGenerator()
+                let tree3 = treeGenerator()
+
+                tree3.right?.right?.windowID = "5"
+
+                expect(tree1 == tree2).to(beTrue())
+                expect(tree1 == tree3).to(beFalse())
+            }
         }
 
         describe("layout") {
@@ -313,6 +349,38 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                     CGRect(x: 1000, y: 0, width: 1000, height: 500),
                     CGRect(x: 1000, y: 500, width: 500, height: 500),
                     CGRect(x: 1500, y: 500, width: 500, height: 500)
+                ])
+            }
+
+            it("handles non-origin screens") {
+                let screen = TestScreen(frame: CGRect(x: 100, y: 100, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+                windows.forEach { layout.updateWithChange(.add(window: $0)) }
+
+                let assignments = layout.frameAssignments(windowSet, on: screen)!
+                assignments.verify(frames: [
+                    CGRect(x: 100, y: 100, width: 1000, height: 1000),
+                    CGRect(x: 1100, y: 100, width: 1000, height: 500),
+                    CGRect(x: 1100, y: 600, width: 500, height: 500),
+                    CGRect(x: 1600, y: 600, width: 500, height: 500)
                 ])
             }
 
@@ -502,6 +570,52 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                     CGRect(x: 1500, y: 500, width: 500, height: 500)
                 ]
                 expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
+            }
+        }
+
+        describe("coding") {
+            it("encodes and decodes") {
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+                let window = TestWindow(element: nil)!
+
+                layout.updateWithChange(.add(window: window))
+
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let decodedLayout = try! JSONDecoder().decode(BinarySpacePartitioningLayout<TestWindow>.self, from: encodedLayout)
+
+                expect(decodedLayout).to(equal(layout))
+            }
+
+            it("maintains the tree") {
+                let layout = BinarySpacePartitioningLayout<TestWindow>()
+                let windows = [TestWindow(element: nil)!, TestWindow(element: nil)!, TestWindow(element: nil)!]
+
+                layout.updateWithChange(.add(window: windows[0]))
+                layout.updateWithChange(.add(window: windows[1]))
+                layout.updateWithChange(.focusChanged(window: windows[0]))
+                layout.updateWithChange(.add(window: windows[2]))
+
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let decodedLayout = try! JSONDecoder().decode(BinarySpacePartitioningLayout<TestWindow>.self, from: encodedLayout)
+
+                expect(decodedLayout).to(equal(layout))
+
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+
+                let assignments = decodedLayout.frameAssignments(windowSet, on: screen)!.map { [$0.window.id: $0.frame] }
+                let expectedAssignments = layout.frameAssignments(windowSet, on: screen)!.map { [$0.window.id: $0.frame] }
+                expect(assignments).to(equal(expectedAssignments))
             }
         }
     }

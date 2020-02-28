@@ -55,6 +55,43 @@ class ColumnLayoutTests: QuickSpec {
                 secondaryAssignments.verify(frames: secondaryFrames)
             }
 
+            it("handles non-origin screen") {
+                let screen = TestScreen(frame: CGRect(x: 100, y: 100, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = ColumnLayout<TestWindow>()
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(layout.mainPaneCount).to(equal(1))
+
+                // The main pane is full height and the first half of the screen
+                let mainAssignment = frameAssignments.forWindows(windows[..<1])
+                let secondaryAssignments = frameAssignments.forWindows(windows[1...])
+
+                mainAssignment.verify(frames: [CGRect(x: 100, y: 100, width: 1000, height: 1000)])
+
+                let secondaryFrames = secondaryAssignments.enumerated().map { index, _ in
+                    return CGRect(x: 1100.0 + 333.0 * CGFloat(index), y: 100, width: 333, height: 1000)
+                }
+
+                secondaryAssignments.verify(frames: secondaryFrames)
+            }
+
             it("increases and decreases windows in the main pane") {
                 let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
                 TestScreen.availableScreens = [screen]
@@ -193,6 +230,23 @@ class ColumnLayoutTests: QuickSpec {
                     CGRect(x: 500, y: 0, width: 750, height: 1000),
                     CGRect(x: 1250, y: 0, width: 750, height: 1000)
                 ])
+            }
+        }
+
+        describe("coding") {
+            it("encodes and decodes") {
+                let layout = ColumnLayout<TestWindow>()
+                layout.increaseMainPaneCount()
+                layout.recommendMainPaneRatio(0.45)
+
+                expect(layout.mainPaneCount).to(equal(2))
+                expect(layout.mainPaneRatio).to(equal(0.45))
+
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let decodedLayout = try! JSONDecoder().decode(ColumnLayout<TestWindow>.self, from: encodedLayout)
+
+                expect(decodedLayout.mainPaneCount).to(equal(2))
+                expect(decodedLayout.mainPaneRatio).to(equal(0.45))
             }
         }
     }

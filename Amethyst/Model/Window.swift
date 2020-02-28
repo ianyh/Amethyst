@@ -12,7 +12,7 @@ import Silica
 /// Generic protocol for objects acting as windows in the system.
 protocol WindowType: Equatable {
     associatedtype Screen: ScreenType
-    associatedtype WindowID: Hashable
+    associatedtype WindowID: Codable, Hashable
 
     /// Returns the currently focused window of its type.
     static func currentlyFocused() -> Self?
@@ -27,9 +27,10 @@ protocol WindowType: Equatable {
      */
     init?(element: SIAccessibilityElement?)
 
+    /// Returns an opaque unique identifier for the window.
     func id() -> WindowID
 
-    /// Returns the window's ID
+    /// Returns the window's ID in the underlying window system.
     func cgID() -> CGWindowID
 
     /// Returns the window's current frame.
@@ -110,25 +111,70 @@ protocol WindowType: Equatable {
     func move(toSpace spaceID: CGSSpaceID)
 }
 
+enum WindowDecodingError: Error {
+    case idNotFound
+}
+
 /**
  Final subclass of the Silica `SIWindow`.
  
  A final class is necessary for satisfying the `focusedWindow()` requirement in the `WindowType` protocol. Otherwise, as `SIWindow` is not final, the type system does not know how to constrain `Self`.
  */
 final class AXWindow: SIWindow {}
-final class AXWindowID: Hashable {
-    private let element: SIAccessibilityElement
 
+/**
+ Identifier for `AXWindow` objects.
+ 
+ - Note:
+ Decoding for this object is very inefficient. Use it sparingly.
+ */
+final class AXWindowID: Hashable, Codable {
+    /// Coding keys.
+    private enum CodingKeys: String, CodingKey {
+        /// The pid of the process that owns the window.
+        case pid
+
+        /// The CoreGraphics id for the window.
+        case windowID
+    }
+
+    private let window: AXWindow
+
+    /// Equality for window IDs is based on the underlying CoreGraphics id and the owning pid, which (mostly) uniquely identifies a window.
     static func == (lhs: AXWindowID, rhs: AXWindowID) -> Bool {
-        return lhs.element == rhs.element
+        return lhs.window.pid() == rhs.window.pid() && lhs.window.windowID() == rhs.window.windowID()
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(element)
+        hasher.combine(window)
     }
 
-    fileprivate init(element: SIAccessibilityElement) {
-        self.element = element
+    fileprivate init(window: AXWindow) {
+        self.window = window
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let pid = try container.decode(pid_t.self, forKey: .pid)
+        let windowID = try container.decode(CGWindowID.self, forKey: .windowID)
+
+        guard let application = SIApplication(pid: pid) else {
+            throw WindowDecodingError.idNotFound
+        }
+
+        let windows: [SIWindow] = application.windows()
+
+        guard let window = windows.first(where: { $0.windowID() == windowID }) else {
+            throw WindowDecodingError.idNotFound
+        }
+
+        self.window = AXWindow(axElement: window.axElementRef)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(window.pid(), forKey: .pid)
+        try container.encode(window.windowID(), forKey: .windowID)
     }
 }
 
@@ -162,7 +208,7 @@ extension AXWindow: WindowType {
     }
 
     func id() -> WindowID {
-        return AXWindowID(element: self)
+        return AXWindowID(window: self)
     }
 
     func cgID() -> CGWindowID {

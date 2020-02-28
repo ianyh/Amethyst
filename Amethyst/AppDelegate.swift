@@ -16,6 +16,8 @@ import Sparkle
 import SwiftyBeaver
 
 class AppDelegate: NSObject, NSApplicationDelegate {
+    static let windowManagerEncodingKey = "EncodedWindowManager"
+
     @IBOutlet var preferencesWindowController: PreferencesWindowController?
 
     fileprivate var windowManager: WindowManager<SIApplication>?
@@ -54,10 +56,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         preferencesWindowController?.window?.level = .floating
 
-        windowManager = WindowManager(userConfiguration: UserConfiguration.shared)
+        if let encodedWindowManager = UserDefaults.standard.data(forKey: AppDelegate.windowManagerEncodingKey), UserConfiguration.shared.restoreLayoutsOnLaunch() {
+            let decoder = JSONDecoder()
+            windowManager = try? decoder.decode(WindowManager<SIApplication>.self, from: encodedWindowManager)
+        }
+
+        windowManager = windowManager ?? WindowManager(userConfiguration: UserConfiguration.shared)
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
-        hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared)
+        hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared, appDelegate: self)
     }
 
     override func awakeFromNib() {
@@ -86,6 +93,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         showPreferencesWindow(self)
+    }
+
+    func applicationWillTerminate(_ notification: Notification) {
+        guard let windowManager = windowManager else {
+            return
+        }
+
+        do {
+            let encoder = JSONEncoder()
+            let encodedWindowManager = try encoder.encode(windowManager)
+            UserDefaults.standard.set(encodedWindowManager, forKey: AppDelegate.windowManagerEncodingKey)
+        } catch {
+            log.error("Failed to encode window manager: \(error)")
+        }
     }
 
     @IBAction func toggleStartAtLogin(_ sender: AnyObject) {
