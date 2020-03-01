@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MousePreferencesViewController" customModule="Amethyst" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="x3L-Gq-iaK" id="Z03-U8-zUU"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="x3L-Gq-iaK" userLabel="General Preferences">
+            <rect key="frame" x="0.0" y="0.0" width="548" height="141"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="scP-ET-bFf">
+                    <rect key="frame" x="139" y="95" width="49" height="16"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Mouse:" id="XCu-B3-rM2">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="wYk-HL-GMD">
+                    <rect key="frame" x="192" y="94" width="217" height="18"/>
+                    <buttonCell key="cell" type="check" title="Mouse follows focused windows" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="TxK-dN-e0P">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="0Zw-5D-d8F" name="value" keyPath="values.mouse-follows-focus" id="oXG-n4-OKw"/>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="ixv-sr-c65">
+                    <rect key="frame" x="192" y="72" width="149" height="18"/>
+                    <buttonCell key="cell" type="check" title="Focus follows mouse" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="qfr-yK-eHB">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="0Zw-5D-d8F" name="value" keyPath="values.focus-follows-mouse" id="M1V-sX-Exx"/>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="sMl-QM-sUD">
+                    <rect key="frame" x="192" y="50" width="192" height="18"/>
+                    <buttonCell key="cell" type="check" title="Swap windows using mouse" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="uXT-sp-FfQ">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="0Zw-5D-d8F" name="value" keyPath="values.mouse-swaps-windows" id="F7g-JO-UNF"/>
+                    </connections>
+                </button>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="0le-KQ-hcF">
+                    <rect key="frame" x="192" y="28" width="198" height="18"/>
+                    <buttonCell key="cell" type="check" title="Resize windows using mouse" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="HHA-Vh-kIb">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="0Zw-5D-d8F" name="value" keyPath="values.mouse-resizes-windows" id="hIZ-Jv-M3v"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="0le-KQ-hcF" firstAttribute="leading" secondItem="sMl-QM-sUD" secondAttribute="leading" id="1RR-QQ-Sli"/>
+                <constraint firstAttribute="trailing" secondItem="scP-ET-bFf" secondAttribute="trailing" constant="362" id="8Y3-Sb-MQr"/>
+                <constraint firstItem="ixv-sr-c65" firstAttribute="leading" secondItem="wYk-HL-GMD" secondAttribute="leading" id="FTL-tK-70n"/>
+                <constraint firstItem="wYk-HL-GMD" firstAttribute="leading" secondItem="scP-ET-bFf" secondAttribute="trailing" constant="8" id="IVN-cc-odd"/>
+                <constraint firstItem="sMl-QM-sUD" firstAttribute="leading" secondItem="ixv-sr-c65" secondAttribute="leading" id="Qbp-uM-gRj"/>
+                <constraint firstItem="scP-ET-bFf" firstAttribute="top" secondItem="x3L-Gq-iaK" secondAttribute="top" constant="30" id="Xm0-Fe-eGV"/>
+                <constraint firstItem="ixv-sr-c65" firstAttribute="top" secondItem="wYk-HL-GMD" secondAttribute="bottom" constant="8" id="Yxr-99-91x"/>
+                <constraint firstItem="wYk-HL-GMD" firstAttribute="centerY" secondItem="scP-ET-bFf" secondAttribute="centerY" id="ZZ2-vt-5oW"/>
+                <constraint firstAttribute="bottom" secondItem="0le-KQ-hcF" secondAttribute="bottom" constant="30" id="fif-W9-08m"/>
+                <constraint firstItem="sMl-QM-sUD" firstAttribute="top" secondItem="ixv-sr-c65" secondAttribute="bottom" constant="8" id="hVp-9r-d09"/>
+                <constraint firstItem="0le-KQ-hcF" firstAttribute="top" secondItem="sMl-QM-sUD" secondAttribute="bottom" constant="8" id="zz4-Tg-iUB"/>
+            </constraints>
+            <point key="canvasLocation" x="561" y="61"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="0Zw-5D-d8F"/>
+    </objects>
+</document>

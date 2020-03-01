@@ -26,8 +26,12 @@ class PreferencesWindowController: NSWindowController {
         switch sender.itemIdentifier.rawValue {
         case "general":
             contentViewController = GeneralPreferencesViewController()
+        case "layouts":
+            contentViewController = LayoutsPreferencesViewController()
         case "shortcuts":
             contentViewController = ShortcutsPreferencesViewController()
+        case "mouse":
+            contentViewController = MousePreferencesViewController()
         case "floating":
             contentViewController = FloatingPreferencesViewController()
         case "debug":
