@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -101,10 +101,22 @@
                             <action selector="selectPane:" target="0fi-bi-huz" id="aNs-0B-bfi"/>
                         </connections>
                     </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="74318EC6-A099-4964-B13B-6B2B699C7EC3" explicitItemIdentifier="mouse" label="Mouse" paletteLabel="Mouse" image="toolbar-icon-cursor" selectable="YES" id="dfc-D6-FsG" userLabel="Mouse">
+                        <connections>
+                            <action selector="selectPane:" target="0fi-bi-huz" id="0vo-hl-zVN"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="C7D5B660-7047-4353-8F39-18609BCF05D1" explicitItemIdentifier="layouts" label="Layouts" paletteLabel="Layouts" image="toolbar-icon-layouts" selectable="YES" id="FsX-hN-WZb" userLabel="Layouts">
+                        <connections>
+                            <action selector="selectPane:" target="0fi-bi-huz" id="mBI-Du-M23"/>
+                        </connections>
+                    </toolbarItem>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="WV2-G9-AL4"/>
+                    <toolbarItem reference="FsX-hN-WZb"/>
                     <toolbarItem reference="j0a-87-Yvz"/>
+                    <toolbarItem reference="dfc-D6-FsG"/>
                     <toolbarItem reference="QEp-pN-Lz9"/>
                     <toolbarItem reference="KUo-2v-ywG"/>
                 </defaultToolbarItems>
@@ -133,7 +145,9 @@
     <resources>
         <image name="NSAdvanced" width="32" height="32"/>
         <image name="NSPreferencesGeneral" width="32" height="32"/>
+        <image name="toolbar-icon-cursor" width="32" height="32"/>
         <image name="toolbar-icon-floating" width="36" height="36"/>
+        <image name="toolbar-icon-layouts" width="32" height="32"/>
         <image name="toolbar-icon-shortcuts" width="32" height="32"/>
     </resources>
 </document>
