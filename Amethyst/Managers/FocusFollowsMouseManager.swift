@@ -21,14 +21,12 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
     typealias Window = Delegate.Window
     typealias Screen = Window.Screen
 
-    weak var delegate: Delegate!
+    weak var delegate: Delegate?
 
     private let userConfiguration: UserConfiguration
-
     private let disposeBag = DisposeBag()
 
-    init(delegate: Delegate, userConfiguration: UserConfiguration) {
-        self.delegate = delegate
+    init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
 
         // we want to observe changes to the focusFollowsMouse config, because mouse tracking has CPU cost
