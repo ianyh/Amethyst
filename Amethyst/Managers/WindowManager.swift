@@ -152,10 +152,12 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
+        windows.activateApplication(withPID: application.pid())
         markAllScreensForReflow(withChange: .applicationActivate)
     }
 
     fileprivate func deactivate(application: AnyApplication<Application>) {
+        windows.deactivateApplication(withPID: application.pid())
         markAllScreensForReflow(withChange: .applicationDeactivate)
     }
 

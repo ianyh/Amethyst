@@ -13,6 +13,7 @@ extension WindowManager {
     class Windows {
         private(set) var windows: [Window] = []
         private var activeIDCache: Set<CGWindowID> = Set()
+        private var deactivatedPIDs: Set<pid_t> = Set()
         private var floatingMap: [Window.WindowID: Bool] = [:]
 
         // MARK: Window Filters
@@ -53,9 +54,10 @@ extension WindowManager {
                 }
 
                 let isActive = self.isWindowActive(window)
+                let isHidden = self.isWindowHidden(window)
                 let isFloating = self.isWindowFloating(window)
 
-                return windowScreen.screenID() == screen.screenID() && isActive && !isFloating
+                return windowScreen.screenID() == screen.screenID() && isActive && !isHidden && !isFloating
             }
 
             return screenWindows
@@ -104,12 +106,24 @@ extension WindowManager {
             return window.isActive() && activeIDCache.contains(window.cgID())
         }
 
+        func isWindowHidden(_ window: Window) -> Bool {
+            return deactivatedPIDs.contains(window.pid())
+        }
+
         func isWindowFloating(_ window: Window) -> Bool {
             return floatingMap[window.id()] ?? false
         }
 
         func setFloating(_ floating: Bool, forWindow window: Window) {
             floatingMap[window.id()] = floating
+        }
+
+        func activateApplication(withPID pid: pid_t) {
+            deactivatedPIDs.remove(pid)
+        }
+
+        func deactivateApplication(withPID pid: pid_t) {
+            deactivatedPIDs.insert(pid)
         }
 
         func regenerateActiveIDCache() {
