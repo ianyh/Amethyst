@@ -25,6 +25,11 @@ If applicable, add screenshots to help explain your problem.
 **Versions:**
  - macOS: 
  - Amethyst: 
+ 
+**Debug Info**
+```
+$ /Applications/Amethyst.app/Contents/MacOS/Amethyst --debug-info
+```
 
 **Additional context**
 Add any other context about the problem here.
