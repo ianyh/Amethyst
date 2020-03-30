@@ -67,6 +67,10 @@
 		40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A7AEA6232ECF3000E79964 /* Windows.swift */; };
 		40A87FDC2404AEAD005EE9C6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A87FDB2404AEAD005EE9C6 /* main.swift */; };
 		40A87FFD2404B1B4005EE9C6 /* DebugInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A87FFC2404B1B4005EE9C6 /* DebugInfo.swift */; };
+		40A87FFF240AF2BC005EE9C6 /* MousePreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A87FFE240AF2BC005EE9C6 /* MousePreferencesViewController.swift */; };
+		40A88001240AF2D5005EE9C6 /* MousePreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40A88000240AF2D5005EE9C6 /* MousePreferencesViewController.xib */; };
+		40A88003240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A88002240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift */; };
+		40A88005240C40D0005EE9C6 /* LayoutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40A88004240C40D0005EE9C6 /* LayoutsPreferencesViewController.xib */; };
 		40AB5BE923AB0A2B00E29346 /* TallRightLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */; };
 		40AB5BEB23AB182300E29346 /* WidescreenTallLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB5BEA23AB182300E29346 /* WidescreenTallLayoutTests.swift */; };
 		40AB5BED23AC3CF800E29346 /* ThreeColumnLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */; };
@@ -186,6 +190,10 @@
 		40A7AEA6232ECF3000E79964 /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
 		40A87FDB2404AEAD005EE9C6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		40A87FFC2404B1B4005EE9C6 /* DebugInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugInfo.swift; sourceTree = "<group>"; };
+		40A87FFE240AF2BC005EE9C6 /* MousePreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MousePreferencesViewController.swift; sourceTree = "<group>"; };
+		40A88000240AF2D5005EE9C6 /* MousePreferencesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MousePreferencesViewController.xib; sourceTree = "<group>"; };
+		40A88002240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutsPreferencesViewController.swift; sourceTree = "<group>"; };
+		40A88004240C40D0005EE9C6 /* LayoutsPreferencesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LayoutsPreferencesViewController.xib; sourceTree = "<group>"; };
 		40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallRightLayoutTests.swift; sourceTree = "<group>"; };
 		40AB5BEA23AB182300E29346 /* WidescreenTallLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayoutTests.swift; sourceTree = "<group>"; };
 		40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayoutTests.swift; sourceTree = "<group>"; };
@@ -248,6 +256,10 @@
 				40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */,
 				401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */,
 				4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */,
+				40A88002240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift */,
+				40A88004240C40D0005EE9C6 /* LayoutsPreferencesViewController.xib */,
+				40A87FFE240AF2BC005EE9C6 /* MousePreferencesViewController.swift */,
+				40A88000240AF2D5005EE9C6 /* MousePreferencesViewController.xib */,
 				401BC89B1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift */,
 				401BC8A11CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift */,
 				4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */,
@@ -613,6 +625,7 @@
 			files = (
 				4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */,
 				40111CCD22342CF3003D20BD /* DebugPreferencesViewController.xib in Resources */,
+				40A88001240AF2D5005EE9C6 /* MousePreferencesViewController.xib in Resources */,
 				402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */,
 				402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */,
 				40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */,
@@ -621,6 +634,7 @@
 				40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */,
 				40AF71DE20BB401400F58EA9 /* FloatingPreferencesViewController.xib in Resources */,
 				40E705D8176EAD7800850DA6 /* default.amethyst in Resources */,
+				40A88005240C40D0005EE9C6 /* LayoutsPreferencesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -760,6 +774,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
+				40A88003240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift in Sources */,
 				4046EFD12238949900113067 /* Application.swift in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
 				409645B31CEE8D950042F459 /* LogManager.swift in Sources */,
@@ -800,6 +815,7 @@
 				401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */,
 				40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
+				40A87FFF240AF2BC005EE9C6 /* MousePreferencesViewController.swift in Sources */,
 				40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */,
 				401C35B32244650F0019ED07 /* MouseState.swift in Sources */,
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
@@ -980,7 +996,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 87;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -992,7 +1008,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				MARKETING_VERSION = 0.15.1;
+				MARKETING_VERSION = 0.15.2;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"DEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1014,9 +1030,9 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 85;
+				CURRENT_PROJECT_VERSION = 87;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1026,7 +1042,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				MARKETING_VERSION = 0.15.1;
+				MARKETING_VERSION = 0.15.2;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"RELEASE\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";

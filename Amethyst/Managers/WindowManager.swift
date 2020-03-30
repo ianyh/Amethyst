@@ -21,8 +21,8 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         case screens
     }
 
-    private(set) lazy var windowTransitionCoordinator = WindowTransitionCoordinator(target: self)
-    private(set) lazy var focusTransitionCoordinator = FocusTransitionCoordinator(target: self, userConfiguration: self.userConfiguration)
+    let windowTransitionCoordinator: WindowTransitionCoordinator<WindowManager<Application>>
+    let focusTransitionCoordinator: FocusTransitionCoordinator<WindowManager<Application>>
 
     private var applications: [AnyApplication<Application>] = []
     private let screens: Screens
@@ -37,6 +37,8 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
         self.screens = Screens()
+        self.windowTransitionCoordinator = WindowTransitionCoordinator<WindowManager<Application>>()
+        self.focusTransitionCoordinator = FocusTransitionCoordinator<WindowManager<Application>>(userConfiguration: userConfiguration)
         super.init()
         initialize()
     }
@@ -45,11 +47,16 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.screens = try values.decode(Screens.self, forKey: .screens)
         self.userConfiguration = UserConfiguration.shared
+        self.windowTransitionCoordinator = WindowTransitionCoordinator<WindowManager<Application>>()
+        self.focusTransitionCoordinator = FocusTransitionCoordinator<WindowManager<Application>>(userConfiguration: userConfiguration)
         super.init()
         initialize()
     }
 
     private func initialize() {
+        windowTransitionCoordinator.target = self
+        focusTransitionCoordinator.target = self
+
         addWorkspaceNotificationObserver(NSWorkspace.didLaunchApplicationNotification, selector: #selector(applicationDidLaunch(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didTerminateApplicationNotification, selector: #selector(applicationDidTerminate(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didHideApplicationNotification, selector: #selector(applicationDidHide(_:)))
@@ -145,10 +152,12 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
+        windows.activateApplication(withPID: application.pid())
         markAllScreensForReflow(withChange: .applicationActivate)
     }
 
     fileprivate func deactivate(application: AnyApplication<Application>) {
+        windows.deactivateApplication(withPID: application.pid())
         markAllScreensForReflow(withChange: .applicationDeactivate)
     }
 

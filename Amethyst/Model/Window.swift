@@ -146,7 +146,8 @@ final class AXWindowID: Hashable, Codable {
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(window)
+        hasher.combine(window.pid())
+        hasher.combine(window.windowID())
     }
 
     fileprivate init(window: AXWindow) {
