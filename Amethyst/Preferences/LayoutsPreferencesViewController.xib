@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -33,7 +33,7 @@
                                 <tableColumns>
                                     <tableColumn editable="NO" width="483" minWidth="40" maxWidth="1000" id="iX3-vh-qVg">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                            <font key="font" metaFont="label" size="11"/>
+                                            <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
@@ -149,7 +149,7 @@
                     </textFieldCell>
                 </textField>
                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jyc-WA-HVd">
-                    <rect key="frame" x="224" y="223" width="19" height="28"/>
+                    <rect key="frame" x="224" y="224" width="19" height="27"/>
                     <stepperCell key="cell" continuous="YES" alignment="left" minValue="1" maxValue="100" doubleValue="1" id="DQ7-2X-I9c"/>
                     <connections>
                         <binding destination="fHp-J5-akw" name="value" keyPath="values.window-resize-step" id="3Vt-78-kkT"/>
@@ -166,16 +166,16 @@
             </subviews>
             <constraints>
                 <constraint firstItem="JHN-38-Vcl" firstAttribute="leading" secondItem="Iqr-xS-F3Y" secondAttribute="trailing" constant="8" id="0dK-0w-9Oa"/>
-                <constraint firstItem="u8n-2E-r2x" firstAttribute="top" secondItem="9o5-6W-pBB" secondAttribute="bottom" id="0e4-gV-yjc"/>
+                <constraint firstItem="u8n-2E-r2x" firstAttribute="top" secondItem="TUI-Vc-F84" secondAttribute="bottom" constant="-1" id="0e4-gV-yjc"/>
                 <constraint firstItem="nHi-Ex-f22" firstAttribute="centerY" secondItem="jyc-WA-HVd" secondAttribute="centerY" id="7Ie-Oz-lWs"/>
                 <constraint firstItem="ZlK-na-Nuc" firstAttribute="top" secondItem="u8n-2E-r2x" secondAttribute="bottom" constant="5" id="7Sr-BD-203"/>
                 <constraint firstItem="yGP-qi-0QH" firstAttribute="top" secondItem="qtZ-jm-AmG" secondAttribute="top" constant="30" id="88S-d8-abc"/>
                 <constraint firstItem="gMn-n1-4Ff" firstAttribute="height" secondItem="u8n-2E-r2x" secondAttribute="height" id="92m-mx-3EP"/>
-                <constraint firstItem="ZlK-na-Nuc" firstAttribute="leading" secondItem="9o5-6W-pBB" secondAttribute="leading" constant="2" id="CxX-jz-5DU"/>
-                <constraint firstItem="gMn-n1-4Ff" firstAttribute="leading" secondItem="9o5-6W-pBB" secondAttribute="leading" id="Jko-Xd-KPR"/>
+                <constraint firstItem="ZlK-na-Nuc" firstAttribute="leading" secondItem="TUI-Vc-F84" secondAttribute="leading" constant="3" id="CxX-jz-5DU"/>
+                <constraint firstItem="gMn-n1-4Ff" firstAttribute="leading" secondItem="TUI-Vc-F84" secondAttribute="leading" constant="1" id="Jko-Xd-KPR"/>
                 <constraint firstItem="ZN0-93-er7" firstAttribute="height" secondItem="u8n-2E-r2x" secondAttribute="height" id="LSQ-qv-Ez6"/>
-                <constraint firstItem="ZN0-93-er7" firstAttribute="top" secondItem="9o5-6W-pBB" secondAttribute="bottom" id="PrO-R6-8lH"/>
-                <constraint firstItem="u8n-2E-r2x" firstAttribute="trailing" secondItem="9o5-6W-pBB" secondAttribute="trailing" id="Ta8-19-xJL"/>
+                <constraint firstItem="ZN0-93-er7" firstAttribute="top" secondItem="TUI-Vc-F84" secondAttribute="bottom" constant="-1" id="PrO-R6-8lH"/>
+                <constraint firstItem="u8n-2E-r2x" firstAttribute="trailing" secondItem="TUI-Vc-F84" secondAttribute="trailing" constant="-1" id="Ta8-19-xJL"/>
                 <constraint firstItem="EqO-8K-pe7" firstAttribute="centerY" secondItem="yGP-qi-0QH" secondAttribute="centerY" id="ToA-bo-xmZ"/>
                 <constraint firstAttribute="trailing" secondItem="TUI-Vc-F84" secondAttribute="trailing" constant="30" id="UWP-0i-c8r"/>
                 <constraint firstItem="u8n-2E-r2x" firstAttribute="leading" secondItem="ZN0-93-er7" secondAttribute="trailing" id="VvD-TW-gxj"/>
@@ -184,12 +184,11 @@
                 <constraint firstItem="Iqr-xS-F3Y" firstAttribute="top" secondItem="yGP-qi-0QH" secondAttribute="bottom" constant="8" id="fqN-kK-dal"/>
                 <constraint firstItem="jyc-WA-HVd" firstAttribute="leading" secondItem="JHN-38-Vcl" secondAttribute="trailing" constant="1" id="gnV-fL-hLc"/>
                 <constraint firstItem="Thm-8g-Ol9" firstAttribute="top" secondItem="Iqr-xS-F3Y" secondAttribute="bottom" constant="30" id="grH-KA-5Up"/>
-                <constraint firstItem="gMn-n1-4Ff" firstAttribute="top" secondItem="9o5-6W-pBB" secondAttribute="bottom" id="iIT-xQ-ANp"/>
-                <constraint firstItem="gMn-n1-4Ff" firstAttribute="top" secondItem="qtZ-jm-AmG" secondAttribute="top" constant="229" id="iql-MF-tOi"/>
+                <constraint firstItem="gMn-n1-4Ff" firstAttribute="top" secondItem="TUI-Vc-F84" secondAttribute="bottom" constant="-1" id="iIT-xQ-ANp"/>
                 <constraint firstItem="ZN0-93-er7" firstAttribute="leading" secondItem="gMn-n1-4Ff" secondAttribute="trailing" id="kU9-7e-70r"/>
                 <constraint firstItem="nHi-Ex-f22" firstAttribute="leading" secondItem="jyc-WA-HVd" secondAttribute="trailing" constant="2" id="mAv-pQ-Jje"/>
                 <constraint firstItem="Iqr-xS-F3Y" firstAttribute="trailing" secondItem="yGP-qi-0QH" secondAttribute="trailing" id="mWK-me-z3c"/>
-                <constraint firstItem="ZlK-na-Nuc" firstAttribute="trailing" secondItem="9o5-6W-pBB" secondAttribute="trailing" constant="2" id="ohz-oA-8FE"/>
+                <constraint firstItem="ZlK-na-Nuc" firstAttribute="trailing" secondItem="TUI-Vc-F84" secondAttribute="trailing" constant="1" id="ohz-oA-8FE"/>
                 <constraint firstItem="TUI-Vc-F84" firstAttribute="top" secondItem="Thm-8g-Ol9" secondAttribute="bottom" constant="30" id="oyx-zk-NTd"/>
                 <constraint firstAttribute="trailing" secondItem="yGP-qi-0QH" secondAttribute="trailing" constant="362" id="ozf-uP-KJs"/>
                 <constraint firstAttribute="bottom" secondItem="ZlK-na-Nuc" secondAttribute="bottom" constant="30" id="qZ1-ld-a0s"/>
