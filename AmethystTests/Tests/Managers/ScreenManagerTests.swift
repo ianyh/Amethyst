@@ -17,6 +17,12 @@ private final class TestDelegate: ScreenManagerDelegate {
     func activeWindowSet(forScreenManager screenManager: ScreenManager<TestDelegate>) -> WindowSet<TestWindow> {
         fatalError()
     }
+    func onReflowInitiation() {
+        fatalError()
+    }
+    func onReflowCompletion() {
+        fatalError()
+    }
 }
 
 class ScreenManagerTests: QuickSpec {
