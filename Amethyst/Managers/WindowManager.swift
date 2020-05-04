@@ -189,6 +189,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             return
         }
         markScreen(screen, forReflowWithChange: .unknown)
+        doMouseFollowsFocus(focusedWindow: focusedWindow)
     }
 
     @objc func applicationDidLaunch(_ notification: Notification) {
@@ -392,12 +393,40 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     }
 
     func onReflowCompletion() {
+        if let focusedWindow = Window.currentlyFocused() {
+            doMouseFollowsFocus(focusedWindow: focusedWindow)
+        }
+
         // This handler will be executed by the Operation, in a queue.  Although async
         // (and although the docs say that it executes in a separate thread), I consider
         // this to be thread safe, at least safe enough, because we always want the
         // latest time that a reflow took place.
         mouseStateKeeper.handleReflowEvent()
         lastReflowTime = Date()
+    }
+
+    func doMouseFollowsFocus(focusedWindow: Window) {
+        guard UserConfiguration.shared.mouseFollowsFocus() else {
+            return
+        }
+
+        guard NSEvent.pressedMouseButtons == 0 else {
+            // If a mouse button is pressed, then the user is probably dragging something between windows. Do not move the mouse.
+            return
+        }
+
+        if focusTransitionCoordinator.recentlyTriggeredFocusFollowsMouse() {
+            // If we have recently triggered focus-follows-mouse, then disable mouse-follows-focus. Otherwise, the moment
+            // focus-follows-mouse is triggered, the mouse will jump to the center of the focused window.
+            return
+        }
+
+        let windowFrame = focusedWindow.frame()
+        let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
+        if let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) {
+            mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
+            mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
+        }
     }
 }
 
@@ -460,6 +489,8 @@ extension WindowManager: ApplicationObservationDelegate {
         } else {
             markScreen(screen, forReflowWithChange: .focusChanged(window: window))
         }
+
+        doMouseFollowsFocus(focusedWindow: window)
     }
 
     func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
