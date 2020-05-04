@@ -23,6 +23,8 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
 
     weak var delegate: Delegate?
 
+    private var lastMouseFocusTime = Date.distantPast
+
     private let userConfiguration: UserConfiguration
     private let disposeBag = DisposeBag()
 
@@ -35,8 +37,8 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
             .scan(nil) { [unowned self] existingHandler, followingIsDesired -> Any? in
                 if let handler = existingHandler {
                     NSEvent.removeMonitor(handler)
-                    return nil
-                } else if followingIsDesired! {
+                }
+                if followingIsDesired! {
                     return NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { [unowned self] event in
                         self.focusWindowWithMouseMovedEvent(event)
                     }
@@ -76,6 +78,12 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
             return
         }
 
+        self.lastMouseFocusTime = Date()
+
         topWindow.focus()
+    }
+
+    func recentlyTriggeredFocusFollowsMouse() -> Bool {
+        return Date().timeIntervalSince(lastMouseFocusTime) < 0.5
     }
 }

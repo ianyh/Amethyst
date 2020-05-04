@@ -181,6 +181,10 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
 
         focusScreen(at: screenIndex)
     }
+
+    func recentlyTriggeredFocusFollowsMouse() -> Bool {
+        return focusFollowsMouseManager.recentlyTriggeredFocusFollowsMouse()
+    }
 }
 
 extension FocusTransitionCoordinator: FocusFollowsMouseManagerDelegate {
