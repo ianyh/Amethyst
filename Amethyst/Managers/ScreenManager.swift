@@ -12,6 +12,8 @@ import Silica
 protocol ScreenManagerDelegate: class {
     associatedtype Window: WindowType
     func activeWindowSet(forScreenManager screenManager: ScreenManager<Self>) -> WindowSet<Window>
+    func onReflowInitiation()
+    func onReflowCompletion()
 }
 
 final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
@@ -31,8 +33,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     /// `ObserveApplicationNotifications`.
     private(set) var lastFocusedWindow: Window?
     private let userConfiguration: UserConfiguration
-    var onReflowInitiation: (() -> Void)?
-    var onReflowCompletion: (() -> Void)?
 
     private var reflowOperation: Operation?
 
@@ -122,11 +122,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         try values.encode(layoutsBySpaceUUID, forKey: .layoutsBySpaceUUID)
     }
 
-    deinit {
-        self.onReflowInitiation = nil
-        self.onReflowCompletion = nil
-    }
-
     func updateScreen(to screen: Screen) {
         self.screen = screen
     }
@@ -202,9 +197,9 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
                 return
             }
 
-            self?.onReflowCompletion?()
+            self?.delegate?.onReflowCompletion()
         }
-        onReflowInitiation?()
+        delegate?.onReflowInitiation()
         OperationQueue.main.addOperation(reflowOperation)
     }
 

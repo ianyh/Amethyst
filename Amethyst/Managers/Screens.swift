@@ -78,7 +78,11 @@ extension WindowManager {
                     continue
                 }
 
-                let screenManager = screenManagersCache[screenID] ?? windowManager.screenManager(screen: screen)
+                let screenManager = screenManagersCache[screenID] ?? ScreenManager<WindowManager<Application>>(
+                    screen: screen,
+                    delegate: windowManager,
+                    userConfiguration: UserConfiguration.shared
+                )
                 screenManager.delegate = windowManager
                 screenManager.updateScreen(to: screen)
 

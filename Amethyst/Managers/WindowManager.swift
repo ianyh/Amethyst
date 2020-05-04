@@ -84,27 +84,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         workspaceNotificationCenter.addObserver(self, selector: selector, name: name, object: nil)
     }
 
-    func screenManager(screen: Screen) -> ScreenManager<WindowManager<Application>> {
-        let screenManager = ScreenManager<WindowManager<Application>>(
-            screen: screen,
-            delegate: self,
-            userConfiguration: userConfiguration
-        )
-        screenManager.onReflowInitiation = { [weak self] in
-            self?.mouseStateKeeper.handleReflowEvent()
-        }
-        screenManager.onReflowCompletion = { [weak self] in
-            // This handler will be executed by the Operation, in a queue.  Although async
-            // (and although the docs say that it executes in a separate thread), I consider
-            // this to be thread safe, at least safe enough, because we always want the
-            // latest time that a reflow took place.
-            self?.mouseStateKeeper.handleReflowEvent()
-            self?.lastReflowTime = Date()
-        }
-
-        return screenManager
-    }
-
     func preferencesDidClose() {
         DispatchQueue.main.async {
             self.focusTransitionCoordinator.focusScreen(at: 0)
@@ -406,6 +385,19 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
         // If we've reached this point we haven't found any tab to switch out, but this window could still be new.
         add(window: window)
+    }
+
+    func onReflowInitiation() {
+        mouseStateKeeper.handleReflowEvent()
+    }
+
+    func onReflowCompletion() {
+        // This handler will be executed by the Operation, in a queue.  Although async
+        // (and although the docs say that it executes in a separate thread), I consider
+        // this to be thread safe, at least safe enough, because we always want the
+        // latest time that a reflow took place.
+        mouseStateKeeper.handleReflowEvent()
+        lastReflowTime = Date()
     }
 }
 
