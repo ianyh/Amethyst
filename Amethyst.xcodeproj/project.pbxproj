@@ -132,6 +132,7 @@
 		40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIWindow+AmethystTests.swift"; sourceTree = "<group>"; };
 		40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPreferencesViewController.swift; sourceTree = "<group>"; };
 		40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugPreferencesViewController.xib; sourceTree = "<group>"; };
+		401A529824D3B63A004359A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnLayoutTests.swift; sourceTree = "<group>"; };
 		401BC8971CE7E45300F89B3F /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotKeyManager.swift; path = ../Events/HotKeyManager.swift; sourceTree = "<group>"; };
@@ -159,7 +160,6 @@
 		402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Amethyst-Info.plist"; sourceTree = "<group>"; };
 		402DB6EB1742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		402DB6F11742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		402DB6F71742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		40378E22238F39B900D11E22 /* Amethyst.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Amethyst.entitlements; sourceTree = "<group>"; };
 		403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLayoutTests.swift; sourceTree = "<group>"; };
@@ -601,11 +601,11 @@
 			};
 			buildConfigurationList = 402DB6D91742E41A00D1C936 /* Build configuration list for PBXProject "Amethyst" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = 402DB6D51742E41A00D1C936;
 			productRefGroup = 402DB6DF1742E41A00D1C936 /* Products */;
@@ -879,7 +879,7 @@
 		402DB6F61742E41A00D1C936 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				402DB6F71742E41A00D1C936 /* en */,
+				401A529824D3B63A004359A4 /* Base */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
