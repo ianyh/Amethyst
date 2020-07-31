@@ -1,8 +1,9 @@
 language: objective-c
-osx_image: xcode11.1
+osx_image: xcode11.6
 xcode_workspace: Amethyst.xcworkspace
 xcode_scheme: Amethyst
 before_install:
+ - gem install bundler
  - bundle install
  - pod repo update
 script: set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | bundle exec xcpretty
