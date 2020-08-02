@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Check Xcode version (TODO: semver)
-OUR_XCODE=11.3
+OUR_XCODE=11.6
 OUR_RUBY=`cat .ruby-version | tr -d '\n'`
 printf "Checking if xcode-select points to the Xcode version we use ($OUR_XCODE): "
 if [ `xcodebuild -version | grep Xcode | awk '{print $2}'` = $OUR_XCODE ] ; then
