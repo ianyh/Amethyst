@@ -21,6 +21,10 @@ extension NSRunningApplication {
             return false
         }
 
+        if case .prohibited = activationPolicy {
+            return false
+        }
+
         switch bundleIdentifier {
         case "com.apple.dashboard":
             return false
