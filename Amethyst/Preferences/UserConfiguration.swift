@@ -352,7 +352,9 @@ class UserConfiguration: NSObject {
                 return
             }
 
-            handler()
+            DispatchQueue.global(qos: .userInitiated).async {
+                handler()
+            }
         }
 
         hotKeyRegistrar.registerHotKey(

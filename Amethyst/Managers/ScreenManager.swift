@@ -241,7 +241,9 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
 
-        displayLayoutHUD()
+        DispatchQueue.main.async {
+            self.displayLayoutHUD()
+        }
     }
 
     func shrinkMainPane() {
