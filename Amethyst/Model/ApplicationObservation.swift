@@ -206,7 +206,9 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                 return
             }
 
-            self.handle(notification: notification, window: window)
+            DispatchQueue.main.async {
+                self.handle(notification: notification, window: window)
+            }
         }
 
         guard success else {
