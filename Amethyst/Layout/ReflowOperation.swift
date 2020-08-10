@@ -78,6 +78,13 @@ struct WindowSet<Window: WindowType> {
     private let isWindowWithIDActive: (Window.WindowID) -> Bool
     private let isWindowWithIDFloating: (Window.WindowID) -> Bool
     private let windowForID: (Window.WindowID) -> Window?
+    private let assignmentQueue = DispatchQueue(
+        label: "Amethyst Assignment Queue",
+        qos: .userInitiated,
+        attributes: .concurrent,
+        autoreleaseFrequency: .inherit,
+        target: nil
+    )
 
     init(
         windows: [LayoutWindow<Window>],
@@ -110,7 +117,9 @@ struct WindowSet<Window: WindowType> {
             guard let window = windowForID(frameAssignment.window.id) else {
                 continue
             }
-            frameAssignment.perform(withWindow: window)
+            assignmentQueue.async {
+                frameAssignment.perform(withWindow: window)
+            }
         }
     }
 }
