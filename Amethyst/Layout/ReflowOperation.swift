@@ -129,12 +129,31 @@ struct FrameAssignment<Window: WindowType> {
     /// The rules governing constraints to frame transforms
     let resizeRules: ResizeRules
 
+    /// If `true`, then  window margins won't be applied
+    let disableWindowMargins: Bool
+
+    init(frame: CGRect, window: LayoutWindow<Window>, screenFrame: CGRect, resizeRules: ResizeRules) {
+        self.frame = frame
+        self.window =  window
+        self.screenFrame = screenFrame
+        self.resizeRules = resizeRules
+        self.disableWindowMargins = false
+    }
+
+    init(frame: CGRect, window: LayoutWindow<Window>, screenFrame: CGRect, resizeRules: ResizeRules, disableWindowMargins: Bool) {
+        self.frame = frame
+        self.window =  window
+        self.screenFrame = screenFrame
+        self.resizeRules = resizeRules
+        self.disableWindowMargins = disableWindowMargins
+    }
+
     /// The final frame is the desired frame, but transformed to provide desired padding
     var finalFrame: CGRect {
         var ret = frame
         let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
 
-        if UserConfiguration.shared.windowMargins() {
+        if UserConfiguration.shared.windowMargins() && !disableWindowMargins {
             ret.origin.x += padding
             ret.origin.y += padding
             ret.size.width -= 2 * padding
