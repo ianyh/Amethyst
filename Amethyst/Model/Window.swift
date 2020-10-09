@@ -261,6 +261,34 @@ extension AXWindow: WindowType {
         return isEqual(to: focused)
     }
 
+    /**
+     Focuses the window.
+     
+     This handles focusing and also moves the cursor to the window's frame if mouse-follows-focus is enabled.
+     
+     - Returns:
+     `true` if the window was successfully focused, `false` otherwise.
+     */
+    @discardableResult override func focus() -> Bool {
+        guard super.focus() else {
+            return false
+        }
+
+        guard UserConfiguration.shared.mouseFollowsFocus() else {
+            return true
+        }
+
+        let windowFrame = frame()
+        let mouseCursorPoint = NSPoint(x: windowFrame.midX, y: windowFrame.midY)
+        guard let mouseMoveEvent = CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: mouseCursorPoint, mouseButton: .left) else {
+            return true
+        }
+        mouseMoveEvent.flags = CGEventFlags(rawValue: 0)
+        mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
+
+        return true
+    }
+
     func moveScaled(to screen: Screen) {
         let screenFrame = screen.frameWithoutDockOrMenu()
         let currentFrame = frame()
