@@ -200,7 +200,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             return
         }
         markScreen(screen, forReflowWithChange: .unknown)
-        doMouseFollowsFocus(focusedWindow: focusedWindow)
+//        doMouseFollowsFocus(focusedWindow: focusedWindow)
     }
 
     @objc func applicationDidLaunch(_ notification: Notification) {
@@ -405,7 +405,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
     func onReflowCompletion() {
         if let focusedWindow = Window.currentlyFocused() {
-            doMouseFollowsFocus(focusedWindow: focusedWindow)
+//            doMouseFollowsFocus(focusedWindow: focusedWindow)
         }
 
         // This handler will be executed by the Operation, in a queue.  Although async
@@ -506,7 +506,7 @@ extension WindowManager: ApplicationObservationDelegate {
             markScreen(screen, forReflowWithChange: .focusChanged(window: window))
         }
 
-        doMouseFollowsFocus(focusedWindow: window)
+//        doMouseFollowsFocus(focusedWindow: window)
     }
 
     func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
