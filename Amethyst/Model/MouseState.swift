@@ -44,7 +44,6 @@ class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
     let dragRaceThresholdSeconds = 0.15 // prevent race conditions during drag ops
     var state: MouseState<Delegate.Window>
     private(set) weak var delegate: Delegate?
-    private(set) var lastClick: Date?
     private var monitor: Any?
 
     init(delegate: Delegate) {
@@ -90,10 +89,7 @@ class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
                 self.resizeFrameToDraggedWindowBorder(ratio)
             case .doneDragging:
                 self.state = .doneDragging(atTime: Date()) // reset the clock I guess
-            case .clicking:
-                lastClick = Date()
-                self.state = .pointing
-            case .pointing:
+            case .pointing, .clicking:
                 self.state = .pointing
             }
 
