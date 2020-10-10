@@ -2,8 +2,8 @@ PODS:
   - Cartography (4.0.0)
   - LoginServiceKit (2.0.2)
   - MASShortcut (2.4.0)
-  - Nimble (8.0.4)
-  - Quick (2.2.0)
+  - Nimble (9.0.0)
+  - Quick (3.0.0)
   - RxCocoa (5.1.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -19,7 +19,6 @@ PODS:
     - RxCocoa (~> 5.0)
     - RxSwiftExt/Core
   - Silica (0.3.2)
-  - Sparkle (1.23.0)
   - SwiftLint (0.38.2)
   - SwiftyBeaver (1.8.4)
   - SwiftyJSON (5.0.0)
@@ -34,7 +33,6 @@ DEPENDENCIES:
   - RxSwift
   - RxSwiftExt
   - Silica (from `https://github.com/ianyh/Silica`)
-  - Sparkle
   - SwiftLint
   - SwiftyBeaver
   - SwiftyJSON
@@ -49,7 +47,6 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - RxSwiftExt
-    - Sparkle
     - SwiftLint
     - SwiftyBeaver
     - SwiftyJSON
@@ -74,18 +71,17 @@ SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
   LoginServiceKit: 5b4736234dc4cc96d786d8cd83e43b9ce5e7f1ca
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
-  Nimble: 18d5360282923225d62b09d781f63abc1a0111fc
-  Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
+  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
+  Quick: 6d9559f40647bc4d510103842ef2fdd882d753e2
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
   RxSwiftExt: 4ca80336f43c28f11a2825cdd2fc61dd6c044697
   Silica: 0c58c46e035923f05dae5880acf91cb436dc3430
-  Sparkle: 55b1a87ba69d56913375a281546b7c82dec95bb0
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
   SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 772d8e704e23f7a7b256e4956b8d8e1cd4f79535
+PODFILE CHECKSUM: 1898592a136d82a386b97799c885fde965592872
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0.rc.1
