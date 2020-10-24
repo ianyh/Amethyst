@@ -157,7 +157,9 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         constructCommandWithCommandKey(CommandKey.displayCurrentLayout.rawValue) {
-            windowManager.displayCurrentLayout()
+            DispatchQueue.main.async {
+                windowManager.displayCurrentLayout()
+            }
         }
 
         (1...4).forEach { screenNumber in

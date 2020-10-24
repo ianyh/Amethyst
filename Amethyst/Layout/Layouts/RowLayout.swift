@@ -49,7 +49,7 @@ class RowLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 
-    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         let windows = windowSet.windows
 
         guard !windows.isEmpty else {
@@ -66,7 +66,7 @@ class RowLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         let mainPaneWindowHeight = floor(mainPaneHeight / CGFloat(mainPaneCount))
         let secondaryPaneWindowHeight = hasSecondaryPane ? floor((screenFrame.size.height - mainPaneHeight) / CGFloat(secondaryPaneCount)) : 0.0
 
-        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignmentOperation<Window>] in
             var assignments = frameAssignments
             var windowFrame: CGRect = .zero
             let isMain = frameAssignments.count < mainPaneCount
@@ -94,7 +94,7 @@ class RowLayout<Window: WindowType>: Layout<Window>, PanedLayout {
                 resizeRules: resizeRules
             )
 
-            assignments.append(frameAssignment)
+            assignments.append(FrameAssignmentOperation(frameAssignment: frameAssignment, windowSet: windowSet))
 
             return assignments
         }

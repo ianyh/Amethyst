@@ -14,7 +14,7 @@ class FloatingLayout<Window: WindowType>: Layout<Window> {
 
     override var layoutDescription: String { return "" }
 
-    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         return nil
     }
 }

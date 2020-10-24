@@ -14,11 +14,12 @@ class FullscreenLayout<Window: WindowType>: Layout<Window> {
 
     override var layoutDescription: String { return "" }
 
-    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         let screenFrame = screen.adjustedFrame()
         return windowSet.windows.map { window in
             let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-            return FrameAssignment<Window>(frame: screenFrame, window: window, screenFrame: screenFrame, resizeRules: resizeRules)
+            let frameAssignment = FrameAssignment<Window>(frame: screenFrame, window: window, screenFrame: screenFrame, resizeRules: resizeRules)
+            return FrameAssignmentOperation(frameAssignment: frameAssignment, windowSet: windowSet)
         }
     }
 }

@@ -49,7 +49,7 @@ class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         mainPaneCount = max(1, mainPaneCount - 1)
     }
 
-    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         let windows = windowSet.windows
 
         guard !windows.isEmpty else {
@@ -65,7 +65,7 @@ class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         let mainPaneWindowWidth = round(mainPaneWidth / CGFloat(mainPaneCount))
         let secondaryPaneWindowWidth = hasSecondaryPane ? round((screenFrame.width - mainPaneWidth) / CGFloat(secondaryPaneCount)) : 0.0
 
-        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignmentOperation<Window>] in
             var assignments = frameAssignments
             var windowFrame: CGRect = .zero
             let isMain = frameAssignments.count < mainPaneCount
@@ -92,8 +92,9 @@ class ColumnLayout<Window: WindowType>: Layout<Window>, PanedLayout {
                 screenFrame: screenFrame,
                 resizeRules: resizeRules
             )
+            let operation = FrameAssignmentOperation(frameAssignment: frameAssignment, windowSet: windowSet)
 
-            assignments.append(frameAssignment)
+            assignments.append(operation)
 
             return assignments
         }

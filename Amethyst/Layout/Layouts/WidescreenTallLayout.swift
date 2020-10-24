@@ -36,7 +36,7 @@ class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
         try container.encode(mainPaneRatio, forKey: .mainPaneRatio)
     }
 
-    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         let windows = windowSet.windows
 
         if windows.count == 0 {
@@ -57,7 +57,7 @@ class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
         let mainPaneWindowWidth = round(mainPaneWidth / CGFloat(mainPaneCount))
         let secondaryPaneWindowWidth = screenFrame.width - mainPaneWidth
 
-        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignmentOperation<Window>] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let windowIndex = frameAssignments.count
@@ -92,7 +92,7 @@ class WidescreenTallLayout<Window: WindowType>: Layout<Window> {
                 resizeRules: resizeRules
             )
 
-            assignments.append(frameAssignment)
+            assignments.append(FrameAssignmentOperation(frameAssignment: frameAssignment, windowSet: windowSet))
 
             return assignments
         }

@@ -78,13 +78,6 @@ struct WindowSet<Window: WindowType> {
     private let isWindowWithIDActive: (Window.WindowID) -> Bool
     private let isWindowWithIDFloating: (Window.WindowID) -> Bool
     private let windowForID: (Window.WindowID) -> Window?
-    private let assignmentQueue = DispatchQueue(
-        label: "Amethyst Assignment Queue",
-        qos: .userInitiated,
-        attributes: .concurrent,
-        autoreleaseFrequency: .inherit,
-        target: nil
-    )
 
     init(
         windows: [LayoutWindow<Window>],
@@ -106,21 +99,31 @@ struct WindowSet<Window: WindowType> {
         return isWindowWithIDFloating(window.id)
     }
 
-    func performFrameAssignments(_ frameAssignments: [FrameAssignment<Window>]) {
-        for frameAssignment in frameAssignments {
-            if !isWindowWithIDActive(frameAssignment.window.id) {
-                return
-            }
+    func perform(frameAssignment: FrameAssignment<Window>) {
+        guard let window = windowForID(frameAssignment.window.id) else {
+            return
         }
 
-        for frameAssignment in frameAssignments {
-            guard let window = windowForID(frameAssignment.window.id) else {
-                continue
-            }
-            assignmentQueue.async {
-                frameAssignment.perform(withWindow: window)
-            }
+        frameAssignment.perform(withWindow: window)
+    }
+}
+
+class FrameAssignmentOperation<Window: WindowType>: Operation {
+    let frameAssignment: FrameAssignment<Window>
+    let windowSet: WindowSet<Window>
+
+    init(frameAssignment: FrameAssignment<Window>, windowSet: WindowSet<Window>) {
+        self.frameAssignment = frameAssignment
+        self.windowSet = windowSet
+        super.init()
+    }
+
+    override func main() {
+        guard !isCancelled else {
+            return
         }
+
+        windowSet.perform(frameAssignment: frameAssignment)
     }
 }
 
@@ -185,13 +188,13 @@ struct FrameAssignment<Window: WindowType> {
     }
 
     /// Perform the actual application of the frame to the window
-    fileprivate func perform(withWindow window: Window) {
+    func perform(withWindow window: Window) {
         var finalFrame = self.finalFrame
         var finalOrigin = finalFrame.origin
 
         // If this is the focused window then we need to shift it to be on screen regardless of size
         // We call this "window peeking" (this line here to aid in text search)
-        if self.window.isFocused {
+        if window.isFocused() {
             // Just resize the window first to see what the dimensions end up being
             // Sometimes applications have internal window requirements that are not exposed to us directly
             finalFrame.origin = window.frame().origin
@@ -209,47 +212,5 @@ struct FrameAssignment<Window: WindowType> {
         // Move the window to its final frame
         finalFrame.origin = finalOrigin
         window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
-    }
-}
-
-/**
- A base class for specific layout operations that perform assignments according to their algorithm.
- 
- - Requires:
- Specific operations should subclass and override the `frameAssignments()` method.
- 
- - Note:
- Subclasses need not override `main()`, but if you do you _must_ call the `super` implementation.
- */
-class ReflowOperation<Window: WindowType>: Operation {
-    typealias Screen = Window.Screen
-
-    /// The screen on which the windows are being laid out.
-    let screen: Screen
-
-    /// The screen on which the windows are being laid out.
-    let windowSet: WindowSet<Window>
-
-    let layout: Layout<Window>
-
-    var windows: [LayoutWindow<Window>] { return windowSet.windows }
-
-    /**
-     - Parameters:
-         - screen: The screen on which the windows are being laid out.
-         - windows: The screen on which the windows are being laid out.
-     */
-    init(screen: Screen, windowSet: WindowSet<Window>, layout: Layout<Window>) {
-        self.screen = screen
-        self.windowSet = windowSet
-        self.layout = layout
-        super.init()
-    }
-
-    /// The main method of the `Operation`.
-    override func main() {
-        guard !isCancelled else { return }
-        guard let assignments = layout.frameAssignments(windowSet, on: screen) else { return }
-        windowSet.performFrameAssignments(assignments)
     }
 }
