@@ -26,8 +26,13 @@ protocol ScreenType: Equatable {
      */
     static func screenDescriptions() -> [JSON]?
 
-    /// The frame adjusted for app modifiers; e.g., window margins.
-    func adjustedFrame() -> CGRect
+    /**
+     The frame adjusted for app modifiers; e.g., window margin
+
+     - Parameters:
+        - disableWindowMargins: If `true`, then window margins won't be applied
+     */
+    func adjustedFrame(disableWindowMargins: Bool) -> CGRect
 
     /// The frame adjusted to contain both the dock and the status menu.
     func frameIncludingDockAndMenu() -> CGRect
@@ -53,6 +58,11 @@ extension ScreenType {
         let minY = availableScreens.map { $0.frameIncludingDockAndMenu().minY }.min() ?? 0
         return maxY - minY
     }
+
+    /// The frame adjusted for app modifiers; e.g., window margins.
+    func adjustedFrame() -> CGRect {
+        return adjustedFrame(disableWindowMargins: false)
+    }
 }
 
 struct AMScreen: ScreenType {
@@ -61,10 +71,10 @@ struct AMScreen: ScreenType {
 
     let screen: NSScreen
 
-    func adjustedFrame() -> CGRect {
+    func adjustedFrame(disableWindowMargins: Bool) -> CGRect {
         var frame = UserConfiguration.shared.ignoreMenuBar() ? frameIncludingDockAndMenu() : frameWithoutDockOrMenu()
 
-        if UserConfiguration.shared.windowMargins() {
+        if UserConfiguration.shared.windowMargins() && !disableWindowMargins {
             /* Inset for producing half of the full padding around screen as collapse only adds half of it to all windows */
             let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
 

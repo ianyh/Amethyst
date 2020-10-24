@@ -30,7 +30,7 @@ final class TestScreen: ScreenType {
         self.init(frame: frame)
     }
 
-    func adjustedFrame() -> CGRect {
+    func adjustedFrame(disableWindowMargins: Bool) -> CGRect {
         return internalFrame
     }
 

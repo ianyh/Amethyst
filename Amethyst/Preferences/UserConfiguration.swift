@@ -66,6 +66,7 @@ enum ConfigurationKey: String {
     case mod1 = "mod1"
     case mod2 = "mod2"
     case windowMargins = "window-margins"
+    case smartWindowMargins = "smart-window-margins"
     case windowMarginSize = "window-margin-size"
     case windowMinimumHeight = "window-minimum-height"
     case windowMinimumWidth = "window-minimum-width"
@@ -509,7 +510,23 @@ class UserConfiguration: NSObject {
     }
 
     func windowMargins() -> Bool {
-        return storage.bool(forKey: .windowMargins)
+        if !storage.bool(forKey: .windowMargins) {
+            return false
+        }
+        // if smartWindowMargins is not enabled, enable window margins
+        if !smartWindowMargins() {
+            return true
+        }
+        // if smartWindowMargins is enabled, enabled window margins if there are more than one visible windows on screen
+        let options = CGWindowListOption(arrayLiteral: .excludeDesktopElements, .optionOnScreenOnly)
+        let windowsListInfo = CGWindowListCopyWindowInfo(options, CGWindowID(0))
+        let infoList = windowsListInfo as! [[String: Any]]
+        let visibleWindows = infoList.filter { $0["kCGWindowLayer"] as! Int == 0 }
+        return visibleWindows.count > 1
+    }
+
+    func smartWindowMargins() -> Bool {
+        return storage.bool(forKey: .smartWindowMargins)
     }
 
     func windowMinimumHeight() -> CGFloat {
