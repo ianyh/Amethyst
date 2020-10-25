@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode11.6
+osx_image: xcode12.2
 xcode_workspace: Amethyst.xcworkspace
 xcode_scheme: Amethyst
 before_install:
