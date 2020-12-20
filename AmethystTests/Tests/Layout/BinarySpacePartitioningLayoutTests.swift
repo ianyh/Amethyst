@@ -613,8 +613,14 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
 
-                let assignments = decodedLayout.frameAssignments(windowSet, on: screen)!.map { [$0.window.id: $0.frame] }
-                let expectedAssignments = layout.frameAssignments(windowSet, on: screen)!.map { [$0.window.id: $0.frame] }
+                let assignments = decodedLayout
+                    .frameAssignments(windowSet, on: screen)!
+                    .map { $0.frameAssignment }
+                    .map { [$0.window.id: $0.frame] }
+                let expectedAssignments = layout
+                    .frameAssignments(windowSet, on: screen)!
+                    .map { $0.frameAssignment }
+                    .map { [$0.window.id: $0.frame] }
                 expect(assignments).to(equal(expectedAssignments))
             }
         }

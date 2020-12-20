@@ -173,7 +173,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
         try container.encode(mainPaneRatio, forKey: .mainPaneRatio)
     }
 
-    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignment<Window>]? {
+    override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         let windows = windowSet.windows
 
         guard !windows.isEmpty else {
@@ -189,7 +189,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
             mainPaneRatio: mainPaneRatio
         )
 
-        return windows.reduce([]) { frameAssignments, window -> [FrameAssignment<Window>] in
+        return windows.reduce([]) { frameAssignments, window -> [FrameAssignmentOperation<Window>] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let windowIndex: UInt = UInt(frameAssignments.count)
@@ -231,7 +231,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
                 resizeRules: resizeRules
             )
 
-            assignments.append(frameAssignment)
+            assignments.append(FrameAssignmentOperation(frameAssignment: frameAssignment, windowSet: windowSet))
 
             return assignments
         }

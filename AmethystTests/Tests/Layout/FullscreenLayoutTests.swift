@@ -42,8 +42,8 @@ class FullscreenLayoutTests: QuickSpec {
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
 
                 frameAssignments.forEach { assignment in
-                    expect(assignment.frame).to(equal(screen.adjustedFrame()))
-                    expect(assignment.finalFrame).to(equal(screen.adjustedFrame()))
+                    expect(assignment.frameAssignment.frame).to(equal(screen.adjustedFrame()))
+                    expect(assignment.frameAssignment.finalFrame).to(equal(screen.adjustedFrame()))
                 }
             }
 
@@ -65,8 +65,8 @@ class FullscreenLayoutTests: QuickSpec {
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
 
                 frameAssignments.forEach { assignment in
-                    expect(assignment.frame).to(equal(screen.adjustedFrame()))
-                    expect(assignment.finalFrame).to(equal(screen.adjustedFrame()))
+                    expect(assignment.frameAssignment.frame).to(equal(screen.adjustedFrame()))
+                    expect(assignment.frameAssignment.finalFrame).to(equal(screen.adjustedFrame()))
                 }
             }
         }
