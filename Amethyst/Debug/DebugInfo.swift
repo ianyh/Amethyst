@@ -13,7 +13,6 @@ struct DebugInfo {
         return [
             "Version: \(version())",
             "OS version: \(ProcessInfo.processInfo.operatingSystemVersionString)",
-            "Has permissions: \(isProcessTrusted())",
             "Screens:\n\(screens())",
             "Manageable applications:\n\(applications())",
             "Configuration:\n\(config())"
