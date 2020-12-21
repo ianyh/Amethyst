@@ -80,7 +80,9 @@ protocol WindowType: Equatable {
      `true` if the window was successfully focused, `false` otherwise.
      */
     @discardableResult func focus() -> Bool
-
+    
+    @discardableResult func minimize() -> Bool
+    
     /**
      Moves the window to a screen.
      
@@ -287,6 +289,11 @@ extension AXWindow: WindowType {
         mouseMoveEvent.post(tap: CGEventTapLocation.cghidEventTap)
 
         return true
+    }
+
+    @discardableResult func minimize() -> Bool {
+        super.minimize()
+        return isWindowMinimized()
     }
 
     func moveScaled(to screen: Screen) {

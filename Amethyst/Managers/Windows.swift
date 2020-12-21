@@ -71,6 +71,11 @@ extension WindowManager {
             } else {
                 windows.append(window)
             }
+            if let limit = UserConfiguration.shared.windowMaxCount(), windows.count > limit {
+                windows.filter {$0.shouldBeManaged() && $0.isOnScreen() && $0.screen() == window.screen()}.dropFirst(limit).forEach {
+                    $0.minimize()
+                }
+            }
         }
 
         func remove(window: Window) {
