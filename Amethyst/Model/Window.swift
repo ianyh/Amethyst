@@ -80,9 +80,9 @@ protocol WindowType: Equatable {
      `true` if the window was successfully focused, `false` otherwise.
      */
     @discardableResult func focus() -> Bool
-    
+
     @discardableResult func minimize() -> Bool
-    
+
     /**
      Moves the window to a screen.
      
