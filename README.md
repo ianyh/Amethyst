@@ -19,7 +19,7 @@ Getting Amethyst
 Amethyst is available for direct download on the [releases page](https://github.com/ianyh/Amethyst/releases) or using [homebrew cask](https://github.com/Homebrew/homebrew-cask).
 
 ```
-brew cask install amethyst
+brew install --cask amethyst
 ```
 
 Note: that Amethyst now is only supported on macOS 10.12+.
