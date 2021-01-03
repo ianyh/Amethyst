@@ -9,15 +9,19 @@
 import Cocoa
 
 struct DebugInfo {
-    static func description() -> String {
-        return [
+    static func description(arguments: [String]) -> String {
+        var infos = [
             "Version: \(version())",
             "OS version: \(ProcessInfo.processInfo.operatingSystemVersionString)",
-            "Has permissions: \(isProcessTrusted())",
             "Screens:\n\(screens())",
-            "Manageable applications:\n\(applications())",
             "Configuration:\n\(config())"
-        ].joined(separator: "\n\n")
+        ]
+
+        if arguments.contains("--include-apps") {
+            infos.append("Manageable applications:\n\(applications())")
+        }
+
+        return infos.joined(separator: "\n\n")
     }
 
     static func version() -> String {

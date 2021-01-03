@@ -9,7 +9,7 @@
 import Cocoa
 
 if CommandLine.arguments.contains("--debug-info") {
-    print(DebugInfo.description())
+    print(DebugInfo.description(arguments: CommandLine.arguments))
 } else {
     _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
 }
