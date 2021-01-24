@@ -66,15 +66,22 @@ extension WindowManager {
         // MARK: Adding and Removing
 
         func add(window: Window, atFront shouldInsertAtFront: Bool) {
+
+            func applyWindowLimit() {
+                if let screen = window.screen(), let windowLimit = UserConfiguration.shared.windowMaxCount() {
+                    let countToKeep = windowLimit - (shouldInsertAtFront ? 0 : 1)
+                    activeWindows(onScreen: screen).dropFirst(countToKeep).forEach {
+                        $0.minimize()
+                    }
+                }
+            }
+
             if shouldInsertAtFront {
                 windows.insert(window, at: 0)
+                applyWindowLimit()
             } else {
+                applyWindowLimit()
                 windows.append(window)
-            }
-            if let screen = window.screen(), let limit = UserConfiguration.shared.windowMaxCount() {
-                activeWindows(onScreen: screen).dropFirst(limit).forEach {
-                    $0.minimize()
-                }
             }
         }
 
