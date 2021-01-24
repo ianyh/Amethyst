@@ -68,7 +68,9 @@ extension WindowManager {
         func add(window: Window, atFront shouldInsertAtFront: Bool) {
 
             func applyWindowLimit() {
-                if let screen = window.screen(), let windowLimit = UserConfiguration.shared.windowMaxCount() {
+                if UserConfiguration.shared.tilingEnabled,
+                   let screen = window.screen(),
+                   let windowLimit = UserConfiguration.shared.windowMaxCount() {
                     let countToKeep = windowLimit - (shouldInsertAtFront ? 0 : 1)
                     activeWindows(onScreen: screen).dropFirst(countToKeep).forEach {
                         $0.minimize()
