@@ -198,7 +198,11 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
                 }
                 if !(currentLayout is PanedLayout) {
                     // Minimize from the back, for layouts like floating/fullscreen.
-                    return 0 ..< windowCount - windowLimit
+                    if currentLayout is FloatingLayout {
+                        return windowLimit ..< windowCount
+                    } else {
+                        return 0 ..< windowCount - windowLimit
+                    }
                 }
                 if windowLimit <= mainPaneCount {
                     // Don't minimize main panes. This allowing varying main pane count to pin windows.
