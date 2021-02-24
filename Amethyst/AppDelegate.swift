@@ -124,11 +124,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @IBAction func relaunch(_ sender: AnyObject) {
-        let executablePath = Bundle.main.executablePath! as NSString
-        let fileSystemRepresentedPath = executablePath.fileSystemRepresentation
-        let fileSystemPath = FileManager.default.string(withFileSystemRepresentation: fileSystemRepresentedPath, length: Int(strlen(fileSystemRepresentedPath)))
-        Process.launchedProcess(launchPath: fileSystemPath, arguments: [])
-        NSApp.terminate(self)
+        AppManager.relaunch()
     }
 
     @IBAction func showPreferencesWindow(_ sender: AnyObject) {
