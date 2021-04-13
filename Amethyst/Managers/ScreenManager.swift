@@ -198,7 +198,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
                 }
                 if !(currentLayout is PanedLayout) {
                     // Minimize from the back, for layouts like floating/fullscreen.
-                    if currentLayout is FloatingLayout {
+                    if shouldInsertAtFront {
                         return windowLimit ..< windowCount
                     } else {
                         return 0 ..< windowCount - windowLimit
