@@ -76,6 +76,10 @@ class TestWindow: WindowType {
         return false
     }
 
+    func minimize() -> Bool {
+      return false
+    }
+
     func moveScaled(to screen: Screen) {
 
     }

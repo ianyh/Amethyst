@@ -14,6 +14,9 @@ import Silica
 private final class TestDelegate: ScreenManagerDelegate {
     typealias Window = TestWindow
 
+    func applyWindowLimit(forScreenManager screenManager: ScreenManager<TestDelegate>, minimizingIn range: (Int) -> Range<Int>) {
+        fatalError()
+    }
     func activeWindowSet(forScreenManager screenManager: ScreenManager<TestDelegate>) -> WindowSet<TestWindow> {
         fatalError()
     }
