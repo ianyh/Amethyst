@@ -384,7 +384,10 @@ extension ScreenManager: Comparable {
 extension WindowManager: ScreenManagerDelegate {
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<WindowManager<Application>>, minimizingIn range: (Int) -> Range<Int>) {
         guard let screen = screenManager.screen else {return}
-        let windows = activeWindows(on: screen)
+        let windows =
+            screenManager.currentLayout is FloatingLayout
+            ? self.windows.activeWindows(onScreen: screen).filter { $0.shouldBeManaged() }
+            : activeWindows(on: screen)
         windows[range(windows.count)].forEach {
             $0.minimize()
         }
