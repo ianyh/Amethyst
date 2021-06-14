@@ -16,6 +16,7 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
     case tall = "tall"
     case tallRight = "tall-right"
     case wide = "wide"
+    case twoPane = "two-pane"
     case threeColumnLeft = "3column-left"
     case threeColumnMiddle = "middle-wide"
     case threeColumnRight = "3column-right"
@@ -35,6 +36,8 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
             return TallRightLayout<Window>.self
         case .wide:
             return WideLayout<Window>.self
+        case .twoPane:
+            return TwoPaneLayout<Window>.self
         case .threeColumnLeft:
             return ThreeColumnLeftLayout<Window>.self
         case .threeColumnMiddle:
@@ -105,6 +108,8 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
             return try JSONEncoder().encode(typedLayout)
         case let typedLayout as WideLayout<Window>:
             return try JSONEncoder().encode(typedLayout)
+        case let typedLayout as TwoPaneLayout<Window>:
+            return try JSONEncoder().encode(typedLayout)
         case let typedLayout as ThreeColumnLeftLayout<Window>:
             return try JSONEncoder().encode(typedLayout)
         case let typedLayout as ThreeColumnMiddleLayout<Window>:
@@ -144,6 +149,8 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
             return try decoder.decode(TallRightLayout.self, from: data)
         case .wide:
             return try decoder.decode(WideLayout.self, from: data)
+        case .twoPane:
+            return try decoder.decode(TwoPaneLayout.self, from: data)
         case .threeColumnLeft:
             return try decoder.decode(ThreeColumnLeftLayout.self, from: data)
         case .threeColumnMiddle:

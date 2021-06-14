@@ -94,6 +94,8 @@
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
 		7D64A455AD3F8FCD86D30E19 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A26EB687171B77B8239AF147 /* Pods_AmethystTests.framework */; };
+		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
+		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
 		ED989E6BAE0E8D035277478A /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6611384054CC1D59E32FC049 /* Pods_Amethyst.framework */; };
 /* End PBXBuildFile section */
 
@@ -223,6 +225,8 @@
 		A26EB687171B77B8239AF147 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A47ECCB9422C789FE6A4C218 /* Pods-Amethyst.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.debug.xcconfig"; path = "Target Support Files/Pods-Amethyst/Pods-Amethyst.debug.xcconfig"; sourceTree = "<group>"; };
 		A6102745A914DC1AD00462D0 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
+		AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayout.swift; sourceTree = "<group>"; };
+		AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayoutTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -317,6 +321,7 @@
 				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
 				4062AD361C1FA83300DB612B /* RowLayout.swift */,
 				4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */,
+				AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */,
 				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
 				4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */,
 				4062AD341C1FA62500DB612B /* WideLayout.swift */,
@@ -431,6 +436,7 @@
 				40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */,
 				40D491D723367590007E0CCB /* RowLayoutTests.swift */,
 				403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */,
+				AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */,
 				40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */,
 				40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */,
 				4000DB0F239CA07000365A0C /* WideLayoutTests.swift */,
@@ -787,6 +793,7 @@
 				401BC89C1CE8D58A00F89B3F /* ShortcutsPreferencesListItemView.swift in Sources */,
 				400540F22325CDF4004B8656 /* Reliability.swift in Sources */,
 				4029C4F11C112478001E4788 /* Layout.swift in Sources */,
+				AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */,
 				401BC8A41CE8DB0800F89B3F /* GeneralPreferencesViewController.swift in Sources */,
 				4046EFCF2236019400113067 /* Window.swift in Sources */,
 				40A87FDC2404AEAD005EE9C6 /* main.swift in Sources */,
@@ -835,6 +842,7 @@
 				40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */,
 				401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */,
 				401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */,
+				AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */,
 				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
