@@ -2,8 +2,8 @@ PODS:
   - Cartography (4.0.0)
   - LoginServiceKit (2.0.2)
   - MASShortcut (2.4.0)
-  - Nimble (9.0.0)
-  - Quick (3.0.0)
+  - Nimble (9.0.1)
+  - Quick (4.0.0)
   - RxCocoa (5.1.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -27,8 +27,8 @@ DEPENDENCIES:
   - Cartography
   - LoginServiceKit (from `https://github.com/Clipy/LoginServiceKit.git`)
   - MASShortcut
-  - Nimble
-  - Quick
+  - Nimble (~> 9.0.1)
+  - Quick (~> 4.0.0)
   - RxCocoa
   - RxSwift
   - RxSwiftExt
@@ -71,8 +71,8 @@ SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
   LoginServiceKit: 5b4736234dc4cc96d786d8cd83e43b9ce5e7f1ca
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
-  Nimble: 3b4ec3fd40f1dc178058e0981107721c615643d8
-  Quick: 6d9559f40647bc4d510103842ef2fdd882d753e2
+  Nimble: 7bed62ffabd6dbfe05f5925cbc43722533248990
+  Quick: 6473349e43b9271a8d43839d9ba1c442ed1b7ac4
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
   RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
@@ -82,6 +82,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 1898592a136d82a386b97799c885fde965592872
+PODFILE CHECKSUM: da15584c703db32a9bb302958aad042ae9ca3e37
 
-COCOAPODS: 1.10.0.rc.1
+COCOAPODS: 1.10.1

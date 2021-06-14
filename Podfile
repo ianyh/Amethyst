@@ -17,7 +17,7 @@ target 'Amethyst' do
 
   target 'AmethystTests' do
     inherit! :search_paths
-    pod 'Nimble'
-    pod 'Quick'
+    pod 'Nimble', '~> 9.0.1'
+    pod 'Quick', '~> 4.0.0'
   end
 end
