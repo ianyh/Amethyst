@@ -20,6 +20,9 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
     case threeColumnLeft = "3column-left"
     case threeColumnMiddle = "middle-wide"
     case threeColumnRight = "3column-right"
+    case threeColumnTallLeft = "3column-tall-left"
+    case threeColumnTallMiddle = "3column-tall-middle"
+    case threeColumnTallRight = "3column-tall-right"
     case fullscreen = "fullscreen"
     case column = "column"
     case row = "row"
@@ -44,6 +47,12 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
             return ThreeColumnMiddleLayout<Window>.self
         case .threeColumnRight:
             return ThreeColumnRightLayout<Window>.self
+        case .threeColumnLeft:
+            return ThreeColumnTallLeftLayout<Window>.self
+        case .threeColumnMiddle:
+            return ThreeColumnTallMiddleLayout<Window>.self
+        case .threeColumnRight:
+            return ThreeColumnTallRightLayout<Window>.self
         case .fullscreen:
             return FullscreenLayout<Window>.self
         case .column:
@@ -116,6 +125,12 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
             return try JSONEncoder().encode(typedLayout)
         case let typedLayout as ThreeColumnRightLayout<Window>:
             return try JSONEncoder().encode(typedLayout)
+        case let typedLayout as ThreeColumnTallLeftLayout<Window>:
+            return try JSONEncoder().encode(typedLayout)
+        case let typedLayout as ThreeColumnTallMiddleLayout<Window>:
+            return try JSONEncoder().encode(typedLayout)
+        case let typedLayout as ThreeColumnTallRightLayout<Window>:
+            return try JSONEncoder().encode(typedLayout)
         case let typedLayout as FullscreenLayout<Window>:
             return try JSONEncoder().encode(typedLayout)
         case let typedLayout as ColumnLayout<Window>:
@@ -157,6 +172,12 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
             return try decoder.decode(ThreeColumnMiddleLayout.self, from: data)
         case .threeColumnRight:
             return try decoder.decode(ThreeColumnRightLayout.self, from: data)
+        case .threeColumnTallLeft:
+            return try decoder.decode(ThreeColumnTallLeftLayout.self, from: data)
+        case .threeColumnTallMiddle:
+            return try decoder.decode(ThreeColumnTallMiddleLayout.self, from: data)
+        case .threeColumnTallRight:
+            return try decoder.decode(ThreeColumnTallRightLayout.self, from: data)
         case .fullscreen:
             return try decoder.decode(FullscreenLayout.self, from: data)
         case .column:
