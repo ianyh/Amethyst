@@ -90,6 +90,9 @@ struct TriplePaneArrangement {
 
         // calculate widths
         let screenWidth = screenSize.width
+        let mainPaneWidth = secondaryPaneCount == 0
+            ? screenWidth
+            : round(screenWidth * mainPaneRatio)
         let mainWindowWidth = mainPaneStack == Stack.tall
             ? round(mainPaneWidth/CGFloat(mainPaneCount))
             : mainPaneWidth

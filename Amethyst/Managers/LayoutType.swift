@@ -47,11 +47,11 @@ enum LayoutType<Window: WindowType>: String, CaseIterable {
             return ThreeColumnMiddleLayout<Window>.self
         case .threeColumnRight:
             return ThreeColumnRightLayout<Window>.self
-        case .threeColumnLeft:
+        case .threeColumnTallLeft:
             return ThreeColumnTallLeftLayout<Window>.self
-        case .threeColumnMiddle:
+        case .threeColumnTallMiddle:
             return ThreeColumnTallMiddleLayout<Window>.self
-        case .threeColumnRight:
+        case .threeColumnTallRight:
             return ThreeColumnTallRightLayout<Window>.self
         case .fullscreen:
             return FullscreenLayout<Window>.self
