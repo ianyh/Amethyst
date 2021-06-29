@@ -39,7 +39,7 @@ struct TriplePaneArrangement {
 
     /// width of windows in pane
     private let paneWindowWidth: [Pane: CGFloat]
-    
+
     /// width of main pane (different than window in pane when using Stack.tall)
     private let mainPaneWidth: CGFloat
 
@@ -81,7 +81,7 @@ struct TriplePaneArrangement {
         // calculate heights
         let screenHeight = screenSize.height
         self.paneWindowHeight = [
-            .main: mainPaneStack == Stack.tall 
+            .main: mainPaneStack == Stack.tall
                 ? screenHeight
                 : round(screenHeight / CGFloat(mainPaneCount)),
             .secondary: secondaryPaneCount == 0 ? 0.0 : round(screenHeight / CGFloat(secondaryPaneCount)),
@@ -226,7 +226,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
                 case .right: return leftPaneWidth + middlePaneWidth
                 }
             }()
-                                   
+
             let yorigin: CGFloat = screenFrame.origin.y + {
                 switch column {
                 case .left:
@@ -327,4 +327,3 @@ class ThreeColumnTallRightLayout<Window: WindowType>: ThreeColumnLayout<Window>,
     override static var mainColumn: Column { return .right }
     override static var mainColumnStack: Stack { return .tall }
 }
-
