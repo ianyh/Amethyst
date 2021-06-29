@@ -49,6 +49,9 @@ struct TriplePaneArrangement {
     /// how columns relate to panes
     private let columnDesignation: [Column: Pane]
 
+    private let mainPaneStack: Stack
+    private let mainPane: Column
+
     /**
      - Parameters:
         - mainPane: which Column is the main Pane
@@ -59,6 +62,10 @@ struct TriplePaneArrangement {
         - mainPaneRatio: ratio of the screen taken by main pane
      */
     init(mainPane: Column, mainPaneStack: Stack, numWindows: UInt, numMainPane: UInt, screenSize: CGSize, mainPaneRatio: CGFloat) {
+
+        self.mainPane = mainPane
+        self.mainPaneStack = mainPaneStack
+
         // forward and reverse mapping of columns to their designations
         self.panePosition = {
             switch mainPane {
@@ -157,7 +164,17 @@ struct TriplePaneArrangement {
 
     /// Get the column widths in the order (left, middle, right)
     func widthsLeftToRight() -> (CGFloat, CGFloat, CGFloat) {
-        return (width(pane(ofColumn: .left)), mainPaneWidth, width(pane(ofColumn: .right)))
+        if self.mainPaneStack == Stack.wide {
+            return (width(pane(ofColumn: .left)), width(pane(ofColumn: .middle)), width(pane(ofColumn: .right)))
+        }
+        switch self.mainPane {
+        case Column.left:
+            return (self.mainPaneWidth, width(pane(ofColumn: .middle)), width(pane(ofColumn: .right)))
+        case Column.middle:
+            return (width(pane(ofColumn: .left)), self.mainPaneWidth, width(pane(ofColumn: .right)))
+        case Column.right:
+            return (width(pane(ofColumn: .left)), width(pane(ofColumn: .middle)), self.mainPaneWidth)
+        }
     }
 }
 
@@ -218,29 +235,38 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
             let (windowHeight, windowWidth): (CGFloat, CGFloat) = paneArrangement.windowDimensions(inPane: pane)
             let column: Column = paneArrangement.column(ofPane: pane)
 
-            let (leftPaneWidth, middlePaneWidth, _): (CGFloat, CGFloat, CGFloat) = paneArrangement.widthsLeftToRight()
+            let (leftPaneWidth, middlePaneWidth, rightPaneWidth): (CGFloat, CGFloat, CGFloat) = paneArrangement.widthsLeftToRight()
 
             let xorigin: CGFloat = screenFrame.origin.x + {
-                switch column {
-                case .left: return 0.0
-                case .middle: return type(of: self).mainColumnStack == Stack.tall
-                    ? leftPaneWidth + (middlePaneWidth/CGFloat(mainPaneCount))*CGFloat(paneIndex)
-                    : leftPaneWidth
-                case .right: return leftPaneWidth + middlePaneWidth
+                let isInTallMainPane = (column == type(of: self).mainColumn) && type(of: self).mainColumnStack == .tall
+
+                if isInTallMainPane {
+                    let widthOffset = CGFloat(paneIndex)/CGFloat(mainPaneCount)
+
+                    switch column {
+                    case .left: return 0.0 + (leftPaneWidth * widthOffset)
+                    case .middle: return leftPaneWidth + (middlePaneWidth * widthOffset)
+                    case .right: return leftPaneWidth + middlePaneWidth + rightPaneWidth * widthOffset
+                    }
+                } else {
+                    switch column {
+                    case .left: return 0.0
+                    case .middle: return leftPaneWidth
+                    case .right: return leftPaneWidth + middlePaneWidth
+                    }
                 }
             }()
 
             let yorigin: CGFloat = screenFrame.origin.y + {
-                switch column {
-                case .left:
+                let isInTallMainPane = (column == type(of: self).mainColumn) && type(of: self).mainColumnStack == .tall
+
+                if isInTallMainPane {
+                    return 0
+
+                } else {
                     return windowHeight * CGFloat(paneIndex)
-                case .right:
-                    return windowHeight * CGFloat(paneIndex)
-                case .middle:
-                    return type(of: self).mainColumnStack == Stack.tall
-                        ? 0
-                        : windowHeight * CGFloat(paneIndex)
                 }
+
             }()
 
             let scaleFactor: CGFloat = screenFrame.width / {
