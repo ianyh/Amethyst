@@ -12,7 +12,7 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
     private var layoutKeys: [String] = []
 
     @IBOutlet var layoutsTableView: NSTableView?
-    @IBOutlet weak var relaunchBtn: NSButton?
+    @IBOutlet weak var relaunchButton: NSButton?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -69,7 +69,7 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
 
         UserConfiguration.shared.setLayoutKeys(self.layoutKeys)
 
-        relaunchBtn?.isEnabled = true
+        relaunchButton?.isEnabled = true
         layoutsTableView?.reloadData()
     }
 
@@ -80,7 +80,7 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
 
         UserConfiguration.shared.setLayoutKeys(layoutKeys)
 
-        relaunchBtn?.isEnabled = true
+        relaunchButton?.isEnabled = true
         layoutsTableView?.reloadData()
     }
 
