@@ -12,6 +12,7 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
     private var layoutKeys: [String] = []
 
     @IBOutlet var layoutsTableView: NSTableView?
+    @IBOutlet weak var relaunchButton: NSButton?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,6 +69,7 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
 
         UserConfiguration.shared.setLayoutKeys(self.layoutKeys)
 
+        relaunchButton?.isEnabled = true
         layoutsTableView?.reloadData()
     }
 
@@ -78,6 +80,7 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
 
         UserConfiguration.shared.setLayoutKeys(layoutKeys)
 
+        relaunchButton?.isEnabled = true
         layoutsTableView?.reloadData()
     }
 
@@ -91,6 +94,10 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
         }
 
         return LayoutType<AXWindow>.layoutNameForKey(layoutKeys[row])
+    }
+
+    @IBAction func relaunch(_ sender: AnyObject) {
+        AppManager.relaunch()
     }
 
     func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
