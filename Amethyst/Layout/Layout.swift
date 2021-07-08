@@ -35,6 +35,9 @@ class Layout<Window: WindowType>: Codable {
     /// The configuration key of the layout.
     class var layoutKey: String { fatalError("Must be implemented by subclass") }
 
+    /// The display name of the layout.
+    var layoutName: String { return type(of: self).layoutName }
+
     /// The configuration key of the layout.
     var layoutKey: String { return type(of: self).layoutKey }
 
