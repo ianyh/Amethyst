@@ -111,7 +111,7 @@ enum LayoutType<Window: WindowType> {
         }
     }
 
-    var layoutClass: Layout<Window>.Type? {
+    var layoutClass: Layout<Window>.Type {
         switch self {
         case .tall:
             return TallLayout<Window>.self
@@ -185,7 +185,7 @@ enum LayoutType<Window: WindowType> {
         let type = LayoutType<Window>.from(key: layoutKey)
 
         guard case .custom = type else {
-            return type.layoutClass?.init()
+            return type.layoutClass.init()
         }
 
         do {
@@ -205,7 +205,7 @@ enum LayoutType<Window: WindowType> {
         let type = LayoutType<Window>.from(key: layoutKey)
 
         guard case .custom = type else {
-            return type.layoutClass?.layoutName
+            return type.layoutClass.layoutName
         }
 
         return layoutForKey(layoutKey)?.layoutName
@@ -255,77 +255,12 @@ enum LayoutType<Window: WindowType> {
     }
 
     static func encoded(layout: Layout<Window>) throws -> Data {
-        switch layout {
-        case let typedLayout as TallLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as TallRightLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as WideLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as TwoPaneLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as ThreeColumnLeftLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as ThreeColumnMiddleLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as ThreeColumnRightLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as FullscreenLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as ColumnLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as RowLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as FloatingLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as WidescreenTallLayoutRight<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as WidescreenTallLayoutLeft<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as BinarySpacePartitioningLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        case let typedLayout as CustomLayout<Window>:
-            return try JSONEncoder().encode(typedLayout)
-        default:
-            throw Error.unknownLayout
-        }
+        return try JSONEncoder().encode(layout)
     }
 
     static func decoded(data: Data, key: String) throws -> Layout<Window> {
         let layoutType = LayoutType<Window>.from(key: key)
         let decoder = JSONDecoder()
-
-        switch layoutType {
-        case .tall:
-            return try decoder.decode(TallLayout.self, from: data)
-        case .tallRight:
-            return try decoder.decode(TallRightLayout.self, from: data)
-        case .wide:
-            return try decoder.decode(WideLayout.self, from: data)
-        case .twoPane:
-            return try decoder.decode(TwoPaneLayout.self, from: data)
-        case .threeColumnLeft:
-            return try decoder.decode(ThreeColumnLeftLayout.self, from: data)
-        case .threeColumnMiddle:
-            return try decoder.decode(ThreeColumnMiddleLayout.self, from: data)
-        case .threeColumnRight:
-            return try decoder.decode(ThreeColumnRightLayout.self, from: data)
-        case .fullscreen:
-            return try decoder.decode(FullscreenLayout.self, from: data)
-        case .column:
-            return try decoder.decode(ColumnLayout.self, from: data)
-        case .row:
-            return try decoder.decode(RowLayout.self, from: data)
-        case .floating:
-            return try decoder.decode(FloatingLayout.self, from: data)
-        case .widescreenTallLeft:
-            return try decoder.decode(WidescreenTallLayoutLeft.self, from: data)
-        case .widescreenTallRight:
-            return try decoder.decode(WidescreenTallLayoutRight.self, from: data)
-        case .binarySpacePartitioning:
-            return try decoder.decode(BinarySpacePartitioningLayout.self, from: data)
-        case .custom:
-            return try decoder.decode(CustomLayout.self, from: data)
-        }
+        return try decoder.decode(layoutType.layoutClass, from: data)
     }
 }
