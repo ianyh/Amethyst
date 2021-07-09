@@ -92,30 +92,27 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
         }
 
         let screenFrame = screen.adjustedFrame()
+        let jsScreenFrameArg = JSValue(rect: screenFrame, in: context)!
+
         let jsWindows = windows.map { JSWindow<Window>(id: UUID().uuidString, window: $0) }
         let jsWindowsArg = jsWindows.map { ["id": $0.id, "window": $0] }
-        let jsWindowMap: [String: LayoutWindow<Window>] = Dictionary(
-            jsWindows.map { ($0.id, $0.window) },
-            uniquingKeysWith: { window, _ in window }
-        )
 
         guard
-            let frameAssignmentsValue = getFrameAssignments.call(withArguments: [jsWindowsArg, screenFrame]),
-            frameAssignmentsValue.isObject,
-            let frameAssignments = frameAssignmentsValue.toDictionary() as? [String: CGRect]
+            let frameAssignmentsValue = getFrameAssignments.call(withArguments: [jsWindowsArg, jsScreenFrameArg]),
+            frameAssignmentsValue.isObject
         else {
             return nil
         }
 
         let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-        return frameAssignments.compactMap { id, frame in
-            guard let window = jsWindowMap[id] else {
+        return jsWindows.compactMap { jsWindow in
+            guard let frame = frameAssignmentsValue.objectForKeyedSubscript(jsWindow.id)?.toRect() else {
                 return nil
             }
 
             let frameAssignment = FrameAssignment<Window>(
                 frame: frame,
-                window: window,
+                window: jsWindow.window,
                 screenFrame: screenFrame,
                 resizeRules: resizeRules
             )

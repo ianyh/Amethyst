@@ -134,5 +134,84 @@ class CustomLayoutTests: QuickSpec {
                 }
             }
         }
+
+        describe("columns layout") {
+            it("defines a name") {
+                let layout = CustomLayout<TestWindow>(key: "uniform-columns", fileURL: Bundle.layoutFile(key: "uniform-columns")!)
+                expect(layout.layoutName).to(equal("Uniform Columns"))
+            }
+
+            it("puts windows in uniform columns") {
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = CustomLayout<TestWindow>(key: "uniform-columns", fileURL: Bundle.layoutFile(key: "uniform-columns")!)
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(frameAssignments.count).to(equal(layoutWindows.count))
+
+                let expectedFrames = [
+                    CGRect(x: 0, y: 0, width: 500, height: 1000),
+                    CGRect(x: 500, y: 0, width: 500, height: 1000),
+                    CGRect(x: 1000, y: 0, width: 500, height: 1000),
+                    CGRect(x: 1500, y: 0, width: 500, height: 1000)
+                ]
+
+                zip(frameAssignments.map { $0.frameAssignment.frame }, expectedFrames).forEach {
+                    expect($0).to(equal($1))
+                }
+            }
+
+            it("handles non-origin screen") {
+                let screen = TestScreen(frame: CGRect(x: 100, y: 100, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = CustomLayout<TestWindow>(key: "uniform-columns", fileURL: Bundle.layoutFile(key: "uniform-columns")!)
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(frameAssignments.count).to(equal(layoutWindows.count))
+
+                let expectedFrames = [
+                    CGRect(x: 100, y: 100, width: 500, height: 1000),
+                    CGRect(x: 600, y: 100, width: 500, height: 1000),
+                    CGRect(x: 1100, y: 100, width: 500, height: 1000),
+                    CGRect(x: 1600, y: 100, width: 500, height: 1000)
+                ]
+
+                zip(frameAssignments.map { $0.frameAssignment.frame }, expectedFrames).forEach {
+                    expect($0).to(equal($1))
+                }
+            }
+        }
     }
 }
