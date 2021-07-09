@@ -44,6 +44,11 @@
 		403E1A2A2337173600DB7B2A /* FloatingLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */; };
 		403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */; };
 		4045416F268FFDA000861BE8 /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4045416E268FFDA000861BE8 /* CustomLayout.swift */; };
+		404541712697C14A00861BE8 /* CustomLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404541702697C14A00861BE8 /* CustomLayoutTests.swift */; };
+		404541742697C22A00861BE8 /* null.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541732697C22A00861BE8 /* null.js */; };
+		404541762697C62400861BE8 /* TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404541752697C62400861BE8 /* TestBundle.swift */; };
+		404541782697CDD000861BE8 /* fullscreen.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541772697CDD000861BE8 /* fullscreen.js */; };
+		4045417A2697EBC500861BE8 /* undefined.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541792697EBC500861BE8 /* undefined.js */; };
 		4046EFCF2236019400113067 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFCE2236019400113067 /* Window.swift */; };
 		4046EFD12238949900113067 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFD02238949900113067 /* Application.swift */; };
 		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
@@ -170,6 +175,11 @@
 		403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLayoutTests.swift; sourceTree = "<group>"; };
 		403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallLayoutTests.swift; sourceTree = "<group>"; };
 		4045416E268FFDA000861BE8 /* CustomLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayout.swift; sourceTree = "<group>"; };
+		404541702697C14A00861BE8 /* CustomLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutTests.swift; sourceTree = "<group>"; };
+		404541732697C22A00861BE8 /* null.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = null.js; sourceTree = "<group>"; };
+		404541752697C62400861BE8 /* TestBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestBundle.swift; sourceTree = "<group>"; };
+		404541772697CDD000861BE8 /* fullscreen.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = fullscreen.js; sourceTree = "<group>"; };
+		404541792697EBC500861BE8 /* undefined.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = undefined.js; sourceTree = "<group>"; };
 		4046EFCE2236019400113067 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		4046EFD02238949900113067 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
@@ -416,6 +426,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		404541722697C16B00861BE8 /* CustomLayouts */ = {
+			isa = PBXGroup;
+			children = (
+				404541772697CDD000861BE8 /* fullscreen.js */,
+				404541732697C22A00861BE8 /* null.js */,
+				404541792697EBC500861BE8 /* undefined.js */,
+			);
+			path = CustomLayouts;
+			sourceTree = "<group>";
+		};
 		4046EFCD2236018400113067 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -438,13 +458,14 @@
 			children = (
 				404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */,
 				401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */,
+				404541702697C14A00861BE8 /* CustomLayoutTests.swift */,
 				403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */,
 				40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */,
 				40D491D723367590007E0CCB /* RowLayoutTests.swift */,
 				403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */,
-				AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */,
 				40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */,
 				40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */,
+				AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */,
 				4000DB0F239CA07000365A0C /* WideLayoutTests.swift */,
 				40AB5BEA23AB182300E29346 /* WidescreenTallLayoutTests.swift */,
 			);
@@ -482,6 +503,7 @@
 		40B0D149232D94410021E0A7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				404541722697C16B00861BE8 /* CustomLayouts */,
 				40578C1A232DC607006553A0 /* TestScreen.swift */,
 				40B0D14A232D944C0021E0A7 /* TestWindow.swift */,
 			);
@@ -522,6 +544,7 @@
 			isa = PBXGroup;
 			children = (
 				40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */,
+				404541752697C62400861BE8 /* TestBundle.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -660,6 +683,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				404541742697C22A00861BE8 /* null.js in Resources */,
+				4045417A2697EBC500861BE8 /* undefined.js in Resources */,
+				404541782697CDD000861BE8 /* fullscreen.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,9 +881,11 @@
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
+				404541762697C62400861BE8 /* TestBundle.swift in Sources */,
 				40B0D14B232D944C0021E0A7 /* TestWindow.swift in Sources */,
 				40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */,
 				403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */,
+				404541712697C14A00861BE8 /* CustomLayoutTests.swift in Sources */,
 				4000DB10239CA07000365A0C /* WideLayoutTests.swift in Sources */,
 				40AB5BEB23AB182300E29346 /* WidescreenTallLayoutTests.swift in Sources */,
 				40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */,

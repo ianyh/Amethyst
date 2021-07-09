@@ -7,6 +7,12 @@
 //
 
 import Foundation
+import JavaScriptCore
+
+private struct JSWindow<Window: WindowType> {
+    let id: String
+    let window: LayoutWindow<Window>
+}
 
 class CustomLayout<Window: WindowType>: Layout<Window> {
     typealias WindowID = Window.WindowID
@@ -24,11 +30,29 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
     }
 
     override var layoutName: String {
-        return ""
+        return layout?.objectForKeyedSubscript("name").toString() ?? ""
     }
 
     private let key: String
     private let fileURL: URL
+
+    private lazy var context: JSContext? = {
+        guard let context = JSContext() else {
+            return nil
+        }
+
+        do {
+            context.evaluateScript(try String(contentsOf: self.fileURL))
+        } catch {
+            return nil
+        }
+
+        return context
+    }()
+
+    private lazy var layout: JSValue? = {
+        return self.context?.objectForKeyedSubscript("layout")
+    }()
 
     required init() {
         fatalError("must be constructed with a file")
@@ -54,12 +78,48 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
     }
 
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
+        guard
+            let getFrameAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"),
+            !getFrameAssignments.isNull && !getFrameAssignments.isUndefined
+        else {
+            return nil
+        }
+
         let windows = windowSet.windows
 
         guard !windows.isEmpty else {
             return []
         }
 
-        return []
+        let screenFrame = screen.adjustedFrame()
+        let jsWindows = windows.map { JSWindow<Window>(id: UUID().uuidString, window: $0) }
+        let jsWindowsArg = jsWindows.map { ["id": $0.id, "window": $0] }
+        let jsWindowMap: [String: LayoutWindow<Window>] = Dictionary(
+            jsWindows.map { ($0.id, $0.window) },
+            uniquingKeysWith: { window, _ in window }
+        )
+
+        guard
+            let frameAssignmentsValue = getFrameAssignments.call(withArguments: [jsWindowsArg, screenFrame]),
+            frameAssignmentsValue.isObject,
+            let frameAssignments = frameAssignmentsValue.toDictionary() as? [String: CGRect]
+        else {
+            return nil
+        }
+
+        let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
+        return frameAssignments.compactMap { id, frame in
+            guard let window = jsWindowMap[id] else {
+                return nil
+            }
+
+            let frameAssignment = FrameAssignment<Window>(
+                frame: frame,
+                window: window,
+                screenFrame: screenFrame,
+                resizeRules: resizeRules
+            )
+            return FrameAssignmentOperation(frameAssignment: frameAssignment, windowSet: windowSet)
+        }
     }
 }
