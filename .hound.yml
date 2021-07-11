@@ -1,2 +1,6 @@
 swiftlint:
     config_file: .swiftlint.yml
+
+eslint:
+    enabled: true
+    config_file: .eslint.yml
