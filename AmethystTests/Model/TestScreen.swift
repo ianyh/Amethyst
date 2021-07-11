@@ -26,7 +26,7 @@ final class TestScreen: ScreenType {
     }
 
     convenience init() {
-        let frame = CGRect(x: 0, y: 0, width: CGFloat.random(in: 500...2000), height: CGFloat.random(in: 500...2000))
+        let frame = CGRect(x: 0, y: 0, width: round(CGFloat.random(in: 500...2000)), height: round(CGFloat.random(in: 500...2000)))
         self.init(frame: frame)
     }
 

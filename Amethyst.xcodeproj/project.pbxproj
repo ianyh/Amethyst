@@ -50,6 +50,7 @@
 		404541782697CDD000861BE8 /* fullscreen.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541772697CDD000861BE8 /* fullscreen.js */; };
 		4045417A2697EBC500861BE8 /* undefined.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541792697EBC500861BE8 /* undefined.js */; };
 		4045417C2697EE7800861BE8 /* uniform-columns.js in Resources */ = {isa = PBXBuildFile; fileRef = 4045417B2697EE7800861BE8 /* uniform-columns.js */; };
+		4045417E2698030A00861BE8 /* static-ratio-tall.js in Resources */ = {isa = PBXBuildFile; fileRef = 4045417D2698030A00861BE8 /* static-ratio-tall.js */; };
 		4046EFCF2236019400113067 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFCE2236019400113067 /* Window.swift */; };
 		4046EFD12238949900113067 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFD02238949900113067 /* Application.swift */; };
 		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
@@ -182,6 +183,7 @@
 		404541772697CDD000861BE8 /* fullscreen.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = fullscreen.js; sourceTree = "<group>"; };
 		404541792697EBC500861BE8 /* undefined.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = undefined.js; sourceTree = "<group>"; };
 		4045417B2697EE7800861BE8 /* uniform-columns.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "uniform-columns.js"; sourceTree = "<group>"; };
+		4045417D2698030A00861BE8 /* static-ratio-tall.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall.js"; sourceTree = "<group>"; };
 		4046EFCE2236019400113067 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		4046EFD02238949900113067 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
@@ -431,10 +433,11 @@
 		404541722697C16B00861BE8 /* CustomLayouts */ = {
 			isa = PBXGroup;
 			children = (
-				4045417B2697EE7800861BE8 /* uniform-columns.js */,
 				404541772697CDD000861BE8 /* fullscreen.js */,
 				404541732697C22A00861BE8 /* null.js */,
+				4045417D2698030A00861BE8 /* static-ratio-tall.js */,
 				404541792697EBC500861BE8 /* undefined.js */,
+				4045417B2697EE7800861BE8 /* uniform-columns.js */,
 			);
 			path = CustomLayouts;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4045417E2698030A00861BE8 /* static-ratio-tall.js in Resources */,
 				404541742697C22A00861BE8 /* null.js in Resources */,
 				4045417A2697EBC500861BE8 /* undefined.js in Resources */,
 				4045417C2697EE7800861BE8 /* uniform-columns.js in Resources */,
