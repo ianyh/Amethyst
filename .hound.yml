@@ -3,4 +3,4 @@ swiftlint:
 
 eslint:
     enabled: true
-    config_file: .eslint.yml
+    config_file: .eslintrc.yml
