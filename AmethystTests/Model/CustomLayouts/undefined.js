@@ -1,3 +1,5 @@
-var layout = {
-    name: "Undefined"
-};
+function layout() {
+    return {
+        name: "Undefined"
+    };
+}

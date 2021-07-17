@@ -1,4 +1,6 @@
-var layout = {
-    name: "Null",
-    getFrameAssignments: null
-};
+function layout() {
+    return {
+        name: "Null",
+        getFrameAssignments: null
+    };
+}

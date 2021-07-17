@@ -58,7 +58,7 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
     }()
 
     private lazy var layout: JSValue? = {
-        return self.context?.objectForKeyedSubscript("layout")
+        return self.context?.objectForKeyedSubscript("layout")?.call(withArguments: [])
     }()
 
     private lazy var state: JSValue? = {
