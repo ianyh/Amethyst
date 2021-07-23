@@ -320,7 +320,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             y: screenCenter.y - layoutNameWindow.frame.height / 2.0
         )
 
-        layoutNameWindow.layoutNameField?.stringValue = currentLayout.flatMap({ type(of: $0).layoutName }) ?? "None"
+        layoutNameWindow.layoutNameField?.stringValue = currentLayout.flatMap({ $0.layoutName }) ?? "None"
         layoutNameWindow.layoutDescriptionLabel?.stringValue = currentLayout?.layoutDescription ?? ""
         layoutNameWindow.setFrameOrigin(NSPointFromCGPoint(windowOrigin))
 
