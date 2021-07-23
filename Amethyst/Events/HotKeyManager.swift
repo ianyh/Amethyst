@@ -116,6 +116,42 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             }
         }
 
+        constructCommandWithCommandKey(CommandKey.command1.rawValue) {
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
+                if let customLayout = layout as? CustomLayout {
+                    customLayout.command1()
+                }
+            }
+        }
+
+        constructCommandWithCommandKey(CommandKey.command2.rawValue) {
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
+                if let customLayout = layout as? CustomLayout {
+                    customLayout.command2()
+                }
+            }
+        }
+
+        constructCommandWithCommandKey(CommandKey.command3.rawValue) {
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
+                if let customLayout = layout as? CustomLayout {
+                    customLayout.command3()
+                }
+            }
+        }
+
+        constructCommandWithCommandKey(CommandKey.command4.rawValue) {
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
+            screenManager?.updateCurrentLayout { layout in
+                if let customLayout = layout as? CustomLayout {
+                    customLayout.command4()
+                }
+            }
+        }
+
         constructCommandWithCommandKey(CommandKey.focusCCW.rawValue) {
             windowManager.focusTransitionCoordinator.moveFocusCounterClockwise()
         }
@@ -331,6 +367,10 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Expand main pane", CommandKey.expandMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Increase main pane count", CommandKey.increaseMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Decrease main pane count", CommandKey.decreaseMain.rawValue])
+        hotKeyNameToDefaultsKey.append(["Custom layout command 1", CommandKey.command1.rawValue])
+        hotKeyNameToDefaultsKey.append(["Custom layout command 2", CommandKey.command2.rawValue])
+        hotKeyNameToDefaultsKey.append(["Custom layout command 3", CommandKey.command3.rawValue])
+        hotKeyNameToDefaultsKey.append(["Custom layout command 4", CommandKey.command4.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus counter clockwise", CommandKey.focusCCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus clockwise", CommandKey.focusCW.rawValue])
         hotKeyNameToDefaultsKey.append(["Move focus to main window", CommandKey.focusMain.rawValue])
