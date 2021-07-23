@@ -241,7 +241,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     func selectLayout(_ layoutString: String) {
-        guard let layoutIndex = layouts.index(where: { type(of: $0).layoutKey == layoutString }) else {
+        guard let layoutIndex = layouts.index(where: { $0.layoutKey == layoutString }) else {
             return
         }
 
