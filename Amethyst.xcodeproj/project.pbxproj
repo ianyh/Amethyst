@@ -98,6 +98,7 @@
 		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
 		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
 		ED989E6BAE0E8D035277478A /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6611384054CC1D59E32FC049 /* Pods_Amethyst.framework */; };
+		F46629C4272AD7A30040C275 /* FourColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46629C3272AD7A30040C275 /* FourColumnLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,6 +230,7 @@
 		A6102745A914DC1AD00462D0 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
 		AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayout.swift; sourceTree = "<group>"; };
 		AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayoutTests.swift; sourceTree = "<group>"; };
+		F46629C3272AD7A30040C275 /* FourColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourColumnLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +329,7 @@
 				AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */,
 				4062AD301C1FA29600DB612B /* TallRightLayout.swift */,
 				4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */,
+				F46629C3272AD7A30040C275 /* FourColumnLayout.swift */,
 				4062AD341C1FA62500DB612B /* WideLayout.swift */,
 				4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */,
 			);
@@ -801,6 +804,7 @@
 				2A6D9A4125E5D24D006A36B5 /* AppManager.swift in Sources */,
 				4046EFCF2236019400113067 /* Window.swift in Sources */,
 				40A87FDC2404AEAD005EE9C6 /* main.swift in Sources */,
+				F46629C4272AD7A30040C275 /* FourColumnLayout.swift in Sources */,
 				401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */,
 				401C35AF2241BBDD0019ED07 /* ReflowOperation.swift in Sources */,
 				401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */,
