@@ -9,6 +9,27 @@
 import AppKit
 import Foundation
 
+private let ignoredBundleIDs = Set([
+    "com.apple.dashboard",
+    "com.apple.loginwindow",
+    "com.apple.notificationcenterui",
+    "com.apple.wifi.WiFiAgent",
+    "com.apple.Spotlight",
+    "com.apple.systemuiserver",
+    "com.apple.dock",
+    "com.apple.AirPlayUIAgent",
+    "com.apple.dock.extra",
+    "com.apple.PowerChime",
+    "com.apple.WebKit.Networking",
+    "com.apple.WebKit.WebContent",
+    "com.apple.WebKit.GPU",
+    "com.apple.FollowUpUI",
+    "com.apple.controlcenter",
+    "com.apple.SoftwareUpdateNotificationManager",
+    "com.apple.TextInputMenuAgent",
+    "com.apple.TextInputSwitcher"
+])
+
 protocol BundleIdentifiable {
     var bundleIdentifier: String? { get }
 }
@@ -17,7 +38,7 @@ extension NSRunningApplication: BundleIdentifiable {}
 
 extension NSRunningApplication {
     var isManageable: Bool {
-        guard let bundleIdentifier = bundleIdentifier, !isAgent() else {
+        guard let bundleIdentifier = bundleIdentifier else {
             return false
         }
 
@@ -25,13 +46,14 @@ extension NSRunningApplication {
             return false
         }
 
-        switch bundleIdentifier {
-        case "com.apple.dashboard":
+        if ignoredBundleIDs.contains(bundleIdentifier) {
             return false
-        case "com.apple.loginwindow":
-            return false
-        default:
-            return true
         }
+
+        if isAgent() {
+            return false
+        }
+
+        return true
     }
 }
