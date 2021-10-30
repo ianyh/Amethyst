@@ -1,0 +1,22 @@
+name: Tests
+
+on:
+  push:
+    branches: [ development ]
+  pull_request:
+
+jobs:
+  build:
+    name: Build and run unit tests
+    runs-on: macos-11
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Dependencies
+        run: |
+          bundle install
+          pod install
+      - name: Test
+        run: |
+          set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | bundle exec xcpretty
