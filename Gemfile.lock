@@ -236,9 +236,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods (= 1.10.1)
+  cocoapods
   fastlane
   xcpretty
 
 BUNDLED WITH
-   2.2.19
+   2.2.27
