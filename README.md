@@ -120,6 +120,16 @@ Exactly the same as *Tall*, but the main pane is on the right, with the other pa
 
 The rotated version of *Tall*, where the main pane is on the _top_ (extending the full width of the screen), and the other pane is on the bottom. If either pane has more than one window, that pane will split into columns instead of rows.
 
+#### Two Pane
+
+This layout has two visible panes - the main and the secondary pane. The window
+in the main pane is pinned, just like in other layouts, and all the remaining
+windows are placed in the other pane with only one window being visible at a
+time, which can be swapped (using the keyboard shortcuts). This layout
+automatically adapts to horizontal/vertical tiling depending on your screen
+orientation. The main pane is on the left in the horizontal orientation and it's
+on the top in the vertical orientation.
+
 #### 3Column-Left
 
 A three-column version of *Tall*, with one main pane on the left (extending the full height of the screen) and two other panes, one in the middle and one on the right. Like *Tall*, if any pane has more than one window, that pane will be split into rows. You can control how many windows are in the main pane as usual; other windows will be assigned as evenly as possible between the other two panes.
