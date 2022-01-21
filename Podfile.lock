@@ -1,6 +1,6 @@
 PODS:
   - Cartography (4.0.0)
-  - LoginServiceKit (2.0.2)
+  - LoginServiceKit (2.2.1)
   - MASShortcut (2.4.0)
   - Nimble (9.0.1)
   - Quick (4.0.0)
@@ -25,7 +25,7 @@ PODS:
 
 DEPENDENCIES:
   - Cartography
-  - LoginServiceKit (from `https://github.com/Clipy/LoginServiceKit.git`)
+  - LoginServiceKit (from `https://github.com/Sunnyyoung/LoginServiceKit.git`)
   - MASShortcut
   - Nimble (~> 9.0.1)
   - Quick (~> 4.0.0)
@@ -53,15 +53,15 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   LoginServiceKit:
-    :git: https://github.com/Clipy/LoginServiceKit.git
+    :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
 CHECKOUT OPTIONS:
   LoginServiceKit:
-    :commit: 79c9d6d2cc25dc238e6044245bebdc8253a786f2
-    :git: https://github.com/Clipy/LoginServiceKit.git
+    :commit: 04a1379908432bc4e304b38c831d573b1943b3fa
+    :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
     :commit: fd2c3a469d4e8855c26a1fe0769af2c0cad9f1fb
     :git: https://github.com/ianyh/Silica
@@ -69,7 +69,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
-  LoginServiceKit: 5b4736234dc4cc96d786d8cd83e43b9ce5e7f1ca
+  LoginServiceKit: e39022a6ea6169b3716fc3c43e89b2e7fd12f222
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
   Nimble: 7bed62ffabd6dbfe05f5925cbc43722533248990
   Quick: 6473349e43b9271a8d43839d9ba1c442ed1b7ac4
@@ -82,6 +82,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 7c25b423e2dbd7afb667fcb9f2d43dc98411bba9
+PODFILE CHECKSUM: e40f10ab3ee06f2055a47b7b06e4964c47015f89
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2
