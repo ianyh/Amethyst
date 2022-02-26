@@ -2,7 +2,6 @@ Amethyst
 ========
 
 [![Discussions](https://img.shields.io/github/discussions/ianyh/Amethyst)](https://github.com/ianyh/Amethyst/discussions)
-https://img.shields.io/github/discussions/ianyh/Amethyst
 [![Build Status](https://travis-ci.com/ianyh/Amethyst.svg?branch=development)](https://travis-ci.com/ianyh/Amethyst)
 [![Open Source Helpers](https://www.codetriage.com/ianyh/amethyst/badges/users.svg)](https://www.codetriage.com/ianyh/amethyst)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
