@@ -72,6 +72,26 @@ struct CGScreensInfo<Window: WindowType> {
 struct CGSpacesInfo<Window: WindowType> {
     typealias Screen = Window.Screen
 
+    static func spacesForAllScreens(includeOnlyUserSpaces: Bool = false) -> [Space]? {
+        guard let screenDescriptions = Screen.screenDescriptions() else {
+            return nil
+        }
+
+        guard !screenDescriptions.isEmpty else {
+            return nil
+        }
+
+        let spaces = screenDescriptions.map { screenDescription -> [Space] in
+            return allSpaces(fromScreenDescription: screenDescription) ?? []
+        }.reduce([], {acc, spaces in acc + spaces})
+
+        if includeOnlyUserSpaces {
+            return spaces.filter { $0.type == CGSSpaceTypeUser }
+        }
+
+        return spaces
+    }
+
     static func spacesForScreen(_ screen: Screen, includeOnlyUserSpaces: Bool = false) -> [Space]? {
         guard let screenDescriptions = Screen.screenDescriptions() else {
             return nil
@@ -88,10 +108,10 @@ struct CGSpacesInfo<Window: WindowType> {
             spaces = screenDescriptions
                 .first { $0["Display Identifier"].string == screenID }
                 .flatMap { screenDescription -> [Space]? in
-                    return screenDescription["Spaces"].array?.map { space(fromSpaceDescription: $0) }
+                    return allSpaces(fromScreenDescription: screenDescription)
                 }
         } else {
-            spaces = screenDescriptions[0]["Spaces"].arrayValue.map { space(fromSpaceDescription: $0) }
+            spaces = allSpaces(fromScreenDescription: screenDescriptions[0])
         }
 
         if includeOnlyUserSpaces {
@@ -150,5 +170,11 @@ struct CGSpacesInfo<Window: WindowType> {
         let type = CGSSpaceType(rawValue: spaceDictionary["type"].uInt32Value)
         let uuid = spaceDictionary["uuid"].stringValue
         return Space(id: id, type: type, uuid: uuid)
+    }
+
+    static func allSpaces(fromScreenDescription screenDictionary: JSON) -> [Space]? {
+        return screenDictionary["Spaces"].array?.map {
+            space(fromSpaceDescription: $0)
+        }
     }
 }
