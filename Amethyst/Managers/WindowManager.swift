@@ -649,9 +649,16 @@ extension WindowManager: WindowTransitionTarget {
             }
 
             let targetSpace = spaces[spaceIndex]
-
+            guard let targetScreen = CGSpacesInfo<Window>.screenForSpace(space: targetSpace) else {
+                return
+            }
             markScreen(screen, forReflowWithChange: .remove(window: window))
             window.move(toSpace: targetSpace.id)
+            // necessary to set frame here as window is expected to be at origin when moved, can be improved.
+            let newFrame = targetScreen.frameWithoutDockOrMenu()
+            window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
+            markScreen(targetScreen, forReflowWithChange: .add(window: window))
+            window.focus()
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
                 executeTransition(.focusScreen(screen))

@@ -161,6 +161,15 @@ struct CGSpacesInfo<Window: WindowType> {
         return currentSpaceForScreen(screen)
     }
 
+    static func screenForSpace(space: Space) -> Screen? {
+        for screen in Screen.availableScreens {
+            if (spacesForScreen(screen)?.contains { $0.id == space.id } ?? false) {
+                return screen
+            }
+        }
+        return nil
+    }
+
     static func space(fromScreenDescription screenDictionary: JSON) -> Space {
         return space(fromSpaceDescription: screenDictionary["Current Space"])
     }
