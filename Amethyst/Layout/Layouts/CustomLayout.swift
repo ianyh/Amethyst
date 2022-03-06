@@ -6,6 +6,7 @@
 //  Copyright © 2021 Ian Ynda-Hummel. All rights reserved.
 //
 
+import CommonCrypto
 import Foundation
 import JavaScriptCore
 
@@ -18,6 +19,16 @@ private extension JSValue {
     func toRoundedRect() -> CGRect {
         let rect = toRect()
         return CGRect(x: round(rect.origin.x), y: round(rect.origin.y), width: round(rect.width), height: round(rect.height))
+    }
+}
+
+private extension Data {
+    func sha256() -> String {
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(count), &hash)
+        }
+        return map { String(format: "%02hhx", $0) }.joined()
     }
 }
 
@@ -109,7 +120,10 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
         let screenFrame = screen.adjustedFrame()
         let jsScreenFrameArg = JSValue(rect: screenFrame, in: context)!
 
-        let jsWindows = windows.map { JSWindow<Window>(id: UUID().uuidString, window: $0) }
+        let jsWindows = windows.map { window -> JSWindow<Window> in
+            let encodedID = try? JSONEncoder().encode(window.id).sha256()
+            return JSWindow<Window>(id: encodedID ?? UUID().uuidString, window: window)
+        }
         let jsWindowsArg = jsWindows.map { ["id": $0.id, "window": $0] }
 
         let args: [Any]
@@ -169,7 +183,17 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
             return
         }
 
-        guard let updatedState = updateState.call(withArguments: state.flatMap { [$0] } ?? []), !updateState.isNull && !updateState.isUndefined else {
+        let focusedWindowID = Window.currentlyFocused()?.id()
+        let encodedID = focusedWindowID.flatMap { try? JSONEncoder().encode($0).sha256() }
+        let updateStateArgs: [Any]? = state.flatMap { state in
+            if let id = encodedID {
+                return [state, id]
+            } else {
+                return [state]
+            }
+        }
+
+        guard let updatedState = updateState.call(withArguments: updateStateArgs ?? []), !updateState.isNull && !updateState.isUndefined else {
             log.error("\(layoutKey) — \(key): received invalid updated state")
             return
         }

@@ -354,5 +354,109 @@ class CustomLayoutTests: QuickSpec {
                 ])
             }
         }
+
+        describe("subset layout") {
+            it("defines a name") {
+                let layout = CustomLayout<TestWindow>(key: "subset", fileURL: Bundle.layoutFile(key: "subset")!)
+                expect(layout.layoutName).to(equal("Subset"))
+            }
+
+            describe("subset") {
+                it("starts empty") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let windows = [
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!
+                    ]
+                    let layoutWindows = windows.map {
+                        LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                    }
+                    let windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows,
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.id() == id } }
+                    )
+                    let layout = CustomLayout<TestWindow>(key: "subset", fileURL: Bundle.layoutFile(key: "subset")!)
+                    let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                    frameAssignments.verify(frames: [
+                        CGRect(x: 1000, y: 0, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 250, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 750, width: 1000, height: 250)
+                    ], inOrder: false)
+                }
+
+                it("adds and removes ids to the subset") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let windows = [
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!
+                    ]
+                    let layoutWindows = windows.map {
+                        LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                    }
+                    let windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows,
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.id() == id } }
+                    )
+                    let layout = CustomLayout<TestWindow>(key: "subset", fileURL: Bundle.layoutFile(key: "subset")!)
+
+                    var frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        CGRect(x: 1000, y: 0, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 250, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 750, width: 1000, height: 250)
+                    ], inOrder: false)
+
+                    TestWindow.focused = windows[0]
+                    layout.command3()
+                    TestWindow.focused = windows[3]
+                    layout.command3()
+
+                    frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        CGRect(x: 0, y: 0, width: 1000, height: 500),
+                        CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 500),
+                        CGRect(x: 0, y: 500, width: 1000, height: 500)
+                    ], inOrder: false)
+
+                    TestWindow.focused = windows[0]
+                    layout.command4()
+
+                    frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        CGRect(x: 1000, y: 0, width: 1000, height: 333),
+                        CGRect(x: 1000, y: 333, width: 1000, height: 333),
+                        CGRect(x: 1000, y: 666, width: 1000, height: 333),
+                        CGRect(x: 0, y: 0, width: 1000, height: 1000)
+                    ], inOrder: false)
+
+                    TestWindow.focused = windows[3]
+                    layout.command4()
+
+                    frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        CGRect(x: 1000, y: 0, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 250, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 500, width: 1000, height: 250),
+                        CGRect(x: 1000, y: 750, width: 1000, height: 250)
+                    ], inOrder: false)
+                }
+            }
+        }
     }
 }
