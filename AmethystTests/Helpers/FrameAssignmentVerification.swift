@@ -48,4 +48,15 @@ extension RandomAccessCollection where Element == FrameAssignmentOperation<TestW
             }
         }
     }
+
+    func verify(frames: [String: CGRect]) {
+        var unverifiedFrames = frames
+        for operation in self {
+            let id = operation.frameAssignment.window.id
+            expect(unverifiedFrames[id]).toNot(beNil(), description: "\(id) should exist")
+            expect(operation.frameAssignment.frame).to(equal(unverifiedFrames[id]), description: "\(id)")
+            unverifiedFrames[id] = nil
+        }
+        expect(unverifiedFrames).to(beEmpty())
+    }
 }

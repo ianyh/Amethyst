@@ -419,7 +419,7 @@ class CustomLayoutTests: QuickSpec {
                         CGRect(x: 1000, y: 250, width: 1000, height: 250),
                         CGRect(x: 1000, y: 500, width: 1000, height: 250),
                         CGRect(x: 1000, y: 750, width: 1000, height: 250)
-                    ], inOrder: false)
+                    ])
 
                     TestWindow.focused = windows[0]
                     layout.command3()
@@ -432,7 +432,7 @@ class CustomLayoutTests: QuickSpec {
                         CGRect(x: 1000, y: 0, width: 1000, height: 500),
                         CGRect(x: 1000, y: 500, width: 1000, height: 500),
                         CGRect(x: 0, y: 500, width: 1000, height: 500)
-                    ], inOrder: false)
+                    ])
 
                     TestWindow.focused = windows[0]
                     layout.command4()
@@ -443,7 +443,7 @@ class CustomLayoutTests: QuickSpec {
                         CGRect(x: 1000, y: 333, width: 1000, height: 333),
                         CGRect(x: 1000, y: 666, width: 1000, height: 333),
                         CGRect(x: 0, y: 0, width: 1000, height: 1000)
-                    ], inOrder: false)
+                    ])
 
                     TestWindow.focused = windows[3]
                     layout.command4()
@@ -454,7 +454,70 @@ class CustomLayoutTests: QuickSpec {
                         CGRect(x: 1000, y: 250, width: 1000, height: 250),
                         CGRect(x: 1000, y: 500, width: 1000, height: 250),
                         CGRect(x: 1000, y: 750, width: 1000, height: 250)
-                    ], inOrder: false)
+                    ])
+                }
+
+                it("swaps subset state on window swaps") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let windows = [
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!
+                    ]
+                    let layoutWindows = windows.map {
+                        LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                    }
+                    let windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows,
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.id() == id } }
+                    )
+                    let layout = CustomLayout<TestWindow>(key: "subset", fileURL: Bundle.layoutFile(key: "subset")!)
+
+                    var frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        windows[0].id(): CGRect(x: 1000, y: 0, width: 1000, height: 250),
+                        windows[1].id(): CGRect(x: 1000, y: 250, width: 1000, height: 250),
+                        windows[2].id(): CGRect(x: 1000, y: 500, width: 1000, height: 250),
+                        windows[3].id(): CGRect(x: 1000, y: 750, width: 1000, height: 250)
+                    ])
+
+                    TestWindow.focused = windows[0]
+                    layout.command3()
+                    TestWindow.focused = windows[3]
+                    layout.command3()
+
+                    frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        windows[0].id(): CGRect(x: 0, y: 0, width: 1000, height: 500),
+                        windows[1].id(): CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        windows[2].id(): CGRect(x: 1000, y: 500, width: 1000, height: 500),
+                        windows[3].id(): CGRect(x: 0, y: 500, width: 1000, height: 500)
+                    ])
+
+                    layout.updateWithChange(.windowSwap(window: windows[1], otherWindow: windows[0]))
+
+                    frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        windows[0].id(): CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        windows[1].id(): CGRect(x: 0, y: 0, width: 1000, height: 500),
+                        windows[2].id(): CGRect(x: 1000, y: 500, width: 1000, height: 500),
+                        windows[3].id(): CGRect(x: 0, y: 500, width: 1000, height: 500)
+                    ])
+
+                    layout.updateWithChange(.windowSwap(window: windows[3], otherWindow: windows[2]))
+
+                    frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                    frameAssignments.verify(frames: [
+                        windows[0].id(): CGRect(x: 1000, y: 0, width: 1000, height: 500),
+                        windows[1].id(): CGRect(x: 0, y: 0, width: 1000, height: 500),
+                        windows[2].id(): CGRect(x: 0, y: 500, width: 1000, height: 500),
+                        windows[3].id(): CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    ])
                 }
             }
         }

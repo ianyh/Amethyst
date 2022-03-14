@@ -65,6 +65,23 @@ function layout() {
                 }
                 return { ...frames, [window.id]: frame };
             }, {});
+        },
+        updateWithChange: (change, state) => {
+            switch (change.change) {
+                case "window_swap":
+                    if (state.ids.includes(change.windowID) && !state.ids.includes(change.otherWindowID)) {
+                        const index = state.ids.indexOf(change.windowID);
+                        state.ids.splice(index, 1);
+                        state.ids.push(change.otherWindowID);
+                    } else if (state.ids.includes(change.otherWindowID) && !state.ids.includes(change.windowID)) {
+                        const index = state.ids.indexOf(change.otherWindowID);
+                        state.ids.splice(index, 1);
+                        state.ids.push(change.windowID);
+                    }
+                    break;
+            }
+
+            return state;
         }
     };
 }

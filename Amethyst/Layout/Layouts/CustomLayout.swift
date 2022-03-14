@@ -22,17 +22,7 @@ private extension JSValue {
     }
 }
 
-private extension Data {
-    func sha256() -> String {
-        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        withUnsafeBytes {
-            _ = CC_SHA256($0.baseAddress, CC_LONG(count), &hash)
-        }
-        return map { String(format: "%02hhx", $0) }.joined()
-    }
-}
-
-class CustomLayout<Window: WindowType>: Layout<Window> {
+class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
     typealias WindowID = Window.WindowID
 
     private enum CodingKeys: String, CodingKey {
@@ -121,8 +111,7 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
         let jsScreenFrameArg = JSValue(rect: screenFrame, in: context)!
 
         let jsWindows = windows.map { window -> JSWindow<Window> in
-            let encodedID = try? JSONEncoder().encode(window.id).sha256()
-            return JSWindow<Window>(id: encodedID ?? UUID().uuidString, window: window)
+            return JSWindow<Window>(id: idHash(forWindowID: window.id) ?? UUID().uuidString, window: window)
         }
         let jsWindowsArg = jsWindows.map { ["id": $0.id, "window": $0] }
 
@@ -156,6 +145,23 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
         }
     }
 
+    override func updateWithChange(_ windowChange: Change<Window>) {
+        guard let updateWithChange = layout?.objectForKeyedSubscript("updateWithChange"), !updateWithChange.isNull && !updateWithChange.isUndefined else {
+            return
+        }
+
+        let updateWithChangeArgs: [Any]? = state.flatMap { state in
+            return [jsChange(forChange: windowChange), state]
+        }
+
+        guard let updatedState = updateWithChange.call(withArguments: updateWithChangeArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
+            log.error("\(layoutKey)): received invalid updated state")
+            return
+        }
+
+        state = updatedState
+    }
+
     func command1() {
         command(key: "command1")
     }
@@ -183,21 +189,64 @@ class CustomLayout<Window: WindowType>: Layout<Window> {
             return
         }
 
-        let focusedWindowID = Window.currentlyFocused()?.id()
-        let encodedID = focusedWindowID.flatMap { try? JSONEncoder().encode($0).sha256() }
+        let focusedWindowID = Window.currentlyFocused().flatMap { idHash(forWindowID: $0.id()) }
         let updateStateArgs: [Any]? = state.flatMap { state in
-            if let id = encodedID {
+            if let id = focusedWindowID {
                 return [state, id]
             } else {
                 return [state]
             }
         }
 
-        guard let updatedState = updateState.call(withArguments: updateStateArgs ?? []), !updateState.isNull && !updateState.isUndefined else {
+        guard let updatedState = updateState.call(withArguments: updateStateArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
             log.error("\(layoutKey) — \(key): received invalid updated state")
             return
         }
 
         state = updatedState
+    }
+
+    private func idHash(forWindowID windowID: WindowID) -> String? {
+        guard let encodedID = try? JSONEncoder().encode(windowID) else {
+            return nil
+        }
+
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        encodedID.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(encodedID.count), &hash)
+        }
+        return hash.map { String(format: "%02hhx", $0) }.joined()
+    }
+
+    private func jsChange(forChange change: Change<Window>) -> [String: String] {
+        var jsChange: [String: String] = [:]
+
+        switch change {
+        case .add(window: let window):
+            jsChange["change"] = "add"
+            jsChange["windowID"] = idHash(forWindowID: window.id())
+        case .remove(window: let window):
+            jsChange["change"] = "remove"
+            jsChange["windowID"] = idHash(forWindowID: window.id())
+        case .focusChanged(window: let window):
+            jsChange["change"] = "focus_changed"
+            jsChange["windowID"] = idHash(forWindowID: window.id())
+        case .windowSwap(window: let window, otherWindow: let otherWindow):
+            jsChange["change"] = "window_swap"
+            jsChange["windowID"] = idHash(forWindowID: window.id())
+            jsChange["otherWindowID"] = idHash(forWindowID: otherWindow.id())
+        case .applicationActivate:
+            jsChange["change"] = "application_activate"
+        case .applicationDeactivate:
+            jsChange["change"] = "application_deactivate"
+        case .spaceChange:
+            jsChange["change"] = "space_change"
+        case .layoutChange:
+            jsChange["change"] = "layout_change"
+        case .unknown:
+            jsChange["change"] = "unknown"
+        }
+
+        return jsChange
     }
 }
