@@ -313,7 +313,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
 
-        let screenFrame = screen.frameIncludingDockAndMenu()
+        let screenFrame = screen.frame()
         let screenCenter = CGPoint(x: screenFrame.midX, y: screenFrame.midY)
         let windowOrigin = CGPoint(
             x: screenCenter.x - layoutNameWindow.frame.width / 2.0,
