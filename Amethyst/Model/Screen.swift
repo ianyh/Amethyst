@@ -40,6 +40,9 @@ protocol ScreenType: Equatable {
     /// The frame adjusted such that the dock and menu are not included.
     func frameWithoutDockOrMenu() -> CGRect
 
+    /// The frame without adjustment.
+    func frame() -> CGRect
+
     /// The opaque idenfitifer for the screen in the underlying graphics system.
     func screenID() -> String?
 
@@ -117,6 +120,10 @@ struct AMScreen: ScreenType {
 
     func frameWithoutDockOrMenu() -> CGRect {
         return screen.frameWithoutDockOrMenu()
+    }
+
+    func frame() -> CGRect {
+        return screen.frame
     }
 
     func screenID() -> String? {
