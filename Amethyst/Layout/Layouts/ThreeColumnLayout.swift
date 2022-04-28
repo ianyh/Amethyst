@@ -25,6 +25,11 @@ enum Pane {
     case tertiary
 }
 
+enum Stack {
+    case tall
+    case wide
+}
+
 struct TriplePaneArrangement {
     /// number of windows in pane
     private let paneCount: [Pane: UInt]
@@ -35,21 +40,32 @@ struct TriplePaneArrangement {
     /// width of windows in pane
     private let paneWindowWidth: [Pane: CGFloat]
 
+    /// width of main pane (different than window in pane when using Stack.tall)
+    private let mainPaneWidth: CGFloat
+
     // how panes relate to columns
     private let panePosition: [Pane: Column]
 
     /// how columns relate to panes
     private let columnDesignation: [Column: Pane]
 
+    private let mainPaneStack: Stack
+    private let mainPane: Column
+
     /**
      - Parameters:
         - mainPane: which Column is the main Pane
+        - mainPaneStack: which Stack configuration is used for the main Pane
         - numWindows: how many windows total
         - numMainPane: how many windows in the main Pane
         - screenSize: total size of the screen
         - mainPaneRatio: ratio of the screen taken by main pane
      */
-    init(mainPane: Column, numWindows: UInt, numMainPane: UInt, screenSize: CGSize, mainPaneRatio: CGFloat) {
+    init(mainPane: Column, mainPaneStack: Stack, numWindows: UInt, numMainPane: UInt, screenSize: CGSize, mainPaneRatio: CGFloat) {
+
+        self.mainPane = mainPane
+        self.mainPaneStack = mainPaneStack
+
         // forward and reverse mapping of columns to their designations
         self.panePosition = {
             switch mainPane {
@@ -72,20 +88,28 @@ struct TriplePaneArrangement {
         // calculate heights
         let screenHeight = screenSize.height
         self.paneWindowHeight = [
-            .main: round(screenHeight / CGFloat(mainPaneCount)),
+            .main: mainPaneStack == Stack.tall
+                ? screenHeight
+                : round(screenHeight / CGFloat(mainPaneCount)),
             .secondary: secondaryPaneCount == 0 ? 0.0 : round(screenHeight / CGFloat(secondaryPaneCount)),
             .tertiary: tertiaryPaneCount == 0 ? 0.0 : round(screenHeight / CGFloat(tertiaryPaneCount))
         ]
 
         // calculate widths
         let screenWidth = screenSize.width
-        let mainWindowWidth = secondaryPaneCount == 0 ? screenWidth : round(screenWidth * mainPaneRatio)
-        let nonMainWindowWidth = round((screenWidth - mainWindowWidth) / 2)
+        let mainPaneWidth = secondaryPaneCount == 0
+            ? screenWidth
+            : round(screenWidth * mainPaneRatio)
+        let mainWindowWidth = mainPaneStack == Stack.tall
+            ? round(mainPaneWidth/CGFloat(mainPaneCount))
+            : mainPaneWidth
+        let nonMainWindowWidth = round((screenWidth - mainPaneWidth) / 2)
         self.paneWindowWidth = [
             .main: mainWindowWidth,
             .secondary: nonMainWindowWidth,
             .tertiary: nonMainWindowWidth
         ]
+        self.mainPaneWidth = mainPaneWidth
    }
 
     func count(_ pane: Pane) -> UInt {
@@ -140,13 +164,24 @@ struct TriplePaneArrangement {
 
     /// Get the column widths in the order (left, middle, right)
     func widthsLeftToRight() -> (CGFloat, CGFloat, CGFloat) {
-        return (width(pane(ofColumn: .left)), width(pane(ofColumn: .middle)), width(pane(ofColumn: .right)))
+        if self.mainPaneStack == Stack.wide {
+            return (width(pane(ofColumn: .left)), width(pane(ofColumn: .middle)), width(pane(ofColumn: .right)))
+        }
+        switch self.mainPane {
+        case Column.left:
+            return (self.mainPaneWidth, width(pane(ofColumn: .middle)), width(pane(ofColumn: .right)))
+        case Column.middle:
+            return (width(pane(ofColumn: .left)), self.mainPaneWidth, width(pane(ofColumn: .right)))
+        case Column.right:
+            return (width(pane(ofColumn: .left)), width(pane(ofColumn: .middle)), self.mainPaneWidth)
+        }
     }
 }
 
 // not an actual Layout, just a base class for the three actual Layouts below
 class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
     class var mainColumn: Column { fatalError("Must be implemented by subclass") }
+    class var mainColumnStack: Stack { fatalError("Must be implemented by subclass") }
 
     enum CodingKeys: String, CodingKey {
         case mainPaneCount
@@ -183,6 +218,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
         let screenFrame = screen.adjustedFrame()
         let paneArrangement = TriplePaneArrangement(
             mainPane: type(of: self).mainColumn,
+            mainPaneStack: type(of: self).mainColumnStack,
             numWindows: UInt(windows.count),
             numMainPane: UInt(mainPaneCount),
             screenSize: screenFrame.size,
@@ -199,14 +235,38 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
             let (windowHeight, windowWidth): (CGFloat, CGFloat) = paneArrangement.windowDimensions(inPane: pane)
             let column: Column = paneArrangement.column(ofPane: pane)
 
-            let (leftPaneWidth, middlePaneWidth, _): (CGFloat, CGFloat, CGFloat) = paneArrangement.widthsLeftToRight()
+            let (leftPaneWidth, middlePaneWidth, rightPaneWidth): (CGFloat, CGFloat, CGFloat) = paneArrangement.widthsLeftToRight()
 
             let xorigin: CGFloat = screenFrame.origin.x + {
-                switch column {
-                case .left: return 0.0
-                case .middle: return leftPaneWidth
-                case .right: return leftPaneWidth + middlePaneWidth
+                let isInTallMainPane = (column == type(of: self).mainColumn) && type(of: self).mainColumnStack == .tall
+
+                if isInTallMainPane {
+                    let widthOffset = CGFloat(paneIndex)/CGFloat(mainPaneCount)
+
+                    switch column {
+                    case .left: return 0.0 + (leftPaneWidth * widthOffset)
+                    case .middle: return leftPaneWidth + (middlePaneWidth * widthOffset)
+                    case .right: return leftPaneWidth + middlePaneWidth + rightPaneWidth * widthOffset
+                    }
+                } else {
+                    switch column {
+                    case .left: return 0.0
+                    case .middle: return leftPaneWidth
+                    case .right: return leftPaneWidth + middlePaneWidth
+                    }
                 }
+            }()
+
+            let yorigin: CGFloat = screenFrame.origin.y + {
+                let isInTallMainPane = (column == type(of: self).mainColumn) && type(of: self).mainColumnStack == .tall
+
+                if isInTallMainPane {
+                    return 0
+
+                } else {
+                    return windowHeight * CGFloat(paneIndex)
+                }
+
             }()
 
             let scaleFactor: CGFloat = screenFrame.width / {
@@ -217,7 +277,7 @@ class ThreeColumnLayout<Window: WindowType>: Layout<Window> {
             }()
 
             windowFrame.origin.x = xorigin
-            windowFrame.origin.y = screenFrame.origin.y + (windowHeight * CGFloat(paneIndex))
+            windowFrame.origin.y = yorigin
             windowFrame.size.width = windowWidth
             windowFrame.size.height = windowHeight
 
@@ -252,12 +312,12 @@ extension ThreeColumnLayout {
     }
 }
 
-// implement the three variants
-
+// implement the three + tall variants
 class ThreeColumnLeftLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Left" }
     override static var layoutKey: String { return "3column-left" }
     override static var mainColumn: Column { return .left }
+    override static var mainColumnStack: Stack { return .wide }
 }
 
 class ThreeColumnMiddleLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
@@ -265,10 +325,34 @@ class ThreeColumnMiddleLayout<Window: WindowType>: ThreeColumnLayout<Window>, Pa
     // for backwards compatibility with users who still have 'middle-wide' in their active layouts
     override static var layoutKey: String { return "middle-wide" }
     override static var mainColumn: Column { return .middle }
+    override static var mainColumnStack: Stack { return .wide }
 }
 
 class ThreeColumnRightLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
     override static var layoutName: String { return "3Column Right" }
     override static var layoutKey: String { return "3column-right" }
     override static var mainColumn: Column { return .right }
+    override static var mainColumnStack: Stack { return .wide }
+
+}
+
+class ThreeColumnTallLeftLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
+    override static var layoutName: String { return "3Column Tall Left" }
+    override static var layoutKey: String { return "3column-tall-left" }
+    override static var mainColumn: Column { return .left }
+    override static var mainColumnStack: Stack { return .tall }
+}
+
+class ThreeColumnTallMiddleLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
+    override static var layoutName: String { return "3Column Tall Middle" }
+    override static var layoutKey: String { return "3column-tall-middle" }
+    override static var mainColumn: Column { return .middle }
+    override static var mainColumnStack: Stack { return .tall }
+}
+
+class ThreeColumnTallRightLayout<Window: WindowType>: ThreeColumnLayout<Window>, PanedLayout {
+    override static var layoutName: String { return "3Column Tall Right" }
+    override static var layoutKey: String { return "3column-tall-right" }
+    override static var mainColumn: Column { return .right }
+    override static var mainColumnStack: Stack { return .tall }
 }

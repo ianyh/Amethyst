@@ -25,6 +25,7 @@ class ThreeColumnLayoutTests: QuickSpec {
                     let count: (UInt) -> UInt = { windowCount -> UInt in
                         return TriplePaneArrangement(
                             mainPane: .left,
+                            mainPaneStack: .wide,
                             numWindows: windowCount,
                             numMainPane: mainPaneCount,
                             screenSize: screenSize,
@@ -43,6 +44,7 @@ class ThreeColumnLayoutTests: QuickSpec {
                     let secondaryCount: (UInt) -> UInt = { windowCount -> UInt in
                         return TriplePaneArrangement(
                             mainPane: .left,
+                            mainPaneStack: .wide,
                             numWindows: windowCount,
                             numMainPane: mainPaneCount,
                             screenSize: screenSize,
@@ -52,6 +54,7 @@ class ThreeColumnLayoutTests: QuickSpec {
                     let tertiaryCount: (UInt) -> UInt = { windowCount -> UInt in
                         return TriplePaneArrangement(
                             mainPane: .left,
+                            mainPaneStack: .wide,
                             numWindows: windowCount,
                             numMainPane: mainPaneCount,
                             screenSize: screenSize,
@@ -77,6 +80,7 @@ class ThreeColumnLayoutTests: QuickSpec {
                 let height: (UInt, Pane) -> CGFloat = { windowCount, pane -> CGFloat in
                     return TriplePaneArrangement(
                         mainPane: .left,
+                        mainPaneStack: .wide,
                         numWindows: windowCount,
                         numMainPane: mainPaneCount,
                         screenSize: screenSize,
@@ -87,6 +91,53 @@ class ThreeColumnLayoutTests: QuickSpec {
                 expect(height(1, .main)).to(equal(1000))
                 expect(height(2, .main)).to(equal(500))
                 expect(height(3, .main)).to(equal(500))
+                expect(height(1, .secondary)).to(equal(0))
+                expect(height(2, .secondary)).to(equal(0))
+                expect(height(3, .secondary)).to(equal(1000))
+                expect(height(4, .secondary)).to(equal(1000))
+                expect(height(5, .secondary)).to(equal(500))
+                expect(height(6, .secondary)).to(equal(500))
+                expect(height(1, .tertiary)).to(equal(0))
+                expect(height(2, .tertiary)).to(equal(0))
+                expect(height(3, .tertiary)).to(equal(0))
+                expect(height(4, .tertiary)).to(equal(1000))
+                expect(height(5, .tertiary)).to(equal(1000))
+                expect(height(6, .tertiary)).to(equal(500))
+            }
+
+            it("splits panes into columns on tall variant") {
+                let mainPaneCount: UInt = 2
+                let screenSize = CGSize(width: 2000, height: 1000)
+                let height: (UInt, Pane) -> CGFloat = { windowCount, pane -> CGFloat in
+                    return TriplePaneArrangement(
+                        mainPane: .left,
+                        mainPaneStack: .tall,
+                        numWindows: windowCount,
+                        numMainPane: mainPaneCount,
+                        screenSize: screenSize,
+                        mainPaneRatio: 0.5
+                    ).height(pane)
+                }
+                let width: (UInt, Pane) -> CGFloat = { windowCount, pane -> CGFloat in
+                    return TriplePaneArrangement(
+                        mainPane: .left,
+                        mainPaneStack: .tall,
+                        numWindows: windowCount,
+                        numMainPane: mainPaneCount,
+                        screenSize: screenSize,
+                        mainPaneRatio: 0.5
+                    ).width(pane)
+                }
+
+                expect(height(1, .main)).to(equal(1000))
+                expect(width(1, .main)).to(equal(2000))
+                expect(height(2, .main)).to(equal(1000))
+                expect(width(2, .main)).to(equal(1000))
+                expect(height(3, .main)).to(equal(1000))
+                expect(width(3, .main)).to(equal(500))
+                expect(height(4, .main)).to(equal(1000))
+                expect(width(4, .main)).to(equal(500))
+
                 expect(height(1, .secondary)).to(equal(0))
                 expect(height(2, .secondary)).to(equal(0))
                 expect(height(3, .secondary)).to(equal(1000))
