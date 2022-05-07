@@ -418,7 +418,13 @@ class UserConfiguration: NSObject {
         // If the title matches it is included
         //   - Blacklist means floating
         //   - Whitelist means not floating
-        if floatingBundle.windowTitles.contains(title) {
+        if floatingBundle.windowTitles.contains(where: { windowTitle in
+            if title.range(of: windowTitle, options: .regularExpression) != nil {
+                return true
+            } else {
+                return false
+            }
+        }) {
             return .reliable(DefaultFloat.from(useIdentifiersAsBlacklist))
         }
 

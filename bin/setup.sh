@@ -13,7 +13,8 @@ fi
 
 # Check for installed ruby version
 printf "Checking for rbenv: "
-if rbenv version >/dev/null 2>&1 ; then
+which rbenv >/dev/null 2>&1 
+if [ $? -eq 0 ]; then
     printf "found!\n"
     printf "Ensuring correct ruby version ($OUR_RUBY) is installed:\n"
     rbenv install -s $OUR_RUBY
@@ -26,10 +27,10 @@ else
     printf "nope!\n"
     ACTUAL=`ruby -v | awk '{print $2}' | awk -Fp '{print $1}' | tr -d '\n'`
     if [ $ACTUAL = $OUR_RUBY ] ; then
-	printf "Correct ruby version is already installed, without rbenv\n"
+	    printf "Correct ruby version is already installed, without rbenv\n"
     else
-	printf "WARNING: You have ruby $ACTUAL, we want ruby $EXPECTED, and rbenv is not installed.\n"
-	printf "If you encounter setup problems, Try running:\n\tbrew install rbenv\n"
+    	printf "WARNING: You have ruby $ACTUAL, we want ruby $EXPECTED, and rbenv is not installed.\n"
+	    printf "If you encounter setup problems, Try running:\n\tbrew install rbenv\n"
     fi
 fi
 

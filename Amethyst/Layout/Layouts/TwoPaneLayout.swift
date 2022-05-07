@@ -59,12 +59,13 @@ class TwoPaneLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         let hasSecondaryPane = secondaryPaneCount > 0
 
         let screenFrame = screen.adjustedFrame()
+        let isHorizontal = (screenFrame.size.width / screenFrame.size.height) >= 1
 
-        let mainPaneWindowHeight = round(screenFrame.size.height / CGFloat(mainPaneCount))
-        let secondaryPaneWindowHeight = hasSecondaryPane ? round(screenFrame.size.height / CGFloat(secondaryPaneCount)) : 0.0
+        let mainPaneWindowHeight = screenFrame.size.height * (!isHorizontal && hasSecondaryPane ? mainPaneRatio : 1)
+        let secondaryPaneWindowHeight = isHorizontal ? mainPaneWindowHeight : screenFrame.size.height - mainPaneWindowHeight
 
-        let mainPaneWindowWidth = round(screenFrame.size.width * (hasSecondaryPane ? CGFloat(mainPaneRatio) : 1.0))
-        let secondaryPaneWindowWidth = screenFrame.size.width - mainPaneWindowWidth
+        let mainPaneWindowWidth = screenFrame.size.width * (isHorizontal && hasSecondaryPane ? mainPaneRatio : 1)
+        let secondaryPaneWindowWidth = !isHorizontal ? mainPaneWindowWidth : screenFrame.size.width - mainPaneWindowWidth
 
         return windows.reduce([]) { acc, window -> [FrameAssignmentOperation<Window>] in
             var assignments = acc
@@ -75,13 +76,13 @@ class TwoPaneLayout<Window: WindowType>: Layout<Window>, PanedLayout {
             if isMain {
                 scaleFactor = screenFrame.size.width / mainPaneWindowWidth
                 windowFrame.origin.x = screenFrame.origin.x
-                windowFrame.origin.y = screenFrame.origin.y + (mainPaneWindowHeight * CGFloat(acc.count))
+                windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = mainPaneWindowHeight
             } else {
                 scaleFactor = screenFrame.size.width / secondaryPaneWindowWidth
-                windowFrame.origin.x = screenFrame.origin.x + mainPaneWindowWidth
-                windowFrame.origin.y = screenFrame.origin.y
+                windowFrame.origin.x = screenFrame.origin.x + (isHorizontal ? mainPaneWindowWidth : 0)
+                windowFrame.origin.y = screenFrame.origin.y + (isHorizontal ? 0 : mainPaneWindowHeight)
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
             }
