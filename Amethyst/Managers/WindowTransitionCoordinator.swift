@@ -26,7 +26,7 @@ protocol WindowTransitionTarget: class {
     func executeTransition(_ transition: WindowTransition<Window>)
 
     func isWindowFloating(_ window: Window) -> Bool
-    func getCurrentLayout() -> Layout<Application.Window>?
+    func currentLayout() -> Layout<Application.Window>?
     func screen(at index: Int) -> Screen?
     func activeWindows(on screen: Screen) -> [Window]
     func nextScreenIndexClockwise(from screen: Screen) -> Int
@@ -52,7 +52,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
 
         if windows.count == 1 {
             return
-        } else if windows.count == 2 || target?.getCurrentLayout()?.layoutKey == TwoPaneLayout<Window>.layoutKey {
+        } else if windows.count == 2 || target?.currentLayout()?.layoutKey == TwoPaneLayout<Window>.layoutKey {
             // Swap the two visible windows, keep focus on the main window if it already was there
             target?.executeTransition(.switchWindows(focusedWindow, windows[1 - focusedIndex]))
             if focusedWindow == windows[0] {
