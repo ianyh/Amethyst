@@ -670,6 +670,10 @@ extension WindowManager: WindowTransitionTarget {
         return windows.isWindowFloating(window)
     }
 
+    func currentLayout() -> Layout<Application.Window>? {
+        return focusedScreenManager()?.currentLayout
+    }
+
     func activeWindows(on screen: Screen) -> [Window] {
         return windows.activeWindows(onScreen: screen).filter { window in
             return window.shouldBeManaged() && !self.windows.isWindowFloating(window)
