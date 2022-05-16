@@ -52,12 +52,12 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
 
         if windows.count == 1 {
             return
-        } else if windows.count == 2 || target?.currentLayout()?.layoutKey == TwoPaneLayout<Window>.layoutKey {
-            // Swap the two visible windows, keep focus on the main window if it already was there
-            target?.executeTransition(.switchWindows(focusedWindow, windows[1 - focusedIndex]))
-            if focusedWindow == windows[0] {
-                windows[1 - focusedIndex].focus()
-            }
+        }
+
+        if focusedIndex == 0 {
+            // If main window is focused - swap the two top-most windows, keep focus on the main window
+            target?.executeTransition(.switchWindows(focusedWindow, windows[1]))
+            windows[1].focus()
         } else {
             // Swap focused window with main window
             target?.executeTransition(.switchWindows(focusedWindow, windows[0]))
