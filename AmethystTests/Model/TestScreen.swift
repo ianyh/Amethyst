@@ -42,6 +42,10 @@ final class TestScreen: ScreenType {
         return internalFrame
     }
 
+    func frame() -> CGRect {
+        return internalFrame
+    }
+
     func screenID() -> String? {
         return id
     }

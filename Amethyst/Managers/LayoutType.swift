@@ -49,6 +49,8 @@ enum LayoutType<Window: WindowType> {
     case threeColumnLeft
     case threeColumnMiddle
     case threeColumnRight
+    case fourColumnLeft
+    case fourColumnRight
     case fullscreen
     case column
     case row
@@ -68,6 +70,8 @@ enum LayoutType<Window: WindowType> {
             .threeColumnLeft,
             .threeColumnMiddle,
             .threeColumnRight,
+            .fourColumnLeft,
+            .fourColumnRight,
             .fullscreen,
             .column,
             .row,
@@ -94,6 +98,10 @@ enum LayoutType<Window: WindowType> {
             return "middle-wide"
         case .threeColumnRight:
             return "3column-right"
+        case .fourColumnLeft:
+            return "4column-left"
+        case .fourColumnRight:
+            return "4column-right"
         case .fullscreen:
             return "fullscreen"
         case .column:
@@ -129,6 +137,10 @@ enum LayoutType<Window: WindowType> {
             return ThreeColumnMiddleLayout<Window>.self
         case .threeColumnRight:
             return ThreeColumnRightLayout<Window>.self
+        case .fourColumnLeft:
+            return FourColumnLeftLayout<Window>.self
+        case .fourColumnRight:
+            return FourColumnRightLayout<Window>.self
         case .fullscreen:
             return FullscreenLayout<Window>.self
         case .column:

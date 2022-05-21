@@ -66,7 +66,7 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `mod2 + j` | Swap focused window counter clockwise |
 | `mod2 + k` | Swap focused window clockwise |
 | `mod1 + enter` | Swap focused window with main window |
-| `mod1 + z` | Force windows to be reevalulated |
+| `mod1 + z` | Force windows to be reevaluated |
 | `mod2 + z` | Relaunch Amethyst |
 | `mod2 + left` | Throw focused window to space left |
 | `mod2 + right` | Throw focused window to space right |
@@ -119,6 +119,16 @@ Exactly the same as *Tall*, but the main pane is on the right, with the other pa
 #### Wide
 
 The rotated version of *Tall*, where the main pane is on the _top_ (extending the full width of the screen), and the other pane is on the bottom. If either pane has more than one window, that pane will split into columns instead of rows.
+
+#### Two Pane
+
+This layout has two visible panes - the main and the secondary pane. The window
+in the main pane is pinned, just like in other layouts, and all the remaining
+windows are placed in the other pane with only one window being visible at a
+time, which can be swapped (using the keyboard shortcuts). This layout
+automatically adapts to horizontal/vertical tiling depending on your screen
+orientation. The main pane is on the left in the horizontal orientation and it's
+on the top in the vertical orientation.
 
 #### 3Column-Left
 
