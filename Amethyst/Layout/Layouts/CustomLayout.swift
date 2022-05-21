@@ -177,6 +177,14 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
     func command4() {
         command(key: "command4")
     }
+    
+    override func nextWindowIDClockwise() -> Window.WindowID? {
+        return nil
+    }
+    
+    override func nextWindowIDCounterClockwise() -> Window.WindowID? {
+        return nil
+    }
 
     private func command(key: String) {
         guard let command = commands?.objectForKeyedSubscript(key), command.isObject else {
