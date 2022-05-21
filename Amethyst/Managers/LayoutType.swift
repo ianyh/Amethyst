@@ -176,6 +176,10 @@ enum LayoutType<Window: WindowType> {
             return .threeColumnMiddle
         case "3column-right":
             return .threeColumnRight
+        case "4column-left":
+            return .fourColumnLeft
+        case "4column-right":
+            return .fourColumnRight
         case "fullscreen":
             return .fullscreen
         case "column":
