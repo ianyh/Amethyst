@@ -176,7 +176,7 @@ This layout does not have a main pane in the way that other layouts do. When add
 
 #### Custom
 
-Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/Custom Layouts.md).
+Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/custom-layouts.md).
 
 Contributing
 ============
