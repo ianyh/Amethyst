@@ -10,9 +10,11 @@
 import Foundation
 import Silica
 
-class TestWindow: WindowType {
+final class TestWindow: WindowType {
     typealias Screen = TestScreen
     typealias WindowID = String
+
+    static var focused: TestWindow?
 
     private let element: SIAccessibilityElement?
     private let cgWindowID = CGWindowID(Int.random(in: 1...1000))
@@ -21,7 +23,7 @@ class TestWindow: WindowType {
     var isFocusedValue = false
 
     static func currentlyFocused() -> Self? {
-        return nil
+        return (focused as? Self)
     }
 
     required init?(element: SIAccessibilityElement?) {

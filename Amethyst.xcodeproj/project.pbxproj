@@ -43,6 +43,14 @@
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		403E1A2A2337173600DB7B2A /* FloatingLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */; };
 		403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */; };
+		4045416F268FFDA000861BE8 /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4045416E268FFDA000861BE8 /* CustomLayout.swift */; };
+		404541712697C14A00861BE8 /* CustomLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404541702697C14A00861BE8 /* CustomLayoutTests.swift */; };
+		404541742697C22A00861BE8 /* null.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541732697C22A00861BE8 /* null.js */; };
+		404541762697C62400861BE8 /* TestBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404541752697C62400861BE8 /* TestBundle.swift */; };
+		404541782697CDD000861BE8 /* fullscreen.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541772697CDD000861BE8 /* fullscreen.js */; };
+		4045417A2697EBC500861BE8 /* undefined.js in Resources */ = {isa = PBXBuildFile; fileRef = 404541792697EBC500861BE8 /* undefined.js */; };
+		4045417C2697EE7800861BE8 /* uniform-columns.js in Resources */ = {isa = PBXBuildFile; fileRef = 4045417B2697EE7800861BE8 /* uniform-columns.js */; };
+		4045417E2698030A00861BE8 /* static-ratio-tall.js in Resources */ = {isa = PBXBuildFile; fileRef = 4045417D2698030A00861BE8 /* static-ratio-tall.js */; };
 		4046EFCF2236019400113067 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFCE2236019400113067 /* Window.swift */; };
 		4046EFD12238949900113067 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFD02238949900113067 /* Application.swift */; };
 		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
@@ -91,6 +99,7 @@
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
 		40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491D723367590007E0CCB /* RowLayoutTests.swift */; };
 		40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */; };
+		40DA8B6E27D5AA7300C291AF /* subset.js in Resources */ = {isa = PBXBuildFile; fileRef = 40DA8B6D27D5AA7300C291AF /* subset.js */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
@@ -169,6 +178,14 @@
 		40378E22238F39B900D11E22 /* Amethyst.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Amethyst.entitlements; sourceTree = "<group>"; };
 		403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingLayoutTests.swift; sourceTree = "<group>"; };
 		403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallLayoutTests.swift; sourceTree = "<group>"; };
+		4045416E268FFDA000861BE8 /* CustomLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayout.swift; sourceTree = "<group>"; };
+		404541702697C14A00861BE8 /* CustomLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLayoutTests.swift; sourceTree = "<group>"; };
+		404541732697C22A00861BE8 /* null.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = null.js; sourceTree = "<group>"; };
+		404541752697C62400861BE8 /* TestBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestBundle.swift; sourceTree = "<group>"; };
+		404541772697CDD000861BE8 /* fullscreen.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = fullscreen.js; sourceTree = "<group>"; };
+		404541792697EBC500861BE8 /* undefined.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = undefined.js; sourceTree = "<group>"; };
+		4045417B2697EE7800861BE8 /* uniform-columns.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "uniform-columns.js"; sourceTree = "<group>"; };
+		4045417D2698030A00861BE8 /* static-ratio-tall.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall.js"; sourceTree = "<group>"; };
 		4046EFCE2236019400113067 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		4046EFD02238949900113067 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
@@ -219,6 +236,7 @@
 		40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameAssignmentVerification.swift; sourceTree = "<group>"; };
 		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		40DA8B6D27D5AA7300C291AF /* subset.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = subset.js; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
 		40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenManagerTests.swift; sourceTree = "<group>"; };
 		4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayout.swift; sourceTree = "<group>"; };
@@ -332,6 +350,7 @@
 				F46629C3272AD7A30040C275 /* FourColumnLayout.swift */,
 				4062AD341C1FA62500DB612B /* WideLayout.swift */,
 				4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */,
+				4045416E268FFDA000861BE8 /* CustomLayout.swift */,
 			);
 			path = Layouts;
 			sourceTree = "<group>";
@@ -416,6 +435,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		404541722697C16B00861BE8 /* CustomLayouts */ = {
+			isa = PBXGroup;
+			children = (
+				40DA8B6D27D5AA7300C291AF /* subset.js */,
+				404541772697CDD000861BE8 /* fullscreen.js */,
+				404541732697C22A00861BE8 /* null.js */,
+				4045417D2698030A00861BE8 /* static-ratio-tall.js */,
+				404541792697EBC500861BE8 /* undefined.js */,
+				4045417B2697EE7800861BE8 /* uniform-columns.js */,
+			);
+			path = CustomLayouts;
+			sourceTree = "<group>";
+		};
 		4046EFCD2236018400113067 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -438,13 +470,14 @@
 			children = (
 				404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */,
 				401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */,
+				404541702697C14A00861BE8 /* CustomLayoutTests.swift */,
 				403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */,
 				40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */,
 				40D491D723367590007E0CCB /* RowLayoutTests.swift */,
 				403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */,
-				AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */,
 				40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */,
 				40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */,
+				AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */,
 				4000DB0F239CA07000365A0C /* WideLayoutTests.swift */,
 				40AB5BEA23AB182300E29346 /* WidescreenTallLayoutTests.swift */,
 			);
@@ -482,6 +515,7 @@
 		40B0D149232D94410021E0A7 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				404541722697C16B00861BE8 /* CustomLayouts */,
 				40578C1A232DC607006553A0 /* TestScreen.swift */,
 				40B0D14A232D944C0021E0A7 /* TestWindow.swift */,
 			);
@@ -522,6 +556,7 @@
 			isa = PBXGroup;
 			children = (
 				40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */,
+				404541752697C62400861BE8 /* TestBundle.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -660,6 +695,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4045417E2698030A00861BE8 /* static-ratio-tall.js in Resources */,
+				404541742697C22A00861BE8 /* null.js in Resources */,
+				4045417A2697EBC500861BE8 /* undefined.js in Resources */,
+				4045417C2697EE7800861BE8 /* uniform-columns.js in Resources */,
+				40DA8B6E27D5AA7300C291AF /* subset.js in Resources */,
+				404541782697CDD000861BE8 /* fullscreen.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -838,6 +879,7 @@
 				4062AD2D1C1F9B8B00DB612B /* FullscreenLayout.swift in Sources */,
 				40637075224EFED70081299D /* CGInfo.swift in Sources */,
 				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,
+				4045416F268FFDA000861BE8 /* CustomLayout.swift in Sources */,
 				40637077224F0EFF0081299D /* Screens.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -855,9 +897,11 @@
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
+				404541762697C62400861BE8 /* TestBundle.swift in Sources */,
 				40B0D14B232D944C0021E0A7 /* TestWindow.swift in Sources */,
 				40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */,
 				403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */,
+				404541712697C14A00861BE8 /* CustomLayoutTests.swift in Sources */,
 				4000DB10239CA07000365A0C /* WideLayoutTests.swift in Sources */,
 				40AB5BEB23AB182300E29346 /* WidescreenTallLayoutTests.swift in Sources */,
 				40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */,

@@ -174,6 +174,10 @@ This mode makes all windows "floating", allowing you to move and resize them as 
 
 This layout does not have a main pane in the way that other layouts do. When adding windows, any given pane can be split evenly into two panes along whatever axis is longer. This is recursive such that pane A can be split in the middle into pane A on the left and pane B on the right; pane B can then be split into pane B on top and pane C on bottom; pane C can then be split into pane C on the left and pane D on the right; and so on.
 
+#### Custom (beta)
+
+Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/custom-layouts.md).
+
 Contributing
 ============
 
