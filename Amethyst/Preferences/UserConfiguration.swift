@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftyJSON
+import Yams
 
 enum DefaultFloat: Equatable {
     case floating
@@ -191,7 +192,8 @@ class UserConfiguration: NSObject {
         }
     }
 
-    var configuration: JSON?
+    var configurationYAML: Yams.Node?
+    var configurationJSON: JSON?
     var defaultConfiguration: JSON?
 
     var modifier1: AMModifierFlags?
@@ -205,16 +207,24 @@ class UserConfiguration: NSObject {
         self.init(storage: UserDefaults.standard)
     }
 
-    private func configurationValueForKey<T>(_ key: ConfigurationKey) -> T? {
-        guard let exists = configuration?[key.rawValue].exists(), exists else {
-            return defaultConfiguration![key.rawValue].object as? T
+    private func configurationValueForKey<T>(_ key: ConfigurationKey, fallbackToDefault: Bool = true) -> T? {
+        return configurationValue(forKeyValue: key.rawValue, fallbackToDefault: fallbackToDefault)
+    }
+
+    private func configurationValue<T>(forKeyValue keyValue: String, fallbackToDefault: Bool = true) -> T? {
+        if let yamlValue = configurationYAML?[keyValue] {
+            return yamlValue.any as? T
         }
 
-        guard let configurationValue = configuration?[key.rawValue].rawValue as? T else {
-            return defaultConfiguration![key.rawValue].object as? T
+        if let jsonValue = configurationJSON?[keyValue], jsonValue.exists(), jsonValue.error == nil {
+            return jsonValue.rawValue as? T
         }
 
-        return configurationValue
+        if fallbackToDefault {
+            return defaultConfiguration![keyValue].rawValue as? T
+        }
+
+        return nil
     }
 
     func modifierFlagsForStrings(_ modifierStrings: [String]) -> AMModifierFlags {
@@ -247,11 +257,11 @@ class UserConfiguration: NSObject {
 
     func loadConfiguration() {
         for key in ConfigurationKey.allCases {
-            let value = configuration?[key.rawValue]
+            let value: Any? = configurationValueForKey(key, fallbackToDefault: false)
             let defaultValue = defaultConfiguration?[key.rawValue]
             let existingValue = storage.object(forKey: key)
 
-            let hasLocalConfigurationValue = (value != nil && value?.error == nil)
+            let hasLocalConfigurationValue = value != nil
             let hasDefaultConfigurationValue = (defaultValue != nil && defaultValue?.error == nil)
             let hasExistingValue = (existingValue != nil)
 
@@ -259,8 +269,22 @@ class UserConfiguration: NSObject {
                 continue
             }
 
-            storage.set(hasLocalConfigurationValue ? value?.object : defaultValue?.object as Any?, forKey: key)
+            storage.set(hasLocalConfigurationValue ? value : defaultValue?.rawValue, forKey: key)
         }
+    }
+
+    private func yamlForConfig(at path: String) -> Yams.Node? {
+        guard FileManager.default.fileExists(atPath: path, isDirectory: nil) else {
+            return nil
+        }
+
+        let configPath = URL(fileURLWithPath: path)
+
+        guard let string = try? String(contentsOf: configPath), let yaml = try? Yams.load(yaml: string), let yamlNode = yaml as? Yams.Node else {
+            return nil
+        }
+
+        return yamlNode
     }
 
     private func jsonForConfig(at path: String) -> JSON? {
@@ -268,7 +292,9 @@ class UserConfiguration: NSObject {
             return nil
         }
 
-        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
+        let configPath = URL(fileURLWithPath: path)
+
+        guard let data = try? Data(contentsOf: configPath) else {
             return nil
         }
 
@@ -276,19 +302,25 @@ class UserConfiguration: NSObject {
     }
 
     private func loadConfigurationFile() {
-        let amethystConfigPath = NSHomeDirectory() + "/.amethyst"
+        let amethystConfigPath = NSHomeDirectory().appending(".amethyst")
         let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
         if FileManager.default.fileExists(atPath: amethystConfigPath, isDirectory: nil) {
-            configuration = jsonForConfig(at: amethystConfigPath)
+            configurationYAML = yamlForConfig(at: amethystConfigPath)
 
-            if configuration == nil {
-                log.error("error loading configuration")
+            if configurationYAML == nil {
+                log.warning("error loading configuration as yaml")
 
-                let alert = NSAlert()
-                alert.alertStyle = .critical
-                alert.messageText = "Error loading configuration"
-                alert.runModal()
+                configurationJSON = jsonForConfig(at: amethystConfigPath)
+
+                if configurationJSON == nil {
+                    log.error("error loading configuration as json")
+
+                    let alert = NSAlert()
+                    alert.alertStyle = .critical
+                    alert.messageText = "Error loading configuration"
+                    alert.runModal()
+                }
             }
         }
 
@@ -315,14 +347,16 @@ class UserConfiguration: NSObject {
 
     func constructCommand(for hotKeyRegistrar: HotKeyRegistrar, commandKey: String, handler: @escaping HotKeyHandler) {
         var override = false
-        var command: [String: String]? = configuration?[commandKey].object as? [String: String]
+        var command: [String: String]? = configurationValue(forKeyValue: commandKey, fallbackToDefault: false)
         if command != nil {
             override = true
         } else {
-            if configuration?[ConfigurationKey.mod1.rawValue] != nil || configuration?[ConfigurationKey.mod2.rawValue] != nil {
+            let mod1: [String]? = configurationValueForKey(.mod1, fallbackToDefault: false)
+            let mod2: [String]? = configurationValueForKey(.mod2, fallbackToDefault: false)
+            if mod1 != nil || mod2 != nil {
                 override = true
             }
-            command = defaultConfiguration?[commandKey].object as? [String: String]
+            command = defaultConfiguration?[commandKey].rawValue as? [String: String]
         }
 
         let commandKeyString = command?[ConfigurationKey.commandKey.rawValue]
@@ -372,7 +406,7 @@ class UserConfiguration: NSObject {
     }
 
     func hasCustomConfiguration() -> Bool {
-        return configuration != nil
+        return configurationYAML != nil || configurationJSON != nil
     }
 
     private func modifierFlagsForModifierString(_ modifierString: String) -> AMModifierFlags {

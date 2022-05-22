@@ -13,6 +13,7 @@ target 'Amethyst' do
   pod 'SwiftLint'
   pod 'SwiftyBeaver'
   pod 'SwiftyJSON'
+  pod 'Yams'
 
   target 'AmethystTests' do
     inherit! :search_paths

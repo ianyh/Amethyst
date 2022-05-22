@@ -77,7 +77,7 @@ class UserConfigurationTests: QuickSpec {
                             "key": "1"
                         ]
                     ]
-                    configuration.configuration = JSON(localConfiguration)
+                    configuration.configurationJSON = JSON(localConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
 
                     let registrar = TestHotKeyRegistrar()
@@ -100,7 +100,7 @@ class UserConfigurationTests: QuickSpec {
                             "key": "1"
                         ]
                     ]
-                    configuration.configuration = JSON(localConfiguration)
+                    configuration.configurationJSON = JSON(localConfiguration)
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
 
@@ -124,7 +124,7 @@ class UserConfigurationTests: QuickSpec {
                             "key": "1"
                         ]
                     ]
-                    configuration.configuration = JSON(localConfiguration)
+                    configuration.configurationJSON = JSON(localConfiguration)
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
 
@@ -151,7 +151,7 @@ class UserConfigurationTests: QuickSpec {
                             "key": "2"
                         ]
                     ]
-                    configuration.configuration = JSON(localConfiguration)
+                    configuration.configurationJSON = JSON(localConfiguration)
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
 
@@ -170,7 +170,7 @@ class UserConfigurationTests: QuickSpec {
                             "key": "1"
                         ]
                     ]
-                    configuration.configuration = JSON([:])
+                    configuration.configurationJSON = JSON([:])
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
 
@@ -196,7 +196,7 @@ class UserConfigurationTests: QuickSpec {
                         "key": "2"
                     ]
                 ]
-                configuration.configuration = JSON(localConfiguration)
+                configuration.configurationJSON = JSON(localConfiguration)
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
 
@@ -477,7 +477,7 @@ class UserConfigurationTests: QuickSpec {
                 storage.set(existingLayouts, forKey: .layouts)
 
                 expect(configuration.layoutKeys()).to(equal(existingLayouts))
-                configuration.configuration = JSON(localConfiguration)
+                configuration.configurationJSON = JSON(localConfiguration)
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()
                 expect(configuration.layoutKeys()).to(equal(localConfiguration["layouts"]))
