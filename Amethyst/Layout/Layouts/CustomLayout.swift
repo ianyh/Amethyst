@@ -113,7 +113,13 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
         let jsWindows = windows.map { window -> JSWindow<Window> in
             return JSWindow<Window>(id: idHash(forWindowID: window.id) ?? UUID().uuidString, window: window)
         }
-        let jsWindowsArg = jsWindows.map { ["id": $0.id, "window": $0] }
+        let jsWindowsArg = jsWindows.map { jsWindow -> [String: Any] in
+            return [
+                "id": jsWindow.id,
+                "frame": jsWindow.window.frame,
+                "isFocused": jsWindow.window.isFocused
+            ]
+        }
 
         let args: [Any]
         if let state = state {
