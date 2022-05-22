@@ -38,7 +38,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
     }
 
     override var layoutName: String {
-        return layout?.objectForKeyedSubscript("name").toString() ?? ""
+        return layout?.objectForKeyedSubscript("name").toString() ?? layoutKey
     }
 
     private let key: String
