@@ -96,3 +96,7 @@ Current changes are:
     * No parameters
 * `"unknown"`: an unknown event
     * No parameters
+
+## Examples
+
+There are several layouts defined for automated tests that can serve as examples. They are in [AmethystTests/Model/CustomLayouts/](../AmethystTests/Model/CustomLayouts/).
