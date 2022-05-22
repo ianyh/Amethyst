@@ -1,4 +1,4 @@
-# Custom Layouts
+# Custom Layouts (beta)
 
 Amethyst supports implementing custom layouts via JavaScript.
 
