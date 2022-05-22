@@ -29,7 +29,7 @@ An object defining the commands the layout responds to. Currently, there are fou
 The `updateState` function takes two arguments—`state` and `focusedWindowID`—and must return a new state object.
 
 * `state`: the current layout state
-* `focusedWindowID`: the currently focused window.
+* `focusedWindowID`: the currently focused window
 
 #### `getFrameAssignments`
 
@@ -65,6 +65,8 @@ A frame is an object with four properties.
 * `y`: y-coordinate in the screen space
 * `width`: pixel width
 * `height`: pixel height
+
+Note that frames are in a global space, not relative to a given screen.
 
 #### Changes
 
