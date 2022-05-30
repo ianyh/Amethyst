@@ -11,7 +11,7 @@ import Silica
 import SwiftyJSON
 
 /// Windows info as taken from the underlying system.
-struct CGWindowsInfo {
+struct CGWindowsInfo<Window: WindowType> {
     /// An array of dictionaries of window information
     let descriptions: [[String: AnyObject]]
 
@@ -48,6 +48,10 @@ struct CGWindowsInfo {
         }
 
         return ids
+    }
+
+    static func windowIDsArray(_ window: Window) -> NSArray {
+        return [NSNumber(value: window.cgID() as UInt32)] as NSArray
     }
 }
 

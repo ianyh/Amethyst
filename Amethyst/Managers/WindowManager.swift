@@ -334,7 +334,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         guard let screen = window.screen() else {
             return
         }
-        let windowIDsArray = [NSNumber(value: window.cgID() as UInt32)] as NSArray
+        let windowIDsArray = CGWindowsInfo.windowIDsArray(window)
         guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
             return
         }

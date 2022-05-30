@@ -21,10 +21,10 @@ extension CGRect {
 
 struct WindowsInformation<Window: WindowType> {
     let ids: Set<CGWindowID>
-    let descriptions: CGWindowsInfo?
+    let descriptions: CGWindowsInfo<Window>?
 
     init?(windows: [Window]) {
-        guard let descriptions = CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0)) else {
+        guard let descriptions = CGWindowsInfo<Window>(options: .optionOnScreenOnly, windowID: CGWindowID(0)) else {
             return nil
         }
 
@@ -38,7 +38,7 @@ extension WindowsInformation {
     // additionally, return the full set of window descriptions (which is unsorted and may contain extra windows)
     fileprivate static func windowInformation(_ windows: [Window]) -> (IDs: Set<CGWindowID>, descriptions: [[String: AnyObject]]?) {
         let ids = Set(windows.map { $0.cgID() })
-        return (IDs: ids, descriptions: CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.descriptions)
+        return (IDs: ids, descriptions: CGWindowsInfo<Window>(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.descriptions)
     }
 
     fileprivate static func onScreenWindowsAtPoint(_ point: CGPoint,
@@ -93,7 +93,7 @@ extension WindowsInformation {
                 continue
             }
 
-            guard let windowsAboveWindow = CGWindowsInfo(options: .optionOnScreenAboveWindow, windowID: windowID.uint32Value) else {
+            guard let windowsAboveWindow = CGWindowsInfo<Window>(options: .optionOnScreenAboveWindow, windowID: windowID.uint32Value) else {
                 continue
             }
 
