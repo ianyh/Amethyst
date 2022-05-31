@@ -53,6 +53,16 @@ struct CGWindowsInfo<Window: WindowType> {
     static func windowIDsArray(_ window: Window) -> NSArray {
         return [NSNumber(value: window.cgID() as UInt32)] as NSArray
     }
+
+    static func windowSpace(_ window: Window) -> Int? {
+        let windowIDsArray = CGWindowsInfo.windowIDsArray(window)
+
+        guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
+            return nil
+        }
+
+        return (spaces as NSArray as? [NSNumber])?.first?.intValue
+    }
 }
 
 struct CGScreensInfo<Window: WindowType> {

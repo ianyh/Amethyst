@@ -41,13 +41,7 @@ extension WindowManager {
             }
 
             let screenWindows = windows.filter { window in
-                let windowIDsArray = CGWindowsInfo.windowIDsArray(window)
-
-                guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
-                    return false
-                }
-
-                let space = (spaces as NSArray as? [NSNumber])?.first?.intValue
+                let space = CGWindowsInfo.windowSpace(window)
 
                 guard let windowScreen = window.screen(), currentSpace.id == space else {
                     return false
