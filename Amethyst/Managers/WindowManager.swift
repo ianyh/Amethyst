@@ -334,8 +334,9 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         guard let screen = window.screen() else {
             return
         }
+        let space = CGWindowsInfo.windowSpace(window)
 
-        let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
+        let windowChange: Change = windows.isWindowFloating(window) || space == nil ? .unknown : .add(window: window)
         markScreen(screen, forReflowWithChange: windowChange)
     }
 

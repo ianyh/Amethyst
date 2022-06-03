@@ -41,13 +41,7 @@ extension WindowManager {
             }
 
             let screenWindows = windows.filter { window in
-                let windowIDsArray = [NSNumber(value: window.cgID() as UInt32)] as NSArray
-
-                guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
-                    return false
-                }
-
-                let space = (spaces as NSArray as? [NSNumber])?.first?.intValue
+                let space = CGWindowsInfo.windowSpace(window)
 
                 guard let windowScreen = window.screen(), currentSpace.id == space else {
                     return false
@@ -127,7 +121,7 @@ extension WindowManager {
         }
 
         func regenerateActiveIDCache() {
-            let windowDescriptions = CGWindowsInfo(options: .optionOnScreenOnly, windowID: CGWindowID(0))
+            let windowDescriptions = CGWindowsInfo<Window>(options: .optionOnScreenOnly, windowID: CGWindowID(0))
             activeIDCache = windowDescriptions?.activeIDs() ?? Set()
         }
 

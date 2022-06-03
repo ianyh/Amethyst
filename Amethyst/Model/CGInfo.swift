@@ -11,7 +11,7 @@ import Silica
 import SwiftyJSON
 
 /// Windows info as taken from the underlying system.
-struct CGWindowsInfo {
+struct CGWindowsInfo<Window: WindowType> {
     /// An array of dictionaries of window information
     let descriptions: [[String: AnyObject]]
 
@@ -48,6 +48,20 @@ struct CGWindowsInfo {
         }
 
         return ids
+    }
+
+    static func windowIDsArray(_ window: Window) -> NSArray {
+        return [NSNumber(value: window.cgID() as UInt32)] as NSArray
+    }
+
+    static func windowSpace(_ window: Window) -> Int? {
+        let windowIDsArray = CGWindowsInfo.windowIDsArray(window)
+
+        guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
+            return nil
+        }
+
+        return (spaces as NSArray as? [NSNumber])?.first?.intValue
     }
 }
 
