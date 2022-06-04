@@ -50,7 +50,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        if windows.count == 1 {
+        if windows.count <= 1 {
             return
         }
 
