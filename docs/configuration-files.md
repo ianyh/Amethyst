@@ -83,5 +83,3 @@ A mod is a list of keyboard modifiers. Namely, `option`, `control`, `shift`, and
 | `reevaluate-windows` | Rerun the current layout's algorithm. |
 | `toggle-focus-follows-mouse` | Turn on or off `focus-follows-mouse`. |
 | `relaunch-amethyst` | Automatically quit and reopen Amethyst. |
-
-

@@ -5,12 +5,6 @@
         "fullscreen",
         "column"
     ],
-    "Valid modifiers are": [
-        "option",
-        "shift",
-        "control",
-        "command"
-    ],
     "mod1": [
         "option",
         "shift"
@@ -20,7 +14,6 @@
         "shift",
         "control"
     ],
-    "screens": 4,
     "cycle-layout": {
         "mod": "mod1",
         "key": "space"
@@ -221,7 +214,6 @@
     "use-canary-build": false,
     "new-windows-to-main": false,
     "follow-space-thrown-windows": true,
-    "send-crash-reports": false,
     "screen-padding-top": 0,
     "screen-padding-bottom": 0,
     "screen-padding-left": 0,
