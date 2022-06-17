@@ -302,25 +302,31 @@ class UserConfiguration: NSObject {
     }
 
     private func loadConfigurationFile() {
-        let amethystConfigPath = NSHomeDirectory().appending(".amethyst")
+        let amethystYAMLConfigPath = NSHomeDirectory().appending(".amethyst.yml")
+        let amethystJSONConfigPath = NSHomeDirectory().appending(".amethyst")
         let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
-        if FileManager.default.fileExists(atPath: amethystConfigPath, isDirectory: nil) {
-            configurationYAML = yamlForConfig(at: amethystConfigPath)
+        if FileManager.default.fileExists(atPath: amethystYAMLConfigPath, isDirectory: nil) {
+            configurationYAML = yamlForConfig(at: amethystYAMLConfigPath)
 
             if configurationYAML == nil {
                 log.warning("error loading configuration as yaml")
 
-                configurationJSON = jsonForConfig(at: amethystConfigPath)
+                let alert = NSAlert()
+                alert.alertStyle = .critical
+                alert.messageText = "Error loading configuration"
+                alert.runModal()
+            }
+        } else if FileManager.default.fileExists(atPath: amethystJSONConfigPath, isDirectory: nil) {
+            configurationJSON = jsonForConfig(at: amethystJSONConfigPath)
 
-                if configurationJSON == nil {
-                    log.error("error loading configuration as json")
+            if configurationJSON == nil {
+                log.error("error loading configuration as json")
 
-                    let alert = NSAlert()
-                    alert.alertStyle = .critical
-                    alert.messageText = "Error loading configuration"
-                    alert.runModal()
-                }
+                let alert = NSAlert()
+                alert.alertStyle = .critical
+                alert.messageText = "Error loading configuration"
+                alert.runModal()
             }
         }
 
