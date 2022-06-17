@@ -613,21 +613,12 @@ class UserConfiguration: NSObject {
         return storage.bool(forKey: .floatingBundleIdentifiersIsBlacklist)
     }
 
-    func floatingBundleIdentifiers() -> [String] {
-        let floatingBundleIdentifiers = storage.stringArray(forKey: .floatingBundleIdentifiers)
-        return floatingBundleIdentifiers ?? []
-    }
-
     func floatingBundles() -> [FloatingBundle] {
         guard let floatingBundles = storage.array(forKey: .floatingBundleIdentifiers) else {
             return []
         }
 
         return floatingBundles.compactMap { FloatingBundle.from($0) }
-    }
-
-    func setFloatingBundleIdentifiers(_ floatingBundleIdentifiers: [String]) {
-        storage.set(floatingBundleIdentifiers as Any?, forKey: .floatingBundleIdentifiers)
     }
 
     func setFloatingBundles(_ floatingBundles: [FloatingBundle]) {
