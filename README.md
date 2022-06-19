@@ -178,6 +178,11 @@ This layout does not have a main pane in the way that other layouts do. When add
 
 Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/custom-layouts.md).
 
+Configuration
+-------------
+
+Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md).
+
 Contributing
 ============
 

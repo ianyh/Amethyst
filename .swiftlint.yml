@@ -4,6 +4,7 @@ disabled_rules:
     - statement_position
     - force_cast
     - force_try
+    - no_space_in_method_call
 included:
     - Amethyst
     - AmethystTests

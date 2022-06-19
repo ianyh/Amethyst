@@ -22,6 +22,7 @@ PODS:
   - SwiftLint (0.38.2)
   - SwiftyBeaver (1.8.4)
   - SwiftyJSON (5.0.0)
+  - Yams (5.0.0)
 
 DEPENDENCIES:
   - Cartography
@@ -36,6 +37,7 @@ DEPENDENCIES:
   - SwiftLint
   - SwiftyBeaver
   - SwiftyJSON
+  - Yams
 
 SPEC REPOS:
   trunk:
@@ -50,6 +52,7 @@ SPEC REPOS:
     - SwiftLint
     - SwiftyBeaver
     - SwiftyJSON
+    - Yams
 
 EXTERNAL SOURCES:
   LoginServiceKit:
@@ -81,7 +84,8 @@ SPEC CHECKSUMS:
   SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
   SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  Yams: b5c3e188ceeb8321a9830b1d0e791ccea9af3201
 
-PODFILE CHECKSUM: e40f10ab3ee06f2055a47b7b06e4964c47015f89
+PODFILE CHECKSUM: 063c8d2fa19c8dccb26b3a49afbb4c80ff987096
 
 COCOAPODS: 1.11.2
