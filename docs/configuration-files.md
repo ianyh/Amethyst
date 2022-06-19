@@ -1,11 +1,11 @@
 # Configuration Files
 
-Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can be found at [/.amethyst.sample](../.amethyst.sample)
+Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can be found at [/.amethyst.sample.yml](../.amethyst.sample.yml)
 
 ## Configuration Keys
 
 | Key | Description |
-|--|--|
+| -- | -- |
 | `layouts` | Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column). |
 | `mod1` | First mod (default option + shift). |
 | `mod2` | Second mod (default option + shift + control). |
