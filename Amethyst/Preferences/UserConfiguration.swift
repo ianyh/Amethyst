@@ -162,13 +162,23 @@ class FloatingBundle: NSObject {
         if let id = object as? String {
             return FloatingBundle(id: id, windowTitles: [])
         } else if let dict = object as? [String: Any] {
-            let json = JSON(dict)
+            var json = JSON(dict)
 
-            guard let id = json["id"].string, let windowTitles = json["window-titles"].arrayObject as? [String] else {
+            if let id = json["id"].string, let windowTitles = json["window-titles"].arrayObject as? [String] {
+                return FloatingBundle(id: id, windowTitles: windowTitles)
+            }
+
+            guard let key = dict.keys.first, dict.count == 1 else {
                 return nil
             }
 
-            return FloatingBundle(id: id, windowTitles: windowTitles)
+            json = json[key]
+
+            if let windowTitles = json["window-titles"].arrayObject as? [String] {
+                return FloatingBundle(id: key, windowTitles: windowTitles)
+            }
+
+            return nil
         } else {
             return nil
         }

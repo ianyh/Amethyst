@@ -666,14 +666,25 @@ class UserConfigurationTests: QuickSpec {
                     let storage = TestConfigurationStorage()
                     let configuration = UserConfiguration(storage: storage)
                     let bundlesData: [Any] = [
+                        // Normal string
                         "test.test.1",
+                        // JSON formatted
                         [
                             "id": "test.test.2",
                             "window-titles": [
                                 "dialog"
                             ]
                         ],
-                        "test.test.3"
+                        // Another string
+                        "test.test.3",
+                        // YAML formatted
+                        [
+                            "test.test.4": [
+                                "window-titles": [
+                                    "dialog2"
+                                ]
+                            ]
+                        ]
                     ]
 
                     storage.set(bundlesData, forKey: .floatingBundleIdentifiers)
@@ -682,7 +693,8 @@ class UserConfigurationTests: QuickSpec {
                     let expectedBundles = [
                         FloatingBundle(id: "test.test.1", windowTitles: []),
                         FloatingBundle(id: "test.test.2", windowTitles: ["dialog"]),
-                        FloatingBundle(id: "test.test.3", windowTitles: [])
+                        FloatingBundle(id: "test.test.3", windowTitles: []),
+                        FloatingBundle(id: "test.test.4", windowTitles: ["dialog2"])
                     ]
                     expect(bundles.count).to(equal(3))
                     expect(bundles).to(equal(expectedBundles))
