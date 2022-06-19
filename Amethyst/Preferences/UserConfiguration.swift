@@ -326,7 +326,7 @@ class UserConfiguration: NSObject {
             configurationYAML = yamlForConfig(at: amethystYAMLConfigPath)
 
             if configurationYAML == nil {
-                log.warning("error loading configuration as yaml")
+                log.error("error loading configuration as yaml")
 
                 let alert = NSAlert()
                 alert.alertStyle = .critical
