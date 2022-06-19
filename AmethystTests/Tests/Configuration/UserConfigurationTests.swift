@@ -696,7 +696,7 @@ class UserConfigurationTests: QuickSpec {
                         FloatingBundle(id: "test.test.3", windowTitles: []),
                         FloatingBundle(id: "test.test.4", windowTitles: ["dialog2"])
                     ]
-                    expect(bundles.count).to(equal(3))
+                    expect(bundles.count).to(equal(4))
                     expect(bundles).to(equal(expectedBundles))
                 }
             }
