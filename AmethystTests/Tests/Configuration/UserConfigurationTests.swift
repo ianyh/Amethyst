@@ -89,7 +89,7 @@ class UserConfigurationTests: QuickSpec {
                     expect(registrar.override).to(beTrue())
 
                     configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    configuration.configurationYAML = try! Yams.Node(localConfiguration)
+                    configuration.configurationYAML = localConfiguration
                     configuration.configurationJSON = nil
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
 
@@ -125,7 +125,7 @@ class UserConfigurationTests: QuickSpec {
                     expect(registrar.override).to(beTrue())
 
                     configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    configuration.configurationYAML = try! Yams.Node(localConfiguration)
+                    configuration.configurationYAML = localConfiguration
                     configuration.configurationJSON = nil
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
@@ -162,7 +162,7 @@ class UserConfigurationTests: QuickSpec {
                     expect(registrar.override).to(beTrue())
 
                     configuration = UserConfiguration(storage: TestConfigurationStorage())
-                    configuration.configurationYAML = try! Yams.Node(localConfiguration)
+                    configuration.configurationYAML = localConfiguration
                     configuration.configurationJSON = nil
                     configuration.defaultConfiguration = JSON(defaultConfiguration)
                     configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
@@ -258,7 +258,7 @@ class UserConfigurationTests: QuickSpec {
                 }.toNot(throwError())
 
                 configuration = UserConfiguration(storage: TestConfigurationStorage())
-                configuration.configurationYAML = try! Yams.Node(localConfiguration)
+                configuration.configurationYAML = localConfiguration
                 configuration.configurationJSON = nil
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.modifier1 = configuration.modifierFlagsForStrings(["command"])
@@ -565,7 +565,7 @@ class UserConfigurationTests: QuickSpec {
                 storage.set(existingLayouts, forKey: .layouts)
 
                 expect(configuration.layoutKeys()).to(equal(existingLayouts))
-                configuration.configurationYAML = try! Yams.Node(localConfiguration)
+                configuration.configurationYAML = localConfiguration
                 configuration.configurationJSON = nil
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()
@@ -589,7 +589,7 @@ class UserConfigurationTests: QuickSpec {
                         "wide"
                     ]
                 ]
-                configuration.configurationYAML = try! Yams.Node(yamlConfiguration)
+                configuration.configurationYAML = yamlConfiguration
                 configuration.configurationJSON = JSON(jsonConfiguration)
                 configuration.defaultConfiguration = JSON(defaultConfiguration)
                 configuration.loadConfiguration()

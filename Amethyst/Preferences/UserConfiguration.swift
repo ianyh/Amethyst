@@ -192,7 +192,7 @@ class UserConfiguration: NSObject {
         }
     }
 
-    var configurationYAML: Yams.Node?
+    var configurationYAML: [String: Any]?
     var configurationJSON: JSON?
     var defaultConfiguration: JSON?
 
@@ -213,7 +213,7 @@ class UserConfiguration: NSObject {
 
     private func configurationValue<T>(forKeyValue keyValue: String, fallbackToDefault: Bool = true) -> T? {
         if let yamlValue = configurationYAML?[keyValue] {
-            return yamlValue.any as? T
+            return yamlValue as? T
         }
 
         if let jsonValue = configurationJSON?[keyValue], jsonValue.exists(), jsonValue.error == nil {
@@ -273,18 +273,24 @@ class UserConfiguration: NSObject {
         }
     }
 
-    private func yamlForConfig(at path: String) -> Yams.Node? {
+    private func yamlForConfig(at path: String) -> [String: Any]? {
         guard FileManager.default.fileExists(atPath: path, isDirectory: nil) else {
             return nil
         }
 
         let configPath = URL(fileURLWithPath: path)
 
-        guard let string = try? String(contentsOf: configPath), let yaml = try? Yams.load(yaml: string), let yamlNode = yaml as? Yams.Node else {
+        guard let string = try? String(contentsOf: configPath) else {
             return nil
         }
 
-        return yamlNode
+        do {
+            let yaml = try Yams.load(yaml: string)
+            return yaml as? [String: Any]
+        } catch {
+            log.debug(error)
+            return nil
+        }
     }
 
     private func jsonForConfig(at path: String) -> JSON? {
@@ -302,8 +308,8 @@ class UserConfiguration: NSObject {
     }
 
     private func loadConfigurationFile() {
-        let amethystYAMLConfigPath = NSHomeDirectory().appending(".amethyst.yml")
-        let amethystJSONConfigPath = NSHomeDirectory().appending(".amethyst")
+        let amethystYAMLConfigPath = NSHomeDirectory().appending("/.amethyst.yml")
+        let amethystJSONConfigPath = NSHomeDirectory().appending("/.amethyst")
         let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
         if FileManager.default.fileExists(atPath: amethystYAMLConfigPath, isDirectory: nil) {
