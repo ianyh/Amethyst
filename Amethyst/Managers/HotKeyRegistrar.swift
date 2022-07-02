@@ -34,7 +34,6 @@ extension HotKeyManager: HotKeyRegistrar {
                 MASShortcutBinder.shared().registerDefaultShortcuts([ defaultsKey: shortcut as Any ])
                 // Note that the shortcut binder above only sets the default value, not the stored value, so we explicitly store it here.
                 userDefaults.set(userDefaults.object(forKey: defaultsKey), forKey: defaultsKey)
-
             } else {
                 log.warning("String \"\(string)\" does not map to any keycodes")
             }
