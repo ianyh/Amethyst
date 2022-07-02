@@ -310,7 +310,15 @@ extension AXWindow: WindowType {
         }
 
         if scaledFrame != currentFrame {
+            let key = "AXEnhancedUserInterface" as CFString
+            let enhancedUI = number(forKey: key)?.boolValue ?? false
+            if enhancedUI {
+                setFlag(false, forKey: key)
+            }
             setFrame(scaledFrame)
+            if enhancedUI {
+                setFlag(true, forKey: key)
+            }
         }
 
         move(to: screen.screen)
