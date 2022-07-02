@@ -214,8 +214,7 @@ Amethyst is free and always will be. That said, a couple of people have expresse
 
 And a bunch of technology-oriented ones:
 
-* [National Center for Women & Information Technology](https://www.ncwit.org/donate)
+* [National Center for Women & Information Technology](https://ncwit.org/about-ncwit/donate/)
 * [girls who code](https://girlswhocode.com/get-involved/)
-* [MotherCoders](https://www.indiegogo.com/projects/mothercoders-a-giant-hack-for-moms-who-want-in)
-* [Trans*H4CK](https://www.transhack.org/donate/)
-* [Black Girls CODE](https://www.blackgirlscode.com/)
+* [Trans*H4CK](https://www.transhack.org/sponsorship/)
+* [Black Girls CODE](https://www.blackgirlscode.com/donate/)
