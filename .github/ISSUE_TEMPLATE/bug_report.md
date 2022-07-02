@@ -28,8 +28,9 @@ If applicable, add screenshots to help explain your problem.
  
 **Debug Info**
 ```
-$ /Applications/Amethyst.app/Contents/MacOS/Amethyst --debug-info
+$ /Applications/Amethyst.app/Contents/MacOS/Amethyst --debug-info [--include-apps]
 ```
+Note: `--include-apps` will list your manageable applications, but is optional if you don't want to list that.
 
 **Additional context**
 Add any other context about the problem here.
