@@ -11,7 +11,9 @@ Tiling window manager for macOS along the lines of [xmonad](https://xmonad.org/)
 
 ![Windows](https://ianyh.com/amethyst/images/windows.png)
 
-A quick screencast of basic functionality can be found [here](https://youtu.be/boPilhScpkY). (It's rough, and I'd love to see a better one if someone has the skills and inclination to make one.)
+If you want to learn more about tiling window managers and the features of Amethyst there are some great community resources on YouTube.
+
+[Boost your MacOS PRODUCTIVITY with Amethyst | Tiling Window Manager](https://www.youtube.com/watch?v=7Z9-Ry4yGNc)
 
 Getting Amethyst
 ================
