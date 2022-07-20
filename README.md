@@ -22,7 +22,7 @@ brew install --cask amethyst
 
 Note: that Amethyst now is only supported on macOS 10.12+.
 
-## Using Amethyst
+## System Settings
 
 Amethyst must be given permissions to use the accessibility APIs under the Privacy tab of the Security & Privacy preferences pane as shown below.
 
