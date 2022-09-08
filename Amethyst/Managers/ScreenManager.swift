@@ -188,35 +188,36 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private func minimizeWindows() {
         let mainPaneCount = (currentLayout as? PanedLayout)?.mainPaneCount ?? 0
 
-        if UserConfiguration.shared.tilingEnabled, let windowLimit = UserConfiguration.shared.windowMaxCount() {
-            let shouldInsertAtFront = UserConfiguration.shared.sendNewWindowsToMainPane()
-            delegate?.applyWindowLimit(forScreenManager: self, minimizingIn: { windowCount in
+        guard UserConfiguration.shared.tilingEnabled, let windowLimit = UserConfiguration.shared.windowMaxCount() else {
+            return
+        }
+        let shouldInsertAtFront = UserConfiguration.shared.sendNewWindowsToMainPane()
+        delegate?.applyWindowLimit(forScreenManager: self, minimizingIn: { windowCount in
 
-                if windowLimit > windowCount {
-                    // Not enough windows to minimize.
-                    return 0 ..< 0
-                }
-                if !(currentLayout is PanedLayout) {
-                    // Minimize from the back, for layouts like floating/fullscreen.
-                    if shouldInsertAtFront {
-                        return windowLimit ..< windowCount
-                    } else {
-                        return 0 ..< windowCount - windowLimit
-                    }
-                }
-                if windowLimit <= mainPaneCount {
-                    // Don't minimize main panes. This allowing varying main pane count to pin windows.
-                    guard windowCount >= mainPaneCount else {return 0 ..< 0}
-                    return mainPaneCount ..< windowCount
-                }
-                // Minimize the oldest non-main panes.
+            if windowLimit > windowCount {
+                // Not enough windows to minimize.
+                return 0 ..< 0
+            }
+            if !(currentLayout is PanedLayout) {
+                // Minimize from the back, for layouts like floating/fullscreen.
                 if shouldInsertAtFront {
                     return windowLimit ..< windowCount
                 } else {
-                    return mainPaneCount ..< windowCount + mainPaneCount - windowLimit
+                    return 0 ..< windowCount - windowLimit
                 }
-            })
-        }
+            }
+            if windowLimit <= mainPaneCount {
+                // Don't minimize main panes. This allowing varying main pane count to pin windows.
+                guard windowCount >= mainPaneCount else {return 0 ..< 0}
+                return mainPaneCount ..< windowCount
+            }
+            // Minimize the oldest non-main panes.
+            if shouldInsertAtFront {
+                return windowLimit ..< windowCount
+            } else {
+                return mainPaneCount ..< windowCount + mainPaneCount - windowLimit
+            }
+        })
     }
 
     private func reflow(_ event: Change<Window>) {
