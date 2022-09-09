@@ -2,6 +2,20 @@
 layouts:
     - tall
     - fullscreen
+    - tall-right
+    - wide
+    - two-pane
+    - 3column-left
+    - middle-wide
+    - 3column-right
+    - 4column-left
+    - 4column-right
+    - column
+    - row
+    - floating
+    - widescreen-tall
+    - widescreen-tall-right
+    - bsp
 
 # Add "command" to the default mods
 mod1:
