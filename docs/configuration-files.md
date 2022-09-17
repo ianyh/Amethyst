@@ -11,7 +11,7 @@ Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can b
 | `mod2` | Second mod (default option + shift + control). |
 | `window-margins` | Boolean flag for whether or not to add margins betwen windows (default `false`). |
 | `smart-window-margins` | Boolean flag for whether or not to set window margins if there is only one window on the screen, assuming window margins are enabled (default `false`). |
-| `window-margin-size` | The size of the margins betwee windows (in px, default `0`). |
+| `window-margin-size` | The size of the margins between windows (in px, default `0`). |
 | `window-minimum-height` | The smallest height that a window can be sized to regardless of its layout frame (in px, default `0`). |
 | `window-minimum-width` | The smallest width that a window can be sized to regardless of its layout frame (in px, default `0`) |
 | `floating` | List of bundle identifiers for applications to either be automatically floating or automatically tiled based on `floating-is-blacklist` (default `[]`). |
