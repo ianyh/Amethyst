@@ -60,6 +60,7 @@ extension WindowManager {
         // MARK: Adding and Removing
 
         func add(window: Window, atFront shouldInsertAtFront: Bool) {
+
             if shouldInsertAtFront {
                 windows.insert(window, at: 0)
             } else {

@@ -210,6 +210,7 @@
     "window-margins": false,
     "window-minimum-height": 0,
     "window-minimum-width": 0,
+    "window-max-count": 0,
     "ignore-menu-bar": false,
     "use-canary-build": false,
     "new-windows-to-main": false,

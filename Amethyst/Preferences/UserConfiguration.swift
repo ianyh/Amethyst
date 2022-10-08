@@ -71,6 +71,7 @@ enum ConfigurationKey: String {
     case windowMarginSize = "window-margin-size"
     case windowMinimumHeight = "window-minimum-height"
     case windowMinimumWidth = "window-minimum-width"
+    case windowMaxCount = "window-max-count"
     case floatingBundleIdentifiers = "floating"
     case floatingBundleIdentifiersIsBlacklist = "floating-is-blacklist"
     case ignoreMenuBar = "ignore-menu-bar"
@@ -603,6 +604,11 @@ class UserConfiguration: NSObject {
 
     func windowMinimumWidth() -> CGFloat {
         return CGFloat(storage.float(forKey: .windowMinimumWidth))
+    }
+
+    func windowMaxCount() -> Int? {
+        let int = Int(storage.float(forKey: .windowMaxCount))
+        return int == 0 ? nil : int
     }
 
     func windowResizeStep() -> CGFloat {

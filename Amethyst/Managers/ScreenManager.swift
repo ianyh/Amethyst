@@ -11,6 +11,7 @@ import Silica
 
 protocol ScreenManagerDelegate: class {
     associatedtype Window: WindowType
+    func applyWindowLimit(forScreenManager screenManager: ScreenManager<Self>, minimizingIn range: (_ windowCount: Int) -> Range<Int>)
     func activeWindowSet(forScreenManager screenManager: ScreenManager<Self>) -> WindowSet<Window>
     func onReflowInitiation()
     func onReflowCompletion()
@@ -179,8 +180,44 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
 
         DispatchQueue.main.async {
+            self.minimizeWindows()
             self.reflow(windowChange)
         }
+    }
+
+    private func minimizeWindows() {
+        let mainPaneCount = (currentLayout as? PanedLayout)?.mainPaneCount ?? 0
+
+        guard UserConfiguration.shared.tilingEnabled, let windowLimit = UserConfiguration.shared.windowMaxCount() else {
+            return
+        }
+        let shouldInsertAtFront = UserConfiguration.shared.sendNewWindowsToMainPane()
+        delegate?.applyWindowLimit(forScreenManager: self, minimizingIn: { windowCount in
+
+            if windowLimit > windowCount {
+                // Not enough windows to minimize.
+                return 0 ..< 0
+            }
+            if !(currentLayout is PanedLayout) {
+                // Minimize from the back, for layouts like floating/fullscreen.
+                if shouldInsertAtFront {
+                    return windowLimit ..< windowCount
+                } else {
+                    return 0 ..< windowCount - windowLimit
+                }
+            }
+            if windowLimit <= mainPaneCount {
+                // Don't minimize main panes. This allowing varying main pane count to pin windows.
+                guard windowCount >= mainPaneCount else {return 0 ..< 0}
+                return mainPaneCount ..< windowCount
+            }
+            // Minimize the oldest non-main panes.
+            if shouldInsertAtFront {
+                return windowLimit ..< windowCount
+            } else {
+                return mainPaneCount ..< windowCount + mainPaneCount - windowLimit
+            }
+        })
     }
 
     private func reflow(_ event: Change<Window>) {
@@ -346,6 +383,16 @@ extension ScreenManager: Comparable {
 }
 
 extension WindowManager: ScreenManagerDelegate {
+    func applyWindowLimit(forScreenManager screenManager: ScreenManager<WindowManager<Application>>, minimizingIn range: (Int) -> Range<Int>) {
+        guard let screen = screenManager.screen else {return}
+        let windows =
+            screenManager.currentLayout is FloatingLayout
+            ? self.windows.activeWindows(onScreen: screen).filter { $0.shouldBeManaged() }
+            : activeWindows(on: screen)
+        windows[range(windows.count)].forEach {
+            $0.minimize()
+        }
+    }
     func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>) -> WindowSet<Window> {
         return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen!)
     }
