@@ -36,6 +36,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             log.addDestination(ConsoleDestination())
         #endif
 
+        if CommandLine.arguments.contains("--log") {
+            let destination = ConsoleDestination()
+            destination.useNSLog = true
+            log.addDestination(destination)
+        }
+
         log.info("Logging is enabled")
         log.debug("Debug logging is enabled")
 

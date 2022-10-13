@@ -49,6 +49,12 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             return nil
         }
 
+        context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
+        let consoleLog: @convention(block) (String) -> Void = { message in
+            log.debug(message)
+        }
+        context.setObject(unsafeBitCast(consoleLog, to: AnyObject.self), forKeyedSubscript: "_consoleLog" as (NSCopying & NSObjectProtocol))
+
         do {
             context.evaluateScript(try String(contentsOf: self.fileURL))
         } catch {
