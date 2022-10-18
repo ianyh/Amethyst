@@ -319,12 +319,15 @@ class UserConfiguration: NSObject {
     }
 
     private func loadConfigurationFile() {
+        let xdgConfigPath = ProcessInfo.processInfo.environment["XDG_CONFIG_HOME"] ?? NSHomeDirectory().appending("/.config")
+        let amethystXDGConfigPath = xdgConfigPath.appending("/amethyst")
         let amethystYAMLConfigPath = NSHomeDirectory().appending("/.amethyst.yml")
         let amethystJSONConfigPath = NSHomeDirectory().appending("/.amethyst")
         let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
-        if FileManager.default.fileExists(atPath: amethystYAMLConfigPath, isDirectory: nil) {
-            configurationYAML = yamlForConfig(at: amethystYAMLConfigPath)
+        var isDirectory: ObjCBool = false
+        if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
+            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst.yml") : amethystYAMLConfigPath)
 
             if configurationYAML == nil {
                 log.error("error loading configuration as yaml")
@@ -334,8 +337,8 @@ class UserConfiguration: NSObject {
                 alert.messageText = "Error loading configuration"
                 alert.runModal()
             }
-        } else if FileManager.default.fileExists(atPath: amethystJSONConfigPath, isDirectory: nil) {
-            configurationJSON = jsonForConfig(at: amethystJSONConfigPath)
+        } else if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
+            configurationJSON = jsonForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst") : amethystJSONConfigPath)
 
             if configurationJSON == nil {
                 log.error("error loading configuration as json")
