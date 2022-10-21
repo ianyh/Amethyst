@@ -103,6 +103,8 @@
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
+		6774A031290328E20067A2A1 /* TvOnDeskLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6774A030290328E20067A2A1 /* TvOnDeskLayout.swift */; };
+		6774A03329033BCD0067A2A1 /* TvOnDeskLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6774A03229033BCD0067A2A1 /* TvOnDeskLayoutTests.swift */; };
 		7D64A455AD3F8FCD86D30E19 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A26EB687171B77B8239AF147 /* Pods_AmethystTests.framework */; };
 		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
 		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
@@ -242,6 +244,8 @@
 		4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayout.swift; sourceTree = "<group>"; };
 		5DE30D362838843F0D5EBD1D /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6611384054CC1D59E32FC049 /* Pods_Amethyst.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Amethyst.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6774A030290328E20067A2A1 /* TvOnDeskLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TvOnDeskLayout.swift; sourceTree = "<group>"; };
+		6774A03229033BCD0067A2A1 /* TvOnDeskLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TvOnDeskLayoutTests.swift; sourceTree = "<group>"; };
 		95588BAE5271D12C97C4C8B9 /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
 		A26EB687171B77B8239AF147 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A47ECCB9422C789FE6A4C218 /* Pods-Amethyst.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.debug.xcconfig"; path = "Target Support Files/Pods-Amethyst/Pods-Amethyst.debug.xcconfig"; sourceTree = "<group>"; };
@@ -338,6 +342,7 @@
 		401C35AD2241BA760019ED07 /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
+				6774A030290328E20067A2A1 /* TvOnDeskLayout.swift */,
 				404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */,
 				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
 				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
@@ -468,6 +473,7 @@
 		404BE9CF1CFBDEFD00D6C537 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
+				6774A03229033BCD0067A2A1 /* TvOnDeskLayoutTests.swift */,
 				404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */,
 				401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */,
 				404541702697C14A00861BE8 /* CustomLayoutTests.swift */,
@@ -871,6 +877,7 @@
 				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
 				401BC8A81CE8E94000F89B3F /* WindowsInformation.swift in Sources */,
 				401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */,
+				6774A031290328E20067A2A1 /* TvOnDeskLayout.swift in Sources */,
 				400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */,
 				401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */,
 				40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */,
@@ -892,6 +899,7 @@
 			files = (
 				403E1A2A2337173600DB7B2A /* FloatingLayoutTests.swift in Sources */,
 				40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */,
+				6774A03329033BCD0067A2A1 /* TvOnDeskLayoutTests.swift in Sources */,
 				401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */,
 				401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */,
 				AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */,
