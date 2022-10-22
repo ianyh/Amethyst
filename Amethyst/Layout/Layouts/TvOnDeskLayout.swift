@@ -20,7 +20,7 @@ class TvOnDeskLayout<Window: WindowType>: Layout<Window>, PanedLayout {
     override var layoutDescription: String { return "" }
 
     private(set) var mainPaneCount: Int = 1
-    private(set) var mainPaneRatio: CGFloat = 0.65
+    private(set) var mainPaneRatio: CGFloat = 0.68
 
     required init() {
         super.init()
@@ -47,10 +47,12 @@ class TvOnDeskLayout<Window: WindowType>: Layout<Window>, PanedLayout {
         if mainPaneCount <= 3 {
             mainPaneCount += 1
         }
+        log.info("increaseMainPaneCount: \(mainPaneCount)")
     }
 
     func decreaseMainPaneCount() {
         mainPaneCount = max(1, mainPaneCount - 1)
+        log.info("decreaseMainPaneCount: \(mainPaneCount)")
     }
 
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
@@ -72,30 +74,35 @@ class TvOnDeskLayout<Window: WindowType>: Layout<Window>, PanedLayout {
 
         let mainPaneWindowWidth = round(screenFrame.size.width / CGFloat(mainPaneCount))
         let secondaryPaneWindowWidth = hasSecondaryPane ? round(screenFrame.size.width / CGFloat(maxSecondaryPane)) : 0.0
+        log.info("Screen (W:\(windows.count)): \(screenFrame.size.width)x\(screenFrame.size.height)")
+        log.info("Main: \(mainPaneWindowWidth)x\(mainPaneWindowHeight)/\(mainPaneCount)")
+        log.info("2ndary: \(secondaryPaneWindowWidth)x\(secondaryPaneWindowHeight)/\(secondaryPaneCount)")
 
         return windows.reduce([]) { frameAssignments, window -> [FrameAssignmentOperation<Window>] in
             var assignments = frameAssignments
             var windowFrame = CGRect.zero
             let isMain = frameAssignments.count < mainPaneCount
             var scaleFactor: CGFloat
-            var secondaryPosition: Int
+            var secondaryPosition: CGFloat
 
             if isMain {
-                scaleFactor = screenFrame.size.width / mainPaneWindowWidth
+                scaleFactor = screenFrame.size.height / mainPaneWindowHeight
                 windowFrame.origin.x = screenFrame.origin.x + (mainPaneWindowWidth * CGFloat(frameAssignments.count))
                 windowFrame.origin.y = screenFrame.origin.y + secondaryPaneWindowWidth
                 windowFrame.size.width = mainPaneWindowWidth
                 windowFrame.size.height = mainPaneWindowHeight
+                log.info("Main frame \(frameAssignments.count): \(windowFrame.origin.x)x\(windowFrame.origin.y)/\(scaleFactor)")
             } else {
-                scaleFactor = screenFrame.size.width / secondaryPaneWindowWidth
-                secondaryPosition = (frameAssignments.count - mainPaneCount) % 3
+                scaleFactor = screenFrame.size.height / secondaryPaneWindowHeight
+                secondaryPosition = CGFloat((frameAssignments.count - mainPaneCount) % 3)
                 windowFrame.origin.x = screenFrame.origin.x + (secondaryPaneWindowWidth * secondaryPosition)
                 windowFrame.origin.y = screenFrame.origin.y
                 windowFrame.size.width = secondaryPaneWindowWidth
                 windowFrame.size.height = secondaryPaneWindowHeight
+                log.info("2nd frame \(frameAssignments.count): \(windowFrame.origin.x)x\(windowFrame.origin.y)/\(scaleFactor)")
             }
 
-            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: scaleFactor)
+            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .vertical, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment<Window>(
                 frame: windowFrame,
                 window: window,
