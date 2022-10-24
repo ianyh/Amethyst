@@ -171,7 +171,7 @@ The rotated version of *Column*, where each window takes up an entire row, exten
 #### Two Row
 
 A two-row version of *Wide*, with the Main Pane in at the bottom Row. This is
-particulary useful if you has a large 48" TV on your desk where the bottom 2/3
+particularly useful if you have a large 48" TV on your desk where the bottom 2/3
 is in your direct line of sight (Main Pane), and the top 1/3 is in your
 peripheral vision (Secondary Pane).
 The maximum number of Main and Secondary Pane are limited to 3 and 4, but can be
