@@ -1,5 +1,5 @@
 //
-//  TvOnDeskLayoutTests.swift
+//  TwoRowLayoutTests.swift
 //  AmethystTests
 //
 //  Created by @joelee on 10/21/2022.
@@ -11,7 +11,8 @@ import Nimble
 import Quick
 import Silica
 
-class TvOnDeskLayoutTests: QuickSpec {
+// @todo Implement Unit Test
+class TwoRowLayoutTests: QuickSpec {
     override func spec() {
         afterEach {
             TestScreen.availableScreens = []
@@ -36,7 +37,7 @@ class TvOnDeskLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
-                let layout = TvOnDeskLayout<TestWindow>()
+                let layout = TwoRowLayout<TestWindow>()
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
 
                 expect(layout.mainPaneCount).to(equal(1))
@@ -71,7 +72,7 @@ class TvOnDeskLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
-                let layout = TvOnDeskLayout<TestWindow>()
+                let layout = TwoRowLayout<TestWindow>()
                 let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
 
                 expect(layout.mainPaneCount).to(equal(1))
@@ -107,7 +108,7 @@ class TvOnDeskLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
-                let layout = TvOnDeskLayout<TestWindow>()
+                let layout = TwoRowLayout<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
@@ -178,7 +179,7 @@ class TvOnDeskLayoutTests: QuickSpec {
                     isWindowWithIDFloating: { _ in return false },
                     windowForID: { id in return windows.first { $0.id() == id } }
                 )
-                let layout = TvOnDeskLayout<TestWindow>()
+                let layout = TwoRowLayout<TestWindow>()
 
                 expect(layout.mainPaneCount).to(equal(1))
 
@@ -231,7 +232,7 @@ class TvOnDeskLayoutTests: QuickSpec {
 
         describe("coding") {
             it("encodes and decodes") {
-                let layout = TvOnDeskLayout<TestWindow>()
+                let layout = TwoRowLayout<TestWindow>()
                 layout.increaseMainPaneCount()
                 layout.recommendMainPaneRatio(0.45)
 
@@ -239,7 +240,7 @@ class TvOnDeskLayoutTests: QuickSpec {
                 expect(layout.mainPaneRatio).to(equal(0.45))
 
                 let encodedLayout = try! JSONEncoder().encode(layout)
-                let decodedLayout = try! JSONDecoder().decode(TvOnDeskLayout<TestWindow>.self, from: encodedLayout)
+                let decodedLayout = try! JSONDecoder().decode(TwoRowLayout<TestWindow>.self, from: encodedLayout)
 
                 expect(decodedLayout.mainPaneCount).to(equal(2))
                 expect(decodedLayout.mainPaneRatio).to(equal(0.45))

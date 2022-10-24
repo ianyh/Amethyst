@@ -213,7 +213,7 @@ struct FrameAssignment<Window: WindowType> {
 
         // If this is the focused window then we need to shift it to be on screen regardless of size
         // We call this "window peeking" (this line here to aid in text search)
-        if window.isFocused() {
+        if window.isFocused() || resizeRules.isMain {
             // Just resize the window first to see what the dimensions end up being
             // Sometimes applications have internal window requirements that are not exposed to us directly
             finalFrame.origin = window.frame().origin
