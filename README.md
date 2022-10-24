@@ -168,21 +168,18 @@ This layout has one column per window, with each window extending the full heigh
 
 The rotated version of *Column*, where each window takes up an entire row, extending the full width of the screen.
 
-#### Two Row-Bottom
+#### Two Row
 
 A two-row version of *Wide*, with the Main Pane in at the bottom Row. This is
 particulary useful if you has a large 48" TV on your desk where the bottom 2/3
-is in your direct line of sight, and the top 1/3 is in your peripheral vision.
+is in your direct line of sight (Main Pane), and the top 1/3 is in your
+peripheral vision (Secondary Pane).
 The maximum number of Main and Secondary Pane are limited to 3 and 4, but can be
 changed using the custom layout command:
 - *Command 1*: Decrease Maximum Main Pane
 - *Command 2*: Increase Maximum Main Pane
 - *Command 3*: Decrease Maximum Secondary Pane
 - *Command 4*: Increase Maximum Secondary Pane
-
-#### Two Row-Top
-
-Same as the *Two Row-Bottom*, but the Main Pane row is at the top.
 
 #### Floating
 
