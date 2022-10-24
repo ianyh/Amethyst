@@ -11,7 +11,6 @@ import Nimble
 import Quick
 import Silica
 
-// @todo Implement Unit Test
 class TwoRowLayoutTests: QuickSpec {
     override func spec() {
         afterEach {
@@ -46,11 +45,11 @@ class TwoRowLayoutTests: QuickSpec {
                 let secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignment.verify(frames: [
-                    CGRect(origin: .zero, size: CGSize(width: 1000, height: 1000))
+                    CGRect(origin: .zero, size: CGSize(width: 2000, height: 680))
                 ])
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
-                    CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    CGRect(x: 0, y: 0, width: 1000, height: 320),
+                    CGRect(x: 1000, y: 0, width: 1000, height: 320)
                 ])
             }
 
@@ -81,11 +80,11 @@ class TwoRowLayoutTests: QuickSpec {
                 let secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignment.verify(frames: [
-                    CGRect(x: 100, y: 100, width: 1000, height: 1000)
+                    CGRect(x: 100, y: 420, width: 2000, height: 680)
                 ])
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 1100, y: 100, width: 1000, height: 500),
-                    CGRect(x: 1100, y: 600, width: 1000, height: 500)
+                    CGRect(x: 100, y: 100, width: 1000, height: 320),
+                    CGRect(x: 1100, y: 100, width: 1000, height: 320)
                 ])
             }
 
@@ -117,13 +116,13 @@ class TwoRowLayoutTests: QuickSpec {
                 var secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 1000, height: 1000)
+                    CGRect(x: 0, y: 320, width: 2000, height: 680)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 1000, y: 0, width: 1000, height: 333),
-                    CGRect(x: 1000, y: 333, width: 1000, height: 333),
-                    CGRect(x: 1000, y: 666, width: 1000, height: 333)
+                    CGRect(x: 0, y: 0, width: 667, height: 320),
+                    CGRect(x: 667, y: 0, width: 667, height: 320),
+                    CGRect(x: 1334, y: 0, width: 667, height: 320)
                 ])
 
                 layout.increaseMainPaneCount()
@@ -134,13 +133,13 @@ class TwoRowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[2...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 1000, height: 500),
-                    CGRect(x: 0, y: 500, width: 1000, height: 500)
+                    CGRect(x: 0, y: 320, width: 1000, height: 680),
+                    CGRect(x: 1000, y: 320, width: 1000, height: 680)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
-                    CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    CGRect(x: 0, y: 0, width: 1000, height: 320),
+                    CGRect(x: 1000, y: 0, width: 1000, height: 320)
                 ])
 
                 layout.increaseMainPaneCount()
@@ -151,13 +150,13 @@ class TwoRowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[3...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 1000, height: 333),
-                    CGRect(x: 0, y: 333, width: 1000, height: 333),
-                    CGRect(x: 0, y: 666, width: 1000, height: 333)
+                    CGRect(x: 0, y: 320, width: 667, height: 680),
+                    CGRect(x: 667, y: 320, width: 667, height: 680),
+                    CGRect(x: 1334, y: 320, width: 667, height: 680)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 1000, y: 0, width: 1000, height: 1000)
+                    CGRect(x: 0, y: 0, width: 2000, height: 320)
                 ])
             }
 
@@ -188,12 +187,12 @@ class TwoRowLayoutTests: QuickSpec {
                 var secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 1000, height: 1000)
+                    CGRect(x: 0, y: 320, width: 2000, height: 680)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 1000, y: 0, width: 1000, height: 500),
-                    CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    CGRect(x: 0, y: 0, width: 1000, height: 320),
+                    CGRect(x: 1000, y: 0, width: 1000, height: 320)
                 ])
 
                 layout.recommendMainPaneRatio(0.75)
@@ -204,12 +203,12 @@ class TwoRowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 1500, height: 1000)
+                    CGRect(x: 0, y: 250, width: 2000, height: 750)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 1500, y: 0, width: 500, height: 500),
-                    CGRect(x: 1500, y: 500, width: 500, height: 500)
+                    CGRect(x: 0, y: 0, width: 1000, height: 250),
+                    CGRect(x: 1000, y: 0, width: 1000, height: 250)
                 ])
 
                 layout.recommendMainPaneRatio(0.25)
@@ -220,12 +219,12 @@ class TwoRowLayoutTests: QuickSpec {
                 secondaryAssignments = frameAssignments.forWindows(windows[1...])
 
                 mainAssignments.verify(frames: [
-                    CGRect(x: 0, y: 0, width: 500, height: 1000)
+                    CGRect(x: 0, y: 750, width: 2000, height: 250)
                 ])
 
                 secondaryAssignments.verify(frames: [
-                    CGRect(x: 500, y: 0, width: 1500, height: 500),
-                    CGRect(x: 500, y: 500, width: 1500, height: 500)
+                    CGRect(x: 0, y: 0, width: 1000, height: 750),
+                    CGRect(x: 1000, y: 0, width: 1000, height: 750)
                 ])
             }
         }
