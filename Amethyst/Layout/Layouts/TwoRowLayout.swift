@@ -68,6 +68,9 @@ class TwoRowLayout<Window: WindowType>: Layout<Window>, PanedLayout {
     // Decrease Maximum Main Pane Count
     func command1() {
         mainMaxPane = max(1, mainMaxPane - 1)
+        if mainPaneCount > mainMaxPane {
+            mainPaneCount = mainMaxPane
+        }
         log.debug("cmd1 mainMaxPane: \(mainMaxPane)")
     }
 
