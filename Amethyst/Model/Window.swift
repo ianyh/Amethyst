@@ -237,6 +237,11 @@ extension AXWindow: WindowType {
             return false
         }
 
+        // if the window is minimized, it should not be managed
+        guard !isMinimized() else {
+            return false
+        }
+
         guard let subrole = string(forKey: kAXSubroleAttribute as CFString), subrole == kAXStandardWindowSubrole as String else {
             return false
         }
