@@ -238,7 +238,7 @@ extension AXWindow: WindowType {
         }
 
         // if the window is minimized, it should not be managed
-        guard !isMinimized() else {
+        guard !isWindowMinimized() else {
             return false
         }
 
