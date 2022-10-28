@@ -659,7 +659,9 @@ extension WindowManager: WindowTransitionTarget {
             let newFrame = targetScreen.frameWithoutDockOrMenu()
             window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
             markScreen(targetScreen, forReflowWithChange: .add(window: window))
-            window.focus()
+            if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
+                window.focus()
+            }
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
                 executeTransition(.focusScreen(screen))
