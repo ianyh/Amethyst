@@ -9,6 +9,7 @@ Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can b
 | `layouts` | Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column). |
 | `mod1` | First mod (default option + shift). |
 | `mod2` | Second mod (default option + shift + control). |
+| `window-max-count` | The max number of windows that may be visible on a screen at one time before additional windows are minimized. A value of 0 disables the feature. |
 | `window-margins` | Boolean flag for whether or not to add margins betwen windows (default `false`). |
 | `smart-window-margins` | Boolean flag for whether or not to set window margins if there is only one window on the screen, assuming window margins are enabled (default `false`). |
 | `window-margin-size` | The size of the margins between windows (in px, default `0`). |
