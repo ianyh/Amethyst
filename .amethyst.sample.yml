@@ -56,7 +56,7 @@ mod2:
 # Move to the next layout in the list.
 cycle-layout:
   mod: mod1
-  key: "space"
+  key: space
 
 # Move to the previous layout in the list.
 cycle-layout-backward:
