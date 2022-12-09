@@ -42,12 +42,16 @@ mod2:
 
 # Commands:
 # special key values
-# "space"
-# "enter"
-# "up"
-# "right"
-# "down"
-# "left"
+# space
+# enter
+# up
+# right
+# down
+# left
+
+# special characters require quotes
+# '.'
+# ','
 
 # Move to the next layout in the list.
 cycle-layout:
