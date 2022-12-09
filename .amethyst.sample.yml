@@ -6,7 +6,7 @@
 # If you experience issues pulling in the changes you can also quit Amethyst and run: `defaults delete com.amethyst.Amethyst.plist`
 # This removes the current preferences and causes Amethyst to restart with default preferences and pull configs from this file.
 
-# layouts	Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column).
+# layouts - Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column).
 layouts:
   - tall
   - fullscreen
