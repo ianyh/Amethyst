@@ -168,7 +168,7 @@ swap-main:
 # Move the currently focused window to the space to the left.
 throw-space-left:
   mod: mod2
-  key: "left"
+  key: left
 
 # Move currently the focused window to the space to the right.
 throw-space-right:
