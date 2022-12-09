@@ -26,7 +26,7 @@ layouts:
   # - widescreen-tall-right
   # - bsp
 
-#	First mod (default option + shift).
+# First mod (default option + shift).
 mod1:
   - option
   - shift
