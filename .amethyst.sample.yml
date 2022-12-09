@@ -3,8 +3,8 @@
 #
 # Move this file to: `~/.amethyst.yml`
 # In order to register changes restart Amethyst.
-# If you experience issues pulling in the changes you can also quit Amethyst and run: `rm ~/Library/Preferences/com.amethyst.Amethyst.plist`
-# This removes the current preferences and causes a re-load of this file when amethyst restarts.
+# If you experience issues pulling in the changes you can also quit Amethyst and run: `defaults delete com.amethyst.Amethyst.plist`
+# This removes the current preferences and causes Amethyst to restart with default preferences and pull configs from this file.
 
 # layouts	Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column).
 layouts:
