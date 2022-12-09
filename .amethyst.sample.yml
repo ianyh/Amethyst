@@ -173,7 +173,7 @@ throw-space-left:
 # Move currently the focused window to the space to the right.
 throw-space-right:
   mod: mod2
-  key: "right"
+  key: right
 
 # Toggle the floating state of the currently focused window; i.e., if it was floating make it tiled and if it was tiled make it floating.
 toggle-float:
