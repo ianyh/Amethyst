@@ -249,10 +249,30 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         LayoutType<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
+            log.debug("LayoutName: \(layoutKey)")
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
                 let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
                 screenManager?.selectLayout(layoutKey)
             }
+        }
+
+        constructCommandWithCommandKey(CommandKey.toggleFullscreen.rawValue) {
+            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
+            guard let currentLayout = screenManager?.currentLayout?.layoutKey else {
+                return
+            }
+
+            if currentLayout == "fullscreen" {
+                guard let previousLayout = screenManager?.previousLayout else {
+                    return
+                }
+
+                screenManager?.selectLayout(previousLayout)
+            } else {
+                screenManager?.selectLayout("fullscreen")
+            }
+
+            screenManager?.setPreviousLayout(layout: currentLayout)
         }
     }
 
@@ -402,6 +422,8 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         hotKeyNameToDefaultsKey.append(["Toggle float for focused window", CommandKey.toggleFloat.rawValue])
+        hotKeyNameToDefaultsKey.append(["Toggle fullscreen for focused window",
+                                        CommandKey.toggleFullscreen.rawValue])
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle focus follows mouse", CommandKey.toggleFocusFollowsMouse.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])

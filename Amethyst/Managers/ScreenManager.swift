@@ -48,6 +48,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private var currentLayoutIndexBySpaceUUID: [String: Int] = [:]
     private var layoutsBySpaceUUID: [String: [Layout<Window>]] = [:]
     private var currentLayoutIndex: Int = 0
+    var previousLayout: String = ""
     var currentLayout: Layout<Window>? {
         guard !layouts.isEmpty else {
             return nil
@@ -300,6 +301,10 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         DispatchQueue.main.async {
             self.displayLayoutHUD()
         }
+    }
+
+    func setPreviousLayout(layout: String) {
+        previousLayout = layout
     }
 
     func shrinkMainPane() {

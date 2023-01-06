@@ -123,6 +123,7 @@ enum CommandKey: String {
     case throwSpaceLeft = "throw-space-left"
     case throwSpaceRight = "throw-space-right"
     case toggleFloat = "toggle-float"
+    case toggleFullscreen = "toggle-fullscreen"
     case displayCurrentLayout = "display-current-layout"
     case toggleTiling = "toggle-tiling"
     case reevaluateWindows = "reevaluate-windows"
