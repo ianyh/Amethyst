@@ -368,16 +368,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
                 continue
             }
 
-            // We need to tolerate a bit more height because a window that goes from untabbed to tabbed can change
-            // the height of the titlebar (e.g., Terminal)
-            let tolerance = CGRect(x: 10, y: 10, width: 10, height: 30)
-            let isApproximatelyInFrame = existingWindow.frame().approximatelyEqual(to: window.frame(), within: tolerance)
-
-            // If the window is in the same position and is going off screen it is likely a tab being replaced
-            guard isApproximatelyInFrame || isInvalid else {
-                continue
-            }
-
             // We have to make sure that we haven't had a focus change too recently as that could mean
             // the window is already active, but just became focused by swapping window focus.
             // The time is in seconds, and too long a time ends up with quick switches triggering tabs to incorrectly
