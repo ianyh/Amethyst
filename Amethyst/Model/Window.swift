@@ -310,15 +310,7 @@ extension AXWindow: WindowType {
         }
 
         if scaledFrame != currentFrame {
-            let key = "AXEnhancedUserInterface" as CFString
-            let enhancedUI = number(forKey: key)?.boolValue ?? false
-            if enhancedUI {
-                setFlag(false, forKey: key)
-            }
             setFrame(scaledFrame)
-            if enhancedUI {
-                setFlag(true, forKey: key)
-            }
         }
 
         move(to: screen.screen)
@@ -331,6 +323,40 @@ extension AXWindow: WindowType {
 
         if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
             focus()
+        }
+    }
+
+    override func setFrame(_ frame: CGRect) {
+        guard let app = app() else {
+            super.setFrame(frame)
+            return
+        }
+
+        let key = "AXEnhancedUserInterface" as CFString
+        let enhancedUI = app.number(forKey: key)?.boolValue ?? false
+        if enhancedUI {
+            app.setFlag(false, forKey: key)
+        }
+        super.setFrame(frame)
+        if enhancedUI {
+            app.setFlag(true, forKey: key)
+        }
+    }
+
+    override func setFrame(_ frame: CGRect, withThreshold threshold: CGSize) {
+        guard let app = app() else {
+            super.setFrame(frame, withThreshold: threshold)
+            return
+        }
+
+        let key = "AXEnhancedUserInterface" as CFString
+        let enhancedUI = app.number(forKey: key)?.boolValue ?? false
+        if enhancedUI {
+            app.setFlag(false, forKey: key)
+        }
+        super.setFrame(frame, withThreshold: threshold)
+        if enhancedUI {
+            app.setFlag(true, forKey: key)
         }
     }
 }
