@@ -305,7 +305,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             return
         }
 
-        switch application.defaultFloatForWindowWithTitle(window.title()) {
+        switch application.defaultFloatForWindow(window) {
         case .unreliable where retries > 0:
             return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                 self.add(window: window, retries: retries - 1)
