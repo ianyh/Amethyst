@@ -636,6 +636,9 @@ class UserConfiguration: NSObject {
     }
 
     func floatingBundleIdentifiersIsBlacklist() -> Bool {
+        guard storage.object(forKey: .floatingBundleIdentifiersIsBlacklist) != nil else {
+            return true
+        }
         return storage.bool(forKey: .floatingBundleIdentifiersIsBlacklist)
     }
 
