@@ -22,6 +22,11 @@ private extension JSValue {
     }
 }
 
+private enum LayoutExtension<Window: WindowType> {
+    case none
+    case layout(Layout<Window>)
+}
+
 class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
     typealias WindowID = Window.WindowID
 
@@ -76,6 +81,18 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
         return self.layout?.objectForKeyedSubscript("commands")
     }()
 
+    private lazy var layoutExtension: LayoutExtension<Window> = {
+        guard let extendedLayoutKey = self.layout?.objectForKeyedSubscript("extends"), extendedLayoutKey.isString else {
+            return .none
+        }
+
+        guard let layout = LayoutType<Window>.layoutForKey(extendedLayoutKey.toString()) else {
+            return .none
+        }
+
+        return .layout(layout)
+    }()
+
     required init() {
         fatalError("must be constructed with a file")
     }
@@ -99,6 +116,15 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
         try container.encode(fileURL, forKey: .fileURL)
     }
 
+    private func extendedFrameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
+        switch layoutExtension {
+        case .none:
+            return nil
+        case .layout(let layout):
+            return layout.frameAssignments(windowSet, on: screen)
+        }
+    }
+
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         guard
             let getFrameAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"),
@@ -115,11 +141,12 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
 
         let screenFrame = screen.adjustedFrame()
         let jsScreenFrameArg = JSValue(rect: screenFrame, in: context)!
-
-        let jsWindows = windows.map { window -> JSWindow<Window> in
-            return JSWindow<Window>(id: idHash(forWindowID: window.id) ?? UUID().uuidString, window: window)
+        let jsWindows: [WindowID: JSWindow<Window>] = windows.reduce([:]) { partialResult, layoutWindow in
+            let id = idHash(forWindowID: layoutWindow.id) ?? UUID().uuidString
+            let window = JSWindow<Window>(id: id, window: layoutWindow)
+            return partialResult.merging([layoutWindow.id: window]) { current, _ in return current }
         }
-        let jsWindowsArg = jsWindows.map { jsWindow -> [String: Any] in
+        let jsWindowsArg = jsWindows.mapValues { jsWindow -> [String: Any] in
             return [
                 "id": jsWindow.id,
                 "frame": jsWindow.window.frame,
@@ -127,12 +154,23 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             ]
         }
 
-        let args: [Any]
-        if let state = state {
-            args = [jsWindowsArg, jsScreenFrameArg, state]
-        } else {
-            args = [jsWindowsArg, jsScreenFrameArg]
+        let extendedFrames: [[String: Any]]? = extendedFrameAssignments(windowSet, on: screen)?.compactMap { frameAssignmentOperation in
+            let frameAssignment = frameAssignmentOperation.frameAssignment
+            guard let jsWindow = jsWindows[frameAssignment.window.id] else {
+                return nil
+            }
+            return [
+                "id": jsWindow.id,
+                "frame": frameAssignment.frame,
+                "isFocused": jsWindow.window.isFocused
+            ]
         }
+        let args: [Any] = [
+            jsWindowsArg,
+            jsScreenFrameArg,
+            state ?? JSValue(undefinedIn: context)!,
+            extendedFrames ?? JSValue(undefinedIn: context)!
+        ]
 
         guard
             let frameAssignmentsValue = getFrameAssignments.call(withArguments: args),
@@ -142,7 +180,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
         }
 
         let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-        return jsWindows.compactMap { jsWindow in
+        return jsWindows.values.compactMap { jsWindow in
             guard let frame = frameAssignmentsValue.objectForKeyedSubscript(jsWindow.id)?.toRoundedRect() else {
                 return nil
             }
