@@ -48,7 +48,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private var currentLayoutIndexBySpaceUUID: [String: Int] = [:]
     private var layoutsBySpaceUUID: [String: [Layout<Window>]] = [:]
     private var currentLayoutIndex: Int = 0
-    var previousLayout: String = ""
+    var previousLayout: String?
     var currentLayout: Layout<Window>? {
         guard !layouts.isEmpty else {
             return nil
@@ -303,10 +303,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
     }
 
-    func setPreviousLayout(layout: String) {
-        previousLayout = layout
-    }
-
     func shrinkMainPane() {
         guard let panedLayout = currentLayout as? PanedLayout else {
             return
@@ -371,6 +367,26 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
     @objc func hideLayoutHUD(_ sender: AnyObject) {
         layoutNameWindowController.close()
+    }
+
+    func toggleFullscreen() {
+        guard let currentLayout = currentLayout?.layoutKey else {
+            return
+        }
+
+        if currentLayout == "fullscreen" {
+            previousLayout = previousLayout ?? layouts.first(where: {$0.layoutKey != "fullscreen"})?.layoutKey
+
+            if previousLayout == nil {
+                return
+            }
+
+            selectLayout(previousLayout!)
+        } else {
+            previousLayout = currentLayout
+
+            selectLayout("fullscreen")
+        }
     }
 }
 
