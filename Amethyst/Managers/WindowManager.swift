@@ -305,7 +305,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             return
         }
 
-        switch application.defaultFloatForWindowWithTitle(window.title()) {
+        switch application.defaultFloatForWindow(window) {
         case .unreliable where retries > 0:
             return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                 self.add(window: window, retries: retries - 1)
@@ -365,16 +365,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             // The window needs to have either left the screen and therefore is being replaced
             // or be invalid and therefore being removed and can be replaced.
             guard didLeaveScreen || isInvalid else {
-                continue
-            }
-
-            // We need to tolerate a bit more height because a window that goes from untabbed to tabbed can change
-            // the height of the titlebar (e.g., Terminal)
-            let tolerance = CGRect(x: 10, y: 10, width: 10, height: 30)
-            let isApproximatelyInFrame = existingWindow.frame().approximatelyEqual(to: window.frame(), within: tolerance)
-
-            // If the window is in the same position and is going off screen it is likely a tab being replaced
-            guard isApproximatelyInFrame || isInvalid else {
                 continue
             }
 

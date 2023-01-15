@@ -92,6 +92,7 @@ enum ConfigurationKey: String {
     case screenPaddingBottom = "screen-padding-bottom"
     case debugLayoutInfo = "debug-layout-info"
     case restoreLayoutsOnLaunch = "restore-layouts-on-launch"
+    case disablePaddingOnBuiltinDisplay = "disable-padding-on-builtin-display"
 }
 
 extension ConfigurationKey: CaseIterable {}
@@ -636,6 +637,9 @@ class UserConfiguration: NSObject {
     }
 
     func floatingBundleIdentifiersIsBlacklist() -> Bool {
+        guard storage.object(forKey: .floatingBundleIdentifiersIsBlacklist) != nil else {
+            return true
+        }
         return storage.bool(forKey: .floatingBundleIdentifiersIsBlacklist)
     }
 
@@ -653,6 +657,10 @@ class UserConfiguration: NSObject {
 
     func sendNewWindowsToMainPane() -> Bool {
         return storage.bool(forKey: .newWindowsToMain)
+    }
+
+    func disablePaddingOnBuiltinDisplay() -> Bool {
+        return storage.bool(forKey: .disablePaddingOnBuiltinDisplay)
     }
 
     func followWindowsThrownBetweenSpaces() -> Bool {
