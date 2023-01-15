@@ -146,7 +146,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             let window = JSWindow<Window>(id: id, window: layoutWindow)
             return partialResult.merging([layoutWindow.id: window]) { current, _ in return current }
         }
-        let jsWindowsArg = jsWindows.mapValues { jsWindow -> [String: Any] in
+        let jsWindowsArg = jsWindows.values.map { jsWindow -> [String: Any] in
             return [
                 "id": jsWindow.id,
                 "frame": jsWindow.window.frame,
