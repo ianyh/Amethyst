@@ -1,4 +1,4 @@
-platform :osx, '10.12'
+platform :osx, '10.15'
 
 use_frameworks!
 
@@ -17,7 +17,7 @@ target 'Amethyst' do
 
   target 'AmethystTests' do
     inherit! :search_paths
-    pod 'Nimble', '~> 9.0.1'
-    pod 'Quick', '~> 4.0.0'
+    pod 'Nimble', '~> 11.2.1'
+    pod 'Quick', '~> 6.1.0'
   end
 end
