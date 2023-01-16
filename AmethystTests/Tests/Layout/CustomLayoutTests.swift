@@ -171,10 +171,8 @@ class CustomLayoutTests: QuickSpec {
                     CGRect(x: 1000, y: 0, width: 500, height: 1000),
                     CGRect(x: 1500, y: 0, width: 500, height: 1000)
                 ]
-
-                zip(frameAssignments.map { $0.frameAssignment.frame }, expectedFrames).forEach {
-                    expect($0).to(equal($1))
-                }
+                
+                frameAssignments.verify(frames: expectedFrames)
             }
 
             it("handles non-origin screen") {
@@ -207,13 +205,7 @@ class CustomLayoutTests: QuickSpec {
                     CGRect(x: 1100, y: 100, width: 500, height: 1000),
                     CGRect(x: 1600, y: 100, width: 500, height: 1000)
                 ]
-                let receivedFrames = frameAssignments
-                    .map { $0.frameAssignment.frame }
-                    .sorted { $0.origin.x < $1.origin.x }
-
-                zip(receivedFrames, expectedFrames).forEach {
-                    expect($0).to(equal($1))
-                }
+                frameAssignments.verify(frames: expectedFrames)
             }
         }
 

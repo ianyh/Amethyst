@@ -150,7 +150,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             let jsWindow = jsWindows[window.id]!
             return [
                 "id": jsWindow.id,
-                "frame": jsWindow.window.frame,
+                "frame": JSValue(rect: jsWindow.window.frame, in: context),
                 "isFocused": jsWindow.window.isFocused
             ]
         }
@@ -162,7 +162,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             }
             return [
                 "id": jsWindow.id,
-                "frame": frameAssignment.frame,
+                "frame": JSValue(rect: frameAssignment.frame, in: context),
                 "isFocused": jsWindow.window.isFocused
             ]
         }
