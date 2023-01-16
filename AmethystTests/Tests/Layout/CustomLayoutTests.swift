@@ -171,10 +171,8 @@ class CustomLayoutTests: QuickSpec {
                     CGRect(x: 1000, y: 0, width: 500, height: 1000),
                     CGRect(x: 1500, y: 0, width: 500, height: 1000)
                 ]
-
-                zip(frameAssignments.map { $0.frameAssignment.frame }, expectedFrames).forEach {
-                    expect($0).to(equal($1))
-                }
+                
+                frameAssignments.verify(frames: expectedFrames)
             }
 
             it("handles non-origin screen") {
@@ -207,10 +205,7 @@ class CustomLayoutTests: QuickSpec {
                     CGRect(x: 1100, y: 100, width: 500, height: 1000),
                     CGRect(x: 1600, y: 100, width: 500, height: 1000)
                 ]
-
-                zip(frameAssignments.map { $0.frameAssignment.frame }, expectedFrames).forEach {
-                    expect($0).to(equal($1))
-                }
+                frameAssignments.verify(frames: expectedFrames)
             }
         }
 
@@ -517,6 +512,43 @@ class CustomLayoutTests: QuickSpec {
                         windows[1].id(): CGRect(x: 0, y: 0, width: 1000, height: 500),
                         windows[2].id(): CGRect(x: 0, y: 500, width: 1000, height: 500),
                         windows[3].id(): CGRect(x: 1000, y: 500, width: 1000, height: 500)
+                    ])
+                }
+            }
+        }
+        
+        describe("extended") {
+            describe("tall right") {
+                it("swaps columns") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let windows = [
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!,
+                        TestWindow(element: nil)!
+                    ]
+                    let layoutWindows = windows.map {
+                        LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                    }
+                    let windowSet = WindowSet<TestWindow>(
+                        windows: layoutWindows,
+                        isWindowWithIDActive: { _ in return true },
+                        isWindowWithIDFloating: { _ in return false },
+                        windowForID: { id in return windows.first { $0.id() == id } }
+                    )
+                    let layout = CustomLayout<TestWindow>(key: "extended", fileURL: Bundle.layoutFile(key: "extended")!)
+                    let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                    let mainAssignment = frameAssignments.forWindows(windows[..<1])
+                    let secondaryAssignments = frameAssignments.forWindows(windows[1...])
+
+                    mainAssignment.verify(frames: [
+                        CGRect(x: 1000, y: 0, width: 1000, height: 1000)
+                    ])
+                    secondaryAssignments.verify(frames: [
+                        CGRect(x: 0, y: 0, width: 1000, height: 500),
+                        CGRect(x: 0, y: 500, width: 1000, height: 500)
                     ])
                 }
             }
