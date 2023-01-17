@@ -42,7 +42,7 @@ Amethyst must be given permissions to use the accessibility APIs under the Priva
 Keyboard Shortcuts
 ------------------
 
-Amethyst uses four modifier combinations.
+Amethyst uses two modifier combinations (`mod1` and `mod2`) and can optionally use another two (`mod3` and `mod4`).
 
 | Default Shortcut | Description |
 |---|---|
