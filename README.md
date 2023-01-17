@@ -42,12 +42,14 @@ Amethyst must be given permissions to use the accessibility APIs under the Priva
 Keyboard Shortcuts
 ------------------
 
-Amethyst uses two modifier combinations.
+Amethyst uses four modifier combinations.
 
 | Default Shortcut | Description |
 |---|---|
 | `mod1` | `option + shift` |
 | `mod2` | `ctrl + option + shift` |
+| `mod3` | `command` |
+| `mod4` | `control` |
 
 And defines the following commands, mostly a mapping to xmonad key combinations.
 
