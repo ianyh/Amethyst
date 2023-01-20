@@ -367,13 +367,18 @@ class UserConfiguration: NSObject {
 
         let mod1Strings: [String] = configurationValueForKey(.mod1)!
         let mod2Strings: [String] = configurationValueForKey(.mod2)!
-        let mod3Strings: [String] = configurationValueForKey(.mod3)
-        let mod4Strings: [String] = configurationValueForKey(.mod4)
+        let mod3Strings: [String]? = configurationValueForKey(.mod3)
+        let mod4Strings: [String]? = configurationValueForKey(.mod4)
 
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
-        modifier3 = modifierFlagsForStrings(mod3Strings)
-        modifier4 = modifierFlagsForStrings(mod4Strings)
+
+        if mod3Strings != nil {
+            modifier3 = modifierFlagsForStrings(mod3Strings!)
+        }
+        if mod4Strings != nil {
+            modifier4 = modifierFlagsForStrings(mod4Strings!)
+        }
     }
 
     static func constructLayoutKeyString(_ layoutKey: String) -> String {
