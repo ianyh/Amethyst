@@ -14,8 +14,6 @@
         "shift",
         "control"
     ],
-    "mod3": [],
-    "mod4": [],
     "cycle-layout": {
         "mod": "mod1",
         "key": "space"

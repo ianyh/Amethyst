@@ -367,8 +367,8 @@ class UserConfiguration: NSObject {
 
         let mod1Strings: [String] = configurationValueForKey(.mod1)!
         let mod2Strings: [String] = configurationValueForKey(.mod2)!
-        let mod3Strings: [String] = configurationValueForKey(.mod3)!
-        let mod4Strings: [String] = configurationValueForKey(.mod4)!
+        let mod3Strings: [String] = configurationValueForKey(.mod3)
+        let mod4Strings: [String] = configurationValueForKey(.mod4)
 
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
