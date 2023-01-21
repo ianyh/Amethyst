@@ -373,11 +373,12 @@ class UserConfiguration: NSObject {
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
 
-        if mod3Strings != nil {
-            modifier3 = modifierFlagsForStrings(mod3Strings!)
+        if let mod3Strings = mod3Strings {
+            modifier3 = modifierFlagsForStrings(mod3Strings)
         }
-        if mod4Strings != nil {
-            modifier4 = modifierFlagsForStrings(mod4Strings!)
+
+        if let mod4Strings = mod4Strings {
+            modifier4 = modifierFlagsForStrings(mod4Strings)
         }
     }
 
