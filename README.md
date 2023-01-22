@@ -48,8 +48,8 @@ Amethyst uses two modifier combinations (`mod1` and `mod2`) and can optionally u
 |---|---|
 | `mod1` | `option + shift` |
 | `mod2` | `ctrl + option + shift` |
-| `mod3` | `command` |
-| `mod4` | `control` |
+| `mod3` | not defined by default |
+| `mod4` | not defined by default |
 
 And defines the following commands, mostly a mapping to xmonad key combinations.
 
