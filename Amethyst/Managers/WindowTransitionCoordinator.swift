@@ -31,6 +31,7 @@ protocol WindowTransitionTarget: class {
     func activeWindows(on screen: Screen) -> [Window]
     func nextScreenIndexClockwise(from screen: Screen) -> Int
     func nextScreenIndexCounterClockwise(from screen: Screen) -> Int
+    func lastMainWindowForCurrentSpace() -> Window?
 }
 
 class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
@@ -54,14 +55,18 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        if focusedIndex == 0 && target?.currentLayout()?.layoutKey == TwoPaneLayout<Window>.layoutKey {
-            // If main window is focused and layout is two-pane - swap the two top-most windows, keep focus on the main window
-            target?.executeTransition(.switchWindows(focusedWindow, windows[1]))
-            windows[1].focus()
+        if focusedIndex == 0 {
+            guard let lastMainWindow = target?.lastMainWindowForCurrentSpace() else {
+                return
+            }
+            log.debug("Swapping to last main window \(lastMainWindow.title())")
+            target?.executeTransition(.switchWindows(focusedWindow, lastMainWindow))
+            lastMainWindow.focus()
             return
         }
 
         if focusedIndex != 0 {
+            log.debug("Swapping with main window \(windows[0].title())")
             // Swap focused window with main window if other window is focused
             target?.executeTransition(.switchWindows(focusedWindow, windows[0]))
         }
