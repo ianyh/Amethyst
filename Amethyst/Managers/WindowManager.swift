@@ -696,7 +696,6 @@ extension WindowManager: WindowTransitionTarget {
         else {
             return nil
         }
-        log.debug("Get last main window on space \(currentFocusedSpace.id) = \(lastMainWindow?.title() ?? "nil")")
         return lastMainWindow
     }
 }

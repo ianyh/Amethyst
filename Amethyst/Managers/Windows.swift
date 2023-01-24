@@ -78,18 +78,12 @@ extension WindowManager {
         }
 
         @discardableResult func swap(window: Window, withWindow otherWindow: Window) -> Bool {
-            guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() else {
-                return false
-            }
-            guard let currentScreen = window.screen() else {
-                return false
-            }
-
-            let activeWindows = activeWindows(onScreen: currentScreen)
-            log.debug("Windows: \(activeWindows.map({ $0.title() }))")
-            if (activeWindows[0] == window || activeWindows[0] == otherWindow) {
-                log.debug("Setting last main window for space \(currentFocusedSpace.id) to \(activeWindows[0].title())")
-                lastMainWindows[currentFocusedSpace.id] = activeWindows[0]
+            if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+               let currentScreen = window.screen() {
+                let activeWindows = activeWindows(onScreen: currentScreen)
+                if activeWindows[0] == window || activeWindows[0] == otherWindow {
+                    lastMainWindows[currentFocusedSpace.id] = activeWindows[0]
+                }
             }
 
             guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
