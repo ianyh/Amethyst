@@ -533,7 +533,7 @@ class UserConfiguration: NSObject {
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
         let floatingBundles = self.floatingBundles()
 
-        let bundleIdentifier = runningApplication.bundleIdentifier ?? "*"
+        let bundleIdentifier = runningApplication.bundleIdentifier ?? ""
 
         for floatingBundle in floatingBundles {
             if floatingBundle.id.contains("*") {
