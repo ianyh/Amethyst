@@ -118,7 +118,7 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
         }
         
         if focusedWindow.id() == windows[0].id() {
-            target?.lastFocusedWindow(on: screen)!.focus()
+            (target?.lastFocusedWindow(on: screen) ?? windows[0]).focus()
         } else {
             windows[0].focus()
         }
