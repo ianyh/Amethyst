@@ -9,6 +9,8 @@ Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can b
 | `layouts` | Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column). |
 | `mod1` | First mod (default option + shift). |
 | `mod2` | Second mod (default option + shift + control). |
+| `mod3` | Third mod (not used by default). |
+| `mod4` | Fourth mod (not used by default). |
 | `window-max-count` | The max number of windows that may be visible on a screen at one time before additional windows are minimized. A value of 0 disables the feature. |
 | `window-margins` | Boolean flag for whether or not to add margins betwen windows (default `false`). |
 | `smart-window-margins` | Boolean flag for whether or not to set window margins if there is only one window on the screen, assuming window margins are enabled (default `false`). |
@@ -43,7 +45,7 @@ Commands are defined at the root of the config file, and have a `mod` and a `key
 
 | Key | Description |
 | --- | ----------- |
-| `mod` | The modifier to use, either `mod1` or `mod2`. |
+| `mod` | The modifier to use, either `mod1`, `mod2`, `mod3` or `mod4`. |
 | `key` | The key on the keyboard to use. |
 
 ### Mods
