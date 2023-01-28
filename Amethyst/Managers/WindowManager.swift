@@ -688,6 +688,16 @@ extension WindowManager: WindowTransitionTarget {
 
         return (screenManagerIndex == 0 ? screens.screenManagers.count - 1 : screenManagerIndex - 1)
     }
+
+    func lastMainWindowForCurrentSpace() -> Window? {
+        guard let screenManager = screens.focusedScreenManager(),
+              let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+              let lastMainWindow = windows.lastMainWindows[currentFocusedSpace.id]
+        else {
+            return nil
+        }
+        return lastMainWindow
+    }
 }
 
 // MARK: Focus Transition

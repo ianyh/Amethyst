@@ -12,6 +12,7 @@ import Silica
 extension WindowManager {
     class Windows {
         private(set) var windows: [Window] = []
+        private(set) var lastMainWindows: [CGSSpaceID:Window?] = [:]
         private var activeIDCache: Set<CGWindowID> = Set()
         private var deactivatedPIDs: Set<pid_t> = Set()
         private var floatingMap: [Window.WindowID: Bool] = [:]
@@ -77,6 +78,14 @@ extension WindowManager {
         }
 
         @discardableResult func swap(window: Window, withWindow otherWindow: Window) -> Bool {
+            if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+               let currentScreen = window.screen() {
+                let activeWindows = activeWindows(onScreen: currentScreen)
+                if activeWindows[0] == window || activeWindows[0] == otherWindow {
+                    lastMainWindows[currentFocusedSpace.id] = activeWindows[0]
+                }
+            }
+
             guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
                 return false
             }
