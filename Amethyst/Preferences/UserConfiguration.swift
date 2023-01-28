@@ -533,13 +533,11 @@ class UserConfiguration: NSObject {
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
         let floatingBundles = self.floatingBundles()
 
+        let bundleIdentifier = runningApplication.bundleIdentifier ?? ""
+
         for floatingBundle in floatingBundles {
             if floatingBundle.id.contains("*") {
                 do {
-                    guard let bundleIdentifier = runningApplication.bundleIdentifier else {
-                        continue
-                    }
-
                     let pattern = floatingBundle.id
                         .replacingOccurrences(of: ".", with: "\\.")
                         .replacingOccurrences(of: "*", with: ".*")
