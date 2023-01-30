@@ -81,7 +81,7 @@ extension WindowManager {
             if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
                let currentScreen = window.screen() {
                 let activeWindows = activeWindows(onScreen: currentScreen)
-                if activeWindows[0] == window || activeWindows[0] == otherWindow {
+                if activeWindows.count > 0 && (activeWindows[0] == window || activeWindows[0] == otherWindow) {
                     lastMainWindows[currentFocusedSpace.id] = activeWindows[0]
                 }
             }
