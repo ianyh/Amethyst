@@ -171,7 +171,7 @@ class CustomLayoutTests: QuickSpec {
                     CGRect(x: 1000, y: 0, width: 500, height: 1000),
                     CGRect(x: 1500, y: 0, width: 500, height: 1000)
                 ]
-                
+
                 frameAssignments.verify(frames: expectedFrames)
             }
 
@@ -516,7 +516,7 @@ class CustomLayoutTests: QuickSpec {
                 }
             }
         }
-        
+
         describe("extended") {
             describe("tall right") {
                 it("swaps columns") {
