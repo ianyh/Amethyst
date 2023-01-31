@@ -12,7 +12,7 @@ import Silica
 extension WindowManager {
     class Windows {
         private(set) var windows: [Window] = []
-        private(set) var lastMainWindows: [CGSSpaceID:Window?] = [:]
+        private(set) var lastMainWindows: [CGSSpaceID: Window?] = [:]
         private var activeIDCache: Set<CGWindowID> = Set()
         private var deactivatedPIDs: Set<pid_t> = Set()
         private var floatingMap: [Window.WindowID: Bool] = [:]
