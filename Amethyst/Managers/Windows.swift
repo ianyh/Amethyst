@@ -58,11 +58,25 @@ extension WindowManager {
             return screenWindows
         }
 
+        func activeWindowOnCurrentScreen(atIndex: Int) -> Window? {
+            guard let focusedWindow = Window.currentlyFocused(),
+                  let currentScreen = focusedWindow.screen() else {
+                return nil
+            }
+            let activeWindows = activeWindows(onScreen: currentScreen)
+
+            return activeWindows.indices.contains(atIndex) ? activeWindows[atIndex] : nil
+        }
+
         // MARK: Adding and Removing
 
         func add(window: Window, atFront shouldInsertAtFront: Bool) {
-
             if shouldInsertAtFront {
+                if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+                   let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {
+                    lastMainWindows[currentFocusedSpace.id] = firstActiveWindow
+                }
+
                 windows.insert(window, at: 0)
             } else {
                 windows.append(window)
@@ -70,6 +84,15 @@ extension WindowManager {
         }
 
         func remove(window: Window) {
+            for (_, lastMainWindow) in lastMainWindows {
+                if lastMainWindow == window {
+                    if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() {
+                        let secondWindow = activeWindowOnCurrentScreen(atIndex: 1)
+                        lastMainWindows[currentFocusedSpace.id] = secondWindow
+                    }
+                }
+            }
+
             guard let windowIndex = windows.index(of: window) else {
                 return
             }
@@ -79,10 +102,9 @@ extension WindowManager {
 
         @discardableResult func swap(window: Window, withWindow otherWindow: Window) -> Bool {
             if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
-               let currentScreen = window.screen() {
-                let activeWindows = activeWindows(onScreen: currentScreen)
-                if activeWindows.count > 0 && (activeWindows[0] == window || activeWindows[0] == otherWindow) {
-                    lastMainWindows[currentFocusedSpace.id] = activeWindows[0]
+               let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {
+                if firstActiveWindow == window || firstActiveWindow == otherWindow {
+                    lastMainWindows[currentFocusedSpace.id] = firstActiveWindow
                 }
             }
 
