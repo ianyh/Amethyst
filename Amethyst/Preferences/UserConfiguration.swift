@@ -331,8 +331,15 @@ class UserConfiguration: NSObject {
         let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
         var isDirectory: ObjCBool = false
-        if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
-            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst.yml") : amethystYAMLConfigPath)
+        /**
+         Prioritiy order for config files:
+         1. yml in home dir
+         2. yml in xdg path
+         3. json in home dir
+         4. default json
+         */
+        if FileManager.default.fileExists(atPath: amethystYAMLConfigPath, isDirectory: &isDirectory) {
+            configurationYAML = yamlForConfig(at: amethystYAMLConfigPath)
 
             if configurationYAML == nil {
                 log.error("error loading configuration as yaml")
@@ -343,7 +350,18 @@ class UserConfiguration: NSObject {
                 alert.runModal()
             }
         } else if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
-            configurationJSON = jsonForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst") : amethystJSONConfigPath)
+            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst") : amethystXDGConfigPath)
+
+            if configurationYAML == nil {
+                log.error("error loading configuration as yaml")
+
+                let alert = NSAlert()
+                alert.alertStyle = .critical
+                alert.messageText = "Error loading configuration"
+                alert.runModal()
+            }
+        } else if FileManager.default.fileExists(atPath: amethystJSONConfigPath, isDirectory: &isDirectory) {
+            configurationJSON = jsonForConfig(at: amethystJSONConfigPath)
 
             if configurationJSON == nil {
                 log.error("error loading configuration as json")
