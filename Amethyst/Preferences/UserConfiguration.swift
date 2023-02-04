@@ -350,7 +350,7 @@ class UserConfiguration: NSObject {
                 alert.runModal()
             }
         } else if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
-            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst") : amethystXDGConfigPath)
+            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst.yml") : amethystXDGConfigPath)
 
             if configurationYAML == nil {
                 log.error("error loading configuration as yaml")
