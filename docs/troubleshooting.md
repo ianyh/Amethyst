@@ -10,4 +10,4 @@ Amethyst has the option to float everything by default until the user manually i
 
 If you have not intentionally enabled this make sure that the option in the Floating tab says "Automatically float applications listed" as in this screenshot.
 
-![](./images/floating-preferences.png)
+<img src="./images/floating-preferences.png" width="75%">
