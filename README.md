@@ -187,6 +187,17 @@ Configuration
 
 Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md).
 
+Troubleshooting
+===============
+
+See [Troubleshooting](docs/troubleshooting.md) for some common issues.
+
+Contact
+=======
+
+If you have questions or feedback your best options are to [tweet](https://twitter.com/amethystwm) or to get on [gitter](https://gitter.im/ianyh/Amethyst).
+
+
 Contributing
 ============
 
@@ -196,10 +207,6 @@ If you'd like to contribute please branch off of the `development` branch and op
 $ ./bin/setup.sh
 ```
 
-Contact
-=======
-
-If you have questions or feedback your best options are to [tweet](https://twitter.com/amethystwm) or to get on [gitter](https://gitter.im/ianyh/Amethyst).
 
 Donating
 ========
