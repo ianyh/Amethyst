@@ -229,7 +229,11 @@ class UserConfiguration: NSObject {
 
     private func configurationValue<T>(forKeyValue keyValue: String, fallbackToDefault: Bool = true) -> T? {
         if let yamlValue = configurationYAML?[keyValue] {
-            return yamlValue as? T
+            if yamlValue is NSNull {
+                return nil
+            } else {
+                return yamlValue as? T
+            }
         }
 
         if let jsonValue = configurationJSON?[keyValue], jsonValue.exists(), jsonValue.error == nil {
