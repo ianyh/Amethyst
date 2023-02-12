@@ -18,7 +18,7 @@ PODS:
   - RxSwiftExt/RxCocoa (6.0.1):
     - RxCocoa (~> 6.0)
     - RxSwiftExt/Core
-  - Silica (0.3.6)
+  - Silica (0.3.7)
   - Sparkle (2.3.1)
   - SwiftLint (0.50.3)
   - SwiftyBeaver (1.9.5)
@@ -69,7 +69,7 @@ CHECKOUT OPTIONS:
     :commit: 04a1379908432bc4e304b38c831d573b1943b3fa
     :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
-    :commit: 3b70f325aabf7e4067f0e947d3e1c44474ebf9cc
+    :commit: 6049d21e0082db55681e9b3218c07ad81495c5f8
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
@@ -83,7 +83,7 @@ SPEC CHECKSUMS:
   RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   RxSwiftExt: d61c4b9b06e0a448041b1c659e0f1b5c5a035afc
-  Silica: ad202f871b26a24de7f1e39f28a98614b699f431
+  Silica: e70998fbfa22068602e8ebde94808603dc34ed0d
   Sparkle: d64df28df56d0b1f98e13653b31b106dbc856c72
   SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82

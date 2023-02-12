@@ -117,7 +117,11 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        windows[0].focus()
+        if focusedWindow.id() == windows[0].id() {
+            (target?.lastFocusedWindow(on: screen) ?? windows[0]).focus()
+        } else {
+            windows[0].focus()
+        }
     }
 
     func focusScreen(at screenIndex: Int) {

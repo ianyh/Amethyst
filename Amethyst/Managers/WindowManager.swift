@@ -13,6 +13,61 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
+// swiftlint:disable identifier_name
+@_silgen_name("GetProcessPID") @discardableResult
+func GetProcessPID(_ psn: inout ProcessSerialNumber, _ pid: inout pid_t) -> OSStatus
+// swiftlint:enable identifier_name
+
+protocol ApplicationEventHandlerDelegate: class {
+    func add(applicationWithPID: pid_t)
+    func remove(applicationWithPID: pid_t)
+}
+
+func applicationEventHandlerUPP(_ call: EventHandlerCallRef?, _ event: EventRef?, _ data: UnsafeMutableRawPointer?) -> OSStatus {
+    guard let data = data, let event = event else {
+        return OSStatus(eventNotHandledErr)
+    }
+
+    let handler = Unmanaged<ApplicationEventHandler>.fromOpaque(data).takeUnretainedValue()
+    return handler.handleEvent(event)
+}
+
+private class ApplicationEventHandler {
+    weak var delegate: ApplicationEventHandlerDelegate?
+
+    init(delegate: ApplicationEventHandlerDelegate) {
+        self.delegate = delegate
+    }
+
+    func handleEvent(_ event: EventRef) -> OSStatus {
+        var psn = ProcessSerialNumber()
+        var error = GetEventParameter(event, EventParamName(kEventParamProcessID), EventParamName(typeProcessSerialNumber), nil, MemoryLayout<ProcessSerialNumber>.size, nil, &psn)
+        guard error == noErr else {
+            log.error(error)
+            return error
+        }
+
+        var pid = pid_t()
+        error = GetProcessPID(&psn, &pid)
+
+        guard error == noErr else {
+            log.error(error)
+            return error
+        }
+
+        switch GetEventKind(event) {
+        case UInt32(kEventAppLaunched):
+            delegate?.add(applicationWithPID: pid)
+        case UInt32(kEventAppTerminated):
+            delegate?.remove(applicationWithPID: pid)
+        default:
+            return OSStatus(eventNotHandledErr)
+        }
+
+        return noErr
+    }
+}
+
 /**
  The tolerant interval between the click and the application of a mouse move from focus.
  
@@ -42,6 +97,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     private var lastFocusDate: Date?
 
     private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
+    private lazy var applicationEventHandler = ApplicationEventHandler(delegate: self)
     private let userConfiguration: UserConfiguration
     private let disposeBag = DisposeBag()
 
@@ -68,8 +124,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         windowTransitionCoordinator.target = self
         focusTransitionCoordinator.target = self
 
-        addWorkspaceNotificationObserver(NSWorkspace.didLaunchApplicationNotification, selector: #selector(applicationDidLaunch(_:)))
-        addWorkspaceNotificationObserver(NSWorkspace.didTerminateApplicationNotification, selector: #selector(applicationDidTerminate(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didHideApplicationNotification, selector: #selector(applicationDidHide(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didUnhideApplicationNotification, selector: #selector(applicationDidUnhide(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.activeSpaceDidChangeNotification, selector: #selector(activeSpaceDidChange(_:)))
@@ -80,6 +134,8 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             name: NSApplication.didChangeScreenParametersNotification,
             object: nil
         )
+
+        installApplicationMonitor()
 
         reevaluateWindows()
         screens.updateScreens(windowManager: self)
@@ -95,6 +151,121 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         workspaceNotificationCenter.addObserver(self, selector: selector, name: name, object: nil)
     }
 
+    @objc func applicationActivated(_ sender: AnyObject) {
+        guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
+            return
+        }
+        markScreen(screen, forReflowWithChange: .unknown)
+//        doMouseFollowsFocus(focusedWindow: focusedWindow)
+    }
+
+    @objc func applicationDidLaunch(_ notification: Notification) {
+        guard let launchedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+        add(runningApplication: launchedApplication)
+    }
+
+    @objc func applicationDidTerminate(_ notification: Notification) {
+        guard let terminatedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+
+        guard let application = applicationWithPID(terminatedApplication.processIdentifier) else {
+            return
+        }
+
+        remove(application: application)
+    }
+
+    @objc func applicationDidHide(_ notification: Notification) {
+        guard let hiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+
+        guard let application = applicationWithPID(hiddenApplication.processIdentifier) else {
+            return
+        }
+
+        deactivate(application: application)
+        application.dropWindowsCache()
+    }
+
+    @objc func applicationDidUnhide(_ notification: Notification) {
+        guard let unhiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+
+        guard let application = applicationWithPID(unhiddenApplication.processIdentifier) else {
+            return
+        }
+
+        application.dropWindowsCache()
+        activate(application: application)
+    }
+
+    @objc func activeSpaceDidChange(_ notification: Notification) {
+        for runningApplication in NSWorkspace.shared.runningApplications {
+            guard runningApplication.isManageable else {
+                continue
+            }
+
+            let pid = runningApplication.processIdentifier
+            guard let application = applicationWithPID(pid) else {
+                continue
+            }
+
+            application.dropWindowsCache()
+
+            for window in application.windows() {
+                add(window: window)
+            }
+        }
+
+        screens.updateSpaces()
+        windows.regenerateActiveIDCache()
+        markAllScreensForReflow(withChange: .spaceChange)
+    }
+
+    @objc func screenParametersDidChange(_ notification: Notification) {
+        screens.updateScreens(windowManager: self)
+    }
+}
+
+extension WindowManager: ApplicationEventHandlerDelegate {
+    private func installApplicationMonitor() {
+        let target = GetApplicationEventTarget()
+        let launchedEventSpec = EventTypeSpec(eventClass: OSType(kEventClassApplication), eventKind: OSType(kEventAppLaunched))
+        let terminatedEventSpec = EventTypeSpec(eventClass: OSType(kEventClassApplication), eventKind: OSType(kEventAppTerminated))
+        var eventSpecs = [launchedEventSpec, terminatedEventSpec]
+        let eventHandler = UnsafeMutableRawPointer(Unmanaged.passUnretained(applicationEventHandler).toOpaque())
+        let error = InstallEventHandler(target, applicationEventHandlerUPP, 2, &eventSpecs, eventHandler, nil)
+
+        if error != noErr {
+            log.error("error installing app launch monitor: \(error)")
+        }
+    }
+
+    func add(applicationWithPID pid: pid_t) {
+        guard let runningApplication = NSRunningApplication(processIdentifier: pid) else {
+            log.warning("process launched with no application: \(pid)")
+            return
+        }
+
+        add(runningApplication: runningApplication)
+    }
+
+    func remove(applicationWithPID pid: pid_t) {
+        guard let application = applicationWithPID(pid) else {
+            log.warning("process terminated with no application: \(pid)")
+            return
+        }
+
+        remove(application: application)
+    }
+}
+
+extension WindowManager {
     func preferencesDidClose() {
         DispatchQueue.main.async {
             self.focusTransitionCoordinator.focusScreen(at: 0)
@@ -193,86 +364,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         for screenManager in screens.screenManagers {
             screenManager.displayLayoutHUD()
         }
-    }
-
-    @objc func applicationActivated(_ sender: AnyObject) {
-        guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
-            return
-        }
-        markScreen(screen, forReflowWithChange: .unknown)
-//        doMouseFollowsFocus(focusedWindow: focusedWindow)
-    }
-
-    @objc func applicationDidLaunch(_ notification: Notification) {
-        guard let launchedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-        add(runningApplication: launchedApplication)
-    }
-
-    @objc func applicationDidTerminate(_ notification: Notification) {
-        guard let terminatedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-
-        guard let application = applicationWithPID(terminatedApplication.processIdentifier) else {
-            return
-        }
-
-        remove(application: application)
-    }
-
-    @objc func applicationDidHide(_ notification: Notification) {
-        guard let hiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-
-        guard let application = applicationWithPID(hiddenApplication.processIdentifier) else {
-            return
-        }
-
-        deactivate(application: application)
-        application.dropWindowsCache()
-    }
-
-    @objc func applicationDidUnhide(_ notification: Notification) {
-        guard let unhiddenApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
-            return
-        }
-
-        guard let application = applicationWithPID(unhiddenApplication.processIdentifier) else {
-            return
-        }
-
-        application.dropWindowsCache()
-        activate(application: application)
-    }
-
-    @objc func activeSpaceDidChange(_ notification: Notification) {
-        for runningApplication in NSWorkspace.shared.runningApplications {
-            guard runningApplication.isManageable else {
-                continue
-            }
-
-            let pid = runningApplication.processIdentifier
-            guard let application = applicationWithPID(pid) else {
-                continue
-            }
-
-            application.dropWindowsCache()
-
-            for window in application.windows() {
-                add(window: window)
-            }
-        }
-
-        screens.updateSpaces()
-        windows.regenerateActiveIDCache()
-        markAllScreensForReflow(withChange: .spaceChange)
-    }
-
-    @objc func screenParametersDidChange(_ notification: Notification) {
-        screens.updateScreens(windowManager: self)
     }
 
     func add(runningApplication: NSRunningApplication) {
@@ -624,10 +715,11 @@ extension WindowManager: WindowTransitionTarget {
 
             markAllScreensForReflow(withChange: .windowSwap(window: window, otherWindow: otherWindow))
         case let .moveWindowToScreen(window, screen):
-            if let currentScreen = window.screen() {
+            let currentScreen = window.screen()
+            window.moveScaled(to: screen)
+            if let currentScreen = currentScreen {
                 markScreen(currentScreen, forReflowWithChange: .remove(window: window))
             }
-            window.moveScaled(to: screen)
             markScreen(screen, forReflowWithChange: .add(window: window))
             window.focus()
         case let .moveWindowToSpaceAtIndex(window, spaceIndex):
@@ -647,7 +739,9 @@ extension WindowManager: WindowTransitionTarget {
             window.move(toSpace: targetSpace.id)
             // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
             let newFrame = targetScreen.frameWithoutDockOrMenu()
-            window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
+            DispatchQueue.main.sync {
+                window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
+            }
             markScreen(targetScreen, forReflowWithChange: .add(window: window))
             if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
                 window.focus()
@@ -687,6 +781,16 @@ extension WindowManager: WindowTransitionTarget {
         }
 
         return (screenManagerIndex == 0 ? screens.screenManagers.count - 1 : screenManagerIndex - 1)
+    }
+
+    func lastMainWindowForCurrentSpace() -> Window? {
+        guard let screenManager = screens.focusedScreenManager(),
+              let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+              let lastMainWindow = windows.lastMainWindows[currentFocusedSpace.id]
+        else {
+            return nil
+        }
+        return lastMainWindow
     }
 }
 

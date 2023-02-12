@@ -230,7 +230,11 @@ class UserConfiguration: NSObject {
 
     private func configurationValue<T>(forKeyValue keyValue: String, fallbackToDefault: Bool = true) -> T? {
         if let yamlValue = configurationYAML?[keyValue] {
-            return yamlValue as? T
+            if yamlValue is NSNull {
+                return nil
+            } else {
+                return yamlValue as? T
+            }
         }
 
         if let jsonValue = configurationJSON?[keyValue], jsonValue.exists(), jsonValue.error == nil {
@@ -332,8 +336,15 @@ class UserConfiguration: NSObject {
         let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
         var isDirectory: ObjCBool = false
-        if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
-            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst.yml") : amethystYAMLConfigPath)
+        /**
+         Prioritiy order for config files:
+         1. yml in home dir
+         2. yml in xdg path
+         3. json in home dir
+         4. default json
+         */
+        if FileManager.default.fileExists(atPath: amethystYAMLConfigPath, isDirectory: &isDirectory) {
+            configurationYAML = yamlForConfig(at: amethystYAMLConfigPath)
 
             if configurationYAML == nil {
                 log.error("error loading configuration as yaml")
@@ -344,7 +355,18 @@ class UserConfiguration: NSObject {
                 alert.runModal()
             }
         } else if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
-            configurationJSON = jsonForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst") : amethystJSONConfigPath)
+            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst.yml") : amethystXDGConfigPath)
+
+            if configurationYAML == nil {
+                log.error("error loading configuration as yaml")
+
+                let alert = NSAlert()
+                alert.alertStyle = .critical
+                alert.messageText = "Error loading configuration"
+                alert.runModal()
+            }
+        } else if FileManager.default.fileExists(atPath: amethystJSONConfigPath, isDirectory: &isDirectory) {
+            configurationJSON = jsonForConfig(at: amethystJSONConfigPath)
 
             if configurationJSON == nil {
                 log.error("error loading configuration as json")
@@ -534,13 +556,11 @@ class UserConfiguration: NSObject {
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
         let floatingBundles = self.floatingBundles()
 
+        let bundleIdentifier = runningApplication.bundleIdentifier ?? ""
+
         for floatingBundle in floatingBundles {
             if floatingBundle.id.contains("*") {
                 do {
-                    guard let bundleIdentifier = runningApplication.bundleIdentifier else {
-                        continue
-                    }
-
                     let pattern = floatingBundle.id
                         .replacingOccurrences(of: ".", with: "\\.")
                         .replacingOccurrences(of: "*", with: ".*")
