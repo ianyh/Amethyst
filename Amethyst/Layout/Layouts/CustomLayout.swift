@@ -54,6 +54,13 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             return nil
         }
 
+        context.exceptionHandler = { (_: JSContext!, value: JSValue!) in
+            let name = value.objectForKeyedSubscript("name").toString() ?? ""
+            let message = value.objectForKeyedSubscript("message").toString() ?? ""
+            let stack = value.objectForKeyedSubscript("stack").toString() ?? ""
+            log.error("\(name): \(message)\n\(stack)")
+        }
+
         context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
         let consoleLog: @convention(block) (String) -> Void = { message in
             log.debug(message)
