@@ -1,6 +1,13 @@
 # Default settings for amethyst
 # Repo: `https://github.com/ianyh/Amethyst`
 #
+# Note due to issue 1419 (https://github.com/ianyh/Amethyst/issues/1419) some
+# config values may conflict and not work if they are the same as the default
+# values for amathyst. You can see these values on github at
+# https://github.com/ianyh/Amethyst/blob/development/Amethyst/default.amethyst
+# If you're experiencing conflicts and the settings are the same as the default,
+# comment out the commands in this file.
+#
 # Move this file to: `~/.amethyst.yml`
 # In order to register changes restart Amethyst.
 # If you experience issues pulling in the changes you can also quit Amethyst and run: `defaults delete com.amethyst.Amethyst.plist`
@@ -164,6 +171,26 @@ swap-main:
 # throw-space-<screen-number>:
 #   mod: mod1
 #   key: i
+
+# Select tall layout
+select-tall-layout:
+  mod: mod1
+  key: a
+
+# Select wide layout
+select-wide-layout:
+  mod: mod1
+  key: s
+
+# Select fullscreen layout
+select-fullscreen-layout:
+  mod: mod1
+  key: d
+
+# Select column layout
+select-column-layout:
+  mod: mod1
+  key: f
 
 # Move the currently focused window to the space to the left.
 throw-space-left:
