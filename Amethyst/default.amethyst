@@ -166,6 +166,8 @@
         "mod": "mod2",
         "key": "0"
     },
+    "throw-space-11": [],
+    "throw-space-12": [],
     "throw-space-left": {
         "mod": "mod2",
         "key": "left"
