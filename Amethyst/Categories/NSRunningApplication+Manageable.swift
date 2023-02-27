@@ -38,19 +38,11 @@ extension NSRunningApplication: BundleIdentifiable {}
 
 extension NSRunningApplication {
     var isManageable: Bool {
-        guard let bundleIdentifier = bundleIdentifier else {
+        guard case .regular = activationPolicy else {
             return false
         }
 
-        if case .prohibited = activationPolicy {
-            return false
-        }
-
-        if ignoredBundleIDs.contains(bundleIdentifier) {
-            return false
-        }
-
-        if isAgent() {
+        if let bundleIdentifier = bundleIdentifier, ignoredBundleIDs.contains(bundleIdentifier) {
             return false
         }
 
