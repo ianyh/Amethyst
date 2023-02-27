@@ -367,16 +367,16 @@ extension WindowManager {
     }
 
     func add(runningApplication: NSRunningApplication) {
+        guard runningApplication.isManageable else {
+            return
+        }
+
         let application = AnyApplication(Application(runningApplication: runningApplication))
         add(application: application)
     }
 
     func reevaluateWindows() {
         for runningApplication in NSWorkspace.shared.runningApplications {
-            guard runningApplication.isManageable else {
-                continue
-            }
-
             add(runningApplication: runningApplication)
         }
         markAllScreensForReflow(withChange: .unknown)
