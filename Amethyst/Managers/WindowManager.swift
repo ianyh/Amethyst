@@ -325,7 +325,7 @@ extension WindowManager {
             applicationObservations.removeValue(forKey: pid)
         }
 
-        let observation = runningApplication.observe(\.activationPolicy, options: [.old]) { [weak self] runningApplication, change in
+        let observation = runningApplication.observe(\.activationPolicy) { [weak self] runningApplication, change in
             guard case .setting = change.kind else {
                 return
             }
