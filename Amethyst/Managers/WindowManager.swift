@@ -36,6 +36,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     let focusTransitionCoordinator: FocusTransitionCoordinator<WindowManager<Application>>
 
     private var applications: [pid_t: AnyApplication<Application>] = [:]
+    private var applicationObservations: [pid_t: (NSRunningApplication, NSKeyValueObservation)] = [:]
     private let screens: Screens
     let windows = Windows()
     private var lastReflowTime = Date()
@@ -315,9 +316,27 @@ extension WindowManager {
             break
         }
     }
-    
+
     func monitorUndeterminedApplication(_ runningApplication: NSRunningApplication) {
-        // TODO
+        let pid = runningApplication.processIdentifier
+
+        if let (_, previousObservation) = applicationObservations[pid] {
+            previousObservation.invalidate()
+            applicationObservations.removeValue(forKey: pid)
+        }
+
+        let observation = runningApplication.observe(\.activationPolicy, options: [.old]) { [weak self] runningApplication, change in
+            guard case .setting = change.kind else {
+                return
+            }
+
+            if runningApplication.activationPolicy == .regular {
+                self?.add(runningApplication: runningApplication)
+                self?.applicationObservations[runningApplication.processIdentifier]?.1.invalidate()
+                self?.applicationObservations.removeValue(forKey: runningApplication.processIdentifier)
+            }
+        }
+        applicationObservations[pid] = (runningApplication, observation)
     }
 
     func reevaluateWindows() {
