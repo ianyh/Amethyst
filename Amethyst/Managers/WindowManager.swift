@@ -281,6 +281,9 @@ extension WindowManager {
         guard windows.windows(onScreen: screen).contains(focusedWindow) else {
             let windowChange: Change<Window> = .add(window: focusedWindow)
             add(window: focusedWindow)
+            guard windows.window(withID: focusedWindow.id()) != nil else {
+                return
+            }
             windows.setFloating(false, forWindow: focusedWindow)
             markScreen(screen, forReflowWithChange: windowChange)
             return
