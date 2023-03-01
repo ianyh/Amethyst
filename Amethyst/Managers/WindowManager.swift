@@ -35,7 +35,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     let windowTransitionCoordinator: WindowTransitionCoordinator<WindowManager<Application>>
     let focusTransitionCoordinator: FocusTransitionCoordinator<WindowManager<Application>>
 
-    private var applications: [AnyApplication<Application>] = []
+    private var applications: [pid_t: AnyApplication<Application>] = [:]
     private let screens: Screens
     let windows = Windows()
     private var lastReflowTime = Date()
@@ -151,10 +151,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
         for runningApplication in NSWorkspace.shared.runningApplications {
-            guard runningApplication.isManageable else {
-                continue
-            }
-
             let pid = runningApplication.processIdentifier
             guard let application = applicationWithPID(pid) else {
                 continue
@@ -222,11 +218,11 @@ extension WindowManager {
     }
 
     fileprivate func applicationWithPID(_ pid: pid_t) -> AnyApplication<Application>? {
-        return applications.first { $0.pid() == pid }
+        return applications[pid]
     }
 
     fileprivate func add(application: AnyApplication<Application>) {
-        guard !applications.contains(application) else {
+        guard applications[application.pid()] == nil else {
             for window in application.windows() {
                 add(window: window)
             }
@@ -237,7 +233,7 @@ extension WindowManager {
             .addObservers()
             .subscribe(
                 onCompleted: { [weak self] in
-                    self?.applications.append(application)
+                    self?.applications[application.pid()] = application
 
                     for window in application.windows() {
                         self?.add(window: window)
@@ -251,10 +247,7 @@ extension WindowManager {
         for window in application.windows() {
             remove(window: window)
         }
-        guard let applicationIndex = applications.index(of: application) else {
-            return
-        }
-        applications.remove(at: applicationIndex)
+        applications.removeValue(forKey: application.pid())
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
@@ -312,12 +305,19 @@ extension WindowManager {
     }
 
     func add(runningApplication: NSRunningApplication) {
-        guard runningApplication.isManageable else {
-            return
+        switch runningApplication.isManageable {
+        case .manageable:
+            let application = AnyApplication(Application(runningApplication: runningApplication))
+            add(application: application)
+        case .undetermined:
+            monitorUndeterminedApplication(runningApplication)
+        case .unmanageable:
+            break
         }
-
-        let application = AnyApplication(Application(runningApplication: runningApplication))
-        add(application: application)
+    }
+    
+    func monitorUndeterminedApplication(_ runningApplication: NSRunningApplication) {
+        // TODO
     }
 
     func reevaluateWindows() {

@@ -34,18 +34,23 @@ protocol BundleIdentifiable {
     var bundleIdentifier: String? { get }
 }
 
+enum Manageable {
+    case manageable
+    case unmanageable
+    case undetermined
+}
 extension NSRunningApplication: BundleIdentifiable {}
 
 extension NSRunningApplication {
-    var isManageable: Bool {
-        guard case .regular = activationPolicy else {
-            return false
-        }
-
+    var isManageable: Manageable {
         if let bundleIdentifier = bundleIdentifier, ignoredBundleIDs.contains(bundleIdentifier) {
-            return false
+            return .unmanageable
         }
 
-        return true
+        guard case .regular = activationPolicy else {
+            return .undetermined
+        }
+
+        return .manageable
     }
 }
