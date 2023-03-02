@@ -18,7 +18,7 @@ enum WindowTransition<Window: WindowType> {
     case resetFocus
 }
 
-protocol WindowTransitionTarget: class {
+protocol WindowTransitionTarget: AnyObject {
     associatedtype Application: ApplicationType
     typealias Window = Application.Window
     typealias Screen = Window.Screen
@@ -47,7 +47,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let windows = target?.activeWindows(on: screen), let focusedIndex = windows.index(of: focusedWindow) else {
+        guard let windows = target?.activeWindows(on: screen), let focusedIndex = windows.firstIndex(of: focusedWindow) else {
             return
         }
 
@@ -80,7 +80,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let windows = target?.activeWindows(on: screen), let focusedWindowIndex = windows.index(of: focusedWindow) else {
+        guard let windows = target?.activeWindows(on: screen), let focusedWindowIndex = windows.firstIndex(of: focusedWindow) else {
             return
         }
 
@@ -99,7 +99,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let windows = target?.activeWindows(on: screen), let focusedWindowIndex = windows.index(of: focusedWindow) else {
+        guard let windows = target?.activeWindows(on: screen), let focusedWindowIndex = windows.firstIndex(of: focusedWindow) else {
             return
         }
 
@@ -168,7 +168,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.index(of: currentFocusedSpace), index > 0 else {
+        guard let index = spaces.firstIndex(of: currentFocusedSpace), index > 0 else {
             return
         }
 
@@ -180,7 +180,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.index(of: currentFocusedSpace), index + 1 < spaces.count else {
+        guard let index = spaces.firstIndex(of: currentFocusedSpace), index + 1 < spaces.count else {
             return
         }
 

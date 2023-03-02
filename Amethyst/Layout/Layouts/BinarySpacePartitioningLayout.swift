@@ -257,7 +257,7 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
 
         let orderedIDs = rootNode.orderedWindowIDs()
 
-        guard let focusedWindowIndex = orderedIDs.index(of: focusedWindow.id()) else {
+        guard let focusedWindowIndex = orderedIDs.firstIndex(of: focusedWindow.id()) else {
             return nil
         }
 
@@ -273,7 +273,7 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
 
         let orderedIDs = rootNode.orderedWindowIDs()
 
-        guard let focusedWindowIndex = orderedIDs.index(of: focusedWindow.id()) else {
+        guard let focusedWindowIndex = orderedIDs.firstIndex(of: focusedWindow.id()) else {
             return nil
         }
 

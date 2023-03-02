@@ -62,12 +62,7 @@ extension WindowManager {
             guard let focusedWindow = Window.currentlyFocused() else {
                 return nil
             }
-            for screenManager in screenManagers {
-                if screenManager.screen?.screenID() == focusedWindow.screen()?.screenID() {
-                    return screenManager
-                }
-            }
-            return nil
+            return screenManagers.first { $0.screen?.screenID() == focusedWindow.screen()?.screenID() }
         }
 
         func updateScreens(windowManager: WindowManager) {
