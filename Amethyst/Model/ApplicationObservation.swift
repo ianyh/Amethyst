@@ -10,7 +10,7 @@ import Foundation
 import RxSwift
 
 /// Delegate for handling application observer events.
-protocol ApplicationObservationDelegate: class {
+protocol ApplicationObservationDelegate: AnyObject {
     associatedtype Application: ApplicationType
     typealias Window = Application.Window
 

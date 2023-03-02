@@ -176,12 +176,7 @@ struct CGSpacesInfo<Window: WindowType> {
     }
 
     static func screenForSpace(space: Space) -> Screen? {
-        for screen in Screen.availableScreens {
-            if (spacesForScreen(screen)?.contains { $0.id == space.id } ?? false) {
-                return screen
-            }
-        }
-        return nil
+        return Screen.availableScreens.first { spacesForScreen($0)?.contains { $0.id == space.id } ?? false }
     }
 
     static func space(fromScreenDescription screenDictionary: JSON) -> Space {

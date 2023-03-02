@@ -25,7 +25,7 @@ enum MouseState<Window: WindowType> {
 }
 
 /// MouseStateKeeper will need a few things to do its job effectively
-protocol MouseStateKeeperDelegate: class {
+protocol MouseStateKeeperDelegate: AnyObject {
     associatedtype Window: WindowType
     func recommendMainPaneRatio(_ ratio: CGFloat)
     func swapDraggedWindowWithDropzone(_ draggedWindow: Window)

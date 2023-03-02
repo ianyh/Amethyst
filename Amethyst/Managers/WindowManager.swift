@@ -38,7 +38,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     private var applications: [pid_t: AnyApplication<Application>] = [:]
     private var applicationObservations: [pid_t: (NSRunningApplication, NSKeyValueObservation)] = [:]
     private let screens: Screens
-    let windows = Windows()
+    private let windows = Windows()
     private var lastReflowTime = Date()
     private var lastFocusDate: Date?
 
@@ -453,9 +453,9 @@ extension WindowManager {
     }
 
     func onReflowCompletion() {
-        if let focusedWindow = Window.currentlyFocused() {
+//        if let focusedWindow = Window.currentlyFocused() {
 //            doMouseFollowsFocus(focusedWindow: focusedWindow)
-        }
+//        }
 
         // This handler will be executed by the Operation, in a queue.  Although async
         // (and although the docs say that it executes in a separate thread), I consider
@@ -667,7 +667,7 @@ extension WindowManager {
     }
 
     func screenManagerIndex(for screen: Screen) -> Int? {
-        return screens.screenManagers.index { $0.screen?.screenID() == screen.screenID() }
+        return screens.screenManagers.firstIndex { $0.screen?.screenID() == screen.screenID() }
     }
 }
 
@@ -751,8 +751,7 @@ extension WindowManager: WindowTransitionTarget {
     }
 
     func lastMainWindowForCurrentSpace() -> Window? {
-        guard let screenManager = screens.focusedScreenManager(),
-              let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
               let lastMainWindow = windows.lastMainWindows[currentFocusedSpace.id]
         else {
             return nil
@@ -786,5 +785,24 @@ extension WindowManager: FocusTransitionTarget {
 
     func nextWindowIDCounterClockwise(on screen: Screen) -> Window.WindowID? {
         return screenManager(for: screen)?.nextWindowIDCounterClockwise()
+    }
+}
+
+extension WindowManager: ScreenManagerDelegate {
+    func applyWindowLimit(forScreenManager screenManager: ScreenManager<WindowManager<Application>>, minimizingIn range: (Int) -> Range<Int>) {
+        guard let screen = screenManager.screen else {
+            return
+        }
+
+        let windows = screenManager.currentLayout is FloatingLayout
+            ? self.windows(onScreen: screen).filter { $0.shouldBeManaged() }
+            : activeWindows(on: screen)
+        windows[range(windows.count)].forEach {
+            $0.minimize()
+        }
+    }
+
+    func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>) -> WindowSet<Window> {
+        return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen!)
     }
 }
