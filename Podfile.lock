@@ -69,7 +69,7 @@ CHECKOUT OPTIONS:
     :commit: 04a1379908432bc4e304b38c831d573b1943b3fa
     :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
-    :commit: 6049d21e0082db55681e9b3218c07ad81495c5f8
+    :commit: 332f2400ff2cad88399d3183bc5754d67b6579dc
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
