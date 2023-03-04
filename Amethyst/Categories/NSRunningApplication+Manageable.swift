@@ -9,6 +9,12 @@
 import AppKit
 import Foundation
 
+enum Manageable {
+    case manageable
+    case unmanageable
+    case undetermined
+}
+
 private let ignoredBundleIDs = Set([
     "com.apple.dashboard",
     "com.apple.loginwindow",
@@ -34,17 +40,16 @@ protocol BundleIdentifiable {
     var bundleIdentifier: String? { get }
 }
 
-enum Manageable {
-    case manageable
-    case unmanageable
-    case undetermined
-}
 extension NSRunningApplication: BundleIdentifiable {}
 
 extension NSRunningApplication {
     var isManageable: Manageable {
         if let bundleIdentifier = bundleIdentifier, ignoredBundleIDs.contains(bundleIdentifier) {
             return .unmanageable
+        }
+
+        guard isFinishedLaunching else {
+            return .undetermined
         }
 
         guard case .regular = activationPolicy else {
