@@ -1,6 +1,6 @@
 PODS:
   - Cartography (4.0.0)
-  - LoginServiceKit (2.2.1)
+  - LoginServiceKit (2.4.0)
   - MASShortcut (2.4.0)
   - Nimble (11.2.1)
   - Quick (6.1.0)
@@ -19,15 +19,15 @@ PODS:
     - RxCocoa (~> 6.0)
     - RxSwiftExt/Core
   - Silica (0.3.7)
-  - Sparkle (2.3.1)
+  - Sparkle (2.3.2)
   - SwiftLint (0.50.3)
   - SwiftyBeaver (1.9.5)
   - SwiftyJSON (5.0.1)
-  - Yams (5.0.0)
+  - Yams (5.0.5)
 
 DEPENDENCIES:
   - Cartography
-  - LoginServiceKit (from `https://github.com/Sunnyyoung/LoginServiceKit.git`)
+  - LoginServiceKit
   - MASShortcut
   - Nimble (~> 11.2.1)
   - Quick (~> 6.1.0)
@@ -44,6 +44,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Cartography
+    - LoginServiceKit
     - MASShortcut
     - Nimble
     - Quick
@@ -58,16 +59,11 @@ SPEC REPOS:
     - Yams
 
 EXTERNAL SOURCES:
-  LoginServiceKit:
-    :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
 CHECKOUT OPTIONS:
-  LoginServiceKit:
-    :commit: 04a1379908432bc4e304b38c831d573b1943b3fa
-    :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
     :commit: 332f2400ff2cad88399d3183bc5754d67b6579dc
     :git: https://github.com/ianyh/Silica
@@ -75,7 +71,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
-  LoginServiceKit: e39022a6ea6169b3716fc3c43e89b2e7fd12f222
+  LoginServiceKit: f1fcedb23076c3a0384f0c7c06978bc49459a1be
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
   Nimble: 516ac503a0fafaa8e41dbb4a70a61be421fa893a
   Quick: 6676ffb409bf04abba2ff23902af2407bfc6ac90
@@ -84,12 +80,12 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   RxSwiftExt: d61c4b9b06e0a448041b1c659e0f1b5c5a035afc
   Silica: e70998fbfa22068602e8ebde94808603dc34ed0d
-  Sparkle: d64df28df56d0b1f98e13653b31b106dbc856c72
+  Sparkle: b36a51855e81585a1c38e32e53101d36c00f4304
   SwiftLint: 77f7cb2b9bb81ab4a12fcc86448ba3f11afa50c6
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
-  Yams: b5c3e188ceeb8321a9830b1d0e791ccea9af3201
+  Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: e9e4e5aa969b0a678a9cf0c3c3ea287c49d15838
+PODFILE CHECKSUM: 7f3c6d976af94958786a21fa983f23ac6d6a2228
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0
