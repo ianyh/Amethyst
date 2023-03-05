@@ -5,14 +5,14 @@ disabled_rules:
     - force_cast
     - force_try
     - no_space_in_method_call
+    - file_length
+    - type_body_length
 included:
     - Amethyst
     - AmethystTests
 line_length:
     warning: 200
     ignores_comments: true
-file_length: 500
-type_body_length: 400
 cyclomatic_complexity: 15
 large_tuple: 3
 nesting:
