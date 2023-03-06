@@ -97,6 +97,7 @@
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
 		40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 40CF37BF29B440A100CDB07A /* ArgumentParser */; };
+		40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C129B58C7400CDB07A /* WindowsInfo.swift */; };
 		40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491D723367590007E0CCB /* RowLayoutTests.swift */; };
 		40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */; };
 		40D82FF129739C5300F3C18B /* extended.js in Resources */ = {isa = PBXBuildFile; fileRef = 40D82FF029739C5300F3C18B /* extended.js */; };
@@ -232,6 +233,7 @@
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; usesTabs = 0; };
+		40CF37C129B58C7400CDB07A /* WindowsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsInfo.swift; sourceTree = "<group>"; };
 		40D491D723367590007E0CCB /* RowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowLayoutTests.swift; sourceTree = "<group>"; };
 		40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameAssignmentVerification.swift; sourceTree = "<group>"; };
 		40D82FF029739C5300F3C18B /* extended.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = extended.js; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 			isa = PBXGroup;
 			children = (
 				40A87FFC2404B1B4005EE9C6 /* DebugInfo.swift */,
+				40CF37C129B58C7400CDB07A /* WindowsInfo.swift */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -842,6 +845,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */,
 				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
 				40A88003240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift in Sources */,
 				4046EFD12238949900113067 /* Application.swift in Sources */,
