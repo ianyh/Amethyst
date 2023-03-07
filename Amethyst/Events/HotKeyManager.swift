@@ -211,7 +211,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             }
         }
 
-        (1...10).forEach { spaceNumber in
+        (1...12).forEach { spaceNumber in
             let commandKey = "\(CommandKey.throwSpacePrefix.rawValue)-\(spaceNumber)"
 
             self.constructCommandWithCommandKey(commandKey) {
