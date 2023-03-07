@@ -17,7 +17,7 @@ Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can b
 | `window-margin-size` | The size of the margins between windows (in px, default `0`). |
 | `window-minimum-height` | The smallest height that a window can be sized to regardless of its layout frame (in px, default `0`). |
 | `window-minimum-width` | The smallest width that a window can be sized to regardless of its layout frame (in px, default `0`) |
-| `floating` | List of bundle identifiers for applications to either be automatically floating or automatically tiled based on `floating-is-blacklist` (default `[]`). |
+| `floating` | List of bundle identifiers for applications to either be automatically floating or automatically tiled based on `floating-is-blacklist` (default `[]`). You can find specific bundle identifier based on application's name using [IDHunter](https://github.com/nbayat/IDHunter).|
 | `floating-is-blacklist` | Boolean flag determining behavior of the `floating` list. `true` if the applications should be floating and all others tiled. `false` if the applications should be tiled and all others floating (default `true`). |
 | `ignore-menu-bar` | `true` if screen frames should exclude the status bar. `false` if the screen frames should include the status bar (default `false`). |
 | `float-small-windows` | `true` if windows smaller than a 500px square should be floating by default (default `true`) |
