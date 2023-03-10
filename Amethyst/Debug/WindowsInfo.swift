@@ -11,12 +11,41 @@ import Cocoa
 import Foundation
 import Silica
 
+extension AXWindow {
+    func debugInfo(redactTitles: Bool) -> String {
+        let screenDescription = screen().map { AMScreen(screen: $0).debugDescription() }
+
+        return """
+        \tTitle: \(redactTitles ? "<redacted>" : title() ?? "<no title>")
+        \tFrame: \(frame())
+        \tid: \(windowID())
+        \(screenDescription ?? "Screen: unknown")
+        \tisActive: \(isActive())
+        \tisOnScreen: \(isOnScreen())
+        \tisFocused: \(isFocused())
+        \tshouldBeManaged: \(shouldBeManaged())
+        \tshouldFloat: \(shouldFloat())
+        """
+    }
+}
+
 struct Windows: ParsableCommand {
+    @Flag(help: "Include windows of unmanaged applications.")
+    var includeUnmanaged = false
+
+    @Flag(help: "Redact window titles.")
+    var redactWindowTitles = false
+
     mutating func run() throws {
-        let applications = NSWorkspace.shared.runningApplications.map { SIApplication(runningApplication: $0) }
-        for application in applications {
-            let windows: [SIWindow] = application.windows()
-            print(windows)
+        let applications = NSWorkspace.shared.runningApplications
+        for application in applications where includeUnmanaged || application.isManageable == .manageable {
+            let app = SIApplication(runningApplication: application)
+            print("\(app.title() ?? "<no title>") (pid \(app.pid()))")
+            for window in app.windows() {
+                let axWindow = AXWindow(element: window)!
+                print(axWindow.debugInfo(redactTitles: redactWindowTitles))
+                print("")
+            }
         }
     }
 }
