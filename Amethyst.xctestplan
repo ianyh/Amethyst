@@ -1,0 +1,32 @@
+{
+  "configurations" : [
+    {
+      "id" : "3A3BA42F-5862-48E3-9505-9D3676A1BA59",
+      "name" : "Standard",
+      "options" : {
+        "commandLineArgumentEntries" : [
+          {
+            "argument" : "test"
+          }
+        ]
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Amethyst.xcodeproj",
+      "identifier" : "402DB6DD1742E41A00D1C936",
+      "name" : "Amethyst"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Amethyst.xcodeproj",
+        "identifier" : "40D95B461C6E2ED800AAF433",
+        "name" : "AmethystTests"
+      }
+    }
+  ],
+  "version" : 1
+}

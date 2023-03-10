@@ -9,6 +9,8 @@
 import ArgumentParser
 import Cocoa
 
+struct Arguments: ParsableArguments {}
+
 struct Amethyst: ParsableCommand {
     static var configuration: CommandConfiguration = CommandConfiguration(
         subcommands: [Debug.self, App.self],
@@ -28,7 +30,13 @@ struct App: ParsableCommand {
 
 if CommandLine.arguments.contains("--debug-info") {
     print(DebugInfo.description(arguments: CommandLine.arguments))
+ } else if CommandLine.arguments.dropFirst().first == "test" {
+    _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
 } else {
-    var command = try Amethyst.parseAsRoot()
-    try command.run()
+    do {
+        var command = try Amethyst.parseAsRoot()
+        try command.run()
+    } catch {
+        print(Arguments.fullMessage(for: error))
+    }
 }
