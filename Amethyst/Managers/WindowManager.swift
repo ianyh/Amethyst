@@ -13,61 +13,6 @@ import RxSwiftExt
 import Silica
 import SwiftyJSON
 
-// swiftlint:disable identifier_name
-@_silgen_name("GetProcessPID") @discardableResult
-func GetProcessPID(_ psn: inout ProcessSerialNumber, _ pid: inout pid_t) -> OSStatus
-// swiftlint:enable identifier_name
-
-protocol ApplicationEventHandlerDelegate: class {
-    func add(applicationWithPID: pid_t)
-    func remove(applicationWithPID: pid_t)
-}
-
-func applicationEventHandlerUPP(_ call: EventHandlerCallRef?, _ event: EventRef?, _ data: UnsafeMutableRawPointer?) -> OSStatus {
-    guard let data = data, let event = event else {
-        return OSStatus(eventNotHandledErr)
-    }
-
-    let handler = Unmanaged<ApplicationEventHandler>.fromOpaque(data).takeUnretainedValue()
-    return handler.handleEvent(event)
-}
-
-private class ApplicationEventHandler {
-    weak var delegate: ApplicationEventHandlerDelegate?
-
-    init(delegate: ApplicationEventHandlerDelegate) {
-        self.delegate = delegate
-    }
-
-    func handleEvent(_ event: EventRef) -> OSStatus {
-        var psn = ProcessSerialNumber()
-        var error = GetEventParameter(event, EventParamName(kEventParamProcessID), EventParamName(typeProcessSerialNumber), nil, MemoryLayout<ProcessSerialNumber>.size, nil, &psn)
-        guard error == noErr else {
-            log.error(error)
-            return error
-        }
-
-        var pid = pid_t()
-        error = GetProcessPID(&psn, &pid)
-
-        guard error == noErr else {
-            log.error(error)
-            return error
-        }
-
-        switch GetEventKind(event) {
-        case UInt32(kEventAppLaunched):
-            delegate?.add(applicationWithPID: pid)
-        case UInt32(kEventAppTerminated):
-            delegate?.remove(applicationWithPID: pid)
-        default:
-            return OSStatus(eventNotHandledErr)
-        }
-
-        return noErr
-    }
-}
-
 /**
  The tolerant interval between the click and the application of a mouse move from focus.
  
@@ -83,6 +28,17 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
 
+    private struct UndeterminedApplication {
+        let application: NSRunningApplication
+        let activationPolicyObservation: NSKeyValueObservation?
+        let isFinishedLaunchingObservation: NSKeyValueObservation?
+
+        func invalidate() {
+            activationPolicyObservation?.invalidate()
+            isFinishedLaunchingObservation?.invalidate()
+        }
+    }
+
     enum CodingKeys: String, CodingKey {
         case screens
     }
@@ -90,9 +46,10 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     let windowTransitionCoordinator: WindowTransitionCoordinator<WindowManager<Application>>
     let focusTransitionCoordinator: FocusTransitionCoordinator<WindowManager<Application>>
 
-    private var applications: [AnyApplication<Application>] = []
+    private var applications: [pid_t: AnyApplication<Application>] = [:]
+    private var applicationObservations: [pid_t: UndeterminedApplication] = [:]
     private let screens: Screens
-    let windows = Windows()
+    private let windows = Windows()
     private var lastReflowTime = Date()
     private var lastFocusDate: Date?
 
@@ -206,10 +163,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
         for runningApplication in NSWorkspace.shared.runningApplications {
-            guard runningApplication.isManageable else {
-                continue
-            }
-
             let pid = runningApplication.processIdentifier
             guard let application = applicationWithPID(pid) else {
                 continue
@@ -277,11 +230,11 @@ extension WindowManager {
     }
 
     fileprivate func applicationWithPID(_ pid: pid_t) -> AnyApplication<Application>? {
-        return applications.first { $0.pid() == pid }
+        return applications[pid]
     }
 
     fileprivate func add(application: AnyApplication<Application>) {
-        guard !applications.contains(application) else {
+        guard applications[application.pid()] == nil else {
             for window in application.windows() {
                 add(window: window)
             }
@@ -292,7 +245,7 @@ extension WindowManager {
             .addObservers()
             .subscribe(
                 onCompleted: { [weak self] in
-                    self?.applications.append(application)
+                    self?.applications[application.pid()] = application
 
                     for window in application.windows() {
                         self?.add(window: window)
@@ -306,10 +259,7 @@ extension WindowManager {
         for window in application.windows() {
             remove(window: window)
         }
-        guard let applicationIndex = applications.index(of: application) else {
-            return
-        }
-        applications.remove(at: applicationIndex)
+        applications.removeValue(forKey: application.pid())
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
@@ -342,6 +292,9 @@ extension WindowManager {
         guard windows.windows(onScreen: screen).contains(focusedWindow) else {
             let windowChange: Change<Window> = .add(window: focusedWindow)
             add(window: focusedWindow)
+            guard windows.window(withID: focusedWindow.id()) != nil else {
+                return
+            }
             windows.setFloating(false, forWindow: focusedWindow)
             markScreen(screen, forReflowWithChange: windowChange)
             return
@@ -367,16 +320,58 @@ extension WindowManager {
     }
 
     func add(runningApplication: NSRunningApplication) {
-        let application = AnyApplication(Application(runningApplication: runningApplication))
-        add(application: application)
+        switch runningApplication.isManageable {
+        case .manageable:
+            let application = AnyApplication(Application(runningApplication: runningApplication))
+            add(application: application)
+        case .undetermined:
+            monitorUndeterminedApplication(runningApplication)
+        case .unmanageable:
+            break
+        }
+    }
+
+    func monitorUndeterminedApplication(_ runningApplication: NSRunningApplication) {
+        let pid = runningApplication.processIdentifier
+
+        if let previousApplication = applicationObservations[pid] {
+            previousApplication.invalidate()
+            applicationObservations.removeValue(forKey: pid)
+        }
+
+        let activationPolicyObservation = runningApplication.observe(\.activationPolicy) { [weak self] runningApplication, change in
+            guard case .setting = change.kind else {
+                return
+            }
+
+            if runningApplication.activationPolicy == .regular {
+                self?.applicationObservations[runningApplication.processIdentifier]?.invalidate()
+                self?.applicationObservations.removeValue(forKey: runningApplication.processIdentifier)
+                self?.add(runningApplication: runningApplication)
+            }
+        }
+
+        let isFinishedLaunchingObservation = runningApplication.observe(\.isFinishedLaunching) { [weak self] runningApplication, change in
+            guard case .setting = change.kind else {
+                return
+            }
+
+            if runningApplication.isFinishedLaunching {
+                self?.applicationObservations[runningApplication.processIdentifier]?.invalidate()
+                self?.applicationObservations.removeValue(forKey: runningApplication.processIdentifier)
+                self?.add(runningApplication: runningApplication)
+            }
+        }
+
+        applicationObservations[pid] = UndeterminedApplication(
+            application: runningApplication,
+            activationPolicyObservation: activationPolicyObservation,
+            isFinishedLaunchingObservation: isFinishedLaunchingObservation
+        )
     }
 
     func reevaluateWindows() {
         for runningApplication in NSWorkspace.shared.runningApplications {
-            guard runningApplication.isManageable else {
-                continue
-            }
-
             add(runningApplication: runningApplication)
         }
         markAllScreensForReflow(withChange: .unknown)
@@ -486,9 +481,9 @@ extension WindowManager {
     }
 
     func onReflowCompletion() {
-        if let focusedWindow = Window.currentlyFocused() {
+//        if let focusedWindow = Window.currentlyFocused() {
 //            doMouseFollowsFocus(focusedWindow: focusedWindow)
-        }
+//        }
 
         // This handler will be executed by the Operation, in a queue.  Although async
         // (and although the docs say that it executes in a separate thread), I consider
@@ -700,7 +695,7 @@ extension WindowManager {
     }
 
     func screenManagerIndex(for screen: Screen) -> Int? {
-        return screens.screenManagers.index { $0.screen?.screenID() == screen.screenID() }
+        return screens.screenManagers.firstIndex { $0.screen?.screenID() == screen.screenID() }
     }
 }
 
@@ -784,8 +779,7 @@ extension WindowManager: WindowTransitionTarget {
     }
 
     func lastMainWindowForCurrentSpace() -> Window? {
-        guard let screenManager = screens.focusedScreenManager(),
-              let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
               let lastMainWindow = windows.lastMainWindows[currentFocusedSpace.id]
         else {
             return nil
@@ -819,5 +813,24 @@ extension WindowManager: FocusTransitionTarget {
 
     func nextWindowIDCounterClockwise(on screen: Screen) -> Window.WindowID? {
         return screenManager(for: screen)?.nextWindowIDCounterClockwise()
+    }
+}
+
+extension WindowManager: ScreenManagerDelegate {
+    func applyWindowLimit(forScreenManager screenManager: ScreenManager<WindowManager<Application>>, minimizingIn range: (Int) -> Range<Int>) {
+        guard let screen = screenManager.screen else {
+            return
+        }
+
+        let windows = screenManager.currentLayout is FloatingLayout
+            ? self.windows(onScreen: screen).filter { $0.shouldBeManaged() }
+            : activeWindows(on: screen)
+        windows[range(windows.count)].forEach {
+            $0.minimize()
+        }
+    }
+
+    func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>) -> WindowSet<Window> {
+        return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen!)
     }
 }

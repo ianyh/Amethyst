@@ -84,16 +84,14 @@ extension WindowManager {
         }
 
         func remove(window: Window) {
-            for (_, lastMainWindow) in lastMainWindows {
-                if lastMainWindow == window {
-                    if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() {
-                        let secondWindow = activeWindowOnCurrentScreen(atIndex: 1)
-                        lastMainWindows[currentFocusedSpace.id] = secondWindow
-                    }
+            for (_, lastMainWindow) in lastMainWindows where lastMainWindow == window {
+                if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() {
+                    let secondWindow = activeWindowOnCurrentScreen(atIndex: 1)
+                    lastMainWindows[currentFocusedSpace.id] = secondWindow
                 }
             }
 
-            guard let windowIndex = windows.index(of: window) else {
+            guard let windowIndex = windows.firstIndex(of: window) else {
                 return
             }
 
@@ -108,7 +106,7 @@ extension WindowManager {
                 }
             }
 
-            guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
+            guard let windowIndex = windows.firstIndex(of: window), let otherWindowIndex = windows.firstIndex(of: otherWindow) else {
                 return false
             }
 

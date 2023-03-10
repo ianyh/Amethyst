@@ -84,6 +84,8 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `mod2 + 8` | Throw focused window to space 8 |
 | `mod2 + 9` | Throw focused window to space 9 |
 | `mod2 + 0` | Throw focused window to space 10 |
+| `none`     | Throw focused window to space 11 |
+| `none`     | Throw focused window to space 12 |
 | `mod1 + w` | Focus Screen 1 |
 | `mod2 + w` | Throw focused window to screen 1 |
 | `mod1 + e` | Focus Screen 2 |

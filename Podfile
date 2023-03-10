@@ -4,7 +4,7 @@ use_frameworks!
 
 target 'Amethyst' do
   pod 'Cartography'
-  pod 'LoginServiceKit', :git => 'https://github.com/Sunnyyoung/LoginServiceKit.git'
+  pod 'LoginServiceKit'
   pod 'MASShortcut'
   pod 'RxCocoa'
   pod 'RxSwift'

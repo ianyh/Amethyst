@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -57,6 +57,7 @@
 		404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */; };
 		40578C19232D9CC0006553A0 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40578C18232D9CC0006553A0 /* Screen.swift */; };
 		40578C1B232DC607006553A0 /* TestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40578C1A232DC607006553A0 /* TestScreen.swift */; };
+		40583E1329AEF70B008602BB /* ApplicationEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */; };
 		4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */; };
 		4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */; };
 		4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */; };
@@ -190,6 +191,7 @@
 		404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayoutTests.swift; sourceTree = "<group>"; };
 		40578C18232D9CC0006553A0 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		40578C1A232DC607006553A0 /* TestScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScreen.swift; sourceTree = "<group>"; };
+		40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationEventHandler.swift; sourceTree = "<group>"; };
 		4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindowController.swift; sourceTree = "<group>"; };
 		4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralPreferencesViewController.xib; sourceTree = "<group>"; };
 		4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShortcutsPreferencesViewController.xib; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 				400A5E9C2327350C00F0A2C3 /* Space.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
+				40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -727,6 +730,7 @@
 		};
 		4058C4701C4C4F9E00B19D26 /* Lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -874,6 +878,7 @@
 				400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */,
 				401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */,
 				40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */,
+				40583E1329AEF70B008602BB /* ApplicationEventHandler.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				40A87FFF240AF2BC005EE9C6 /* MousePreferencesViewController.swift in Sources */,
 				40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */,
@@ -1002,6 +1007,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1048,7 +1054,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1062,7 +1070,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 97;
+				CURRENT_PROJECT_VERSION = 100;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1074,16 +1082,18 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.17.0;
+				MARKETING_VERSION = 0.18.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"DEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1098,7 +1108,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 97;
+				CURRENT_PROJECT_VERSION = 100;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1110,16 +1120,18 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.17.0;
+				MARKETING_VERSION = 0.18.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"RELEASE\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1152,7 +1164,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
 			};
 			name = Debug;
@@ -1185,7 +1196,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
 			};
 			name = Release;

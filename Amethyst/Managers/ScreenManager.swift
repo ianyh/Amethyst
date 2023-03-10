@@ -9,7 +9,7 @@
 import Foundation
 import Silica
 
-protocol ScreenManagerDelegate: class {
+protocol ScreenManagerDelegate: AnyObject {
     associatedtype Window: WindowType
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<Self>, minimizingIn range: (_ windowCount: Int) -> Range<Int>)
     func activeWindowSet(forScreenManager screenManager: ScreenManager<Self>) -> WindowSet<Window>
@@ -279,7 +279,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     func selectLayout(_ layoutString: String) {
-        guard let layoutIndex = layouts.index(where: { $0.layoutKey == layoutString }) else {
+        guard let layoutIndex = layouts.firstIndex(where: { $0.layoutKey == layoutString }) else {
             return
         }
 
@@ -400,21 +400,5 @@ extension ScreenManager: Comparable {
         let originX2 = rhsScreen.frameWithoutDockOrMenu().origin.x
 
         return originX1 < originX2
-    }
-}
-
-extension WindowManager: ScreenManagerDelegate {
-    func applyWindowLimit(forScreenManager screenManager: ScreenManager<WindowManager<Application>>, minimizingIn range: (Int) -> Range<Int>) {
-        guard let screen = screenManager.screen else {return}
-        let windows =
-            screenManager.currentLayout is FloatingLayout
-            ? self.windows.activeWindows(onScreen: screen).filter { $0.shouldBeManaged() }
-            : activeWindows(on: screen)
-        windows[range(windows.count)].forEach {
-            $0.minimize()
-        }
-    }
-    func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>) -> WindowSet<Window> {
-        return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen!)
     }
 }

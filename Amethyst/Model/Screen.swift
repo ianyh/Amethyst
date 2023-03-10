@@ -100,9 +100,9 @@ struct AMScreen: ScreenType {
             frame.size.height = windowMinimumHeight
         }
 
-         var isDisablePaddingOnBuiltinDisplay: Bool =
+         let isDisablePaddingOnBuiltinDisplay: Bool =
              UserConfiguration.shared.disablePaddingOnBuiltinDisplay()
-         var isScreenBuiltin: boolean_t =
+         let isScreenBuiltin: boolean_t =
              CGDisplayIsBuiltin(screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as! CGDirectDisplayID)
          if isDisablePaddingOnBuiltinDisplay && isScreenBuiltin == 1 {return frame}
 

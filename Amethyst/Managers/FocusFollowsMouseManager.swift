@@ -11,7 +11,7 @@ import Foundation
 import Silica
 import RxSwift
 
-protocol FocusFollowsMouseManagerDelegate: class {
+protocol FocusFollowsMouseManagerDelegate: AnyObject {
     associatedtype Window: WindowType
     typealias Screen = Window.Screen
     func windows(onScreen screen: Screen) -> [Window]

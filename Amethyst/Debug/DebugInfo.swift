@@ -44,7 +44,7 @@ struct DebugInfo {
 
     static func applications() -> String {
         return NSWorkspace.shared.runningApplications
-            .filter { $0.isManageable }
+            .filter { $0.isManageable == .manageable }
             .map { "\t\($0.localizedName ?? "<unknown name>") (\($0.bundleIdentifier ?? "<unknown bundle id>"))" }
             .joined(separator: "\n")
     }
