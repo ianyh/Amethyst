@@ -12,7 +12,7 @@ import Cocoa
 struct Debug: ParsableCommand {
     static var configuration: CommandConfiguration = CommandConfiguration(
         abstract: "Generate diagnostic reports on system state.",
-        subcommands: [Windows.self],
+        subcommands: [Apps.self, Windows.self],
         defaultSubcommand: Windows.self
     )
 }

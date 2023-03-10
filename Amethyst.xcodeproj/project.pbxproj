@@ -99,6 +99,7 @@
 		40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 40CF37BF29B440A100CDB07A /* ArgumentParser */; };
 		40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C129B58C7400CDB07A /* WindowsInfo.swift */; };
 		40CF37C429BAC18300CDB07A /* ScreensInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C329BAC18300CDB07A /* ScreensInfo.swift */; };
+		40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C529BACD1800CDB07A /* AppsInfo.swift */; };
 		40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491D723367590007E0CCB /* RowLayoutTests.swift */; };
 		40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */; };
 		40D82FF129739C5300F3C18B /* extended.js in Resources */ = {isa = PBXBuildFile; fileRef = 40D82FF029739C5300F3C18B /* extended.js */; };
@@ -236,6 +237,7 @@
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; usesTabs = 0; };
 		40CF37C129B58C7400CDB07A /* WindowsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsInfo.swift; sourceTree = "<group>"; };
 		40CF37C329BAC18300CDB07A /* ScreensInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreensInfo.swift; sourceTree = "<group>"; };
+		40CF37C529BACD1800CDB07A /* AppsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsInfo.swift; sourceTree = "<group>"; };
 		40D491D723367590007E0CCB /* RowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowLayoutTests.swift; sourceTree = "<group>"; };
 		40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameAssignmentVerification.swift; sourceTree = "<group>"; };
 		40D82FF029739C5300F3C18B /* extended.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = extended.js; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 				40A87FFC2404B1B4005EE9C6 /* DebugInfo.swift */,
 				40CF37C129B58C7400CDB07A /* WindowsInfo.swift */,
 				40CF37C329BAC18300CDB07A /* ScreensInfo.swift */,
+				40CF37C529BACD1800CDB07A /* AppsInfo.swift */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -873,6 +876,7 @@
 				40637073224EF9B20081299D /* Change.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
+				40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */,
 				40A87FFD2404B1B4005EE9C6 /* DebugInfo.swift in Sources */,
 				4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */,
 				40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */,

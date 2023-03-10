@@ -7,6 +7,8 @@
 //
 
 import ArgumentParser
+import Cocoa
+import Silica
 
 extension AMScreen {
     func debugDescription() -> String {
@@ -19,6 +21,5 @@ extension AMScreen {
 
 struct Screens: ParsableCommand {
     mutating func run() throws {
-
     }
 }
