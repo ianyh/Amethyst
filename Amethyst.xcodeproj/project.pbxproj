@@ -96,6 +96,10 @@
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
+		40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 40CF37BF29B440A100CDB07A /* ArgumentParser */; };
+		40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C129B58C7400CDB07A /* WindowsInfo.swift */; };
+		40CF37C429BAC18300CDB07A /* ScreensInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C329BAC18300CDB07A /* ScreensInfo.swift */; };
+		40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C529BACD1800CDB07A /* AppsInfo.swift */; };
 		40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491D723367590007E0CCB /* RowLayoutTests.swift */; };
 		40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */; };
 		40D82FF129739C5300F3C18B /* extended.js in Resources */ = {isa = PBXBuildFile; fileRef = 40D82FF029739C5300F3C18B /* extended.js */; };
@@ -231,6 +235,9 @@
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; usesTabs = 0; };
+		40CF37C129B58C7400CDB07A /* WindowsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsInfo.swift; sourceTree = "<group>"; };
+		40CF37C329BAC18300CDB07A /* ScreensInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreensInfo.swift; sourceTree = "<group>"; };
+		40CF37C529BACD1800CDB07A /* AppsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsInfo.swift; sourceTree = "<group>"; };
 		40D491D723367590007E0CCB /* RowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowLayoutTests.swift; sourceTree = "<group>"; };
 		40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameAssignmentVerification.swift; sourceTree = "<group>"; };
 		40D82FF029739C5300F3C18B /* extended.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = extended.js; sourceTree = "<group>"; };
@@ -262,6 +269,7 @@
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
+				40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */,
 				ED989E6BAE0E8D035277478A /* Pods_Amethyst.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -497,6 +505,9 @@
 			isa = PBXGroup;
 			children = (
 				40A87FFC2404B1B4005EE9C6 /* DebugInfo.swift */,
+				40CF37C129B58C7400CDB07A /* WindowsInfo.swift */,
+				40CF37C329BAC18300CDB07A /* ScreensInfo.swift */,
+				40CF37C529BACD1800CDB07A /* AppsInfo.swift */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -604,6 +615,9 @@
 			dependencies = (
 			);
 			name = Amethyst;
+			packageProductDependencies = (
+				40CF37BF29B440A100CDB07A /* ArgumentParser */,
+			);
 			productName = Amethyst;
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
 			productType = "com.apple.product-type.application";
@@ -661,6 +675,9 @@
 				Base,
 			);
 			mainGroup = 402DB6D51742E41A00D1C936;
+			packageReferences = (
+				40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+			);
 			productRefGroup = 402DB6DF1742E41A00D1C936 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -834,6 +851,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */,
 				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
 				40A88003240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift in Sources */,
 				4046EFD12238949900113067 /* Application.swift in Sources */,
@@ -858,6 +876,7 @@
 				40637073224EF9B20081299D /* Change.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
+				40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */,
 				40A87FFD2404B1B4005EE9C6 /* DebugInfo.swift in Sources */,
 				4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */,
 				40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */,
@@ -868,6 +887,7 @@
 				401BC8B61CE9259000F89B3F /* LayoutType.swift in Sources */,
 				401C35B12244626E0019ED07 /* ApplicationObservation.swift in Sources */,
 				401C35B7224831470019ED07 /* FocusTransitionCoordinator.swift in Sources */,
+				40CF37C429BAC18300CDB07A /* ScreensInfo.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
@@ -1231,6 +1251,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		40CF37BF29B440A100CDB07A /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 402DB6D61742E41A00D1C936 /* Project object */;
 }

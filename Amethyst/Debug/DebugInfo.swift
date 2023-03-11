@@ -6,7 +6,16 @@
 //  Copyright © 2020 Ian Ynda-Hummel. All rights reserved.
 //
 
+import ArgumentParser
 import Cocoa
+
+struct Debug: ParsableCommand {
+    static var configuration: CommandConfiguration = CommandConfiguration(
+        abstract: "Generate diagnostic reports on system state.",
+        subcommands: [Apps.self, Windows.self],
+        defaultSubcommand: Windows.self
+    )
+}
 
 struct DebugInfo {
     static func description(arguments: [String]) -> String {
