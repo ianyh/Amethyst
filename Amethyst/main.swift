@@ -30,13 +30,14 @@ struct App: ParsableCommand {
 
 if CommandLine.arguments.contains("--debug-info") {
     print(DebugInfo.description(arguments: CommandLine.arguments))
- } else if CommandLine.arguments.dropFirst().first == "test" {
+} else if CommandLine.arguments.dropFirst().first == "test" {
     _ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
 } else {
     do {
         var command = try Amethyst.parseAsRoot()
         try command.run()
     } catch {
-        print(Arguments.fullMessage(for: error))
+        Arguments.exit(withError: error)
     }
+    Arguments.exit()
 }
