@@ -30,7 +30,7 @@ Amethyst must be given permissions to use the accessibility APIs under the Priva
 
 ## Keyboard Shortcuts
 
-Make sure you read the [Terminologies](Terminologies.md) before proceeding further.
+Make sure you read the [Terminologies](docs/Terminologies.md) before proceeding further.
 
 Amethyst uses two modifier combinations.
 
