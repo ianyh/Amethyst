@@ -22,3 +22,4 @@ crashlytics_app_key
 Carthage
 AMKeys.h
 fastlane/report.xml
+*profraw
