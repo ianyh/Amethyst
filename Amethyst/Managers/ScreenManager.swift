@@ -48,7 +48,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private var currentLayoutIndexBySpaceUUID: [String: Int] = [:]
     private var layoutsBySpaceUUID: [String: [Layout<Window>]] = [:]
     private var currentLayoutIndex: Int = 0
-    var previousLayout: String?
+    var previousLayoutKey: String?
     var currentLayout: Layout<Window>? {
         guard !layouts.isEmpty else {
             return nil
@@ -279,21 +279,19 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     func selectLayout(_ layoutString: String) {
-        log.debug("layout is " + layoutString)
-
-        guard let currentLayout = currentLayout?.layoutKey else {
+        guard let currentLayoutKey = currentLayout?.layoutKey else {
             return
         }
 
-        let nextLayout = currentLayout == layoutString ? previousLayout : layoutString
+        let nextLayoutKey = currentLayoutKey == layoutString ? previousLayoutKey : layoutString
 
-        guard let layoutIndex = layouts.firstIndex(where: { $0.layoutKey == nextLayout }) else {
+        guard let layoutIndex = layouts.firstIndex(where: { $0.layoutKey == nextLayoutKey }) else {
             return
         }
 
         setCurrentLayoutIndex(layoutIndex)
         setNeedsReflow(withWindowChange: .layoutChange)
-        previousLayout = currentLayout
+        previousLayoutKey = currentLayoutKey
     }
 
     private func setCurrentLayoutIndex(_ index: Int, changingSpace: Bool = false) {
