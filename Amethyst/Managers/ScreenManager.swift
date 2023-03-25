@@ -279,12 +279,21 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     func selectLayout(_ layoutString: String) {
-        guard let layoutIndex = layouts.firstIndex(where: { $0.layoutKey == layoutString }) else {
+        log.debug("layout is " + layoutString)
+
+        guard let currentLayout = currentLayout?.layoutKey else {
+            return
+        }
+
+        let nextLayout = currentLayout == layoutString ? previousLayout : layoutString
+
+        guard let layoutIndex = layouts.firstIndex(where: { $0.layoutKey == nextLayout }) else {
             return
         }
 
         setCurrentLayoutIndex(layoutIndex)
         setNeedsReflow(withWindowChange: .layoutChange)
+        previousLayout = currentLayout
     }
 
     private func setCurrentLayoutIndex(_ index: Int, changingSpace: Bool = false) {
@@ -367,26 +376,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
     @objc func hideLayoutHUD(_ sender: AnyObject) {
         layoutNameWindowController.close()
-    }
-
-    func toggleFullscreen() {
-        guard let currentLayout = currentLayout?.layoutKey else {
-            return
-        }
-
-        if currentLayout == "fullscreen" {
-            previousLayout = previousLayout ?? layouts.first(where: {$0.layoutKey != "fullscreen"})?.layoutKey
-
-            if previousLayout == nil {
-                return
-            }
-
-            selectLayout(previousLayout!)
-        } else {
-            previousLayout = currentLayout
-
-            selectLayout("fullscreen")
-        }
     }
 }
 

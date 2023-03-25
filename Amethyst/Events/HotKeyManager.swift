@@ -254,11 +254,6 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
                 screenManager?.selectLayout(layoutKey)
             }
         }
-
-        constructCommandWithCommandKey(CommandKey.toggleFullscreen.rawValue) {
-            let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
-            screenManager?.toggleFullscreen()
-        }
     }
 
     private func constructKeyCodeMap() -> [String: [AMKeyCode]] {
@@ -407,8 +402,6 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
 
         hotKeyNameToDefaultsKey.append(["Toggle float for focused window", CommandKey.toggleFloat.rawValue])
-        hotKeyNameToDefaultsKey.append(["Toggle fullscreen for focused window",
-                                        CommandKey.toggleFullscreen.rawValue])
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle focus follows mouse", CommandKey.toggleFocusFollowsMouse.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
