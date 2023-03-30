@@ -65,7 +65,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Silica:
-    :commit: ff07dd809d41dd7d0be6e2ca547e7000a204295c
+    :commit: f04e9afb77d5593e0f7b346ccf040d0bb3c2ff7c
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
