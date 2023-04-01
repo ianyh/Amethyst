@@ -732,10 +732,12 @@ extension WindowManager: WindowTransitionTarget {
             }
             markScreen(screen, forReflowWithChange: .remove(window: window))
             window.move(toSpace: targetSpace.id)
-            // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
-            let newFrame = targetScreen.frameWithoutDockOrMenu()
-            DispatchQueue.main.sync {
-                window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
+            if targetScreen.screenID() != screen.screenID() {
+                // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
+                let newFrame = targetScreen.frameWithoutDockOrMenu()
+                DispatchQueue.main.sync {
+                    window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
+                }
             }
             markScreen(targetScreen, forReflowWithChange: .add(window: window))
             if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
