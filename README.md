@@ -39,6 +39,13 @@ Amethyst must be given permissions to use the accessibility APIs under the Priva
   <img style="text-align: center" width="500px" src="https://user-images.githubusercontent.com/11782590/127423014-1faa4a7f-9225-42ea-b400-56b994e2796f.png" />
 </p>
 
+Troubleshooting
+===============
+
+See [Troubleshooting](docs/troubleshooting.md) for some common issues.
+
+# Configuration
+
 Keyboard Shortcuts
 ------------------
 
@@ -184,15 +191,10 @@ This layout does not have a main pane in the way that other layouts do. When add
 
 Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/custom-layouts.md).
 
-Configuration
+Configuration File
 -------------
 
 Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md).
-
-Troubleshooting
-===============
-
-See [Troubleshooting](docs/troubleshooting.md) for some common issues.
 
 Contact
 =======
@@ -208,7 +210,6 @@ If you'd like to contribute please branch off of the `development` branch and op
 ```bash
 $ ./bin/setup.sh
 ```
-
 
 Donating
 ========
