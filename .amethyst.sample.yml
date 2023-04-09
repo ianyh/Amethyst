@@ -139,7 +139,7 @@ swap-screen-ccw:
 
 # Move the currently focused window onto the next screen in the list going clockwise.
 swap-screen-cw:
-  mod: mod1
+  mod: mod2
   key: l
 
 # Swap the position of the currently focused window with the next window in the list going counter-clockwise.
@@ -232,6 +232,9 @@ relaunch-amethyst:
   mod: mod2
   key: z
 
+# disable screen padding on in-built display
+disable-screen-padding-on-inbuilt: false
+
 # Boolean flag for whether or not to add margins betwen windows (default false).
 window-margins: false
 
@@ -243,6 +246,10 @@ smart-window-margins: false
 # window-margin-size: 5
 # The size of the margins between windows (in px, default 0).
 window-margin-size: 0
+
+# The max number of windows that may be visible on a screen at one time before
+# additional windows are minimized. A value of 0 disables the feature.
+window-max-count: 0
 
 # The smallest height that a window can be sized to regardless of its layout frame (in px, default 0).
 window-minimum-height: 0
