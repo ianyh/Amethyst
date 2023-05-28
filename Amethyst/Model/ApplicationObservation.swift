@@ -178,15 +178,18 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
 
         return Observable.from(notifications)
             .scan([]) { observed, notification -> [Notification] in
+                let notifications = observed + [notification]
+
                 do {
                     try self.addObserver(for: notification)
                 } catch {
-                    log.error("Failed to add observer \(notification) on application \(self.application.title() ?? "<unknown>") (\(self.application.pid())): \(error)")
-                    self.removeObservers(notifications: observed)
+                    let applicationTitle = self.application.title() ?? "<unknown>"
+                    log.error("Failed to add observer \(notification) on application \(applicationTitle) (\(self.application.pid())): \(error)")
+                    self.removeObservers(notifications: notifications)
                     throw error
                 }
 
-                return observed + [notification]
+                return notifications
             }
             .map { _ in }
     }
