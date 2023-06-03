@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "text.and.command.macwindow.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
