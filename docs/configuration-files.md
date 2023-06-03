@@ -87,3 +87,7 @@ A mod is a list of keyboard modifiers. Namely, `option`, `control`, `shift`, and
 | `reevaluate-windows` | Rerun the current layout's algorithm. |
 | `toggle-focus-follows-mouse` | Turn on or off `focus-follows-mouse`. |
 | `relaunch-amethyst` | Automatically quit and reopen Amethyst. |
+
+### Layout Selection
+
+Amethyst supports defining shortcuts for selecting specific layouts directly. They take the form of `select-${layout_key}-layout`. For example, defining the command `select-tall-layout` will define a shortcut that when used will switch directly to the Tall layout. Note, this works for custom layouts as well.
