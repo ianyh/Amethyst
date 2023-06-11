@@ -322,12 +322,6 @@ extension AXWindow: WindowType {
     }
 
     func move(toSpace spaceID: CGSSpaceID) {
-        let ids = [cgID()]
-
-        CGSMoveWindowsToManagedSpace(CGSMainConnectionID(), ids as CFArray, spaceID)
-
-        if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
-            focus()
-        }
+        CGSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
     }
 }

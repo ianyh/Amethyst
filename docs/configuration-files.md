@@ -9,6 +9,9 @@ Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can b
 | `layouts` | Ordered list of layouts to use by layout key (default tall, wide, fullscreen, and column). |
 | `mod1` | First mod (default option + shift). |
 | `mod2` | Second mod (default option + shift + control). |
+| `mod3` | Third mod (not used by default). |
+| `mod4` | Fourth mod (not used by default). |
+| `window-max-count` | The max number of windows that may be visible on a screen at one time before additional windows are minimized. A value of 0 disables the feature. |
 | `window-margins` | Boolean flag for whether or not to add margins betwen windows (default `false`). |
 | `smart-window-margins` | Boolean flag for whether or not to set window margins if there is only one window on the screen, assuming window margins are enabled (default `false`). |
 | `window-margin-size` | The size of the margins between windows (in px, default `0`). |
@@ -34,6 +37,7 @@ Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can b
 | `screen-padding-bottom` | Padding to apply between windows and the bottom edge of the screen (in px, default `0`).
 | `restore-layouts-on-launch` | `true` to maintain layout state across application executions (default `true`). |
 | `debug-layout-info` | `true` to display some optional debug information in the layout HUD (default `false`). |
+| `disable-screen-padding-on-inbuilt` |  `true` to disable screen padding on in-built display (default `false`). |
 
 ## Commands
 
@@ -41,7 +45,7 @@ Commands are defined at the root of the config file, and have a `mod` and a `key
 
 | Key | Description |
 | --- | ----------- |
-| `mod` | The modifier to use, either `mod1` or `mod2`. |
+| `mod` | The modifier to use, either `mod1`, `mod2`, `mod3` or `mod4`. |
 | `key` | The key on the keyboard to use. |
 
 ### Mods
@@ -83,3 +87,7 @@ A mod is a list of keyboard modifiers. Namely, `option`, `control`, `shift`, and
 | `reevaluate-windows` | Rerun the current layout's algorithm. |
 | `toggle-focus-follows-mouse` | Turn on or off `focus-follows-mouse`. |
 | `relaunch-amethyst` | Automatically quit and reopen Amethyst. |
+
+### Layout Selection
+
+Amethyst supports defining shortcuts for selecting specific layouts directly. They take the form of `select-${layout_key}-layout`. For example, defining the command `select-tall-layout` will define a shortcut that when used will switch directly to the Tall layout. Note, this works for custom layouts as well.

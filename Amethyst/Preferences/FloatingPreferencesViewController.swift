@@ -159,7 +159,7 @@ class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource
 
         let title = windowTitles[windowTitlesTableView.selectedRow]
         let updatedBundle = FloatingBundle(id: id, windowTitles: windowTitles.filter { $0 != title })
-        floatingBundles.index { $0.id == id }.flatMap { index in
+        floatingBundles.firstIndex { $0.id == id }.flatMap { index in
             arrayController.remove(atArrangedObjectIndex: index)
             arrayController.insert(updatedBundle, atArrangedObjectIndex: index)
         }
@@ -175,7 +175,7 @@ class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource
         }
 
         let updatedBundle = FloatingBundle(id: id, windowTitles: windowTitles + [title])
-        floatingBundles.index { $0.id == id }.flatMap { index in
+        floatingBundles.firstIndex { $0.id == id }.flatMap { index in
             arrayController.remove(atArrangedObjectIndex: index)
             arrayController.insert(updatedBundle, atArrangedObjectIndex: index)
         }

@@ -253,7 +253,7 @@ class UserConfigurationTests: QuickSpec {
 
                 var registrar = TestHotKeyRegistrar()
 
-                expect() {
+                expect {
                     configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
                 }.toNot(throwError())
 
@@ -265,7 +265,7 @@ class UserConfigurationTests: QuickSpec {
 
                 registrar = TestHotKeyRegistrar()
 
-                expect() {
+                expect {
                     configuration.constructCommand(for: registrar, commandKey: "test", handler: {})
                 }.toNot(throwError())
             }

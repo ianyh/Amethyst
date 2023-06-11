@@ -12,6 +12,7 @@ import Silica
 extension WindowManager {
     class Windows {
         private(set) var windows: [Window] = []
+        private(set) var lastMainWindows: [CGSSpaceID: Window?] = [:]
         private var activeIDCache: Set<CGWindowID> = Set()
         private var deactivatedPIDs: Set<pid_t> = Set()
         private var floatingMap: [Window.WindowID: Bool] = [:]
@@ -57,11 +58,25 @@ extension WindowManager {
             return screenWindows
         }
 
+        func activeWindowOnCurrentScreen(atIndex: Int) -> Window? {
+            guard let focusedWindow = Window.currentlyFocused(),
+                  let currentScreen = focusedWindow.screen() else {
+                return nil
+            }
+            let activeWindows = activeWindows(onScreen: currentScreen)
+
+            return activeWindows.indices.contains(atIndex) ? activeWindows[atIndex] : nil
+        }
+
         // MARK: Adding and Removing
 
         func add(window: Window, atFront shouldInsertAtFront: Bool) {
-
             if shouldInsertAtFront {
+                if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+                   let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {
+                    lastMainWindows[currentFocusedSpace.id] = firstActiveWindow
+                }
+
                 windows.insert(window, at: 0)
             } else {
                 windows.append(window)
@@ -69,7 +84,14 @@ extension WindowManager {
         }
 
         func remove(window: Window) {
-            guard let windowIndex = windows.index(of: window) else {
+            for (_, lastMainWindow) in lastMainWindows where lastMainWindow == window {
+                if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() {
+                    let secondWindow = activeWindowOnCurrentScreen(atIndex: 1)
+                    lastMainWindows[currentFocusedSpace.id] = secondWindow
+                }
+            }
+
+            guard let windowIndex = windows.firstIndex(of: window) else {
                 return
             }
 
@@ -77,7 +99,14 @@ extension WindowManager {
         }
 
         @discardableResult func swap(window: Window, withWindow otherWindow: Window) -> Bool {
-            guard let windowIndex = windows.index(of: window), let otherWindowIndex = windows.index(of: otherWindow) else {
+            if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+               let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {
+                if firstActiveWindow == window || firstActiveWindow == otherWindow {
+                    lastMainWindows[currentFocusedSpace.id] = firstActiveWindow
+                }
+            }
+
+            guard let windowIndex = windows.firstIndex(of: window), let otherWindowIndex = windows.firstIndex(of: otherWindow) else {
                 return false
             }
 

@@ -6,7 +6,16 @@
 //  Copyright © 2020 Ian Ynda-Hummel. All rights reserved.
 //
 
+import ArgumentParser
 import Cocoa
+
+struct Debug: ParsableCommand {
+    static var configuration: CommandConfiguration = CommandConfiguration(
+        abstract: "Generate diagnostic reports on system state.",
+        subcommands: [Apps.self, Windows.self],
+        defaultSubcommand: Windows.self
+    )
+}
 
 struct DebugInfo {
     static func description(arguments: [String]) -> String {
@@ -44,7 +53,7 @@ struct DebugInfo {
 
     static func applications() -> String {
         return NSWorkspace.shared.runningApplications
-            .filter { $0.isManageable }
+            .filter { $0.isManageable == .manageable }
             .map { "\t\($0.localizedName ?? "<unknown name>") (\($0.bundleIdentifier ?? "<unknown bundle id>"))" }
             .joined(separator: "\n")
     }

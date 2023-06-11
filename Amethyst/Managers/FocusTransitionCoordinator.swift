@@ -16,7 +16,7 @@ enum FocusTransition<Window: WindowType> {
     case focusScreen(_ screen: Screen)
 }
 
-protocol FocusTransitionTarget: class {
+protocol FocusTransitionTarget: AnyObject {
     associatedtype Application: ApplicationType
     typealias Window = Application.Window
     typealias Screen = Window.Screen
@@ -63,10 +63,10 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
 
         let windowToFocus = { () -> Window in
             if let nextWindowID = self.target?.nextWindowIDCounterClockwise(on: screen) {
-                let windowToFocusIndex = windows.index { $0.id() == nextWindowID } ?? 0
+                let windowToFocusIndex = windows.firstIndex { $0.id() == nextWindowID } ?? 0
                 return windows[windowToFocusIndex]
             } else {
-                let windowIndex = windows.index(of: focusedWindow) ?? 0
+                let windowIndex = windows.firstIndex(of: focusedWindow) ?? 0
                 let windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1)
                 return windows[windowToFocusIndex]
             }
@@ -91,10 +91,10 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
 
         let windowToFocus = { () -> Window in
             if let nextWindowID = target?.nextWindowIDClockwise(on: screen) {
-                let windowToFocusIndex = windows.index { $0.id() == nextWindowID } ?? 0
+                let windowToFocusIndex = windows.firstIndex { $0.id() == nextWindowID } ?? 0
                 return windows[windowToFocusIndex]
             } else {
-                let windowIndex = windows.index(of: focusedWindow) ?? windows.count - 1
+                let windowIndex = windows.firstIndex(of: focusedWindow) ?? windows.count - 1
                 let windowToFocusIndex = (windowIndex + 1) % windows.count
                 return windows[windowToFocusIndex]
             }
@@ -117,7 +117,11 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
             return
         }
 
-        windows[0].focus()
+        if focusedWindow.id() == windows[0].id() {
+            (target?.lastFocusedWindow(on: screen) ?? windows[0]).focus()
+        } else {
+            windows[0].focus()
+        }
     }
 
     func focusScreen(at screenIndex: Int) {

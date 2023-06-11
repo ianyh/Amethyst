@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -57,6 +57,7 @@
 		404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */; };
 		40578C19232D9CC0006553A0 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40578C18232D9CC0006553A0 /* Screen.swift */; };
 		40578C1B232DC607006553A0 /* TestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40578C1A232DC607006553A0 /* TestScreen.swift */; };
+		40583E1329AEF70B008602BB /* ApplicationEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */; };
 		4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */; };
 		4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */; };
 		4058C47E1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */; };
@@ -89,16 +90,19 @@
 		40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */; };
 		40B0D14B232D944C0021E0A7 /* TestWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B0D14A232D944C0021E0A7 /* TestWindow.swift */; };
 		40B3927C1814967F009A296B /* LayoutNameWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40B3927B1814967F009A296B /* LayoutNameWindow.xib */; };
-		40B42F3025315F410000380A /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40B42F2425315D590000380A /* Sparkle.framework */; };
-		40B42F3125315F410000380A /* Sparkle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 40B42F2425315D590000380A /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C1357B1F202AEE00FF9FA7 /* PreferencesWindow.swift */; };
 		40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91A1BD1B22E00F58660 /* Security.framework */; };
 		40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */; };
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
+		40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 40CF37BF29B440A100CDB07A /* ArgumentParser */; };
+		40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C129B58C7400CDB07A /* WindowsInfo.swift */; };
+		40CF37C429BAC18300CDB07A /* ScreensInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C329BAC18300CDB07A /* ScreensInfo.swift */; };
+		40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C529BACD1800CDB07A /* AppsInfo.swift */; };
 		40D491D823367590007E0CCB /* RowLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491D723367590007E0CCB /* RowLayoutTests.swift */; };
 		40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */; };
+		40D82FF129739C5300F3C18B /* extended.js in Resources */ = {isa = PBXBuildFile; fileRef = 40D82FF029739C5300F3C18B /* extended.js */; };
 		40DA8B6E27D5AA7300C291AF /* subset.js in Resources */ = {isa = PBXBuildFile; fileRef = 40DA8B6D27D5AA7300C291AF /* subset.js */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
@@ -127,7 +131,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				40B42F3125315F410000380A /* Sparkle.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -192,6 +195,7 @@
 		404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayoutTests.swift; sourceTree = "<group>"; };
 		40578C18232D9CC0006553A0 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		40578C1A232DC607006553A0 /* TestScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScreen.swift; sourceTree = "<group>"; };
+		40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationEventHandler.swift; sourceTree = "<group>"; };
 		4058C46E1C4B119500B19D26 /* LayoutNameWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutNameWindowController.swift; sourceTree = "<group>"; };
 		4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralPreferencesViewController.xib; sourceTree = "<group>"; };
 		4058C47D1C54119B00B19D26 /* ShortcutsPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShortcutsPreferencesViewController.xib; sourceTree = "<group>"; };
@@ -225,15 +229,18 @@
 		40B0D144232D2E630021E0A7 /* FullscreenLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenLayoutTests.swift; sourceTree = "<group>"; };
 		40B0D14A232D944C0021E0A7 /* TestWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWindow.swift; sourceTree = "<group>"; };
 		40B3927B1814967F009A296B /* LayoutNameWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LayoutNameWindow.xib; sourceTree = "<group>"; };
-		40B42F2425315D590000380A /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		40C1357B1F202AEE00FF9FA7 /* PreferencesWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesWindow.swift; sourceTree = "<group>"; };
 		40C3F91A1BD1B22E00F58660 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; usesTabs = 0; };
+		40CF37C129B58C7400CDB07A /* WindowsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsInfo.swift; sourceTree = "<group>"; };
+		40CF37C329BAC18300CDB07A /* ScreensInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreensInfo.swift; sourceTree = "<group>"; };
+		40CF37C529BACD1800CDB07A /* AppsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsInfo.swift; sourceTree = "<group>"; };
 		40D491D723367590007E0CCB /* RowLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowLayoutTests.swift; sourceTree = "<group>"; };
 		40D491DA23367630007E0CCB /* FrameAssignmentVerification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameAssignmentVerification.swift; sourceTree = "<group>"; };
+		40D82FF029739C5300F3C18B /* extended.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = extended.js; sourceTree = "<group>"; };
 		40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AmethystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		40D95B4B1C6E2ED800AAF433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		40DA8B6D27D5AA7300C291AF /* subset.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = subset.js; sourceTree = "<group>"; };
@@ -262,8 +269,8 @@
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
+				40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */,
 				ED989E6BAE0E8D035277478A /* Pods_Amethyst.framework in Frameworks */,
-				40B42F3025315F410000380A /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +388,6 @@
 			children = (
 				40C3F9241BD1B36C00F58660 /* libz.tbd */,
 				40C3F9221BD1B35E00F58660 /* libc++.tbd */,
-				40B42F2425315D590000380A /* Sparkle.framework */,
 				40C3F91A1BD1B22E00F58660 /* Security.framework */,
 				40C3F91B1BD1B22E00F58660 /* SystemConfiguration.framework */,
 				402DB6FE1742E44E00D1C936 /* Carbon.framework */,
@@ -438,6 +444,7 @@
 		404541722697C16B00861BE8 /* CustomLayouts */ = {
 			isa = PBXGroup;
 			children = (
+				40D82FF029739C5300F3C18B /* extended.js */,
 				40DA8B6D27D5AA7300C291AF /* subset.js */,
 				404541772697CDD000861BE8 /* fullscreen.js */,
 				404541732697C22A00861BE8 /* null.js */,
@@ -461,6 +468,7 @@
 				400A5E9C2327350C00F0A2C3 /* Space.swift */,
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
+				40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -497,6 +505,9 @@
 			isa = PBXGroup;
 			children = (
 				40A87FFC2404B1B4005EE9C6 /* DebugInfo.swift */,
+				40CF37C129B58C7400CDB07A /* WindowsInfo.swift */,
+				40CF37C329BAC18300CDB07A /* ScreensInfo.swift */,
+				40CF37C529BACD1800CDB07A /* AppsInfo.swift */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -604,6 +615,9 @@
 			dependencies = (
 			);
 			name = Amethyst;
+			packageProductDependencies = (
+				40CF37BF29B440A100CDB07A /* ArgumentParser */,
+			);
 			productName = Amethyst;
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
 			productType = "com.apple.product-type.application";
@@ -661,6 +675,9 @@
 				Base,
 			);
 			mainGroup = 402DB6D51742E41A00D1C936;
+			packageReferences = (
+				40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+			);
 			productRefGroup = 402DB6DF1742E41A00D1C936 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -700,6 +717,7 @@
 				4045417A2697EBC500861BE8 /* undefined.js in Resources */,
 				4045417C2697EE7800861BE8 /* uniform-columns.js in Resources */,
 				40DA8B6E27D5AA7300C291AF /* subset.js in Resources */,
+				40D82FF129739C5300F3C18B /* extended.js in Resources */,
 				404541782697CDD000861BE8 /* fullscreen.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -729,6 +747,7 @@
 		};
 		4058C4701C4C4F9E00B19D26 /* Lint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -739,7 +758,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n${PODS_ROOT}/SwiftLint/swiftlint\n";
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint --fix\n${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		53A3AB24B83E8DB235FDD910 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -800,6 +819,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwiftExt/RxSwiftExt.framework",
 				"${BUILT_PRODUCTS_DIR}/Silica/Silica.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Yams/Yams.framework",
@@ -814,6 +834,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwiftExt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Silica.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Yams.framework",
@@ -830,6 +851,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */,
 				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
 				40A88003240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift in Sources */,
 				4046EFD12238949900113067 /* Application.swift in Sources */,
@@ -854,6 +876,7 @@
 				40637073224EF9B20081299D /* Change.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
+				40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */,
 				40A87FFD2404B1B4005EE9C6 /* DebugInfo.swift in Sources */,
 				4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */,
 				40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */,
@@ -864,6 +887,7 @@
 				401BC8B61CE9259000F89B3F /* LayoutType.swift in Sources */,
 				401C35B12244626E0019ED07 /* ApplicationObservation.swift in Sources */,
 				401C35B7224831470019ED07 /* FocusTransitionCoordinator.swift in Sources */,
+				40CF37C429BAC18300CDB07A /* ScreensInfo.swift in Sources */,
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
@@ -874,6 +898,7 @@
 				400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */,
 				401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */,
 				40C1357C1F202AEE00FF9FA7 /* PreferencesWindow.swift in Sources */,
+				40583E1329AEF70B008602BB /* ApplicationEventHandler.swift in Sources */,
 				4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */,
 				40A87FFF240AF2BC005EE9C6 /* MousePreferencesViewController.swift in Sources */,
 				40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */,
@@ -999,9 +1024,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1046,9 +1072,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1062,7 +1090,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 94;
+				CURRENT_PROJECT_VERSION = 103;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1074,15 +1102,18 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = 0.16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 0.19.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"DEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1097,7 +1128,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 94;
+				CURRENT_PROJECT_VERSION = 103;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 82P2XLB4UH;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1109,15 +1140,18 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Amethyst/Amethyst-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MARKETING_VERSION = 0.16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MARKETING_VERSION = 0.19.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"RELEASE\"";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Amethyst/Amethyst-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1143,13 +1177,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AmethystTests/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
 			};
 			name = Debug;
@@ -1176,12 +1210,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AmethystTests/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AmethystTests/AmethystTests-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Amethyst.app/Contents/MacOS/Amethyst";
 			};
 			name = Release;
@@ -1217,6 +1251,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		40CF37BF29B440A100CDB07A /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 402DB6D61742E41A00D1C936 /* Project object */;
 }

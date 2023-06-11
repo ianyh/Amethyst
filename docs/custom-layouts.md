@@ -31,13 +31,18 @@ The `updateState` function takes two arguments—`state` and `focusedWindowID`�
 * `state`: the current layout state
 * `focusedWindowID`: the currently focused window
 
+#### `extends`
+
+The key for a layout that the custom layout extends. Each call to `getFrameAssignments` will include the frames determined by the extended layout for reference. There are some limitations to this extension—you cannot affect the state of the extended layout, for example—but this is useful for small modifications to existing native layout algorithms.
+
 #### `getFrameAssignments`
 
-A function that takes three arguments—`windows`, `screenFrame`, and `state`—and returns a mapping of window ids to window frames.
+A function that takes four arguments—`windows`, `screenFrame`, `state`, and `extendedFrames`—and returns a mapping of window ids to window frames.
 
 * `windows`: the list of active windows on the screen
 * `screenFrame`: the frame of the screen containing the layout
 * `state`: the current layout state
+* `extendedFrames`: the frames that are inherited from the extended layout if any is defined
 
 The return should be an object with _new_ frames keyed by the window id.
 

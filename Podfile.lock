@@ -1,39 +1,41 @@
 PODS:
   - Cartography (4.0.0)
-  - LoginServiceKit (2.2.1)
+  - LoginServiceKit (2.4.0)
   - MASShortcut (2.4.0)
-  - Nimble (9.0.1)
-  - Quick (4.0.0)
-  - RxCocoa (5.1.1):
-    - RxRelay (~> 5)
-    - RxSwift (~> 5)
-  - RxRelay (5.1.1):
-    - RxSwift (~> 5)
-  - RxSwift (5.1.1)
-  - RxSwiftExt (5.2.0):
-    - RxSwiftExt/Core (= 5.2.0)
-    - RxSwiftExt/RxCocoa (= 5.2.0)
-  - RxSwiftExt/Core (5.2.0):
-    - RxSwift (~> 5.0)
-  - RxSwiftExt/RxCocoa (5.2.0):
-    - RxCocoa (~> 5.0)
+  - Nimble (11.2.1)
+  - Quick (6.1.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
+  - RxSwiftExt (6.0.1):
+    - RxSwiftExt/Core (= 6.0.1)
+    - RxSwiftExt/RxCocoa (= 6.0.1)
+  - RxSwiftExt/Core (6.0.1):
+    - RxSwift (~> 6.0)
+  - RxSwiftExt/RxCocoa (6.0.1):
+    - RxCocoa (~> 6.0)
     - RxSwiftExt/Core
-  - Silica (0.3.5)
-  - SwiftLint (0.38.2)
-  - SwiftyBeaver (1.8.4)
-  - SwiftyJSON (5.0.0)
-  - Yams (5.0.0)
+  - Silica (0.3.7)
+  - Sparkle (2.4.0)
+  - SwiftLint (0.51.0)
+  - SwiftyBeaver (1.9.5)
+  - SwiftyJSON (5.0.1)
+  - Yams (5.0.5)
 
 DEPENDENCIES:
   - Cartography
-  - LoginServiceKit (from `https://github.com/Sunnyyoung/LoginServiceKit.git`)
+  - LoginServiceKit
   - MASShortcut
-  - Nimble (~> 9.0.1)
-  - Quick (~> 4.0.0)
+  - Nimble (~> 11.2.1)
+  - Quick (~> 6.1.0)
   - RxCocoa
   - RxSwift
   - RxSwiftExt
   - Silica (from `https://github.com/ianyh/Silica`)
+  - Sparkle
   - SwiftLint
   - SwiftyBeaver
   - SwiftyJSON
@@ -42,6 +44,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Cartography
+    - LoginServiceKit
     - MASShortcut
     - Nimble
     - Quick
@@ -49,43 +52,40 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - RxSwiftExt
+    - Sparkle
     - SwiftLint
     - SwiftyBeaver
     - SwiftyJSON
     - Yams
 
 EXTERNAL SOURCES:
-  LoginServiceKit:
-    :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
 CHECKOUT OPTIONS:
-  LoginServiceKit:
-    :commit: 04a1379908432bc4e304b38c831d573b1943b3fa
-    :git: https://github.com/Sunnyyoung/LoginServiceKit.git
   Silica:
-    :commit: 28978736c3c084cdec40f6c6ac0a1dcd94f24c7b
+    :commit: f04e9afb77d5593e0f7b346ccf040d0bb3c2ff7c
     :git: https://github.com/ianyh/Silica
     :submodules: true
 
 SPEC CHECKSUMS:
   Cartography: c5626d29056b20f1e95c017326ee4df57cc39ad8
-  LoginServiceKit: e39022a6ea6169b3716fc3c43e89b2e7fd12f222
+  LoginServiceKit: f1fcedb23076c3a0384f0c7c06978bc49459a1be
   MASShortcut: d9e4909e878661cc42877cc9d6efbe638273ab57
-  Nimble: 7bed62ffabd6dbfe05f5925cbc43722533248990
-  Quick: 6473349e43b9271a8d43839d9ba1c442ed1b7ac4
-  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
-  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
-  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
-  RxSwiftExt: 4ca80336f43c28f11a2825cdd2fc61dd6c044697
-  Silica: a51f6b113d761ff7be08c91f51ed0dc6b0179b9e
-  SwiftLint: 8f5d2f903e1c9bcbc832fd16771e80a263ac6cbb
-  SwiftyBeaver: f9a9aba96a6a6166e21682377804d728b0d20b95
-  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
-  Yams: b5c3e188ceeb8321a9830b1d0e791ccea9af3201
+  Nimble: 516ac503a0fafaa8e41dbb4a70a61be421fa893a
+  Quick: 6676ffb409bf04abba2ff23902af2407bfc6ac90
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
+  RxSwiftExt: d61c4b9b06e0a448041b1c659e0f1b5c5a035afc
+  Silica: e70998fbfa22068602e8ebde94808603dc34ed0d
+  Sparkle: 529aaf23a0dbc6b3e9e2e364c2bd996def4c91f0
+  SwiftLint: 1b7561918a19e23bfed960e40759086e70f4dba5
+  SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
+  SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
+  Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: 063c8d2fa19c8dccb26b3a49afbb4c80ff987096
+PODFILE CHECKSUM: 7f3c6d976af94958786a21fa983f23ac6d6a2228
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.12.0

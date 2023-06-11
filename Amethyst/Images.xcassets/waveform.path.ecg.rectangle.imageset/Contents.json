@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "waveform.path.ecg.rectangle.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

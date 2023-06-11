@@ -24,7 +24,7 @@ Amethyst is available for direct download on the [releases page](https://github.
 brew install --cask amethyst
 ```
 
-Note: that Amethyst now is only supported on macOS 10.12+.
+Note: that Amethyst now is only supported on macOS 10.15+.
 
 Using Amethyst
 ==============
@@ -39,15 +39,24 @@ Amethyst must be given permissions to use the accessibility APIs under the Priva
   <img style="text-align: center" width="500px" src="https://user-images.githubusercontent.com/11782590/127423014-1faa4a7f-9225-42ea-b400-56b994e2796f.png" />
 </p>
 
+Troubleshooting
+===============
+
+See [Troubleshooting](docs/troubleshooting.md) for some common issues.
+
+# Configuration
+
 Keyboard Shortcuts
 ------------------
 
-Amethyst uses two modifier combinations.
+Amethyst uses two modifier combinations (`mod1` and `mod2`) and can optionally use another two (`mod3` and `mod4`).
 
 | Default Shortcut | Description |
 |---|---|
 | `mod1` | `option + shift` |
 | `mod2` | `ctrl + option + shift` |
+| `mod3` | not defined by default |
+| `mod4` | not defined by default |
 
 And defines the following commands, mostly a mapping to xmonad key combinations.
 
@@ -82,6 +91,8 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `mod2 + 8` | Throw focused window to space 8 |
 | `mod2 + 9` | Throw focused window to space 9 |
 | `mod2 + 0` | Throw focused window to space 10 |
+| `none`     | Throw focused window to space 11 |
+| `none`     | Throw focused window to space 12 |
 | `mod1 + w` | Focus Screen 1 |
 | `mod2 + w` | Throw focused window to screen 1 |
 | `mod1 + e` | Focus Screen 2 |
@@ -180,10 +191,16 @@ This layout does not have a main pane in the way that other layouts do. When add
 
 Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/custom-layouts.md).
 
-Configuration
+Configuration File
 -------------
 
 Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md).
+
+Contact
+=======
+
+If you have questions or feedback your best options are to [tweet](https://twitter.com/amethystwm) or to get on [gitter](https://gitter.im/ianyh/Amethyst).
+
 
 Contributing
 ============
@@ -193,11 +210,6 @@ If you'd like to contribute please branch off of the `development` branch and op
 ```bash
 $ ./bin/setup.sh
 ```
-
-Contact
-=======
-
-If you have questions or feedback your best options are to [tweet](https://twitter.com/amethystwm) or to get on [gitter](https://gitter.im/ianyh/Amethyst).
 
 Donating
 ========
@@ -219,4 +231,4 @@ And a bunch of technology-oriented ones:
 * [National Center for Women & Information Technology](https://ncwit.org/about-ncwit/donate/)
 * [girls who code](https://girlswhocode.com/get-involved/)
 * [Trans*H4CK](https://www.transhack.org/sponsorship/)
-* [Black Girls CODE](https://www.blackgirlscode.com/donate/)
+* [Black Girls CODE](https://wearebgc.org/donate/)

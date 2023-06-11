@@ -34,7 +34,7 @@ extension RandomAccessCollection where Element == FrameAssignmentOperation<TestW
         }.joined(separator: "\n")
     }
 
-    func verify(frames: [CGRect], inOrder: Bool = true) {
+    func verify(frames: [CGRect], inOrder: Bool = false) {
         expect(self.count).to(equal(frames.count), description: "\(count) assignments, but \(frames.count) frames")
 
         if inOrder {

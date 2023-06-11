@@ -66,6 +66,8 @@ enum ConfigurationKey: String {
     case commandKey = "key"
     case mod1 = "mod1"
     case mod2 = "mod2"
+    case mod3 = "mod3"
+    case mod4 = "mod4"
     case windowMargins = "window-margins"
     case smartWindowMargins = "smart-window-margins"
     case windowMarginSize = "window-margin-size"
@@ -92,6 +94,7 @@ enum ConfigurationKey: String {
     case screenPaddingBottom = "screen-padding-bottom"
     case debugLayoutInfo = "debug-layout-info"
     case restoreLayoutsOnLaunch = "restore-layouts-on-launch"
+    case disablePaddingOnBuiltinDisplay = "disable-padding-on-builtin-display"
 }
 
 extension ConfigurationKey: CaseIterable {}
@@ -209,6 +212,8 @@ class UserConfiguration: NSObject {
 
     var modifier1: AMModifierFlags?
     var modifier2: AMModifierFlags?
+    var modifier3: AMModifierFlags?
+    var modifier4: AMModifierFlags?
 
     init(storage: ConfigurationStorage) {
         self.storage = storage
@@ -224,7 +229,11 @@ class UserConfiguration: NSObject {
 
     private func configurationValue<T>(forKeyValue keyValue: String, fallbackToDefault: Bool = true) -> T? {
         if let yamlValue = configurationYAML?[keyValue] {
-            return yamlValue as? T
+            if yamlValue is NSNull {
+                return nil
+            } else {
+                return yamlValue as? T
+            }
         }
 
         if let jsonValue = configurationJSON?[keyValue], jsonValue.exists(), jsonValue.error == nil {
@@ -326,8 +335,15 @@ class UserConfiguration: NSObject {
         let defaultAmethystConfigPath = Bundle.main.path(forResource: "default", ofType: "amethyst")
 
         var isDirectory: ObjCBool = false
-        if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
-            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst.yml") : amethystYAMLConfigPath)
+        /**
+         Prioritiy order for config files:
+         1. yml in home dir
+         2. yml in xdg path
+         3. json in home dir
+         4. default json
+         */
+        if FileManager.default.fileExists(atPath: amethystYAMLConfigPath, isDirectory: &isDirectory) {
+            configurationYAML = yamlForConfig(at: amethystYAMLConfigPath)
 
             if configurationYAML == nil {
                 log.error("error loading configuration as yaml")
@@ -338,7 +354,18 @@ class UserConfiguration: NSObject {
                 alert.runModal()
             }
         } else if FileManager.default.fileExists(atPath: amethystXDGConfigPath, isDirectory: &isDirectory) {
-            configurationJSON = jsonForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst") : amethystJSONConfigPath)
+            configurationYAML = yamlForConfig(at: isDirectory.boolValue ? amethystXDGConfigPath.appending("/amethyst.yml") : amethystXDGConfigPath)
+
+            if configurationYAML == nil {
+                log.error("error loading configuration as yaml")
+
+                let alert = NSAlert()
+                alert.alertStyle = .critical
+                alert.messageText = "Error loading configuration"
+                alert.runModal()
+            }
+        } else if FileManager.default.fileExists(atPath: amethystJSONConfigPath, isDirectory: &isDirectory) {
+            configurationJSON = jsonForConfig(at: amethystJSONConfigPath)
 
             if configurationJSON == nil {
                 log.error("error loading configuration as json")
@@ -362,9 +389,19 @@ class UserConfiguration: NSObject {
 
         let mod1Strings: [String] = configurationValueForKey(.mod1)!
         let mod2Strings: [String] = configurationValueForKey(.mod2)!
+        let mod3Strings: [String]? = configurationValueForKey(.mod3)
+        let mod4Strings: [String]? = configurationValueForKey(.mod4)
 
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
+
+        if let mod3Strings = mod3Strings {
+            modifier3 = modifierFlagsForStrings(mod3Strings)
+        }
+
+        if let mod4Strings = mod4Strings {
+            modifier4 = modifierFlagsForStrings(mod4Strings)
+        }
     }
 
     static func constructLayoutKeyString(_ layoutKey: String) -> String {
@@ -379,7 +416,9 @@ class UserConfiguration: NSObject {
         } else {
             let mod1: [String]? = configurationValueForKey(.mod1, fallbackToDefault: false)
             let mod2: [String]? = configurationValueForKey(.mod2, fallbackToDefault: false)
-            if mod1 != nil || mod2 != nil {
+            let mod3: [String]? = configurationValueForKey(.mod3, fallbackToDefault: false)
+            let mod4: [String]? = configurationValueForKey(.mod4, fallbackToDefault: false)
+            if mod1 != nil || mod2 != nil || mod3 != nil || mod4 != nil {
                 override = true
             }
             command = defaultConfiguration?[commandKey].rawValue as? [String: String]
@@ -396,6 +435,10 @@ class UserConfiguration: NSObject {
                 commandFlags = modifier1
             case "mod2":
                 commandFlags = modifier2
+            case "mod3":
+                commandFlags = modifier3
+            case "mod4":
+                commandFlags = modifier4
             default:
                 log.warning("Unknown modifier string: \(modifierString)")
                 return
@@ -441,6 +484,10 @@ class UserConfiguration: NSObject {
             return modifier1!
         case "mod2":
             return modifier2!
+        case "mod3":
+            return modifier3!
+        case "mod4":
+            return modifier4!
         default:
             log.warning("Unknown modifier string: \(modifierString)")
             return modifier1!
@@ -508,13 +555,11 @@ class UserConfiguration: NSObject {
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
         let floatingBundles = self.floatingBundles()
 
+        let bundleIdentifier = runningApplication.bundleIdentifier ?? ""
+
         for floatingBundle in floatingBundles {
             if floatingBundle.id.contains("*") {
                 do {
-                    guard let bundleIdentifier = runningApplication.bundleIdentifier else {
-                        continue
-                    }
-
                     let pattern = floatingBundle.id
                         .replacingOccurrences(of: ".", with: "\\.")
                         .replacingOccurrences(of: "*", with: ".*")
@@ -635,6 +680,9 @@ class UserConfiguration: NSObject {
     }
 
     func floatingBundleIdentifiersIsBlacklist() -> Bool {
+        guard storage.object(forKey: .floatingBundleIdentifiersIsBlacklist) != nil else {
+            return true
+        }
         return storage.bool(forKey: .floatingBundleIdentifiersIsBlacklist)
     }
 
@@ -652,6 +700,10 @@ class UserConfiguration: NSObject {
 
     func sendNewWindowsToMainPane() -> Bool {
         return storage.bool(forKey: .newWindowsToMain)
+    }
+
+    func disablePaddingOnBuiltinDisplay() -> Bool {
+        return storage.bool(forKey: .disablePaddingOnBuiltinDisplay)
     }
 
     func followWindowsThrownBetweenSpaces() -> Bool {

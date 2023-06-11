@@ -418,6 +418,17 @@
                         <binding destination="XhK-Tn-zrU" name="value" keyPath="values.window-max-count" id="WIW-VS-GfJ"/>
                     </connections>
                 </textField>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IK4-QB-Sbo">
+                     <rect key="frame" x="192" y="93" width="280" height="18"/>
+                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                     <buttonCell key="cell" type="check" title="Disable screen padding on built-in display" bezelStyle="regularSquare" imagePosition="left" inset="2" id="9Vr-QQ-tmB">
+                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                         <font key="font" metaFont="system"/>
+                     </buttonCell>
+                     <connections>
+                         <binding destination="XhK-Tn-zrU" name="value" keyPath="values.disable-padding-on-builtin-display" id="LEd-HG-IyE"/>
+                     </connections>
+                 </button>
             </subviews>
             <point key="canvasLocation" x="561" y="253"/>
         </customView>
