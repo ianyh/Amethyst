@@ -328,6 +328,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         stringToKeyCodes["right"] = [kVK_RightArrow]
         stringToKeyCodes["down"] = [kVK_DownArrow]
         stringToKeyCodes["left"] = [kVK_LeftArrow]
+        stringToKeyCodes["delete"] = [kVK_Delete]
 
         return stringToKeyCodes
     }
