@@ -46,6 +46,7 @@ enum LayoutType<Window: WindowType> {
     case tallRight
     case wide
     case twoPane
+    case twoPaneRight
     case threeColumnLeft
     case threeColumnMiddle
     case threeColumnRight
@@ -67,6 +68,7 @@ enum LayoutType<Window: WindowType> {
             .tallRight,
             .wide,
             .twoPane,
+            .twoPaneRight,
             .threeColumnLeft,
             .threeColumnMiddle,
             .threeColumnRight,
@@ -92,6 +94,8 @@ enum LayoutType<Window: WindowType> {
             return "wide"
         case .twoPane:
             return "two-pane"
+        case .twoPaneRight:
+            return "two-pane-right"
         case .threeColumnLeft:
             return "3column-left"
         case .threeColumnMiddle:
@@ -131,6 +135,8 @@ enum LayoutType<Window: WindowType> {
             return WideLayout<Window>.self
         case .twoPane:
             return TwoPaneLayout<Window>.self
+        case .twoPaneRight:
+            return TwoPaneRightLayout<Window>.self
         case .threeColumnLeft:
             return ThreeColumnLeftLayout<Window>.self
         case .threeColumnMiddle:
@@ -170,6 +176,8 @@ enum LayoutType<Window: WindowType> {
             return .wide
         case "two-pane":
             return .twoPane
+        case "two-pane-right":
+            return .twoPaneRight
         case "3column-left":
             return .threeColumnLeft
         case "middle-wide":
