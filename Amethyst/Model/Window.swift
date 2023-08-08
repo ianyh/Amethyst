@@ -303,30 +303,19 @@ extension AXWindow: WindowType {
             return false
         }
 
-        var bytes1 = [UInt8](repeating: 0, count: 0xf8)
-        bytes1[0x04] = 0xF8
-        bytes1[0x08] = 0x01
-        bytes1[0x3a] = 0x10
-        memcpy(&bytes1[0x3c], &wid, MemoryLayout<UInt32>.size)
-        memset(&bytes1[0x20], 0xFF, 0x10)
-        cgStatus = bytes1.withUnsafeMutableBufferPointer { pointer in
-            return SLPSPostEventRecordTo(&psn, &pointer.baseAddress!.pointee)
-        }
-        guard cgStatus == .success else {
-            return false
-        }
-
-        var bytes2 = [UInt8](repeating: 0, count: 0xf8)
-        bytes2[0x04] = 0xF8
-        bytes2[0x08] = 0x02
-        bytes2[0x3a] = 0x10
-        memcpy(&bytes2[0x3c], &wid, MemoryLayout<UInt32>.size)
-        memset(&bytes2[0x20], 0xFF, 0x10)
-        cgStatus = bytes2.withUnsafeMutableBufferPointer { pointer in
-            return SLPSPostEventRecordTo(&psn, &pointer.baseAddress!.pointee)
-        }
-        guard cgStatus == .success else {
-            return false
+        for byte in [0x01, 0x02] {
+            var bytes = [UInt8](repeating: 0, count: 0xf8)
+            bytes[0x04] = 0xF8
+            bytes[0x08] = UInt8(byte)
+            bytes[0x3a] = 0x10
+            memcpy(&bytes[0x3c], &wid, MemoryLayout<UInt32>.size)
+            memset(&bytes[0x20], 0xFF, 0x10)
+            cgStatus = bytes.withUnsafeMutableBufferPointer { pointer in
+                return SLPSPostEventRecordTo(&psn, &pointer.baseAddress!.pointee)
+            }
+            guard cgStatus == .success else {
+                return false
+            }
         }
 
         guard super.focus() else {
