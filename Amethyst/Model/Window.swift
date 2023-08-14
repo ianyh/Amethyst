@@ -9,6 +9,19 @@
 import Foundation
 import Silica
 
+// swiftlint:disable identifier_name
+@_silgen_name("GetProcessForPID") @discardableResult
+func GetProcessForPID(_ pid: pid_t, _ psn: inout ProcessSerialNumber) -> OSStatus
+
+@_silgen_name("_SLPSSetFrontProcessWithOptions") @discardableResult
+func _SLPSSetFrontProcessWithOptions(_ psn: inout ProcessSerialNumber, _ wid: UInt32, _ mode: UInt32) -> CGError
+
+@_silgen_name("SLPSPostEventRecordTo") @discardableResult
+func SLPSPostEventRecordTo(_ psn: inout ProcessSerialNumber, _ bytes: inout UInt8) -> CGError
+
+let kCPSUserGenerated: UInt32 = 0x200
+// swiftlint:enable identifier_name
+
 /// Generic protocol for objects acting as windows in the system.
 protocol WindowType: Equatable {
     associatedtype Screen: ScreenType
@@ -270,8 +283,41 @@ extension AXWindow: WindowType {
      
      - Returns:
      `true` if the window was successfully focused, `false` otherwise.
+     
+     - Description:
+     What a mess. See: https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-545545468
      */
     @discardableResult override func focus() -> Bool {
+        var pid = self.pid()
+        var wid = self.cgID()
+        var psn = ProcessSerialNumber()
+        let status = GetProcessForPID(pid, &psn)
+
+        guard status == noErr else {
+            return false
+        }
+
+        var cgStatus = _SLPSSetFrontProcessWithOptions(&psn, wid, kCPSUserGenerated)
+
+        guard cgStatus == .success else {
+            return false
+        }
+
+        for byte in [0x01, 0x02] {
+            var bytes = [UInt8](repeating: 0, count: 0xf8)
+            bytes[0x04] = 0xF8
+            bytes[0x08] = UInt8(byte)
+            bytes[0x3a] = 0x10
+            memcpy(&bytes[0x3c], &wid, MemoryLayout<UInt32>.size)
+            memset(&bytes[0x20], 0xFF, 0x10)
+            cgStatus = bytes.withUnsafeMutableBufferPointer { pointer in
+                return SLPSPostEventRecordTo(&psn, &pointer.baseAddress!.pointee)
+            }
+            guard cgStatus == .success else {
+                return false
+            }
+        }
+
         guard super.focus() else {
             return false
         }
