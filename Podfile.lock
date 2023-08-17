@@ -20,10 +20,10 @@ PODS:
     - RxSwiftExt/Core
   - Silica (0.3.7)
   - Sparkle (2.4.2)
-  - SwiftLint (0.51.0)
+  - SwiftLint (0.52.4)
   - SwiftyBeaver (1.9.5)
   - SwiftyJSON (5.0.1)
-  - Yams (5.0.5)
+  - Yams (5.0.6)
 
 DEPENDENCIES:
   - Cartography
@@ -81,10 +81,10 @@ SPEC CHECKSUMS:
   RxSwiftExt: d61c4b9b06e0a448041b1c659e0f1b5c5a035afc
   Silica: e70998fbfa22068602e8ebde94808603dc34ed0d
   Sparkle: 5ef7097e655c60f4aeb23fd1658fc3e8dd50f4ec
-  SwiftLint: 1b7561918a19e23bfed960e40759086e70f4dba5
+  SwiftLint: 1cc5cd61ba9bacb2194e340aeb47a2a37fda00b3
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
-  Yams: 271b5757cee031e087ae6322128895c04826c4f3
+  Yams: e10dae147f517ed57ecae37c5e8681bdf8fcab65
 
 PODFILE CHECKSUM: e7a446e7b3ceed16b4b55f718810ae8d01c36a0d
 
