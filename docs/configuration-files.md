@@ -37,7 +37,7 @@ Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can b
 | `screen-padding-bottom` | Padding to apply between windows and the bottom edge of the screen (in px, default `0`).
 | `restore-layouts-on-launch` | `true` to maintain layout state across application executions (default `true`). |
 | `debug-layout-info` | `true` to display some optional debug information in the layout HUD (default `false`). |
-| `disable-screen-padding-on-inbuilt` |  `true` to disable screen padding on in-built display (default `false`). |
+| `disable-padding-on-builtin-display` |  `true` to disable screen padding on in-built display (default `false`). |
 
 ## Commands
 
