@@ -19,7 +19,7 @@ PODS:
     - RxCocoa (~> 6.0)
     - RxSwiftExt/Core
   - Silica (0.3.7)
-  - Sparkle (2.4.0)
+  - Sparkle (2.4.2)
   - SwiftLint (0.51.0)
   - SwiftyBeaver (1.9.5)
   - SwiftyJSON (5.0.1)
@@ -80,7 +80,7 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   RxSwiftExt: d61c4b9b06e0a448041b1c659e0f1b5c5a035afc
   Silica: e70998fbfa22068602e8ebde94808603dc34ed0d
-  Sparkle: 529aaf23a0dbc6b3e9e2e364c2bd996def4c91f0
+  Sparkle: 5ef7097e655c60f4aeb23fd1658fc3e8dd50f4ec
   SwiftLint: 1b7561918a19e23bfed960e40759086e70f4dba5
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
