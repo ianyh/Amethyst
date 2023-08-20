@@ -15,6 +15,11 @@
 		4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */; };
 		4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */; };
 		400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A5E9C2327350C00F0A2C3 /* Space.swift */; };
+		400D48F42A92AF1E0082750F /* Cartography in Frameworks */ = {isa = PBXBuildFile; productRef = 400D48F32A92AF1E0082750F /* Cartography */; };
+		400D48F72A92AF9B0082750F /* LoginServiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 400D48F62A92AF9B0082750F /* LoginServiceKit */; };
+		400D48FA2A92B0130082750F /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 400D48F92A92B0130082750F /* Sparkle */; };
+		400D48FD2A92B06B0082750F /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 400D48FC2A92B06B0082750F /* SwiftyJSON */; };
+		400D49002A92B0A00082750F /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 400D48FF2A92B0A00082750F /* Yams */; };
 		40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */; };
 		40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */; };
 		40111CCD22342CF3003D20BD /* DebugPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */; };
@@ -252,13 +257,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				400D48FD2A92B06B0082750F /* SwiftyJSON in Frameworks */,
 				40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */,
 				40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
+				400D49002A92B0A00082750F /* Yams in Frameworks */,
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
+				400D48F72A92AF9B0082750F /* LoginServiceKit in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
+				400D48F42A92AF1E0082750F /* Cartography in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
 				40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */,
+				400D48FA2A92B0130082750F /* Sparkle in Frameworks */,
 				ED989E6BAE0E8D035277478A /* Pods_Amethyst.framework in Frameworks */,
 				402F6FA62A81C9E30036B512 /* SkyLight.framework in Frameworks */,
 			);
@@ -607,6 +617,11 @@
 			name = Amethyst;
 			packageProductDependencies = (
 				40CF37BF29B440A100CDB07A /* ArgumentParser */,
+				400D48F32A92AF1E0082750F /* Cartography */,
+				400D48F62A92AF9B0082750F /* LoginServiceKit */,
+				400D48F92A92B0130082750F /* Sparkle */,
+				400D48FC2A92B06B0082750F /* SwiftyJSON */,
+				400D48FF2A92B0A00082750F /* Yams */,
 			);
 			productName = Amethyst;
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
@@ -666,7 +681,12 @@
 			);
 			mainGroup = 402DB6D51742E41A00D1C936;
 			packageReferences = (
-				40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser.git" */,
+				400D48F22A92AF1E0082750F /* XCRemoteSwiftPackageReference "Cartography" */,
+				400D48F52A92AF9B0082750F /* XCRemoteSwiftPackageReference "LoginServiceKit" */,
+				400D48F82A92B0130082750F /* XCRemoteSwiftPackageReference "Sparkle" */,
+				400D48FB2A92B06A0082750F /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				400D48FE2A92B0A00082750F /* XCRemoteSwiftPackageReference "Yams" */,
 			);
 			productRefGroup = 402DB6DF1742E41A00D1C936 /* Products */;
 			projectDirPath = "";
@@ -801,33 +821,23 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Amethyst/Pods-Amethyst-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Cartography/Cartography.framework",
-				"${BUILT_PRODUCTS_DIR}/LoginServiceKit/LoginServiceKit.framework",
 				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwiftExt/RxSwiftExt.framework",
 				"${BUILT_PRODUCTS_DIR}/Silica/Silica.framework",
-				"${PODS_ROOT}/Sparkle/Sparkle.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-				"${BUILT_PRODUCTS_DIR}/Yams/Yams.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Cartography.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LoginServiceKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwiftExt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Silica.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Yams.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1251,7 +1261,47 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+		400D48F22A92AF1E0082750F /* XCRemoteSwiftPackageReference "Cartography" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/robb/Cartography";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		400D48F52A92AF9B0082750F /* XCRemoteSwiftPackageReference "LoginServiceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Clipy/LoginServiceKit";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		400D48F82A92B0130082750F /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		400D48FB2A92B06A0082750F /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		400D48FE2A92B0A00082750F /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
 			requirement = {
@@ -1262,9 +1312,34 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		400D48F32A92AF1E0082750F /* Cartography */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 400D48F22A92AF1E0082750F /* XCRemoteSwiftPackageReference "Cartography" */;
+			productName = Cartography;
+		};
+		400D48F62A92AF9B0082750F /* LoginServiceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 400D48F52A92AF9B0082750F /* XCRemoteSwiftPackageReference "LoginServiceKit" */;
+			productName = LoginServiceKit;
+		};
+		400D48F92A92B0130082750F /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 400D48F82A92B0130082750F /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+		400D48FC2A92B06B0082750F /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 400D48FB2A92B06A0082750F /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		400D48FF2A92B0A00082750F /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 400D48FE2A92B0A00082750F /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
 		40CF37BF29B440A100CDB07A /* ArgumentParser */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			package = 40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser.git" */;
 			productName = ArgumentParser;
 		};
 /* End XCSwiftPackageProductDependency section */
