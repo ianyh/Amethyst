@@ -205,11 +205,7 @@ If you have questions or feedback your best options are to [tweet](https://twitt
 Contributing
 ============
 
-If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than `master`. Otherwise just try to stick to the general style of the code. There is a setup script to guide you through the process of installing necessary tools and getting dependencies built. To get started run
-
-```bash
-$ ./bin/setup.sh
-```
+If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than `master`. Otherwise just try to stick to the general style of the code.
 
 Donating
 ========
