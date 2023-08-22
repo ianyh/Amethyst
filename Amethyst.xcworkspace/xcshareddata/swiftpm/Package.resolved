@@ -10,12 +10,84 @@
       }
     },
     {
+      "identity" : "cwlcatchexception",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattgallagher/CwlCatchException.git",
+      "state" : {
+        "revision" : "3b123999de19bf04905bc1dfdb76f817b0f2cc00",
+        "version" : "2.1.2"
+      }
+    },
+    {
+      "identity" : "cwlpreconditiontesting",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattgallagher/CwlPreconditionTesting.git",
+      "state" : {
+        "revision" : "a23ded2c91df9156628a6996ab4f347526f17b6b",
+        "version" : "2.1.2"
+      }
+    },
+    {
       "identity" : "loginservicekit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Clipy/LoginServiceKit",
       "state" : {
         "branch" : "master",
         "revision" : "a8e68051aca8bbb702e62ab36006a301966ab053"
+      }
+    },
+    {
+      "identity" : "masshortcut",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/shpakovski/MASShortcut",
+      "state" : {
+        "branch" : "master",
+        "revision" : "6f2603c6b6cc18f64a799e5d2c9d3bbc467c413a"
+      }
+    },
+    {
+      "identity" : "nimble",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Quick/Nimble",
+      "state" : {
+        "revision" : "eb5e3d717224fa0d1f6aff3fc2c5e8e81fa1f728",
+        "version" : "11.2.2"
+      }
+    },
+    {
+      "identity" : "quick",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Quick/Quick",
+      "state" : {
+        "revision" : "16910e406be96e08923918315388c3e989deac9e",
+        "version" : "6.1.0"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift",
+      "state" : {
+        "revision" : "9dcaa4b333db437b0fbfaf453fad29069044a8b4",
+        "version" : "6.6.0"
+      }
+    },
+    {
+      "identity" : "rxswiftext",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/RxSwiftExt",
+      "state" : {
+        "revision" : "a42af9caeab63f2dbde318f1f3dc424f05871a37",
+        "version" : "6.1.0"
+      }
+    },
+    {
+      "identity" : "silica",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ianyh/silica",
+      "state" : {
+        "branch" : "master",
+        "revision" : "c439956df1f446e014a014e560a379c644dc1755"
       }
     },
     {
@@ -34,6 +106,15 @@
       "state" : {
         "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
         "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "swiftybeaver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyBeaver/SwiftyBeaver",
+      "state" : {
+        "revision" : "12b5acf96d98f91d50de447369bd18df74600f1a",
+        "version" : "1.9.6"
       }
     },
     {

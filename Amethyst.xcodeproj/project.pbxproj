@@ -47,6 +47,7 @@
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		402F6FA62A81C9E30036B512 /* SkyLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402F6FA52A81C9E30036B512 /* SkyLight.framework */; };
+		403D9EE72A94494700F278F2 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 403D9EE62A94494700F278F2 /* Silica */; };
 		403E1A2A2337173600DB7B2A /* FloatingLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */; };
 		403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */; };
 		4045416F268FFDA000861BE8 /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4045416E268FFDA000861BE8 /* CustomLayout.swift */; };
@@ -90,6 +91,14 @@
 		40AB5BE923AB0A2B00E29346 /* TallRightLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */; };
 		40AB5BEB23AB182300E29346 /* WidescreenTallLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB5BEA23AB182300E29346 /* WidescreenTallLayoutTests.swift */; };
 		40AB5BED23AC3CF800E29346 /* ThreeColumnLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */; };
+		40AE15E32A92E9AF00E14536 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15E22A92E9AF00E14536 /* SwiftyBeaver */; };
+		40AE15E62A92EA7500E14536 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15E52A92EA7500E14536 /* RxCocoa */; };
+		40AE15E82A92EA7500E14536 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15E72A92EA7500E14536 /* RxSwift */; };
+		40AE15EB2A92EAC400E14536 /* RxSwiftExt in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15EA2A92EAC400E14536 /* RxSwiftExt */; };
+		40AE15EE2A92EBD800E14536 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15ED2A92EBD800E14536 /* Quick */; };
+		40AE15F12A92EC5300E14536 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15F02A92EC5300E14536 /* Nimble */; };
+		40AE15F52A92EE8000E14536 /* MASShortcut in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15F42A92EE8000E14536 /* MASShortcut */; };
+		40AE16312A943EF900E14536 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40AE16302A943EF900E14536 /* CoreGraphics.framework */; };
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
 		40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */; };
 		40AF71DE20BB401400F58EA9 /* FloatingPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */; };
@@ -113,7 +122,6 @@
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
-		7D64A455AD3F8FCD86D30E19 /* Pods_AmethystTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A26EB687171B77B8239AF147 /* Pods_AmethystTests.framework */; };
 		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
 		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
 		ED989E6BAE0E8D035277478A /* Pods_Amethyst.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6611384054CC1D59E32FC049 /* Pods_Amethyst.framework */; };
@@ -217,6 +225,7 @@
 		40AB5BE823AB0A2B00E29346 /* TallRightLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallRightLayoutTests.swift; sourceTree = "<group>"; };
 		40AB5BEA23AB182300E29346 /* WidescreenTallLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayoutTests.swift; sourceTree = "<group>"; };
 		40AB5BEC23AC3CF800E29346 /* ThreeColumnLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayoutTests.swift; sourceTree = "<group>"; };
+		40AE16302A943EF900E14536 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		40AF71D920BB348300F58EA9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingPreferencesViewController.swift; sourceTree = "<group>"; };
 		40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingPreferencesViewController.xib; sourceTree = "<group>"; };
@@ -241,10 +250,7 @@
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
 		40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenManagerTests.swift; sourceTree = "<group>"; };
 		4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayout.swift; sourceTree = "<group>"; };
-		5DE30D362838843F0D5EBD1D /* Pods-AmethystTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.debug.xcconfig"; path = "Target Support Files/Pods-AmethystTests/Pods-AmethystTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6611384054CC1D59E32FC049 /* Pods_Amethyst.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Amethyst.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		95588BAE5271D12C97C4C8B9 /* Pods-AmethystTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmethystTests.release.xcconfig"; path = "Target Support Files/Pods-AmethystTests/Pods-AmethystTests.release.xcconfig"; sourceTree = "<group>"; };
-		A26EB687171B77B8239AF147 /* Pods_AmethystTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AmethystTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A47ECCB9422C789FE6A4C218 /* Pods-Amethyst.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.debug.xcconfig"; path = "Target Support Files/Pods-Amethyst/Pods-Amethyst.debug.xcconfig"; sourceTree = "<group>"; };
 		A6102745A914DC1AD00462D0 /* Pods-Amethyst.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amethyst.release.xcconfig"; path = "Target Support Files/Pods-Amethyst/Pods-Amethyst.release.xcconfig"; sourceTree = "<group>"; };
 		AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayout.swift; sourceTree = "<group>"; };
@@ -257,19 +263,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40AE15F52A92EE8000E14536 /* MASShortcut in Frameworks */,
 				400D48FD2A92B06B0082750F /* SwiftyJSON in Frameworks */,
 				40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */,
+				40AE16312A943EF900E14536 /* CoreGraphics.framework in Frameworks */,
+				40AE15E32A92E9AF00E14536 /* SwiftyBeaver in Frameworks */,
 				40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */,
 				402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */,
 				400D49002A92B0A00082750F /* Yams in Frameworks */,
+				40AE15E62A92EA7500E14536 /* RxCocoa in Frameworks */,
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
+				40AE15E82A92EA7500E14536 /* RxSwift in Frameworks */,
 				400D48F72A92AF9B0082750F /* LoginServiceKit in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				400D48F42A92AF1E0082750F /* Cartography in Frameworks */,
+				40AE15EB2A92EAC400E14536 /* RxSwiftExt in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
 				40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */,
 				400D48FA2A92B0130082750F /* Sparkle in Frameworks */,
 				ED989E6BAE0E8D035277478A /* Pods_Amethyst.framework in Frameworks */,
+				403D9EE72A94494700F278F2 /* Silica in Frameworks */,
 				402F6FA62A81C9E30036B512 /* SkyLight.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -278,7 +291,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7D64A455AD3F8FCD86D30E19 /* Pods_AmethystTests.framework in Frameworks */,
+				40AE15F12A92EC5300E14536 /* Nimble in Frameworks */,
+				40AE15EE2A92EBD800E14536 /* Quick in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +400,7 @@
 		402DB6E01742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40AE16302A943EF900E14536 /* CoreGraphics.framework */,
 				402F6FA52A81C9E30036B512 /* SkyLight.framework */,
 				40C3F9241BD1B36C00F58660 /* libz.tbd */,
 				40C3F9221BD1B35E00F58660 /* libc++.tbd */,
@@ -395,7 +410,6 @@
 				402DB6E11742E41A00D1C936 /* Cocoa.framework */,
 				402DB6E31742E41A00D1C936 /* Other Frameworks */,
 				6611384054CC1D59E32FC049 /* Pods_Amethyst.framework */,
-				A26EB687171B77B8239AF147 /* Pods_AmethystTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -590,8 +604,6 @@
 			children = (
 				A47ECCB9422C789FE6A4C218 /* Pods-Amethyst.debug.xcconfig */,
 				A6102745A914DC1AD00462D0 /* Pods-Amethyst.release.xcconfig */,
-				5DE30D362838843F0D5EBD1D /* Pods-AmethystTests.debug.xcconfig */,
-				95588BAE5271D12C97C4C8B9 /* Pods-AmethystTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -608,7 +620,6 @@
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
-				D47F3405558308F2EB634A66 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -622,6 +633,12 @@
 				400D48F92A92B0130082750F /* Sparkle */,
 				400D48FC2A92B06B0082750F /* SwiftyJSON */,
 				400D48FF2A92B0A00082750F /* Yams */,
+				40AE15E22A92E9AF00E14536 /* SwiftyBeaver */,
+				40AE15E52A92EA7500E14536 /* RxCocoa */,
+				40AE15E72A92EA7500E14536 /* RxSwift */,
+				40AE15EA2A92EAC400E14536 /* RxSwiftExt */,
+				40AE15F42A92EE8000E14536 /* MASShortcut */,
+				403D9EE62A94494700F278F2 /* Silica */,
 			);
 			productName = Amethyst;
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
@@ -631,11 +648,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 40D95B4E1C6E2ED800AAF433 /* Build configuration list for PBXNativeTarget "AmethystTests" */;
 			buildPhases = (
-				648F044A095EE8736EEA0D73 /* [CP] Check Pods Manifest.lock */,
 				40D95B431C6E2ED800AAF433 /* Sources */,
 				40D95B441C6E2ED800AAF433 /* Frameworks */,
 				40D95B451C6E2ED800AAF433 /* Resources */,
-				30A26A3F3AC4AE87BB204146 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -643,6 +658,10 @@
 				40D95B4D1C6E2ED800AAF433 /* PBXTargetDependency */,
 			);
 			name = AmethystTests;
+			packageProductDependencies = (
+				40AE15ED2A92EBD800E14536 /* Quick */,
+				40AE15F02A92EC5300E14536 /* Nimble */,
+			);
 			productName = AmethystTests;
 			productReference = 40D95B471C6E2ED800AAF433 /* AmethystTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -681,12 +700,19 @@
 			);
 			mainGroup = 402DB6D51742E41A00D1C936;
 			packageReferences = (
-				40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser.git" */,
+				40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
 				400D48F22A92AF1E0082750F /* XCRemoteSwiftPackageReference "Cartography" */,
 				400D48F52A92AF9B0082750F /* XCRemoteSwiftPackageReference "LoginServiceKit" */,
 				400D48F82A92B0130082750F /* XCRemoteSwiftPackageReference "Sparkle" */,
 				400D48FB2A92B06A0082750F /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				400D48FE2A92B0A00082750F /* XCRemoteSwiftPackageReference "Yams" */,
+				40AE15E12A92E9AF00E14536 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
+				40AE15E42A92EA7400E14536 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				40AE15E92A92EAC400E14536 /* XCRemoteSwiftPackageReference "RxSwiftExt" */,
+				40AE15EC2A92EBD800E14536 /* XCRemoteSwiftPackageReference "Quick" */,
+				40AE15EF2A92EC5300E14536 /* XCRemoteSwiftPackageReference "Nimble" */,
+				40AE15F32A92EE8000E14536 /* XCRemoteSwiftPackageReference "MASShortcut" */,
+				403D9EE52A94494700F278F2 /* XCRemoteSwiftPackageReference "silica" */,
 			);
 			productRefGroup = 402DB6DF1742E41A00D1C936 /* Products */;
 			projectDirPath = "";
@@ -735,26 +761,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		30A26A3F3AC4AE87BB204146 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
-				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quick.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AmethystTests/Pods-AmethystTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		4058C4701C4C4F9E00B19D26 /* Lint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -790,58 +796,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		648F044A095EE8736EEA0D73 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-AmethystTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D47F3405558308F2EB634A66 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Amethyst/Pods-Amethyst-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwiftExt/RxSwiftExt.framework",
-				"${BUILT_PRODUCTS_DIR}/Silica/Silica.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwiftExt.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Silica.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Amethyst/Pods-Amethyst-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -981,7 +935,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1008,7 +961,6 @@
 				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1036,7 +988,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1062,7 +1013,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
@@ -1166,7 +1116,6 @@
 		};
 		40D95B4F1C6E2ED800AAF433 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5DE30D362838843F0D5EBD1D /* Pods-AmethystTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1198,7 +1147,6 @@
 		};
 		40D95B501C6E2ED800AAF433 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 95588BAE5271D12C97C4C8B9 /* Pods-AmethystTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1301,7 +1249,63 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser.git" */ = {
+		403D9EE52A94494700F278F2 /* XCRemoteSwiftPackageReference "silica" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ianyh/silica";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		40AE15E12A92E9AF00E14536 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.5;
+			};
+		};
+		40AE15E42A92EA7400E14536 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		40AE15E92A92EAC400E14536 /* XCRemoteSwiftPackageReference "RxSwiftExt" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxSwiftExt";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		40AE15EC2A92EBD800E14536 /* XCRemoteSwiftPackageReference "Quick" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Quick";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.1.0;
+			};
+		};
+		40AE15EF2A92EC5300E14536 /* XCRemoteSwiftPackageReference "Nimble" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Quick/Nimble";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.2.1;
+			};
+		};
+		40AE15F32A92EE8000E14536 /* XCRemoteSwiftPackageReference "MASShortcut" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/shpakovski/MASShortcut";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
 			requirement = {
@@ -1337,9 +1341,49 @@
 			package = 400D48FE2A92B0A00082750F /* XCRemoteSwiftPackageReference "Yams" */;
 			productName = Yams;
 		};
+		403D9EE62A94494700F278F2 /* Silica */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 403D9EE52A94494700F278F2 /* XCRemoteSwiftPackageReference "silica" */;
+			productName = Silica;
+		};
+		40AE15E22A92E9AF00E14536 /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AE15E12A92E9AF00E14536 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
+		};
+		40AE15E52A92EA7500E14536 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AE15E42A92EA7400E14536 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		40AE15E72A92EA7500E14536 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AE15E42A92EA7400E14536 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		40AE15EA2A92EAC400E14536 /* RxSwiftExt */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AE15E92A92EAC400E14536 /* XCRemoteSwiftPackageReference "RxSwiftExt" */;
+			productName = RxSwiftExt;
+		};
+		40AE15ED2A92EBD800E14536 /* Quick */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AE15EC2A92EBD800E14536 /* XCRemoteSwiftPackageReference "Quick" */;
+			productName = Quick;
+		};
+		40AE15F02A92EC5300E14536 /* Nimble */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AE15EF2A92EC5300E14536 /* XCRemoteSwiftPackageReference "Nimble" */;
+			productName = Nimble;
+		};
+		40AE15F42A92EE8000E14536 /* MASShortcut */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 40AE15F32A92EE8000E14536 /* XCRemoteSwiftPackageReference "MASShortcut" */;
+			productName = MASShortcut;
+		};
 		40CF37BF29B440A100CDB07A /* ArgumentParser */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser.git" */;
+			package = 40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -6,6 +6,7 @@
 //  Copyright © 2019 Ian Ynda-Hummel. All rights reserved.
 //
 
+import Cocoa
 import Foundation
 import RxSwift
 
