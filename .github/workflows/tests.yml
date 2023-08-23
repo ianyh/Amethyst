@@ -16,7 +16,6 @@ jobs:
       - name: Dependencies
         run: |
           bundle install
-          pod install
       - name: Test
         run: |
           set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | bundle exec xcpretty

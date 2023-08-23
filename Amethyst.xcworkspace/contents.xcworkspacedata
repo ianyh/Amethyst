@@ -5,9 +5,6 @@
       location = "group:Amethyst.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Amethyst.xctestplan">
    </FileRef>
 </Workspace>

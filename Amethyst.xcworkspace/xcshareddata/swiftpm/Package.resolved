@@ -1,12 +1,138 @@
 {
   "pins" : [
     {
+      "identity" : "cartography",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/robb/Cartography",
+      "state" : {
+        "revision" : "b75197ea134f42b5feafb04b526b37eb1a41034b",
+        "version" : "4.0.0"
+      }
+    },
+    {
+      "identity" : "cwlcatchexception",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattgallagher/CwlCatchException.git",
+      "state" : {
+        "revision" : "3b123999de19bf04905bc1dfdb76f817b0f2cc00",
+        "version" : "2.1.2"
+      }
+    },
+    {
+      "identity" : "cwlpreconditiontesting",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattgallagher/CwlPreconditionTesting.git",
+      "state" : {
+        "revision" : "a23ded2c91df9156628a6996ab4f347526f17b6b",
+        "version" : "2.1.2"
+      }
+    },
+    {
+      "identity" : "loginservicekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Clipy/LoginServiceKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "a8e68051aca8bbb702e62ab36006a301966ab053"
+      }
+    },
+    {
+      "identity" : "masshortcut",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/shpakovski/MASShortcut",
+      "state" : {
+        "branch" : "master",
+        "revision" : "6f2603c6b6cc18f64a799e5d2c9d3bbc467c413a"
+      }
+    },
+    {
+      "identity" : "nimble",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Quick/Nimble",
+      "state" : {
+        "revision" : "eb5e3d717224fa0d1f6aff3fc2c5e8e81fa1f728",
+        "version" : "11.2.2"
+      }
+    },
+    {
+      "identity" : "quick",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Quick/Quick",
+      "state" : {
+        "revision" : "16910e406be96e08923918315388c3e989deac9e",
+        "version" : "6.1.0"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift",
+      "state" : {
+        "revision" : "9dcaa4b333db437b0fbfaf453fad29069044a8b4",
+        "version" : "6.6.0"
+      }
+    },
+    {
+      "identity" : "rxswiftext",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/RxSwiftExt",
+      "state" : {
+        "revision" : "a42af9caeab63f2dbde318f1f3dc424f05871a37",
+        "version" : "6.1.0"
+      }
+    },
+    {
+      "identity" : "silica",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ianyh/silica",
+      "state" : {
+        "branch" : "master",
+        "revision" : "8bda2ed4aac62917c696282822e0de2341837d0a"
+      }
+    },
+    {
+      "identity" : "sparkle",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sparkle-project/Sparkle",
+      "state" : {
+        "revision" : "87e4fcbac39912f9cdb9a9acf205cad60e1ca3bc",
+        "version" : "2.4.2"
+      }
+    },
+    {
       "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
         "revision" : "fee6933f37fde9a5e12a1e4aeaa93fe60116ff2a",
         "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "swiftybeaver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyBeaver/SwiftyBeaver",
+      "state" : {
+        "revision" : "12b5acf96d98f91d50de447369bd18df74600f1a",
+        "version" : "1.9.6"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
+      "state" : {
+        "revision" : "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
+        "version" : "5.0.1"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams",
+      "state" : {
+        "revision" : "0d9ee7ea8c4ebd4a489ad7a73d5c6cad55d6fed3",
+        "version" : "5.0.6"
       }
     }
   ],

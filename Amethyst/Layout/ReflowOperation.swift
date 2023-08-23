@@ -65,12 +65,6 @@ struct LayoutWindow<Window: WindowType>: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.id == rhs.id
     }
-
-    init(id: Window.WindowID, frame: CGRect, isFocused: Bool) {
-        self.id = id
-        self.frame = frame
-        self.isFocused = isFocused
-    }
 }
 
 struct WindowSet<Window: WindowType> {

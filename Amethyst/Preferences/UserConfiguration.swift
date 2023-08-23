@@ -6,6 +6,7 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
+import Cocoa
 import Foundation
 import SwiftyJSON
 import Yams

@@ -7,6 +7,7 @@
 //
 
 @testable import Amethyst
+import Cocoa
 import Nimble
 import Quick
 import SwiftyJSON
