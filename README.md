@@ -36,7 +36,7 @@ Amethyst must be given permissions to use the accessibility APIs under the Priva
 **_Important note_**: You will probably want to disable `Automatically rearrange Spaces based on most recent use` (found under Mission Control in System Preferences). This setting is enabled by default, and will cause your Spaces to swap places based on use. This makes keyboard navigation between Spaces unpredictable.
 
 <p align="center">
-  <img style="text-align: center" width="500px" src="https://user-images.githubusercontent.com/11782590/127423014-1faa4a7f-9225-42ea-b400-56b994e2796f.png" />
+  <img style="text-align: center" width="500px" src="docs/images/auto-rearranage.png" />
 </p>
 
 Troubleshooting
