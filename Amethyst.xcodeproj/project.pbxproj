@@ -1017,7 +1017,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
 					"$(PROJECT_DIR)",
-					/System/Library/PrivateFrameworks,
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -1059,7 +1059,7 @@
 					"$(inherited)",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Amethyst-hayuzxrdmhaqmverzffhmryaexfi/Build/Products/Debug",
 					"$(PROJECT_DIR)",
-					/System/Library/PrivateFrameworks,
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
