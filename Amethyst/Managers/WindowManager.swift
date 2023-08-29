@@ -10,7 +10,6 @@ import AppKit
 import Carbon
 import Foundation
 import RxSwift
-import RxSwiftExt
 import Silica
 import SwiftyJSON
 

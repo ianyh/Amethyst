@@ -163,7 +163,15 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
      An observable that attemps to subscribe to events on the application. The observable completes when subscriptions have been put in place, and errors otherwise.
      */
     func addObservers() -> Observable<Void> {
-        return _addObservers().retry(.exponentialDelayed(maxCount: 4, initial: 0.1, multiplier: 2))
+        return _addObservers().retry { errorTrigger in
+            errorTrigger.enumerated().flatMap { count, error -> Observable<Int> in
+                guard count < 4 else {
+                    return .error(error)
+                }
+
+                return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+            }
+        }
     }
 
     private func _addObservers() -> Observable<Void> {
