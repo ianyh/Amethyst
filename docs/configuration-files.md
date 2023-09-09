@@ -1,6 +1,6 @@
 # Configuration Files
 
-Amethyst will pick up a config file located at `~/.amethyst.yml`. A sample can be found at [/.amethyst.sample.yml](../.amethyst.sample.yml)
+Amethyst will pick up a config file located at `~/.amethyst.yml` or `~/.config/amethyst/amethyst.yml` in this order. A sample can be found at [/.amethyst.sample.yml](../.amethyst.sample.yml)
 
 ## Configuration Keys
 
