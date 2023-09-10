@@ -7,18 +7,18 @@
 //
 
 import Cartography
+import Cocoa
 import Foundation
-import MASShortcut
+import KeyboardShortcuts
 
 class ShortcutsPreferencesListItemView: NSView {
     private(set) var nameLabel: NSTextField?
-    private(set) var shortcutView: MASShortcutView?
+    private(set) var shortcutView: KeyboardShortcuts.RecorderCocoa?
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
         let label = NSTextField()
-        let shortcutView = MASShortcutView(frame: NSRect(x: 0, y: 0, width: 120, height: 19))
 
         label.isBezeled = false
         label.isEditable = false
@@ -27,20 +27,13 @@ class ShortcutsPreferencesListItemView: NSView {
         label.sizeToFit()
 
         addSubview(label)
-        addSubview(shortcutView)
 
-        constrain(label, shortcutView, self) { label, shortcutView, view in
+        constrain(label, self) { label, view in
             label.centerY == view.centerY
             label.left == view.left + 8
-
-            shortcutView.centerY == view.centerY
-            shortcutView.right == view.right - 16
-            shortcutView.width == 120
-            shortcutView.height == 19
         }
 
         self.nameLabel = label
-        self.shortcutView = shortcutView
     }
 
     required init?(coder: NSCoder) {
@@ -48,6 +41,21 @@ class ShortcutsPreferencesListItemView: NSView {
     }
 
     deinit {
-        shortcutView?.associatedUserDefaultsKey = nil
+        shortcutView = nil
+    }
+
+    func setShortcutName(name: KeyboardShortcuts.Name) {
+        let shortcutView = KeyboardShortcuts.RecorderCocoa(for: name)
+
+        addSubview(shortcutView)
+
+        constrain(shortcutView, self) { shortcutView, view in
+            shortcutView.centerY == view.centerY
+            shortcutView.right == view.right - 16
+            shortcutView.width == 120
+            shortcutView.height == 19
+        }
+
+        self.shortcutView = shortcutView
     }
 }
