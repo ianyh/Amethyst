@@ -13,7 +13,6 @@ import KeyboardShortcuts
 
 class ShortcutsPreferencesListItemView: NSView {
     private(set) var nameLabel: NSTextField?
-    private(set) var shortcutView: KeyboardShortcuts.RecorderCocoa?
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -40,10 +39,6 @@ class ShortcutsPreferencesListItemView: NSView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    deinit {
-        shortcutView = nil
-    }
-
     func setShortcutName(name: KeyboardShortcuts.Name) {
         let shortcutView = KeyboardShortcuts.RecorderCocoa(for: name)
 
@@ -53,7 +48,5 @@ class ShortcutsPreferencesListItemView: NSView {
             shortcutView.centerY == view.centerY
             shortcutView.right == view.right - 16
         }
-
-        self.shortcutView = shortcutView
     }
 }
