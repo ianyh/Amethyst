@@ -6,8 +6,8 @@
 //  Copyright © 2016 Ian Ynda-Hummel. All rights reserved.
 //
 
+import Carbon
 import Foundation
-import MASShortcut
 import Silica
 
 // Type for defining key code.
@@ -33,7 +33,6 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         self.userConfiguration = userConfiguration
         super.init()
         _ = constructKeyCodeMap()
-        MASShortcutValidator.shared().allowAnyShortcutWithOptionModifier = true
     }
 
     private static func keyCodeForNumber(_ number: NSNumber) -> AMKeyCode {
