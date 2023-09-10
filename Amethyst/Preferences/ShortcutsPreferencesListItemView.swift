@@ -52,8 +52,6 @@ class ShortcutsPreferencesListItemView: NSView {
         constrain(shortcutView, self) { shortcutView, view in
             shortcutView.centerY == view.centerY
             shortcutView.right == view.right - 16
-            shortcutView.width == 120
-            shortcutView.height == 19
         }
 
         self.shortcutView = shortcutView
