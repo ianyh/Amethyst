@@ -46,15 +46,6 @@
       }
     },
     {
-      "identity" : "masshortcut",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/shpakovski/MASShortcut",
-      "state" : {
-        "branch" : "master",
-        "revision" : "6f2603c6b6cc18f64a799e5d2c9d3bbc467c413a"
-      }
-    },
-    {
       "identity" : "nimble",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Quick/Nimble",

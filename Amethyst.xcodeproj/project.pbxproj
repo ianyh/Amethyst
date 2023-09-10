@@ -97,7 +97,6 @@
 		40AE15E82A92EA7500E14536 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15E72A92EA7500E14536 /* RxSwift */; };
 		40AE15EE2A92EBD800E14536 /* Quick in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15ED2A92EBD800E14536 /* Quick */; };
 		40AE15F12A92EC5300E14536 /* Nimble in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15F02A92EC5300E14536 /* Nimble */; };
-		40AE15F52A92EE8000E14536 /* MASShortcut in Frameworks */ = {isa = PBXBuildFile; productRef = 40AE15F42A92EE8000E14536 /* MASShortcut */; };
 		40AE16312A943EF900E14536 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40AE16302A943EF900E14536 /* CoreGraphics.framework */; };
 		40AF71DA20BB348300F58EA9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40AF71D920BB348300F58EA9 /* Images.xcassets */; };
 		40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AF71DB20BB401400F58EA9 /* FloatingPreferencesViewController.swift */; };
@@ -259,7 +258,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40AE15F52A92EE8000E14536 /* MASShortcut in Frameworks */,
 				400D48FD2A92B06B0082750F /* SwiftyJSON in Frameworks */,
 				40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */,
 				40AE16312A943EF900E14536 /* CoreGraphics.framework in Frameworks */,
@@ -619,7 +617,6 @@
 				40AE15E22A92E9AF00E14536 /* SwiftyBeaver */,
 				40AE15E52A92EA7500E14536 /* RxCocoa */,
 				40AE15E72A92EA7500E14536 /* RxSwift */,
-				40AE15F42A92EE8000E14536 /* MASShortcut */,
 				403D9EE62A94494700F278F2 /* Silica */,
 				400F2DF22AABF4FC00C1AAE2 /* KeyboardShortcuts */,
 			);
@@ -694,7 +691,6 @@
 				40AE15E42A92EA7400E14536 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				40AE15EC2A92EBD800E14536 /* XCRemoteSwiftPackageReference "Quick" */,
 				40AE15EF2A92EC5300E14536 /* XCRemoteSwiftPackageReference "Nimble" */,
-				40AE15F32A92EE8000E14536 /* XCRemoteSwiftPackageReference "MASShortcut" */,
 				403D9EE52A94494700F278F2 /* XCRemoteSwiftPackageReference "silica" */,
 				400F2DF12AABF4FC00C1AAE2 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 			);
@@ -1271,14 +1267,6 @@
 				minimumVersion = 11.2.1;
 			};
 		};
-		40AE15F32A92EE8000E14536 /* XCRemoteSwiftPackageReference "MASShortcut" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/shpakovski/MASShortcut";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		40CF37BE29B440A100CDB07A /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
@@ -1349,11 +1337,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 40AE15EF2A92EC5300E14536 /* XCRemoteSwiftPackageReference "Nimble" */;
 			productName = Nimble;
-		};
-		40AE15F42A92EE8000E14536 /* MASShortcut */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 40AE15F32A92EE8000E14536 /* XCRemoteSwiftPackageReference "MASShortcut" */;
-			productName = MASShortcut;
 		};
 		40CF37BF29B440A100CDB07A /* ArgumentParser */ = {
 			isa = XCSwiftPackageProductDependency;
