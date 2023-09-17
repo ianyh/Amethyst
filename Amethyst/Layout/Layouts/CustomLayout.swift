@@ -27,7 +27,7 @@ private enum LayoutExtension<Window: WindowType> {
     case layout(Layout<Window>)
 }
 
-class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
+class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
     typealias WindowID = Window.WindowID
 
     private enum CodingKeys: String, CodingKey {
@@ -48,6 +48,9 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
 
     private let key: String
     private let fileURL: URL
+
+    private(set) var mainPaneCount: Int = 1
+    private(set) var mainPaneRatio: CGFloat = 1.0
 
     private lazy var context: JSContext? = {
         guard let context = JSContext() else {
@@ -314,5 +317,63 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
         }
 
         return jsChange
+    }
+
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
+        switch layoutExtension {
+        case .layout(let layout):
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.recommendMainPaneRawRatio(rawRatio: rawRatio)
+                mainPaneRatio = panedLayout.mainPaneRatio
+            }
+        default:
+            mainPaneRatio = rawRatio
+        }
+    }
+
+    func increaseMainPaneCount() {
+        switch layoutExtension {
+        case .layout(let layout):
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.increaseMainPaneCount()
+                mainPaneCount = panedLayout.mainPaneCount
+            }
+        default:
+            mainPaneCount += 1
+        }
+    }
+
+    func decreaseMainPaneCount() {
+        switch layoutExtension {
+        case .layout(let layout):
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.decreaseMainPaneCount()
+                mainPaneCount = panedLayout.mainPaneCount
+            }
+        default:
+            mainPaneCount -= 1
+        }
+    }
+
+    func shrinkMainPane() {
+        switch layoutExtension {
+        case .layout(let layout):
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.shrinkMainPane()
+            }
+        default:
+            ()
+        }
+    }
+
+    func expandMainPane() {
+        switch layoutExtension {
+        case .layout(let layout):
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.expandMainPane()
+            }
+        default:
+            ()
+        }
     }
 }
