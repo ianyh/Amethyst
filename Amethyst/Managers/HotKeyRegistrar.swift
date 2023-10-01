@@ -24,16 +24,15 @@ extension HotKeyManager: HotKeyRegistrar {
 
         if override {
             MASShortcutBinder.shared().breakBinding(withDefaultsKey: defaultsKey)
-            // Setting the shortcut via KeyboardShortcuts should overwrite this regardless, but we remove it here for good measure
             UserDefaults.standard.removeObject(forKey: defaultsKey)
             KeyboardShortcuts.setShortcut(nil, for: name)
         }
 
         // If there is an existing shortcut defined by MASShortcut we need to parse and convert it before continuing
-        if let value = UserDefaults.standard.dictionary(forKey: defaultsKey), let shortcut = MASDictionaryTransformer().transformedValue(value) as? MASShortcut {
+        if let value = UserDefaults.standard.object(forKey: defaultsKey),
+           let shortcut = ValueTransformer(forName: .keyedUnarchiveFromDataTransformerName)?.transformedValue(value) as? MASShortcut {
             let shortcutKey = KeyboardShortcuts.Key(rawValue: shortcut.keyCode)
             let newShortcut = KeyboardShortcuts.Shortcut(shortcutKey, modifiers: shortcut.modifierFlags)
-            // Setting the shortcut via KeyboardShortcuts should overwrite this regardless, but we remove it here for good measure
             UserDefaults.standard.removeObject(forKey: defaultsKey)
             KeyboardShortcuts.setShortcut(newShortcut, for: name)
         }
