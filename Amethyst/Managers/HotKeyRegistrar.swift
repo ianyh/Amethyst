@@ -32,8 +32,7 @@ extension HotKeyManager: HotKeyRegistrar {
             return
         }
 
-        // If there is an existing MASShortcut it should get migrated _only_ if it is not being overriden
-        if !override, let value = UserDefaults.standard.object(forKey: defaultsKey),
+        if let value = UserDefaults.standard.object(forKey: defaultsKey),
            let shortcut = ValueTransformer(forName: .keyedUnarchiveFromDataTransformerName)?.transformedValue(value) as? MASShortcut {
             let shortcutKey = KeyboardShortcuts.Key(rawValue: shortcut.keyCode)
             let newShortcut = KeyboardShortcuts.Shortcut(shortcutKey, modifiers: shortcut.modifierFlags)
