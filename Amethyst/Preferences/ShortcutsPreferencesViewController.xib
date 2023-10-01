@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ShortcutsPreferencesViewController" customModule="Amethyst" customModuleProvider="target">
             <connections>
+                <outlet property="profileSelector" destination="zUX-c8-UyZ" id="dEQ-cx-btJ"/>
                 <outlet property="tableView" destination="N3x-ad-oc8" id="ARY-os-XHS"/>
                 <outlet property="view" destination="21f-NX-Gwr" id="aWK-xd-gnE"/>
             </connections>
@@ -15,31 +16,30 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="21f-NX-Gwr" userLabel="Shortcut Preferences">
-            <rect key="frame" x="0.0" y="0.0" width="548" height="586"/>
+            <rect key="frame" x="0.0" y="0.0" width="550" height="679"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ab5-OV-I22">
-                    <rect key="frame" x="27" y="26" width="494" height="532"/>
+                    <rect key="frame" x="27" y="26" width="496" height="570"/>
                     <view key="contentView" id="JEm-5T-by8">
-                        <rect key="frame" x="3" y="3" width="488" height="526"/>
+                        <rect key="frame" x="4" y="5" width="488" height="562"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="32" horizontalPageScroll="10" verticalLineScroll="32" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZI-RC-j8b">
-                                <rect key="frame" x="0.0" y="0.0" width="488" height="526"/>
+                                <rect key="frame" x="0.0" y="0.0" width="488" height="562"/>
                                 <clipView key="contentView" id="AZ8-is-g0G">
-                                    <rect key="frame" x="1" y="1" width="486" height="524"/>
+                                    <rect key="frame" x="1" y="1" width="486" height="560"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" selectionHighlightStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="30" viewBased="YES" id="N3x-ad-oc8">
-                                            <rect key="frame" x="0.0" y="0.0" width="486" height="524"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="486" height="560"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="0.0" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn editable="NO" width="472" minWidth="10" maxWidth="3.4028234663852886e+38" id="Hkg-O0-TNN">
+                                                <tableColumn editable="NO" width="440" minWidth="10" maxWidth="3.4028234663852886e+38" id="Hkg-O0-TNN">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                        <font key="font" metaFont="message" size="11"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -51,7 +51,7 @@
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                     <prototypeCellViews>
                                                         <tableCellView id="dEQ-9s-icb">
-                                                            <rect key="frame" x="0.0" y="1" width="472" height="17"/>
+                                                            <rect key="frame" x="0.0" y="1" width="452" height="17"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SNR-eb-h74">
@@ -92,15 +92,77 @@
                         </constraints>
                     </view>
                 </box>
+                <stackView distribution="fillProportionally" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="251" verticalStackHuggingPriority="251" detachesHiddenViews="YES" id="tdY-qC-kCq">
+                    <rect key="frame" x="30" y="604" width="490" height="60"/>
+                    <autoresizingMask key="autoresizingMask"/>
+                    <subviews>
+                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zUX-c8-UyZ" userLabel="ProfileSelector">
+                            <rect key="frame" x="-3" y="16" width="256" height="25"/>
+                            <popUpButtonCell key="cell" type="push" title="Select profile" bezelStyle="rounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" inset="2" selectedItem="AH0-hs-s9H" id="qf2-oH-yrf">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="eZh-kd-X9q">
+                                    <items>
+                                        <menuItem title="Select profile" state="on" hidden="YES" id="AH0-hs-s9H"/>
+                                        <menuItem title="Profile 1" tag="1" identifier="profile-1" id="1bM-ji-Nh8"/>
+                                        <menuItem title="Profile 2" tag="2" identifier="profile-2" id="7Ut-jd-spW"/>
+                                        <menuItem title="Profile 3" tag="3" identifier="profile-3" id="DOd-XW-8v5"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                            <connections>
+                                <action selector="selectedProfileChanged:" target="-2" id="U0x-GR-Vve"/>
+                                <binding destination="G0o-rz-7Iv" name="selectedTag" keyPath="values.selected-profile-tag" id="4Fc-FK-z8X"/>
+                            </connections>
+                        </popUpButton>
+                        <button identifier="load-profile" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tNW-2u-9Fw">
+                            <rect key="frame" x="252" y="13" width="125" height="32"/>
+                            <buttonCell key="cell" type="push" title="Load" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FFG-Jy-29i">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="loadProfileClicked:" target="-2" id="WH5-f6-6rs"/>
+                            </connections>
+                        </button>
+                        <button identifier="save-profile" horizontalHuggingPriority="252" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KIL-6y-p67">
+                            <rect key="frame" x="373" y="13" width="124" height="32"/>
+                            <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UU7-ts-hij">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="saveProfileClicked:" target="-2" id="PIw-73-7hu"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="CJk-yl-CAP"/>
+                    </constraints>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="ab5-OV-I22" secondAttribute="bottom" constant="30" id="L7k-Ug-K9c"/>
+                <constraint firstAttribute="trailing" secondItem="tdY-qC-kCq" secondAttribute="trailing" constant="30" id="Ogk-pw-q0E"/>
                 <constraint firstAttribute="trailing" secondItem="ab5-OV-I22" secondAttribute="trailing" constant="30" id="P49-T9-2Ym"/>
+                <constraint firstItem="tdY-qC-kCq" firstAttribute="leading" secondItem="21f-NX-Gwr" secondAttribute="leading" constant="30" id="PlU-lt-lYw"/>
                 <constraint firstItem="ab5-OV-I22" firstAttribute="leading" secondItem="21f-NX-Gwr" secondAttribute="leading" constant="30" id="eCr-ro-aZF"/>
-                <constraint firstItem="ab5-OV-I22" firstAttribute="top" secondItem="21f-NX-Gwr" secondAttribute="top" constant="30" id="vU5-yI-Oqq"/>
+                <constraint firstItem="tdY-qC-kCq" firstAttribute="top" secondItem="21f-NX-Gwr" secondAttribute="top" constant="15" id="mC3-7g-14T"/>
+                <constraint firstItem="ab5-OV-I22" firstAttribute="top" secondItem="tdY-qC-kCq" secondAttribute="bottom" constant="10" id="vU5-yI-Oqq"/>
             </constraints>
-            <point key="canvasLocation" x="131" y="253"/>
+            <point key="canvasLocation" x="131" y="251.5"/>
         </customView>
         <userDefaultsController id="XhK-Tn-zrU"/>
+        <userDefaultsController representsSharedInstance="YES" id="G0o-rz-7Iv"/>
     </objects>
 </document>

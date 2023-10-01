@@ -428,22 +428,8 @@ class UserConfiguration: NSObject {
         let commandKeyString = command?[ConfigurationKey.commandKey.rawValue]
         let commandModifierString = command?[ConfigurationKey.commandMod.rawValue]
 
-        var commandFlags: AMModifierFlags?
-
-        if let modifierString = commandModifierString {
-            switch modifierString {
-            case "mod1":
-                commandFlags = modifier1
-            case "mod2":
-                commandFlags = modifier2
-            case "mod3":
-                commandFlags = modifier3
-            case "mod4":
-                commandFlags = modifier4
-            default:
-                log.warning("Unknown modifier string: \(modifierString)")
-                return
-            }
+        guard let commandFlags = modifierFlagsForModifierString(commandModifierString) else {
+            return
         }
 
         let injectedHandler: () -> Void = { [weak self] in
@@ -479,20 +465,21 @@ class UserConfiguration: NSObject {
         return configurationYAML != nil || configurationJSON != nil
     }
 
-    private func modifierFlagsForModifierString(_ modifierString: String) -> AMModifierFlags {
+    private func modifierFlagsForModifierString(_ modifierString: String?) -> AMModifierFlags? {
+        var result: AMModifierFlags?
         switch modifierString {
         case "mod1":
-            return modifier1!
+            result = modifier1!
         case "mod2":
-            return modifier2!
+            result = modifier2!
         case "mod3":
-            return modifier3!
+            result = modifier3!
         case "mod4":
-            return modifier4!
+            result = modifier4!
         default:
-            log.warning("Unknown modifier string: \(modifierString)")
-            return modifier1!
+            log.warning("Unknown modifier string: \(modifierString ?? "nil")")
         }
+        return result
     }
 
     func layoutKeys() -> [String] {
@@ -713,6 +700,34 @@ class UserConfiguration: NSObject {
 
     func restoreLayoutsOnLaunch() -> Bool {
         return storage.bool(forKey: .restoreLayoutsOnLaunch)
+    }
+
+    func saveCommandKeysToProfile(profile: Profile, commandKeys: [String]) {
+        let userDefaults = UserDefaults.standard
+
+        for key in commandKeys {
+            let constrCommandKey = UserConfiguration.constructProfileCommandKeyString(profile: profile, commandKey: key)
+            if let currentValue = userDefaults.object(forKey: key) {
+                userDefaults.set(currentValue, forKey: constrCommandKey)
+            }
+        }
+    }
+
+    func loadCommandKeysFromProfile(profile: Profile, commandKeys: [String]) {
+        let userDefaults = UserDefaults.standard
+
+        for key in commandKeys {
+            let constrCommandKey = UserConfiguration.constructProfileCommandKeyString(profile: profile, commandKey: key)
+            if let selectedProfileValue = userDefaults.object(forKey: constrCommandKey) {
+                userDefaults.set(selectedProfileValue, forKey: key)
+            } else {
+                userDefaults.removeObject(forKey: key)
+            }
+        }
+    }
+
+    static func constructProfileCommandKeyString(profile: Profile, commandKey: String) -> String {
+        return "\(profile.rawValue)-\(commandKey)"
     }
 }
 

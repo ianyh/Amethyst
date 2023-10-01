@@ -13,12 +13,14 @@ import MASShortcut
 class ShortcutsPreferencesListItemView: NSView {
     private(set) var nameLabel: NSTextField?
     private(set) var shortcutView: MASShortcutView?
+    private(set) var shortcutDraft: MASShortcutView?
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
 
         let label = NSTextField()
-        let shortcutView = MASShortcutView(frame: NSRect(x: 0, y: 0, width: 120, height: 19))
+        let shortcutView = MASShortcutView(frame: NSRect(x: 0, y: 0, width: 105, height: 19))
+        let shortcutDraft = MASShortcutView(frame: NSRect(x: 0, y: 0, width: 105, height: 19))
 
         label.isBezeled = false
         label.isEditable = false
@@ -26,21 +28,31 @@ class ShortcutsPreferencesListItemView: NSView {
         label.backgroundColor = NSColor.clear
         label.sizeToFit()
 
+        shortcutDraft.isEnabled = false
+
         addSubview(label)
         addSubview(shortcutView)
+        addSubview(shortcutDraft)
 
-        constrain(label, shortcutView, self) { label, shortcutView, view in
+        constrain(label, shortcutView, shortcutDraft, self) { label, shortcutView, shortcutDraft, view in
+            shortcutView.centerY == view.centerY
+            shortcutView.right == view.right - 108
+            shortcutView.width == 100
+            shortcutView.height == 19
+
             label.centerY == view.centerY
             label.left == view.left + 8
+            label.right == shortcutView.left - 2
 
-            shortcutView.centerY == view.centerY
-            shortcutView.right == view.right - 16
-            shortcutView.width == 120
-            shortcutView.height == 19
+            shortcutDraft.centerY == view.centerY
+            shortcutDraft.right == view.right
+            shortcutDraft.width == 100
+            shortcutDraft.height == 19
         }
 
         self.nameLabel = label
         self.shortcutView = shortcutView
+        self.shortcutDraft = shortcutDraft
     }
 
     required init?(coder: NSCoder) {
@@ -49,5 +61,6 @@ class ShortcutsPreferencesListItemView: NSView {
 
     deinit {
         shortcutView?.associatedUserDefaultsKey = nil
+        shortcutDraft?.associatedUserDefaultsKey = nil
     }
 }
