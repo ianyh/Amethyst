@@ -28,16 +28,17 @@ extension HotKeyManager: HotKeyRegistrar {
             KeyboardShortcuts.setShortcut(nil, for: name)
         }
 
-        // If there is an existing shortcut defined by MASShortcut we need to parse and convert it before continuing
-        if let value = UserDefaults.standard.object(forKey: defaultsKey),
+        guard KeyboardShortcuts.getShortcut(for: name) == nil else {
+            return
+        }
+
+        // If there is an existing MASShortcut it should get migrated _only_ if it is not being overriden
+        if !override, let value = UserDefaults.standard.object(forKey: defaultsKey),
            let shortcut = ValueTransformer(forName: .keyedUnarchiveFromDataTransformerName)?.transformedValue(value) as? MASShortcut {
             let shortcutKey = KeyboardShortcuts.Key(rawValue: shortcut.keyCode)
             let newShortcut = KeyboardShortcuts.Shortcut(shortcutKey, modifiers: shortcut.modifierFlags)
             UserDefaults.standard.removeObject(forKey: defaultsKey)
             KeyboardShortcuts.setShortcut(newShortcut, for: name)
-        }
-
-        guard KeyboardShortcuts.getShortcut(for: name) == nil else {
             return
         }
 
