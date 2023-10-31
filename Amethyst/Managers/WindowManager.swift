@@ -705,6 +705,7 @@ extension WindowManager: WindowTransitionTarget {
         switch transition {
         case let .switchWindows(window, otherWindow):
             guard windows.swap(window: window, withWindow: otherWindow) else {
+                markAllScreensForReflow(withChange: .focusChanged(window: window))
                 return
             }
 
