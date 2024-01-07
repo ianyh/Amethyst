@@ -40,6 +40,8 @@
 		401C35B32244650F0019ED07 /* MouseState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B22244650F0019ED07 /* MouseState.swift */; };
 		401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B422482EAF0019ED07 /* WindowTransitionCoordinator.swift */; };
 		401C35B7224831470019ED07 /* FocusTransitionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401C35B6224831470019ED07 /* FocusTransitionCoordinator.swift */; };
+		401F89BB2B4B5A7900DBA976 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 401F89BA2B4B5A7900DBA976 /* Silica */; };
+		401F89BE2B4B5B1C00DBA976 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 401F89BD2B4B5B1C00DBA976 /* Silica */; };
 		4029C4F11C112478001E4788 /* Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4029C4F01C112478001E4788 /* Layout.swift */; };
 		402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6E11742E41A00D1C936 /* Cocoa.framework */; };
 		402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6EA1742E41A00D1C936 /* InfoPlist.strings */; };
@@ -47,7 +49,6 @@
 		402DB6F81742E41A00D1C936 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 402DB6F61742E41A00D1C936 /* MainMenu.xib */; };
 		402DB6FF1742E44E00D1C936 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402DB6FE1742E44E00D1C936 /* Carbon.framework */; };
 		402F6FA62A81C9E30036B512 /* SkyLight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 402F6FA52A81C9E30036B512 /* SkyLight.framework */; };
-		403D9EE72A94494700F278F2 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 403D9EE62A94494700F278F2 /* Silica */; };
 		403E1A2A2337173600DB7B2A /* FloatingLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */; };
 		403E1A2C233719E500DB7B2A /* TallLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403E1A2B233719E500DB7B2A /* TallLayoutTests.swift */; };
 		4045416F268FFDA000861BE8 /* CustomLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4045416E268FFDA000861BE8 /* CustomLayout.swift */; };
@@ -268,14 +269,15 @@
 				400D49002A92B0A00082750F /* Yams in Frameworks */,
 				40AE15E62A92EA7500E14536 /* RxCocoa in Frameworks */,
 				40C3F91F1BD1B22E00F58660 /* SystemConfiguration.framework in Frameworks */,
+				401F89BB2B4B5A7900DBA976 /* Silica in Frameworks */,
 				40AE15E82A92EA7500E14536 /* RxSwift in Frameworks */,
 				400D48F72A92AF9B0082750F /* LoginServiceKit in Frameworks */,
 				402DB6E21742E41A00D1C936 /* Cocoa.framework in Frameworks */,
 				400D48F42A92AF1E0082750F /* Cartography in Frameworks */,
+				401F89BE2B4B5B1C00DBA976 /* Silica in Frameworks */,
 				40C3F91E1BD1B22E00F58660 /* Security.framework in Frameworks */,
 				40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */,
 				400D48FA2A92B0130082750F /* Sparkle in Frameworks */,
-				403D9EE72A94494700F278F2 /* Silica in Frameworks */,
 				402F6FA62A81C9E30036B512 /* SkyLight.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -618,7 +620,8 @@
 				40AE15E52A92EA7500E14536 /* RxCocoa */,
 				40AE15E72A92EA7500E14536 /* RxSwift */,
 				40AE15F42A92EE8000E14536 /* MASShortcut */,
-				403D9EE62A94494700F278F2 /* Silica */,
+				401F89BA2B4B5A7900DBA976 /* Silica */,
+				401F89BD2B4B5B1C00DBA976 /* Silica */,
 			);
 			productName = Amethyst;
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
@@ -692,7 +695,7 @@
 				40AE15EC2A92EBD800E14536 /* XCRemoteSwiftPackageReference "Quick" */,
 				40AE15EF2A92EC5300E14536 /* XCRemoteSwiftPackageReference "Nimble" */,
 				40AE15F32A92EE8000E14536 /* XCRemoteSwiftPackageReference "MASShortcut" */,
-				403D9EE52A94494700F278F2 /* XCRemoteSwiftPackageReference "silica" */,
+				401F89BC2B4B5B1C00DBA976 /* XCRemoteSwiftPackageReference "silica" */,
 			);
 			productRefGroup = 402DB6DF1742E41A00D1C936 /* Products */;
 			projectDirPath = "";
@@ -1219,7 +1222,7 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		403D9EE52A94494700F278F2 /* XCRemoteSwiftPackageReference "silica" */ = {
+		401F89BC2B4B5B1C00DBA976 /* XCRemoteSwiftPackageReference "silica" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ianyh/silica";
 			requirement = {
@@ -1303,9 +1306,13 @@
 			package = 400D48FE2A92B0A00082750F /* XCRemoteSwiftPackageReference "Yams" */;
 			productName = Yams;
 		};
-		403D9EE62A94494700F278F2 /* Silica */ = {
+		401F89BA2B4B5A7900DBA976 /* Silica */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 403D9EE52A94494700F278F2 /* XCRemoteSwiftPackageReference "silica" */;
+			productName = Silica;
+		};
+		401F89BD2B4B5B1C00DBA976 /* Silica */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 401F89BC2B4B5B1C00DBA976 /* XCRemoteSwiftPackageReference "silica" */;
 			productName = Silica;
 		};
 		40AE15E22A92E9AF00E14536 /* SwiftyBeaver */ = {

@@ -318,7 +318,7 @@ extension AXWindow: WindowType {
             }
         }
 
-        guard super.focus() else {
+        guard super.raise() else {
             return false
         }
 
