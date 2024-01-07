@@ -22,7 +22,7 @@ layouts:
   # - two-pane
   # - middle-wide
   # - 3column-left
-  # - 3column-middle
+  # - middle-wide # The legacy name of "3column-middle"
   # - 3column-right
   # - 4column-left
   # - 4column-right
