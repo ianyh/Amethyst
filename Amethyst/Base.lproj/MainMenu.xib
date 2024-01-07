@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -74,7 +75,7 @@
             <rect key="contentRect" x="446" y="278" width="480" height="270"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="IHj-fa-gIc">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                <rect key="frame" x="0.0" y="0.0" width="480" height="260"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
             <toolbar key="toolbar" implicitIdentifier="2383369F-98A6-4420-8EFE-319DB9588C53" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="5oI-m4-akz">
@@ -160,7 +161,7 @@
     </objects>
     <resources>
         <image name="123.rectangle" catalog="system" width="24" height="18"/>
-        <image name="dots.and.line.vertical.and.cursorarrow.rectangle" catalog="system" width="24" height="23"/>
+        <image name="dots.and.line.vertical.and.cursorarrow.rectangle" catalog="system" width="24" height="25"/>
         <image name="macwindow.on.rectangle" catalog="system" width="25" height="20"/>
         <image name="text.and.command.macwindow" catalog="system" width="24" height="18"/>
         <image name="uiwindow.split.2x1" catalog="system" width="24" height="18"/>
