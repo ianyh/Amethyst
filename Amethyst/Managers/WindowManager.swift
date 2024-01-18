@@ -467,7 +467,7 @@ extension WindowManager {
             add(window: window)
             executeTransition(.switchWindows(existingWindow, window))
             windows.regenerateActiveIDCache()
-            markScreen(screen, forReflowWithChange: .unknown)
+            markScreen(screen, forReflowWithChange: .tabChange)
 
             return
         }

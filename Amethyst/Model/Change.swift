@@ -17,5 +17,6 @@ enum Change<Window: WindowType> {
     case applicationDeactivate
     case spaceChange
     case layoutChange
+    case tabChange
     case unknown
 }
