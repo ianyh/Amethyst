@@ -15,24 +15,34 @@ class StageManagerLayout<Window: WindowType>: Layout<Window> {
     override var layoutDescription: String { return "" }
 
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
-        let screenFrame = screen.adjustedFrame(disableWindowMargins: UserConfiguration.shared.smartWindowMargins())
+        let screenFrame = screen.adjustedFrame()
+        let smartWindowMargins = UserConfiguration.shared.smartWindowMargins()
+        let windowMarginSize = UserConfiguration.shared.windowMarginSize()
         let gridGuides = (
             horizontal: self.gridGuides(in: screenFrame.width, from: screenFrame.minX),
             vertical: self.gridGuides(in: screenFrame.height, from: screenFrame.minY)
         )
         return windowSet.windows.map { window in
-            let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-            let frameInset: CGFloat = 8
+            let frameInset: CGFloat = windowMarginSize/2
             var frame = window.frame.insetBy(dx: -frameInset, dy: -frameInset)
             // Limit windows to screen bounds
+            // 1. Pull window up left onto screen
+            if frame.maxX > screenFrame.maxX {
+                frame.origin.x += screenFrame.maxX - frame.maxX
+            }
+            if frame.maxY > screenFrame.maxY {
+                frame.origin.y += screenFrame.maxY - frame.maxY
+            }
+            // 2. Push window down right onto screen
             if frame.minX < screenFrame.minX {
                 frame.origin.x = screenFrame.minX
             }
             if frame.minY < screenFrame.minY {
                 frame.origin.y = screenFrame.minY
             }
+            // 3. Trim window's bottom right
             if frame.maxX > screenFrame.maxX {
-                frame.origin.x += screenFrame.maxX - frame.maxX
+                frame.size.width += screenFrame.maxX - frame.maxX
             }
             if frame.maxY > screenFrame.maxY {
                 frame.origin.y += screenFrame.maxY - frame.maxY
@@ -46,13 +56,16 @@ class StageManagerLayout<Window: WindowType>: Layout<Window> {
             frame.size.height += oldY - frame.origin.y
             frame.size.width = match(frame.maxX, to: gridGuides.horizontal, leadingEdge: false) - frame.minX
             frame.size.height = match(frame.maxY, to: gridGuides.vertical, leadingEdge: false) - frame.minY
-            frame = frame.insetBy(dx: frameInset, dy: frameInset)
+            
+            let isFullscreen = smartWindowMargins && frame.union(screenFrame) == frame
+            
+            let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
             let frameAssignment = FrameAssignment<Window>(
-                frame: frame,
+                frame: isFullscreen ? screen.adjustedFrame(disableWindowMargins: true) : frame,
                 window: window,
-                screenFrame: screenFrame,
+                screenFrame: isFullscreen ? screen.adjustedFrame(disableWindowMargins: true) : screenFrame,
                 resizeRules: resizeRules,
-                disableWindowMargins: UserConfiguration.shared.smartWindowMargins()
+                disableWindowMargins: isFullscreen
             )
             return FrameAssignmentOperation(frameAssignment: frameAssignment, windowSet: windowSet)
         }
