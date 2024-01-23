@@ -731,6 +731,22 @@ extension WindowManager: WindowTransitionTarget {
             guard let targetScreen = CGSpacesInfo<Window>.screenForSpace(space: targetSpace) else {
                 return
             }
+            if window.isFocused() {
+                if activeWindows(on: screen).count == 1,
+                   let finder = NSWorkspace.shared.runningApplications.first(where: { $0.bundleIdentifier == "com.apple.finder" }) {
+                    var psn = ProcessSerialNumber()
+                    let status = GetProcessForPID(finder.processIdentifier, &psn)
+                    if status != noErr {
+                        log.error(status)
+                    }
+                    let cgStatus = _SLPSSetFrontProcessWithOptions(&psn, 0, kCPSNoWindows)
+                    if cgStatus != .success {
+                        log.error(cgStatus.rawValue)
+                    }
+                } else {
+                    focusTransitionCoordinator.moveFocusClockwise()
+                }
+            }
             markScreen(screen, forReflowWithChange: .remove(window: window))
             window.move(toSpace: targetSpace.id)
             if targetScreen.screenID() != screen.screenID() {
@@ -740,10 +756,10 @@ extension WindowManager: WindowTransitionTarget {
                     window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
                 }
             }
-            markScreen(targetScreen, forReflowWithChange: .add(window: window))
             if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
                 window.focus()
             }
+            markScreen(targetScreen, forReflowWithChange: .add(window: window))
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
                 executeTransition(.focusScreen(screen))

@@ -19,7 +19,11 @@ func _SLPSSetFrontProcessWithOptions(_ psn: inout ProcessSerialNumber, _ wid: UI
 @_silgen_name("SLPSPostEventRecordTo") @discardableResult
 func SLPSPostEventRecordTo(_ psn: inout ProcessSerialNumber, _ bytes: inout UInt8) -> CGError
 
+@_silgen_name("SLSMoveWindowsToManagedSpace")
+func SLSMoveWindowsToManagedSpace(_ cid: Int32, _ window_ids: CFArray, _ sid: Int)
+
 let kCPSUserGenerated: UInt32 = 0x200
+let kCPSNoWindows: UInt32 = 0x400
 // swiftlint:enable identifier_name
 
 /// Generic protocol for objects acting as windows in the system.
@@ -363,6 +367,6 @@ extension AXWindow: WindowType {
     }
 
     func move(toSpace spaceID: CGSSpaceID) {
-        CGSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
+        SLSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
     }
 }
