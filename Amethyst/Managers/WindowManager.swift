@@ -112,7 +112,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
-        markScreen(screen, forReflowWithChange: .unknown)
+        markScreen(screen, forReflowWithChange: .applicationActivate)
 //        doMouseFollowsFocus(focusedWindow: focusedWindow)
     }
 
@@ -374,11 +374,12 @@ extension WindowManager {
         for runningApplication in NSWorkspace.shared.runningApplications {
             add(runningApplication: runningApplication)
         }
-        markAllScreensForReflow(withChange: .unknown)
+        markAllScreensForReflow(withChange: .none)
     }
 
     private func add(window: Window, retries: Int = 5) {
         guard !windows.isWindowTracked(window) else {
+            log.warning("skipping window")
             return
         }
 

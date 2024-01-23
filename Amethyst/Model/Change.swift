@@ -18,5 +18,6 @@ enum Change<Window: WindowType> {
     case spaceChange
     case layoutChange
     case tabChange
+    case none
     case unknown
 }
