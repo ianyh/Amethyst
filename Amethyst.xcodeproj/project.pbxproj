@@ -124,6 +124,7 @@
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
 		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
 		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
+		D60A69A02AF115A500EE0235 /* StageManagerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60A699F2AF115A500EE0235 /* StageManagerLayout.swift */; };
 		F46629C4272AD7A30040C275 /* FourColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46629C3272AD7A30040C275 /* FourColumnLayout.swift */; };
 /* End PBXBuildFile section */
 
@@ -251,6 +252,7 @@
 		4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayout.swift; sourceTree = "<group>"; };
 		AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayout.swift; sourceTree = "<group>"; };
 		AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayoutTests.swift; sourceTree = "<group>"; };
+		D60A699F2AF115A500EE0235 /* StageManagerLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageManagerLayout.swift; sourceTree = "<group>"; };
 		F46629C3272AD7A30040C275 /* FourColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourColumnLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -358,6 +360,7 @@
 				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
 				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
 				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
+				D60A699F2AF115A500EE0235 /* StageManagerLayout.swift */,
 				4062AD361C1FA83300DB612B /* RowLayout.swift */,
 				4062AD2E1C1F9D6B00DB612B /* TallLayout.swift */,
 				AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */,
@@ -599,7 +602,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
-				4058C4701C4C4F9E00B19D26 /* Lint */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
@@ -743,24 +745,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		4058C4701C4C4F9E00B19D26 /* Lint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Lint;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nswiftlint --fix\nswiftlint\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		402DB6DA1742E41A00D1C936 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -822,6 +806,7 @@
 				40637075224EFED70081299D /* CGInfo.swift in Sources */,
 				1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */,
 				4045416F268FFDA000861BE8 /* CustomLayout.swift in Sources */,
+				D60A69A02AF115A500EE0235 /* StageManagerLayout.swift in Sources */,
 				40637077224F0EFF0081299D /* Screens.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1055,7 +1040,7 @@
 				CURRENT_PROJECT_VERSION = 108;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 82P2XLB4UH;
+				DEVELOPMENT_TEAM = MAWRUVWLA5;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = (
