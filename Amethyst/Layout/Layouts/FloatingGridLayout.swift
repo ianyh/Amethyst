@@ -1,16 +1,16 @@
 //
-//  StageManagerLayout.swift
+//  FloatingGridLayout.swift
 //  Amethyst
 //
-//  Created by Ian Ynda-Hummel on 12/14/15.
+//  Created by James Froggatt on 31/10/23.
 //  Copyright © 2015 Ian Ynda-Hummel. All rights reserved.
 //
 
 import Silica
 
-class StageManagerLayout<Window: WindowType>: Layout<Window> {
-    override static var layoutName: String { return "Stage Manager" }
-    override static var layoutKey: String { return "stage-manager" }
+class FloatingGridLayout<Window: WindowType>: Layout<Window> {
+    override static var layoutName: String { return "Floating Grid" }
+    override static var layoutKey: String { return "floating-grid" }
 
     override var layoutDescription: String { return "" }
 
@@ -104,7 +104,7 @@ class StageManagerLayout<Window: WindowType>: Layout<Window> {
 }
 
 // To ensure updates when resizing
-extension StageManagerLayout: PanedLayout {
+extension FloatingGridLayout: PanedLayout {
     var mainPaneRatio: CGFloat { 0.5 }
     var mainPaneCount: Int { 1 }
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {}

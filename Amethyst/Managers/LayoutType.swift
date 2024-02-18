@@ -42,7 +42,7 @@ enum LayoutType<Window: WindowType> {
         case unknownLayout
     }
 
-    case stageManager
+    case floatingGrid
     case tall
     case tallRight
     case wide
@@ -64,7 +64,7 @@ enum LayoutType<Window: WindowType> {
 
     static var standardLayouts: [LayoutType<Window>] {
         return [
-            .stageManager,
+            .floatingGrid,
             .tall,
             .tallRight,
             .wide,
@@ -86,8 +86,8 @@ enum LayoutType<Window: WindowType> {
 
     var key: String {
         switch self {
-        case .stageManager:
-            return "stage-manager"
+        case .floatingGrid:
+            return "floating-grid"
         case .tall:
             return "tall"
         case .tallRight:
@@ -127,8 +127,8 @@ enum LayoutType<Window: WindowType> {
 
     var layoutClass: Layout<Window>.Type {
         switch self {
-        case .stageManager:
-            return StageManagerLayout<Window>.self
+        case .floatingGrid:
+            return FloatingGridLayout<Window>.self
         case .tall:
             return TallLayout<Window>.self
         case .tallRight:
@@ -168,8 +168,8 @@ enum LayoutType<Window: WindowType> {
 
     static func from(key: String) -> LayoutType<Window> {
         switch key {
-        case "stage-manager":
-            return .stageManager
+        case "floating-grid":
+            return .floatingGrid
         case "tall":
             return .tall
         case "tall-right":
