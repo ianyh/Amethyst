@@ -23,3 +23,7 @@ Carthage
 AMKeys.h
 fastlane/report.xml
 *profraw
+
+# Homebrew
+Brewfile.lock.json
+
