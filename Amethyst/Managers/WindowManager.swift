@@ -392,9 +392,15 @@ extension WindowManager {
             return
         }
 
+        guard CGWindowsInfo.windowSpace(window) != nil else {
+            return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05 * pow(1.5, Double(5 - retries))) {
+                self.add(window: window, retries: retries - 1)
+            }
+        }
+
         switch application.defaultFloatForWindow(window) {
         case .unreliable where retries > 0:
-            return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05 * pow(1.5, Double(5 - retries))) {
                 self.add(window: window, retries: retries - 1)
             }
         case .reliable(.floating), .unreliable(.floating):
@@ -421,9 +427,8 @@ extension WindowManager {
         guard let screen = window.screen() else {
             return
         }
-        let space = CGWindowsInfo.windowSpace(window)
 
-        let windowChange: Change = windows.isWindowFloating(window) || space == nil ? .unknown : .add(window: window)
+        let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
         markScreen(screen, forReflowWithChange: windowChange)
     }
 
