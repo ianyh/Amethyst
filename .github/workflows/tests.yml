@@ -15,7 +15,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Dependencies
         run: |
-          bundle install
           brew bundle
       - name: Test
         run: |
