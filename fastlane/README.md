@@ -16,7 +16,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 ### mac
 
 ```sh
-[bundle exec] fastlane mac
+fastlane mac
 ```
 
 
