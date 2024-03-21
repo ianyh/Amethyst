@@ -555,7 +555,7 @@ class UserConfiguration: NSObject {
     }
 
     func runningApplicationFloatingBundle(_ runningApplication: BundleIdentifiable) -> FloatingBundle? {
-        let floatingBundles = self.floatingBundles()
+        let floatingBundles = self.floatingBundles().sorted { Int($0.id.contains("*")) < Int($1.id.contains("*")) }
 
         let bundleIdentifier = runningApplication.bundleIdentifier ?? ""
 
