@@ -62,6 +62,10 @@
         "mod": "mod1",
         "key": "q"
     },
+    "focus-screen-5": {
+        "mod": "mod1",
+        "key": "g"
+    },
     "throw-screen-1": {
         "mod": "mod2",
         "key": "w"
@@ -77,6 +81,10 @@
     "throw-screen-4": {
         "mod": "mod2",
         "key": "q"
+    },
+    "throw-screen-5": {
+        "mod": "mod2",
+        "key": "g"
     },
     "shrink-main": {
         "mod": "mod1",
