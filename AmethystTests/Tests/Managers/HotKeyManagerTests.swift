@@ -17,7 +17,7 @@ class HotKeyManagerTests: QuickSpec {
             it("has the right number of screens") {
                 let keyMapping = HotKeyManager<SIApplication>.hotKeyNameToDefaultsKey()
                 let screenCommands = keyMapping.filter { $0[1].hasPrefix(CommandKey.focusScreenPrefix.rawValue) }
-                expect(screenCommands.count).to(equal(6))
+                expect(screenCommands.count).to(equal(7))
             }
         }
     }
