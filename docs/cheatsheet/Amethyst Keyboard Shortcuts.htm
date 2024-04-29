@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Amethyst Keyboard Shortcuts</title>
+  <script>var shortcuts = {"crossplatform":null,"darwin":{"Option+Shift":"mod1","Control+Option+Shift":"mod2","Option+Shift+space":"Cycle layout forward","Control+Option+Shift+space":"Cycle layout backwards","Option+Shift+h":"Shrink the main pane","Option+Shift+l":"Expand the main pane","Option+Shift+,":"Increase main pane count","Option+Shift+.":"Decrease main pane count","Option+Shift+j":"Move focus counter clockwise","Option+Shift+k":"Move focus clockwise","Option+Shift+p":"Move focus to counter clockwise screen","Option+Shift+n":"Move focus to clockwise screen","Control+Option+Shift+h":"Swap focused window to counter clockwise screen","Control+Option+Shift+l":"Swap focused window to clockwise screen","Control+Option+Shift+j":"Swap focused window counter clockwise","Control+Option+Shift+k":"Swap focused window clockwise","Option+Shift+enter":"Swap focused window with main window","Option+Shift+z":"Force windows to be reevaluated","Control+Option+Shift+z":"Relaunch Amethyst","Control+Option+Shift+left":"Throw focused window to space left","Control+Option+Shift+right":"Throw focused window to space right","Control+Option+Shift+1":"Throw focused window to space 1","Control+Option+Shift+2":"Throw focused window to space 2","Control+Option+Shift+3":"Throw focused window to space 3","Control+Option+Shift+4":"Throw focused window to space 4","Control+Option+Shift+5":"Throw focused window to space 5","Control+Option+Shift+6":"Throw focused window to space 6","Control+Option+Shift+7":"Throw focused window to space 7","Control+Option+Shift+8":"Throw focused window to space 8","Control+Option+Shift+9":"Throw focused window to space 9","Control+Option+Shift+0":"Throw focused window to space 10","none1":"Throw focused window to space 11","none2":"Throw focused window to space 12","Option+Shift+w":"Focus Screen 1","Control+Option+Shift+w":"Throw focused window to screen 1","Option+Shift+e":"Focus Screen 2","Control+Option+Shift+e":"Throw focused window to screen 2","Option+Shift+r":"Focus Screen 3","Control+Option+Shift+r":"Throw focused window to screen 3","Option+Shift+q":"Focus Screen 4","Control+Option+Shift+q":"Throw focused window to screen 4","Option+Shift+t":"Toggle float for focused window","Option+Shift+i":"Display current layout","Control+Option+Shift+t":"Toggle global tiling","Option+Shift+a":"Select tall layout","none3":"Select tall-right layout","Option+Shift+s":"Select wide layout","none4":"Select middle-wide layout","Option+Shift+d":"Select fullscreen layout","Option+Shift+f":"Select column layout","none5":"Select row layout","none6":"Select floating layout","none7":"Select widescreen-tall layout","none8":"Select bsp layout"}}
+var keymaps = {"mac":{"de-DE":{"layer1":{"key1-1":"^","key1-2":"1","key1-3":"2","key1-4":"3","key1-5":"4","key1-6":"5","key1-7":"6","key1-8":"7","key1-9":"8","key1-10":"9","key1-11":"0","key1-12":"ß","key1-13":"´","key2-1":"Q","key2-2":"W","key2-3":"E","key2-4":"R","key2-5":"T","key2-6":"Z","key2-7":"U","key2-8":"I","key2-9":"O","key2-10":"P","key2-11":"Ü","key2-12":"+","key3-1":"A","key3-2":"S","key3-3":"D","key3-4":"F","key3-5":"G","key3-6":"H","key3-7":"J","key3-8":"K","key3-9":"L","key3-10":"Ö","key3-11":"Ä","key3-12":"#","key4-1":"<","key4-2":"Y","key4-3":"X","key4-4":"C","key4-5":"V","key4-6":"B","key4-7":"N","key4-8":"M","key4-9":",","key4-10":".","key4-11":"-"},"layer2":{"key1-1":"°","key1-2":"!","key1-3":"\"","key1-4":"§","key1-5":"$","key1-6":"%","key1-7":"&","key1-8":"/","key1-9":"(","key1-10":")","key1-11":"=","key1-12":"?","key1-13":"`","key2-12":"*","key3-12":"'","key4-1":">","key4-9":";","key4-10":":","key4-11":"_"},"layer3":{"key1-6":"[","key1-7":"]","key1-8":"|","key1-9":"{","key1-10":"}","key2-3":"€","key3-9":"@","key4-7":"~","key4-8":"µ"}},"en-US":{"layer1":{"key1-1":"§","key1-2":"1","key1-3":"2","key1-4":"3","key1-5":"4","key1-6":"5","key1-7":"6","key1-8":"7","key1-9":"8","key1-10":"9","key1-11":"0","key1-12":"-","key1-13":"=","key2-1":"Q","key2-2":"W","key2-3":"E","key2-4":"R","key2-5":"T","key2-6":"Y","key2-7":"U","key2-8":"I","key2-9":"O","key2-10":"P","key2-11":"[","key2-12":"]","key3-1":"A","key3-2":"S","key3-3":"D","key3-4":"F","key3-5":"G","key3-6":"H","key3-7":"J","key3-8":"K","key3-9":"L","key3-10":";","key3-11":"'","key3-12":"\\","key4-1":"`","key4-2":"Z","key4-3":"X","key4-4":"C","key4-5":"V","key4-6":"B","key4-7":"N","key4-8":"M","key4-9":",","key4-10":".","key4-11":"/"},"layer2":{"key1-1":"±","key1-2":"!","key1-3":"@","key1-4":"#","key1-5":"$","key1-6":"%","key1-7":"^","key1-8":"&","key1-9":"*","key1-10":"(","key1-11":")","key1-12":"_","key1-13":"+","key2-11":"{","key2-12":"}","key3-10":":","key3-11":"\"","key3-12":"|","key4-1":"~","key4-9":"<","key4-10":">","key4-11":"?"},"layer3":null}},"surface":{"de-DE":{"layer1":{"key1-1":"^","key1-2":"1","key1-3":"2","key1-4":"3","key1-5":"4","key1-6":"5","key1-7":"6","key1-8":"7","key1-9":"8","key1-10":"9","key1-11":"0","key1-12":"ß","key1-13":"´","key2-1":"Q","key2-2":"W","key2-3":"E","key2-4":"R","key2-5":"T","key2-6":"Z","key2-7":"U","key2-8":"I","key2-9":"O","key2-10":"P","key2-11":"Ü","key2-12":"+","key2-13":"#","key3-1":"A","key3-2":"S","key3-3":"D","key3-4":"F","key3-5":"G","key3-6":"H","key3-7":"J","key3-8":"K","key3-9":"L","key3-10":"Ö","key3-11":"Ä","key4-1":"Y","key4-2":"X","key4-3":"C","key4-4":"V","key4-5":"B","key4-6":"N","key4-7":"M","key4-8":",","key4-9":".","key4-10":"-"},"layer2":{"key1-1":"°","key1-2":"!","key1-3":"\"","key1-4":"§","key1-5":"$","key1-6":"%","key1-7":"&","key1-8":"/","key1-9":"(","key1-10":")","key1-11":"=","key1-12":"?","key1-13":"`","key2-12":"*","key2-13":"'","key4-8":";","key4-9":":","key4-10":"_"},"layer3":{"key2-1":"@","key2-3":"€","key2-12":"~","key4-7":"µ"},"layer4":{"f9":"Home","f10":"End","f11":"Page-Up","f12":"Page-Down"}},"en-US":{"layer1":{"key1-1":"`","key1-2":"1","key1-3":"2","key1-4":"3","key1-5":"4","key1-6":"5","key1-7":"6","key1-8":"7","key1-9":"8","key1-10":"9","key1-11":"0","key1-12":"-","key1-13":"=","key2-1":"Q","key2-2":"W","key2-3":"E","key2-4":"R","key2-5":"T","key2-6":"Y","key2-7":"U","key2-8":"i","key2-9":"O","key2-10":"P","key2-11":"[","key2-12":"]","key2-13":"\\","key3-1":"A","key3-2":"S","key3-3":"D","key3-4":"F","key3-5":"G","key3-6":"H","key3-7":"J","key3-8":"K","key3-9":"L","key3-10":";","key3-11":"'","key4-1":"Z","key4-2":"X","key4-3":"C","key4-4":"V","key4-5":"B","key4-6":"N","key4-7":"M","key4-8":",","key4-9":".","key4-10":"/"},"layer2":{"key1-1":"~","key1-2":"!","key1-3":"@","key1-4":"#","key1-5":"$","key1-6":"%","key1-7":"^","key1-8":"&","key1-9":"*","key1-10":"(","key1-11":")","key1-12":"_","key1-13":"+","key2-11":"{","key2-12":"}","key2-13":"|","key3-10":":","key3-11":"\"","key4-8":"<","key4-9":">","key4-10":"?"},"layer3":null,"layer4":{"f9":"Home","f10":"End","f11":"Page-Up","f12":"Page-Down"}}}}</script>
+  <script>!function(e){var t={};function r(l){if(t[l])return t[l].exports;var n=t[l]={i:l,l:!1,exports:{}};return e[l].call(n.exports,n,n.exports,r),n.l=!0,n.exports}r.m=e,r.c=t,r.d=function(e,t,l){r.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:l})},r.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},r.t=function(e,t){if(1&t&&(e=r(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var l=Object.create(null);if(r.r(l),Object.defineProperty(l,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var n in e)r.d(l,n,function(t){return e[t]}.bind(null,n));return l},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,"a",t),t},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},r.p="",r(r.s=0)}([function(e,t,r){"use strict";function l(e,t,r,l="key"){if(!keymaps)throw new Error("Please make sure to include keymaps.js!");if(!["linux","darwin","win32","mac","surface"].includes(r))throw new Error("Invalid platform: "+r);var n=["darwin","mac"].includes(r)?"mac":"surface";e=e.toLowerCase();var a=keymaps[n];if(!a.hasOwnProperty(t))throw console.log(keymaps,a,n,r),new Error("Could not find layout: "+t);a=a[t];if("comma"===e&&(e=","),"plus"===e&&(e="+"),"minus"===e&&(e="-"),"up"===e&&(e="arrow-up"),"down"===e&&(e="arrow-down"),"left"===e&&(e="arrow-left"),"right"===e&&(e="arrow-right"),["pgdn","pagedown"].includes(e)&&(e="page-down"),["pgup","pageup"].includes(e)&&(e="page-up"),"option"===e&&(e="option-left"),"cmd"===e&&(e="command-left"),"shift"===e&&(e="shift-left"),"ctrl"===e&&(e="control"),"esc"===e&&(e="escape"),"delete"===e&&"mac"===n&&(e="backspace"),"alt"===e&&"surface"===n&&(e="alt-left"),"alt"===e&&"mac"===n&&(e="option-left"),["escape","f1","f2","f3","f4","f5","f6","f7","f8","f9","f10","f11","f12","special","delete","backspace","tab","enter","caps-lock","shift-left","shift-right","fn","control","command-left","command-right","option-left","option-right","space","arrow-left","arrow-up","arrow-down","arrow-right","windows","alt-left","alt-right","menu"].includes(e))return[{key:e,layer:"layer1"}];let o=[];for(var s in a)for(var c in a[s])"key"===l&&a[s][c].toLowerCase()===e&&o.push({key:c,layer:s}),"id"===l&&c.toLowerCase()===e&&o.push({key:a[s][c],layer:s});return o}r.r(t);new class{constructor(){this._previousPlatform="darwin",window.addEventListener("load",()=>{this.stateChange(),document.getElementById("alt-key").onchange=this.stateChange.bind(this),document.getElementById("control-key").onchange=this.stateChange.bind(this),document.getElementById("command-key").onchange=this.stateChange.bind(this),document.getElementById("shift-key").onchange=this.stateChange.bind(this),document.getElementById("platform-select").onchange=this.stateChange.bind(this),document.getElementById("layout-select").onchange=this.stateChange.bind(this),document.getElementById("shortcut-container").onmouseover=this.pulsateKeys.bind(this),document.getElementById("shortcut-container").onmouseout=this.stopPulse.bind(this)})}pulsateKeys(e){var t=e.target;["LI","STRONG"].includes(t.tagName)&&("LI"===t.tagName&&(t=t.getElementsByClassName("shortcut")[0]),function(e,t,r){e=e.toLowerCase().split("+");var n="darwin"===r?"mac":"surface";for(var a in e)if("cmdorctrl"===e[a]){e[a]="darwin"===r?"cmd":"ctrl";break}var o=[];for(var s of e)if(!o.includes(s)){var c=l(s,t,r);if(1!==c.length){console.warn("Resolved multiple keys for key "+s+" on layout "+t+" and platform "+r);continue}switch((c=c[0]).layer){case"layer2":o.includes("shift-left")||o.push("shift-left");break;case"layer3":var i="darwin"===r?"option-left":"alt-left";o.includes(i)||o.push(i);break;case"layer4":o.includes("fn")||o.push("fn")}o.push(c.key)}var d=document.getElementById(n);for(var s of(o=o.map((function(e){return"#"+e})),d.querySelectorAll(o.join(", "))))"darwin"===r&&"enter"===s.getAttribute("id")?s.getElementsByTagName("path")[0].classList.add("pulse"):s.getElementsByTagName("rect")[0].classList.add("pulse")}(t.innerText,document.getElementById("layout-select").value,document.getElementById("platform-select").value))}stopPulse(e){var t="darwin"===document.getElementById("platform-select").value?"mac":"surface",r=document.getElementById(t);for(var l of r.getElementsByTagName("rect"))l.classList.remove("pulse");"mac"===t&&r.querySelectorAll("#enter")[0].getElementsByTagName("path")[0].classList.remove("pulse")}stateChange(e){var t=document.getElementById("layout-select").value,r=document.getElementById("platform-select").value,n="darwin"===r?"mac":"surface";this._previousPlatform||(this._previousPlatform=r);var a=document.getElementById("control-key"),o=document.getElementById("command-key");r!==this._previousPlatform&&"darwin"!==r&&o.checked?(o.checked=!1,a.checked=!0):r!==this._previousPlatform&&"darwin"===r&&a.checked&&(o.checked=!0,a.checked=!1);var s=Object.keys(keymaps[n]);for(var c of document.getElementById("layout-select").options)s.includes(c.value)?c.disabled=!1:c.disabled=!0;keymaps[n][t]||(document.getElementById("layout-select").value=s[0],t=document.getElementById("layout-select").value),r!==this._previousPlatform&&(this._previousPlatform=r),"darwin"!==r&&o.checked&&(o.checked=!1),function(e,t,r){if(!e)throw new Error("To apply a keyboard layout, please provide the keyboard's ID.");if(!t)throw new Error("Please specify the platform (either darwin, linux, or win32).");if(!r)throw new Error("To apply a keyboard layout, please specify the layout.");var n=document.getElementById(e).getElementsByClassName("key");for(var a of n){var o=a.parentNode.getAttribute("id");if(0===o.indexOf("key")){var s=l(o,r,t,"id");if(0!==s.length){for(var c=1;c<4;c++){var i=a.parentNode.getElementsByClassName("layer"+c+"-key-label");i.length>0&&(i[0].innerHTML="")}for(let e of s)if("layer4"!==e.layer){var d=a.parentNode.getElementsByClassName(e.layer+"-key-label")[0],u=document.createTextNode(e.key);d.innerHTML="",d.appendChild(u)}}else console.warn("Could not find letter for ID "+o)}}}("darwin"===r?"mac":"surface",r,t),function(e){var t=document.getElementsByClassName("keyboard");for(let e of t)e.classList.add("hidden");"darwin"===e?document.getElementById("mac").classList.remove("hidden"):document.getElementById("surface").classList.remove("hidden")}(r),function(e){var t=document.getElementById("platform-select").value;t=["mac","darwin"].includes(t)?"mac":"surface";var r=document.getElementById("layout-select").value,n=document.getElementById(t);for(var a of n.getElementsByClassName("key"))a.classList.remove("highlight");var o,s=document.getElementById("alt-key").checked||!1,c=document.getElementById("control-key").checked||!1,i=document.getElementById("command-key").checked||!1,d=document.getElementById("shift-key").checked||!1;if(s&&c&&i&&d?o=e["Cmd+Ctrl+Alt+Shift"]:s&&c&&i?o=e["Cmd+Ctrl+Alt"]:c&&i?o=e["Cmd+Ctrl"]:c&&s&&d&&!i?o=e["Ctrl+Alt+Shift"]:c&&d&&!i&&!s?o=e["Ctrl+Shift"]:c&&s&&!i&&!d?o=e["Ctrl+Alt"]:i&&s&&d&&!c?o=e["Cmd+Alt+Shift"]:i&&d&&!s&&!c?o=e["Cmd+Shift"]:i&&s&&!c&&!d?o=e["Cmd+Alt"]:!s||c||i||d?!i||c||s||d?!c||i||s||d?!d||i||s||c?c||i||s||d||(o=e.vanilla):o=e.Shift:o=e.Ctrl:o=e.Cmd:o=e.Alt,!o)return console.error("Invalid combination!");for(var u of o){var m=u.shortcut.toLowerCase().split("+");for(var f of m){"cmdorctrl"===f&&(f="mac"===t?"cmd":"ctrl");var h=l(f,r,t);if(1===h.length){var p="#"+(h=h[0]).key;"layer2"===h.layer&&(p+=", #shift-left"),"layer3"===h.layer&&(p+="mac"===t?", #option-left":", #alt-left"),"layer4"===h.layer&&(p+=", #fn");var y=document.querySelectorAll(p);if(y)for(var g of y)g.getElementsByClassName("key")[0].classList.add("highlight");else console.warn("No mapping to key "+f+" on layout "+r+" and platform "+t)}else console.warn("Received multiple mappings for key "+f+" on layout "+r+" and platform "+t,h)}}var v=document.createElement("ul");for(var u of o){var C=u.shortcut.replace("CmdOrCtrl","mac"===t?"Cmd":"Ctrl"),w=document.createElement("li");w.innerHTML=`<strong class="shortcut">${C}</strong>: ${u.description}`,v.appendChild(w)}0===o.length?document.getElementById("shortcut-container").innerHTML="<p>No shortcuts available</p>":(document.getElementById("shortcut-container").innerHTML="",document.getElementById("shortcut-container").appendChild(v))}(function(e){var t=document.getElementById("platform-select").value,r=[],l={vanilla:[],Ctrl:[],Cmd:[],Alt:[],Shift:[],"Cmd+Alt":[],"Cmd+Shift":[],"Cmd+Alt+Shift":[],"Ctrl+Alt":[],"Ctrl+Shift":[],"Ctrl+Alt+Shift":[],"Cmd+Ctrl":[],"Cmd+Ctrl+Alt":[],"Cmd+Ctrl+Alt+Shift":[]};for(var n in e.crossplatform)r.push({shortcut:n,description:e.crossplatform[n]});for(var n in e[t])r.push({shortcut:n,description:e[t][n]});for(var n of r){var a=n.shortcut.toLowerCase().split("+"),o=a.includes("alt")||a.includes("option"),s=a.includes("ctrl")||a.includes("cmdorctrl")&&"darwin"!==t,c=(a.includes("cmd")||a.includes("cmdorctrl"))&&"darwin"===t,i=a.includes("shift");1===a.length&&["ctrl","alt","cmd","shift","option"].includes(a[0])?l.vanilla.push(n):o&&s&&c&&i?l["Cmd+Ctrl+Alt+Shift"].push(n):o&&s&&c&&!i?l["Cmd+Ctrl+Alt"].push(n):s&&c&&!o&&!i?l["Cmd+Ctrl"].push(n):s&&o&&i&&!c?l["Ctrl+Alt+Shift"].push(n):s&&!i&&!c&&o||s&&o&&!c&&!i?l["Ctrl+Alt"].push(n):s&&i&&!c&&!o?l["Ctrl+Shift"].push(n):c&&o&&i&&!s?l["Cmd+Alt+Shift"].push(n):c&&i&&!o&&!s?l["Cmd+Shift"].push(n):c&&o&&!s&&!i?l["Cmd+Alt"].push(n):!o||s||c||i?!c||s||o||i?!s||c||o||i?!i||c||o||s?l.vanilla.push(n):l.Shift.push(n):l.Ctrl.push(n):l.Cmd.push(n):l.Alt.push(n)}return l}(shortcuts))}}}]);</script>
+  <style>
+/* Main CSS file. */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 25px;
+}
+
+.fancy-checkbox label, .fancy-select {
+  line-height: 30px;
+  font-size: 30px;
+  display: inline-block;
+  margin: 6px;
+  padding: 6px;
+  border: 1px solid #eee;
+  background-color: #eee;
+  color: #bbb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.5s all ease;
+}
+
+.fancy-checkbox > input[type="checkbox"] {
+  display: none;
+}
+
+.fancy-checkbox label:hover, .fancy-select {
+  background-color: rgb(216, 216, 216);
+  color: #333;
+}
+
+.fancy-checkbox input:checked + label {
+  background-color: #b4e9b4;
+  color: #333;
+}
+
+.container {
+  width: 80vw;
+  margin: 0 auto;
+}
+
+#shortcut-container {
+  font-size: 20px;
+  margin-bottom: 80px; /* Make sure there's room to the footer */
+}
+
+#shortcut-container ul {
+  margin: 0;
+  padding: 0;
+}
+
+#shortcut-container ul li {
+  list-style-type: none;
+  cursor: pointer;
+  transition: 0.5s all ease;
+}
+
+#shortcut-container ul li:nth-child(2n) {
+  background-color: #eeeeee;
+}
+
+#shortcut-container ul li:hover {
+  background-color: #ff7066; /*color: #fde1a3;*/
+}
+
+@media (min-width: 800px) {
+  #shortcut-container {
+    column-count: 2;
+    column-gap: 10px;
+  }
+}
+
+@media (min-width: 1400px) {
+  #shortcut-container {
+    column-count: 3; /* Divide the shortcuts into three columns */
+    column-gap: 10px;
+  }
+}
+
+.hidden { display: none; }
+
+footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #334;
+  height: 60px;
+  font-size: 15px;
+  line-height: 60px;
+  text-align: center;
+  color: white;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .5);
+}
+
+footer p { margin: 0; }
+
+footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+footer a:hover {
+  color: #88aaff;
+}
+
+/* Hide certain elements on Print */
+@media print {
+  html, body { font-size: 10pt; }
+  #shortcut-container {
+    font-size: 8pt;
+    column-count: 3;
+    margin-bottom: 0px; /* No need for a margin during print */
+  }
+  footer, #controls { display: none; }
+}
+
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Amethyst Keyboard Shortcuts</h1>
+    <div id="controls">
+      <label for="control-key" class="fancy-checkbox">
+        <input type="checkbox" value="yes" id="control-key" />
+        <label for="control-key">Ctrl</label>
+      </label>
+
+      <label for="command-key" class="fancy-checkbox">
+        <input type="checkbox" value="yes" id="command-key" />
+        <label for="command-key">Cmd</label>
+      </label>
+
+      <label for="alt-key" class="fancy-checkbox">
+        <input type="checkbox" value="yes" id="alt-key" />
+        <label for="alt-key">Alt/Option</label>
+      </label>
+
+      <label for="shift-key" class="fancy-checkbox">
+        <input type="checkbox" value="yes" id="shift-key" />
+        <label for="shift-key">Shift</label>
+      </label>
+
+      <select id="platform-select" class="fancy-select">
+        <option value="darwin">macOS</option>
+        <option value="win32">Windows</option>
+        <option value="linux">Linux</option>
+      </select>
+
+      <select id="layout-select" class="fancy-select">
+        <option value="en-US">English (United States)</option>
+<option value="en-GB">English (United Kingdom)</option>
+<option value="de-DE">German (Germany)</option>
+<option value="fr-FR">French (France)</option>
+<option value="it-IT">Italian (Italy)</option>
+      </select>
+    </div>
+    <div class="keyboard" id="mac"><!--
+  SVG image for a 79-key Mac Keyboard
+  ===================================
+
+  Created by: Hendrik Erz      <info@zettlr.com>
+  License:    CC BY-NC-SA 4.0  <https://creativecommons.org/licenses/by-nc-sa/4.0/>
+
+  Terms of use
+  ============
+
+  You are free to:
+
+  * SHARE: Copy and redistribute the material in any medium or format
+  * ADAPT: Remix, transform, and built upon the material
+
+  Under the following terms:
+
+  * ATTRIBUTION: You must give appropriate credit, provide
+    a link to the license, and indicate if changes were made.
+    You may do so in any reasonable manner, but not in any
+    way that suggests the licensor endorses you or your use.
+  * NON-COMMERCIAL: You may not use the material for commercial
+    purposes.
+  * SHARE-ALIKE: If you remix, transform, or build upon the
+    material, you must distribute your contributions under the
+    same license as the original.
+
+  DO NOT REMOVE THIS LICENSE BLOCK.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 545 220">
+  <!--
+    Apple keyboards always have 79 keys (the small version w/o Numpad)
+    All possible layouts can be viewed here: https://support.apple.com/en-us/HT201794
+
+    Row 1: 14 keys (incl. one special, either Eject, on/off, or empty)
+    Row 2: 14 keys (incl. Backspace)
+    Row 3: 13 keys (plus Enter)
+    Row 4: 13 keys (plus Enter)
+    Row 5: 13 keys (incl. Shift)
+    Row 6: 11 keys (incl. Arrows)
+
+    All standard keys are addressed via x/y-coords (row:key), one-based index,
+    e.g.: key1-1 is accent/tilde, key2-1 is Q (on en-US layout). The special keys
+    are addressed via named IDs, that is: arrow-up, caps-lock, shift-right, etc.
+
+    NOTE: You can toggle the caps-lock state by adding/removing
+          the "on" class to it's indicator.
+   -->
+
+
+   <!-- GENERAL STYLES -->
+   <style type="text/css">
+       /* This animation pulsates a key if it has the class "pulse" */
+       @keyframes pulsate-key {
+         0% {
+           stroke-opcaity: 1;
+           stroke-width: 0;
+         }
+
+         10% {
+           stroke-opacity: 1;
+           stroke-width: 1;
+         }
+
+         100% {
+           stroke-opacity: 0;
+           stroke-width: 6;
+         }
+       }
+
+       .keyboard-mac {
+         fill: #f0f0f8;
+         stroke: #333333;
+       }
+
+       .mac .indicator {
+         stroke: none;
+         fill: #c6c6cc;
+       }
+
+       .mac .indicator.on {
+         fill: #66cc66;
+       }
+
+       .mac .indicator.off {
+         fill: #c6c6cc;
+       }
+
+       /* .keyboard-keys namespacing enables custom theming. */
+       .mac.keyboard-keys rect.key, .mac.keyboard-keys #enter .key {
+         fill: #ffffff;
+         stroke: #333333;
+         rx: 2pt;
+         ry: 2pt;
+       }
+
+       .mac.keyboard-keys rect.key.highlight, .mac.keyboard-keys #enter .key.highlight {
+         fill: #ffaaaa;
+       }
+
+       .mac.keyboard-keys rect.key.pulse, .mac.keyboard-keys #enter .key.pulse {
+         stroke: #a14141;
+         animation: pulsate-key 1s infinite; /* Let the key's stroke pulsate */
+       }
+
+       .mac.keyboard-keys text {
+         fill: #333333;
+         stroke: none;
+         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+         font-size: 5pt;
+         text-anchor: middle;
+         dominant-baseline: middle;
+       }
+
+       .mac.keyboard-keys text.function-key-label {
+         font-size: 3pt;
+         dominant-baseline: baseline;
+       }
+
+       .mac.keyboard-keys text.layer1-key-label {
+         font-size: 8pt; /* Make the regular key labels bigger */
+       }
+
+       .mac.keyboard-keys text.layer2-key-label {
+         font-size: 6pt; /* An inch smaller */
+       }
+
+       .mac.keyboard-keys text.layer3-key-label {
+         font-size: 5pt; /* The layer 3s are smaller */
+       }
+
+       .mac.keyboard-keys .icon-outline {
+         stroke: #333333;
+         fill: none;
+       }
+
+       .mac.keyboard-keys .icon-fill {
+         stroke: none;
+         fill: #333333;
+       }
+
+       .mac.keyboard-keys .icon-outline-reverse {
+         stroke: #333333;
+         fill: none;
+       }
+
+       .mac.keyboard-keys .icon-fill-reverse {
+         stroke: none;
+         fill: #333333;
+       }
+   </style>
+
+  <!-- First, draw the keyboard outline -->
+  <rect class="keyboard-mac" x="10" y="10" width="525" height="200" rx="5" ry="5" />
+
+  <!-- Namespace the keys for easy styling -->
+  <g class="mac keyboard-keys">
+    <!-- Row one: Function keys -->
+    <g id="escape">
+      <rect class="key" x="15" y="15" width="60" height="15" />
+      <text x="25" y="22.5" font-size="10" text-anchor="start">esc</text>
+    </g>
+    <g id="f1">
+      <rect class="key" x="80" y="15" width="30" height="15" />
+      <!-- Sun -->
+      <circle class="icon-outline" cx="95" cy="20" r="1" stroke-width="0.5" />
+      <!-- Eight points surrounding it -->
+      <circle class="icon-fill" cx="95" cy="17" r="0.5" />
+      <circle class="icon-fill" cx="97" cy="18" r="0.5" />
+      <circle class="icon-fill" cx="98" cy="20" r="0.5" />
+      <circle class="icon-fill" cx="97" cy="22" r="0.5" />
+      <circle class="icon-fill" cx="95" cy="23" r="0.5" />
+      <circle class="icon-fill" cx="93" cy="22" r="0.5" />
+      <circle class="icon-fill" cx="92" cy="20" r="0.5" />
+      <circle class="icon-fill" cx="93" cy="18" r="0.5" />
+      <text class="function-key-label" x="95" y="27.5">F1</text>
+    </g>
+    <g id="f2">
+      <rect class="key" x="115" y="15" width="30" height="15" />
+      <!-- Sun -->
+      <circle class="icon-outline" cx="130" cy="20" r="1" stroke-width="0.5" />
+      <!-- Eight points surrounding it -->
+      <ellipse class="icon-fill" cx="130" cy="17" rx="0.5" ry="1" />
+      <ellipse class="icon-fill" cx="132" cy="18" rx="0.5" ry="1" transform="rotate(45 132 18)" />
+      <ellipse class="icon-fill" cx="133" cy="20" rx="1" ry="0.5" />
+      <ellipse class="icon-fill" cx="132" cy="22" rx="0.5" ry="1" transform="rotate(-45 132 22)"  />
+      <ellipse class="icon-fill" cx="130" cy="23" rx="0.5" ry="1" />
+      <ellipse class="icon-fill" cx="128" cy="22" rx="0.5" ry="1" transform="rotate(45 128 22)"  />
+      <ellipse class="icon-fill" cx="127" cy="20" rx="1" ry="0.5" />
+      <ellipse class="icon-fill" cx="128" cy="18" rx="0.5" ry="1" transform="rotate(-45 128 18)"  />
+      <text class="function-key-label" x="130" y="27.5">F2</text>
+    </g>
+    <g id="f3">
+      <rect class="key" x="150" y="15" width="30" height="15" />
+      <!-- Three windows -->
+      <rect class="icon-outline" x="161" y="18" width="5" height="2.2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <rect class="icon-outline" x="162.5" y="21.5" width="4" height="2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <rect class="icon-outline" x="168" y="18.5" width="3" height="4.5" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <text class="function-key-label" x="165" y="27.5">F3</text>
+    </g>
+    <g id="f4">
+      <rect class="key" x="185" y="15" width="30" height="15" />
+      <!-- Six windows -->
+      <rect class="icon-outline" x="196" y="18" width="2" height="2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <rect class="icon-outline" x="199" y="18" width="2" height="2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <rect class="icon-outline" x="202" y="18" width="2" height="2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <rect class="icon-outline" x="196" y="21" width="2" height="2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <rect class="icon-outline" x="199" y="21" width="2" height="2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <rect class="icon-outline" x="202" y="21" width="2" height="2" rx="0.5" ry="0.5" stroke-width="0.5" />
+      <text class="function-key-label" x="200" y="27.5">F4</text>
+    </g>
+    <g id="f5">
+      <rect class="key" x="220" y="15" width="30" height="15" />
+      <!-- A small rising sun -->
+      <line class="icon-outline" x1="233" y1="22" x2="237" y2="22" stroke-width="0.5" />
+      <!-- Five rays -->
+      <line class="icon-outline" x1="229" y1="22" x2="232" y2="22" stroke-width="0.5" />
+      <line class="icon-outline" x1="231.5" y1="18.5" x2="233" y2="20.5" stroke-width="0.5" />
+      <line class="icon-outline" x1="235" y1="18" x2="235" y2="20" stroke-width="0.5" />
+      <line class="icon-outline" x1="237" y1="20.5" x2="239" y2="18.5" stroke-width="0.5" />
+      <line class="icon-outline" x1="238" y1="22" x2="241" y2="22" stroke-width="0.5" />
+      <text class="function-key-label" x="235" y="27.5">F5</text>
+    </g>
+    <g id="f6">
+      <rect class="key" x="255" y="15" width="30" height="15" />
+      <!-- A somewhat bigger rising sun -->
+      <line class="icon-outline" x1="268" y1="22" x2="272" y2="22" />
+      <!-- Five rays -->
+      <line class="icon-outline" x1="263" y1="22" x2="266" y2="22" />
+      <line class="icon-outline" x1="265.5" y1="18" x2="267.5" y2="20" />
+      <line class="icon-outline" x1="270" y1="17" x2="270" y2="20" />
+      <line class="icon-outline" x1="272.5" y1="20" x2="274.5" y2="18" />
+      <line class="icon-outline" x1="274" y1="22" x2="277" y2="22" />
+      <text class="function-key-label" x="270" y="27.5">F6</text>
+    </g>
+    <g id="f7">
+      <rect class="key" x="290" y="15" width="30" height="15" />
+      <!-- Reverse -->
+      <polygon class="icon-outline" points="302,21 305,19.5 305,22.5" stroke-width="0.5" />
+      <polygon class="icon-outline" points="306,21 309,19.5 309,22.5" stroke-width="0.5" />
+      <text class="function-key-label" x="305" y="27.5">F7</text>
+    </g>
+    <g id="f8">
+      <rect class="key" x="325" y="15" width="30" height="15" />
+      <!-- Play/Pause -->
+      <polygon class="icon-outline" points="340,21 337,19.5 337,22.5" stroke-width="0.5" />
+      <line class="icon-outline" x1="341.5" y1="19" x2="341.5" y2="23" stroke-width="0.5" />
+      <line class="icon-outline" x1="343" y1="19" x2="343" y2="23" stroke-width="0.5" />
+      <text class="function-key-label" x="340" y="27.5">F8</text>
+    </g>
+    <g id="f9">
+      <rect class="key" x="360" y="15" width="30" height="15" />
+      <!-- Fast Forward -->
+      <polygon class="icon-outline" points="375,21 372,19.5 372,22.5" stroke-width="0.5" />
+      <polygon class="icon-outline" points="379,21 376,19.5 376,22.5" stroke-width="0.5" />
+      <text class="function-key-label" x="375" y="27.5">F9</text>
+    </g>
+    <g id="f10">
+      <rect class="key" x="395" y="15" width="30" height="15" />
+      <!-- Mute -->
+      <path class="icon-outline" d="M407 19 l2 0 l1 -1 q1 -1 1 0 l0 4 q0 1 -1 0 l-1 -1 l-2 0 Z" stroke-width="0.5" />
+      <text class="function-key-label" x="410" y="27.5">F10</text>
+    </g>
+    <g id="f11">
+      <rect class="key" x="430" y="15" width="30" height="15" />
+      <!-- Decrease volume -->
+      <path class="icon-outline" d="M441 19 l2 0 l1 -1 q1 -1 1 0 l0 4 q0 1 -1 0 l-1 -1 l-2 0 Z" stroke-width="0.5" />
+      <path class="icon-outline" d="M447 18 q1 2 0 4" stroke-width="0.5" />
+      <text class="function-key-label" x="445" y="27.5">F11</text>
+    </g>
+    <g id="f12">
+      <rect class="key" x="465" y="15" width="30" height="15" />
+      <!-- Increase volume -->
+      <path class="icon-outline" d="M476 19 l2 0 l1 -1 q1 -1 1 0 l0 4 q0 1 -1 0 l-1 -1 l-2 0 Z" stroke-width="0.5" />
+      <path class="icon-outline" d="M482    18   q1   2   0 4" stroke-width="0.5" />
+      <path class="icon-outline" d="M483.25 17.5 q1.5 2.5 0 5" stroke-width="0.5" />
+      <path class="icon-outline" d="M484.5  17   q2   3   0 6" stroke-width="0.5" />
+      <text class="function-key-label" x="480" y="27.5">F12</text>
+    </g>
+    <!-- Special key (Eject on magic keyboards, on/off on laptops -->
+    <g id="special">
+      <rect class="key" x="500" y="15" width="30" height="15" />
+      <text class="layer1-key-label" x="515" y="22.5"></text>
+    </g>
+
+    <!-- Row two: Numbers and Backspace -->
+    <!-- Here, label one and two are placed on top of each other -->
+    <g id="key1-1">
+      <rect class="key" x="15" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="30" y="58"></text>
+      <text class="layer2-key-label" x="30" y="45"></text>
+    </g>
+    <g id="key1-2">
+      <rect class="key" x="50" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="65" y="58"></text>
+      <text class="layer2-key-label" x="65" y="45"></text>
+    </g>
+    <g id="key1-3">
+      <rect class="key" x="85" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="100" y="58"></text>
+      <text class="layer2-key-label" x="100" y="45"></text>
+    </g>
+    <g id="key1-4">
+      <rect class="key" x="120" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="135" y="58"></text>
+      <text class="layer2-key-label" x="135" y="45"></text>
+    </g>
+    <g id="key1-5">
+      <rect class="key" x="155" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="170" y="58"></text>
+      <text class="layer2-key-label" x="170" y="45"></text>
+    </g>
+    <g id="key1-6">
+      <rect class="key" x="190" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="205" y="58"></text>
+      <text class="layer2-key-label" x="205" y="45"></text>
+      <text class="layer3-key-label" x="215" y="58"></text>
+    </g>
+    <g id="key1-7">
+      <rect class="key" x="225" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="240" y="58"></text>
+      <text class="layer2-key-label" x="240" y="45"></text>
+      <text class="layer3-key-label" x="250" y="58"></text>
+    </g>
+    <g id="key1-8">
+      <rect class="key" x="260" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="275" y="58"></text>
+      <text class="layer2-key-label" x="275" y="45"></text>
+      <text class="layer3-key-label" x="285" y="58"></text>
+    </g>
+    <g id="key1-9">
+      <rect class="key" x="295" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="310" y="58"></text>
+      <text class="layer2-key-label" x="310" y="45"></text>
+      <text class="layer3-key-label" x="320" y="58"></text>
+    </g>
+    <g id="key1-10">
+      <rect class="key" x="330" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="345" y="58"></text>
+      <text class="layer2-key-label" x="345" y="45"></text>
+      <text class="layer3-key-label" x="355" y="58"></text>
+    </g>
+    <g id="key1-11">
+      <rect class="key" x="365" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="380" y="58"></text>
+      <text class="layer2-key-label" x="380" y="45"></text>
+    </g>
+    <g id="key1-12">
+      <rect class="key" x="400" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="415" y="58"></text>
+      <text class="layer2-key-label" x="415" y="45"></text>
+    </g>
+    <g id="key1-13">
+      <rect class="key" x="435" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="450" y="58"></text>
+      <text class="layer2-key-label" x="450" y="45"></text>
+    </g>
+    <g id="backspace">
+      <rect class="key" x="470" y="35" width="60" height="30" />
+      <path class="icon-outline" d="M517 52 L523 52 Q525 52 525 54 L525 58 Q525 60 523 60 L517 60 L512 56 Z" />
+      <line class="icon-outline" x1="519" y1="54" x2="523" y2="58" />
+      <line class="icon-outline" x1="519" y1="58" x2="523" y2="54" />
+    </g>
+
+    <!-- Row three: Tab and Enter (part 1) -->
+    <g id="tab">
+      <rect class="key" x="15"  y="70" width="50" height="30" />
+      <line class="icon-outline" x1="22" y1="92" x2="35" y2="92" />
+      <path class="icon-outline" d="M30 89 l5 3 l-5 3" />
+      <line class="icon-outline" x1="37" y1="88" x2="37" y2="96" />
+    </g>
+    <g id="key2-1">
+      <rect class="key" x="70"  y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="85" y="85"></text>
+    </g>
+    <g id="key2-2">
+      <rect class="key" x="105" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="120" y="85"></text>
+    </g>
+    <g id="key2-3">
+      <rect class="key" x="140" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="155" y="85"></text>
+      <text class="layer3-key-label" x="165" y="95"></text>
+    </g>
+    <g id="key2-4">
+      <rect class="key" x="175" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="190" y="85"></text>
+    </g>
+    <g id="key2-5">
+      <rect class="key" x="210" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="225" y="85"></text>
+    </g>
+    <g id="key2-6">
+      <rect class="key" x="245" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="260" y="85"></text>
+    </g>
+    <g id="key2-7">
+      <rect class="key" x="280" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="295" y="85"></text>
+    </g>
+    <g id="key2-8">
+      <rect class="key" x="315" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="330" y="85"></text>
+    </g>
+    <g id="key2-9">
+      <rect class="key" x="350" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="365" y="85"></text>
+    </g>
+    <g id="key2-10">
+      <rect class="key" x="385" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="400" y="85"></text>
+    </g>
+    <g id="key2-11">
+      <rect class="key" x="420" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="435" y="85"></text>
+      <text class="layer2-key-label" x="445" y="95"></text>
+    </g>
+    <g id="key2-12">
+      <rect class="key" x="455" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="470" y="85"></text>
+      <text class="layer2-key-label" x="480" y="95"></text>
+    </g>
+
+    <!-- Starting point for Enter is the topleft corner -->
+    <g id="enter">
+      <path class="key" d="M495 70 l32 0 q3 0 3 3 l0 59 q0 3 -3 3 l-24 0 q-3 0 -3 -3 l0 -29 q0 -3 -3 -3 l-4 0 q-3 0 -3 -3 l0 -24 q0 -3 3 -3 Z" />
+      <path class="icon-outline" d="M510 85 L518 85 Q520 85 520 87 L520 90 Q520 92 518 92 L505 92" />
+      <path class="icon-outline" d=" M510 89 l-5 3 l5 3" />
+    </g>
+
+    <!-- Row four: Caps and Enter (part 2) -->
+    <g id="caps-lock">
+      <rect class="key" x="15" y="105" width="60" height="30" />
+      <circle class="indicator on" id="caps-status" cx="22" cy="112" r="2" />
+      <path class="icon-outline" d="M26 124  l0 -3 l-2 0 l5 -5 l5 5 l-2 0 l0 3 Z" />
+      <rect class="icon-outline" x="26" y="126" width="6" height="4" rx="1" ry="1" />
+    </g>
+    <g id="key3-1">
+      <rect class="key" x="80" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="95" y="120"></text>
+    </g>
+    <g id="key3-2">
+      <rect class="key" x="115" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="130" y="120"></text>
+    </g>
+    <g id="key3-3">
+      <rect class="key" x="150" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="165" y="120"></text>
+    </g>
+    <g id="key3-4">
+      <rect class="key" x="185" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="200" y="120"></text>
+    </g>
+    <g id="key3-5">
+      <rect class="key" x="220" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="235" y="120"></text>
+    </g>
+    <g id="key3-6">
+      <rect class="key" x="255" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="270" y="120"></text>
+    </g>
+    <g id="key3-7">
+      <rect class="key" x="290" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="305" y="120"></text>
+    </g>
+    <g id="key3-8">
+      <rect class="key" x="325" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="340" y="120"></text>
+    </g>
+    <g id="key3-9">
+      <rect class="key" x="360" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="375" y="120"></text>
+      <text class="layer3-key-label" x="385" y="130"></text>
+    </g>
+    <g id="key3-10">
+      <rect class="key" x="395" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="410" y="120"></text>
+      <text class="layer2-key-label" x="420" y="130"></text>
+    </g>
+    <g id="key3-11">
+      <rect class="key" x="430" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="445" y="120"></text>
+      <text class="layer2-key-label" x="455" y="130"></text>
+    </g>
+    <g id="key3-12">
+      <rect class="key" x="465" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="480" y="120"></text>
+      <text class="layer2-key-label" x="490" y="130"></text>
+    </g>
+
+    <!-- Row five: Both Shifts -->
+    <g id="shift-left">
+      <rect class="key" x="15" y="140" width="45" height="30" />
+      <path class="icon-outline" d="M26 165 l0 -3 l-2 0 l5 -5 l5 5 l-2 0 l0 3 Z" />
+    </g>
+    <g id="key4-1">
+      <rect class="key" x="65" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="80" y="160"></text>
+      <text class="layer2-key-label" x="80" y="150"></text>
+    </g>
+    <g id="key4-2">
+      <rect class="key" x="100" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="115" y="155"></text>
+    </g>
+    <g id="key4-3">
+      <rect class="key" x="135" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="150" y="155"></text>
+    </g>
+    <g id="key4-4">
+      <rect class="key" x="170" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="185" y="155"></text>
+    </g>
+    <g id="key4-5">
+      <rect class="key" x="205" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="220" y="155"></text>
+    </g>
+    <g id="key4-6">
+      <rect class="key" x="240" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="255" y="155"></text>
+    </g>
+    <g id="key4-7">
+      <rect class="key" x="275" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="290" y="155"></text>
+      <text class="layer3-key-label" x="300" y="165"></text>
+    </g>
+    <g id="key4-8">
+      <rect class="key" x="310" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="325" y="155"></text>
+      <text class="layer3-key-label" x="335" y="165"></text>
+    </g>
+    <g id="key4-9">
+      <rect class="key" x="345" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="360" y="160"></text>
+      <text class="layer2-key-label" x="360" y="150"></text>
+    </g>
+    <g id="key4-10">
+      <rect class="key" x="380" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="395" y="160"></text>
+      <text class="layer2-key-label" x="395" y="150"></text>
+    </g>
+    <g id="key4-11">
+      <rect class="key" x="415" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="430" y="160"></text>
+      <text class="layer2-key-label" x="430" y="150"></text>
+    </g>
+    <g id="shift-right">
+      <rect class="key" x="450" y="140" width="80" height="30" />
+      <path class="icon-outline" d="M516 165 l0 -3 l-2 0 l5 -5 l5 5 l-2 0 l0 3 Z" />
+    </g>
+
+    <!-- Row six: The control section -->
+    <g id="fn">
+      <rect class="key" x="15" y="175" width="30" height="30" />
+      <text x="25" y="200">fn</text>
+    </g>
+    <g id="control">
+      <rect class="key" x="50" y="175" width="30" height="30" />
+      <path class="icon-outline" d="M70 184 l3 -3 l3 3" />
+      <text x="65" y="200">control</text>
+    </g>
+    <g id="option-left">
+      <rect class="key" x="85" y="175" width="30" height="30" />
+      <path class="icon-outline" d="M100 181 l3 0 l2 3 l4 0" />
+      <line class="icon-outline" x1="105" y1="181" x2="109" y2="181" />
+      <text x="100" y="200">option</text>
+    </g>
+    <g id="command-left">
+      <rect class="key" x="120" y="175" width="45" height="30" />
+      <path class="icon-outline" d="M153 182 l5 0 c3 -1 0 -4 -1 -1 l0 5 c1 3 4 0 1 -1 l-5 0 c-3 1 0 4 1 1 l0 -5 c-1 -3 -4 0 -1 1 Z" />
+      <text x="145" y="200">command</text>
+    </g>
+    <g id="space">
+      <rect class="key" x="170" y="175" width="170" height="30" />
+      <text x="255" y="200"></text>
+    </g>
+    <g id="command-right">
+      <rect class="key" x="345" y="175" width="45" height="30" />
+      <path class="icon-outline" d="M352 182 l5 0 c3 -1 0 -4 -1 -1 l0 5 c1 3 4 0 1 -1 l-5 0 c-3 1 0 4 1 1 l0 -5 c-1 -3 -4 0 -1 1 Z" />
+      <text x="365" y="200">command</text>
+    </g>
+    <g id="option-right">
+      <rect class="key" x="395" y="175" width="30" height="30" />
+      <path class="icon-outline" d="M400 181 l3 0 l2 3 l4 0" />
+      <line class="icon-outline" x1="405" y1="181" x2="409" y2="181" />
+      <text x="410" y="200">option</text>
+    </g>
+    <g id="arrow-left">
+      <rect class="key" x="430" y="175" width="30" height="30" />
+      <polygon class="icon-fill" points="443,190 447,188 447,192" />
+    </g>
+    <g id="arrow-up">
+      <rect class="key" x="465" y="175" width="30" height="15" />
+      <polygon class="icon-fill" points="478,184 480,180 482,184" />
+    </g>
+    <g id="arrow-down">
+      <rect class="key" x="465" y="190" width="30" height="15" />
+      <polygon class="icon-fill" points="478,196 480,200 482,196" />
+    </g>
+    <g id="arrow-right">
+      <rect class="key" x="500" y="175" width="30" height="30" />
+      <polygon class="icon-fill" points="513,188 517,190 513,192" />
+    </g>
+  </g> <!-- END keyboard-keys -->
+</svg>
+</div>
+    <div class="keyboard" id="surface"><!--
+  SVG image for a 78-key Microsoft Surface Keyboard
+  =================================================
+
+  Created by: Hendrik Erz      <info@zettlr.com>
+  License:    CC BY-NC-SA 4.0  <https://creativecommons.org/licenses/by-nc-sa/4.0/>
+
+  Terms of use
+  ============
+
+  You are free to:
+
+  * SHARE: Copy and redistribute the material in any medium or format
+  * ADAPT: Remix, transform, and built upon the material
+
+  Under the following terms:
+
+  * ATTRIBUTION: You must give appropriate credit, provide
+    a link to the license, and indicate if changes were made.
+    You may do so in any reasonable manner, but not in any
+    way that suggests the licensor endorses you or your use.
+  * NON-COMMERCIAL: You may not use the material for commercial
+    purposes.
+  * SHARE-ALIKE: If you remix, transform, or build upon the
+    material, you must distribute your contributions under the
+    same license as the original.
+
+  DO NOT REMOVE THIS LICENSE BLOCK.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 545 220">
+  <!--
+    Surface keyboards always have 78 keys (at least Gen 4)
+
+    Row 1: 14 keys (incl. Delete)
+    Row 2: 14 keys (incl. Backspace)
+    Row 3: 14 keys (incl. Tab)
+    Row 4: 13 keys (incl. Enter)
+    Row 5: 12 keys (incl. Shift)
+    Row 6: 11 keys (incl. Arrows)
+
+    All standard keys are addressed via x/y-coords (row:key), one-based index,
+    e.g.: key1-1 is accent/tilde, key2-1 is Q (on en-US layout). The special keys
+    are addressed via named IDs, that is: arrow-up, caps-lock, shift-right, etc.
+
+    NOTES:
+
+    * You can toggle caps-lock by adding/removing the "on" class on its indicator.
+    * You can toggle the Fn key by adding/removing the "on" class on its indicator.
+   -->
+
+   <!-- GENERAL STYLES -->
+   <style type="text/css">
+       /* This animation pulsates a key if it has the class "pulse" */
+       @keyframes pulsate-key {
+         0% {
+           stroke-opcaity: 1;
+           stroke-width: 0;
+         }
+
+         10% {
+           stroke-opacity: 1;
+           stroke-width: 1;
+         }
+
+         100% {
+           stroke-opacity: 0;
+           stroke-width: 6;
+         }
+       }
+
+       .keyboard-surface {
+         fill: #8b8b8b;
+         stroke: #333333;
+       }
+
+       .surface .indicator {
+         stroke: none;
+         fill: #c6c6cc;
+       }
+
+       .surface .indicator.on {
+         fill: #aaffaa;
+       }
+
+       .surface .indicator.off {
+         fill: #c6c6cc;
+       }
+
+       /* .keyboard-keys namespacing enables custom theming. */
+       .surface.keyboard-keys rect.key {
+         fill: #a6a6ac;
+         stroke: #181818;
+         rx: 1pt;
+         ry: 1pt;
+       }
+
+       .surface.keyboard-keys rect.key.highlight {
+         fill: #aa6666;
+       }
+
+       .surface.keyboard-keys rect.key.pulse {
+         stroke: #fde1a3;
+         animation: pulsate-key 1s infinite; /* Let the key's stroke pulsate */
+       }
+
+       .surface.keyboard-keys text {
+         fill: #ffffff;
+         stroke: none;
+         font-family: 'Calibri Light', 'Helvetica Neue', sans-serif;
+         font-size: 5pt;
+         text-anchor: middle;
+         dominant-baseline: middle;
+       }
+
+       .surface.keyboard-keys text.function-key-label {
+         font-size: 3pt;
+         text-anchor: end;
+         dominant-baseline: baseline;
+       }
+
+       /* Adjust the font size of layer1, layer2, and layer3 key labels */
+       .surface.keyboard-keys text.layer1-key-label, .surface.keyboard-keys text.layer2-key-label {
+         font-size: 5pt; /* Same */
+       }
+
+       .surface.keyboard-keys text.layer3-key-label {
+         font-size: 5pt; /* Smaller font-size */
+       }
+
+       .surface.keyboard-keys .icon-outline {
+         stroke: #ffffff;
+         fill: none;
+         r: 0.5pt;
+       }
+
+       .surface.keyboard-keys .icon-fill {
+         stroke: none;
+         fill: #ffffff;
+       }
+
+       .surface.keyboard-keys .icon-outline-reverse {
+         stroke: #a6a6ac;
+         fill: none;
+       }
+
+       .surface.keyboard-keys .icon-fill-reverse {
+         stroke: none;
+         fill: #a6a6ac;
+       }
+   </style>
+
+  <!-- First, draw the keyboard outline -->
+  <rect class="keyboard-surface" x="10" y="10" width="525" height="200" rx="2" ry="2" />
+
+  <!-- Namespace the keys for easy styling -->
+  <g class="surface keyboard-keys">
+    <!-- Row one: Function keys -->
+    <g id="escape">
+      <rect class="key" x="15" y="15" width="45" height="15" />
+      <text x="25" y="22.5" text-anchor="start">Esc</text>
+    </g>
+    <g id="f1">
+      <rect class="key" x="65" y="15" width="30" height="15" />
+      <!-- Sun -->
+      <circle class="icon-fill" cx="80" cy="22" r="0.5" />
+      <!-- Eight points surrounding it -->
+      <circle class="icon-fill" cx="80" cy="19" r="0.5" />
+      <circle class="icon-fill" cx="82" cy="20" r="0.5" />
+      <circle class="icon-fill" cx="83" cy="22" r="0.5" />
+      <circle class="icon-fill" cx="82" cy="24" r="0.5" />
+      <circle class="icon-fill" cx="80" cy="25" r="0.5" />
+      <circle class="icon-fill" cx="78" cy="24" r="0.5" />
+      <circle class="icon-fill" cx="77" cy="22" r="0.5" />
+      <circle class="icon-fill" cx="78" cy="20" r="0.5" />
+      <text class="function-key-label" x="93" y="27">F1</text>
+    </g>
+    <g id="f2">
+      <rect class="key" x="100" y="15" width="30" height="15" />
+      <!-- Sun -->
+      <circle class="icon-fill" cx="115" cy="22" r="1" stroke="#ffffff" />
+      <!-- Eight points surrounding it -->
+      <circle class="icon-fill" cx="115" cy="19" r="1" />
+      <circle class="icon-fill" cx="117" cy="20" r="1" />
+      <circle class="icon-fill" cx="118" cy="22" r="1" />
+      <circle class="icon-fill" cx="117" cy="24" r="1" />
+      <circle class="icon-fill" cx="115" cy="25" r="1" />
+      <circle class="icon-fill" cx="113" cy="24" r="1" />
+      <circle class="icon-fill" cx="112" cy="22" r="1" />
+      <circle class="icon-fill" cx="113" cy="20" r="1" />
+      <text class="function-key-label" x="128" y="27">F2</text>
+    </g>
+    <g id="f3">
+      <rect class="key" x="135" y="15" width="30" height="15" />
+      <!-- Play/Pause -->
+      <polygon class="icon-outline" points="148.5,22 146,20.5 146,23.5" stroke-width="0.5" />
+      <line class="icon-outline" x1="150" y1="20" x2="150" y2="24" stroke-width="0.5" />
+      <line class="icon-outline" x1="152" y1="20" x2="152" y2="24" stroke-width="0.5" />
+      <text class="function-key-label" x="163" y="27">F3</text>
+    </g>
+    <g id="f4">
+      <rect class="key" x="170" y="15" width="30" height="15" />
+      <!-- Mute -->
+      <path class="icon-outline" d="M180 21 l2 0 l1 -1 q1 -1 1 0 l0 4 q0 1 -1 0 l-1 -1 l-2 0 Z" stroke-width="0.5" />
+      <line class="icon-outline" x1="186" x2="188" y1="21" y2="23" stroke-width="0.5" />
+      <line class="icon-outline" x1="186" x2="188" y1="23" y2="21" stroke-width="0.5" />
+      <text class="function-key-label" x="198" y="27">F4</text>
+    </g>
+    <g id="f5">
+      <rect class="key" x="205" y="15" width="30" height="15" />
+      <!-- Decrease volume -->
+      <path class="icon-outline" d="M217 21 l2 0 l1 -1 q1 -1 1 0 l0 4 q0 1 -1 0 l-1 -1 l-2 0 Z" stroke-width="0.5" />
+      <path class="icon-outline" d="M222 20 q1 2 0 4" stroke-width="0.5" />
+      <text class="function-key-label" x="233" y="27" >F5</text>
+    </g>
+    <g id="f6">
+      <rect class="key" x="240" y="15" width="30" height="15" />
+      <!-- Increase volume -->
+      <path class="icon-outline" d="M251 21 l2 0 l1 -1 q1 -1 1 0 l0 4 q0 1 -1 0 l-1 -1 l-2 0 Z" stroke-width="0.5" />
+      <path class="icon-outline" d="M256 20   q1   2   0 4" stroke-width="0.5" />
+      <path class="icon-outline" d="M257 19.5 q1.5 2.5 0 5" stroke-width="0.5" />
+      <text class="function-key-label" x="268" y="27">F6</text>
+    </g>
+    <g id="f7">
+      <rect class="key" x="275" y="15" width="30" height="15" />
+      <!-- A somewhat bigger rising sun -->
+      <line class="icon-outline" x1="288" y1="23.8" x2="292" y2="23.8" stroke-width="1.5" />
+      <!-- Five rays -->
+      <line class="icon-outline" x1="284" y1="24" x2="287" y2="24" />
+      <line class="icon-outline" x1="285.5" y1="19.5" x2="287.5" y2="21.5" />
+      <line class="icon-outline" x1="290" y1="18" x2="290" y2="21" />
+      <line class="icon-outline" x1="292.5" y1="21.5" x2="294.5" y2="19.5" />
+      <line class="icon-outline" x1="293" y1="24" x2="296" y2="24" />
+      <text class="function-key-label" x="303" y="27">F7</text>
+    </g>
+    <g id="f8">
+      <rect class="key" x="310" y="15" width="30" height="15" />
+      <text x="325" y="22.5">PrtScn</text>
+      <text class="function-key-label" x="338" y="27">F8</text>
+    </g>
+    <g id="f9">
+      <rect class="key" x="345" y="15" width="30" height="15" />
+      <text x="360" y="22.5" stroke="none" text-anchor="middle">Home</text>
+      <text class="function-key-label" x="373" y="27">F9</text>
+    </g>
+    <g id="f10">
+      <rect class="key" x="380" y="15" width="30" height="15" />
+      <text x="395" y="22.5" text-anchor="middle">End</text>
+      <text class="function-key-label" x="408" y="27">F10</text>
+    </g>
+    <g id="f11">
+      <rect class="key" x="415" y="15" width="30" height="15" />
+      <text x="430" y="22.5" text-anchor="middle">PgUp</text>
+      <text class="function-key-label" x="443" y="27">F11</text>
+    </g>
+    <g id="f12">
+      <rect class="key" x="450" y="15" width="30" height="15" />
+      <text x="465" y="22.5" text-anchor="middle">PgDn</text>
+      <text class="function-key-label" x="478" y="27">F12</text>
+    </g>
+    <g id="delete">
+      <rect class="key" x="485" y="15" width="45" height="15" />
+      <text x="520" y="22.5" text-anchor="right">Del</text>
+    </g>
+
+    <!-- Row two: Numbers and Backspace -->
+    <g id="key1-1">
+      <rect class="key" x="15" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="30" y="55"></text>
+      <text class="layer2-key-label" x="30" y="45"></text>
+    </g>
+    <g id="key1-2">
+      <rect class="key" x="50" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="65" y="55"></text>
+      <text class="layer2-key-label" x="65" y="45"></text>
+    </g>
+    <g id="key1-3">
+      <rect class="key" x="85" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="100" y="55"></text>
+      <text class="layer2-key-label" x="100" y="45"></text>
+    </g>
+    <g id="key1-4">
+      <rect class="key" x="120" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="135" y="55"></text>
+      <text class="layer2-key-label" x="135" y="45"></text>
+    </g>
+    <g id="key1-5">
+      <rect class="key" x="155" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="170" y="55"></text>
+      <text class="layer2-key-label" x="170" y="45"></text>
+    </g>
+    <g id="key1-6">
+      <rect class="key" x="190" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="205" y="55"></text>
+      <text class="layer2-key-label" x="205" y="45"></text>
+    </g>
+    <g id="key1-7">
+      <rect class="key" x="225" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="240" y="55"></text>
+      <text class="layer2-key-label" x="240" y="45"></text>
+    </g>
+    <g id="key1-8">
+      <rect class="key" x="260" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="275" y="55" ></text>
+      <text class="layer2-key-label" x="275" y="45" ></text>
+    </g>
+    <g id="key1-9">
+      <rect class="key" x="295" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="310" y="55"></text>
+      <text class="layer2-key-label" x="310" y="45"></text>
+    </g>
+    <g id="key1-10">
+      <rect class="key" x="330" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="345" y="55"></text>
+      <text class="layer2-key-label" x="345" y="45"></text>
+    </g>
+    <g id="key1-11">
+      <rect class="key" x="365" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="380" y="55"></text>
+      <text class="layer2-key-label" x="380" y="45"></text>
+    </g>
+    <g id="key1-12">
+      <rect class="key" x="400" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="415" y="55"></text>
+      <text class="layer2-key-label" x="415" y="45"></text>
+    </g>
+    <g id="key1-13">
+      <rect class="key" x="435" y="35" width="30" height="30" />
+      <text class="layer1-key-label" x="450" y="55"></text>
+      <text class="layer2-key-label" x="450" y="45"></text>
+    </g>
+    <g id="backspace">
+      <rect class="key" x="470" y="35" width="60" height="30" />
+      <text x="500" y="50">Backspace</text>
+    </g>
+
+    <!-- Row three: Tab -->
+    <g id="tab">
+      <rect class="key" x="15"  y="70" width="45" height="30" />
+      <text x="30" y="85">Tab</text>
+    </g>
+    <g id="key2-1">
+      <rect class="key" x="65"  y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="80" y="85"></text>
+      <text class="layer3-key-label" x="90" y="95"></text>
+    </g>
+    <g id="key2-2">
+      <rect class="key" x="100" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="115" y="85"></text>
+    </g>
+    <g id="key2-3">
+      <rect class="key" x="135" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="150" y="85"></text>
+      <text class="layer3-key-label" x="160" y="95"></text>
+    </g>
+    <g id="key2-4">
+      <rect class="key" x="170" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="185" y="85"></text>
+    </g>
+    <g id="key2-5">
+      <rect class="key" x="205" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="220" y="85"></text>
+    </g>
+    <g id="key2-6">
+      <rect class="key" x="240" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="255" y="85"></text>
+    </g>
+    <g id="key2-7">
+      <rect class="key" x="275" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="290" y="85"></text>
+    </g>
+    <g id="key2-8">
+      <rect class="key" x="310" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="325" y="85"></text>
+    </g>
+    <g id="key2-9">
+      <rect class="key" x="345" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="360" y="85"></text>
+    </g>
+    <g id="key2-10">
+      <rect class="key" x="380" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="395" y="85"></text>
+    </g>
+    <g id="key2-11">
+      <rect class="key" x="415" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="430" y="85"></text>
+      <text class="layer2-key-label" x="440" y="95"></text>
+    </g>
+    <g id="key2-12">
+      <rect class="key" x="450" y="70" width="30" height="30" />
+      <text class="layer1-key-label" x="465" y="80"></text>
+      <text class="layer2-key-label" x="465" y="90"></text>
+      <text class="layer3-key-label" x="475" y="90"></text>
+    </g>
+    <g id="key2-13">
+      <rect class="key" x="485" y="70" width="45" height="30" />
+      <text class="layer1-key-label" x="508" y="80"></text>
+      <text class="layer2-key-label" x="508" y="90"></text>
+    </g>
+
+    <!-- Row four: Caps and Enter -->
+    <g id="caps-lock">
+      <rect class="key" x="15" y="105" width="55" height="30" />
+      <circle class="indicator on" id="caps-status" cx="65" cy="110" r="1" />
+      <text x="32.5" y="120">Caps</text>
+    </g>
+    <g id="key3-1">
+      <rect class="key" x="75" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="90" y="120"></text>
+    </g>
+    <g id="key3-2">
+      <rect class="key" x="110" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="125" y="120"></text>
+    </g>
+    <g id="key3-3">
+      <rect class="key" x="145" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="160" y="120"></text>
+    </g>
+    <g id="key3-4">
+      <rect class="key" x="180" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="195" y="120"></text>
+    </g>
+    <g id="key3-5">
+      <rect class="key" x="215" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="230" y="120"></text>
+    </g>
+    <g id="key3-6">
+      <rect class="key" x="250" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="265" y="120"></text>
+    </g>
+    <g id="key3-7">
+      <rect class="key" x="285" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="300" y="120"></text>
+    </g>
+    <g id="key3-8">
+      <rect class="key" x="320" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="335" y="120"></text>
+    </g>
+    <g id="key3-9">
+      <rect class="key" x="355" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="370" y="120"></text>
+    </g>
+    <g id="key3-10">
+      <rect class="key" x="390" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="405" y="120"></text>
+      <text class="layer2-key-label" x="415" y="130"></text>
+    </g>
+    <g id="key3-11">
+      <rect class="key" x="425" y="105" width="30" height="30" />
+      <text class="layer1-key-label" x="440" y="120"></text>
+      <text class="layer2-key-label" x="450" y="130"></text>
+    </g>
+    <g id="enter">
+      <rect class="key" x="460" y="105" width="70" height="30" />
+      <text x="510" y="120">Enter</text>
+    </g>
+
+    <!-- Row five: Both Shifts -->
+    <g id="shift-left">
+      <rect class="key" x="15"  y="140" width="80" height="30" />
+      <text x="32.5" y="155">Shift</text>
+    </g>
+    <g id="key4-1">
+      <rect class="key" x="100" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="115" y="155"></text>
+    </g>
+    <g id="key4-2">
+      <rect class="key" x="135" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="150" y="155"></text>
+    </g>
+    <g id="key4-3">
+      <rect class="key" x="170" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="185" y="155"></text>
+    </g>
+    <g id="key4-4">
+      <rect class="key" x="205" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="220" y="155"></text>
+    </g>
+    <g id="key4-5">
+      <rect class="key" x="240" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="255" y="155"></text>
+    </g>
+    <g id="key4-6">
+      <rect class="key" x="275" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="290" y="155"></text>
+    </g>
+    <g id="key4-7">
+      <rect class="key" x="310" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="325" y="155"></text>
+      <text class="layer3-key-label" x="335" y="165"></text>
+    </g>
+    <g id="key4-8">
+      <rect class="key" x="345" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="360" y="160"></text>
+      <text class="layer2-key-label" x="360" y="150"></text>
+    </g>
+    <g id="key4-9">
+      <rect class="key" x="380" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="395" y="160"></text>
+      <text class="layer2-key-label" x="395" y="150"></text>
+    </g>
+    <g id="key4-10">
+      <rect class="key" x="415" y="140" width="30" height="30" />
+      <text class="layer1-key-label" x="430" y="160"></text>
+      <text class="layer2-key-label" x="430" y="150"></text>
+    </g>
+    <g id="shift-right">
+      <rect class="key" x="450" y="140" width="80" height="30" />
+      <text x="510" y="155">Shift</text>
+    </g>
+
+    <!-- Row six: The control section -->
+    <g id="control">
+      <rect class="key" x="15"  y="175" width="55" height="30" />
+      <text x="32.5" y="190">Ctrl</text>
+    </g>
+    <g id="fn">
+      <rect class="key" x="75"  y="175" width="30" height="30" />
+      <circle class="indicator on" id="fn-status" cx="100" cy="180" r="1" />
+      <text x="90" y="190">Fn</text>
+    </g>
+    <g id="windows">
+      <rect class="key" x="110"  y="175" width="30" height="30" />
+      <!-- The Windows logo -->
+      <path class="icon-fill" d="M120 186 l10 -1 l0 10 l-10 -1 Z" />
+      <line class="icon-outline-reverse" x1="124" x2="124" y1="185" y2="195" stroke-width="0.5" />
+      <line class="icon-outline-reverse" x1="120" x2="130" y1="190" y2="190" stroke-width="0.5" />
+    </g>
+    <g id="alt-left">
+      <rect class="key" x="145" y="175" width="30" height="30" />
+      <text x="160" y="190">Alt</text>
+    </g>
+    <g id="space">
+      <rect class="key" x="180" y="175" width="175" height="30" />
+      <text x="267.5" y="190"></text>
+    </g>
+    <g id="alt-right">
+      <rect class="key" x="360" y="175" width="30" height="30" />
+      <text x="375" y="190">Alt</text>
+    </g>
+    <g id="menu">
+      <rect class="key" x="395" y="175" width="30" height="30" />
+      <!-- Burgertime! -->
+      <rect class="icon-outline" x="402.5" y="182.5" width="15" height="15" />
+      <line class="icon-outline" x1="407.5" x2="412.5" y1="187.5" y2="187.5" />
+      <line class="icon-outline" x1="407.5" x2="412.5" y1="190" y2="190" />
+      <line class="icon-outline" x1="407.5" x2="412.5" y1="192.5" y2="192.5" />
+    </g>
+    <g id="arrow-left">
+      <rect class="key" x="430" y="175" width="30" height="30" />
+      <path class="icon-outline" d="M445 192 L443 190 L445 188" fill="none" />
+    </g>
+    <g id="arrow-up">
+      <rect class="key" x="465" y="175" width="30" height="15" />
+      <path class="icon-outline" d="M478 183 L480 181 L482 183" fill="none" />
+    </g>
+    <g id="arrow-down">
+      <rect class="key" x="465" y="190" width="30" height="15" />
+      <path class="icon-outline" d="M478 196 L480 198 L482 196" fill="none" />
+    </g>
+    <g id="arrow-right">
+      <rect class="key" x="500" y="175" width="30" height="30" />
+      <path class="icon-outline" d="M515 188 L517 190 L515 192" fill="none" />
+    </g>
+  </g> <!-- END keyboard key group -->
+</svg>
+</div>
+
+    <!-- Displays the parsed shortcuts -->
+    <div id="shortcut-container"></div>
+  </div>
+  <footer>
+    <p>
+      <a href="https://github.com/nathanlesage/cheatsheet-generator" target="_blank" rel="nofollow">Shortcut Generator</a> | &copy; 2019 by Hendrik Erz |
+      <a href="https://www.zettlr.com" target="_blank" rel="nofollow">zettlr.com</a>
+    </p>
+  </footer>
+</body>
+
+</html>
