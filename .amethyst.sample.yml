@@ -266,6 +266,9 @@ floating-is-blacklist: true
 # true if screen frames should exclude the status bar. false if the screen frames should include the status bar (default false).
 ignore-menu-bar: false
 
+# true if menu bar icon should be hidden (default false).
+hide-menu-bar-icon: false
+
 # true if windows smaller than a 500px square should be floating by default (default true)
 float-small-windows: true
 
