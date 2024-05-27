@@ -22,6 +22,12 @@ func SLPSPostEventRecordTo(_ psn: inout ProcessSerialNumber, _ bytes: inout UInt
 @_silgen_name("SLSMoveWindowsToManagedSpace")
 func SLSMoveWindowsToManagedSpace(_ cid: Int32, _ window_ids: CFArray, _ sid: Int)
 
+@_silgen_name("SLSSpaceSetCompatID")
+func SLSSpaceSetCompatID(_ cid: Int32, _ sid: Int, _ workspace: Int32) -> CGError
+
+@_silgen_name("SLSSetWindowListWorkspace")
+func SLSSetWindowListWorkspace(_ cid: Int32, _ window_ids: UnsafePointer<UInt32>, _ window_count: Int32, _ workspace: Int32) -> CGError
+
 let kCPSUserGenerated: UInt32 = 0x200
 let kCPSNoWindows: UInt32 = 0x400
 // swiftlint:enable identifier_name
@@ -292,7 +298,7 @@ extension AXWindow: WindowType {
      What a mess. See: https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-545545468
      */
     @discardableResult override func focus() -> Bool {
-        var pid = self.pid()
+        let pid = self.pid()
         var wid = self.cgID()
         var psn = ProcessSerialNumber()
         let status = GetProcessForPID(pid, &psn)
@@ -367,6 +373,32 @@ extension AXWindow: WindowType {
     }
 
     func move(toSpace spaceID: CGSSpaceID) {
-        SLSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
+        if ProcessInfo.processInfo.isOperatingSystemAtLeast(OperatingSystemVersion(majorVersion: 14, minorVersion: 5, patchVersion: 0)) {
+            /*
+             See:
+             - https://github.com/ianyh/Amethyst/issues/1643
+             - https://github.com/koekeishiya/yabai/issues/2240
+             - https://github.com/koekeishiya/yabai/commit/98bbdbd1363f27d35f09338cded0de1ec010d830
+             */
+            var error: CGError = .success
+
+            error = SLSSpaceSetCompatID(CGSMainConnectionID(), spaceID, 0x79616265)
+            defer { _ = SLSSpaceSetCompatID(CGSMainConnectionID(), spaceID, 0x0) }
+            guard error == .success else {
+                log.error("failed to set compat aside id: \(error)")
+                return
+            }
+
+            var id = cgID()
+            error = withUnsafeMutablePointer(to: &id, { pointer -> CGError in
+                return SLSSetWindowListWorkspace(CGSMainConnectionID(), pointer, 1, 0x79616265)
+            })
+            guard error == .success else {
+                log.error("failed to throw window: \(error)")
+                return
+            }
+        } else {
+            SLSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
+        }
     }
 }
