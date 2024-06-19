@@ -198,7 +198,7 @@ Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/cust
 Configuration File
 -------------
 
-Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md).
+Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md). Note that if configuration file is present, it will override the settings defined via the GUI.
 
 Building Amethyst Locally
 -------------
