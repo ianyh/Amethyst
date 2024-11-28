@@ -128,6 +128,14 @@ protocol WindowType: Equatable {
     func move(toSpace space: UInt)
 
     /**
+     Moves the window to the space at an index.
+     
+     - Parameters:
+        - space: The index of the space
+     */
+    func move(toSpaceAtIndex space: UInt)
+
+    /**
      Moves the window to a space.
      
      - Parameters:
@@ -372,40 +380,47 @@ extension AXWindow: WindowType {
         move(to: screen.screen)
     }
 
-    func move(toSpace spaceID: CGSSpaceID) {
-        let osVersion = ProcessInfo.processInfo.operatingSystemVersion
-        if (osVersion.majorVersion >= 15) ||
-            (osVersion.majorVersion == 14 && osVersion.minorVersion >= 5) ||
-            (osVersion.majorVersion == 13 && osVersion.minorVersion >= 6) ||
-            (osVersion.majorVersion == 12 && osVersion.minorVersion >= 7) {
-            /*
-             See:
-             - https://github.com/ianyh/Amethyst/issues/1643
-             - https://github.com/ianyh/Amethyst/issues/1666
-             - https://github.com/koekeishiya/yabai/issues/2240
-             - https://github.com/koekeishiya/yabai/issues/2408
-             - https://github.com/koekeishiya/yabai/commit/98bbdbd1363f27d35f09338cded0de1ec010d830
-             - https://github.com/koekeishiya/yabai/commit/c8f913cbc0497d1dfe16138f40a8ba6ecaa744f8
-             */
-            var error: CGError = .success
-
-            error = SLSSpaceSetCompatID(CGSMainConnectionID(), spaceID, 0x79616265)
-            defer { _ = SLSSpaceSetCompatID(CGSMainConnectionID(), spaceID, 0x0) }
-            guard error == .success else {
-                log.error("failed to set compat aside id: \(error)")
-                return
-            }
-
-            var id = cgID()
-            error = withUnsafeMutablePointer(to: &id, { pointer -> CGError in
-                return SLSSetWindowListWorkspace(CGSMainConnectionID(), pointer, 1, 0x79616265)
-            })
-            guard error == .success else {
-                log.error("failed to throw window: \(error)")
-                return
-            }
-        } else {
-            SLSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
-        }
+    func move(toSpaceAtIndex space: UInt) {
+        super.move(toSpace: space)
     }
+
+    func move(toSpace spaceID: CGSSpaceID) {
+    }
+//    func move(toSpace spaceID: CGSSpaceID) {
+//        super.move(toSpace: spaceID)
+//        let osVersion = ProcessInfo.processInfo.operatingSystemVersion
+//        if (osVersion.majorVersion >= 15) ||
+//            (osVersion.majorVersion == 14 && osVersion.minorVersion >= 5) ||
+//            (osVersion.majorVersion == 13 && osVersion.minorVersion >= 6) ||
+//            (osVersion.majorVersion == 12 && osVersion.minorVersion >= 7) {
+//            /*
+//             See:
+//             - https://github.com/ianyh/Amethyst/issues/1643
+//             - https://github.com/ianyh/Amethyst/issues/1666
+//             - https://github.com/koekeishiya/yabai/issues/2240
+//             - https://github.com/koekeishiya/yabai/issues/2408
+//             - https://github.com/koekeishiya/yabai/commit/98bbdbd1363f27d35f09338cded0de1ec010d830
+//             - https://github.com/koekeishiya/yabai/commit/c8f913cbc0497d1dfe16138f40a8ba6ecaa744f8
+//             */
+//            var error: CGError = .success
+//
+//            error = SLSSpaceSetCompatID(CGSMainConnectionID(), spaceID, 0x79616265)
+//            defer { _ = SLSSpaceSetCompatID(CGSMainConnectionID(), spaceID, 0x0) }
+//            guard error == .success else {
+//                log.error("failed to set compat aside id: \(error)")
+//                return
+//            }
+//
+//            var id = cgID()
+//            error = withUnsafeMutablePointer(to: &id, { pointer -> CGError in
+//                return SLSSetWindowListWorkspace(CGSMainConnectionID(), pointer, 1, 0x79616265)
+//            })
+//            guard error == .success else {
+//                log.error("failed to throw window: \(error)")
+//                return
+//            }
+//        } else {
+//            SLSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
+//        }
+//    }
 }

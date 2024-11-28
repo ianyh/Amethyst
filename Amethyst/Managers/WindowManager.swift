@@ -731,24 +731,8 @@ extension WindowManager: WindowTransitionTarget {
             guard let targetScreen = CGSpacesInfo<Window>.screenForSpace(space: targetSpace) else {
                 return
             }
-            if window.isFocused() {
-                if activeWindows(on: screen).count == 1,
-                   let finder = NSWorkspace.shared.runningApplications.first(where: { $0.bundleIdentifier == "com.apple.finder" }) {
-                    var psn = ProcessSerialNumber()
-                    let status = GetProcessForPID(finder.processIdentifier, &psn)
-                    if status != noErr {
-                        log.error(status)
-                    }
-                    let cgStatus = _SLPSSetFrontProcessWithOptions(&psn, 0, kCPSNoWindows)
-                    if cgStatus != .success {
-                        log.error(cgStatus.rawValue)
-                    }
-                } else {
-                    focusTransitionCoordinator.moveFocusClockwise()
-                }
-            }
             markScreen(screen, forReflowWithChange: .remove(window: window))
-            window.move(toSpace: targetSpace.id)
+            window.move(toSpaceAtIndex: UInt(spaceIndex + 1))
             if targetScreen.screenID() != screen.screenID() {
                 // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
                 let newFrame = targetScreen.frameWithoutDockOrMenu()
@@ -756,9 +740,9 @@ extension WindowManager: WindowTransitionTarget {
                     window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
                 }
             }
-            if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
-                window.focus()
-            }
+//            if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
+//                window.focus()
+//            }
             markScreen(targetScreen, forReflowWithChange: .add(window: window))
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
