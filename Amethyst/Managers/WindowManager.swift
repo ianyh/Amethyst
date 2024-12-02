@@ -718,7 +718,7 @@ extension WindowManager: WindowTransitionTarget {
             }
             markScreen(screen, forReflowWithChange: .add(window: window))
             window.focus()
-        case let .moveWindowToSpaceAtIndex(window, spaceIndex):
+        case let .moveWindowToSpaceAtIndex(window, spaceIndex, sourceSpaceIndex):
             guard
                 let screen = window.screen(),
                 let spaces = CGSpacesInfo<Window>.spacesForAllScreens(includeOnlyUserSpaces: true),
@@ -740,9 +740,11 @@ extension WindowManager: WindowTransitionTarget {
                     window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
                 }
             }
-//            if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
-//                window.focus()
-//            }
+            if !UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    SISystemWideElement.switch(toSpace: UInt(sourceSpaceIndex + 1))
+                }
+            }
             markScreen(targetScreen, forReflowWithChange: .add(window: window))
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {
