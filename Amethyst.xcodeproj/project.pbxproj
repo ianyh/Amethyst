@@ -762,7 +762,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n(cd ${PROJECT_DIR} && swiftlint --fix && swiftlint)\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nswiftlint --fix && swiftlint\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
