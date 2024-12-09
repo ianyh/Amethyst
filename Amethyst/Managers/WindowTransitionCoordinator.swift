@@ -160,7 +160,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.firstIndex(of: currentFocusedSpace), index + 1 < spaces.count else {
+        guard let index = spaces.firstIndex(of: currentFocusedSpace), index < spaces.count else {
             return
         }
 
