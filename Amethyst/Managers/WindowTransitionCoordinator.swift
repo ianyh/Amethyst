@@ -180,7 +180,8 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.firstIndex(of: currentFocusedSpace), index > 0 else {
+        let filteredSpaces = spaces.filter { $0.type == CGSSpaceTypeUser }
+        guard let index = filteredSpaces.firstIndex(of: currentFocusedSpace), index > 0 else {
             return
         }
 
@@ -192,7 +193,8 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.firstIndex(of: currentFocusedSpace), index + 1 < spaces.count else {
+        let filteredSpaces = spaces.filter { $0.type == CGSSpaceTypeUser }
+        guard let index = filteredSpaces.firstIndex(of: currentFocusedSpace), index + 1 < spaces.count else {
             return
         }
 
