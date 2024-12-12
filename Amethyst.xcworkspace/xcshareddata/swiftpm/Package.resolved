@@ -1,5 +1,5 @@
 {
-  "originHash" : "43f1b1e9bfd866a37b073557f24d496c85ab3a7508ae523528cda0c3afb30aa9",
+  "originHash" : "dacd754e4470b2e150237d6958482482a937b9ccadab57ae7aab15ece775f80c",
   "pins" : [
     {
       "identity" : "cartography",
@@ -79,7 +79,7 @@
       "location" : "https://github.com/ianyh/silica",
       "state" : {
         "branch" : "master",
-        "revision" : "ccc4b5df0485e7633acab92e206cd1b956098255"
+        "revision" : "27773e60601453e9a65729b60fa5efc3322d99e0"
       }
     },
     {
