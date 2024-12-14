@@ -10,16 +10,16 @@ import Foundation
 import Silica
 
 // swiftlint:disable identifier_name
-@_silgen_name("GetProcessForPID") @discardableResult
-func GetProcessForPID(_ pid: pid_t, _ psn: inout ProcessSerialNumber) -> OSStatus
+ @_silgen_name("GetProcessForPID") @discardableResult
+ func GetProcessForPID(_ pid: pid_t, _ psn: inout ProcessSerialNumber) -> OSStatus
 
-@_silgen_name("_SLPSSetFrontProcessWithOptions") @discardableResult
-func _SLPSSetFrontProcessWithOptions(_ psn: inout ProcessSerialNumber, _ wid: UInt32, _ mode: UInt32) -> CGError
+ @_silgen_name("_SLPSSetFrontProcessWithOptions") @discardableResult
+ func _SLPSSetFrontProcessWithOptions(_ psn: inout ProcessSerialNumber, _ wid: UInt32, _ mode: UInt32) -> CGError
 
-@_silgen_name("SLPSPostEventRecordTo") @discardableResult
-func SLPSPostEventRecordTo(_ psn: inout ProcessSerialNumber, _ bytes: inout UInt8) -> CGError
+ @_silgen_name("SLPSPostEventRecordTo") @discardableResult
+ func SLPSPostEventRecordTo(_ psn: inout ProcessSerialNumber, _ bytes: inout UInt8) -> CGError
 
-let kCPSUserGenerated: UInt32 = 0x200
+ let kCPSUserGenerated: UInt32 = 0x200
 // swiftlint:enable identifier_name
 
 /// Generic protocol for objects acting as windows in the system.
@@ -116,6 +116,14 @@ protocol WindowType: Equatable {
         - space: The index of the space.
      */
     func move(toSpace space: UInt)
+
+    /**
+     Moves the window to the space at an index.
+     
+     - Parameters:
+        - space: The index of the space
+     */
+    func move(toSpaceAtIndex space: UInt)
 
     /**
      Moves the window to a space.
@@ -288,7 +296,7 @@ extension AXWindow: WindowType {
      What a mess. See: https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-545545468
      */
     @discardableResult override func focus() -> Bool {
-        var pid = self.pid()
+        let pid = self.pid()
         var wid = self.cgID()
         var psn = ProcessSerialNumber()
         let status = GetProcessForPID(pid, &psn)
@@ -318,7 +326,7 @@ extension AXWindow: WindowType {
             }
         }
 
-        guard super.focus() else {
+        guard super.raise() else {
             return false
         }
 
@@ -362,7 +370,10 @@ extension AXWindow: WindowType {
         move(to: screen.screen)
     }
 
+    func move(toSpaceAtIndex space: UInt) {
+        super.move(toSpace: space)
+    }
+
     func move(toSpace spaceID: CGSSpaceID) {
-        CGSMoveWindowsToManagedSpace(CGSMainConnectionID(), [cgID()] as CFArray, spaceID)
     }
 }

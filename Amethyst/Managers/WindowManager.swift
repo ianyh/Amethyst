@@ -112,7 +112,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
-        markScreen(screen, forReflowWithChange: .unknown)
+        markScreen(screen, forReflowWithChange: .applicationActivate)
 //        doMouseFollowsFocus(focusedWindow: focusedWindow)
     }
 
@@ -374,11 +374,12 @@ extension WindowManager {
         for runningApplication in NSWorkspace.shared.runningApplications {
             add(runningApplication: runningApplication)
         }
-        markAllScreensForReflow(withChange: .unknown)
+        markAllScreensForReflow(withChange: .none)
     }
 
     private func add(window: Window, retries: Int = 5) {
         guard !windows.isWindowTracked(window) else {
+            log.warning("skipping window")
             return
         }
 
@@ -467,7 +468,7 @@ extension WindowManager {
             add(window: window)
             executeTransition(.switchWindows(existingWindow, window))
             windows.regenerateActiveIDCache()
-            markScreen(screen, forReflowWithChange: .unknown)
+            markScreen(screen, forReflowWithChange: .tabChange)
 
             return
         }
@@ -717,7 +718,7 @@ extension WindowManager: WindowTransitionTarget {
             }
             markScreen(screen, forReflowWithChange: .add(window: window))
             window.focus()
-        case let .moveWindowToSpaceAtIndex(window, spaceIndex):
+        case let .moveWindowToSpaceAtIndex(window, spaceIndex, sourceSpaceIndex):
             guard
                 let screen = window.screen(),
                 let spaces = CGSpacesInfo<Window>.spacesForAllScreens(includeOnlyUserSpaces: true),
@@ -730,18 +731,17 @@ extension WindowManager: WindowTransitionTarget {
             guard let targetScreen = CGSpacesInfo<Window>.screenForSpace(space: targetSpace) else {
                 return
             }
-            markScreen(screen, forReflowWithChange: .remove(window: window))
-            window.move(toSpace: targetSpace.id)
+            window.move(toSpaceAtIndex: UInt(spaceIndex + 1))
             if targetScreen.screenID() != screen.screenID() {
                 // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
-                let newFrame = targetScreen.frameWithoutDockOrMenu()
-                DispatchQueue.main.sync {
-                    window.setFrame(newFrame, withThreshold: CGSize(width: 25, height: 25))
-                }
+                window.moveScaled(to: targetScreen)
+                markScreen(screen, forReflowWithChange: .remove(window: window))
+                markScreen(targetScreen, forReflowWithChange: .add(window: window))
             }
-            markScreen(targetScreen, forReflowWithChange: .add(window: window))
-            if UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
-                window.focus()
+            if !UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    SISystemWideElement.switch(toSpace: UInt(sourceSpaceIndex + 1))
+                }
             }
         case .resetFocus:
             if let screen = screens.screenManagers.first?.screen {

@@ -15,7 +15,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Dependencies
         run: |
-          bundle install
+          brew bundle
       - name: Test
         run: |
-          set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | bundle exec xcpretty
+          set -o pipefail && xcodebuild -workspace Amethyst.xcworkspace -scheme Amethyst clean test | xcbeautify
+

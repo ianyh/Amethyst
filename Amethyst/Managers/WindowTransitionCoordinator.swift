@@ -14,7 +14,7 @@ enum WindowTransition<Window: WindowType> {
     typealias Screen = Window.Screen
     case switchWindows(_ window1: Window, _ window2: Window)
     case moveWindowToScreen(_ window: Window, screen: Screen)
-    case moveWindowToSpaceAtIndex(_ window: Window, spaceIndex: Int)
+    case moveWindowToSpaceAtIndex(_ window: Window, spaceIndex: Int, sourceSpaceIndex: Int)
     case resetFocus
 }
 
@@ -156,11 +156,23 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func pushFocusedWindowToSpace(_ space: Int) {
+        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(), let spaces = CGSpacesInfo<Window>.spacesForAllScreens() else {
+            return
+        }
+
+        guard let index = spaces.firstIndex(of: currentFocusedSpace), index < spaces.count else {
+            return
+        }
+
+        pushFocusedWindowToSpace(space, sourceSpace: index)
+    }
+
+    func pushFocusedWindowToSpace(_ space: Int, sourceSpace: Int) {
         guard let focusedWindow = Window.currentlyFocused(), focusedWindow.screen() != nil else {
             return
         }
 
-        target?.executeTransition(.moveWindowToSpaceAtIndex(focusedWindow, spaceIndex: space))
+        target?.executeTransition(.moveWindowToSpaceAtIndex(focusedWindow, spaceIndex: space, sourceSpaceIndex: sourceSpace))
     }
 
     func pushFocusedWindowToSpaceLeft() {
@@ -168,11 +180,12 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.firstIndex(of: currentFocusedSpace), index > 0 else {
+        let filteredSpaces = spaces.filter { $0.type == CGSSpaceTypeUser }
+        guard let index = filteredSpaces.firstIndex(of: currentFocusedSpace), index > 0 else {
             return
         }
 
-        pushFocusedWindowToSpace(index - 1)
+        pushFocusedWindowToSpace(index - 1, sourceSpace: index)
     }
 
     func pushFocusedWindowToSpaceRight() {
@@ -180,10 +193,11 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             return
         }
 
-        guard let index = spaces.firstIndex(of: currentFocusedSpace), index + 1 < spaces.count else {
+        let filteredSpaces = spaces.filter { $0.type == CGSSpaceTypeUser }
+        guard let index = filteredSpaces.firstIndex(of: currentFocusedSpace), index + 1 < spaces.count else {
             return
         }
 
-        pushFocusedWindowToSpace(index + 1)
+        pushFocusedWindowToSpace(index + 1, sourceSpace: index)
     }
 }

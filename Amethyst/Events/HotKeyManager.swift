@@ -197,7 +197,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             }
         }
 
-        (1...4).forEach { screenNumber in
+        (1...5).forEach { screenNumber in
             let focusCommandKey = "\(CommandKey.focusScreenPrefix.rawValue)-\(screenNumber)"
             let throwCommandKey = "\(CommandKey.throwScreenPrefix.rawValue)-\(screenNumber)"
 
@@ -391,7 +391,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             hotKeyNameToDefaultsKey.append([name, "\(CommandKey.throwSpacePrefix.rawValue)-\(spaceNumber)"])
         }
 
-        (1...4).forEach { screenNumber in
+        (1...5).forEach { screenNumber in
             let focusCommandName = "Focus screen \(screenNumber)"
             let throwCommandName = "Throw focused window to screen \(screenNumber)"
             let focusCommandKey = "\(CommandKey.focusScreenPrefix.rawValue)-\(screenNumber)"

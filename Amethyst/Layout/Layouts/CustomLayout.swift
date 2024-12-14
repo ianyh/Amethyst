@@ -153,7 +153,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             let window = JSWindow<Window>(id: id, window: layoutWindow)
             return partialResult.merging([layoutWindow.id: window]) { current, _ in return current }
         }
-        let jsWindowsArg = windows.map { window -> [String: Any] in
+        let jsWindowsArg = windows.map { window -> [String: Any?] in
             let jsWindow = jsWindows[window.id]!
             return [
                 "id": jsWindow.id,
@@ -162,7 +162,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             ]
         }
 
-        let extendedFrames: [[String: Any]]? = extendedFrameAssignments(windowSet, on: screen)?.compactMap { frameAssignmentOperation in
+        let extendedFrames: [[String: Any?]]? = extendedFrameAssignments(windowSet, on: screen)?.compactMap { frameAssignmentOperation in
             let frameAssignment = frameAssignmentOperation.frameAssignment
             guard let jsWindow = jsWindows[frameAssignment.window.id] else {
                 return nil
@@ -273,15 +273,20 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
     }
 
     private func idHash(forWindowID windowID: WindowID) -> String? {
-        guard let encodedID = try? JSONEncoder().encode(windowID) else {
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .sortedKeys
+
+            let encodedID = try encoder.encode(windowID)
+            var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+            encodedID.withUnsafeBytes {
+                _ = CC_SHA256($0.baseAddress, CC_LONG(encodedID.count), &hash)
+            }
+            return hash.map { String(format: "%02hhx", $0) }.joined()
+        } catch {
+            log.warning("Failed to hash window id: \(error)")
             return nil
         }
-
-        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        encodedID.withUnsafeBytes {
-            _ = CC_SHA256($0.baseAddress, CC_LONG(encodedID.count), &hash)
-        }
-        return hash.map { String(format: "%02hhx", $0) }.joined()
     }
 
     private func jsChange(forChange change: Change<Window>) -> [String: String] {
@@ -309,8 +314,12 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
             jsChange["change"] = "space_change"
         case .layoutChange:
             jsChange["change"] = "layout_change"
+        case .tabChange:
+            jsChange["change"] = "tab_change"
         case .unknown:
             jsChange["change"] = "unknown"
+        case .none:
+            jsChange["change"] = "none"
         }
 
         return jsChange

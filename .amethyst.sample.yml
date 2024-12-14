@@ -1,9 +1,9 @@
-# Default settings for amethyst
+# Default settings for Amethyst
 # Repo: `https://github.com/ianyh/Amethyst`
 #
 # Note due to issue 1419 (https://github.com/ianyh/Amethyst/issues/1419) some
 # config values may conflict and not work if they are the same as the default
-# values for amathyst. You can see these values on github at
+# values for Amethyst. You can see these values on GitHub at
 # https://github.com/ianyh/Amethyst/blob/development/Amethyst/default.amethyst
 # If you're experiencing conflicts and the settings are the same as the default,
 # comment out the commands in this file.
@@ -22,7 +22,7 @@ layouts:
   # - two-pane
   # - middle-wide
   # - 3column-left
-  # - 3column-middle
+  # - middle-wide # The legacy name of "3column-middle"
   # - 3column-right
   # - 4column-left
   # - 4column-right
@@ -235,7 +235,7 @@ relaunch-amethyst:
 # disable screen padding on builtin display
 disable-padding-on-builtin-display: false
 
-# Boolean flag for whether or not to add margins betwen windows (default false).
+# Boolean flag for whether or not to add margins between windows (default false).
 window-margins: false
 
 # Boolean flag for whether or not to set window margins if there is only one window on the screen, assuming window margins are enabled (default false).
@@ -265,6 +265,9 @@ floating-is-blacklist: true
 
 # true if screen frames should exclude the status bar. false if the screen frames should include the status bar (default false).
 ignore-menu-bar: false
+
+# true if menu bar icon should be hidden (default false).
+hide-menu-bar-icon: false
 
 # true if windows smaller than a 500px square should be floating by default (default true)
 float-small-windows: true

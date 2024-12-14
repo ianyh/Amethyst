@@ -86,6 +86,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem?.menu = statusItemMenu
         statusItem?.highlightMode = true
 
+        let hideMenuBarIcon: Bool = UserConfiguration.shared.hideMenuBarIcon()
+        statusItem?.isVisible = !hideMenuBarIcon
+
         versionMenuItem?.title = "Version \(shortVersion) (\(version))"
         toggleGlobalTilingMenuItem?.title = "Disable"
 
