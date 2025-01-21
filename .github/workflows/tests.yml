@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Build and run unit tests
-    runs-on: macos-latest
+    runs-on: macos-15
 
     steps:
       - name: Checkout
