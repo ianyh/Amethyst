@@ -94,6 +94,10 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `mod2 + 0` | Throw focused window to space 10 |
 | `none`     | Throw focused window to space 11 |
 | `none`     | Throw focused window to space 12 |
+| `none`     | Throw focused window to space 13 |
+| `none`     | Throw focused window to space 14 |
+| `none`     | Throw focused window to space 15 |
+| `none`     | Throw focused window to space 16 |
 | `mod1 + w` | Focus Screen 1 |
 | `mod2 + w` | Throw focused window to screen 1 |
 | `mod1 + e` | Focus Screen 2 |
@@ -184,7 +188,7 @@ The rotated version of *Column*, where each window takes up an entire row, exten
 #### Floating
 
 This mode makes all windows "floating", allowing you to move and resize them as if Amethyst were temporarily deactivated. Unlike the other modes, this will mean that windows can be placed "on top of" each other, obscuring your view of some windows.
- 
+
 #### Binary Space Partitioning (BSP)
 
 This layout does not have a main pane in the way that other layouts do. When adding windows, any given pane can be split evenly into two panes along whatever axis is longer. This is recursive such that pane A can be split in the middle into pane A on the left and pane B on the right; pane B can then be split into pane B on top and pane C on bottom; pane C can then be split into pane C on the left and pane D on the right; and so on.
