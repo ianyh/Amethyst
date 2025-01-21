@@ -204,7 +204,12 @@ Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/cust
 Configuration File
 -------------
 
-Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md).
+Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md). Note that if configuration file is present, it will override the settings defined via the GUI.
+
+Building Amethyst Locally
+-------------
+
+If you would like to test your changes locally, Amethyst can be built using [`fastlane`](https://github.com/fastlane/fastlane). Just run the command `fastlane` in the root folder, and the app will be available at `./build/Amethyst.app`. (You may need to provision the app under "Signing & Capabilities" in XCode first.)
 
 Contact
 =======
