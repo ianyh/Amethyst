@@ -1,11 +1,8 @@
-Amethyst
-========
+# Amethyst
 
 [![Discussions](https://img.shields.io/github/discussions/ianyh/Amethyst)](https://github.com/ianyh/Amethyst/discussions)
-[![Build Status](https://travis-ci.com/ianyh/Amethyst.svg?branch=development)](https://travis-ci.com/ianyh/Amethyst)
 [![Open Source Helpers](https://www.codetriage.com/ianyh/amethyst/badges/users.svg)](https://www.codetriage.com/ianyh/amethyst)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
-[![Twitter Follow](https://img.shields.io/twitter/follow/amethystwm?style=social)](https://twitter.com/amethystwm)
 
 Tiling window manager for macOS along the lines of [xmonad](https://xmonad.org/).
 
@@ -15,8 +12,7 @@ If you want to learn more about tiling window managers and the features of Ameth
 
 [Boost your MacOS PRODUCTIVITY with Amethyst | Tiling Window Manager](https://www.youtube.com/watch?v=7Z9-Ry4yGNc)
 
-Getting Amethyst
-================
+## Getting Amethyst
 
 Amethyst is available for direct download on the [releases page](https://github.com/ianyh/Amethyst/releases) or using [homebrew cask](https://github.com/Homebrew/homebrew-cask).
 
@@ -26,8 +22,7 @@ brew install --cask amethyst
 
 Note: that Amethyst now is only supported on macOS 10.15+.
 
-Using Amethyst
-==============
+## Using Amethyst
 
 Amethyst must be given permissions to use the accessibility APIs in the Privacy & Security tab, Privacy -> Accessibilty.
 
@@ -47,15 +42,13 @@ defaults write com.apple.dock workspaces-auto-swoosh -bool NO
 killall Dock
 ```
 
-Troubleshooting
-===============
+## Troubleshooting
 
 See [Troubleshooting](docs/troubleshooting.md) for some common issues.
 
-# Configuration
+## Configuration
 
-Keyboard Shortcuts
-------------------
+### Keyboard Shortcuts
 
 Amethyst uses two modifier combinations (`mod1` and `mod2`) and can optionally use another two (`mod3` and `mod4`).
 
@@ -125,8 +118,7 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `none` | Select widescreen-tall layout |
 | `none` | Select bsp layout |
 
-Available Layouts
------------------
+### Available Layouts
 
 Amethyst allows you to cycle among several different window layouts.
 Layouts can also be enabled/disabled to control whether they appear in the cycle sequence at all.
@@ -201,29 +193,19 @@ This layout does not have a main pane in the way that other layouts do. When add
 
 Custom layouts can be implemented via JavaScript. See [Custom Layouts](docs/custom-layouts.md).
 
-Configuration File
--------------
+### Configuration File
 
 Amethyst supports configuration via YAML in the home directory. See [Configuration Files](docs/configuration-files.md). Note that if configuration file is present, it will override the settings defined via the GUI.
 
-Building Amethyst Locally
--------------
+## Building Amethyst Locally
 
 If you would like to test your changes locally, Amethyst can be built using [`fastlane`](https://github.com/fastlane/fastlane). Just run the command `fastlane` in the root folder, and the app will be available at `./build/Amethyst.app`. (You may need to provision the app under "Signing & Capabilities" in XCode first.)
 
-Contact
-=======
-
-If you have questions or feedback your best options are to [tweet](https://twitter.com/amethystwm) or to get on [gitter](https://gitter.im/ianyh/Amethyst).
-
-
-Contributing
-============
+## Contributing
 
 If you'd like to contribute please branch off of the `development` branch and open pull requests against it rather than `master`. Otherwise just try to stick to the general style of the code.
 
-Donating
-========
+## Donating
 
 Amethyst is free and always will be. That said, a couple of people have expressed their desire to donate money in appreciation. Given the current political climate I would recommend donating to one of these organizations instead:
 
