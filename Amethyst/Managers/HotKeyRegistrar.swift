@@ -31,7 +31,7 @@ extension HotKeyManager: HotKeyRegistrar {
             KeyboardShortcuts.setShortcut(nil, for: name)
         }
 
-        guard KeyboardShortcuts.getShortcut(for: name) == nil && !isMigrated else {
+        guard KeyboardShortcuts.getShortcut(for: name) == nil && (!isMigrated || override) else {
             return
         }
 
