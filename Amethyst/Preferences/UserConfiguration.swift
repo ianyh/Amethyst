@@ -415,6 +415,9 @@ class UserConfiguration: NSObject {
         var command: [String: String]? = configurationValue(forKeyValue: commandKey, fallbackToDefault: false)
         if command != nil {
             override = true
+        } else if let enabled: Bool = configurationValue(forKeyValue: commandKey, fallbackToDefault: false), !enabled {
+            override = true
+            command = nil
         } else {
             let mod1: [String]? = configurationValueForKey(.mod1, fallbackToDefault: false)
             let mod2: [String]? = configurationValueForKey(.mod2, fallbackToDefault: false)
