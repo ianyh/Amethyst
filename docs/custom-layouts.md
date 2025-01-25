@@ -24,7 +24,7 @@ An object defining any initial state to be tracked by the layout.
 
 #### `commands`
 
-An object defining the commands the layout responds to. Currently, there are four available commands keyed as `command1`, `command2`, and so on. Commands are objects with a `description` string to describe what the command does and an `updateState` function.
+An object defining the commands the layout responds to. There are four available custom commands keyed as `command1`, `command2`, `command3`, and `command4`, in addition to paned layout commands keyed as `expandMain`, `shrinkMain`, `increaseMain`, and `decreaseMain`. Commands are objects with a `description` string to describe what the command does and an `updateState` function.
 
 The `updateState` function takes two arguments—`state` and `focusedWindowID`—and must return a new state object.
 
