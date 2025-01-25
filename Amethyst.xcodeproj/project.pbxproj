@@ -81,6 +81,7 @@
 		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
 		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
+		4087BB042D447F480062A52B /* static-ratio-tall-native-commands.js in Resources */ = {isa = PBXBuildFile; fileRef = 4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
 		40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A7AEA6232ECF3000E79964 /* Windows.swift */; };
 		40A87FDC2404AEAD005EE9C6 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A87FDB2404AEAD005EE9C6 /* main.swift */; };
@@ -213,6 +214,7 @@
 		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4076368C2394BFB500308336 /* AmethystDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmethystDebug.entitlements; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
+		4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall-native-commands.js"; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		40A7AEA6232ECF3000E79964 /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
 		40A87FDB2404AEAD005EE9C6 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -452,6 +454,7 @@
 		404541722697C16B00861BE8 /* CustomLayouts */ = {
 			isa = PBXGroup;
 			children = (
+				4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */,
 				40D82FF029739C5300F3C18B /* extended.js */,
 				40DA8B6D27D5AA7300C291AF /* subset.js */,
 				404541772697CDD000861BE8 /* fullscreen.js */,
@@ -732,6 +735,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4087BB042D447F480062A52B /* static-ratio-tall-native-commands.js in Resources */,
 				4045417E2698030A00861BE8 /* static-ratio-tall.js in Resources */,
 				404541742697C22A00861BE8 /* null.js in Resources */,
 				4045417A2697EBC500861BE8 /* undefined.js in Resources */,

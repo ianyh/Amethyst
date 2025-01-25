@@ -324,4 +324,32 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window> {
 
         return jsChange
     }
+
+    func recommendMainPaneRawRatio(rawRatio: CGFloat) {
+        switch layoutExtension {
+        case .layout(let layout):
+            if let panedLayout = layout as? PanedLayout {
+                panedLayout.recommendMainPaneRawRatio(rawRatio: rawRatio)
+                mainPaneRatio = panedLayout.mainPaneRatio
+            }
+        default:
+            mainPaneRatio = rawRatio
+        }
+    }
+
+    func increaseMainPaneCount() {
+        command(key: "increaseMain")
+    }
+
+    func decreaseMainPaneCount() {
+        command(key: "decreaseMain")
+    }
+
+    func shrinkMainPane() {
+        command(key: "shrinkMain")
+    }
+
+    func expandMainPane() {
+        command(key: "expandMain")
+    }
 }
