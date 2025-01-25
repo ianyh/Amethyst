@@ -42,7 +42,7 @@ Amethyst will pick up a config file located at `~/.amethyst.yml` or `~/.config/a
 
 ## Commands
 
-Commands are defined at the root of the config file, and have a `mod` and a `key`.
+Commands are defined at the root of the config file, as either an object with `mod` and `key` values to customize the command or is `false` to entirely disable it.
 
 | Key | Description |
 | --- | ----------- |
