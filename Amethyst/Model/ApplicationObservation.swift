@@ -165,7 +165,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
     func addObservers() -> Observable<Void> {
         return _addObservers().retry { errorTrigger in
             errorTrigger.enumerated().flatMap { count, error -> Observable<Int> in
-                guard count < 4 else {
+                guard count < 6 else {
                     return .error(error)
                 }
 
