@@ -181,10 +181,10 @@ extension AppDelegate: UserConfigurationDelegate {
         var statusItemImage: NSImage?
         if UserConfiguration.shared.tilingEnabled == true {
             statusItemImage = NSImage(named: "icon-statusitem")
-            toggleGlobalTilingMenuItem?.title = "Disable"
+            toggleGlobalTilingMenuItem?.title = "Disable Tiling"
         } else {
             statusItemImage = NSImage(named: "icon-statusitem-disabled")
-            toggleGlobalTilingMenuItem?.title = "Enable"
+            toggleGlobalTilingMenuItem?.title = "Enable Tiling"
         }
         statusItemImage?.isTemplate = true
         statusItem?.image = statusItemImage

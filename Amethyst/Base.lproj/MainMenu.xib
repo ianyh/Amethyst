@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="23504" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +20,7 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="uP9-ch-b7n"/>
-                <menuItem title="Disable" id="rjJ-w4-5Ht">
+                <menuItem title="Disable Tiling" id="rjJ-w4-5Ht">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="toggleGlobalTiling:" target="494" id="3aM-9U-hWx"/>
@@ -78,7 +78,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="480" height="260"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="2383369F-98A6-4420-8EFE-319DB9588C53" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconAndLabel" sizeMode="regular" id="5oI-m4-akz">
+            <toolbar key="toolbar" implicitIdentifier="2383369F-98A6-4420-8EFE-319DB9588C53" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconAndLabel" sizeMode="regular" id="5oI-m4-akz">
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="D4FDE95C-2F3E-4C93-8777-9FBAD1EDB613" explicitItemIdentifier="general" label="General" paletteLabel="General" selectable="YES" id="WV2-G9-AL4">
                         <imageReference key="image" image="text.and.command.macwindow" catalog="system" symbolScale="large"/>
