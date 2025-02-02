@@ -329,7 +329,14 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
     }
 
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {
+        guard
+            let recommendMainPaneRatio = layout?.objectForKeyedSubscript("recommendMainPaneRatio"),
+            !recommendMainPaneRatio.isNull && !recommendMainPaneRatio.isUndefined
+        else {
+            return
+        }
 
+        recommendMainPaneRatio.call(withArguments: [rawRatio])
     }
 
     func increaseMainPaneCount() {
