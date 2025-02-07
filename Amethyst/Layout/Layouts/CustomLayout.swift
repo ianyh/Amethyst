@@ -336,7 +336,14 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
             return
         }
 
-        recommendMainPaneRatio.call(withArguments: [rawRatio])
+        let recommendMainPaneRatioArgs: [Any]? =  state.flatMap { [rawRatio, $0] }
+
+        guard let updatedState = recommendMainPaneRatio.call(withArguments: recommendMainPaneRatioArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
+            log.error("\(layoutKey) — recommendMainPaneRawRatio: received invalid updated state")
+            return
+        }
+
+        state = updatedState
     }
 
     func increaseMainPaneCount() {

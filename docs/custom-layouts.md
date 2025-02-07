@@ -52,6 +52,12 @@ A function that takes two arguments—`change` and `state`—and must return a n
 
 * `change`: the particular change the layout needs to respond to.
 
+#### `recommendMainPaneRatio`
+
+A function that takes two arguments—`ratio` and `state`—and must return a new layout state based on the recommended ratio.
+
+* `ratio`: the ratio recommended for the layout based on windows being resized by mouse controls
+
 ### Common Structures
 
 #### Windows
