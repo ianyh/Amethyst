@@ -695,5 +695,44 @@ class CustomLayoutTests: QuickSpec {
                 }
             }
         }
+
+        describe("recommend main pane ratio") {
+            it("receives correct ratio") {
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let window = TestWindow(element: nil)!
+                let layoutWindow = LayoutWindow<TestWindow>(id: window.id(), frame: window.frame(), isFocused: false)
+                let windowSet = WindowSet<TestWindow>(
+                    windows: [layoutWindow],
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { _ in window }
+                )
+                let layout = CustomLayout<TestWindow>(key: "recommended-main-pane-ratio", fileURL: Bundle.layoutFile(key: "recommended-main-pane-ratio")!)
+                var frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                var mainAssignment = frameAssignments.forWindows([window])
+
+                mainAssignment.verify(frames: [
+                    CGRect(x: 0, y: 0, width: 1000, height: 1000)
+                ])
+
+                layout.recommendMainPaneRawRatio(rawRatio: 0.25)
+                frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                mainAssignment = frameAssignments.forWindows([window])
+
+                mainAssignment.verify(frames: [
+                    CGRect(x: 0, y: 0, width: 500, height: 1000)
+                ])
+
+                layout.recommendMainPaneRawRatio(rawRatio: 0.75)
+                frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                mainAssignment = frameAssignments.forWindows([window])
+
+                mainAssignment.verify(frames: [
+                    CGRect(x: 0, y: 0, width: 1500, height: 1000)
+                ])
+            }
+        }
     }
 }

@@ -24,6 +24,7 @@
 		40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */; };
 		40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */; };
 		40111CCD22342CF3003D20BD /* DebugPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */; };
+		401ADBAF2D55A1B6001FF53A /* recommended-main-pane-ratio.js in Resources */ = {isa = PBXBuildFile; fileRef = 401ADBAE2D55A1B6001FF53A /* recommended-main-pane-ratio.js */; };
 		401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */; };
 		401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8971CE7E45300F89B3F /* WindowManager.swift */; };
 		401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */; };
@@ -153,6 +154,7 @@
 		40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPreferencesViewController.swift; sourceTree = "<group>"; };
 		40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DebugPreferencesViewController.xib; sourceTree = "<group>"; };
 		401A529824D3B63A004359A4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		401ADBAE2D55A1B6001FF53A /* recommended-main-pane-ratio.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "recommended-main-pane-ratio.js"; sourceTree = "<group>"; };
 		401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnLayoutTests.swift; sourceTree = "<group>"; };
 		401BC8971CE7E45300F89B3F /* WindowManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		401BC8991CE8C6AE00F89B3F /* HotKeyManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotKeyManager.swift; path = ../Events/HotKeyManager.swift; sourceTree = "<group>"; };
@@ -459,12 +461,13 @@
 		404541722697C16B00861BE8 /* CustomLayouts */ = {
 			isa = PBXGroup;
 			children = (
-				4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */,
 				40D82FF029739C5300F3C18B /* extended.js */,
-				40DA8B6D27D5AA7300C291AF /* subset.js */,
 				404541772697CDD000861BE8 /* fullscreen.js */,
 				404541732697C22A00861BE8 /* null.js */,
+				401ADBAE2D55A1B6001FF53A /* recommended-main-pane-ratio.js */,
 				4045417D2698030A00861BE8 /* static-ratio-tall.js */,
+				4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */,
+				40DA8B6D27D5AA7300C291AF /* subset.js */,
 				404541792697EBC500861BE8 /* undefined.js */,
 				4045417B2697EE7800861BE8 /* uniform-columns.js */,
 			);
@@ -748,6 +751,7 @@
 				4045417C2697EE7800861BE8 /* uniform-columns.js in Resources */,
 				40DA8B6E27D5AA7300C291AF /* subset.js in Resources */,
 				40D82FF129739C5300F3C18B /* extended.js in Resources */,
+				401ADBAF2D55A1B6001FF53A /* recommended-main-pane-ratio.js in Resources */,
 				404541782697CDD000861BE8 /* fullscreen.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
