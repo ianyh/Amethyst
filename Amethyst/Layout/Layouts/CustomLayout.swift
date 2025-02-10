@@ -54,6 +54,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
     private lazy var context: JSContext? = {
         guard let context = JSContext() else {
+            log.error("Failed to create javascript context")
             return nil
         }
 
@@ -65,6 +66,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
 
         context.evaluateScript("var console = { log: function(message) { _consoleLog(message) } }")
+
         let consoleLog: @convention(block) (String) -> Void = { message in
             log.debug(message)
         }
@@ -73,14 +75,30 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         do {
             context.evaluateScript(try String(contentsOf: self.fileURL))
         } catch {
+            log.error(error)
             return nil
         }
+
+        context.evaluateScript("""
+        function sanitizeArguments(fn) {
+            return function(...args) {
+                const sanitizedArgs = args.map(arg => JSON.parse(JSON.stringify(arg)));
+                return fn(...sanitizedArgs);
+            };
+        }
+
+        function normalizedLayout() {
+            const l = layout();
+            l.getFrameAssignments = sanitizeArguments(l.getFrameAssignments);
+            return l;
+        }
+        """)
 
         return context
     }()
 
     private lazy var layout: JSValue? = {
-        return self.context?.objectForKeyedSubscript("layout")?.call(withArguments: [])
+        return self.context?.objectForKeyedSubscript("normalizedLayout")?.call(withArguments: [])
     }()
 
     private lazy var state: JSValue? = {
@@ -136,13 +154,6 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
     }
 
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
-        guard
-            let getFrameAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"),
-            !getFrameAssignments.isNull && !getFrameAssignments.isUndefined
-        else {
-            return nil
-        }
-
         let windows = windowSet.windows
 
         guard !windows.isEmpty else {
@@ -176,28 +187,40 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
                 "isFocused": jsWindow.window.isFocused
             ]
         }
-        let args: [Any] = [
+        var args: [Any] = [
             jsWindowsArg,
-            jsScreenFrameArg,
-            state ?? JSValue(undefinedIn: context)!,
-            extendedFrames ?? JSValue(undefinedIn: context)!
+            jsScreenFrameArg
         ]
 
-        guard
-            let frameAssignmentsValue = getFrameAssignments.call(withArguments: args),
-            frameAssignmentsValue.isObject
-        else {
+        if let state = state {
+            args.append(state)
+        }
+        if let extendedFrames = extendedFrames {
+            args.append(extendedFrames)
+        }
+
+        guard let getAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"), !getAssignments.isNull && !getAssignments.isUndefined else {
             return nil
         }
 
-        let resizeRules = ResizeRules(isMain: true, unconstrainedDimension: .horizontal, scaleFactor: 1)
-        return jsWindows.values.compactMap { jsWindow in
-            guard let frame = frameAssignmentsValue.objectForKeyedSubscript(jsWindow.id)?.toRoundedRect() else {
+        guard let assignments = getAssignments.call(withArguments: args), assignments.isObject else {
+            return nil
+        }
+
+        var isMain = true
+        return windows.compactMap { window -> FrameAssignmentOperation<Window>? in
+            guard let jsWindow = jsWindows[window.id] else {
                 return nil
             }
 
+            guard let frame = assignments.objectForKeyedSubscript(jsWindow.id) else {
+                return nil
+            }
+
+            let isMain = frame.objectForKeyedSubscript("isMain")?.toBool() ?? true
+            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: 1)
             let frameAssignment = FrameAssignment<Window>(
-                frame: frame,
+                frame: frame.toRoundedRect(),
                 window: jsWindow.window,
                 screenFrame: screenFrame,
                 resizeRules: resizeRules
