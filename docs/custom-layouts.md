@@ -56,7 +56,15 @@ A function that takes two arguments—`change` and `state`—and must return a n
 
 A function that takes two arguments—`ratio` and `state`—and must return a new layout state based on the recommended ratio.
 
-* `ratio`: the ratio recommended for the layout based on windows being resized by mouse controls
+* `ratio`: the ratio recommended for the layout based on windows being resized by mouse controls.
+
+### Mouse Resizing
+
+Amethyst supports changing the relative ratios of windows when changing the size of windows by dragging them with the cursor. By default, these ratios are recommended by calling the `recommendMainPaneRatio` layout property, and happen on the horizontal axis. When the window is resized, the system determines what ratio is appropriate for the new width given the dimensions of the screen it is on. These values are clamped to [0, 1].
+
+To scale along a different axis, you can specify the `unconstrainedDimension` and `isMain` properties of each window's frame. The dimension determines the axis along which window frame changes will cause recommended ratio changes, and the `isMain` property determines which part of the ratio the window applies to.
+
+Note that currently the recommended ratio is global to the layout and not specific to a given window, so it is not particularly meaningful to specify multiple `unconstrainedDimension` values among frames.
 
 ### Common Structures
 
@@ -70,12 +78,14 @@ A window is an object with three properties.
 
 #### Frames
 
-A frame is an object with four properties.
+A frame is an object with four required properties and two optional properties.
 
 * `x`: x-coordinate in the screen space
 * `y`: y-coordinate in the screen space
 * `width`: pixel width
 * `height`: pixel height
+* (optional) `isMain`: boolean indicating whether the window is in the main pane (default: `true`)
+* (optional) `unconstrainedDimension`: a string indicating on which axis the window is able to be resized via mouse (values: `horizontal`, `vertical`; default: `horizontal`)
 
 Note that frames are in a global space, not relative to a given screen.
 
