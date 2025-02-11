@@ -216,20 +216,23 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
                 return nil
             }
 
-            let isMain = frame.objectForKeyedSubscript("isMain")?.toBool() ?? true
-            let scaleFactor = screenFrame.width / frame.toRoundedRect().width
             var unconstrainedDimension: UnconstrainedDimension = .horizontal
+            var scaleFactor = screenFrame.width / frame.toRoundedRect().width
+
             if let dimension = frame.objectForKeyedSubscript("unconstrainedDimension")?.toString() {
                 switch dimension {
                 case "horizontal":
                     unconstrainedDimension = .horizontal
                 case "vertical":
                     unconstrainedDimension = .vertical
+                    scaleFactor = screenFrame.height / frame.toRoundedRect().height
                 default:
                     log.warning("Encountered unknown unconstrainedDimension value: \(dimension), defaulting to horizontal")
                     unconstrainedDimension = .horizontal
                 }
             }
+
+            let isMain = frame.objectForKeyedSubscript("isMain")?.toBool() ?? true
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: unconstrainedDimension, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment<Window>(
                 frame: frame.toRoundedRect(),
