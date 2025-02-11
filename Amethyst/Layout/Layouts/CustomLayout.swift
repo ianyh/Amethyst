@@ -207,7 +207,6 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
             return nil
         }
 
-        var isMain = true
         return windows.compactMap { window -> FrameAssignmentOperation<Window>? in
             guard let jsWindow = jsWindows[window.id] else {
                 return nil
@@ -218,7 +217,20 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
             }
 
             let isMain = frame.objectForKeyedSubscript("isMain")?.toBool() ?? true
-            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: .horizontal, scaleFactor: 1)
+            let scaleFactor = screenFrame.width / frame.toRoundedRect().width
+            var unconstrainedDimension: UnconstrainedDimension = .horizontal
+            if let dimension = frame.objectForKeyedSubscript("unconstrainedDimension")?.toString() {
+                switch dimension {
+                case "horizontal":
+                    unconstrainedDimension = .horizontal
+                case "vertical":
+                    unconstrainedDimension = .vertical
+                default:
+                    log.warning("Encountered unknown unconstrainedDimension value: \(dimension), defaulting to horizontal")
+                    unconstrainedDimension = .horizontal
+                }
+            }
+            let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: unconstrainedDimension, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment<Window>(
                 frame: frame.toRoundedRect(),
                 window: jsWindow.window,

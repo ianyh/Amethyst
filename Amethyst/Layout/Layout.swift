@@ -116,9 +116,11 @@ extension Layout {
      - Note: This does not necessarily correspond to the final frame of the window as windows do not necessarily take the exact frame the layout provides.
      */
     func assignedFrame(_ window: Window, of windowSet: WindowSet<Window>, on screen: Screen) -> FrameAssignment<Window>? {
-        return frameAssignments(windowSet, on: screen)?
-            .map { $0.frameAssignment }
-            .first { $0.window.id == window.id() }
+        guard let assignments = frameAssignments(windowSet, on: screen) else {
+            return nil
+        }
+
+        return assignments.map { $0.frameAssignment }.first { $0.window.id == window.id() }
     }
 }
 
