@@ -42,7 +42,6 @@ enum LayoutType<Window: WindowType> {
         case unknownLayout
     }
 
-    case floatingGrid
     case tall
     case tallRight
     case wide
@@ -57,6 +56,7 @@ enum LayoutType<Window: WindowType> {
     case column
     case row
     case floating
+    case floatingGrid
     case widescreenTallLeft
     case widescreenTallRight
     case binarySpacePartitioning
@@ -65,7 +65,6 @@ enum LayoutType<Window: WindowType> {
 
     static var standardLayouts: [LayoutType<Window>] {
         return [
-            .floatingGrid,
             .tall,
             .tallRight,
             .wide,
@@ -80,6 +79,7 @@ enum LayoutType<Window: WindowType> {
             .column,
             .row,
             .floating,
+            .floatingGrid,
             .widescreenTallLeft,
             .widescreenTallRight,
             .binarySpacePartitioning
@@ -88,8 +88,6 @@ enum LayoutType<Window: WindowType> {
 
     var key: String {
         switch self {
-        case .floatingGrid:
-            return "floating-grid"
         case .tall:
             return "tall"
         case .tallRight:
@@ -118,6 +116,8 @@ enum LayoutType<Window: WindowType> {
             return "row"
         case .floating:
             return "floating"
+        case .floatingGrid:
+            return "floating-grid"
         case .widescreenTallLeft:
             return "widescreen-tall"
         case .widescreenTallRight:
@@ -131,8 +131,6 @@ enum LayoutType<Window: WindowType> {
 
     var layoutClass: Layout<Window>.Type {
         switch self {
-        case .floatingGrid:
-            return FloatingGridLayout<Window>.self
         case .tall:
             return TallLayout<Window>.self
         case .tallRight:
@@ -161,6 +159,8 @@ enum LayoutType<Window: WindowType> {
             return RowLayout<Window>.self
         case .floating:
             return FloatingLayout<Window>.self
+        case .floatingGrid:
+            return FloatingGridLayout<Window>.self
         case .widescreenTallLeft:
             return WidescreenTallLayoutLeft<Window>.self
         case .widescreenTallRight:
@@ -174,8 +174,6 @@ enum LayoutType<Window: WindowType> {
 
     static func from(key: String) -> LayoutType<Window> {
         switch key {
-        case "floating-grid":
-            return .floatingGrid
         case "tall":
             return .tall
         case "tall-right":
@@ -204,6 +202,8 @@ enum LayoutType<Window: WindowType> {
             return .row
         case "floating":
             return .floating
+        case "floating-grid":
+            return .floatingGrid
         case "widescreen-tall":
             return .widescreenTallLeft
         case "widescreen-tall-right":
