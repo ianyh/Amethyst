@@ -632,9 +632,15 @@ extension WindowManager: ApplicationObservationDelegate {
 
         guard
             let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(),
-            let layout = screenManager.currentLayout,
-            layout is PanedLayout
+            let layout = screenManager.currentLayout
         else {
+            return
+        }
+        
+        guard layout is PanedLayout else {
+            if layout is FloatingGridLayout, case .doneDragging = mouseStateKeeper.state {
+                screenManager.setNeedsReflow(withWindowChange: .layoutChange)
+            }
             return
         }
 
