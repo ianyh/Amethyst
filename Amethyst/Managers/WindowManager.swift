@@ -609,6 +609,11 @@ extension WindowManager: ApplicationObservationDelegate {
             // record window and wait for mouse up
             mouseStateKeeper.state = .moving(window: window)
         case let .doneDragging(lmbUpMoment):
+            
+            if let screenManager = focusedScreenManager(), screenManager.currentLayout is FloatingGridLayout {
+                screenManager.setNeedsReflow(withWindowChange: .layoutChange)
+            }
+            
             mouseStateKeeper.state = .pointing // flip state first to prevent race condition
 
             // if mouse button recently came up, assume window move is related
