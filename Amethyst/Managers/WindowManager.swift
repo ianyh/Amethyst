@@ -622,18 +622,18 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func application(_ application: AnyApplication<Application>, didResizeWindow window: Window) {
-        guard userConfiguration.mouseResizesWindows() else {
-            return
-        }
-
-        guard let screen = window.screen(), activeWindows(on: screen).contains(window) else {
-            return
-        }
-
         guard
             let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(),
             let layout = screenManager.currentLayout
         else {
+            return
+        }
+        
+        guard userConfiguration.mouseResizesWindows() || layout is FloatingGridLayout else {
+            return
+        }
+
+        guard let screen = window.screen(), activeWindows(on: screen).contains(window) else {
             return
         }
         
