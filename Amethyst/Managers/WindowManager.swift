@@ -145,7 +145,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         }
 
         deactivate(application: application)
-        application.dropWindowsCache()
     }
 
     @objc func applicationDidUnhide(_ notification: Notification) {
@@ -158,6 +157,9 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         }
 
         application.dropWindowsCache()
+        for window in application.windows() {
+            add(window: window)
+        }
         activate(application: application)
     }
 
@@ -264,6 +266,7 @@ extension WindowManager {
 
     fileprivate func activate(application: AnyApplication<Application>) {
         windows.activateApplication(withPID: application.pid())
+        windows.regenerateActiveIDCache()
         markAllScreensForReflow(withChange: .applicationActivate)
     }
 
