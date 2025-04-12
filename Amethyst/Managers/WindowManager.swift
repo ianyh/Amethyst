@@ -277,12 +277,6 @@ extension WindowManager {
 
     fileprivate func remove(window: Window) {
         markAllScreensForReflow(withChange: .remove(window: window))
-
-        let application = applicationWithPID(window.pid())
-        application?.unobserve(notification: kAXUIElementDestroyedNotification, window: window)
-        application?.unobserve(notification: kAXWindowMiniaturizedNotification, window: window)
-        application?.unobserve(notification: kAXWindowDeminiaturizedNotification, window: window)
-
         windows.regenerateActiveIDCache()
         windows.remove(window: window)
     }
@@ -381,17 +375,20 @@ extension WindowManager {
     }
 
     private func add(window: Window, retries: Int = 5) {
-        guard !windows.isWindowTracked(window) else {
-            log.warning("skipping window")
-            return
-        }
-
         guard window.shouldBeManaged() else {
             return
         }
 
         guard let application = applicationWithPID(window.pid()) else {
             log.error("Tried to add a window without an application")
+            return
+        }
+
+        defer {
+            windows.regenerateActiveIDCache()
+        }
+
+        guard !windows.isWindowTracked(window) else {
             return
         }
 
@@ -406,20 +403,7 @@ extension WindowManager {
             windows.setFloating(false, forWindow: window)
         }
 
-        windows.regenerateActiveIDCache()
         windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
-
-        application.observe(notification: kAXUIElementDestroyedNotification, window: window) { _ in
-            self.remove(window: window)
-        }
-        application.observe(notification: kAXWindowMiniaturizedNotification, window: window) { _ in
-            self.remove(window: window)
-
-            guard let screen = window.screen() else {
-                return
-            }
-            self.markScreen(screen, forReflowWithChange: .remove(window: window))
-        }
 
         guard let screen = window.screen() else {
             return
