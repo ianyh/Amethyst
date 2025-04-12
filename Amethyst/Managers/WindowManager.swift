@@ -374,7 +374,7 @@ extension WindowManager {
         markAllScreensForReflow(withChange: .none)
     }
 
-    private func add(window: Window, retries: Int = 5) {
+    private func add(window: Window, retries: Int = 5, delay: TimeInterval = 0.01) {
         guard window.shouldBeManaged() else {
             return
         }
@@ -394,8 +394,8 @@ extension WindowManager {
 
         switch application.defaultFloatForWindow(window) {
         case .unreliable where retries > 0:
-            return DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                self.add(window: window, retries: retries - 1)
+            return DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                self.add(window: window, retries: retries - 1, delay: delay * 2)
             }
         case .reliable(.floating), .unreliable(.floating):
             windows.setFloating(true, forWindow: window)
