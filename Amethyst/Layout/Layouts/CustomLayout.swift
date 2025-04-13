@@ -82,7 +82,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         context.evaluateScript("""
         function sanitizeArguments(fn) {
             return function(...args) {
-                const sanitizedArgs = args.map(arg => JSON.parse(JSON.stringify(arg)));
+                const sanitizedArgs = args.map(arg => !!arg ? JSON.parse(JSON.stringify(arg)) : undefined);
                 return fn(...sanitizedArgs);
             };
         }
