@@ -48,7 +48,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
     private var applications: [pid_t: AnyApplication<Application>] = [:]
     private var applicationObservations: [pid_t: UndeterminedApplication] = [:]
-    private let screens: Screens
+    private var screens: Screens
     private let windows = Windows()
     private var lastReflowTime = Date()
     private var lastFocusDate: Date?
@@ -101,6 +101,12 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     deinit {
         NSWorkspace.shared.notificationCenter.removeObserver(self)
         NotificationCenter.default.removeObserver(self)
+    }
+
+    func reset() {
+        screens = Screens()
+        reevaluateWindows()
+        screens.updateScreens(windowManager: self)
     }
 
     private func addWorkspaceNotificationObserver(_ name: NSNotification.Name, selector: Selector) {

@@ -132,6 +132,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         windowManager?.markAllScreensForReflow(withChange: .unknown)
     }
 
+    @IBAction func resetLayouts(_ sender: AnyObject) {
+        UserDefaults.standard.removeObject(forKey: AppDelegate.windowManagerEncodingKey)
+        windowManager?.reset()
+    }
+
     @IBAction func relaunch(_ sender: AnyObject) {
         AppManager.relaunch()
     }
