@@ -187,17 +187,12 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
                 "isFocused": jsWindow.window.isFocused
             ]
         }
-        var args: [Any] = [
+        let args: [Any] = [
             jsWindowsArg,
-            jsScreenFrameArg
+            jsScreenFrameArg,
+            state ?? JSValue(undefinedIn: context)!,
+            extendedFrames ?? JSValue(undefinedIn: context)!
         ]
-
-        if let state = state {
-            args.append(state)
-        }
-        if let extendedFrames = extendedFrames {
-            args.append(extendedFrames)
-        }
 
         guard let getAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"), !getAssignments.isNull && !getAssignments.isUndefined else {
             return nil
