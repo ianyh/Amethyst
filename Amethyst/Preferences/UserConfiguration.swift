@@ -389,13 +389,31 @@ class UserConfiguration: NSObject {
             alert.runModal()
         }
 
-        let mod1Strings: [String] = configurationValueForKey(.mod1)!
-        let mod2Strings: [String] = configurationValueForKey(.mod2)!
+        let mod1Strings: [String] = configurationValueForKey(.mod1) ?? []
+        let mod2Strings: [String] = configurationValueForKey(.mod2) ?? []
         let mod3Strings: [String]? = configurationValueForKey(.mod3)
         let mod4Strings: [String]? = configurationValueForKey(.mod4)
 
         modifier1 = modifierFlagsForStrings(mod1Strings)
         modifier2 = modifierFlagsForStrings(mod2Strings)
+
+        if modifier1 == nil || modifier1!.isEmpty {
+            log.error("error loading a mod1")
+
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.messageText = "Error loading mod1"
+            alert.runModal()
+        }
+
+        if modifier2 == nil || modifier2!.isEmpty {
+            log.error("error loading a mod2")
+
+            let alert = NSAlert()
+            alert.alertStyle = .critical
+            alert.messageText = "Error loading mod2"
+            alert.runModal()
+        }
 
         if let mod3Strings = mod3Strings {
             modifier3 = modifierFlagsForStrings(mod3Strings)
