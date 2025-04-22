@@ -20,6 +20,8 @@ struct Apps: ParsableCommand {
             let app = SIApplication(runningApplication: application)
             print("""
             Title: \(app.title() ?? "<no title>")
+            Bundle Identifier: \(application.bundleIdentifier ?? "<no id>")
+            Activation Policy: \(application.activationPolicy)
             pid: \(app.pid())
             Manageable: \(application.isManageable)
 
