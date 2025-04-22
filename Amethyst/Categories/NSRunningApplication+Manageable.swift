@@ -62,7 +62,7 @@ extension NSRunningApplication {
             return .undetermined
         }
 
-        guard case .regular = activationPolicy else {
+        if case .prohibited = activationPolicy {
             return .undetermined
         }
 
