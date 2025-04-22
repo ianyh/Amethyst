@@ -33,7 +33,9 @@ private let ignoredBundleIDs = Set([
     "com.apple.controlcenter",
     "com.apple.SoftwareUpdateNotificationManager",
     "com.apple.TextInputMenuAgent",
-    "com.apple.TextInputSwitcher"
+    "com.apple.TextInputSwitcher",
+    "com.apple.WindowManager",
+    "com.apple.accessibility.AXVisualSupportAgent"
 ])
 
 protocol BundleIdentifiable {
