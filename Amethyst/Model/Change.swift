@@ -11,6 +11,7 @@ import Foundation
 enum Change<Window: WindowType> {
     case add(window: Window)
     case remove(window: Window)
+    case resize(window: Window)
     case focusChanged(window: Window)
     case windowSwap(window: Window, otherWindow: Window)
     case applicationActivate

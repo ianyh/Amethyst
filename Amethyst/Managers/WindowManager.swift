@@ -611,7 +611,7 @@ extension WindowManager: ApplicationObservationDelegate {
         case let .doneDragging(lmbUpMoment):
             
             if let screenManager = focusedScreenManager(), screenManager.currentLayout is FloatingGridLayout {
-                screenManager.setNeedsReflow(withWindowChange: .layoutChange)
+                screenManager.setNeedsReflow(withWindowChange: .resize(window: window))
             }
             
             mouseStateKeeper.state = .pointing // flip state first to prevent race condition
@@ -644,7 +644,7 @@ extension WindowManager: ApplicationObservationDelegate {
         
         guard layout is PanedLayout else {
             if layout is FloatingGridLayout, case .doneDragging = mouseStateKeeper.state {
-                screenManager.setNeedsReflow(withWindowChange: .layoutChange)
+                screenManager.setNeedsReflow(withWindowChange: .resize(window: window))
             }
             return
         }
