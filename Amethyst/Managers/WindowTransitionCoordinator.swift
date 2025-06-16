@@ -59,8 +59,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
             guard let lastMainWindow = target?.lastMainWindowForCurrentSpace() else {
                 return
             }
-            target?.executeTransition(.switchWindows(focusedWindow, lastMainWindow))
-            lastMainWindow.focus()
+            target?.executeTransition(.switchWindows(lastMainWindow, focusedWindow))
             return
         }
 

@@ -238,6 +238,8 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
 
+        let mouseFollowsFocus = userConfiguration.mouseFollowsFocus()
+
         let completeOperation = BlockOperation()
 
         // The complete operation should execute the completion delegate call
@@ -248,6 +250,12 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
             DispatchQueue.main.async {
                 self?.delegate?.onReflowCompletion()
+                if mouseFollowsFocus {
+                    if case .windowSwap(let window, _) = event {
+                        window.focus()
+                    }
+                }
+
             }
         }
 
