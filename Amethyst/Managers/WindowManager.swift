@@ -322,6 +322,19 @@ extension WindowManager {
         }
     }
 
+    func displayWindowCountHUD() {
+        guard userConfiguration.enablesWindowCountHUD() else {
+            return
+        }
+
+        for screenManager in screens.screenManagers {
+            let currentCount = userConfiguration.windowMaxCount() ?? 0
+            let countText = currentCount == 0 ? "Unlimited" : "\(currentCount)"
+            let title = "Window Max Count: \(countText)"
+            screenManager.displayCustomHUD(title: title)
+        }
+    }
+
     func add(runningApplication: NSRunningApplication) {
         switch runningApplication.isManageable {
         case .manageable:

@@ -247,6 +247,22 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             appDelegate?.relaunch(self)
         }
 
+        constructCommandWithCommandKey(CommandKey.increaseWindowMaxCount.rawValue) {
+            self.userConfiguration.increaseWindowMaxCount()
+            windowManager.markAllScreensForReflow(withChange: .unknown)
+            DispatchQueue.main.async {
+                windowManager.displayWindowCountHUD()
+            }
+        }
+
+        constructCommandWithCommandKey(CommandKey.decreaseWindowMaxCount.rawValue) {
+            self.userConfiguration.decreaseWindowMaxCount()
+            windowManager.markAllScreensForReflow(withChange: .unknown)
+            DispatchQueue.main.async {
+                windowManager.displayWindowCountHUD()
+            }
+        }
+
         LayoutType<Application.Window>.availableLayoutStrings().forEach { (layoutKey, _) in
             self.constructCommandWithCommandKey(UserConfiguration.constructLayoutKeyString(layoutKey)) {
                 let screenManager: ScreenManager<WindowManager<Application>>? = windowManager.focusedScreenManager()
@@ -367,6 +383,8 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Expand main pane", CommandKey.expandMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Increase main pane count", CommandKey.increaseMain.rawValue])
         hotKeyNameToDefaultsKey.append(["Decrease main pane count", CommandKey.decreaseMain.rawValue])
+        hotKeyNameToDefaultsKey.append(["Increase window max count", CommandKey.increaseWindowMaxCount.rawValue])
+        hotKeyNameToDefaultsKey.append(["Decrease window max count", CommandKey.decreaseWindowMaxCount.rawValue])
         hotKeyNameToDefaultsKey.append(["Custom layout command 1", CommandKey.command1.rawValue])
         hotKeyNameToDefaultsKey.append(["Custom layout command 2", CommandKey.command2.rawValue])
         hotKeyNameToDefaultsKey.append(["Custom layout command 3", CommandKey.command3.rawValue])

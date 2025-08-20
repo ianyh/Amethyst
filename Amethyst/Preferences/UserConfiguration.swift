@@ -85,6 +85,7 @@ enum ConfigurationKey: String {
     case mouseResizesWindows = "mouse-resizes-windows"
     case layoutHUD = "enables-layout-hud"
     case layoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
+    case windowCountHUD = "enables-window-count-hud"
     case useCanaryBuild = "use-canary-build"
     case newWindowsToMain = "new-windows-to-main"
     case followSpaceThrownWindows = "follow-space-thrown-windows"
@@ -133,6 +134,8 @@ enum CommandKey: String {
     case reevaluateWindows = "reevaluate-windows"
     case toggleFocusFollowsMouse = "toggle-focus-follows-mouse"
     case relaunchAmethyst = "relaunch-amethyst"
+    case increaseWindowMaxCount = "increase-window-max-count"
+    case decreaseWindowMaxCount = "decrease-window-max-count"
 }
 
 protocol UserConfigurationDelegate: AnyObject {
@@ -641,6 +644,10 @@ class UserConfiguration: NSObject {
         return storage.bool(forKey: .layoutHUDOnSpaceChange)
     }
 
+    func enablesWindowCountHUD() -> Bool {
+        return storage.bool(forKey: .windowCountHUD)
+    }
+
     func useCanaryBuild() -> Bool {
         return storage.bool(forKey: .useCanaryBuild)
     }
@@ -680,6 +687,34 @@ class UserConfiguration: NSObject {
     func windowMaxCount() -> Int? {
         let int = Int(storage.float(forKey: .windowMaxCount))
         return int == 0 ? nil : int
+    }
+
+    func increaseWindowMaxCount() {
+        let currentCount = windowMaxCount() ?? 0
+        let newCount = currentCount + 1
+
+        // Use KVO-compliant method to trigger UI updates
+        if storage is UserDefaults {
+            UserDefaults.standard.willChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
+            storage.set(Float(newCount), forKey: .windowMaxCount)
+            UserDefaults.standard.didChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
+        } else {
+            storage.set(Float(newCount), forKey: .windowMaxCount)
+        }
+    }
+
+    func decreaseWindowMaxCount() {
+        let currentCount = windowMaxCount() ?? 1
+        let newCount = max(0, currentCount - 1)
+
+        // Use KVO-compliant method to trigger UI updates
+        if storage is UserDefaults {
+            UserDefaults.standard.willChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
+            storage.set(Float(newCount), forKey: .windowMaxCount)
+            UserDefaults.standard.didChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
+        } else {
+            storage.set(Float(newCount), forKey: .windowMaxCount)
+        }
     }
 
     func windowResizeStep() -> CGFloat {

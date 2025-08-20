@@ -213,6 +213,7 @@
     "focus-follows-mouse": false,
     "enables-layout-hud": true,
     "enables-layout-hud-on-space-change": true,
+    "enables-window-count-hud": false,
     "window-margin-size": 0,
     "window-resize-step": 5,
     "window-margins": false,
