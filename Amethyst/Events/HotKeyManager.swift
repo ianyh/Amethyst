@@ -259,6 +259,13 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             appDelegate?.relaunch(self)
         }
 
+        constructCommandWithCommandKey(CommandKey.toggleNewWindowsToMain.rawValue) {
+            self.userConfiguration.toggleNewWindowsToMain()
+            DispatchQueue.main.async {
+                windowManager.displayNewWindowsToMainHUD()
+            }
+        }
+
         constructCommandWithCommandKey(CommandKey.increaseWindowMaxCount.rawValue) {
             self.userConfiguration.increaseWindowMaxCount()
             windowManager.markAllScreensForReflow(withChange: .unknown)
@@ -437,6 +444,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
         hotKeyNameToDefaultsKey.append(["Enable global tiling", CommandKey.enableTiling.rawValue])
         hotKeyNameToDefaultsKey.append(["Disable global tiling", CommandKey.disableTiling.rawValue])
+        hotKeyNameToDefaultsKey.append(["Toggle new windows to main pane sending", CommandKey.toggleNewWindowsToMain.rawValue])
 
         for (layoutKey, layoutName) in LayoutType<Application.Window>.availableLayoutStrings() {
             let commandName = "Select \(layoutName) layout"

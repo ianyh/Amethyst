@@ -86,6 +86,7 @@ enum ConfigurationKey: String {
     case layoutHUD = "enables-layout-hud"
     case layoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case windowCountHUD = "enables-window-count-hud"
+    case newWindowsToMainHUD = "enables-new-windows-to-main-hud"
     case useCanaryBuild = "use-canary-build"
     case newWindowsToMain = "new-windows-to-main"
     case followSpaceThrownWindows = "follow-space-thrown-windows"
@@ -138,6 +139,7 @@ enum CommandKey: String {
     case relaunchAmethyst = "relaunch-amethyst"
     case increaseWindowMaxCount = "increase-window-max-count"
     case decreaseWindowMaxCount = "decrease-window-max-count"
+    case toggleNewWindowsToMain = "toggle-new-windows-to-main"
 }
 
 protocol UserConfigurationDelegate: AnyObject {
@@ -650,6 +652,10 @@ class UserConfiguration: NSObject {
         return storage.bool(forKey: .windowCountHUD)
     }
 
+    func enablesNewWindowsToMainHUD() -> Bool {
+        return storage.bool(forKey: .newWindowsToMainHUD)
+    }
+
     func useCanaryBuild() -> Bool {
         return storage.bool(forKey: .useCanaryBuild)
     }
@@ -713,6 +719,11 @@ class UserConfiguration: NSObject {
         let newCount = max(0, currentCount - 1)
 
         setConfigurationValueWithKVO(Float(newCount), forKey: .windowMaxCount)
+    }
+
+    func toggleNewWindowsToMain() {
+        let currentValue = sendNewWindowsToMainPane()
+        setConfigurationValueWithKVO(!currentValue, forKey: .newWindowsToMain)
     }
 
     func windowResizeStep() -> CGFloat {
