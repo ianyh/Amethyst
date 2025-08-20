@@ -341,11 +341,26 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     func displayLayoutHUD() {
+        guard userConfiguration.enablesLayoutHUD(), space?.type == CGSSpaceTypeUser else {
+            return
+        }
+
+        let currentLayoutName = currentLayout.flatMap({ $0.layoutName }) ?? "None"
+        let currentLayoutDescription = currentLayout?.layoutDescription ?? ""
+
+        displayCustomHUD(title: currentLayoutName, description: currentLayoutDescription)
+    }
+
+    @objc func hideLayoutHUD(_ sender: AnyObject) {
+        layoutNameWindowController.close()
+    }
+
+    func displayCustomHUD(title: String, description: String = "") {
         guard let screen = screen else {
             return
         }
 
-        guard userConfiguration.enablesLayoutHUD(), space?.type == CGSSpaceTypeUser else {
+        guard space?.type == CGSSpaceTypeUser else {
             return
         }
 
@@ -358,22 +373,19 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
 
+        // Use new displayNotification method with dynamic sizing
+        layoutNameWindow.displayNotification(title: title, description: description)
+
+        // Center the window after resizing
         let screenFrame = screen.frame()
         let screenCenter = CGPoint(x: screenFrame.midX, y: screenFrame.midY)
         let windowOrigin = CGPoint(
             x: screenCenter.x - layoutNameWindow.frame.width / 2.0,
             y: screenCenter.y - layoutNameWindow.frame.height / 2.0
         )
-
-        layoutNameWindow.layoutNameField?.stringValue = currentLayout.flatMap({ $0.layoutName }) ?? "None"
-        layoutNameWindow.layoutDescriptionLabel?.stringValue = currentLayout?.layoutDescription ?? ""
         layoutNameWindow.setFrameOrigin(NSPointFromCGPoint(windowOrigin))
 
         layoutNameWindowController.showWindow(self)
-    }
-
-    @objc func hideLayoutHUD(_ sender: AnyObject) {
-        layoutNameWindowController.close()
     }
 }
 
