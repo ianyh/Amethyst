@@ -12,6 +12,7 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
     private var layoutKeys: [String] = []
 
     @IBOutlet var layoutsTableView: NSTableView?
+    @IBOutlet weak var openCustomLayoutsFolderButton: NSButton?
     @IBOutlet weak var relaunchButton: NSButton?
 
     override func awakeFromNib() {
@@ -98,6 +99,16 @@ class LayoutsPreferencesViewController: NSViewController, NSTableViewDataSource,
 
     @IBAction func relaunch(_ sender: AnyObject) {
         AppManager.relaunch()
+    }
+
+    @IBAction func openCustomLayoutsFolder(_ sender: AnyObject) {
+        do {
+            let layoutsDirectory = try FileManager.default.layoutsDirectory()
+            NSWorkspace.shared.open(layoutsDirectory)
+        } catch {
+            // Handle error - could show an alert or log the error
+            log.error("Failed to open layouts directory: \(error)")
+        }
     }
 
     func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {

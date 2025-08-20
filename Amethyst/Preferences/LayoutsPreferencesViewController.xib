@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="LayoutsPreferencesViewController" customModule="Amethyst" customModuleProvider="target">
             <connections>
                 <outlet property="layoutsTableView" destination="9o5-6W-pBB" id="kkq-fe-TRt"/>
+                <outlet property="openCustomLayoutsFolderButton" destination="bR4-fH-9Xy" id="nPz-Ql-8Rf"/>
                 <outlet property="relaunchButton" destination="aO3-09-OQh" id="xn1-ST-HKf"/>
                 <outlet property="view" destination="qtZ-jm-AmG" id="qMb-OA-4eh"/>
             </connections>
@@ -163,6 +164,16 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bR4-fH-9Xy">
+                    <rect key="frame" x="155" y="23" width="173" height="32"/>
+                    <buttonCell key="cell" type="push" title="Open Custom Layouts Folder" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="mK8-Rt-3Ln">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <connections>
+                            <action selector="openCustomLayoutsFolder:" target="-2" id="gP9-Zh-4Xt"/>
+                        </connections>
+                    </buttonCell>
+                </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aO3-09-OQh">
                     <rect key="frame" x="336" y="23" width="151" height="32"/>
                     <buttonCell key="cell" type="push" title="Relaunch Amethyst" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="L4e-Ct-jBn">
@@ -178,6 +189,7 @@
                 <constraint firstItem="JHN-38-Vcl" firstAttribute="leading" secondItem="Iqr-xS-F3Y" secondAttribute="trailing" constant="8" id="0dK-0w-9Oa"/>
                 <constraint firstItem="u8n-2E-r2x" firstAttribute="top" secondItem="TUI-Vc-F84" secondAttribute="bottom" constant="-1" id="0e4-gV-yjc"/>
                 <constraint firstAttribute="bottom" secondItem="aO3-09-OQh" secondAttribute="bottom" constant="30" id="0y9-aP-br8"/>
+                <constraint firstAttribute="bottom" secondItem="bR4-fH-9Xy" secondAttribute="bottom" constant="30" id="1B2-cT-dX9"/>
                 <constraint firstItem="nHi-Ex-f22" firstAttribute="centerY" secondItem="jyc-WA-HVd" secondAttribute="centerY" id="7Ie-Oz-lWs"/>
                 <constraint firstItem="ZlK-na-Nuc" firstAttribute="top" secondItem="u8n-2E-r2x" secondAttribute="bottom" constant="5" id="7Sr-BD-203"/>
                 <constraint firstItem="yGP-qi-0QH" firstAttribute="top" secondItem="qtZ-jm-AmG" secondAttribute="top" constant="30" id="88S-d8-abc"/>
@@ -190,6 +202,7 @@
                 <constraint firstItem="EqO-8K-pe7" firstAttribute="centerY" secondItem="yGP-qi-0QH" secondAttribute="centerY" id="ToA-bo-xmZ"/>
                 <constraint firstAttribute="trailing" secondItem="TUI-Vc-F84" secondAttribute="trailing" constant="30" id="UWP-0i-c8r"/>
                 <constraint firstAttribute="trailing" secondItem="aO3-09-OQh" secondAttribute="trailing" constant="30" id="UX2-UW-uBS"/>
+                <constraint firstItem="aO3-09-OQh" firstAttribute="leading" secondItem="bR4-fH-9Xy" secondAttribute="trailing" constant="8" id="X8T-gH-5Wp"/>
                 <constraint firstItem="u8n-2E-r2x" firstAttribute="leading" secondItem="ZN0-93-er7" secondAttribute="trailing" id="VvD-TW-gxj"/>
                 <constraint firstItem="TUI-Vc-F84" firstAttribute="leading" secondItem="qtZ-jm-AmG" secondAttribute="leading" constant="30" id="WfH-7m-ZQ0"/>
                 <constraint firstItem="JHN-38-Vcl" firstAttribute="centerY" secondItem="Iqr-xS-F3Y" secondAttribute="centerY" id="Ykr-P9-gtI"/>
@@ -204,6 +217,7 @@
                 <constraint firstItem="TUI-Vc-F84" firstAttribute="top" secondItem="Thm-8g-Ol9" secondAttribute="bottom" constant="30" id="oyx-zk-NTd"/>
                 <constraint firstAttribute="trailing" secondItem="yGP-qi-0QH" secondAttribute="trailing" constant="362" id="ozf-uP-KJs"/>
                 <constraint firstItem="aO3-09-OQh" firstAttribute="top" secondItem="ZlK-na-Nuc" secondAttribute="bottom" constant="10" id="qZ1-ld-a0s"/>
+                <constraint firstItem="bR4-fH-9Xy" firstAttribute="top" secondItem="ZlK-na-Nuc" secondAttribute="bottom" constant="10" id="qZ2-ld-b1t"/>
                 <constraint firstItem="jyc-WA-HVd" firstAttribute="centerY" secondItem="JHN-38-Vcl" secondAttribute="centerY" id="rDs-F6-0Jd"/>
                 <constraint firstItem="Thm-8g-Ol9" firstAttribute="centerX" secondItem="qtZ-jm-AmG" secondAttribute="centerX" id="uNg-Kb-ces"/>
                 <constraint firstItem="EqO-8K-pe7" firstAttribute="leading" secondItem="yGP-qi-0QH" secondAttribute="trailing" constant="8" id="zLX-p4-NRg"/>
