@@ -28,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var versionMenuItem: NSMenuItem?
     @IBOutlet var startAtLoginMenuItem: NSMenuItem?
     @IBOutlet var toggleGlobalTilingMenuItem: NSMenuItem?
+    @IBOutlet var layoutsMenuItem: NSMenuItem?
 
     private var isFirstLaunch = true
 
@@ -71,6 +72,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
         hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared, appDelegate: self)
+
+        // Populate layouts menu now that windowManager is initialized
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.populateLayoutsMenu()
+        }
     }
 
     override func awakeFromNib() {
@@ -93,6 +99,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         toggleGlobalTilingMenuItem?.title = "Disable"
 
         startAtLoginMenuItem?.state = (LoginServiceKit.isExistLoginItems(at: Bundle.main.bundlePath) ? .on : .off)
+
+        // Set up layouts menu delegate to refresh when opened
+        layoutsMenuItem?.submenu?.delegate = self
+
+        populateLayoutsMenu()
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -173,11 +184,87 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
+
+    private func populateLayoutsMenu() {
+        guard let layoutsMenuItem = layoutsMenuItem,
+              let submenu = layoutsMenuItem.submenu else {
+            return
+        }
+
+        // Clear existing items
+        submenu.removeAllItems()
+
+        // Get enabled layout keys from user configuration
+        let enabledLayoutKeys = UserConfiguration.shared.layoutKeys()
+
+        // Get all available layouts with their display names
+        let availableLayouts = LayoutType<SIApplication.Window>.availableLayoutStrings()
+
+        // Get current layout
+        let focusedScreenManager = windowManager?.focusedScreenManager()
+        var currentLayoutKey = focusedScreenManager?.currentLayout?.layoutKey
+
+        // If no focused screen manager, fallback to the first screen manager
+        if focusedScreenManager == nil, let firstScreenManager = windowManager?.screenManager(at: 0) {
+            currentLayoutKey = firstScreenManager.currentLayout?.layoutKey
+        }
+
+        // Filter to only enabled layouts and add menu items
+        for layoutKey in enabledLayoutKeys {
+            guard let layoutInfo = availableLayouts.first(where: { $0.key == layoutKey }) else {
+                continue
+            }
+
+            let menuItem = NSMenuItem(title: layoutInfo.name, action: #selector(selectLayout(_:)), keyEquivalent: "")
+            menuItem.target = self
+            menuItem.representedObject = layoutKey
+
+            // Mark current layout with checkmark
+            let isCurrentLayout = layoutKey == currentLayoutKey
+            menuItem.state = isCurrentLayout ? .on : .off
+
+            submenu.addItem(menuItem)
+        }
+
+        // If no layouts are enabled, show a disabled message
+        if enabledLayoutKeys.isEmpty {
+            let noLayoutsItem = NSMenuItem(title: "No layouts enabled", action: nil, keyEquivalent: "")
+            noLayoutsItem.isEnabled = false
+            submenu.addItem(noLayoutsItem)
+        }
+    }
+
+    @IBAction func selectLayout(_ sender: NSMenuItem) {
+        guard let layoutKey = sender.representedObject as? String,
+              let windowManager = windowManager,
+              let screenManager = windowManager.focusedScreenManager() else {
+            return
+        }
+
+        screenManager.selectLayout(layoutKey)
+        // Menu will be refreshed automatically when next opened via NSMenuDelegate
+    }
 }
 
 extension AppDelegate: NSWindowDelegate {
     func windowWillClose(_ notification: Notification) {
         windowManager?.preferencesDidClose()
+    }
+}
+
+extension AppDelegate: NSMenuDelegate {
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        // Refresh layouts menu when it's about to be shown
+        if menu == layoutsMenuItem?.submenu {
+            populateLayoutsMenu()
+        }
+    }
+
+    func menuWillOpen(_ menu: NSMenu) {
+        // Also refresh when menu is about to open
+        if menu == layoutsMenuItem?.submenu {
+            populateLayoutsMenu()
+        }
     }
 }
 
