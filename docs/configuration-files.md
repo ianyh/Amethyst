@@ -85,6 +85,8 @@ A mod is a list of keyboard modifiers. Namely, `option`, `control`, `shift`, and
 | `toggle-float` | Toggle the floating state of the currently focused window; i.e., if it was floating make it tiled and if it was tiled make it floating. |
 | `display-current-layout` | Display the layout HUD with the current layout on each screen. |
 | `toggle-tiling` | Turn on or off tiling entirely. |
+| `enable-tiling` | Turn on tiling. |
+| `disable-tiling` | Turn off tiling. |
 | `reevaluate-windows` | Rerun the current layout's algorithm. |
 | `toggle-focus-follows-mouse` | Turn on or off `focus-follows-mouse`. |
 | `relaunch-amethyst` | Automatically quit and reopen Amethyst. |

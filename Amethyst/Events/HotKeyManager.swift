@@ -235,6 +235,18 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             windowManager.markAllScreensForReflow(withChange: .unknown)
         }
 
+        constructCommandWithCommandKey(CommandKey.enableTiling.rawValue) {
+            guard !self.userConfiguration.tilingEnabled else { return }
+            self.userConfiguration.tilingEnabled = true
+            windowManager.markAllScreensForReflow(withChange: .unknown)
+        }
+
+        constructCommandWithCommandKey(CommandKey.disableTiling.rawValue) {
+            guard self.userConfiguration.tilingEnabled else { return }
+            self.userConfiguration.tilingEnabled = false
+            windowManager.markAllScreensForReflow(withChange: .unknown)
+        }
+
         constructCommandWithCommandKey(CommandKey.reevaluateWindows.rawValue) {
             windowManager.reevaluateWindows()
         }
@@ -405,6 +417,8 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle focus follows mouse", CommandKey.toggleFocusFollowsMouse.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
+        hotKeyNameToDefaultsKey.append(["Enable global tiling", CommandKey.enableTiling.rawValue])
+        hotKeyNameToDefaultsKey.append(["Disable global tiling", CommandKey.disableTiling.rawValue])
 
         for (layoutKey, layoutName) in LayoutType<Application.Window>.availableLayoutStrings() {
             let commandName = "Select \(layoutName) layout"

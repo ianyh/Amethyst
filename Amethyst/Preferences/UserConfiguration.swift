@@ -130,6 +130,8 @@ enum CommandKey: String {
     case toggleFloat = "toggle-float"
     case displayCurrentLayout = "display-current-layout"
     case toggleTiling = "toggle-tiling"
+    case enableTiling = "enable-tiling"
+    case disableTiling = "disable-tiling"
     case reevaluateWindows = "reevaluate-windows"
     case toggleFocusFollowsMouse = "toggle-focus-follows-mouse"
     case relaunchAmethyst = "relaunch-amethyst"

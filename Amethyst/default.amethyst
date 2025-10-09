@@ -190,6 +190,8 @@
         "mod": "mod2",
         "key": "t"
     },
+    "enable-tiling": false,
+    "disable-tiling": false,
     "display-current-layout": {
         "mod": "mod1",
         "key": "i"

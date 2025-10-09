@@ -217,6 +217,16 @@ toggle-tiling:
   mod: mod2
   key: t
 
+# Turn on tiling.
+# enable-tiling:
+#   mod: mod2
+#   key: <NONE>
+
+# Turn off tiling.
+# disable-tiling:
+#   mod: mod2
+#   key: <NONE>
+
 # Rerun the current layout's algorithm.
 reevaluate-windows:
   mod: mod1
