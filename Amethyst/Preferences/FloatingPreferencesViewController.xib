@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24412" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24412"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,21 +21,20 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <scrollView focusRingType="none" horizontalCompressionResistancePriority="250" borderType="line" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6O-Ka-pXq" userLabel="Application IDs">
-                    <rect key="frame" x="30" y="30" width="180" height="214"/>
+                    <rect key="frame" x="30" y="30" width="180" height="210"/>
                     <clipView key="contentView" focusRingType="none" drawsBackground="NO" id="RT8-fN-JDO">
-                        <rect key="frame" x="1" y="1" width="178" height="212"/>
+                        <rect key="frame" x="1" y="1" width="178" height="208"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" id="0sm-tb-Rkn">
-                                <rect key="frame" x="0.0" y="0.0" width="178" height="188"/>
+                                <rect key="frame" x="0.0" y="0.0" width="178" height="184"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn editable="NO" width="175" minWidth="40" maxWidth="1000" id="IPH-Pg-lu9">
+                                    <tableColumn editable="NO" width="166" minWidth="40" maxWidth="1000" id="IPH-Pg-lu9">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                            <font key="font" metaFont="menu" size="11"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                         </tableHeaderCell>
@@ -63,43 +62,43 @@
                         <constraint firstAttribute="width" constant="180" id="lyT-Cm-gS8"/>
                     </constraints>
                     <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="25"/>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="IwH-cx-YkX">
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="IwH-cx-YkX">
                         <rect key="frame" x="-7" y="-14" width="0.0" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="eCG-Tq-r9K">
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="eCG-Tq-r9K">
                         <rect key="frame" x="-14" y="-7" width="15" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZH0-nz-Yiv" userLabel="Add App ID">
-                    <rect key="frame" x="31" y="31" width="27" height="25"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="27" id="u68-Qg-UQ0"/>
-                    </constraints>
+                    <rect key="frame" x="31" y="29.5" width="27.5" height="29"/>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="ok9-1r-DwF">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="27" id="u68-Qg-UQ0"/>
+                    </constraints>
                     <connections>
                         <action selector="addFloatingApplication:" target="-2" id="2LL-EJ-b2i"/>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cfp-8K-Cdt" userLabel="Remove App ID">
-                    <rect key="frame" x="59" y="31" width="27" height="25"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="27" id="ZjR-Vq-3eu"/>
-                    </constraints>
+                    <rect key="frame" x="59" y="34" width="27.5" height="20"/>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="Xif-lH-IK0">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="27" id="ZjR-Vq-3eu"/>
+                    </constraints>
                     <connections>
                         <action selector="removeFloatingApplication:" target="-2" id="BRc-C0-JNy"/>
                     </connections>
                 </button>
                 <button translatesAutoresizingMaskIntoConstraints="NO" id="9hq-U6-t9B">
-                    <rect key="frame" x="192" y="400" width="143" height="18"/>
+                    <rect key="frame" x="194" y="401" width="143" height="16"/>
                     <buttonCell key="cell" type="check" title="Float small windows" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="phj-M8-HfQ">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
@@ -108,7 +107,7 @@
                         <binding destination="XhK-Tn-zrU" name="value" keyPath="values.float-small-windows" id="ahP-PY-5hW"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Mqz-bw-Kwm">
+                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Mqz-bw-Kwm">
                     <rect key="frame" x="133" y="401" width="55" height="16"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="General:" id="OZb-cJ-WUP">
                         <font key="font" metaFont="system"/>
@@ -116,8 +115,8 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Q7b-oi-oDI">
-                    <rect key="frame" x="192" y="370" width="294" height="28"/>
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Q7b-oi-oDI">
+                    <rect key="frame" x="192" y="369" width="294" height="28"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="This option is recommended to avoid tiling dialogs for some applications." id="GHB-Qd-gAx">
                         <font key="font" metaFont="menu" size="11"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -125,13 +124,13 @@
                     </textFieldCell>
                 </textField>
                 <box horizontalHuggingPriority="248" verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="2vs-LF-ePe">
-                    <rect key="frame" x="174" y="337" width="200" height="5"/>
+                    <rect key="frame" x="174" y="336" width="200" height="5"/>
                 </box>
                 <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9ag-lu-Zd7" userLabel="Blacklist Toggle">
-                    <rect key="frame" x="28" y="299" width="493" height="25"/>
+                    <rect key="frame" x="30" y="298" width="488" height="24"/>
                     <popUpButtonCell key="cell" type="push" title="Automatically float applications listed" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" autoenablesItems="NO" altersStateOfSelectedItem="NO" selectedItem="dBv-SS-kCX" id="zLN-Ws-Prr">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
+                        <font key="font" metaFont="message"/>
                         <menu key="menu" autoenablesItems="NO" id="4pZ-9T-T6n">
                             <items>
                                 <menuItem title="Automatically float applications listed" id="dBv-SS-kCX" userLabel="Blacklist"/>
@@ -149,8 +148,8 @@
                         </binding>
                     </connections>
                 </popUpButton>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Dvu-vy-f2R">
-                    <rect key="frame" x="32" y="252" width="492" height="42"/>
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Dvu-vy-f2R">
+                    <rect key="frame" x="32" y="248" width="492" height="42"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="ynm-bG-Bg4">
                         <font key="font" metaFont="menu" size="11"/>
                         <string key="title">Floating an application means that windows from that application will automatically be treated as floating. Windows can still manually be tiled or floated by toggling their floating state.</string>
@@ -159,30 +158,29 @@
                     </textFieldCell>
                 </textField>
                 <box horizontalCompressionResistancePriority="1000" title="Window Title Restrictions" translatesAutoresizingMaskIntoConstraints="NO" id="iHL-Zc-7k5">
-                    <rect key="frame" x="215" y="26" width="306" height="222"/>
+                    <rect key="frame" x="218" y="30" width="300" height="214"/>
                     <view key="contentView" id="LKC-IK-MmH">
-                        <rect key="frame" x="3" y="3" width="300" height="204"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="202"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="ix5-Vi-yZw">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="204"/>
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="202"/>
                                 <subviews>
                                     <scrollView focusRingType="none" borderType="line" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hb8-rU-qD8" userLabel="Window Titles">
-                                        <rect key="frame" x="20" y="70" width="260" height="114"/>
+                                        <rect key="frame" x="20" y="70" width="260" height="112"/>
                                         <clipView key="contentView" focusRingType="none" drawsBackground="NO" id="6un-vZ-A29">
-                                            <rect key="frame" x="1" y="1" width="258" height="112"/>
+                                            <rect key="frame" x="1" y="1" width="258" height="110"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" id="a4Q-Mp-SKh">
-                                                    <rect key="frame" x="0.0" y="0.0" width="258" height="88"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="258" height="86"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                     <tableColumns>
-                                                        <tableColumn editable="NO" width="255" minWidth="40" maxWidth="1000" id="GgL-D9-Ium">
+                                                        <tableColumn editable="NO" width="246" minWidth="40" maxWidth="1000" id="GgL-D9-Ium">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
-                                                                <font key="font" metaFont="menu" size="11"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                             </tableHeaderCell>
@@ -206,11 +204,11 @@
                                             <nil key="backgroundColor"/>
                                         </clipView>
                                         <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="25"/>
-                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="SVJ-m0-CnG">
+                                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="SVJ-m0-CnG">
                                             <rect key="frame" x="1" y="-14" width="0.0" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
-                                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="RIO-9u-Kqs">
+                                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="RIO-9u-Kqs">
                                             <rect key="frame" x="-14" y="-7" width="15" height="0.0"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </scroller>
@@ -227,10 +225,10 @@
                                         <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </box>
                                     <customView focusRingType="none" translatesAutoresizingMaskIntoConstraints="NO" id="bIY-NG-cWh">
-                                        <rect key="frame" x="20" y="70" width="260" height="114"/>
+                                        <rect key="frame" x="20" y="70" width="260" height="112"/>
                                         <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gp2-JY-azv">
-                                                <rect key="frame" x="89" y="49" width="82" height="16"/>
+                                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gp2-JY-azv">
+                                                <rect key="frame" x="89" y="48" width="82" height="16"/>
                                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="All Windows" id="q1g-cs-yOQ">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -251,32 +249,32 @@
                                         </connections>
                                     </customView>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1nd-NB-kkJ" userLabel="Add Window Title">
-                                        <rect key="frame" x="21" y="71" width="27" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="27" id="1Fa-rq-rey"/>
-                                        </constraints>
+                                        <rect key="frame" x="21" y="69.5" width="27.5" height="29"/>
                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="jIx-ts-Y1c">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="27" id="1Fa-rq-rey"/>
+                                        </constraints>
                                         <connections>
                                             <action selector="addWindowTitle:" target="-2" id="ZRi-ce-9P7"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="l9M-Jo-2BQ" userLabel="Remove Window Title">
-                                        <rect key="frame" x="49" y="71" width="27" height="25"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="27" id="dvo-EH-A9H"/>
-                                        </constraints>
+                                        <rect key="frame" x="49" y="74" width="27.5" height="20"/>
                                         <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="TCY-v1-oeB">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="27" id="dvo-EH-A9H"/>
+                                        </constraints>
                                         <connections>
                                             <action selector="removeWindowTitle:" target="-2" id="VjH-qW-TC3"/>
                                         </connections>
                                     </button>
-                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lU5-wk-Rkj">
+                                    <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lU5-wk-Rkj">
                                         <rect key="frame" x="18" y="20" width="264" height="42"/>
                                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Floating for the selected application will be restricted to the windows with titles matching the list above." id="0n3-tw-VMA">
                                             <font key="font" metaFont="message" size="11"/>
@@ -315,8 +313,8 @@
                                     </binding>
                                 </connections>
                             </customView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c4Z-Xi-U9f">
-                                <rect key="frame" x="75" y="94" width="150" height="16"/>
+                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="c4Z-Xi-U9f">
+                                <rect key="frame" x="75" y="93" width="150" height="16"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="No Application Selected" id="JQ7-XU-Edg">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -341,7 +339,7 @@
                         </constraints>
                     </view>
                 </box>
-                <box boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="KqU-3F-KwY" userLabel="Add/Remove Background">
+                <box hidden="YES" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="KqU-3F-KwY" userLabel="Add/Remove Background">
                     <rect key="frame" x="31" y="31" width="178" height="25"/>
                     <view key="contentView" id="Olz-Y5-zJj">
                         <rect key="frame" x="0.0" y="0.0" width="178" height="25"/>
@@ -396,7 +394,7 @@
         <arrayController preservesSelection="NO" id="1St-Zh-cQw" userLabel="Floating Bundles Array Controller"/>
     </objects>
     <resources>
-        <image name="NSAddTemplate" width="11" height="11"/>
-        <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="NSAddTemplate" width="18" height="17"/>
+        <image name="NSRemoveTemplate" width="18" height="5"/>
     </resources>
 </document>
