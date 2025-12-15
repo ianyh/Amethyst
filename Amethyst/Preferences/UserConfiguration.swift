@@ -689,32 +689,28 @@ class UserConfiguration: NSObject {
         return int == 0 ? nil : int
     }
 
+    private func setConfigurationValueWithKVO(_ value: Any?, forKey key: ConfigurationKey) {
+        if let userDefaults = storage as? UserDefaults {
+            userDefaults.willChangeValue(forKey: key.rawValue)
+            userDefaults.set(value, forKey: key)
+            userDefaults.didChangeValue(forKey: key.rawValue)
+        } else {
+            storage.set(value, forKey: key)
+        }
+    }
+
     func increaseWindowMaxCount() {
         let currentCount = windowMaxCount() ?? 0
         let newCount = currentCount + 1
 
-        // Use KVO-compliant method to trigger UI updates
-        if storage is UserDefaults {
-            UserDefaults.standard.willChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
-            storage.set(Float(newCount), forKey: .windowMaxCount)
-            UserDefaults.standard.didChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
-        } else {
-            storage.set(Float(newCount), forKey: .windowMaxCount)
-        }
+        setConfigurationValueWithKVO(Float(newCount), forKey: .windowMaxCount)
     }
 
     func decreaseWindowMaxCount() {
         let currentCount = windowMaxCount() ?? 1
         let newCount = max(0, currentCount - 1)
 
-        // Use KVO-compliant method to trigger UI updates
-        if storage is UserDefaults {
-            UserDefaults.standard.willChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
-            storage.set(Float(newCount), forKey: .windowMaxCount)
-            UserDefaults.standard.didChangeValue(forKey: ConfigurationKey.windowMaxCount.rawValue)
-        } else {
-            storage.set(Float(newCount), forKey: .windowMaxCount)
-        }
+        setConfigurationValueWithKVO(Float(newCount), forKey: .windowMaxCount)
     }
 
     func windowResizeStep() -> CGFloat {
