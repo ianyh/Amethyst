@@ -72,11 +72,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
         hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared, appDelegate: self)
-
-        // Populate layouts menu now that windowManager is initialized
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.populateLayoutsMenu()
-        }
     }
 
     override func awakeFromNib() {
@@ -100,10 +95,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         startAtLoginMenuItem?.state = (LoginServiceKit.isExistLoginItems(at: Bundle.main.bundlePath) ? .on : .off)
 
-        // Set up layouts menu delegate to refresh when opened
-        layoutsMenuItem?.submenu?.delegate = self
-
-        populateLayoutsMenu()
+        // Set up status item menu delegate to refresh layouts when main menu is opened
+        statusItemMenu?.delegate = self
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -197,20 +190,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Get enabled layout keys from user configuration
         let enabledLayoutKeys = UserConfiguration.shared.layoutKeys()
 
+        // Check if no layouts are enabled and return early
+        if enabledLayoutKeys.isEmpty {
+            let noLayoutsItem = NSMenuItem(title: "No layouts enabled", action: nil, keyEquivalent: "")
+            noLayoutsItem.isEnabled = false
+            submenu.addItem(noLayoutsItem)
+            return
+        }
+
+        // Get screen manager: try focused screen first, then screen under mouse cursor, then first screen
+        let screenManager: ScreenManager<WindowManager<SIApplication>>? = {
+            if let focused = windowManager?.focusedScreenManager() {
+                return focused
+            }
+            // Fallback to screen containing mouse cursor (useful when clicking menu bar)
+            let mouseLocation = NSEvent.mouseLocation
+            if let nsScreen = NSScreen.screens.first(where: { NSMouseInRect(mouseLocation, $0.frame, false) }) {
+                let amScreen = AMScreen(screen: nsScreen)
+                return windowManager?.screenManager(for: amScreen)
+            }
+            return windowManager?.screenManager(at: 0)
+        }()
+
+        guard let screenManager = screenManager else {
+            let errorItem = NSMenuItem(title: "Unable to determine current screen", action: nil, keyEquivalent: "")
+            errorItem.isEnabled = false
+            submenu.addItem(errorItem)
+            return
+        }
+
         // Get all available layouts with their display names
         let availableLayouts = LayoutType<SIApplication.Window>.availableLayoutStrings()
 
-        // Get current layout
-        let focusedScreenManager = windowManager?.focusedScreenManager()
-        var currentLayoutKey = focusedScreenManager?.currentLayout?.layoutKey
+        // Get current layout index from the screen manager
+        let currentLayoutIndex = screenManager.currentLayoutIndexValue
 
-        // If no focused screen manager, fallback to the first screen manager
-        if focusedScreenManager == nil, let firstScreenManager = windowManager?.screenManager(at: 0) {
-            currentLayoutKey = firstScreenManager.currentLayout?.layoutKey
-        }
-
-        // Filter to only enabled layouts and add menu items
-        for layoutKey in enabledLayoutKeys {
+        // Add menu items for each enabled layout, using index to handle duplicate layout types
+        for (index, layoutKey) in enabledLayoutKeys.enumerated() {
             guard let layoutInfo = availableLayouts.first(where: { $0.key == layoutKey }) else {
                 continue
             }
@@ -218,19 +234,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let menuItem = NSMenuItem(title: layoutInfo.name, action: #selector(selectLayout(_:)), keyEquivalent: "")
             menuItem.target = self
             menuItem.representedObject = layoutKey
+            menuItem.tag = index
 
-            // Mark current layout with checkmark
-            let isCurrentLayout = layoutKey == currentLayoutKey
+            // Mark current layout with checkmark by comparing index (handles duplicate layout types)
+            let isCurrentLayout = index == currentLayoutIndex
             menuItem.state = isCurrentLayout ? .on : .off
 
             submenu.addItem(menuItem)
-        }
-
-        // If no layouts are enabled, show a disabled message
-        if enabledLayoutKeys.isEmpty {
-            let noLayoutsItem = NSMenuItem(title: "No layouts enabled", action: nil, keyEquivalent: "")
-            noLayoutsItem.isEnabled = false
-            submenu.addItem(noLayoutsItem)
         }
     }
 
@@ -253,16 +263,9 @@ extension AppDelegate: NSWindowDelegate {
 }
 
 extension AppDelegate: NSMenuDelegate {
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        // Refresh layouts menu when it's about to be shown
-        if menu == layoutsMenuItem?.submenu {
-            populateLayoutsMenu()
-        }
-    }
-
     func menuWillOpen(_ menu: NSMenu) {
-        // Also refresh when menu is about to open
-        if menu == layoutsMenuItem?.submenu {
+        // Refresh layouts menu when main status item menu is about to open
+        if menu == statusItemMenu {
             populateLayoutsMenu()
         }
     }

@@ -56,6 +56,11 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         return layouts[currentLayoutIndex]
     }
 
+    /// The index of the current layout in the layouts array
+    var currentLayoutIndexValue: Int {
+        return currentLayoutIndex
+    }
+
     private let layoutNameWindowController: LayoutNameWindowController
 
     init(screen: Screen, delegate: Delegate, userConfiguration: UserConfiguration) {
