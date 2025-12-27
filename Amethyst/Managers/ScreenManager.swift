@@ -176,10 +176,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
         log.debug("Screen: \(screen?.screenID() ?? "unknown") -- Window Change: \(windowChange)")
 
-        if let statefulLayout = currentLayout as? StatefulLayout {
-            statefulLayout.updateWithChange(windowChange)
-        }
-
         DispatchQueue.main.async {
             self.minimizeWindows()
             self.reflow(windowChange)
@@ -222,6 +218,12 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     private func reflow(_ event: Change<Window>) {
+        defer {
+            if let statefulLayout = currentLayout as? StatefulLayout {
+                statefulLayout.updateWithChange(event)
+            }
+        }
+
         guard let screen = screen else {
             return
         }
