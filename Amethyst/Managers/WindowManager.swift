@@ -640,7 +640,8 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
-        swapInTab(window: window)
+        add(window: window)
+//        swapInTab(window: window)
     }
 
     func application(_ application: AnyApplication<Application>, didMoveWindow window: Window) {
