@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -121,9 +121,9 @@
 		40D82FF129739C5300F3C18B /* extended.js in Resources */ = {isa = PBXBuildFile; fileRef = 40D82FF029739C5300F3C18B /* extended.js */; };
 		40DA8B6E27D5AA7300C291AF /* subset.js in Resources */ = {isa = PBXBuildFile; fileRef = 40DA8B6D27D5AA7300C291AF /* subset.js */; };
 		40E2D2302D544F1E00D16B87 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 40E2D22F2D544F1E00D16B87 /* Silica */; };
-		40E2D2332D55931B00D16B87 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 40E2D2322D55931B00D16B87 /* Silica */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
+		40EFFB4A2F0226EF00EDD929 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 40EFFB492F0226EF00EDD929 /* Silica */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
 		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
 		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
@@ -285,7 +285,7 @@
 				40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */,
 				400D48FA2A92B0130082750F /* Sparkle in Frameworks */,
 				400F2DF32AABF4FC00C1AAE2 /* KeyboardShortcuts in Frameworks */,
-				40E2D2332D55931B00D16B87 /* Silica in Frameworks */,
+				40EFFB4A2F0226EF00EDD929 /* Silica in Frameworks */,
 				402F6FA62A81C9E30036B512 /* SkyLight.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,7 +633,7 @@
 				400F2DF22AABF4FC00C1AAE2 /* KeyboardShortcuts */,
 				40D540EF2ABFC7560007F40A /* MASShortcut */,
 				40E2D22F2D544F1E00D16B87 /* Silica */,
-				40E2D2322D55931B00D16B87 /* Silica */,
+				40EFFB492F0226EF00EDD929 /* Silica */,
 			);
 			productName = Amethyst;
 			productReference = 402DB6DE1742E41A00D1C936 /* Amethyst.app */;
@@ -708,7 +708,7 @@
 				40AE15EF2A92EC5300E14536 /* XCRemoteSwiftPackageReference "Nimble" */,
 				400F2DF12AABF4FC00C1AAE2 /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
 				40D540EE2ABFC7560007F40A /* XCRemoteSwiftPackageReference "MASShortcut" */,
-				40E2D2312D55931B00D16B87 /* XCRemoteSwiftPackageReference "silica" */,
+				40EFFB482F0226EF00EDD929 /* XCLocalSwiftPackageReference "../Silica" */,
 			);
 			productRefGroup = 402DB6DF1742E41A00D1C936 /* Products */;
 			projectDirPath = "";
@@ -1196,6 +1196,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		40EFFB482F0226EF00EDD929 /* XCLocalSwiftPackageReference "../Silica" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Silica;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		400D48F22A92AF1E0082750F /* XCRemoteSwiftPackageReference "Cartography" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1293,14 +1300,6 @@
 				kind = branch;
 			};
 		};
-		40E2D2312D55931B00D16B87 /* XCRemoteSwiftPackageReference "silica" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ianyh/silica";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1373,9 +1372,8 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Silica;
 		};
-		40E2D2322D55931B00D16B87 /* Silica */ = {
+		40EFFB492F0226EF00EDD929 /* Silica */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 40E2D2312D55931B00D16B87 /* XCRemoteSwiftPackageReference "silica" */;
 			productName = Silica;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -124,6 +124,9 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
         /// The application changed its primary window
         case mainWindowChanged
 
+        /// The window has likely been destroyed
+        case elementDestroyed(window: Window)
+
         /// The actual notification name
         var string: String {
             switch self {
@@ -143,12 +146,35 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                 return kAXWindowResizedNotification
             case .mainWindowChanged:
                 return kAXMainWindowChangedNotification
+            case .elementDestroyed:
+                return kAXUIElementDestroyedNotification
             }
+        }
+
+        /// Notifications relevant to the entire application
+        static var applicationNotifications: [Notification] {
+            return [
+                .created,
+                .windowDeminiaturized,
+                .windowMiniaturized,
+                .focusedWindowChanged,
+                .applicationActivated,
+                .windowMoved,
+                .windowResized,
+                .mainWindowChanged
+            ]
+        }
+
+        /// Notifications relevant to a particular window of an application
+        static func windowNotificationsForWindow(_ window: Window) -> [Notification] {
+            return [
+                .elementDestroyed(window: window)
+            ]
         }
     }
 
     /// The application being observed
-    private let application: AnyApplication<Application>
+    let application: AnyApplication<Application>
 
     /// The delegate for handling events as they come in
     private weak var delegate: Delegate?
@@ -168,7 +194,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
      An observable that attemps to subscribe to events on the application. The observable completes when subscriptions have been put in place, and errors otherwise.
      */
     func addObservers() -> Observable<Void> {
-        return _addObservers().retry { errorTrigger in
+        return _addObservers(notifications: Notification.applicationNotifications).retry { errorTrigger in
             errorTrigger.enumerated().flatMap { count, error -> Observable<Int> in
                 guard count < 6 else {
                     return .error(error)
@@ -179,18 +205,39 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
         }
     }
 
-    private func _addObservers() -> Observable<Void> {
-        let notifications: [Notification] = [
-            .created,
-            .windowDeminiaturized,
-            .windowMiniaturized,
-            .focusedWindowChanged,
-            .applicationActivated,
-            .windowMoved,
-            .windowResized,
-            .mainWindowChanged
-        ]
+    /**
+     - Returns:
+     An observable that attempts to subscribe to events specifically relevant to a window in an application. The observable completes when subscriptions have been put in place, and errors otherwise.
+     */
+    func addObserversForWindow(_ window: Window) -> Observable<Void> {
+        let notifications = Notification.windowNotificationsForWindow(window)
+        return _addObservers(notifications: notifications).retry { errorTrigger in
+            errorTrigger.enumerated().flatMap { count, error -> Observable<Int> in
+                guard count < 6 else {
+                    return .error(error)
+                }
 
+                return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+            }
+        }
+    }
+
+    /**
+     - Returns:
+     An observable that unsubscribes from events that may be tracked for a specific window.
+
+     - Parameters:
+        - window: the window on which notifications may be observed.
+     
+     - Note:
+     This is a no op in the case where no notifications were being observed.
+     */
+    func removeObserversForWindow(_ window: Window) {
+        let notifications = Notification.windowNotificationsForWindow(window)
+        removeObservers(notifications: notifications, for: window)
+    }
+
+    private func _addObservers(notifications: [Notification]) -> Observable<Void> {
         return Observable.from(notifications)
             .scan([]) { observed, notification -> [Notification] in
                 let notifications = observed + [notification]
@@ -219,13 +266,23 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
      An error when failing to add observer.
      */
     private func addObserver(for notification: Notification) throws {
-        let success = application.observe(notification: notification.string) { element in
-            guard let window = Window(element: element) else {
-                return
+        let success: Bool
+        switch notification {
+        case .elementDestroyed(let window):
+            success = application.observe(notification: notification.string, window: window) { _ in
+                DispatchQueue.main.async {
+                    self.handle(notification: notification, window: window)
+                }
             }
+        default:
+            success = application.observe(notification: notification.string) { element in
+                guard let window = Window(element: element) else {
+                    return
+                }
 
-            DispatchQueue.main.async {
-                self.handle(notification: notification, window: window)
+                DispatchQueue.main.async {
+                    self.handle(notification: notification, window: window)
+                }
             }
         }
 
@@ -238,10 +295,21 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
      Removes notifications from being observed.
      
      - Parameters:
-         - notification: The notifications to stop observing.
+         - notifications: The notifications to stop observing.
      */
     private func removeObservers(notifications: [Notification]) {
         notifications.forEach { application.unobserve(notification: $0.string) }
+    }
+
+    /**
+     Removes notifications from being observed for a window.
+     
+     - Parameters:
+        - notifications: the notifications to stop observing.
+        - window: the window for which notifications were being observed.
+     */
+    private func removeObservers(notifications: [Notification], for window: Window) {
+        notifications.forEach { application.unobserve(notification: $0.string, window: window) }
     }
 
     private func handle(notification: Notification, window: Window) {
@@ -265,6 +333,8 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
             delegate?.application(application, didResizeWindow: window)
         case .mainWindowChanged:
             delegate?.application(application, didFindPotentiallyNewWindow: window)
+        case .elementDestroyed:
+            delegate?.application(application, didRemoveWindow: window)
         }
     }
 }

@@ -218,11 +218,15 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     private func reflow(_ event: Change<Window>) {
+        var deliveredChangeEvent = false
+
         defer {
-            if let statefulLayout = currentLayout as? StatefulLayout {
+            if let statefulLayout = currentLayout as? StatefulLayout, !deliveredChangeEvent {
                 statefulLayout.updateWithChange(event)
             }
         }
+
+        log.debug("Screen: \(screen?.screenID() ?? "unknown"), Layout: \(currentLayout?.layoutName ?? "unknown") -- Window Change: \(event)")
 
         guard let screen = screen else {
             return
@@ -234,6 +238,11 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
         guard let windows = delegate?.activeWindowSet(forScreenManager: self) else {
             return
+        }
+
+        if let statefulLayout = currentLayout as? StatefulLayout {
+            statefulLayout.updateWithChange(event)
+            deliveredChangeEvent = true
         }
 
         guard let layout = currentLayout, let frameAssignments = layout.frameAssignments(windows, on: screen) else {

@@ -43,7 +43,8 @@ private let ignoredBundleIDs = Set([
     "com.apple.security.Keychain-Circle-Notification",
     "com.apple.backgroundtaskmanagement.agent",
     "com.apple.CoreLocationAgent",
-    "com.apple.OSDUIHelper"
+    "com.apple.OSDUIHelper",
+    "com.apple.ViewBridgeAuxiliary"
 ])
 
 protocol BundleIdentifiable {

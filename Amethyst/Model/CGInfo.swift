@@ -57,11 +57,19 @@ struct CGWindowsInfo<Window: WindowType> {
     static func windowSpace(_ window: Window) -> Int? {
         let windowIDsArray = CGWindowsInfo.windowIDsArray(window)
 
-        guard let spaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
+        guard let cfSpaces = CGSCopySpacesForWindows(CGSMainConnectionID(), kCGSAllSpacesMask, windowIDsArray)?.takeRetainedValue() else {
             return nil
         }
 
-        return (spaces as NSArray as? [NSNumber])?.first?.intValue
+        guard let spaces = cfSpaces as NSArray as? [NSNumber] else {
+            return nil
+        }
+
+        guard !spaces.isEmpty else {
+            return nil
+        }
+
+        return spaces.first?.intValue
     }
 }
 

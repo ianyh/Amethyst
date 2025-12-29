@@ -13,6 +13,12 @@ import RxSwift
 import Silica
 import SwiftyJSON
 
+enum TrackingError: Error {
+    case unreliableFloating
+    case unknownScreen
+    case unknownSpace
+}
+
 /**
  The tolerant interval between the click and the application of a mouse move from focus.
  
@@ -411,25 +417,65 @@ extension WindowManager {
             return
         }
 
-        switch application.defaultFloatForWindow(window) {
-        case .unreliable where retries > 0:
-            return DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                self.add(window: window, retries: retries - 1, delay: delay * 2)
+        ApplicationObservation(application: application, delegate: self)
+            .addObserversForWindow(window)
+            .map { try self.determineFloatForWindow(window, application: application, force: false) }
+            .retry { error in
+                error.enumerated().flatMap { count, error -> Observable<Int> in
+                    log.debug("error in determining float for window: \(error)")
+                    guard error is TrackingError, count < 6 else {
+                        return .error(error)
+                    }
+
+                    return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+                }
             }
+            .catch { error in
+                guard error is TrackingError else {
+                    throw error
+                }
+                log.debug("forcing float for window")
+                try self.determineFloatForWindow(window, application: application, force: true)
+                return .just(())
+            }
+            .map { try self.track(window: window, application: application) }
+            .retry { error in
+                error.enumerated().flatMap { count, error -> Observable<Int> in
+                    log.debug("encountered an error trying to track window: \(error)")
+                    guard error is TrackingError, count < 6 else {
+                        return .error(error)
+                    }
+
+                    return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+                }
+            }
+            .subscribe()
+            .disposed(by: disposeBag)
+    }
+
+    private func determineFloatForWindow(_ window: Window, application: AnyApplication<Application>, force: Bool) throws {
+        switch application.defaultFloatForWindow(window) {
+        case .unreliable where !force:
+            throw TrackingError.unreliableFloating
         case .reliable(.floating), .unreliable(.floating):
             windows.setFloating(true, forWindow: window)
         case .reliable(.notFloating), .unreliable(.notFloating):
             windows.setFloating(false, forWindow: window)
         }
+    }
 
+    private func track(window: Window, application: AnyApplication<Application>, retries: Int = 5, delay: TimeInterval = 0.01) throws {
         windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
 
         guard let screen = window.screen() else {
-            return
+            throw TrackingError.unknownScreen
         }
-        let space = CGWindowsInfo.windowSpace(window)
 
-        let windowChange: Change = windows.isWindowFloating(window) || space == nil ? .unknown : .add(window: window)
+        guard CGWindowsInfo.windowSpace(window) != nil else {
+            throw TrackingError.unknownSpace
+        }
+
+        let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
         markScreen(screen, forReflowWithChange: windowChange)
     }
 
