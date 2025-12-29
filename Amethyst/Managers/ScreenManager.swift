@@ -61,6 +61,11 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         return currentLayoutIndex
     }
 
+    /// Returns layout info (key and name) for all layouts in this screen manager
+    var layoutsInfo: [(key: String, name: String)] {
+        return layouts.map { (key: $0.layoutKey, name: $0.layoutName) }
+    }
+
     private let layoutNameWindowController: LayoutNameWindowController
 
     init(screen: Screen, delegate: Delegate, userConfiguration: UserConfiguration) {

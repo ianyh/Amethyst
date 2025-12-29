@@ -187,18 +187,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Clear existing items
         submenu.removeAllItems()
 
-        // Get enabled layout keys from user configuration
-        let enabledLayoutKeys = UserConfiguration.shared.layoutKeys()
-
-        // Check if no layouts are enabled and return early
-        if enabledLayoutKeys.isEmpty {
-            let noLayoutsItem = NSMenuItem(title: "No layouts enabled", action: nil, keyEquivalent: "")
-            noLayoutsItem.isEnabled = false
-            submenu.addItem(noLayoutsItem)
-            return
-        }
-
-        // Get screen manager: try focused screen first, then screen under mouse cursor, then first screen
+        // Get screen manager: try focused screen first, then screen under mouse cursor
         let screenManager: ScreenManager<WindowManager<SIApplication>>? = {
             if let focused = windowManager?.focusedScreenManager() {
                 return focused
@@ -209,7 +198,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 let amScreen = AMScreen(screen: nsScreen)
                 return windowManager?.screenManager(for: amScreen)
             }
-            return windowManager?.screenManager(at: 0)
+            return nil
         }()
 
         guard let screenManager = screenManager else {
@@ -219,24 +208,28 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        // Get all available layouts with their display names
-        let availableLayouts = LayoutType<SIApplication.Window>.availableLayoutStrings()
+        // Get layouts from the screen manager (not from global config)
+        let layouts = screenManager.layoutsInfo
+
+        // Check if no layouts are available and return early
+        if layouts.isEmpty {
+            let noLayoutsItem = NSMenuItem(title: "No layouts enabled", action: nil, keyEquivalent: "")
+            noLayoutsItem.isEnabled = false
+            submenu.addItem(noLayoutsItem)
+            return
+        }
 
         // Get current layout index from the screen manager
         let currentLayoutIndex = screenManager.currentLayoutIndexValue
 
-        // Add menu items for each enabled layout, using index to handle duplicate layout types
-        for (index, layoutKey) in enabledLayoutKeys.enumerated() {
-            guard let layoutInfo = availableLayouts.first(where: { $0.key == layoutKey }) else {
-                continue
-            }
-
+        // Add menu items for each layout in the screen manager
+        for (index, layoutInfo) in layouts.enumerated() {
             let menuItem = NSMenuItem(title: layoutInfo.name, action: #selector(selectLayout(_:)), keyEquivalent: "")
             menuItem.target = self
-            menuItem.representedObject = layoutKey
+            menuItem.representedObject = layoutInfo.key
             menuItem.tag = index
 
-            // Mark current layout with checkmark by comparing index (handles duplicate layout types)
+            // Mark current layout with checkmark by comparing index
             let isCurrentLayout = index == currentLayoutIndex
             menuItem.state = isCurrentLayout ? .on : .off
 
