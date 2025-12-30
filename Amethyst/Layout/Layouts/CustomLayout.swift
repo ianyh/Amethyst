@@ -51,6 +51,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
     private let key: String
     private let fileURL: URL
+    private var windowIDs: [WindowID] = []
 
     private lazy var context: JSContext? = {
         guard let context = JSContext() else {
@@ -155,6 +156,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         let windows = windowSet.windows
+        windowIDs = windows.map { $0.id }
 
         guard !windows.isEmpty else {
             return []
@@ -279,11 +281,19 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
     }
 
     override func nextWindowIDClockwise() -> Window.WindowID? {
-        return nil
+        guard let focusedWindow = Window.currentlyFocused() else { return nil }
+        let focusedID = focusedWindow.id()
+        guard let index = windowIDs.firstIndex(of: focusedID) else { return nil }
+        let nextIndex = (index + 1) % windowIDs.count
+        return windowIDs[nextIndex]
     }
 
     override func nextWindowIDCounterClockwise() -> Window.WindowID? {
-        return nil
+        guard let focusedWindow = Window.currentlyFocused() else { return nil }
+        let focusedID = focusedWindow.id()
+        guard let index = windowIDs.firstIndex(of: focusedID) else { return nil }
+        let nextIndex = (index - 1 + windowIDs.count) % windowIDs.count
+        return windowIDs[nextIndex]
     }
 
     private func command(key: String) {

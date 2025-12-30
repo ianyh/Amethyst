@@ -217,11 +217,19 @@ enum LayoutType<Window: WindowType> {
         do {
             let layoutFile = try FileManager.default.layoutFile(key: layoutKey)
 
-            guard FileManager.default.fileExists(atPath: layoutFile.path) else {
-                return nil
+            if FileManager.default.fileExists(atPath: layoutFile.path) {
+                return CustomLayout<Window>(key: layoutKey, fileURL: layoutFile)
             }
 
-            return CustomLayout<Window>(key: layoutKey, fileURL: layoutFile)
+            if let bundledLayoutURL = Bundle.main.url(forResource: layoutKey, withExtension: "js", subdirectory: "CustomLayouts") {
+                return CustomLayout<Window>(key: layoutKey, fileURL: bundledLayoutURL)
+            }
+
+            if let bundledLayoutURL = Bundle.main.url(forResource: layoutKey, withExtension: "js", subdirectory: nil) {
+                return CustomLayout<Window>(key: layoutKey, fileURL: bundledLayoutURL)
+            }
+
+            return nil
         } catch {
             return nil
         }
@@ -261,6 +269,22 @@ enum LayoutType<Window: WindowType> {
             layoutTypes.append(contentsOf: customLayouts)
         } catch {
             log.error("failed to parse custom layouts")
+        }
+
+        if let bundledLayoutURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: "CustomLayouts") {
+            let bundledLayouts = bundledLayoutURLs
+                .map { $0.deletingPathExtension().lastPathComponent }
+                .filter { key in !layoutTypes.contains { $0.0 == key } }
+                .map { ($0, layoutNameForKey($0)!) }
+            layoutTypes.append(contentsOf: bundledLayouts)
+        }
+
+        if let rootBundledLayoutURLs = Bundle.main.urls(forResourcesWithExtension: "js", subdirectory: nil) {
+            let bundledLayouts = rootBundledLayoutURLs
+                .map { $0.deletingPathExtension().lastPathComponent }
+                .filter { key in !layoutTypes.contains { $0.0 == key } }
+                .map { ($0, layoutNameForKey($0)!) }
+            layoutTypes.append(contentsOf: bundledLayouts)
         }
 
         return layoutTypes
