@@ -107,9 +107,31 @@ function layout() {
         },
 
         updateWithChange: function (change, state) {
-            if (change && change.change === 'window_swap' && change.windowID && change.otherWindowID) {
+            state = state || { order: [] };
+
+            if (!change) return state;
+
+            if (change.change === 'window_swap' && change.windowID && change.otherWindowID) {
                 return _swapWindows(state, change.windowID, change.otherWindowID);
             }
+
+            if (change.change === 'add' && change.windowID) {
+                // Add new window to the end of the order if not already present
+                if (_indexOfId(state.order, change.windowID) === -1) {
+                    state.order.push(change.windowID);
+                }
+                return state;
+            }
+
+            if (change.change === 'remove' && change.windowID) {
+                // Remove the window from the order
+                const idx = _indexOfId(state.order, change.windowID);
+                if (idx !== -1) {
+                    state.order.splice(idx, 1);
+                }
+                return state;
+            }
+
             return state;
         },
 
