@@ -504,6 +504,42 @@ class UserConfigurationTests: QuickSpec {
             }
         }
 
+        describe("small window size") {
+            it("returns default value when not set") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                expect(configuration.smallWindowSize()).to(equal(500))
+            }
+
+            it("returns configured value when set") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                storage.set(Float(300), forKey: .smallWindowSize)
+
+                expect(configuration.smallWindowSize()).to(equal(300))
+            }
+
+            it("returns default value when set to zero") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                storage.set(Float(0), forKey: .smallWindowSize)
+
+                expect(configuration.smallWindowSize()).to(equal(500))
+            }
+
+            it("returns default value when set to negative") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                storage.set(Float(-100), forKey: .smallWindowSize)
+
+                expect(configuration.smallWindowSize()).to(equal(500))
+            }
+        }
+
         describe("load configuration") {
             it("default configuration does not override existing configuration") {
                 let storage = TestConfigurationStorage()
