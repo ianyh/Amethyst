@@ -527,62 +527,63 @@ extension WindowManager {
         applicationWindows.forEach { string += "\n\tExisting window: \($0)" }
         log.debug(string)
 
-        for (existingWindow, isActive, isOnScreen) in applicationWindows {
-            guard existingWindow != window else {
-                log.debug("Windows are the same:\n\tNew: \(window)\n\t\(existingWindow)")
-                continue
-            }
-
-            // This is potentially expensive, but we need up to date information because of the timing of the notifications being so tight in some apps.
+        for _ in 0..<3 {
             windows.regenerateActiveIDCache()
-            
-            // The window needs to have been active _at some point_, but must not be currently on screen.
-            let didLeaveScreen = (isActive || windows.isWindowActive(existingWindow)) && !existingWindow.isOnScreen()
-            let isInvalid = existingWindow.cgID() == kCGNullWindowID
 
-            // The window needs to have either left the screen and therefore is being replaced
-            // or be invalid and therefore being removed and can be replaced.
-            guard didLeaveScreen || isInvalid else {
-                log.debug("""
-                Window candidate discarded: \(existingWindow)
-                isActive: \(isActive), isOnScreen: \(isOnScreen), isInvalid: \(isInvalid)
-                Recomputed isActive: \(windows.isWindowActive(existingWindow)), isOnScreen: \(existingWindow.isOnScreen())
-                """)
-                continue
-            }
+            for (existingWindow, isActive, isOnScreen) in applicationWindows {
+                guard existingWindow != window else {
+                    log.debug("Windows are the same:\n\tNew: \(window)\n\t\(existingWindow)")
+                    continue
+                }
 
-            // We have to make sure that we haven't had a focus change too recently as that could mean
-            // the window is already active, but just became focused by swapping window focus.
-            // The time is in seconds, and too long a time ends up with quick switches triggering tabs to incorrectly
-            // swap.
-//            let changeInterval = lastFocusDate.flatMap { abs($0.timeIntervalSinceNow) }
-//            if let changeInterval = changeInterval, abs(changeInterval) < 0.1 && !isInvalid {
-//                log.debug("""
-//                Window candidate discarded: \(existingWindow)
-//                lastFocusChange: \(lastFocusDate?.description ?? "nil") now: \(changeInterval) isInvalid: \(isInvalid)
-//                """)
-//                continue
-//            }
+                // The window needs to have been active _at some point_, but must not be currently on screen.
+                let didLeaveScreen = (isActive || windows.isWindowActive(existingWindow)) && !existingWindow.isOnScreen()
+                let isInvalid = existingWindow.cgID() == kCGNullWindowID
 
-            log.debug("Selected existing window: \(existingWindow)")
+                // The window needs to have either left the screen and therefore is being replaced
+                // or be invalid and therefore being removed and can be replaced.
+                guard didLeaveScreen || isInvalid else {
+                    log.debug("""
+                    Window candidate discarded: \(existingWindow)
+                    isActive: \(isActive), isOnScreen: \(isOnScreen), isInvalid: \(isInvalid)
+                    Recomputed isActive: \(windows.isWindowActive(existingWindow)), isOnScreen: \(existingWindow.isOnScreen())
+                    """)
+                    continue
+                }
 
-            guard windows.isWindowTracked(window) else {
-                // If the window isn't track we add it in relation to the existing one.
-                add(window: window, afterWindow: existingWindow)
+                // We have to make sure that we haven't had a focus change too recently as that could mean
+                // the window is already active, but just became focused by swapping window focus.
+                // The time is in seconds, and too long a time ends up with quick switches triggering tabs to incorrectly
+                // swap.
+                let changeInterval = lastFocusDate.flatMap { abs($0.timeIntervalSinceNow) }
+                if let changeInterval = changeInterval, abs(changeInterval) < 0.1 && !isInvalid {
+                    log.debug("""
+                    Window candidate discarded: \(existingWindow)
+                    lastFocusChange: \(lastFocusDate?.description ?? "nil") now: \(changeInterval) isInvalid: \(isInvalid)
+                    """)
+                    continue
+                }
+
+                log.debug("Selected existing window: \(existingWindow)")
+
+                guard windows.isWindowTracked(window) else {
+                    // If the window isn't track we add it in relation to the existing one.
+                    add(window: window, afterWindow: existingWindow)
+                    return
+                }
+
+                // If we get here, we are working with a window that has been previously added.
+                // Instead of going through the whole add process, we can just swap the windows in order.
+                windows.swap(window: existingWindow, withWindow: window)
+                windows.regenerateActiveIDCache()
+
+                // Note that the existing window moving out of screen will be tracked as a remove,
+                // but the "adding" happens above, so we need to distribute the relevant change.
+                markScreen(screen, forReflowWithChange: .add(window: window))
+                markScreen(screen, forReflowWithChange: .tabChange)
+
                 return
             }
-
-            // If we get here, we are working with a window that has been previously added.
-            // Instead of going through the whole add process, we can just swap the windows in order.
-            windows.swap(window: existingWindow, withWindow: window)
-            windows.regenerateActiveIDCache()
-
-            // Note that the existing window moving out of screen will be tracked as a remove,
-            // but the "adding" happens above, so we need to distribute the relevant change.
-            markScreen(screen, forReflowWithChange: .add(window: window))
-            markScreen(screen, forReflowWithChange: .tabChange)
-
-            return
         }
 
         log.debug("Found no candidates")
