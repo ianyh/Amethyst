@@ -229,6 +229,10 @@ extension AXWindow: WindowType {
         }
 
         self.init(axElement: axElementRef)
+
+        if string(forKey: "AXRole" as CFString) != "AXWindow" {
+            return nil
+        }
     }
 
     func id() -> WindowID {
@@ -245,7 +249,8 @@ extension AXWindow: WindowType {
     }
 
     func pid() -> pid_t {
-        return processIdentifier()
+//        return processIdentifier()
+        return forKey("AXParent" as CFString)?.processIdentifier() ?? processIdentifier()
     }
 
     /**
@@ -375,5 +380,11 @@ extension AXWindow: WindowType {
     }
 
     func move(toSpace spaceID: CGSSpaceID) {
+    }
+}
+
+extension AXWindow {
+    override var description: String {
+        return "\(super.description) (\(cgID()))"
     }
 }

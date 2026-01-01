@@ -17,6 +17,7 @@ enum TrackingError: Error {
     case unreliableFloating
     case unknownScreen
     case unknownSpace
+    case alreadyTracked
 }
 
 /**
@@ -288,6 +289,7 @@ extension WindowManager {
     }
 
     fileprivate func remove(window: Window) {
+        log.debug("Removing window: \(window)")
         markAllScreensForReflow(withChange: .remove(window: window))
         windows.regenerateActiveIDCache()
         windows.remove(window: window)
@@ -399,13 +401,15 @@ extension WindowManager {
         markAllScreensForReflow(withChange: .none)
     }
 
-    private func add(window: Window, retries: Int = 5, delay: TimeInterval = 0.01) {
+    private func add(window: Window, afterWindow otherWindow: Window? = nil) {
+        log.debug("Adding window: \(window)")
         guard window.shouldBeManaged() else {
+            log.debug("Window is not managed: \(window)")
             return
         }
 
         guard let application = applicationWithPID(window.pid()) else {
-            log.error("Tried to add a window without an application")
+            log.error("Tried to add a window without an application: \(window)")
             return
         }
 
@@ -414,6 +418,7 @@ extension WindowManager {
         }
 
         guard !windows.isWindowTracked(window) else {
+            log.debug("Window was already tracked: \(window)")
             return
         }
 
@@ -422,11 +427,11 @@ extension WindowManager {
             .map { try self.determineFloatForWindow(window, application: application, force: false) }
             .retry { error in
                 error.enumerated().flatMap { count, error -> Observable<Int> in
-                    log.debug("error in determining float for window: \(error)")
                     guard error is TrackingError, count < 6 else {
                         return .error(error)
                     }
 
+                    log.debug("error in determining float for window: \(window) - \(error)")
                     return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
                 }
             }
@@ -434,18 +439,18 @@ extension WindowManager {
                 guard error is TrackingError else {
                     throw error
                 }
-                log.debug("forcing float for window")
+                log.debug("forcing float for window: \(window)")
                 try self.determineFloatForWindow(window, application: application, force: true)
                 return .just(())
             }
-            .map { try self.track(window: window, application: application) }
+            .map { try self.track(window: window, application: application, afterWindow: otherWindow) }
             .retry { error in
                 error.enumerated().flatMap { count, error -> Observable<Int> in
-                    log.debug("encountered an error trying to track window: \(error)")
                     guard error is TrackingError, count < 6 else {
                         return .error(error)
                     }
 
+                    log.debug("encountered an error trying to track window: \(error)")
                     return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
                 }
             }
@@ -464,8 +469,20 @@ extension WindowManager {
         }
     }
 
-    private func track(window: Window, application: AnyApplication<Application>, retries: Int = 5, delay: TimeInterval = 0.01) throws {
-        windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
+    private func track(window: Window, application: AnyApplication<Application>, afterWindow otherWindow: Window? = nil) throws {
+        guard !windows.isWindowTracked(window) else {
+            log.warning("Trying to track a window that is already tracked: \(window)")
+            throw TrackingError.alreadyTracked
+        }
+
+        if let otherWindow = otherWindow {
+            _ = windows.add(window: window, afterWindow: otherWindow)
+        } else {
+            if application.pid() == 694 {
+                log.debug("terminal window")
+            }
+            windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
+        }
 
         guard let screen = window.screen() else {
             throw TrackingError.unknownScreen
@@ -479,6 +496,17 @@ extension WindowManager {
         markScreen(screen, forReflowWithChange: windowChange)
     }
 
+    /**
+     This function is a best effort to detect changes between native macOS tabs.
+     
+     - Description:
+        Each "tab" is an independent window, but the underlying system relates them in some way that we do not have access to. The heuristic is to find a window from the same application that has recently left the screen, and swap them.
+     
+        This performs pretty well in steady state, but can be a bit wonky when finding the existing tabs depending on how quick the transitions are.
+
+     - Parameters:
+        - window: the window that might be a tab change.
+     */
     func swapInTab(window: Window) {
         guard let screen = window.screen() else {
             return
@@ -491,19 +519,35 @@ extension WindowManager {
         }
 
         // We take the windows that are being tracked so we can properly detect when a tab switch is a new tab.
+        // It is important here to compute isActive and isOnScreen as soon as possible for improved accuracy.
         let applicationWindows = windows.windows(forApplicationWithPID: window.pid())
+            .map { ($0, windows.isWindowActive($0), $0.isOnScreen()) }
 
-        for existingWindow in applicationWindows {
+        var string = "\n\tNew Window: \(window)"
+        applicationWindows.forEach { string += "\n\tExisting window: \($0)" }
+        log.debug(string)
+
+        for (existingWindow, isActive, isOnScreen) in applicationWindows {
             guard existingWindow != window else {
+                log.debug("Windows are the same:\n\tNew: \(window)\n\t\(existingWindow)")
                 continue
             }
 
-            let didLeaveScreen = windows.isWindowActive(existingWindow) && !existingWindow.isOnScreen()
+            // This is potentially expensive, but we need up to date information because of the timing of the notifications being so tight in some apps.
+            windows.regenerateActiveIDCache()
+            
+            // The window needs to have been active _at some point_, but must not be currently on screen.
+            let didLeaveScreen = (isActive || windows.isWindowActive(existingWindow)) && !existingWindow.isOnScreen()
             let isInvalid = existingWindow.cgID() == kCGNullWindowID
 
             // The window needs to have either left the screen and therefore is being replaced
             // or be invalid and therefore being removed and can be replaced.
             guard didLeaveScreen || isInvalid else {
+                log.debug("""
+                Window candidate discarded: \(existingWindow)
+                isActive: \(isActive), isOnScreen: \(isOnScreen), isInvalid: \(isInvalid)
+                Recomputed isActive: \(windows.isWindowActive(existingWindow)), isOnScreen: \(existingWindow.isOnScreen())
+                """)
                 continue
             }
 
@@ -511,21 +555,39 @@ extension WindowManager {
             // the window is already active, but just became focused by swapping window focus.
             // The time is in seconds, and too long a time ends up with quick switches triggering tabs to incorrectly
             // swap.
-            if let lastFocusChange = lastFocusDate, abs(lastFocusChange.timeIntervalSinceNow) < 0.1 && !isInvalid {
-                continue
+//            let changeInterval = lastFocusDate.flatMap { abs($0.timeIntervalSinceNow) }
+//            if let changeInterval = changeInterval, abs(changeInterval) < 0.1 && !isInvalid {
+//                log.debug("""
+//                Window candidate discarded: \(existingWindow)
+//                lastFocusChange: \(lastFocusDate?.description ?? "nil") now: \(changeInterval) isInvalid: \(isInvalid)
+//                """)
+//                continue
+//            }
+
+            log.debug("Selected existing window: \(existingWindow)")
+
+            guard windows.isWindowTracked(window) else {
+                // If the window isn't track we add it in relation to the existing one.
+                add(window: window, afterWindow: existingWindow)
+                return
             }
 
-            // Add the new window to be tracked, swap it with the existing window, regenerate cache to account
-            // for the change, and then reflow.
-            add(window: window)
-            executeTransition(.switchWindows(existingWindow, window))
+            // If we get here, we are working with a window that has been previously added.
+            // Instead of going through the whole add process, we can just swap the windows in order.
+            windows.swap(window: existingWindow, withWindow: window)
             windows.regenerateActiveIDCache()
+
+            // Note that the existing window moving out of screen will be tracked as a remove,
+            // but the "adding" happens above, so we need to distribute the relevant change.
+            markScreen(screen, forReflowWithChange: .add(window: window))
             markScreen(screen, forReflowWithChange: .tabChange)
 
             return
         }
 
+        log.debug("Found no candidates")
         // If we've reached this point we haven't found any tab to switch out, but this window could still be new.
+        // We don't need to do any shenanigans for existing windows here because we don't need to muck with ordering.
         add(window: window)
     }
 
@@ -631,7 +693,8 @@ extension WindowManager: ApplicationObservationDelegate {
         lastFocusDate = Date()
 
         if !windows.isWindowTracked(window) {
-            markScreen(screen, forReflowWithChange: .unknown)
+            log.warning("Focused an untracked window")
+//            markScreen(screen, forReflowWithChange: .unknown)
         } else {
             markScreen(screen, forReflowWithChange: .focusChanged(window: window))
         }
@@ -640,8 +703,8 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
-        add(window: window)
-//        swapInTab(window: window)
+//        add(window: window)
+        swapInTab(window: window)
     }
 
     func application(_ application: AnyApplication<Application>, didMoveWindow window: Window) {

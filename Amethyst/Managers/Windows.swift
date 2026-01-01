@@ -83,6 +83,16 @@ extension WindowManager {
             }
         }
 
+        func add(window: Window, afterWindow otherWindow: Window) -> Bool {
+            guard let otherWindowIndex = windows.firstIndex(of: otherWindow) else {
+                return false
+            }
+
+            windows.insert(window, at: otherWindowIndex)
+
+            return true
+        }
+
         func remove(window: Window) {
             for (_, lastMainWindow) in lastMainWindows where lastMainWindow == window {
                 if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() {
