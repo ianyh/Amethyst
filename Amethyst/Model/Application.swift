@@ -6,6 +6,7 @@
 //  Copyright © 2019 Ian Ynda-Hummel. All rights reserved.
 //
 
+import AppKit
 import Foundation
 import Silica
 
@@ -62,7 +63,7 @@ protocol ApplicationType: Equatable {
      - Returns:
      `true` if observing the notification succeeded, and `false` otherwise.
      */
-    func observe(notification: String, handler: @escaping SIAXNotificationHandler) -> Bool
+    func observe(notification: String, handler: @escaping SIAXNotificationHandler) -> AXError
 
     /**
      Observe an AX notification on a window of the application with a given handler.
@@ -77,7 +78,7 @@ protocol ApplicationType: Equatable {
      - Returns:
      `true` if observing the notification succeeded, and `false` otherwise.
      */
-    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> Bool
+    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> AXError
 
     /**
      Removes an observation for a notification on the application itself.
@@ -149,11 +150,11 @@ class AnyApplication<Application: ApplicationType>: ApplicationType {
         internalApplication.dropWindowsCache()
     }
 
-    func observe(notification: String, handler: @escaping SIAXNotificationHandler) -> Bool {
+    func observe(notification: String, handler: @escaping SIAXNotificationHandler) -> AXError {
         return internalApplication.observe(notification: notification, handler: handler)
     }
 
-    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> Bool {
+    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> AXError {
         return internalApplication.observe(notification: notification, window: window, handler: handler)
     }
 
@@ -188,11 +189,11 @@ extension SIApplication: ApplicationType {
         return processIdentifier()
     }
 
-    func observe(notification: String, handler: @escaping SIAXNotificationHandler) -> Bool {
+    func observe(notification: String, handler: @escaping SIAXNotificationHandler) -> AXError {
         return observeNotification(notification as CFString, with: self, handler: handler)
     }
 
-    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> Bool {
+    func observe(notification: String, window: Window, handler: @escaping SIAXNotificationHandler) -> AXError {
         return observeNotification(notification as CFString, with: window, handler: handler)
     }
 
@@ -216,7 +217,7 @@ extension SIApplication: ApplicationType {
         return UserConfiguration.shared.runningApplication(runningApplication, byDefaultFloatsForTitle: window.title())
     }
 
-    private func observe(notification: String, with accessibilityElement: SIAccessibilityElement, handler: @escaping SIAXNotificationHandler) -> Bool {
+    private func observe(notification: String, with accessibilityElement: SIAccessibilityElement, handler: @escaping SIAXNotificationHandler) -> AXError {
         return observeNotification(notification as CFString, with: accessibilityElement, handler: handler)
     }
 }

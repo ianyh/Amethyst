@@ -6,6 +6,7 @@
 //  Copyright © 2019 Ian Ynda-Hummel. All rights reserved.
 //
 
+import AppKit
 import Cocoa
 import Foundation
 import RxSwift
@@ -96,6 +97,9 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
     enum Error: Swift.Error {
         /// General failure
         case failed
+
+        /// Failure in the accessibility observation
+        case observationFailed(error: Int32)
     }
 
     /// Notifications that are observed
@@ -266,7 +270,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
      An error when failing to add observer.
      */
     private func addObserver(for notification: Notification) throws {
-        let success: Bool
+        let success: AXError
         switch notification {
         case .elementDestroyed(let window):
             success = application.observe(notification: notification.string, window: window) { _ in
@@ -286,8 +290,13 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
             }
         }
 
-        guard success else {
-            throw Error.failed
+        switch success {
+        case .success:
+            return
+        case .notificationAlreadyRegistered:
+            return
+        default:
+            throw Error.observationFailed(error: success.rawValue)
         }
     }
 
