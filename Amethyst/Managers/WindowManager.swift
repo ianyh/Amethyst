@@ -475,15 +475,6 @@ extension WindowManager {
             throw TrackingError.alreadyTracked
         }
 
-        if let otherWindow = otherWindow {
-            _ = windows.add(window: window, afterWindow: otherWindow)
-        } else {
-            if application.pid() == 694 {
-                log.debug("terminal window")
-            }
-            windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
-        }
-
         guard let screen = window.screen() else {
             throw TrackingError.unknownScreen
         }
@@ -492,8 +483,18 @@ extension WindowManager {
             throw TrackingError.unknownSpace
         }
 
-        let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
-        markScreen(screen, forReflowWithChange: windowChange)
+        if let otherWindow = otherWindow {
+            _ = windows.swap(window: window, withWindow: otherWindow)
+        } else {
+            windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
+        }
+
+        if let otherWindow = otherWindow {
+            markScreen(screen, forReflowWithChange: .tabChange(window: window, previousWindow: otherWindow))
+        } else {
+            let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
+            markScreen(screen, forReflowWithChange: windowChange)
+        }
     }
 
     /**
@@ -579,8 +580,7 @@ extension WindowManager {
 
                 // Note that the existing window moving out of screen will be tracked as a remove,
                 // but the "adding" happens above, so we need to distribute the relevant change.
-                markScreen(screen, forReflowWithChange: .add(window: window))
-                markScreen(screen, forReflowWithChange: .tabChange)
+                markScreen(screen, forReflowWithChange: .tabChange(window: window, previousWindow: existingWindow))
 
                 return
             }

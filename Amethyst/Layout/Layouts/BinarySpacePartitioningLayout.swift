@@ -245,7 +245,18 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
 
             windowNode.windowID = otherWindowID
             otherWindowNode.windowID = windowID
-        case .applicationDeactivate, .applicationActivate, .spaceChange, .layoutChange, .tabChange, .none, .unknown:
+        case let .tabChange(window, previousWindow):
+            guard let previousWindowNode = rootNode.findWindowID(previousWindow.id()) else {
+                log.error("Trying to change tab from a window that is not in the tree: \(previousWindow)")
+                return
+            }
+
+            if let windowNode = rootNode.findWindowID(window.id()) {
+                log.warning("Trying to swap a tab in from another node")
+            }
+
+            previousWindowNode.windowID = window.id()
+        case .applicationDeactivate, .applicationActivate, .spaceChange, .layoutChange, .none, .unknown:
             break
         }
     }

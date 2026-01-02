@@ -116,6 +116,10 @@ extension WindowManager {
                 }
             }
 
+            if windows.firstIndex(of: window) == nil {
+                windows.append(window)
+            }
+
             guard let windowIndex = windows.firstIndex(of: window), let otherWindowIndex = windows.firstIndex(of: otherWindow) else {
                 return false
             }
