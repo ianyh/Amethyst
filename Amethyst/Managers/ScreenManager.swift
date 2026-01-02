@@ -9,6 +9,13 @@
 import Foundation
 import Silica
 
+/// Information about a layout for display in menus
+struct LayoutMenuItemInfo {
+    let key: String
+    let name: String
+    let isSelected: Bool
+}
+
 protocol ScreenManagerDelegate: AnyObject {
     associatedtype Window: WindowType
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<Self>, minimizingIn range: (_ windowCount: Int) -> Range<Int>)
@@ -56,14 +63,15 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         return layouts[currentLayoutIndex]
     }
 
-    /// The index of the current layout in the layouts array
-    var currentLayoutIndexValue: Int {
-        return currentLayoutIndex
-    }
-
-    /// Returns layout info (key and name) for all layouts in this screen manager
-    var layoutsInfo: [(key: String, name: String)] {
-        return layouts.map { (key: $0.layoutKey, name: $0.layoutName) }
+    /// Returns layout info for all layouts in this screen manager, including selection state
+    var layoutsInfo: [LayoutMenuItemInfo] {
+        return layouts.enumerated().map { index, layout in
+            LayoutMenuItemInfo(
+                key: layout.layoutKey,
+                name: layout.layoutName,
+                isSelected: index == currentLayoutIndex
+            )
+        }
     }
 
     private let layoutNameWindowController: LayoutNameWindowController

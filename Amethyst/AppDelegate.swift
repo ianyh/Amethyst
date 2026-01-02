@@ -219,19 +219,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        // Get current layout index from the screen manager
-        let currentLayoutIndex = screenManager.currentLayoutIndexValue
-
         // Add menu items for each layout in the screen manager
-        for (index, layoutInfo) in layouts.enumerated() {
+        for layoutInfo in layouts {
             let menuItem = NSMenuItem(title: layoutInfo.name, action: #selector(selectLayout(_:)), keyEquivalent: "")
             menuItem.target = self
             menuItem.representedObject = layoutInfo.key
-            menuItem.tag = index
-
-            // Mark current layout with checkmark by comparing index
-            let isCurrentLayout = index == currentLayoutIndex
-            menuItem.state = isCurrentLayout ? .on : .off
+            menuItem.state = layoutInfo.isSelected ? .on : .off
 
             submenu.addItem(menuItem)
         }
