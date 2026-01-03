@@ -109,6 +109,9 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
         /// A window is miniaturized
         case windowMiniaturized
 
+        /// A window is destroyed
+        case windowDestroyed
+
         /// The application has changed its focused window
         case focusedWindowChanged
 
@@ -133,6 +136,8 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                 return kAXWindowDeminiaturizedNotification
             case .windowMiniaturized:
                 return kAXWindowMiniaturizedNotification
+            case .windowDestroyed:
+                return kAXUIElementDestroyedNotification
             case .focusedWindowChanged:
                 return kAXFocusedWindowChangedNotification
             case .applicationActivated:
@@ -184,6 +189,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
             .created,
             .windowDeminiaturized,
             .windowMiniaturized,
+            .windowDestroyed,
             .focusedWindowChanged,
             .applicationActivated,
             .windowMoved,
@@ -251,6 +257,8 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
         case .windowDeminiaturized:
             delegate?.application(application, didAddWindow: window)
         case .windowMiniaturized:
+            delegate?.application(application, didRemoveWindow: window)
+        case .windowDestroyed:
             delegate?.application(application, didRemoveWindow: window)
         case .focusedWindowChanged:
             guard let focusedWindow = Window.currentlyFocused() else {
