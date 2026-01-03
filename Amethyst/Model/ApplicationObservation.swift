@@ -322,6 +322,10 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
     }
 
     private func handle(notification: Notification, window: Window) {
+        log.debug("""
+        Received notification for window: \(window)
+            notification: \(notification)
+        """)
         switch notification {
         case .created:
             delegate?.application(application, didFindPotentiallyNewWindow: window)
