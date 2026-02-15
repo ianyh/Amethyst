@@ -230,6 +230,12 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
 
+        // During rapid Space transitions, activation/focus notifications can arrive before
+        // this screen manager updates its tracked Space. Skip reflow if state is stale.
+        guard let currentSpace = CGSpacesInfo<Window>.currentSpaceForScreen(screen), currentSpace.id == space?.id else {
+            return
+        }
+
         guard let windows = delegate?.activeWindowSet(forScreenManager: self) else {
             return
         }

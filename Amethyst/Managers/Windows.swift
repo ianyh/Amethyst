@@ -84,14 +84,14 @@ extension WindowManager {
         }
 
         func remove(window: Window) {
-            for (_, lastMainWindow) in lastMainWindows where lastMainWindow == window {
+            for (_, lastMainWindow) in lastMainWindows where lastMainWindow?.id() == window.id() {
                 if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() {
                     let secondWindow = activeWindowOnCurrentScreen(atIndex: 1)
                     lastMainWindows[currentFocusedSpace.id] = secondWindow
                 }
             }
 
-            guard let windowIndex = windows.firstIndex(of: window) else {
+            guard let windowIndex = windows.firstIndex(where: { $0.id() == window.id() }) else {
                 return
             }
 
@@ -101,12 +101,15 @@ extension WindowManager {
         @discardableResult func swap(window: Window, withWindow otherWindow: Window) -> Bool {
             if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
                let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {
-                if firstActiveWindow == window || firstActiveWindow == otherWindow {
+                if firstActiveWindow.id() == window.id() || firstActiveWindow.id() == otherWindow.id() {
                     lastMainWindows[currentFocusedSpace.id] = firstActiveWindow
                 }
             }
 
-            guard let windowIndex = windows.firstIndex(of: window), let otherWindowIndex = windows.firstIndex(of: otherWindow) else {
+            guard
+                let windowIndex = windows.firstIndex(where: { $0.id() == window.id() }),
+                let otherWindowIndex = windows.firstIndex(where: { $0.id() == otherWindow.id() })
+            else {
                 return false
             }
 
@@ -123,7 +126,7 @@ extension WindowManager {
         // MARK: Window States
 
         func isWindowTracked(_ window: Window) -> Bool {
-            return windows.contains(window)
+            return windows.contains(where: { $0.id() == window.id() })
         }
 
         func isWindowActive(_ window: Window) -> Bool {
