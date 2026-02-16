@@ -245,7 +245,9 @@ extension AXWindow: WindowType {
     }
 
     func pid() -> pid_t {
-        return processIdentifier()
+        // Some window operations can surface elements owned by a helper process.
+        // Use AXParent's PID when available so identity checks stay stable.
+        return forKey("AXParent" as CFString)?.processIdentifier() ?? processIdentifier()
     }
 
     /**
