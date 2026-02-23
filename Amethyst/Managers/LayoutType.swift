@@ -56,6 +56,7 @@ enum LayoutType<Window: WindowType> {
     case column
     case row
     case floating
+    case floatingGrid
     case widescreenTallLeft
     case widescreenTallRight
     case binarySpacePartitioning
@@ -78,6 +79,7 @@ enum LayoutType<Window: WindowType> {
             .column,
             .row,
             .floating,
+            .floatingGrid,
             .widescreenTallLeft,
             .widescreenTallRight,
             .binarySpacePartitioning
@@ -114,6 +116,8 @@ enum LayoutType<Window: WindowType> {
             return "row"
         case .floating:
             return "floating"
+        case .floatingGrid:
+            return "floating-grid"
         case .widescreenTallLeft:
             return "widescreen-tall"
         case .widescreenTallRight:
@@ -155,6 +159,8 @@ enum LayoutType<Window: WindowType> {
             return RowLayout<Window>.self
         case .floating:
             return FloatingLayout<Window>.self
+        case .floatingGrid:
+            return FloatingGridLayout<Window>.self
         case .widescreenTallLeft:
             return WidescreenTallLayoutLeft<Window>.self
         case .widescreenTallRight:
@@ -196,6 +202,8 @@ enum LayoutType<Window: WindowType> {
             return .row
         case "floating":
             return .floating
+        case "floating-grid":
+            return .floatingGrid
         case "widescreen-tall":
             return .widescreenTallLeft
         case "widescreen-tall-right":

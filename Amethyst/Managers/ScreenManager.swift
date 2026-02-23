@@ -186,7 +186,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             if lastFocusedWindow == window {
                 lastFocusedWindow = nil
             }
-        case .windowSwap, .applicationActivate, .applicationDeactivate, .spaceChange, .layoutChange, .tabChange, .none, .unknown:
+        case .resize, .windowSwap, .applicationActivate, .applicationDeactivate, .spaceChange, .layoutChange, .tabChange, .none, .unknown:
             break
         }
 

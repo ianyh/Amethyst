@@ -619,6 +619,11 @@ extension WindowManager: ApplicationObservationDelegate {
             // record window and wait for mouse up
             mouseStateKeeper.state = .moving(window: window)
         case let .doneDragging(lmbUpMoment):
+            
+            if let screenManager = focusedScreenManager(), screenManager.currentLayout is FloatingGridLayout {
+                screenManager.setNeedsReflow(withWindowChange: .resize(window: window))
+            }
+            
             mouseStateKeeper.state = .pointing // flip state first to prevent race condition
 
             // if mouse button recently came up, assume window move is related
@@ -632,19 +637,25 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func application(_ application: AnyApplication<Application>, didResizeWindow window: Window) {
-        guard userConfiguration.mouseResizesWindows() else {
+        guard
+            let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(),
+            let layout = screenManager.currentLayout
+        else {
+            return
+        }
+        
+        guard userConfiguration.mouseResizesWindows() || layout is FloatingGridLayout else {
             return
         }
 
         guard let screen = window.screen(), activeWindows(on: screen).contains(window) else {
             return
         }
-
-        guard
-            let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(),
-            let layout = screenManager.currentLayout,
-            layout is PanedLayout
-        else {
+        
+        guard layout is PanedLayout else {
+            if layout is FloatingGridLayout, case .doneDragging = mouseStateKeeper.state {
+                screenManager.setNeedsReflow(withWindowChange: .resize(window: window))
+            }
             return
         }
 
@@ -716,6 +727,7 @@ extension WindowManager: WindowTransitionTarget {
         switch transition {
         case let .switchWindows(window, otherWindow):
             guard windows.swap(window: window, withWindow: otherWindow) else {
+                markAllScreensForReflow(withChange: .focusChanged(window: window))
                 return
             }
 

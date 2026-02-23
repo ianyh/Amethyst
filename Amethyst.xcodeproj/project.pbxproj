@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A4B46EB20AA7717003D5110 /* NSTableView+Amethyst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B46EA20AA7717003D5110 /* NSTableView+Amethyst.swift */; };
+		1AA5BA9C2D8C53E6004D6976 /* FloatingGridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA5BA9B2D8C53E6004D6976 /* FloatingGridLayout.swift */; };
 		2A6D9A4125E5D24D006A36B5 /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A6D9A4025E5D24D006A36B5 /* AppManager.swift */; };
 		4000DB10239CA07000365A0C /* WideLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4000DB0F239CA07000365A0C /* WideLayoutTests.swift */; };
 		400540F22325CDF4004B8656 /* Reliability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400540F12325CDF4004B8656 /* Reliability.swift */; };
@@ -143,6 +144,7 @@
 
 /* Begin PBXFileReference section */
 		1A4B46EA20AA7717003D5110 /* NSTableView+Amethyst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Amethyst.swift"; sourceTree = "<group>"; };
+		1AA5BA9B2D8C53E6004D6976 /* FloatingGridLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingGridLayout.swift; sourceTree = "<group>"; };
 		2A6D9A4025E5D24D006A36B5 /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		4000DB0F239CA07000365A0C /* WideLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideLayoutTests.swift; sourceTree = "<group>"; };
 		400540F12325CDF4004B8656 /* Reliability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reliability.swift; sourceTree = "<group>"; };
@@ -364,6 +366,7 @@
 			children = (
 				404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */,
 				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
+				1AA5BA9B2D8C53E6004D6976 /* FloatingGridLayout.swift */,
 				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
 				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
 				4062AD361C1FA83300DB612B /* RowLayout.swift */,
@@ -610,7 +613,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 402DB6FB1742E41A00D1C936 /* Build configuration list for PBXNativeTarget "Amethyst" */;
 			buildPhases = (
-				4058C4701C4C4F9E00B19D26 /* Lint */,
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
@@ -758,29 +760,12 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		4058C4701C4C4F9E00B19D26 /* Lint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = Lint;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nswiftlint --fix\nswiftlint\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		402DB6DA1742E41A00D1C936 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AA5BA9C2D8C53E6004D6976 /* FloatingGridLayout.swift in Sources */,
 				40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */,
 				40AF71DD20BB401400F58EA9 /* FloatingPreferencesViewController.swift in Sources */,
 				40A88003240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift in Sources */,
@@ -1030,7 +1015,7 @@
 				CURRENT_PROJECT_VERSION = 125;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = VKFDYMU9HJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1051,7 +1036,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++14";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"DEBUG\"";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst-mutatingfunc-fork.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1095,7 +1080,7 @@
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++14";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"RELEASE\"";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amethyst-mutatingfunc-fork.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
