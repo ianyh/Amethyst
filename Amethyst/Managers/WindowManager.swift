@@ -592,11 +592,14 @@ extension WindowManager {
             return
         }
 
-        log.debug("Found no candidates, regenerating and retrying")
+//        log.debug("Found no candidates, regenerating and retrying")
         windows.regenerateActiveIDCache()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            self.swapInTab(window: window, retries: retries - 1)
+        if !windows.isWindowTracked(window) {
+            add(window: window)
         }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+//            self.swapInTab(window: window, retries: retries - 1)
+//        }
     }
 
     func onReflowInitiation() {
