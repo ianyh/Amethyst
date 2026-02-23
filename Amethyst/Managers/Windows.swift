@@ -108,6 +108,29 @@ extension WindowManager {
             windows.remove(at: windowIndex)
         }
 
+        @discardableResult func replace(window: Window, withWindow otherWindow: Window) -> Bool {
+            if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
+               let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {
+                if firstActiveWindow == window || firstActiveWindow == otherWindow {
+                    lastMainWindows[currentFocusedSpace.id] = firstActiveWindow
+                }
+            }
+
+            guard let otherWindowIndex = windows.firstIndex(of: otherWindow) else {
+                windows.append(otherWindow)
+                return false
+            }
+
+            let windowIndex = windows.firstIndex(of: window)
+            windows[otherWindowIndex] = window
+
+            if let windowIndex {
+                windows.remove(at: windowIndex)
+            }
+
+            return true
+        }
+
         @discardableResult func swap(window: Window, withWindow otherWindow: Window) -> Bool {
             if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
                let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {

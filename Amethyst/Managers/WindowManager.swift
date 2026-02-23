@@ -484,7 +484,7 @@ extension WindowManager {
         }
 
         if let otherWindow = otherWindow {
-            _ = windows.swap(window: window, withWindow: otherWindow)
+            _ = windows.replace(window: window, withWindow: otherWindow)
         } else {
             windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
         }
@@ -575,14 +575,14 @@ extension WindowManager {
             log.debug("Selected existing window: \(existingWindow)")
 
             guard windows.isWindowTracked(window) else {
-                // If the window isn't track we add it in relation to the existing one.
+                // If the window isn't tracked we add it in relation to the existing one.
                 add(window: window, afterWindow: existingWindow)
                 return
             }
 
             // If we get here, we are working with a window that has been previously added.
             // Instead of going through the whole add process, we can just swap the windows in order.
-            windows.swap(window: existingWindow, withWindow: window)
+            windows.replace(window: existingWindow, withWindow: window)
             windows.regenerateActiveIDCache()
 
             // Note that the existing window moving out of screen will be tracked as a remove,
