@@ -300,6 +300,27 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         setNeedsReflow(withWindowChange: .layoutChange)
     }
 
+    // Custom layout directional focus
+    func focusWindowInDirection(_ direction: String) {
+        guard let customLayout = currentLayout as? CustomLayout<Window>,
+              let screen = screen,
+              let windowSet = delegate?.activeWindowSet(forScreenManager: self) else {
+            return
+        }
+        customLayout.focusWindow(inDirection: direction, windowSet: windowSet, on: screen)
+    }
+
+    // Custom layout directional swap
+    func swapWindowInDirection(_ direction: String) {
+        guard let customLayout = currentLayout as? CustomLayout<Window>,
+              let screen = screen,
+              let windowSet = delegate?.activeWindowSet(forScreenManager: self) else {
+            return
+        }
+        customLayout.swapWindow(inDirection: direction, windowSet: windowSet, on: screen)
+        setNeedsReflow(withWindowChange: .layoutChange)
+    }
+
     func cycleLayoutForward() {
         setCurrentLayoutIndex((currentLayoutIndex + 1) % layouts.count)
         setNeedsReflow(withWindowChange: .layoutChange)

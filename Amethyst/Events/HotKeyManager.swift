@@ -171,6 +171,39 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             windowManager.focusTransitionCoordinator.moveFocusScreenClockwise()
         }
 
+        // Directional focus and swap commands for custom layouts
+        constructCommandWithCommandKey("focus-left") {
+            windowManager.focusedScreenManager()?.focusWindowInDirection("left")
+        }
+
+        constructCommandWithCommandKey("focus-right") {
+            windowManager.focusedScreenManager()?.focusWindowInDirection("right")
+        }
+
+        constructCommandWithCommandKey("focus-up") {
+            windowManager.focusedScreenManager()?.focusWindowInDirection("up")
+        }
+
+        constructCommandWithCommandKey("focus-down") {
+            windowManager.focusedScreenManager()?.focusWindowInDirection("down")
+        }
+
+        constructCommandWithCommandKey("swap-left") {
+            windowManager.focusedScreenManager()?.swapWindowInDirection("left")
+        }
+
+        constructCommandWithCommandKey("swap-right") {
+            windowManager.focusedScreenManager()?.swapWindowInDirection("right")
+        }
+
+        constructCommandWithCommandKey("swap-up") {
+            windowManager.focusedScreenManager()?.swapWindowInDirection("up")
+        }
+
+        constructCommandWithCommandKey("swap-down") {
+            windowManager.focusedScreenManager()?.swapWindowInDirection("down")
+        }
+
         constructCommandWithCommandKey(CommandKey.swapScreenCCW.rawValue) {
             windowManager.windowTransitionCoordinator.swapFocusedWindowScreenCounterClockwise()
         }
@@ -414,6 +447,17 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Force windows to be reevaluated", CommandKey.reevaluateWindows.rawValue])
         hotKeyNameToDefaultsKey.append(["Throw focused window to space left", CommandKey.throwSpaceLeft.rawValue])
         hotKeyNameToDefaultsKey.append(["Throw focused window to space right", CommandKey.throwSpaceRight.rawValue])
+
+        // Directional focus/swap commands (custom layout hooks)
+        hotKeyNameToDefaultsKey.append(["Focus left (custom layout)", "focus-left"])
+        hotKeyNameToDefaultsKey.append(["Focus right (custom layout)", "focus-right"])
+        hotKeyNameToDefaultsKey.append(["Focus up (custom layout)", "focus-up"])
+        hotKeyNameToDefaultsKey.append(["Focus down (custom layout)", "focus-down"])
+
+        hotKeyNameToDefaultsKey.append(["Swap with left (custom layout)", "swap-left"])
+        hotKeyNameToDefaultsKey.append(["Swap with right (custom layout)", "swap-right"])
+        hotKeyNameToDefaultsKey.append(["Swap with up (custom layout)", "swap-up"])
+        hotKeyNameToDefaultsKey.append(["Swap with down (custom layout)", "swap-down"])
 
         (1...16).forEach { spaceNumber in
             let name = "Throw focused window to space \(spaceNumber)"

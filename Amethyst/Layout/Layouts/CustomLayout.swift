@@ -51,6 +51,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
     private let key: String
     private let fileURL: URL
+    private var windowIDs: [WindowID] = []
 
     private lazy var context: JSContext? = {
         guard let context = JSContext() else {
@@ -155,6 +156,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
     override func frameAssignments(_ windowSet: WindowSet<Window>, on screen: Screen) -> [FrameAssignmentOperation<Window>]? {
         let windows = windowSet.windows
+        windowIDs = windows.map { $0.id }
 
         guard !windows.isEmpty else {
             return []
@@ -200,6 +202,12 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
         guard let assignments = getAssignments.call(withArguments: args), assignments.isObject else {
             return nil
+        }
+
+        // If getFrameAssignments returns a 'state' property, update our state.
+        // This is a workaround/extension to ensure state persistence if in-place modification fails.
+        if let newState = assignments.objectForKeyedSubscript("state"), !newState.isUndefined && !newState.isNull {
+             state = newState
         }
 
         return windows.compactMap { window -> FrameAssignmentOperation<Window>? in
@@ -273,11 +281,19 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
     }
 
     override func nextWindowIDClockwise() -> Window.WindowID? {
-        return nil
+        guard let focusedWindow = Window.currentlyFocused() else { return nil }
+        let focusedID = focusedWindow.id()
+        guard let index = windowIDs.firstIndex(of: focusedID) else { return nil }
+        let nextIndex = (index + 1) % windowIDs.count
+        return windowIDs[nextIndex]
     }
 
     override func nextWindowIDCounterClockwise() -> Window.WindowID? {
-        return nil
+        guard let focusedWindow = Window.currentlyFocused() else { return nil }
+        let focusedID = focusedWindow.id()
+        guard let index = windowIDs.firstIndex(of: focusedID) else { return nil }
+        let nextIndex = (index - 1 + windowIDs.count) % windowIDs.count
+        return windowIDs[nextIndex]
     }
 
     private func command(key: String) {
@@ -393,5 +409,183 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
     func expandMainPane() {
         command(key: "expandMain")
+    }
+
+    // Allow native code to invoke an arbitrary command defined in the JS `commands` object.
+    func performCommand(_ key: String) {
+        log.debug("\(layoutKey) — performCommand called with key: \(key)")
+        command(key: key)
+    }
+
+    // Find and focus window in direction using current positions
+    func focusWindow(inDirection direction: String, windowSet: WindowSet<Window>, on screen: Screen) {
+        guard let focusedWindow = Window.currentlyFocused() else {
+            return
+        }
+
+        guard let assignments = frameAssignments(windowSet, on: screen) else {
+            return
+        }
+
+        let focusedFrame = focusedWindow.frame()
+        let focusedCenter = CGPoint(x: focusedFrame.midX, y: focusedFrame.midY)
+
+        var candidates: [(window: LayoutWindow<Window>, overlap: CGFloat, distance: CGFloat)] = []
+
+        for assignment in assignments {
+            let window = assignment.frameAssignment.window
+            if window.id == focusedWindow.id() {
+                continue
+            }
+
+            let frame = assignment.frameAssignment.frame
+            let center = CGPoint(x: frame.midX, y: frame.midY)
+
+            var isCandidate = false
+            var overlap: CGFloat = 0
+            var distance: CGFloat = 0
+
+            switch direction {
+            case "left":
+                isCandidate = center.x < focusedCenter.x
+                if isCandidate {
+                    overlap = max(0, min(frame.maxY, focusedFrame.maxY) - max(frame.minY, focusedFrame.minY))
+                    distance = focusedFrame.minX - frame.maxX
+                }
+            case "right":
+                isCandidate = center.x > focusedCenter.x
+                if isCandidate {
+                    overlap = max(0, min(frame.maxY, focusedFrame.maxY) - max(frame.minY, focusedFrame.minY))
+                    distance = frame.minX - focusedFrame.maxX
+                }
+            case "up":
+                isCandidate = center.y < focusedCenter.y
+                if isCandidate {
+                    overlap = max(0, min(frame.maxX, focusedFrame.maxX) - max(frame.minX, focusedFrame.minX))
+                    distance = focusedFrame.minY - frame.maxY
+                }
+            case "down":
+                isCandidate = center.y > focusedCenter.y
+                if isCandidate {
+                    overlap = max(0, min(frame.maxX, focusedFrame.maxX) - max(frame.minX, focusedFrame.minX))
+                    distance = frame.minY - focusedFrame.maxY
+                }
+            default:
+                break
+            }
+
+            if isCandidate {
+                candidates.append((window, overlap, max(0, distance)))
+            }
+        }
+
+        candidates.sort { (lhs, rhs) -> Bool in
+            if abs(lhs.overlap - rhs.overlap) > 1.0 {
+                return lhs.overlap > rhs.overlap
+            }
+            return lhs.distance < rhs.distance
+        }
+
+        if let bestCandidate = candidates.first, let window = windowSet.window(forID: bestCandidate.window.id) {
+            window.focus()
+        }
+    }
+
+    // Find and swap window in direction using current positions
+    func swapWindow(inDirection direction: String, windowSet: WindowSet<Window>, on screen: Screen) {
+        guard let focusedWindow = Window.currentlyFocused() else {
+            return
+        }
+        guard let assignments = frameAssignments(windowSet, on: screen) else {
+            return
+        }
+
+        let focusedFrame = focusedWindow.frame()
+        let focusedCenter = CGPoint(x: focusedFrame.midX, y: focusedFrame.midY)
+
+        var candidates: [(window: LayoutWindow<Window>, overlap: CGFloat, distance: CGFloat)] = []
+
+        for assignment in assignments {
+            let window = assignment.frameAssignment.window
+            if window.id == focusedWindow.id() {
+                continue
+            }
+
+            let frame = assignment.frameAssignment.frame
+            let center = CGPoint(x: frame.midX, y: frame.midY)
+
+            var isCandidate = false
+            var overlap: CGFloat = 0
+            var distance: CGFloat = 0
+
+            switch direction {
+            case "left":
+                isCandidate = center.x < focusedCenter.x
+                if isCandidate {
+                    overlap = max(0, min(frame.maxY, focusedFrame.maxY) - max(frame.minY, focusedFrame.minY))
+                    distance = focusedFrame.minX - frame.maxX
+                }
+            case "right":
+                isCandidate = center.x > focusedCenter.x
+                if isCandidate {
+                    overlap = max(0, min(frame.maxY, focusedFrame.maxY) - max(frame.minY, focusedFrame.minY))
+                    distance = frame.minX - focusedFrame.maxX
+                }
+            case "up":
+                isCandidate = center.y < focusedCenter.y
+                if isCandidate {
+                    overlap = max(0, min(frame.maxX, focusedFrame.maxX) - max(frame.minX, focusedFrame.minX))
+                    distance = focusedFrame.minY - frame.maxY
+                }
+            case "down":
+                isCandidate = center.y > focusedCenter.y
+                if isCandidate {
+                    overlap = max(0, min(frame.maxX, focusedFrame.maxX) - max(frame.minX, focusedFrame.minX))
+                    distance = frame.minY - focusedFrame.maxY
+                }
+            default:
+                break
+            }
+
+            if isCandidate {
+                candidates.append((window, overlap, max(0, distance)))
+            }
+        }
+
+        candidates.sort { (lhs, rhs) -> Bool in
+            if abs(lhs.overlap - rhs.overlap) > 1.0 {
+                return lhs.overlap > rhs.overlap
+            }
+            return lhs.distance < rhs.distance
+        }
+
+        if let bestCandidate = candidates.first {
+            performSwap(sourceID: focusedWindow.id(), targetID: bestCandidate.window.id)
+        }
+    }
+
+    private func performSwap(sourceID: Window.WindowID, targetID: Window.WindowID) {
+        let commandKey = "swap"
+        guard let command = commands?.objectForKeyedSubscript(commandKey), command.isObject else {
+            return
+        }
+
+        guard let updateState = command.objectForKeyedSubscript("updateState"), !updateState.isNull && !updateState.isUndefined else {
+            return
+        }
+
+        guard let sourceIDHash = idHash(forWindowID: sourceID), let targetIDHash = idHash(forWindowID: targetID) else {
+            return
+        }
+
+        let updateStateArgs: [Any]? = state.flatMap { state in
+            return [state, sourceIDHash, targetIDHash]
+        }
+
+        guard let updatedState = updateState.call(withArguments: updateStateArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
+            return
+        }
+
+        state = updatedState
     }
 }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -261,6 +261,10 @@
 		F46629C3272AD7A30040C275 /* FourColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourColumnLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		FC9152112F04168F00D1AD92 /* CustomLayouts */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CustomLayouts; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		402DB6DB1742E41A00D1C936 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -441,6 +445,7 @@
 				402DB6F61742E41A00D1C936 /* MainMenu.xib */,
 				40AF71D920BB348300F58EA9 /* Images.xcassets */,
 				402DB6E81742E41A00D1C936 /* Supporting Files */,
+				FC9152112F04168F00D1AD92 /* CustomLayouts */,
 			);
 			path = Amethyst;
 			sourceTree = "<group>";
@@ -618,6 +623,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				FC9152112F04168F00D1AD92 /* CustomLayouts */,
 			);
 			name = Amethyst;
 			packageProductDependencies = (
