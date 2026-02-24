@@ -125,7 +125,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
-        markScreen(screen, forReflowWithChange: .applicationActivate)
+        markScreenForReflow(screen)
 //        doMouseFollowsFocus(focusedWindow: focusedWindow)
     }
 
@@ -192,7 +192,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
         screens.updateSpaces()
         windows.regenerateActiveIDCache()
-        markAllScreensForReflow(withChange: .spaceChange)
+        markAllScreensForReflow()
     }
 
     @objc func screenParametersDidChange(_ notification: Notification) {
@@ -280,17 +280,18 @@ extension WindowManager {
     fileprivate func activate(application: AnyApplication<Application>) {
         windows.activateApplication(withPID: application.pid())
         windows.regenerateActiveIDCache()
-        markAllScreensForReflow(withChange: .applicationActivate)
+        markAllScreensForReflow()
     }
 
     fileprivate func deactivate(application: AnyApplication<Application>) {
         windows.deactivateApplication(withPID: application.pid())
-        markAllScreensForReflow(withChange: .applicationDeactivate)
+        markAllScreensForReflow()
     }
 
     fileprivate func remove(window: Window) {
         log.debug("Removing window: \(window)")
-        markAllScreensForReflow(withChange: .remove(window: window))
+        distributeEventToAllScreens(.remove(window: window))
+        markAllScreensForReflow()
         windows.regenerateActiveIDCache()
         windows.remove(window: window)
     }
@@ -307,21 +308,31 @@ extension WindowManager {
                 return
             }
             windows.setFloating(false, forWindow: focusedWindow)
-            markScreen(screen, forReflowWithChange: windowChange)
+            distributeEventToScreen(screen, change: windowChange)
+            markScreenForReflow(screen)
             return
         }
 
         let windowChange: Change = windows.isWindowFloating(focusedWindow) ? .add(window: focusedWindow) : .remove(window: focusedWindow)
         windows.setFloating(!windows.isWindowFloating(focusedWindow), forWindow: focusedWindow)
-        markScreen(screen, forReflowWithChange: windowChange)
+        distributeEventToScreen(screen, change: windowChange)
+        markScreenForReflow(screen)
     }
 
-    func markScreen(_ screen: Screen, forReflowWithChange change: Change<Window>) {
-        screens.markScreen(screen, forReflowWithChange: change)
+    func distributeEventToScreen(_ screen: Screen, change: Change<Window>) {
+        screens.distributeEventToScreen(screen, change: change)
     }
 
-    func markAllScreensForReflow(withChange windowChange: Change<Window>) {
-        screens.markAllScreensForReflow(withChange: windowChange)
+    func distributeEventToAllScreens(_ change: Change<Window>) {
+        screens.distributeEventToAllScreens(change: change)
+    }
+
+    func markScreenForReflow(_ screen: Screen) {
+        screens.markScreenForReflow(screen)
+    }
+
+    func markAllScreensForReflow() {
+        screens.markAllScreensForReflow()
     }
 
     func displayCurrentLayout() {
@@ -398,13 +409,13 @@ extension WindowManager {
         for runningApplication in NSWorkspace.shared.runningApplications {
             add(runningApplication: runningApplication)
         }
-        markAllScreensForReflow(withChange: .none)
+        markAllScreensForReflow()
     }
 
     private func add(window: Window, afterWindow otherWindow: Window? = nil) {
         log.debug("Adding window: \(window)")
         guard window.shouldBeManaged() else {
-            log.debug("Window is not managed: \(window)")
+            log.debug("Window should not be managed: \(window)")
             return
         }
 
@@ -485,16 +496,14 @@ extension WindowManager {
 
         if let otherWindow = otherWindow {
             _ = windows.replace(window: window, withWindow: otherWindow)
+            distributeEventToScreen(screen, change: .tabChange(window: window, previousWindow: otherWindow))
         } else {
             windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
+            let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
+            distributeEventToScreen(screen, change: windowChange)
         }
 
-        if let otherWindow = otherWindow {
-            markScreen(screen, forReflowWithChange: .tabChange(window: window, previousWindow: otherWindow))
-        } else {
-            let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
-            markScreen(screen, forReflowWithChange: windowChange)
-        }
+        markScreenForReflow(screen)
     }
 
     /**
@@ -587,19 +596,20 @@ extension WindowManager {
 
             // Note that the existing window moving out of screen will be tracked as a remove,
             // but the "adding" happens above, so we need to distribute the relevant change.
-            markScreen(screen, forReflowWithChange: .tabChange(window: window, previousWindow: existingWindow))
+            distributeEventToScreen(screen, change: .tabChange(window: window, previousWindow: existingWindow))
+            markScreenForReflow(screen)
 
             return
         }
 
 //        log.debug("Found no candidates, regenerating and retrying")
         windows.regenerateActiveIDCache()
-        if !windows.isWindowTracked(window) {
-            add(window: window)
-        }
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-//            self.swapInTab(window: window, retries: retries - 1)
+//        if !windows.isWindowTracked(window) {
+//            add(window: window)
 //        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            self.swapInTab(window: window, retries: retries - 1)
+        }
     }
 
     func onReflowInitiation() {
@@ -707,7 +717,8 @@ extension WindowManager: ApplicationObservationDelegate {
             log.warning("Focused an untracked window")
 //            markScreen(screen, forReflowWithChange: .unknown)
         } else {
-            markScreen(screen, forReflowWithChange: .focusChanged(window: window))
+            distributeEventToScreen(screen, change: .focusChanged(window: window))
+            markScreenForReflow(screen)
         }
 
 //        doMouseFollowsFocus(focusedWindow: window)
@@ -836,14 +847,16 @@ extension WindowManager: WindowTransitionTarget {
                 return
             }
 
-            markAllScreensForReflow(withChange: .windowSwap(window: window, otherWindow: otherWindow))
+            distributeEventToAllScreens(.windowSwap(window: window, otherWindow: otherWindow))
+            markAllScreensForReflow()
         case let .moveWindowToScreen(window, screen):
             let currentScreen = window.screen()
             window.moveScaled(to: screen)
             if let currentScreen = currentScreen {
-                markScreen(currentScreen, forReflowWithChange: .remove(window: window))
+                distributeEventToScreen(screen, change: .remove(window: window))
+                markScreenForReflow(screen)
             }
-            markScreen(screen, forReflowWithChange: .add(window: window))
+            distributeEventToScreen(screen, change: .add(window: window))
             window.focus()
         case let .moveWindowToSpaceAtIndex(window, spaceIndex, sourceSpaceIndex):
             guard
@@ -862,8 +875,8 @@ extension WindowManager: WindowTransitionTarget {
             if targetScreen.screenID() != screen.screenID() {
                 // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
                 window.moveScaled(to: targetScreen)
-                markScreen(screen, forReflowWithChange: .remove(window: window))
-                markScreen(targetScreen, forReflowWithChange: .add(window: window))
+                distributeEventToScreen(screen, change: .remove(window: window))
+                distributeEventToScreen(targetScreen, change: .add(window: window))
             }
             if !UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

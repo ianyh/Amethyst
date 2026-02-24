@@ -91,20 +91,34 @@ extension WindowManager {
             self.screenManagers = screenManagers.sorted()
 
             updateSpaces()
-            markAllScreensForReflow(withChange: .unknown)
+            markAllScreensForReflow()
         }
 
-        func markScreen(_ screen: Screen, forReflowWithChange change: Change<Window>) {
+        func distributeEventToScreen(_ screen: Screen, change: Change<Window>) {
             screenManagers
                 .filter { $0.screen?.screenID() == screen.screenID() }
                 .forEach { screenManager in
-                    screenManager.setNeedsReflow(withWindowChange: change)
+                    screenManager.distributeEvent(change)
                 }
         }
 
-        func markAllScreensForReflow(withChange windowChange: Change<Window>) {
+        func distributeEventToAllScreens(change: Change<Window>) {
             for screenManager in screenManagers {
-                screenManager.setNeedsReflow(withWindowChange: windowChange)
+                screenManager.distributeEvent(change)
+            }
+        }
+
+        func markScreenForReflow(_ screen: Screen) {
+            screenManagers
+                .filter { $0.screen?.screenID() == screen.screenID() }
+                .forEach { screenManager in
+                    screenManager.setNeedsReflow()
+                }
+        }
+
+        func markAllScreensForReflow() {
+            for screenManager in screenManagers {
+                screenManager.setNeedsReflow()
             }
         }
     }

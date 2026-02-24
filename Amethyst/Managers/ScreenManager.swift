@@ -143,7 +143,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
 
         defer {
-            setNeedsReflow(withWindowChange: .spaceChange)
+            setNeedsReflow()
         }
 
         self.space = space
@@ -158,8 +158,8 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
     }
 
-    func setNeedsReflow(withWindowChange windowChange: Change<Window>) {
-        switch windowChange {
+    func distributeEvent(_ change: Change<Window>) {
+        switch change {
         case let .add(window: window):
             lastFocusedWindow = window
         case let .focusChanged(window):
@@ -172,13 +172,23 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             break
         }
 
+        log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow -- Window Change: \(change)")
+
+        for layout in layouts {
+            if let layout = layout as? StatefulLayout {
+                layout.updateWithChange(change)
+            }
+        }
+    }
+
+    func setNeedsReflow() {
         reflowOperationQueue.cancelAllOperations()
 
-        log.debug("Screen: \(screen?.screenID() ?? "unknown") -- Window Change: \(windowChange)")
+        log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow")
 
         DispatchQueue.main.async {
             self.minimizeWindows()
-            self.reflow(windowChange)
+            self.reflow()
         }
     }
 
@@ -217,17 +227,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         })
     }
 
-    private func reflow(_ event: Change<Window>) {
-        var deliveredChangeEvent = false
-
-        defer {
-            if let statefulLayout = currentLayout as? StatefulLayout, !deliveredChangeEvent {
-                statefulLayout.updateWithChange(event)
-            }
-        }
-
-        log.debug("Screen: \(screen?.screenID() ?? "unknown"), Layout: \(currentLayout?.layoutName ?? "unknown") -- Window Change: \(event)")
-
+    private func reflow() {
         guard let screen = screen else {
             return
         }
@@ -238,11 +238,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
         guard let windows = delegate?.activeWindowSet(forScreenManager: self) else {
             return
-        }
-
-        if let statefulLayout = currentLayout as? StatefulLayout {
-            statefulLayout.updateWithChange(event)
-            deliveredChangeEvent = true
         }
 
         guard let layout = currentLayout, let frameAssignments = layout.frameAssignments(windows, on: screen) else {
@@ -261,12 +256,12 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
             DispatchQueue.main.async {
                 self?.delegate?.onReflowCompletion()
-                if mouseFollowsFocus {
-                    if case .windowSwap(let window, _) = event {
-                        window.focus()
-                    }
-                }
-
+                // TODO: fix mff
+//                if mouseFollowsFocus {
+//                    if case .windowSwap(let window, _) = event {
+//                        window.focus()
+//                    }
+//                }
             }
         }
 
@@ -284,17 +279,17 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
         updater(layout)
-        setNeedsReflow(withWindowChange: .layoutChange)
+        setNeedsReflow()
     }
 
     func cycleLayoutForward() {
         setCurrentLayoutIndex((currentLayoutIndex + 1) % layouts.count)
-        setNeedsReflow(withWindowChange: .layoutChange)
+        setNeedsReflow()
     }
 
     func cycleLayoutBackward() {
         setCurrentLayoutIndex((currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1)
-        setNeedsReflow(withWindowChange: .layoutChange)
+        setNeedsReflow()
     }
 
     func selectLayout(_ layoutString: String) {
@@ -309,7 +304,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
 
         setCurrentLayoutIndex(layoutIndex)
-        setNeedsReflow(withWindowChange: .layoutChange)
+        setNeedsReflow()
         previousLayoutKey = currentLayoutKey
     }
 

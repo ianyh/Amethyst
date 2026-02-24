@@ -232,19 +232,19 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
 
         constructCommandWithCommandKey(CommandKey.toggleTiling.rawValue) {
             self.userConfiguration.tilingEnabled = !self.userConfiguration.tilingEnabled
-            windowManager.markAllScreensForReflow(withChange: .unknown)
+            windowManager.markAllScreensForReflow()
         }
 
         constructCommandWithCommandKey(CommandKey.enableTiling.rawValue) {
             guard !self.userConfiguration.tilingEnabled else { return }
             self.userConfiguration.tilingEnabled = true
-            windowManager.markAllScreensForReflow(withChange: .unknown)
+            windowManager.markAllScreensForReflow()
         }
 
         constructCommandWithCommandKey(CommandKey.disableTiling.rawValue) {
             guard self.userConfiguration.tilingEnabled else { return }
             self.userConfiguration.tilingEnabled = false
-            windowManager.markAllScreensForReflow(withChange: .unknown)
+            windowManager.markAllScreensForReflow()
         }
 
         constructCommandWithCommandKey(CommandKey.reevaluateWindows.rawValue) {
@@ -261,7 +261,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
 
         constructCommandWithCommandKey(CommandKey.increaseWindowMaxCount.rawValue) {
             self.userConfiguration.increaseWindowMaxCount()
-            windowManager.markAllScreensForReflow(withChange: .unknown)
+            windowManager.markAllScreensForReflow()
             DispatchQueue.main.async {
                 windowManager.displayWindowCountHUD()
             }
@@ -269,7 +269,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
 
         constructCommandWithCommandKey(CommandKey.decreaseWindowMaxCount.rawValue) {
             self.userConfiguration.decreaseWindowMaxCount()
-            windowManager.markAllScreensForReflow(withChange: .unknown)
+            windowManager.markAllScreensForReflow()
             DispatchQueue.main.async {
                 windowManager.displayWindowCountHUD()
             }
