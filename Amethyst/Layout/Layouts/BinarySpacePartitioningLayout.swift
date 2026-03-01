@@ -305,11 +305,9 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             return []
         }
 
-        // Insert any windows that are not yet in the tree. This is the normal
-        // initialisation path for a fresh tree (0–1 nodes) and also handles
-        // windows that became active via a space switch without having generated
-        // an .add event (because they were on a different space when first tracked).
-        constructInitialTreeWithWindows(windows)
+        if rootNode.left == nil && rootNode.right == nil {
+            constructInitialTreeWithWindows(windows)
+        }
 
         let windowIDMap: [WindowID: LayoutWindow<Window>] = windows.reduce([:]) { (windowMap, window) -> [WindowID: LayoutWindow<Window>] in
             var mutableWindowMap = windowMap
