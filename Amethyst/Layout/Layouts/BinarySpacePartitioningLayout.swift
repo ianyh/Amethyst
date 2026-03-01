@@ -218,7 +218,7 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
                 return
             }
 
-            if let insertionPoint = lastKnownFocusedWindowID, window.id() != insertionPoint {
+            if let insertionPoint = lastKnownFocusedWindowID, window.id() != insertionPoint, rootNode.findWindowID(insertionPoint) != nil {
                 log.info("insert \(window) - \(window.id()) at point: \(insertionPoint)")
                 rootNode.insertWindowID(window.id(), atPoint: insertionPoint)
             } else {
@@ -246,6 +246,11 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             windowNode.windowID = otherWindowID
             otherWindowNode.windowID = windowID
         case let .tabChange(window, previousWindow):
+            if rootNode.findWindowID(window.id()) != nil {
+                log.warning("Trying to swap a tab in that is already in the tree: \(window)")
+                rootNode.removeWindowID(window.id())
+            }
+
             guard let previousWindowNode = rootNode.findWindowID(previousWindow.id()) else {
                 log.error("Trying to change tab from a window that is not in the tree: \(previousWindow)")
                 return
@@ -300,9 +305,11 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             return []
         }
 
-        if rootNode.left == nil && rootNode.right == nil {
-            constructInitialTreeWithWindows(windows)
-        }
+        // Insert any windows that are not yet in the tree. This is the normal
+        // initialisation path for a fresh tree (0–1 nodes) and also handles
+        // windows that became active via a space switch without having generated
+        // an .add event (because they were on a different space when first tracked).
+        constructInitialTreeWithWindows(windows)
 
         let windowIDMap: [WindowID: LayoutWindow<Window>] = windows.reduce([:]) { (windowMap, window) -> [WindowID: LayoutWindow<Window>] in
             var mutableWindowMap = windowMap
