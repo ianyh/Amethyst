@@ -279,8 +279,11 @@ ignore-menu-bar: false
 # true if menu bar icon should be hidden (default false).
 hide-menu-bar-icon: false
 
-# true if windows smaller than a 500px square should be floating by default (default true)
+# true if windows smaller than the small-window-size threshold should be floating by default (default true)
 float-small-windows: true
+
+# Pixel threshold for float-small-windows. Windows with both width and height below this value are considered small (in px, default 500).
+small-window-size: 500
 
 # true if the mouse should move position to the center of a window when it becomes focused (default false). Note that this is largely incompatible with focus-follows-mouse.
 mouse-follows-focus: false

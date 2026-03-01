@@ -98,6 +98,10 @@ struct WindowSet<Window: WindowType> {
             return
         }
 
+        guard isWindowWithIDActive(frameAssignment.window.id), !isWindowWithIDFloating(frameAssignment.window.id) else {
+            return
+        }
+
         frameAssignment.perform(withWindow: window)
     }
 }

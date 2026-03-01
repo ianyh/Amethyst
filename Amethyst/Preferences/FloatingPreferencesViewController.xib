@@ -115,6 +115,52 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sWs-Th-001" userLabel="Small Window Size Label">
+                    <rect key="frame" x="340" y="401" width="83" height="16"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="smaller than" id="sWs-Th-002">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="enabled" keyPath="values.float-small-windows" id="sWs-Th-003"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sWs-Th-004" userLabel="Small Window Size Input">
+                    <rect key="frame" x="428" y="399" width="50" height="22"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" drawsBackground="YES" usesSingleLineMode="YES" id="sWs-Th-005">
+                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="0" id="sWs-Th-006">
+                            <real key="minimum" value="1"/>
+                            <real key="maximum" value="10000"/>
+                        </numberFormatter>
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="value" keyPath="values.small-window-size" id="sWs-Th-007"/>
+                        <binding destination="XhK-Tn-zrU" name="enabled" keyPath="values.float-small-windows" id="sWs-Th-008"/>
+                    </connections>
+                </textField>
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sWs-Th-009" userLabel="Small Window Size Stepper">
+                    <rect key="frame" x="478" y="396" width="19" height="27"/>
+                    <stepperCell key="cell" continuous="YES" alignment="left" increment="50" minValue="1" maxValue="10000" doubleValue="500" id="sWs-Th-010"/>
+                    <connections>
+                        <binding destination="N2H-cZ-f1m" name="value" keyPath="values.small-window-size" id="sWs-Th-011"/>
+                        <binding destination="XhK-Tn-zrU" name="enabled" keyPath="values.float-small-windows" id="sWs-Th-012"/>
+                    </connections>
+                </stepper>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sWs-Th-013" userLabel="px Label">
+                    <rect key="frame" x="499" y="401" width="20" height="16"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="px" id="sWs-Th-014">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="enabled" keyPath="values.float-small-windows" id="sWs-Th-015"/>
+                    </connections>
+                </textField>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Q7b-oi-oDI">
                     <rect key="frame" x="192" y="369" width="294" height="28"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="This option is recommended to avoid tiling dialogs for some applications." id="GHB-Qd-gAx">
@@ -376,6 +422,14 @@
                 <constraint firstAttribute="bottom" secondItem="U6O-Ka-pXq" secondAttribute="bottom" constant="30" id="fQN-cG-rch"/>
                 <constraint firstItem="U6O-Ka-pXq" firstAttribute="top" secondItem="Dvu-vy-f2R" secondAttribute="bottom" constant="8" id="jTW-ge-qN6"/>
                 <constraint firstItem="9hq-U6-t9B" firstAttribute="centerY" secondItem="Mqz-bw-Kwm" secondAttribute="centerY" id="qde-oI-Gox"/>
+                <constraint firstItem="sWs-Th-001" firstAttribute="leading" secondItem="9hq-U6-t9B" secondAttribute="trailing" constant="8" id="sWs-Cn-001"/>
+                <constraint firstItem="sWs-Th-001" firstAttribute="centerY" secondItem="9hq-U6-t9B" secondAttribute="centerY" id="sWs-Cn-002"/>
+                <constraint firstItem="sWs-Th-004" firstAttribute="leading" secondItem="sWs-Th-001" secondAttribute="trailing" constant="4" id="sWs-Cn-003"/>
+                <constraint firstItem="sWs-Th-004" firstAttribute="centerY" secondItem="9hq-U6-t9B" secondAttribute="centerY" id="sWs-Cn-004"/>
+                <constraint firstItem="sWs-Th-009" firstAttribute="leading" secondItem="sWs-Th-004" secondAttribute="trailing" constant="0" id="sWs-Cn-005"/>
+                <constraint firstItem="sWs-Th-009" firstAttribute="centerY" secondItem="9hq-U6-t9B" secondAttribute="centerY" id="sWs-Cn-006"/>
+                <constraint firstItem="sWs-Th-013" firstAttribute="leading" secondItem="sWs-Th-009" secondAttribute="trailing" constant="2" id="sWs-Cn-007"/>
+                <constraint firstItem="sWs-Th-013" firstAttribute="centerY" secondItem="9hq-U6-t9B" secondAttribute="centerY" id="sWs-Cn-008"/>
                 <constraint firstItem="cfp-8K-Cdt" firstAttribute="leading" secondItem="ZH0-nz-Yiv" secondAttribute="trailing" constant="1" id="rvY-DC-e48"/>
                 <constraint firstItem="Mqz-bw-Kwm" firstAttribute="top" secondItem="LsO-9M-hEw" secondAttribute="top" constant="30" id="saa-p3-iK6"/>
                 <constraint firstItem="KqU-3F-KwY" firstAttribute="leading" secondItem="U6O-Ka-pXq" secondAttribute="leading" constant="1" id="tZl-oJ-mAu"/>

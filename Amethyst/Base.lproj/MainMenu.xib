@@ -26,6 +26,12 @@
                         <action selector="toggleGlobalTiling:" target="494" id="3aM-9U-hWx"/>
                     </connections>
                 </menuItem>
+                <menuItem title="Layouts" id="layouts-menu-item">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" id="layouts-submenu">
+                        <items/>
+                    </menu>
+                </menuItem>
                 <menuItem title="Start Amethyst on Login" id="549">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
@@ -73,6 +79,7 @@
                 <outlet property="statusItemMenu" destination="536" id="547"/>
                 <outlet property="toggleGlobalTilingMenuItem" destination="rjJ-w4-5Ht" id="4Dq-e8-R1M"/>
                 <outlet property="versionMenuItem" destination="bNZ-Ry-Q4Q" id="jXC-pY-N2a"/>
+                <outlet property="layoutsMenuItem" destination="layouts-menu-item" id="layouts-menu-outlet"/>
             </connections>
         </customObject>
         <customObject id="420" customClass="NSFontManager"/>

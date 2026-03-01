@@ -797,6 +797,10 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
+        guard !windows.isWindowTracked(window) else {
+            return
+        }
+
         swapInTab(window: window)
     }
 

@@ -211,6 +211,7 @@
     "floating": [],
     "floating-is-blacklist": true,
     "float-small-windows": true,
+    "small-window-size": 500,
     "mouse-follows-focus": false,
     "focus-follows-mouse": false,
     "enables-layout-hud": true,

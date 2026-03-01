@@ -255,6 +255,8 @@ extension AXWindow: WindowType {
     }
 
     func pid() -> pid_t {
+        // Some window operations can surface elements owned by a helper process.
+        // Use AXParent's PID when available so identity checks stay stable.
         return forKey("AXParent" as CFString)?.processIdentifier() ?? processIdentifier()
     }
 
@@ -278,8 +280,9 @@ extension AXWindow: WindowType {
     func shouldFloat() -> Bool {
         let userConfiguration = UserConfiguration.shared
         let frame = self.frame()
+        let threshold = userConfiguration.smallWindowSize()
 
-        if userConfiguration.floatSmallWindows() && frame.size.width < 500 && frame.size.height < 500 {
+        if userConfiguration.floatSmallWindows() && frame.size.width < threshold && frame.size.height < threshold {
             return true
         }
 

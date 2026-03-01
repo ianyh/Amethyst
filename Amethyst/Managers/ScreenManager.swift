@@ -9,6 +9,13 @@
 import Foundation
 import Silica
 
+/// Information about a layout for display in menus
+struct LayoutMenuItemInfo {
+    let key: String
+    let name: String
+    let isSelected: Bool
+}
+
 protocol ScreenManagerDelegate: AnyObject {
     associatedtype Window: WindowType
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<Self>, minimizingIn range: (_ windowCount: Int) -> Range<Int>)
@@ -54,6 +61,17 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return nil
         }
         return layouts[currentLayoutIndex]
+    }
+
+    /// Returns layout info for all layouts in this screen manager, including selection state
+    var layoutsInfo: [LayoutMenuItemInfo] {
+        return layouts.enumerated().map { index, layout in
+            LayoutMenuItemInfo(
+                key: layout.layoutKey,
+                name: layout.layoutName,
+                isSelected: index == currentLayoutIndex
+            )
+        }
     }
 
     private let layoutNameWindowController: LayoutNameWindowController
@@ -233,6 +251,12 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
 
         guard userConfiguration.tilingEnabled, space?.type == CGSSpaceTypeUser else {
+            return
+        }
+
+        // During rapid Space transitions, activation/focus notifications can arrive before
+        // this screen manager updates its tracked Space. Skip reflow if state is stale.
+        guard let currentSpace = CGSpacesInfo<Window>.currentSpaceForScreen(screen), currentSpace.id == space?.id else {
             return
         }
 

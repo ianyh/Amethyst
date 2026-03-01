@@ -28,6 +28,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var versionMenuItem: NSMenuItem?
     @IBOutlet var startAtLoginMenuItem: NSMenuItem?
     @IBOutlet var toggleGlobalTilingMenuItem: NSMenuItem?
+    @IBOutlet var layoutsMenuItem: NSMenuItem?
 
     private var isFirstLaunch = true
 
@@ -93,6 +94,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         toggleGlobalTilingMenuItem?.title = "Disable"
 
         startAtLoginMenuItem?.state = (LoginServiceKit.isExistLoginItems(at: Bundle.main.bundlePath) ? .on : .off)
+
+        // Set up status item menu delegate to refresh layouts when main menu is opened
+        statusItemMenu?.delegate = self
     }
 
     func applicationDidBecomeActive(_ notification: Notification) {
@@ -173,11 +177,83 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
     }
+
+    private func populateLayoutsMenu() {
+        guard let layoutsMenuItem = layoutsMenuItem,
+              let submenu = layoutsMenuItem.submenu else {
+            return
+        }
+
+        // Clear existing items
+        submenu.removeAllItems()
+
+        // Get screen manager: try focused screen first, then screen under mouse cursor
+        let screenManager: ScreenManager<WindowManager<SIApplication>>? = {
+            if let focused = windowManager?.focusedScreenManager() {
+                return focused
+            }
+            // Fallback to screen containing mouse cursor (useful when clicking menu bar)
+            let mouseLocation = NSEvent.mouseLocation
+            if let nsScreen = NSScreen.screens.first(where: { NSMouseInRect(mouseLocation, $0.frame, false) }) {
+                let amScreen = AMScreen(screen: nsScreen)
+                return windowManager?.screenManager(for: amScreen)
+            }
+            return nil
+        }()
+
+        guard let screenManager = screenManager else {
+            let errorItem = NSMenuItem(title: "Unable to determine current screen", action: nil, keyEquivalent: "")
+            errorItem.isEnabled = false
+            submenu.addItem(errorItem)
+            return
+        }
+
+        // Get layouts from the screen manager (not from global config)
+        let layouts = screenManager.layoutsInfo
+
+        // Check if no layouts are available and return early
+        if layouts.isEmpty {
+            let noLayoutsItem = NSMenuItem(title: "No layouts enabled", action: nil, keyEquivalent: "")
+            noLayoutsItem.isEnabled = false
+            submenu.addItem(noLayoutsItem)
+            return
+        }
+
+        // Add menu items for each layout in the screen manager
+        for layoutInfo in layouts {
+            let menuItem = NSMenuItem(title: layoutInfo.name, action: #selector(selectLayout(_:)), keyEquivalent: "")
+            menuItem.target = self
+            menuItem.representedObject = layoutInfo.key
+            menuItem.state = layoutInfo.isSelected ? .on : .off
+
+            submenu.addItem(menuItem)
+        }
+    }
+
+    @IBAction func selectLayout(_ sender: NSMenuItem) {
+        guard let layoutKey = sender.representedObject as? String,
+              let windowManager = windowManager,
+              let screenManager = windowManager.focusedScreenManager() else {
+            return
+        }
+
+        screenManager.selectLayout(layoutKey)
+        // Menu will be refreshed automatically when next opened via NSMenuDelegate
+    }
 }
 
 extension AppDelegate: NSWindowDelegate {
     func windowWillClose(_ notification: Notification) {
         windowManager?.preferencesDidClose()
+    }
+}
+
+extension AppDelegate: NSMenuDelegate {
+    func menuWillOpen(_ menu: NSMenu) {
+        // Refresh layouts menu when main status item menu is about to open
+        if menu == statusItemMenu {
+            populateLayoutsMenu()
+        }
     }
 }
 

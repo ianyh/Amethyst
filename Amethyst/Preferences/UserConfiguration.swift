@@ -79,6 +79,7 @@ enum ConfigurationKey: String {
     case floatingBundleIdentifiersIsBlacklist = "floating-is-blacklist"
     case ignoreMenuBar = "ignore-menu-bar"
     case floatSmallWindows = "float-small-windows"
+    case smallWindowSize = "small-window-size"
     case mouseFollowsFocus = "mouse-follows-focus"
     case focusFollowsMouse = "focus-follows-mouse"
     case mouseSwapsWindows = "mouse-swaps-windows"
@@ -616,6 +617,11 @@ class UserConfiguration: NSObject {
 
     func floatSmallWindows() -> Bool {
         return storage.bool(forKey: .floatSmallWindows)
+    }
+
+    func smallWindowSize() -> CGFloat {
+        let size = CGFloat(storage.float(forKey: .smallWindowSize))
+        return size > 0 ? size : 500
     }
 
     func mouseFollowsFocus() -> Bool {

@@ -20,7 +20,8 @@ Amethyst will pick up a config file located at `~/.amethyst.yml` or `~/.config/a
 | `floating` | List of bundle identifiers for applications to either be automatically floating or automatically tiled based on `floating-is-blacklist` (default `[]`). |
 | `floating-is-blacklist` | Boolean flag determining behavior of the `floating` list. `true` if the applications should be floating and all others tiled. `false` if the applications should be tiled and all others floating (default `true`). |
 | `ignore-menu-bar` | `true` if screen frames should exclude the status bar. `false` if the screen frames should include the status bar (default `false`). |
-| `float-small-windows` | `true` if windows smaller than a 500px square should be floating by default (default `true`) |
+| `float-small-windows` | `true` if windows smaller than the `small-window-size` threshold should be floating by default (default `true`). |
+| `small-window-size` | Pixel threshold for `float-small-windows`. Windows with both width and height below this value are considered small (in px, default `500`). |
 | `mouse-follows-focus` | `true` if the mouse should move position to the center of a window when it becomes focused (default `false`). Note that this is largely incompatible with `focus-follows-mouse`. |
 | `focus-follows-mouse` | `true` if the windows underneath the mouse should become focused as the mouse moves (default `false`). Note that this is largely incompatible with `mouse-follows-focus` |
 | `mouse-swaps-windows` | `true` if dragging and dropping windows on to each other should swap their positions (default `false`). |
