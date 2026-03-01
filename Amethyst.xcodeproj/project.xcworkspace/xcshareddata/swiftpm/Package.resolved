@@ -1,4 +1,5 @@
 {
+  "originHash" : "0bdfbd20a0602e0ca7fe7531ef1f5ef5df49b4edc989a6121656a1209da2ca9e",
   "pins" : [
     {
       "identity" : "cartography",
@@ -32,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sindresorhus/KeyboardShortcuts",
       "state" : {
-        "revision" : "ac302e21da5883f4bd0490cbd0cb710b08740500",
-        "version" : "1.15.0"
+        "revision" : "1aef85578fdd4f9eaeeb8d53b7b4fc31bf08fe27",
+        "version" : "2.4.0"
       }
     },
     {
@@ -82,15 +83,6 @@
       }
     },
     {
-      "identity" : "silica",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ianyh/silica",
-      "state" : {
-        "branch" : "master",
-        "revision" : "8bda2ed4aac62917c696282822e0de2341837d0a"
-      }
-    },
-    {
       "identity" : "sparkle",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sparkle-project/Sparkle",
@@ -136,5 +128,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

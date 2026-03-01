@@ -325,10 +325,13 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
         log.debug("""
         Received notification for window: \(window)
             notification: \(notification)
+            \(window.title() ?? "no title") (\(window.id()))
         """)
         switch notification {
         case .created:
-            delegate?.application(application, didFindPotentiallyNewWindow: window)
+            // Disabling window creations because they end up being more reliably tracked with main window changed
+//            delegate?.application(application, didFindPotentiallyNewWindow: window)
+            break
         case .windowDeminiaturized:
             delegate?.application(application, didAddWindow: window)
         case .windowMiniaturized:
