@@ -35,6 +35,11 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
 
+    struct PendingEvent {
+        let screen: Screen
+        let event: Change<Window>
+    }
+
     private struct UndeterminedApplication {
         let application: NSRunningApplication
         let activationPolicyObservation: NSKeyValueObservation?
@@ -61,6 +66,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     private var lastFocusDate: Date?
     private var pendingTabDetection: [Window.WindowID: Window] = [:]
     private var earlyFocusedWindows: Set<Window.WindowID> = []
+    private var eventQueue: [PendingEvent] = []
 
     private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
     private lazy var applicationEventHandler = ApplicationEventHandler(delegate: self)
@@ -181,6 +187,11 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     @objc func activeSpaceDidChange(_ notification: Notification) {
         // Update spaces across screens so that events get distributed to the correct layouts
         screens.updateSpaces()
+
+        for pendingEvent in eventQueue {
+            distributeEventToScreen(pendingEvent.screen, change: pendingEvent.event)
+        }
+        eventQueue.removeAll()
 
         pendingTabDetection.removeAll()
         earlyFocusedWindows.removeAll()
@@ -931,15 +942,16 @@ extension WindowManager: WindowTransitionTarget {
             guard let targetScreen = CGSpacesInfo<Window>.screenForSpace(space: targetSpace) else {
                 return
             }
+            distributeEventToScreen(screen, change: .remove(window: window))
+            eventQueue.append(PendingEvent(screen: targetScreen, event: .add(window: window)))
             window.move(toSpaceAtIndex: UInt(spaceIndex + 1))
             if targetScreen.screenID() != screen.screenID() {
                 // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
                 window.moveScaled(to: targetScreen)
-                distributeEventToScreen(screen, change: .remove(window: window))
-                distributeEventToScreen(targetScreen, change: .add(window: window))
             }
-            if !UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if !UserConfiguration.shared.followWindowsThrownBetweenSpaces() {
                     SISystemWideElement.switch(toSpace: UInt(sourceSpaceIndex + 1))
                 }
             }
