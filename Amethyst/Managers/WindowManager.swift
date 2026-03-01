@@ -179,6 +179,9 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     }
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
+        // Update spaces across screens so that events get distributed to the correct layouts
+        screens.updateSpaces()
+
         pendingTabDetection.removeAll()
         earlyFocusedWindows.removeAll()
 
@@ -195,7 +198,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             }
         }
 
-        screens.updateSpaces()
         windows.regenerateActiveIDCache()
         markAllScreensForReflow()
     }

@@ -202,6 +202,12 @@ final class AXWindowID: Hashable, Codable {
     }
 }
 
+extension AXWindowID: CustomStringConvertible {
+    var description: String {
+        return "\(window.title() ?? "unknown") (\(window.windowID()))"
+    }
+}
+
 /// Conformance of `AXWindow` as an Amethyst window.
 extension AXWindow: WindowType {
     typealias Screen = AMScreen
@@ -249,7 +255,6 @@ extension AXWindow: WindowType {
     }
 
     func pid() -> pid_t {
-//        return processIdentifier()
         return forKey("AXParent" as CFString)?.processIdentifier() ?? processIdentifier()
     }
 

@@ -142,10 +142,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             currentLayoutIndexBySpaceUUID[currentSpace.uuid] = currentLayoutIndex
         }
 
-        defer {
-            setNeedsReflow()
-        }
-
         self.space = space
 
         setCurrentLayoutIndex(currentLayoutIndexBySpaceUUID[space.uuid] ?? 0, changingSpace: true)
@@ -174,6 +170,11 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
         log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow -- Window Change: \(change)")
 
+        guard let space, let layouts = layoutsBySpaceUUID[space.uuid] else {
+            log.warning("Trying to distribute an event to a screen with no space")
+            return
+        }
+
         for layout in layouts {
             if let layout = layout as? StatefulLayout {
                 layout.updateWithChange(change)
@@ -200,7 +201,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
         let shouldInsertAtFront = UserConfiguration.shared.sendNewWindowsToMainPane()
         delegate?.applyWindowLimit(forScreenManager: self, minimizingIn: { windowCount in
-
             if windowLimit > windowCount {
                 // Not enough windows to minimize.
                 return 0 ..< 0
@@ -244,7 +244,8 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
 
-        let mouseFollowsFocus = userConfiguration.mouseFollowsFocus()
+        // TODO: fix mff
+//        let mouseFollowsFocus = userConfiguration.mouseFollowsFocus()
 
         let completeOperation = BlockOperation()
 
