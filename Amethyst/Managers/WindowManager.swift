@@ -99,6 +99,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         addWorkspaceNotificationObserver(NSWorkspace.didHideApplicationNotification, selector: #selector(applicationDidHide(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didUnhideApplicationNotification, selector: #selector(applicationDidUnhide(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.activeSpaceDidChangeNotification, selector: #selector(activeSpaceDidChange(_:)))
+        addWorkspaceNotificationObserver(NSWorkspace.didActivateApplicationNotification, selector: #selector(applicationActivated(_:)))
 
         NotificationCenter.default.addObserver(
             self,
@@ -133,6 +134,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
+        distributeEventToScreen(screen, change: .focusChanged(window: focusedWindow))
         markScreenForReflow(screen)
 //        doMouseFollowsFocus(focusedWindow: focusedWindow)
     }

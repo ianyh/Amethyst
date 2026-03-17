@@ -162,7 +162,8 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                 .windowDeminiaturized,
                 .windowMiniaturized,
                 .focusedWindowChanged,
-                .applicationActivated,
+                // This event seems to be less reliable these days, so we rely on the NSWorkspace notification, instead
+//                .applicationActivated,
                 .windowMoved,
                 .windowResized,
                 .mainWindowChanged
