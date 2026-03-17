@@ -782,6 +782,7 @@ extension WindowManager: ApplicationObservationDelegate {
 
         if pendingTabDetection.removeValue(forKey: window.id()) != nil {
             completeTabDetection(for: window, on: screen)
+            distributeEventToScreen(screen, change: .focusChanged(window: window))
         } else if windows.isWindowTracked(window) {
             distributeEventToScreen(screen, change: .focusChanged(window: window))
             markScreenForReflow(screen)
