@@ -207,22 +207,23 @@ extension WindowManager {
                 LayoutWindow(id: $0.id(), frame: $0.frame(), isFocused: $0.isFocused())
             }
 
+            let snapshotFloatingMap = floatingMap
+            let snapshotActiveIDCache = activeIDCache
+            let snapshotWindowsByID = Dictionary(uniqueKeysWithValues: windows.map { ($0.id(), $0) })
+
             return WindowSet<Window>(
                 windows: layoutWindows,
-                isWindowWithIDActive: { [weak self] id -> Bool in
-                    guard let window = self?.window(withID: id) else {
+                isWindowWithIDActive: { id -> Bool in
+                    guard let window = snapshotWindowsByID[id] else {
                         return false
                     }
-                    return self?.isWindowActive(window) ?? false
+                    return window.isActive() && snapshotActiveIDCache.contains(window.cgID())
                 },
-                isWindowWithIDFloating: { [weak self] windowID -> Bool in
-                    guard let window = self?.window(withID: windowID) else {
-                        return false
-                    }
-                    return self?.isWindowFloating(window) ?? false
+                isWindowWithIDFloating: { windowID -> Bool in
+                    return snapshotFloatingMap[windowID] ?? false
                 },
-                windowForID: { [weak self] windowID -> Window? in
-                    return self?.window(withID: windowID)
+                windowForID: { windowID -> Window? in
+                    return snapshotWindowsByID[windowID]
                 }
             )
         }

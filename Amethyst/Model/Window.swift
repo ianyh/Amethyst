@@ -162,19 +162,23 @@ final class AXWindowID: Hashable, Codable {
     }
 
     private let window: AXWindow
+    private let pid: pid_t
+    private let windowID: CGWindowID
 
     /// Equality for window IDs is based on the underlying CoreGraphics id and the owning pid, which (mostly) uniquely identifies a window.
     static func == (lhs: AXWindowID, rhs: AXWindowID) -> Bool {
-        return lhs.window.pid() == rhs.window.pid() && lhs.window.windowID() == rhs.window.windowID()
+        return lhs.pid == rhs.pid && lhs.windowID == rhs.windowID
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(window.pid())
-        hasher.combine(window.windowID())
+        hasher.combine(pid)
+        hasher.combine(windowID)
     }
 
     fileprivate init(window: AXWindow) {
         self.window = window
+        self.pid = window.pid()
+        self.windowID = window.windowID()
     }
 
     init(from decoder: Decoder) throws {
@@ -193,12 +197,14 @@ final class AXWindowID: Hashable, Codable {
         }
 
         self.window = AXWindow(axElement: window.axElementRef)
+        self.pid = pid
+        self.windowID = windowID
     }
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(window.pid(), forKey: .pid)
-        try container.encode(window.windowID(), forKey: .windowID)
+        try container.encode(pid, forKey: .pid)
+        try container.encode(windowID, forKey: .windowID)
     }
 }
 
