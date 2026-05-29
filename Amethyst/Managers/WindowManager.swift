@@ -463,7 +463,7 @@ extension WindowManager {
                     }
 
                     log.debug("error in determining float for window: \(window) - \(error)")
-                    return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+                    return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
                 }
             }
             .catch { error in
@@ -482,7 +482,7 @@ extension WindowManager {
                     }
 
                     log.debug("encountered an error trying to track window: \(error)")
-                    return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+                    return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
                 }
             }
             .subscribe()
