@@ -75,11 +75,12 @@ struct QuadruplePaneArrangement {
         // calculate how many are in each type
         let mainPaneCount = min(numWindows, numMainPane)
         let nonMainCount: UInt = numWindows - mainPaneCount
-        // we do tertiary first because a single window produces a zero in integer division by 2
-        let nonMainPaneCount: UInt = max(nonMainCount / 3, 1)
-        let quaternaryPaneCount = nonMainPaneCount
-        let tertiaryPaneCount = nonMainPaneCount
-        let secondaryPaneCount = nonMainPaneCount + max(nonMainCount, 3) % 3
+        // distribute non-main windows evenly across 3 columns, remainder goes to secondary first, then tertiary
+        let baseCount = nonMainCount / 3
+        let remainder = nonMainCount % 3
+        let secondaryPaneCount = baseCount + (remainder >= 1 ? 1 : 0)
+        let tertiaryPaneCount = baseCount + (remainder >= 2 ? 1 : 0)
+        let quaternaryPaneCount = baseCount
         self.paneCount = [.main: mainPaneCount, .secondary: secondaryPaneCount, .tertiary: tertiaryPaneCount, .quaternary: quaternaryPaneCount]
 
         // calculate heights
@@ -93,8 +94,8 @@ struct QuadruplePaneArrangement {
 
         // calculate widths
         let screenWidth = screenSize.width
-        let mainWindowWidth = round(screenWidth / 4)
-        let nonMainWindowWidth = round(screenWidth / 4)
+        let mainWindowWidth = nonMainCount == 0 ? screenWidth : round(screenWidth * mainPaneRatio)
+        let nonMainWindowWidth = round((screenWidth - mainWindowWidth) / 3)
         self.paneWindowWidth = [
             .main: mainWindowWidth,
             .secondary: nonMainWindowWidth,
