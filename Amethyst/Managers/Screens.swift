@@ -46,8 +46,12 @@ extension WindowManager {
                     screenManager.updateSpace(to: space)
                 }
             } else {
+                guard let firstDescription = screensInfo.descriptions.first else {
+                    log.warning("No screen descriptions available during space update")
+                    return
+                }
                 for screenManager in screenManagers {
-                    let space = CGSpacesInfo<Window>.space(fromScreenDescription: screensInfo.descriptions[0])
+                    let space = CGSpacesInfo<Window>.space(fromScreenDescription: firstDescription)
 
                     guard screenManager.space != space else {
                         continue

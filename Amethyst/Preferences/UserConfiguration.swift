@@ -249,7 +249,7 @@ class UserConfiguration: NSObject {
         }
 
         if fallbackToDefault {
-            return defaultConfiguration![keyValue].rawValue as? T
+            return defaultConfiguration?[keyValue].rawValue as? T
         }
 
         return nil
@@ -674,9 +674,10 @@ class UserConfiguration: NSObject {
         }
         // if smartWindowMargins is enabled, enabled window margins if there are more than one visible windows on screen
         let options = CGWindowListOption(arrayLiteral: .excludeDesktopElements, .optionOnScreenOnly)
-        let windowsListInfo = CGWindowListCopyWindowInfo(options, CGWindowID(0))
-        let infoList = windowsListInfo as! [[String: Any]]
-        let visibleWindows = infoList.filter { $0["kCGWindowLayer"] as! Int == 0 }
+        guard let infoList = CGWindowListCopyWindowInfo(options, CGWindowID(0)) as? [[String: Any]] else {
+            return true
+        }
+        let visibleWindows = infoList.filter { ($0["kCGWindowLayer"] as? Int) == 0 }
         return visibleWindows.count > 1
     }
 
