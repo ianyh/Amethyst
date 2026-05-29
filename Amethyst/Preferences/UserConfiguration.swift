@@ -507,22 +507,6 @@ class UserConfiguration: NSObject {
         return configurationYAML != nil || configurationJSON != nil
     }
 
-    private func modifierFlagsForModifierString(_ modifierString: String) -> AMModifierFlags {
-        switch modifierString {
-        case "mod1":
-            return modifier1!
-        case "mod2":
-            return modifier2!
-        case "mod3":
-            return modifier3!
-        case "mod4":
-            return modifier4!
-        default:
-            log.warning("Unknown modifier string: \(modifierString)")
-            return modifier1!
-        }
-    }
-
     func layoutKeys() -> [String] {
         let layoutKeys = storage.array(forKey: .layouts) as? [String]
         return layoutKeys ?? []
