@@ -27,7 +27,7 @@ private enum LayoutExtension<Window: WindowType> {
     case layout(Layout<Window>)
 }
 
-class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
+class CustomLayout<Window: WindowType>: Layout<Window>, PanedLayout {
     typealias WindowID = Window.WindowID
 
     private enum CodingKeys: String, CodingKey {
@@ -239,23 +239,6 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
     }
 
-    override func updateWithChange(_ windowChange: Change<Window>) {
-        guard let updateWithChange = layout?.objectForKeyedSubscript("updateWithChange"), !updateWithChange.isNull && !updateWithChange.isUndefined else {
-            return
-        }
-
-        let updateWithChangeArgs: [Any]? = state.flatMap { state in
-            return [jsChange(forChange: windowChange), state]
-        }
-
-        guard let updatedState = updateWithChange.call(withArguments: updateWithChangeArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
-            log.error("\(layoutKey)): received invalid updated state")
-            return
-        }
-
-        state = updatedState
-    }
-
     func command1() {
         command(key: "command1")
     }
@@ -270,14 +253,6 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
 
     func command4() {
         command(key: "command4")
-    }
-
-    override func nextWindowIDClockwise() -> Window.WindowID? {
-        return nil
-    }
-
-    override func nextWindowIDCounterClockwise() -> Window.WindowID? {
-        return nil
     }
 
     private func command(key: String) {
@@ -323,42 +298,6 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
             log.warning("Failed to hash window id: \(error)")
             return nil
         }
-    }
-
-    private func jsChange(forChange change: Change<Window>) -> [String: String] {
-        var jsChange: [String: String] = [:]
-
-        switch change {
-        case .add(window: let window):
-            jsChange["change"] = "add"
-            jsChange["windowID"] = idHash(forWindowID: window.id())
-        case .remove(window: let window):
-            jsChange["change"] = "remove"
-            jsChange["windowID"] = idHash(forWindowID: window.id())
-        case .focusChanged(window: let window):
-            jsChange["change"] = "focus_changed"
-            jsChange["windowID"] = idHash(forWindowID: window.id())
-        case .windowSwap(window: let window, otherWindow: let otherWindow):
-            jsChange["change"] = "window_swap"
-            jsChange["windowID"] = idHash(forWindowID: window.id())
-            jsChange["otherWindowID"] = idHash(forWindowID: otherWindow.id())
-        case .applicationActivate:
-            jsChange["change"] = "application_activate"
-        case .applicationDeactivate:
-            jsChange["change"] = "application_deactivate"
-        case .spaceChange:
-            jsChange["change"] = "space_change"
-        case .layoutChange:
-            jsChange["change"] = "layout_change"
-        case .tabChange:
-            jsChange["change"] = "tab_change"
-        case .unknown:
-            jsChange["change"] = "unknown"
-        case .none:
-            jsChange["change"] = "none"
-        }
-
-        return jsChange
     }
 
     func recommendMainPaneRawRatio(rawRatio: CGFloat) {

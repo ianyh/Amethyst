@@ -172,32 +172,8 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
     }
 
-    func distributeEvent(_ change: Change<Window>) {
-        switch change {
-        case let .add(window: window):
-            lastFocusedWindow = window
-        case let .focusChanged(window):
-            lastFocusedWindow = window
-        case let .remove(window):
-            if lastFocusedWindow == window {
-                lastFocusedWindow = nil
-            }
-        case .windowSwap, .applicationActivate, .applicationDeactivate, .spaceChange, .layoutChange, .tabChange, .none, .unknown:
-            break
-        }
-
-        log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow -- Window Change: \(change)")
-
-        guard let space, let layouts = layoutsBySpaceUUID[space.uuid] else {
-            log.warning("Trying to distribute an event to a screen with no space")
-            return
-        }
-
-        for layout in layouts {
-            if let layout = layout as? StatefulLayout {
-                layout.updateWithChange(change)
-            }
-        }
+    func setLastFocusedWindow(_ window: Window?) {
+        lastFocusedWindow = window
     }
 
     func setNeedsReflow() {
@@ -361,22 +337,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
         panedLayout.expandMainPane()
-    }
-
-    func nextWindowIDCounterClockwise() -> Window.WindowID? {
-        guard let layout = currentLayout as? StatefulLayout else {
-            return nil
-        }
-
-        return layout.nextWindowIDCounterClockwise()
-    }
-
-    func nextWindowIDClockwise() -> Window.WindowID? {
-        guard let statefulLayout = currentLayout as? StatefulLayout else {
-            return nil
-        }
-
-        return statefulLayout.nextWindowIDClockwise()
     }
 
     func displayLayoutHUD() {

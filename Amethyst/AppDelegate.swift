@@ -49,6 +49,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         UserConfiguration.shared.delegate = self
         UserConfiguration.shared.load()
 
+        presentBSPRemovalNoticeIfNecessary()
+
         #if RELEASE
             let appcastURLString = { () -> String? in
                 if UserConfiguration.shared.useCanaryBuild() {
@@ -160,6 +162,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         #if RELEASE
             SUUpdater.shared().checkForUpdates(sender)
         #endif
+    }
+
+    /**
+     Binary Space Partitioning was removed because it required event-driven layout state.
+
+     Any configured `bsp` slot is removed. Notify affected users exactly once.
+     */
+    private func presentBSPRemovalNoticeIfNecessary() {
+        let noticeShownKey = "bsp-removal-notice-shown"
+        guard !UserDefaults.standard.bool(forKey: noticeShownKey) else {
+            return
+        }
+        guard UserConfiguration.shared.layoutKeys().contains("bsp") else {
+            return
+        }
+
+        let alert = NSAlert()
+        alert.alertStyle = .informational
+        alert.messageText = "Binary Space Partitioning has been removed"
+        alert.informativeText = "The native BSP layout has been removed. The `bsp` layout in your configuration will no longer resolve to a layout."
+        alert.runModal()
+
+        UserDefaults.standard.set(true, forKey: noticeShownKey)
     }
 
     private func presentDotfileWarningIfNecessary() {

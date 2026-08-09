@@ -17,6 +17,12 @@ extension WindowManager {
         private var deactivatedPIDs: Set<pid_t> = Set()
         private var floatingMap: [Window.WindowID: Bool] = [:]
 
+        /// Per-PID record of the most recently observed main window. Used as the canonical
+        /// "departed tab" signal when an untracked main window appears for an app whose
+        /// previous main window was tracked — it sidesteps CGWindowList lag for the common
+        /// in-app tab swap case.
+        private var lastTrackedMainWindowByPID: [pid_t: Window] = [:]
+
         // MARK: Window Filters
 
         func window(withID id: Window.WindowID) -> Window? {
@@ -185,6 +191,27 @@ extension WindowManager {
 
         func deactivateApplication(withPID pid: pid_t) {
             deactivatedPIDs.insert(pid)
+        }
+
+        // MARK: Last-tracked main window (per PID)
+
+        func recordTrackedMainWindow(_ window: Window) {
+            lastTrackedMainWindowByPID[window.pid()] = window
+        }
+
+        func trackedMainWindow(forPID pid: pid_t) -> Window? {
+            return lastTrackedMainWindowByPID[pid]
+        }
+
+        func clearTrackedMainWindow(forPID pid: pid_t) {
+            lastTrackedMainWindowByPID.removeValue(forKey: pid)
+        }
+
+        func clearTrackedMainWindow(forWindow window: Window) {
+            let pid = window.pid()
+            if lastTrackedMainWindowByPID[pid]?.id() == window.id() {
+                lastTrackedMainWindowByPID.removeValue(forKey: pid)
+            }
         }
 
         func regenerateActiveIDCache() {

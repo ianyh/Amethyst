@@ -63,8 +63,6 @@
 		4045417E2698030A00861BE8 /* static-ratio-tall.js in Resources */ = {isa = PBXBuildFile; fileRef = 4045417D2698030A00861BE8 /* static-ratio-tall.js */; };
 		4046EFCF2236019400113067 /* Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFCE2236019400113067 /* Window.swift */; };
 		4046EFD12238949900113067 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4046EFD02238949900113067 /* Application.swift */; };
-		404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */; };
-		404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */; };
 		40578C19232D9CC0006553A0 /* Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40578C18232D9CC0006553A0 /* Screen.swift */; };
 		40578C1B232DC607006553A0 /* TestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40578C1A232DC607006553A0 /* TestScreen.swift */; };
 		40583E1329AEF70B008602BB /* ApplicationEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */; };
@@ -79,7 +77,6 @@
 		4062AD351C1FA62500DB612B /* WideLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD341C1FA62500DB612B /* WideLayout.swift */; };
 		4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD361C1FA83300DB612B /* RowLayout.swift */; };
 		4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */; };
-		40637073224EF9B20081299D /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637072224EF9B20081299D /* Change.swift */; };
 		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
 		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
 		4084F1502F6B9C2E008A13C2 /* Skylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4084F14F2F6B9C2E008A13C2 /* Skylight.swift */; };
@@ -200,8 +197,6 @@
 		4045417D2698030A00861BE8 /* static-ratio-tall.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall.js"; sourceTree = "<group>"; };
 		4046EFCE2236019400113067 /* Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Window.swift; sourceTree = "<group>"; };
 		4046EFD02238949900113067 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
-		404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayout.swift; sourceTree = "<group>"; };
-		404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinarySpacePartitioningLayoutTests.swift; sourceTree = "<group>"; };
 		40578C18232D9CC0006553A0 /* Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen.swift; sourceTree = "<group>"; };
 		40578C1A232DC607006553A0 /* TestScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestScreen.swift; sourceTree = "<group>"; };
 		40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationEventHandler.swift; sourceTree = "<group>"; };
@@ -216,7 +211,6 @@
 		4062AD341C1FA62500DB612B /* WideLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WideLayout.swift; sourceTree = "<group>"; };
 		4062AD361C1FA83300DB612B /* RowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowLayout.swift; sourceTree = "<group>"; };
 		4062AD3A1C206EA900DB612B /* WidescreenTallLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidescreenTallLayout.swift; sourceTree = "<group>"; };
-		40637072224EF9B20081299D /* Change.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Change.swift; sourceTree = "<group>"; };
 		40637074224EFED70081299D /* CGInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGInfo.swift; sourceTree = "<group>"; };
 		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4076368C2394BFB500308336 /* AmethystDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmethystDebug.entitlements; sourceTree = "<group>"; };
@@ -368,7 +362,6 @@
 		401C35AD2241BA760019ED07 /* Layouts */ = {
 			isa = PBXGroup;
 			children = (
-				404BE9CD1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift */,
 				4062AD321C1FA48C00DB612B /* ColumnLayout.swift */,
 				4062AD2A1C1F99EA00DB612B /* FloatingLayout.swift */,
 				4062AD2C1C1F9B8B00DB612B /* FullscreenLayout.swift */,
@@ -486,7 +479,6 @@
 				4046EFD02238949900113067 /* Application.swift */,
 				401C35B02244626E0019ED07 /* ApplicationObservation.swift */,
 				40637074224EFED70081299D /* CGInfo.swift */,
-				40637072224EF9B20081299D /* Change.swift */,
 				401C35B22244650F0019ED07 /* MouseState.swift */,
 				400540F12325CDF4004B8656 /* Reliability.swift */,
 				40578C18232D9CC0006553A0 /* Screen.swift */,
@@ -502,7 +494,6 @@
 		404BE9CF1CFBDEFD00D6C537 /* Layout */ = {
 			isa = PBXGroup;
 			children = (
-				404BE9D01CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift */,
 				401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */,
 				404541702697C14A00861BE8 /* CustomLayoutTests.swift */,
 				403E1A292337173600DB7B2A /* FloatingLayoutTests.swift */,
@@ -813,7 +804,6 @@
 				401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */,
 				401C35AF2241BBDD0019ED07 /* ReflowOperation.swift in Sources */,
 				401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */,
-				40637073224EF9B20081299D /* Change.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
 				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
 				40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */,
@@ -821,7 +811,6 @@
 				4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */,
 				40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */,
 				F0B42E352A3CA45E00298E30 /* TwoPaneRightLayout.swift in Sources */,
-				404BE9CE1CFBB6E900D6C537 /* BinarySpacePartitioningLayout.swift in Sources */,
 				4062AD3B1C206EA900DB612B /* WidescreenTallLayout.swift in Sources */,
 				4058C46F1C4B119500B19D26 /* LayoutNameWindowController.swift in Sources */,
 				4062AD311C1FA29600DB612B /* TallRightLayout.swift in Sources */,
@@ -861,7 +850,6 @@
 				401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */,
 				401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */,
 				AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */,
-				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,

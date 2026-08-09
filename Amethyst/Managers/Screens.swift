@@ -94,28 +94,6 @@ extension WindowManager {
             markAllScreensForReflow()
         }
 
-        func distributeEventToScreen(_ screen: Screen, change: Change<Window>) {
-            screenManagers
-                .filter { $0.screen?.screenID() == screen.screenID() }
-                .forEach { screenManager in
-                    screenManager.distributeEvent(change)
-                }
-        }
-
-        func distributeEventToAllScreens(change: Change<Window>) {
-            for screenManager in screenManagers {
-                screenManager.distributeEvent(change)
-            }
-        }
-
-        func markScreenForReflow(_ screen: Screen) {
-            screenManagers
-                .filter { $0.screen?.screenID() == screen.screenID() }
-                .forEach { screenManager in
-                    screenManager.setNeedsReflow()
-                }
-        }
-
         func markAllScreensForReflow() {
             for screenManager in screenManagers {
                 screenManager.setNeedsReflow()

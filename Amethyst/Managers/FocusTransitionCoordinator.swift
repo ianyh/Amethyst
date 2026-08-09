@@ -26,8 +26,6 @@ protocol FocusTransitionTarget: AnyObject {
     func lastFocusedWindow(on screen: Screen) -> Window?
     func screen(at index: Int) -> Screen?
     func windows(onScreen screen: Screen) -> [Window]
-    func nextWindowIDClockwise(on screen: Screen) -> Window.WindowID?
-    func nextWindowIDCounterClockwise(on screen: Screen) -> Window.WindowID?
     func nextScreenIndexClockwise(from screen: Screen) -> Int
     func nextScreenIndexCounterClockwise(from screen: Screen) -> Int
 }
@@ -62,14 +60,9 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
         }
 
         let windowToFocus = { () -> Window in
-            if let nextWindowID = self.target?.nextWindowIDCounterClockwise(on: screen) {
-                let windowToFocusIndex = windows.firstIndex { $0.id() == nextWindowID } ?? 0
-                return windows[windowToFocusIndex]
-            } else {
-                let windowIndex = windows.firstIndex(of: focusedWindow) ?? 0
-                let windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1)
-                return windows[windowToFocusIndex]
-            }
+            let windowIndex = windows.firstIndex(of: focusedWindow) ?? 0
+            let windowToFocusIndex = (windowIndex == 0 ? windows.count - 1 : windowIndex - 1)
+            return windows[windowToFocusIndex]
         }()
 
         windowToFocus.focus()
@@ -90,14 +83,9 @@ class FocusTransitionCoordinator<Target: FocusTransitionTarget> {
         }
 
         let windowToFocus = { () -> Window in
-            if let nextWindowID = target?.nextWindowIDClockwise(on: screen) {
-                let windowToFocusIndex = windows.firstIndex { $0.id() == nextWindowID } ?? 0
-                return windows[windowToFocusIndex]
-            } else {
-                let windowIndex = windows.firstIndex(of: focusedWindow) ?? windows.count - 1
-                let windowToFocusIndex = (windowIndex + 1) % windows.count
-                return windows[windowToFocusIndex]
-            }
+            let windowIndex = windows.firstIndex(of: focusedWindow) ?? windows.count - 1
+            let windowToFocusIndex = (windowIndex + 1) % windows.count
+            return windows[windowToFocusIndex]
         }()
 
         windowToFocus.focus()

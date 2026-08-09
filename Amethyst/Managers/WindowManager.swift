@@ -35,11 +35,6 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
 
-    struct PendingEvent {
-        let screen: Screen
-        let event: Change<Window>
-    }
-
     private struct UndeterminedApplication {
         let application: NSRunningApplication
         let activationPolicyObservation: NSKeyValueObservation?
@@ -63,10 +58,9 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     private var screens: Screens
     private let windows = Windows()
     private var lastReflowTime = Date()
-    private var lastFocusDate: Date?
-    private var pendingTabDetection: [Window.WindowID: Window] = [:]
-    private var earlyFocusedWindows: Set<Window.WindowID> = []
-    private var eventQueue: [PendingEvent] = []
+
+    /// Coalesces multiple reflow requests within the same RunLoop cycle into a single pass.
+    private var reflowPending = false
 
     private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
     private lazy var applicationEventHandler = ApplicationEventHandler(delegate: self)
@@ -109,8 +103,10 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
         installApplicationMonitor()
 
-        reevaluateWindows()
+        // updateScreens must run before reevaluateWindows so that screenManagers exist and
+        // have their spaces set before windows are tracked and the first reflow is scheduled.
         screens.updateScreens(windowManager: self)
+        reevaluateWindows()
     }
 
     deinit {
@@ -118,10 +114,37 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         NotificationCenter.default.removeObserver(self)
     }
 
+    // MARK: - Reflow
+
+    /// Schedule a reflow pass, coalescing multiple calls within the same RunLoop cycle.
+    ///
+    /// Multiple window events firing in quick succession (e.g., focus + mainWindowChanged during a
+    /// tab switch, or multiple events during a space transition) produce a single reflow instead of
+    /// 3-4 overlapping ones. Layouts are stateless and derive everything from the current window
+    /// list, so a reflow simply refreshes the active window cache and re-applies layouts.
+    func scheduleReflow() {
+        log.debug("Reflow scheduled (pending: \(reflowPending))")
+        guard !reflowPending else {
+            return
+        }
+        reflowPending = true
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.reflowPending = false
+            self.windows.regenerateActiveIDCache()
+            self.markAllScreensForReflow()
+        }
+    }
+
+    /// Query the system for current on-screen window IDs.
+    private func querySystemWindowIDs() -> Set<CGWindowID> {
+        return CGWindowsInfo<Window>(options: .optionOnScreenOnly, windowID: CGWindowID(0))?.activeIDs() ?? []
+    }
+
     func reset() {
         screens = Screens()
-        reevaluateWindows()
         screens.updateScreens(windowManager: self)
+        reevaluateWindows()
     }
 
     private func addWorkspaceNotificationObserver(_ name: NSNotification.Name, selector: Selector) {
@@ -133,8 +156,8 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return
         }
-        markScreenForReflow(screen)
-//        doMouseFollowsFocus(focusedWindow: focusedWindow)
+        recordLastFocusedWindow(focusedWindow, on: screen)
+        scheduleReflow()
     }
 
     @objc func applicationDidLaunch(_ notification: Notification) {
@@ -185,17 +208,10 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     }
 
     @objc func activeSpaceDidChange(_ notification: Notification) {
-        // Update spaces across screens so that events get distributed to the correct layouts
+        // Update spaces across screens so that windows get assigned to the correct layouts
         screens.updateSpaces()
 
-        for pendingEvent in eventQueue {
-            distributeEventToScreen(pendingEvent.screen, change: pendingEvent.event)
-        }
-        eventQueue.removeAll()
-
-        pendingTabDetection.removeAll()
-        earlyFocusedWindows.removeAll()
-
+        // Re-track windows from all applications on the new space
         for runningApplication in NSWorkspace.shared.runningApplications {
             let pid = runningApplication.processIdentifier
             guard let application = applicationWithPID(pid) else {
@@ -209,8 +225,8 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             }
         }
 
-        windows.regenerateActiveIDCache()
-        markAllScreensForReflow()
+        // Coalesce the reflow with any AX events that fire during the space transition
+        scheduleReflow()
     }
 
     @objc func screenParametersDidChange(_ notification: Notification) {
@@ -293,27 +309,25 @@ extension WindowManager {
             remove(window: window)
         }
         applications.removeValue(forKey: application.pid())
+        windows.clearTrackedMainWindow(forPID: application.pid())
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
         windows.activateApplication(withPID: application.pid())
-        windows.regenerateActiveIDCache()
-        markAllScreensForReflow()
+        scheduleReflow()
     }
 
     fileprivate func deactivate(application: AnyApplication<Application>) {
         windows.deactivateApplication(withPID: application.pid())
-        markAllScreensForReflow()
+        scheduleReflow()
     }
 
     fileprivate func remove(window: Window) {
         log.debug("Removing window: \(window)")
-        pendingTabDetection.removeValue(forKey: window.id())
-        earlyFocusedWindows.remove(window.id())
-        distributeEventToAllScreens(.remove(window: window))
-        markAllScreensForReflow()
-        windows.regenerateActiveIDCache()
+        windows.clearTrackedMainWindow(forWindow: window)
+        clearLastFocusedWindowAcrossScreens(window)
         windows.remove(window: window)
+        scheduleReflow()
     }
 
     func toggleFloatForFocusedWindow() {
@@ -322,33 +336,30 @@ extension WindowManager {
         }
 
         guard windows.windows(onScreen: screen).contains(focusedWindow) else {
-            let windowChange: Change<Window> = .add(window: focusedWindow)
             add(window: focusedWindow)
             guard windows.window(withID: focusedWindow.id()) != nil else {
                 return
             }
             windows.setFloating(false, forWindow: focusedWindow)
-            distributeEventToScreen(screen, change: windowChange)
-            markScreenForReflow(screen)
+            scheduleReflow()
             return
         }
 
-        let windowChange: Change = windows.isWindowFloating(focusedWindow) ? .add(window: focusedWindow) : .remove(window: focusedWindow)
         windows.setFloating(!windows.isWindowFloating(focusedWindow), forWindow: focusedWindow)
-        distributeEventToScreen(screen, change: windowChange)
-        markScreenForReflow(screen)
+        scheduleReflow()
     }
 
-    func distributeEventToScreen(_ screen: Screen, change: Change<Window>) {
-        screens.distributeEventToScreen(screen, change: change)
+    /// Update the last-focused window for the screen containing `window`. Used by
+    /// "focus main" to toggle back to the previously focused window.
+    private func recordLastFocusedWindow(_ window: Window, on screen: Screen) {
+        screenManager(for: screen)?.setLastFocusedWindow(window)
     }
 
-    func distributeEventToAllScreens(_ change: Change<Window>) {
-        screens.distributeEventToAllScreens(change: change)
-    }
-
-    func markScreenForReflow(_ screen: Screen) {
-        screens.markScreenForReflow(screen)
+    /// Clear the last-focused window on any screen that referenced it (e.g. on removal).
+    private func clearLastFocusedWindowAcrossScreens(_ window: Window) {
+        for screenManager in screens.screenManagers where screenManager.lastFocusedWindow == window {
+            screenManager.setLastFocusedWindow(nil)
+        }
     }
 
     func markAllScreensForReflow() {
@@ -429,7 +440,7 @@ extension WindowManager {
         for runningApplication in NSWorkspace.shared.runningApplications {
             add(runningApplication: runningApplication)
         }
-        markAllScreensForReflow()
+        scheduleReflow()
     }
 
     private func add(window: Window, afterWindow otherWindow: Window? = nil) {
@@ -506,7 +517,7 @@ extension WindowManager {
             throw TrackingError.alreadyTracked
         }
 
-        guard let screen = window.screen() else {
+        guard window.screen() != nil else {
             throw TrackingError.unknownScreen
         }
 
@@ -514,169 +525,26 @@ extension WindowManager {
             throw TrackingError.unknownSpace
         }
 
-        if let otherWindow = otherWindow {
-            _ = windows.replace(window: window, withWindow: otherWindow)
-            distributeEventToScreen(screen, change: .tabChange(window: window, previousWindow: otherWindow))
+        // Layouts are stateless and derive their windows from `activeWindows(onScreen:)`, which
+        // already filters by current space / active / not-hidden / not-floating at reflow time.
+        // So tracking just needs to maintain the master window list; off-screen, other-space, and
+        // floating windows are excluded from layouts automatically.
+        //
+        // Tab swap: when a new window replaces a departed tab, take the departed window's slot in
+        // the list so the layout keeps the tile stable. Guard on the departed window still being
+        // tracked — the async add pipeline can race with an AX destruction notification that
+        // removes it before track() runs (replacing against a gone window corrupts the list).
+        if let otherWindow = otherWindow, windows.isWindowTracked(otherWindow) {
+            windows.replace(window: window, withWindow: otherWindow)
+            windows.recordTrackedMainWindow(window)
         } else {
             windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
-
-            // Only send .add to layouts if the window is on the currently active space.
-            // Windows tracked during a space change for a different space should not
-            // generate .add events — doing so gives layouts stale data for windows
-            // that aren't visible on the current space.
-            let windowSpace = CGWindowsInfo.windowSpace(window)
-            let currentSpaceID = CGSpacesInfo<Window>.currentSpaceForScreen(screen)?.id
-            let isOnCurrentSpace: Bool
-            if let currentSpaceID, let windowSpace {
-                isOnCurrentSpace = currentSpaceID == windowSpace
-            } else {
-                isOnCurrentSpace = true
-            }
-
-            if isOnCurrentSpace {
-                let windowChange: Change = windows.isWindowFloating(window) ? .unknown : .add(window: window)
-                distributeEventToScreen(screen, change: windowChange)
+            if !windows.isWindowFloating(window) {
+                windows.recordTrackedMainWindow(window)
             }
         }
 
-        markScreenForReflow(screen)
-    }
-
-    /**
-     This function is a best effort to detect changes between native macOS tabs.
-     
-     - Description:
-        Each "tab" is an independent window, but the underlying system relates them in some way that we do not have access to. The heuristic is to find a window from the same application that has recently left the screen, and swap them.
-     
-        This performs pretty well in steady state, but can be a bit wonky when finding the existing tabs depending on how quick the transitions are.
-
-     - Parameters:
-        - window: the window that might be a tab change.
-     */
-    func swapInTab(window: Window) {
-        guard let screen = window.screen() else {
-            return
-        }
-
-        // We do this to avoid triggering tab swapping when just switching focus between apps.
-        // If the window's app is not running by this point then it's not a tab switch.
-        guard let runningApp = NSRunningApplication(processIdentifier: window.pid()), runningApp.isActive else {
-            return
-        }
-
-        // We take the windows that are being tracked so we can properly detect when a tab switch is a new tab.
-        // It is important here to compute isActive and isOnScreen as soon as possible for improved accuracy.
-        let applicationWindows = windows.windows(forApplicationWithPID: window.pid())
-            .map { ($0, windows.isWindowActive($0), $0.isOnScreen()) }
-
-        var string = "\n\tNew Window: \(window)"
-        applicationWindows.forEach { string += "\n\tExisting window: \($0)" }
-        log.debug(string)
-
-        for (existingWindow, isActive, isOnScreen) in applicationWindows {
-            guard existingWindow != window else {
-                log.debug("Windows are the same:\n\tNew: \(window)\n\t\(existingWindow)")
-                continue
-            }
-
-            // The window needs to have been active _at some point_, but must not be currently on screen.
-            let didLeaveScreen = (isActive || windows.isWindowActive(existingWindow)) && !existingWindow.isOnScreen()
-            let isInvalid = existingWindow.cgID() == kCGNullWindowID
-
-            log.debug("""
-            Considering window: \(existingWindow)
-            isActive: \(isActive), isOnScreen: \(isOnScreen), isInvalid: \(isInvalid), managed: \(existingWindow.shouldBeManaged())
-            Recomputed isActive: \(windows.isWindowActive(existingWindow)), isOnScreen: \(existingWindow.isOnScreen())
-            """)
-
-            // The window needs to have either left the screen and therefore is being replaced
-            // or be invalid and therefore being removed and can be replaced.
-            guard didLeaveScreen || isInvalid else {
-                log.debug("Window candidate discarded: \(existingWindow)")
-                continue
-            }
-
-            // We have to make sure that we haven't had a focus change too recently as that could mean
-            // the window is already active, but just became focused by swapping window focus.
-            // The time is in seconds, and too long a time ends up with quick switches triggering tabs to incorrectly
-            // swap.
-            let changeInterval = lastFocusDate.flatMap { abs($0.timeIntervalSinceNow) }
-            if let changeInterval = changeInterval, abs(changeInterval) < 0.1 && !isInvalid {
-                log.debug("""
-                Window candidate discarded: \(existingWindow)
-                lastFocusChange: \(lastFocusDate?.description ?? "nil") now: \(changeInterval) isInvalid: \(isInvalid)
-                """)
-                continue
-            }
-
-            log.debug("Selected existing window: \(existingWindow)")
-
-            guard windows.isWindowTracked(window) else {
-                // If the window isn't tracked we add it in relation to the existing one.
-                pendingTabDetection.removeValue(forKey: window.id())
-                earlyFocusedWindows.remove(window.id())
-                add(window: window, afterWindow: existingWindow)
-                return
-            }
-
-            // If we get here, we are working with a window that has been previously added.
-            // Instead of going through the whole add process, we can just swap the windows in order.
-            pendingTabDetection.removeValue(forKey: window.id())
-            earlyFocusedWindows.remove(window.id())
-            windows.replace(window: existingWindow, withWindow: window)
-            windows.regenerateActiveIDCache()
-
-            // Note that the existing window moving out of screen will be tracked as a remove,
-            // but the "adding" happens above, so we need to distribute the relevant change.
-            distributeEventToScreen(screen, change: .tabChange(window: window, previousWindow: existingWindow))
-            markScreenForReflow(screen)
-
-            return
-        }
-
-        windows.regenerateActiveIDCache()
-        if earlyFocusedWindows.remove(window.id()) != nil {
-            // Focus notification already fired before we got here — the visual
-            // transition is settled so call completeTabDetection directly.
-            completeTabDetection(for: window, on: screen)
-        } else {
-            pendingTabDetection[window.id()] = window
-        }
-    }
-
-    private func completeTabDetection(for window: Window, on screen: Screen) {
-        windows.regenerateActiveIDCache()
-
-        let applicationWindows = windows.windows(forApplicationWithPID: window.pid())
-
-        for existingWindow in applicationWindows {
-            guard existingWindow != window else { continue }
-
-            let didLeaveScreen = windows.isWindowActive(existingWindow) && !existingWindow.isOnScreen()
-            let isInvalid = existingWindow.cgID() == kCGNullWindowID
-
-            guard didLeaveScreen || isInvalid else { continue }
-
-            log.debug("completeTabDetection: selected candidate \(existingWindow) for \(window)")
-
-            guard windows.isWindowTracked(window) else {
-                pendingTabDetection.removeValue(forKey: window.id())
-                earlyFocusedWindows.remove(window.id())
-                add(window: window, afterWindow: existingWindow)
-                return
-            }
-
-            pendingTabDetection.removeValue(forKey: window.id())
-            earlyFocusedWindows.remove(window.id())
-            windows.replace(window: existingWindow, withWindow: window)
-            windows.regenerateActiveIDCache()
-            distributeEventToScreen(screen, change: .tabChange(window: window, previousWindow: existingWindow))
-            markScreenForReflow(screen)
-            return
-        }
-
-        log.debug("completeTabDetection: no candidate found")
-        add(window: window)
+        scheduleReflow()
     }
 
     func onReflowInitiation() {
@@ -778,30 +646,60 @@ extension WindowManager: ApplicationObservationDelegate {
             return
         }
 
-        lastFocusDate = Date()
-
-        if pendingTabDetection.removeValue(forKey: window.id()) != nil {
-            completeTabDetection(for: window, on: screen)
-        } else if windows.isWindowTracked(window) {
-            distributeEventToScreen(screen, change: .focusChanged(window: window))
-            markScreenForReflow(screen)
-        } else {
-            // Focus notification arrived before the creation notification.
-            // Record this so swapInTab can call completeTabDetection immediately
-            // rather than deferring to a focus event that has already passed.
-            log.debug("Focused untracked window before creation notification - recording early focus: \(window)")
-            earlyFocusedWindows.insert(window.id())
+        if windows.isWindowTracked(window) {
+            windows.recordTrackedMainWindow(window)
+            recordLastFocusedWindow(window, on: screen)
         }
 
-//        doMouseFollowsFocus(focusedWindow: window)
+        scheduleReflow()
     }
 
     func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
-        guard !windows.isWindowTracked(window) else {
+        if windows.isWindowTracked(window) {
+            // Tracked window became main -- record it as focused and as the main window
+            // so the next untracked-main-window event for this PID can resolve to it.
+            windows.recordTrackedMainWindow(window)
+            if let screen = window.screen() {
+                recordLastFocusedWindow(window, on: screen)
+            }
+            scheduleReflow()
             return
         }
 
-        swapInTab(window: window)
+        let pid = window.pid()
+        let departedWindow = classifyDepartedTab(forPID: pid, newWindow: window)
+
+        if let departedWindow = departedWindow {
+            log.debug("Tab switch detected: \(departedWindow) -> \(window)")
+            add(window: window, afterWindow: departedWindow)
+        } else {
+            log.debug("New window (not a tab switch): \(window)")
+            add(window: window)
+        }
+    }
+
+    /// Pick the previously-tracked window of `pid` that the new untracked main window is
+    /// replacing, if any. Priority order:
+    /// 1. The recorded `lastTrackedMainWindow[pid]` — but only if its `cgID` is no longer
+    ///    on-screen, signalling a real tab departure rather than a focus switch between
+    ///    two simultaneously-visible windows of a multi-window app (e.g. VS Code).
+    /// 2. A tracked window for the PID whose `cgID` has dropped off the on-screen list.
+    /// 3. None — caller treats `newWindow` as a fresh window.
+    private func classifyDepartedTab(forPID pid: pid_t, newWindow: Window) -> Window? {
+        let activeIDs = querySystemWindowIDs()
+
+        if let recorded = windows.trackedMainWindow(forPID: pid),
+           recorded.id() != newWindow.id(),
+           windows.isWindowTracked(recorded),
+           !activeIDs.contains(recorded.cgID()) {
+            log.debug("Tab classification: using recorded main window \(recorded) for pid \(pid) (off-screen)")
+            return recorded
+        }
+
+        let trackedForPID = windows.windows(forApplicationWithPID: pid)
+        let departed = trackedForPID.first { !activeIDs.contains($0.cgID()) }
+        log.debug("Tab classification for pid \(pid): \(trackedForPID.count) tracked, \(activeIDs.count) active on screen, departed=\(departed.map(String.init(describing:)) ?? "nil")")
+        return departed
     }
 
     func application(_ application: AnyApplication<Application>, didMoveWindow window: Window) {
@@ -881,12 +779,9 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func applicationDidActivate(_ application: AnyApplication<Application>) {
-        NSObject.cancelPreviousPerformRequests(
-            withTarget: self,
-            selector: #selector(applicationActivated(_:)),
-            object: nil
-        )
-        perform(#selector(applicationActivated(_:)), with: nil, afterDelay: 0.2)
+        // Reflow coalescing replaces the previous 0.2s delay hack.
+        // Multiple activation events within the same RunLoop cycle produce a single reflow pass.
+        scheduleReflow()
     }
 }
 
@@ -922,17 +817,13 @@ extension WindowManager: WindowTransitionTarget {
                 return
             }
 
-            distributeEventToAllScreens(.windowSwap(window: window, otherWindow: otherWindow))
-            markAllScreensForReflow()
+            scheduleReflow()
         case let .moveWindowToScreen(window, screen):
-            let currentScreen = window.screen()
+            // Layouts derive their windows from `window.screen()`, so moving the window updates
+            // both the source and destination layouts on the next reflow automatically.
             window.moveScaled(to: screen)
-            if currentScreen != nil {
-                distributeEventToScreen(screen, change: .remove(window: window))
-                markScreenForReflow(screen)
-            }
-            distributeEventToScreen(screen, change: .add(window: window))
             window.focus()
+            scheduleReflow()
         case let .moveWindowToSpaceAtIndex(window, spaceIndex, sourceSpaceIndex):
             guard
                 let screen = window.screen(),
@@ -946,9 +837,10 @@ extension WindowManager: WindowTransitionTarget {
             guard let targetScreen = CGSpacesInfo<Window>.screenForSpace(space: targetSpace) else {
                 return
             }
-            distributeEventToScreen(screen, change: .remove(window: window))
-            eventQueue.append(PendingEvent(screen: targetScreen, event: .add(window: window)))
             window.move(toSpaceAtIndex: UInt(spaceIndex + 1))
+            // The window leaves the current space immediately; the target space picks it up via
+            // `activeSpaceDidChange` when activated. Reflow the source now.
+            scheduleReflow()
             if targetScreen.screenID() != screen.screenID() {
                 // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.
                 window.moveScaled(to: targetScreen)
@@ -1023,14 +915,6 @@ extension WindowManager: FocusTransitionTarget {
 
     func lastFocusedWindow(on screen: Screen) -> Window? {
         return screens.screenManagers.first { $0.screen?.screenID() == screen.screenID() }?.lastFocusedWindow
-    }
-
-    func nextWindowIDClockwise(on screen: Screen) -> Window.WindowID? {
-        return screenManager(for: screen)?.nextWindowIDClockwise()
-    }
-
-    func nextWindowIDCounterClockwise(on screen: Screen) -> Window.WindowID? {
-        return screenManager(for: screen)?.nextWindowIDCounterClockwise()
     }
 }
 
