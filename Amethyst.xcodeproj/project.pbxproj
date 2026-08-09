@@ -82,6 +82,7 @@
 		40637073224EF9B20081299D /* Change.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637072224EF9B20081299D /* Change.swift */; };
 		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
 		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
+		4084F1502F6B9C2E008A13C2 /* Skylight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4084F14F2F6B9C2E008A13C2 /* Skylight.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
 		4087BB042D447F480062A52B /* static-ratio-tall-native-commands.js in Resources */ = {isa = PBXBuildFile; fileRef = 4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
@@ -219,6 +220,7 @@
 		40637074224EFED70081299D /* CGInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGInfo.swift; sourceTree = "<group>"; };
 		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4076368C2394BFB500308336 /* AmethystDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmethystDebug.entitlements; sourceTree = "<group>"; };
+		4084F14F2F6B9C2E008A13C2 /* Skylight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skylight.swift; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
 		4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall-native-commands.js"; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 				4046EFCE2236019400113067 /* Window.swift */,
 				401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */,
 				40583E1229AEF70B008602BB /* ApplicationEventHandler.swift */,
+				4084F14F2F6B9C2E008A13C2 /* Skylight.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -793,6 +796,7 @@
 				4046EFD12238949900113067 /* Application.swift in Sources */,
 				4062AD331C1FA48C00DB612B /* ColumnLayout.swift in Sources */,
 				409645B31CEE8D950042F459 /* LogManager.swift in Sources */,
+				4084F1502F6B9C2E008A13C2 /* Skylight.swift in Sources */,
 				4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */,
 				401BC89A1CE8C6AE00F89B3F /* HotKeyManager.swift in Sources */,
 				4062AD2F1C1F9D6B00DB612B /* TallLayout.swift in Sources */,
