@@ -37,26 +37,13 @@ class FloatingPreferencesViewController: NSViewController, NSTableViewDataSource
         let layoutMenu = NSMenu(title: "")
         let selectMenuItem = NSMenuItem(title: "Select from applications...", action: #selector(selectFloatingApplication(_:)), keyEquivalent: "")
         let manualMenuItem = NSMenuItem(title: "Manually enter identifier...", action: #selector(manuallyEnterFloatingApplication(_:)), keyEquivalent: "")
+        selectMenuItem.target = self
+        manualMenuItem.target = self
 
         layoutMenu.addItem(selectMenuItem)
         layoutMenu.addItem(manualMenuItem)
 
-        let frame = sender.frame
-        let menuOrigin = sender.superview!.convert(NSPoint(x: frame.origin.x, y: frame.origin.y + frame.size.height + 40), to: nil)
-
-        let event = NSEvent.mouseEvent(
-            with: NSEvent.EventType.leftMouseDown,
-            location: menuOrigin,
-            modifierFlags: [],
-            timestamp: 0,
-            windowNumber: sender.window!.windowNumber,
-            context: sender.window!.graphicsContext,
-            eventNumber: 0,
-            clickCount: 1,
-            pressure: 1
-        )
-
-        NSMenu.popUpContextMenu(layoutMenu, with: event!, for: sender)
+        layoutMenu.popUp(positioning: nil, at: NSPoint(x: sender.bounds.minX, y: sender.bounds.maxY), in: sender)
     }
 
     @objc func selectFloatingApplication(_ sender: AnyObject) {
