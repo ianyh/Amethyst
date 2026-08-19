@@ -209,7 +209,10 @@ extension WindowManager {
 
             let snapshotFloatingMap = floatingMap
             let snapshotActiveIDCache = activeIDCache
-            let snapshotWindowsByID = Dictionary(uniqueKeysWithValues: windows.map { ($0.id(), $0) })
+            // Use a uniquing initializer rather than `uniqueKeysWithValues:`, which traps on
+            // duplicate keys. Distinct windows can momentarily report the same id() (e.g. windows
+            // that expose a 0 CGWindowID), and a duplicate must not crash a reflow.
+            let snapshotWindowsByID = Dictionary(windows.map { ($0.id(), $0) }, uniquingKeysWith: { first, _ in first })
 
             return WindowSet<Window>(
                 windows: layoutWindows,

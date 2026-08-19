@@ -68,6 +68,19 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     private var earlyFocusedWindows: Set<Window.WindowID> = []
     private var eventQueue: [PendingEvent] = []
 
+    // Applications whose observer registration failed (e.g. a freshly-launched app whose
+    // Accessibility interface was not yet ready, returning kAXErrorAPIDisabled). They are
+    // re-attempted on a timer; otherwise the app stays untracked — and unreachable by
+    // space-change recovery, which only revisits already-registered apps — until a manual reevaluate.
+    private var pendingTrackApplications: [pid_t: (application: AnyApplication<Application>, attempts: Int)] = [:]
+    // Applications that exhausted their full retry budget; not re-queued so a permanently
+    // unobservable app does not loop forever. Cleared when the app is removed (a recreated one
+    // gets a fresh chance) or on a manual reevaluate.
+    private var permanentlyFailedApplications: Set<pid_t> = []
+    private var pendingTrackTimer: Timer?
+    private let pendingTrackInterval: TimeInterval = 2.0
+    private let maxPendingTrackAttempts = 10
+
     private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
     private lazy var applicationEventHandler = ApplicationEventHandler(delegate: self)
     private let userConfiguration: UserConfiguration
@@ -116,6 +129,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     deinit {
         NSWorkspace.shared.notificationCenter.removeObserver(self)
         NotificationCenter.default.removeObserver(self)
+        pendingTrackTimer?.invalidate()
     }
 
     func reset() {
@@ -274,9 +288,16 @@ extension WindowManager {
             return
         }
 
+        guard !permanentlyFailedApplications.contains(application.pid()) else {
+            return
+        }
+
         ApplicationObservation(application: application, delegate: self)
             .addObservers()
             .subscribe(
+                onError: { [weak self] error in
+                    self?.handleApplicationObserverFailure(application, error: error)
+                },
                 onCompleted: { [weak self] in
                     self?.applications[application.pid()] = application
 
@@ -293,6 +314,8 @@ extension WindowManager {
             remove(window: window)
         }
         applications.removeValue(forKey: application.pid())
+        pendingTrackApplications.removeValue(forKey: application.pid())
+        permanentlyFailedApplications.remove(application.pid())
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
@@ -426,6 +449,9 @@ extension WindowManager {
     }
 
     func reevaluateWindows() {
+        // A manual reevaluate is an explicit "try everything again" — give any app that previously
+        // gave up a fresh chance.
+        permanentlyFailedApplications.removeAll()
         for runningApplication in NSWorkspace.shared.runningApplications {
             add(runningApplication: runningApplication)
         }
@@ -487,6 +513,66 @@ extension WindowManager {
             }
             .subscribe()
             .disposed(by: disposeBag)
+    }
+
+    /// Called when an application's observer registration exhausts its retries. The application
+    /// is queued for re-attempt rather than abandoned, so apps that were briefly unobservable at
+    /// launch (kAXErrorAPIDisabled) still get picked up without a manual reevaluate.
+    private func handleApplicationObserverFailure(_ application: AnyApplication<Application>, error: Error) {
+        let pid = application.pid()
+        guard applications[pid] == nil else {
+            return
+        }
+        if pendingTrackApplications[pid] == nil {
+            pendingTrackApplications[pid] = (application, 0)
+            log.debug("Queued application for retry after observer failure (\(error)): \(application.title() ?? "no title") (\(pid))")
+        }
+        startPendingTrackTimerIfNeeded()
+    }
+
+    private func startPendingTrackTimerIfNeeded() {
+        guard pendingTrackTimer == nil else {
+            return
+        }
+        pendingTrackTimer = Timer.scheduledTimer(withTimeInterval: pendingTrackInterval, repeats: true) { [weak self] _ in
+            self?.retryPending()
+        }
+    }
+
+    private func retryPending() {
+        retryPendingApplications()
+
+        if pendingTrackApplications.isEmpty {
+            pendingTrackTimer?.invalidate()
+            pendingTrackTimer = nil
+        }
+    }
+
+    /// Re-attempts observer registration for applications that previously failed. Entries are
+    /// dropped once the app becomes registered, it is no longer running, or it exhausts its budget.
+    private func retryPendingApplications() {
+        for (pid, var entry) in pendingTrackApplications {
+            if applications[pid] != nil {
+                log.info("Recovered previously-unobserved application after \(entry.attempts) attempt(s): \(entry.application.title() ?? "no title") (\(pid))")
+                pendingTrackApplications.removeValue(forKey: pid)
+                continue
+            }
+            if NSRunningApplication(processIdentifier: pid) == nil {
+                pendingTrackApplications.removeValue(forKey: pid)
+                continue
+            }
+
+            entry.attempts += 1
+            guard entry.attempts <= maxPendingTrackAttempts else {
+                pendingTrackApplications.removeValue(forKey: pid)
+                permanentlyFailedApplications.insert(pid)
+                log.warning("Giving up observing application after \(maxPendingTrackAttempts) attempts: \(entry.application.title() ?? "no title") (\(pid))")
+                continue
+            }
+
+            pendingTrackApplications[pid] = entry
+            add(application: entry.application)
+        }
     }
 
     private func determineFloatForWindow(_ window: Window, application: AnyApplication<Application>, force: Bool) throws {
