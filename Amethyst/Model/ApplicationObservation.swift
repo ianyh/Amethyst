@@ -204,7 +204,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                     return .error(error)
                 }
 
-                return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+                return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
             }
         }
     }
@@ -221,7 +221,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                     return .error(error)
                 }
 
-                return .timer(.milliseconds((count ^ 2 * 100)), scheduler: MainScheduler.instance)
+                return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
             }
         }
     }
