@@ -50,15 +50,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         UserConfiguration.shared.load()
 
         #if RELEASE
-            let appcastURLString = { () -> String? in
+            let appcastURLString: String? = {
                 if UserConfiguration.shared.useCanaryBuild() {
                     return Bundle.main.infoDictionary?["SUCanaryFeedURL"] as? String
                 } else {
                     return Bundle.main.infoDictionary?["SUFeedURL"] as? String
                 }
-            }()!
+            }()
 
-            SUUpdater.shared().feedURL = URL(string: appcastURLString)
+            if let appcastURLString = appcastURLString, let url = URL(string: appcastURLString) {
+                SUUpdater.shared().feedURL = url
+            } else {
+                log.error("Sparkle feed URL is missing or malformed in Info.plist")
+            }
         #endif
 
         preferencesWindowController?.window?.level = .floating
@@ -68,17 +72,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             windowManager = try? decoder.decode(WindowManager<SIApplication>.self, from: encodedWindowManager)
         }
 
-        windowManager = windowManager ?? WindowManager(userConfiguration: UserConfiguration.shared)
+        let resolvedWindowManager = windowManager ?? WindowManager(userConfiguration: UserConfiguration.shared)
+        windowManager = resolvedWindowManager
         hotKeyManager = HotKeyManager(userConfiguration: UserConfiguration.shared)
 
-        hotKeyManager?.setUpWithWindowManager(windowManager!, configuration: UserConfiguration.shared, appDelegate: self)
+        hotKeyManager?.setUpWithWindowManager(resolvedWindowManager, configuration: UserConfiguration.shared, appDelegate: self)
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        let version = Bundle.main.infoDictionary?["CFBundleVersion"] as! String
-        let shortVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String
+        let version = (Bundle.main.infoDictionary?["CFBundleVersion"] as? String) ?? "unknown"
+        let shortVersion = (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String) ?? "unknown"
         let statusItemImage = NSImage(named: "icon-statusitem")
         statusItemImage?.isTemplate = true
 

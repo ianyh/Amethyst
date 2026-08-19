@@ -102,9 +102,9 @@ struct AMScreen: ScreenType {
 
          let isDisablePaddingOnBuiltinDisplay: Bool =
              UserConfiguration.shared.disablePaddingOnBuiltinDisplay()
-         let isScreenBuiltin: boolean_t =
-             CGDisplayIsBuiltin(screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as! CGDirectDisplayID)
-         if isDisablePaddingOnBuiltinDisplay && isScreenBuiltin == 1 {return frame}
+         let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID
+         let isScreenBuiltin: Bool = screenNumber.map { CGDisplayIsBuiltin($0) == 1 } ?? false
+         if isDisablePaddingOnBuiltinDisplay && isScreenBuiltin {return frame}
 
         let paddingTop = UserConfiguration.shared.screenPaddingTop()
         let paddingBottom = UserConfiguration.shared.screenPaddingBottom()

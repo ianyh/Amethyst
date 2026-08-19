@@ -38,7 +38,7 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
                 if let handler = existingHandler {
                     NSEvent.removeMonitor(handler)
                 }
-                if followingIsDesired! {
+                if followingIsDesired == true {
                     return NSEvent.addGlobalMonitorForEvents(matching: .mouseMoved) { [unowned self] event in
                         self.focusWindowWithMouseMovedEvent(event)
                     }

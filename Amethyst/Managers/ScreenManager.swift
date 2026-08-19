@@ -19,7 +19,7 @@ struct LayoutMenuItemInfo {
 protocol ScreenManagerDelegate: AnyObject {
     associatedtype Window: WindowType
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<Self>, minimizingIn range: (_ windowCount: Int) -> Range<Int>)
-    func activeWindowSet(forScreenManager screenManager: ScreenManager<Self>) -> WindowSet<Window>
+    func activeWindowSet(forScreenManager screenManager: ScreenManager<Self>, on screen: Window.Screen) -> WindowSet<Window>
     func onReflowInitiation()
     func onReflowCompletion()
 }
@@ -260,7 +260,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             return
         }
 
-        guard let windows = delegate?.activeWindowSet(forScreenManager: self) else {
+        guard let windows = delegate?.activeWindowSet(forScreenManager: self, on: screen) else {
             return
         }
 

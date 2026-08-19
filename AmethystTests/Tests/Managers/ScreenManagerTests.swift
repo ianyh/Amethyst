@@ -17,7 +17,7 @@ private final class TestDelegate: ScreenManagerDelegate {
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<TestDelegate>, minimizingIn range: (Int) -> Range<Int>) {
         fatalError()
     }
-    func activeWindowSet(forScreenManager screenManager: ScreenManager<TestDelegate>) -> WindowSet<TestWindow> {
+    func activeWindowSet(forScreenManager screenManager: ScreenManager<TestDelegate>, on screen: TestScreen) -> WindowSet<TestWindow> {
         fatalError()
     }
     func onReflowInitiation() {

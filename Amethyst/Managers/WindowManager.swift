@@ -1048,7 +1048,7 @@ extension WindowManager: ScreenManagerDelegate {
         }
     }
 
-    func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>) -> WindowSet<Window> {
-        return windows.windowSet(forActiveWindowsOnScreen: screenManager.screen!)
+    func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>, on screen: Screen) -> WindowSet<Window> {
+        return windows.windowSet(forActiveWindowsOnScreen: screen)
     }
 }

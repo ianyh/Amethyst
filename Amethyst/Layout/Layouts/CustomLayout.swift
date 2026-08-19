@@ -161,14 +161,19 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
 
         let screenFrame = screen.adjustedFrame()
-        let jsScreenFrameArg = JSValue(rect: screenFrame, in: context)!
+        guard let context = self.context, let jsScreenFrameArg = JSValue(rect: screenFrame, in: context) else {
+            log.error("CustomLayout: JS context unavailable for layout \(self.key)")
+            return nil
+        }
         let jsWindows: [WindowID: JSWindow<Window>] = windows.reduce([:]) { partialResult, layoutWindow in
             let id = idHash(forWindowID: layoutWindow.id) ?? UUID().uuidString
             let window = JSWindow<Window>(id: id, window: layoutWindow)
             return partialResult.merging([layoutWindow.id: window]) { current, _ in return current }
         }
-        let jsWindowsArg = windows.map { window -> [String: Any?] in
-            let jsWindow = jsWindows[window.id]!
+        let jsWindowsArg = windows.compactMap { window -> [String: Any?]? in
+            guard let jsWindow = jsWindows[window.id] else {
+                return nil
+            }
             return [
                 "id": jsWindow.id,
                 "frame": JSValue(rect: jsWindow.window.frame, in: context),
@@ -187,11 +192,12 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
                 "isFocused": jsWindow.window.isFocused
             ]
         }
+        let undefinedValue = JSValue(undefinedIn: context) ?? JSValue(nullIn: context)!
         let args: [Any] = [
             jsWindowsArg,
             jsScreenFrameArg,
-            state ?? JSValue(undefinedIn: context)!,
-            extendedFrames ?? JSValue(undefinedIn: context)!
+            state ?? undefinedValue,
+            extendedFrames ?? undefinedValue
         ]
 
         guard let getAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"), !getAssignments.isNull && !getAssignments.isUndefined else {
