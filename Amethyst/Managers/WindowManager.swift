@@ -740,7 +740,7 @@ extension WindowManager: MouseStateKeeperDelegate {
     func swapDraggedWindowWithDropzone(_ draggedWindow: Window) {
         guard let screen = draggedWindow.screen() else { return }
 
-        let windows: [Window] = self.windows.windows(onScreen: screen)
+        let windows = activeWindows(on: screen)
 
         // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
         let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
@@ -748,7 +748,7 @@ extension WindowManager: MouseStateKeeperDelegate {
         let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
 
         if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(), let layout = screenManager.currentLayout {
-            let windowSet = self.windows.windowSet(forWindowsOnScreen: screen)
+            let windowSet = self.windows.windowSet(forActiveWindowsOnScreen: screen)
             if let layoutWindow = layout.windowAtPoint(pointerLocation, of: windowSet, on: screen), let framedWindow = self.windows.window(withID: layoutWindow.id) {
                 executeTransition(.switchWindows(draggedWindow, framedWindow))
                 return
