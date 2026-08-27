@@ -361,6 +361,19 @@ extension WindowManager {
         }
     }
 
+    func displayNewWindowsToMainHUD() {
+        guard userConfiguration.enablesNewWindowsToMainHUD() else {
+            return
+        }
+
+        for screenManager in screens.screenManagers {
+            let isEnabled = userConfiguration.sendNewWindowsToMainPane()
+            let statusText = isEnabled ? "On" : "Off"
+            let title = "New Windows to Main Pane: \(statusText)"
+            screenManager.displayCustomHUD(title: title)
+        }
+    }
+
     func displayWindowCountHUD() {
         guard userConfiguration.enablesWindowCountHUD() else {
             return
