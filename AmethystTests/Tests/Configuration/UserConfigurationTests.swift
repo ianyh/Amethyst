@@ -540,6 +540,23 @@ class UserConfigurationTests: QuickSpec {
             }
         }
 
+        describe("start with tiling disabled") {
+            it("is disabled by default") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+
+                expect(configuration.startWithTilingDisabled()).to(beFalse())
+            }
+
+            it("returns the configured value") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                storage.set(true, forKey: .startWithTilingDisabled)
+
+                expect(configuration.startWithTilingDisabled()).to(beTrue())
+            }
+        }
+
         describe("load configuration") {
             it("default configuration does not override existing configuration") {
                 let storage = TestConfigurationStorage()

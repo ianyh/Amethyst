@@ -48,6 +48,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         UserConfiguration.shared.delegate = self
         UserConfiguration.shared.load()
+        UserConfiguration.shared.tilingEnabled = !UserConfiguration.shared.startWithTilingDisabled()
 
         #if RELEASE
             let appcastURLString: String? = {

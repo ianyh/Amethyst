@@ -232,5 +232,6 @@
     "screen-padding-left": 0,
     "screen-padding-right": 0,
     "debug-layout-info": false,
-    "restore-layouts-on-launch": true
+    "restore-layouts-on-launch": true,
+    "start-with-tiling-disabled": false
 }
