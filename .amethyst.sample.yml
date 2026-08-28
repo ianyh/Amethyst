@@ -330,5 +330,8 @@ screen-padding-bottom: 0
 # true to maintain layout state across application executions (default true).
 restore-layouts-on-launch: true
 
+# true to start Amethyst with tiling disabled (default false).
+start-with-tiling-disabled: false
+
 # true to display some optional debug information in the layout HUD (default false).
 debug-layout-info: false
