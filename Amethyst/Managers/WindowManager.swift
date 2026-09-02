@@ -773,6 +773,25 @@ extension WindowManager: ApplicationObservationDelegate {
         remove(window: window)
     }
 
+    func application(_ application: AnyApplication<Application>, didDestroyWindow window: Window) {
+        remove(window: window)
+
+        // In apps with native macOS tabs, each tab is its own window and only the visible
+        // one is tracked. Closing the active tab destroys the tracked window and reveals a
+        // sibling that may never have been tracked, and the app may fire no notification
+        // for it. Pick up any window of this app that is now on screen and untracked.
+        application.dropWindowsCache()
+        for candidate in application.windows() {
+            guard candidate != window else { continue }
+            guard windows.isWindowActive(candidate) else { continue }
+            guard !windows.isWindowTracked(candidate) else { continue }
+
+            pendingTabDetection.removeValue(forKey: candidate.id())
+            earlyFocusedWindows.remove(candidate.id())
+            add(window: candidate)
+        }
+    }
+
     func application(_ application: AnyApplication<Application>, didFocusWindow window: Window) {
         guard let screen = window.screen() else {
             return
