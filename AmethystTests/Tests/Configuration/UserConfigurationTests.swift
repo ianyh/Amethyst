@@ -69,6 +69,61 @@ class UserConfigurationTests: QuickSpec {
     }
 
     override func spec() {
+        describe("window animation") {
+            it("is disabled in the bundled defaults") {
+                let path = Bundle.main.path(forResource: "default", ofType: "amethyst")!
+                let defaults = try JSON(data: Data(contentsOf: URL(fileURLWithPath: path)))
+                expect(defaults["animate-windows"].bool) == false
+                expect(defaults["window-animation-duration"].double) == 0.3
+
+                // Seeding a fresh configuration from those defaults leaves animation off.
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                configuration.defaultConfiguration = defaults
+                configuration.loadConfiguration()
+                expect(configuration.animatesWindowMovement()).to(beFalse())
+            }
+
+            it("toggles") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                configuration.toggleAnimateWindows()
+                expect(configuration.animatesWindowMovement()).to(beTrue())
+                configuration.toggleAnimateWindows()
+                expect(configuration.animatesWindowMovement()).to(beFalse())
+            }
+
+            it("animates only when the setting is on and the system does not ask for reduced motion") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                configuration.systemReducesMotion = { false }
+                expect(configuration.shouldAnimateWindowMovement()).to(beFalse())
+
+                configuration.toggleAnimateWindows()
+                expect(configuration.shouldAnimateWindowMovement()).to(beTrue())
+
+                configuration.systemReducesMotion = { true }
+                expect(configuration.animatesWindowMovement()).to(beTrue())
+                expect(configuration.shouldAnimateWindowMovement()).to(beFalse())
+            }
+
+            it("falls back to the default duration when unset") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                expect(configuration.windowAnimationDuration()).to(beCloseTo(UserConfiguration.defaultWindowAnimationDuration))
+            }
+
+            it("clamps the duration") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                storage.set(Float(5), forKey: .windowAnimationDuration)
+                expect(configuration.windowAnimationDuration()).to(beCloseTo(UserConfiguration.maximumWindowAnimationDuration))
+
+                storage.set(Float(0.01), forKey: .windowAnimationDuration)
+                expect(configuration.windowAnimationDuration()).to(beCloseTo(UserConfiguration.minimumWindowAnimationDuration))
+
+                storage.set(Float(0.3), forKey: .windowAnimationDuration)
+                expect(configuration.windowAnimationDuration()).to(beCloseTo(0.3))
+            }
+        }
+
         describe("constructing commands") {
             context("overrides") {
                 it("when user configuration exists") {

@@ -6,6 +6,7 @@
 //  Copyright © 2019 Ian Ynda-Hummel. All rights reserved.
 //
 
+import ApplicationServices
 import Foundation
 import Silica
 
@@ -63,6 +64,26 @@ protocol WindowType: Equatable {
      */
 
     func setFrame(_ frame: CGRect, withThreshold threshold: CGSize)
+
+    /// Whether or not the window can be resized.
+    func isResizable() -> Bool
+
+    /**
+     Applies a frame with the minimum number of accessibility calls: no read-back and no threshold checks.
+
+     Intended only for intermediate frames during an animated reflow. The final frame must still be applied with `setFrame(_:withThreshold:)`, which handles the finicky accessibility behavior that this method deliberately skips.
+
+     - Parameters:
+         - frame: The frame to apply.
+         - includingSize: Whether to apply the size as well as the position. Resizes force a relayout in the target application and are far more expensive than moves.
+     */
+    func setAnimationFrame(_ frame: CGRect, includingSize: Bool)
+
+    /// Called once before a sequence of `setAnimationFrame(_:includingSize:)` calls.
+    func beginAnimatedMovement()
+
+    /// Called once after a sequence of `setAnimationFrame(_:includingSize:)` calls, whether or not the animation completed.
+    func endAnimatedMovement()
 
     /// Whether or not the window is currently holding focus.
     func isFocused() -> Bool
@@ -134,6 +155,11 @@ protocol WindowType: Equatable {
     func move(toSpace spaceID: CGSSpaceID)
 }
 
+extension WindowType {
+    func beginAnimatedMovement() {}
+    func endAnimatedMovement() {}
+}
+
 enum WindowDecodingError: Error {
     case idNotFound
 }
@@ -143,7 +169,74 @@ enum WindowDecodingError: Error {
  
  A final class is necessary for satisfying the `focusedWindow()` requirement in the `WindowType` protocol. Otherwise, as `SIWindow` is not final, the type system does not know how to constrain `Self`.
  */
-final class AXWindow: SIWindow {}
+final class AXWindow: SIWindow {
+    /// One entry per animation currently registered with `EnhancedUserInterfaceSuppression` for this window, holding the
+    /// application it registered with. Two screens can animate the same window object in turn when it is thrown between
+    /// them; each begin registers, each end deregisters, and the two balance out.
+    fileprivate var suppressedApplicationPIDs: [pid_t] = []
+    /// Guards `suppressedApplicationPIDs`, which the reflow operations of different screens touch from their own queues.
+    fileprivate static let suppressionLock = NSLock()
+}
+
+/**
+ Keeps an application's enhanced user interface flag cleared for as long as any of its windows is being animated.
+
+ The flag belongs to the application, not to a window. When windows of one application animate on several screens at once, each
+ screen's operation begins and ends on its own, so the flag is cleared for the first window to begin and restored only when the
+ last window ends. The flag is read and written under the lock so that two screens cannot interleave a clear and a restore.
+ */
+final class EnhancedUserInterfaceSuppression {
+    static let shared = EnhancedUserInterfaceSuppression()
+
+    private let lock = NSLock()
+    private var animatingWindows: [pid_t: Int] = [:]
+    private var clearedApplications: Set<pid_t> = []
+
+    /**
+     Registers a window of the application as animating.
+
+     - Parameters:
+         - pid: The application's process identifier.
+         - clear: Invoked for the application's first animating window; clears the flag if it is set and returns whether it did.
+     */
+    func begin(for pid: pid_t, clear: () -> Bool) {
+        lock.lock()
+        defer { lock.unlock() }
+
+        let count = (animatingWindows[pid] ?? 0) + 1
+        animatingWindows[pid] = count
+
+        if count == 1, clear() {
+            clearedApplications.insert(pid)
+        }
+    }
+
+    /**
+     Registers that a window of the application has finished animating.
+
+     - Parameters:
+         - pid: The application's process identifier.
+         - restore: Invoked when the application's last animating window ends and the flag had been cleared for it.
+     */
+    func end(for pid: pid_t, restore: () -> Void) {
+        lock.lock()
+        defer { lock.unlock() }
+
+        guard let count = animatingWindows[pid] else {
+            return
+        }
+
+        guard count == 1 else {
+            animatingWindows[pid] = count - 1
+            return
+        }
+
+        animatingWindows[pid] = nil
+        if clearedApplications.remove(pid) != nil {
+            restore()
+        }
+    }
+}
 
 /**
  Identifier for `AXWindow` objects.
@@ -219,6 +312,58 @@ extension AXWindow: WindowType {
     typealias Screen = AMScreen
     typealias WindowID = AXWindowID
 
+    /// Some assistive apps set this attribute on applications. Silica clears it around every frame change because it interferes with positioning; an animation keeps it cleared for as long as any of the application's windows is animating.
+    private static let enhancedUserInterfaceKey = "AXEnhancedUserInterface" as CFString
+
+    func setAnimationFrame(_ frame: CGRect, includingSize: Bool) {
+        var origin = frame.origin
+        if let positionValue = AXValueCreate(.cgPoint, &origin) {
+            AXUIElementSetAttributeValue(axElementRef, kAXPositionAttribute as CFString, positionValue)
+        }
+
+        guard includingSize else {
+            return
+        }
+
+        var size = frame.size
+        if let sizeValue = AXValueCreate(.cgSize, &size) {
+            AXUIElementSetAttributeValue(axElementRef, kAXSizeAttribute as CFString, sizeValue)
+        }
+    }
+
+    func beginAnimatedMovement() {
+        guard let application = app() else {
+            return
+        }
+
+        let pid = application.processIdentifier()
+        AXWindow.suppressionLock.lock()
+        suppressedApplicationPIDs.append(pid)
+        AXWindow.suppressionLock.unlock()
+        EnhancedUserInterfaceSuppression.shared.begin(for: pid) {
+            guard application.number(forKey: AXWindow.enhancedUserInterfaceKey)?.boolValue == true else {
+                return false
+            }
+
+            application.setFlag(false, forKey: AXWindow.enhancedUserInterfaceKey)
+            return true
+        }
+    }
+
+    func endAnimatedMovement() {
+        AXWindow.suppressionLock.lock()
+        let pid = suppressedApplicationPIDs.popLast()
+        AXWindow.suppressionLock.unlock()
+        guard let pid = pid else {
+            return
+        }
+
+        let application = app()
+        EnhancedUserInterfaceSuppression.shared.end(for: pid) {
+            application?.setFlag(true, forKey: AXWindow.enhancedUserInterfaceKey)
+        }
+    }
+
     /**
      Returns the currently focused window.
      
@@ -256,6 +401,12 @@ extension AXWindow: WindowType {
     }
 
     func screen() -> AMScreen? {
+        // A window an animation is moving belongs to the screen animating it even while its frame lies elsewhere or, when
+        // parked beyond every display, nowhere at all. Everything that routes hotkeys and focus by screen relies on this answer.
+        if let animatingScreenID = AnimatingWindows.shared.screenID(for: cgID()), let screen = AMScreen.screen(withID: animatingScreenID) {
+            return screen
+        }
+
         let nsScreen: NSScreen? = screen()
         return nsScreen.flatMap { AMScreen(screen: $0) }
     }

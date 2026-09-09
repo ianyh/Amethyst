@@ -255,6 +255,13 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
             self.userConfiguration.toggleFocusFollowsMouse()
         }
 
+        constructCommandWithCommandKey(CommandKey.toggleAnimateWindows.rawValue) {
+            self.userConfiguration.toggleAnimateWindows()
+            DispatchQueue.main.async {
+                windowManager.displayAnimateWindowsHUD()
+            }
+        }
+
         constructCommandWithCommandKey(CommandKey.relaunchAmethyst.rawValue) { [weak appDelegate] in
             appDelegate?.relaunch(self)
         }
@@ -434,6 +441,7 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         hotKeyNameToDefaultsKey.append(["Toggle float for focused window", CommandKey.toggleFloat.rawValue])
         hotKeyNameToDefaultsKey.append(["Display current layout", CommandKey.displayCurrentLayout.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle focus follows mouse", CommandKey.toggleFocusFollowsMouse.rawValue])
+        hotKeyNameToDefaultsKey.append(["Toggle window movement animation", CommandKey.toggleAnimateWindows.rawValue])
         hotKeyNameToDefaultsKey.append(["Toggle global tiling", CommandKey.toggleTiling.rawValue])
         hotKeyNameToDefaultsKey.append(["Enable global tiling", CommandKey.enableTiling.rawValue])
         hotKeyNameToDefaultsKey.append(["Disable global tiling", CommandKey.disableTiling.rawValue])

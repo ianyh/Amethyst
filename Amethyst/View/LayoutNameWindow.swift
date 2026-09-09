@@ -32,6 +32,8 @@ class LayoutNameWindow: NSWindow {
         ignoresMouseEvents = true
         backgroundColor = NSColor.clear
         level = .floating
+        // Left out of screen capture, so an animated reflow's backdrop does not include this flash.
+        sharingType = .none
     }
 
     // Display custom notification with dynamic sizing

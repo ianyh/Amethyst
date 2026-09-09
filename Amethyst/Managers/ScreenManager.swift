@@ -6,6 +6,7 @@
 //  Copyright © 2015 Ian Ynda-Hummel. All rights reserved.
 //
 
+import AppKit
 import Foundation
 import Silica
 
@@ -44,7 +45,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
     private let reflowOperationDispatchQueue = DispatchQueue(
         label: "ScreenManager.reflowOperationQueue",
-        qos: .utility,
+        qos: .userInitiated,
         attributes: [],
         autoreleaseFrequency: .inherit,
         target: nil
@@ -88,6 +89,11 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         layouts = LayoutType.layoutsWithConfiguration(userConfiguration)
 
         reflowOperationQueue.underlyingQueue = reflowOperationDispatchQueue
+
+        // Warm the window list the snapshot animation's backdrop needs so the first reflow does not have to wait for it.
+        if #available(macOS 14.0, *), userConfiguration.shouldAnimateWindowMovement(), ScreenCapturePermission.isGranted {
+            BackdropCapturer.shared.refresh()
+        }
     }
 
     init(from decoder: Decoder) throws {
@@ -290,12 +296,59 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             }
         }
 
+        // Either animate every assignment together in one operation or apply them individually
+        let operations: [Operation]
+        if userConfiguration.shouldAnimateWindowMovement() {
+            // Smooth snapshot animation needs the private capture call and the Screen Recording permission; otherwise the real windows are moved.
+            let canSnapshot = SkyLight.isAvailable && ScreenCapturePermission.isGranted
+            if !canSnapshot && SkyLight.isAvailable {
+                // macOS is asked every launch; the hint is shown once, for long enough to read.
+                ScreenCapturePermission.requestOnce()
+                if ScreenCapturePermission.takeHintOpportunity() {
+                    displayCustomHUD(title: "Allow Screen Recording for smooth window animation", duration: ScreenCapturePermission.hintDuration)
+                }
+            }
+
+            // Windows lying within this display are captured through SkyLight; ones overhanging its edge go through ScreenCaptureKit, which returns them whole.
+            let displayBounds = WindowImageCapture.activeDisplayBounds(containing: screen.frameIncludingDockAndMenu())
+            let captureImages: (([WindowCaptureRequest]) -> [CGImage]?)? = canSnapshot
+                ? { requests in WindowImageCapture.captureImages(for: requests, displayBounds: displayBounds) }
+                : nil
+            let captureIsVerifiable: (WindowCaptureRequest) -> Bool = { request in
+                WindowImageCapture.isCaptureVerifiable(request, displayBounds: displayBounds)
+            }
+            let makeSnapshotAnimator: (() -> SnapshotAnimating)? = canSnapshot ? { ReflowAnimationOverlay() } : nil
+
+            // A backdrop lets windows re-lay out in place and their proxies dissolve into fresh captures. The capturer waits
+            // for the window list it needs if the cached one is stale, and refreshes it here for the next reflow.
+            var captureBackdrop: ((CGRect, [CGWindowID]) -> CGImage?)?
+            if canSnapshot, #available(macOS 14.0, *) {
+                let capturer = BackdropCapturer.shared
+                captureBackdrop = { screenFrame, windowIDs in capturer.captureBackdrop(screenFrame: screenFrame, excluding: windowIDs) }
+                capturer.refresh()
+            }
+
+            operations = [
+                AnimatedReflowOperation(
+                    frameAssignmentOperations: frameAssignments,
+                    duration: userConfiguration.windowAnimationDuration(),
+                    captureImages: captureImages,
+                    captureIsVerifiable: captureIsVerifiable,
+                    captureBackdrop: captureBackdrop,
+                    makeSnapshotAnimator: makeSnapshotAnimator,
+                    screenID: screen.screenID()
+                )
+            ]
+        } else {
+            operations = frameAssignments
+        }
+
         // The completion should be dependent on all assignments finishing
-        frameAssignments.forEach { completeOperation.addDependency($0) }
+        operations.forEach { completeOperation.addDependency($0) }
 
         // Start the operation
         delegate?.onReflowInitiation()
-        reflowOperationQueue.addOperations(frameAssignments, waitUntilFinished: false)
+        reflowOperationQueue.addOperations(operations, waitUntilFinished: false)
         reflowOperationQueue.addOperation(completeOperation)
     }
 
@@ -394,7 +447,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         layoutNameWindowController.close()
     }
 
-    func displayCustomHUD(title: String, description: String = "") {
+    func displayCustomHUD(title: String, description: String = "", duration: TimeInterval = 0.6) {
         guard let screen = screen else {
             return
         }
@@ -405,7 +458,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
         defer {
             NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(hideLayoutHUD(_:)), object: nil)
-            perform(#selector(hideLayoutHUD(_:)), with: nil, afterDelay: 0.6)
+            perform(#selector(hideLayoutHUD(_:)), with: nil, afterDelay: duration)
         }
 
         guard let layoutNameWindow = layoutNameWindowController.window as? LayoutNameWindow else {

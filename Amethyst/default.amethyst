@@ -204,6 +204,7 @@
         "mod": "mod2",
         "key": "x"
     },
+    "toggle-animate-windows": false,
     "relaunch-amethyst": {
         "mod": "mod2",
         "key": "z"
@@ -226,6 +227,8 @@
     "ignore-menu-bar": false,
     "use-canary-build": false,
     "new-windows-to-main": false,
+    "animate-windows": false,
+    "window-animation-duration": 0.3,
     "follow-space-thrown-windows": true,
     "screen-padding-top": 0,
     "screen-padding-bottom": 0,
