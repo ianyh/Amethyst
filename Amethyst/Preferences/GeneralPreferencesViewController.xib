@@ -452,6 +452,43 @@
                         <binding destination="XhK-Tn-zrU" name="value" keyPath="values.hide-menu-bar-icon" id="xeg-d8-MWC"/>
                     </connections>
                 </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anm-wn-chk">
+                    <rect key="frame" x="192" y="432" width="200" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Animate window movement" bezelStyle="regularSquare" imagePosition="left" inset="2" id="anm-wn-cel">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="value" keyPath="values.animate-windows" id="anm-wn-bnd"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anm-du-fld">
+                    <rect key="frame" x="396" y="430" width="50" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="0.3" drawsBackground="YES" usesSingleLineMode="YES" id="anm-du-cel">
+                        <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="1" minimumFractionDigits="1" maximumFractionDigits="2" id="anm-du-fmt">
+                            <real key="minimum" value="0.05"/>
+                            <real key="maximum" value="1.0"/>
+                        </numberFormatter>
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="value" keyPath="values.window-animation-duration" id="anm-du-bnd"/>
+                        <binding destination="XhK-Tn-zrU" name="enabled" keyPath="values.animate-windows" id="anm-du-enb"/>
+                    </connections>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anm-du-lbl">
+                    <rect key="frame" x="450" y="433" width="60" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="seconds" id="anm-du-lbc">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
             </subviews>
             <point key="canvasLocation" x="561" y="274"/>
         </customView>

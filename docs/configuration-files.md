@@ -40,6 +40,8 @@ Amethyst will pick up a config file located at `~/.amethyst.yml` or `~/.config/a
 | `restore-layouts-on-launch` | `true` to maintain layout state across application executions (default `true`). |
 | `debug-layout-info` | `true` to display some optional debug information in the layout HUD (default `false`). |
 | `disable-padding-on-builtin-display` |  `true` to disable screen padding on in-built display (default `false`). |
+| `animate-windows` | `true` to animate windows as they move to their new frames during a reflow (default `false`). With the Screen Recording permission granted, Amethyst slides snapshots of the windows for smooth motion; without it, it moves the real windows. Respects the system Reduce Motion setting. |
+| `window-animation-duration` | Duration of the window movement animation in seconds, between `0.05` and `1.0` (default `0.3`). |
 | `hide-menu-bar-icon` | `true` to hide the menu bar icon (default `false`). |
 
 ## Commands
@@ -93,6 +95,7 @@ A mod is a list of keyboard modifiers. Namely, `option`, `control`, `shift`, and
 | `disable-tiling` | Turn off tiling. |
 | `reevaluate-windows` | Rerun the current layout's algorithm. |
 | `toggle-focus-follows-mouse` | Turn on or off `focus-follows-mouse`. |
+| `toggle-animate-windows` | Turn on or off `animate-windows`. Unbound by default. |
 | `relaunch-amethyst` | Automatically quit and reopen Amethyst. |
 
 ### Layout Selection

@@ -374,6 +374,14 @@ extension WindowManager {
         }
     }
 
+    func displayAnimateWindowsHUD() {
+        let state = userConfiguration.animatesWindowMovement() ? "On" : "Off"
+
+        for screenManager in screens.screenManagers {
+            screenManager.displayCustomHUD(title: "Window Animation: \(state)")
+        }
+    }
+
     func add(runningApplication: NSRunningApplication) {
         switch runningApplication.isManageable {
         case .manageable:
@@ -809,6 +817,12 @@ extension WindowManager: ApplicationObservationDelegate {
             return
         }
 
+        // An animation's own writes generate move notifications for the windows it is moving; those are not user drags.
+        // Notifications about any other window are gestures and go through.
+        guard !AnimatingWindows.shared.isAnimating(window.cgID()) else {
+            return
+        }
+
         guard let screen = window.screen(), activeWindows(on: screen).contains(window) else {
             return
         }
@@ -836,6 +850,11 @@ extension WindowManager: ApplicationObservationDelegate {
 
     func application(_ application: AnyApplication<Application>, didResizeWindow window: Window) {
         guard userConfiguration.mouseResizesWindows() else {
+            return
+        }
+
+        // Intermediate animation frames of a window being animated are not user-driven main pane ratios.
+        guard !AnimatingWindows.shared.isAnimating(window.cgID()) else {
             return
         }
 
@@ -915,6 +934,24 @@ extension WindowManager {
 
 // MARK: Window Transition
 extension WindowManager: WindowTransitionTarget {
+    /**
+     Puts a window an animation had parked beyond every display back where that animation was taking it.
+
+     A move to another screen or Space must start from a window that is actually on screen: Silica moves a window between Spaces by dragging it, which cannot take hold of one parked out of sight, and a window left there would belong to no screen and never be tiled again.
+     */
+    private func unpark(_ window: Window, handedOff targets: [CGWindowID: CGRect]) {
+        guard let target = targets[window.cgID()] else {
+            return
+        }
+
+        let frame = window.frame()
+        guard !ActiveDisplays.bounds().contains(where: { $0.intersects(frame) }) else {
+            return
+        }
+
+        window.setAnimationFrame(CGRect(origin: target.origin, size: frame.size), includingSize: false)
+    }
+
     func executeTransition(_ transition: WindowTransition<Window>) {
         switch transition {
         case let .switchWindows(window, otherWindow):
@@ -926,6 +963,8 @@ extension WindowManager: WindowTransitionTarget {
             markAllScreensForReflow()
         case let .moveWindowToScreen(window, screen):
             let currentScreen = window.screen()
+            // A deliberate move: any animation still moving this window must let go, and the new screen adopts it at once.
+            unpark(window, handedOff: AnimatingWindows.shared.handOff([window.cgID()]))
             window.moveScaled(to: screen)
             if currentScreen != nil {
                 distributeEventToScreen(screen, change: .remove(window: window))
@@ -948,6 +987,7 @@ extension WindowManager: WindowTransitionTarget {
             }
             distributeEventToScreen(screen, change: .remove(window: window))
             eventQueue.append(PendingEvent(screen: targetScreen, event: .add(window: window)))
+            unpark(window, handedOff: AnimatingWindows.shared.handOff([window.cgID()]))
             window.move(toSpaceAtIndex: UInt(spaceIndex + 1))
             if targetScreen.screenID() != screen.screenID() {
                 // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.

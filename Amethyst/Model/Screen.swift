@@ -72,6 +72,11 @@ struct AMScreen: ScreenType {
     static var availableScreens: [AMScreen] { return NSScreen.screens.map { AMScreen(screen: $0) } }
     static var screensHaveSeparateSpaces: Bool { return NSScreen.screensHaveSeparateSpaces }
 
+    /// The screen with the given identifier, if it is currently attached.
+    static func screen(withID screenID: String) -> AMScreen? {
+        return availableScreens.first { $0.screenID() == screenID }
+    }
+
     let screen: NSScreen
 
     func adjustedFrame(disableWindowMargins: Bool) -> CGRect {
