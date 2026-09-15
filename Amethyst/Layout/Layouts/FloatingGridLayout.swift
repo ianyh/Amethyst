@@ -86,11 +86,6 @@ class FloatingGridLayout<Window: WindowType>: Layout<Window> {
         } else {
             guides.removeFirst()
         }
-        // Make it easier to snap to screen edges and avoid stage manager sidebar
-        if guides.indices.count > 2 {
-            guides.remove(at: 1)
-            guides.remove(at: guides.endIndex-2)
-        }
         // Find closest snap guide
         let index = guides.firstIndex(where: { $0 >= value }) ?? guides.indices.last!
         let previous = guides.indices.contains(index-1) ? guides[index-1] : guides.first!
