@@ -32,6 +32,18 @@ enum TrackingError: Error {
  */
 private let mouseMoveClickSpeedTolerance: TimeInterval = 0.3
 
+/// The waits before each repeated attempt to decide a window's float state or to track it, in seconds. The quick ones cover a window that is still appearing; the application adoption waits follow for an application that is not answering Accessibility.
+let windowTrackingDelays: [TimeInterval] = [0, 0.1, 0.4, 0.9, 1.6, 2.5] + ApplicationAdoption.delays
+
+/// The wait before the attempt after `count` failures, or `nil` once the attempts are used up.
+func windowTrackingDelay(afterFailures count: Int) -> DispatchTimeInterval? {
+    guard count < windowTrackingDelays.count else {
+        return nil
+    }
+
+    return .milliseconds(Int(windowTrackingDelays[count] * 1000))
+}
+
 final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     typealias Window = Application.Window
     typealias Screen = Window.Screen
@@ -533,12 +545,12 @@ extension WindowManager {
             .map { try self.determineFloatForWindow(window, application: application, force: false) }
             .retry { error in
                 error.enumerated().flatMap { count, error -> Observable<Int> in
-                    guard error is TrackingError, count < 6 else {
+                    guard error is TrackingError, let delay = windowTrackingDelay(afterFailures: count) else {
                         return .error(error)
                     }
 
                     log.debug("error in determining float for window: \(window) - \(error)")
-                    return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
+                    return .timer(delay, scheduler: MainScheduler.instance)
                 }
             }
             .catch { error in
@@ -552,15 +564,20 @@ extension WindowManager {
             .map { try self.track(window: window, application: application, afterWindow: otherWindow) }
             .retry { error in
                 error.enumerated().flatMap { count, error -> Observable<Int> in
-                    guard error is TrackingError, count < 6 else {
+                    guard error is TrackingError, let delay = windowTrackingDelay(afterFailures: count) else {
                         return .error(error)
                     }
 
                     log.debug("encountered an error trying to track window: \(error)")
-                    return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
+                    return .timer(delay, scheduler: MainScheduler.instance)
                 }
             }
-            .subscribe()
+            .subscribe(
+                onError: { error in
+                    let applicationName = application.title() ?? "<unknown>"
+                    os_log("Could not track a window of %{public}@ (pid %d): %{public}@", log: applicationLog, type: .error, applicationName, window.pid(), "\(error)")
+                }
+            )
             .disposed(by: disposeBag)
     }
 
@@ -569,6 +586,9 @@ extension WindowManager {
         case .unreliable where !force:
             throw TrackingError.unreliableFloating
         case .reliable(.floating), .unreliable(.floating):
+            let frame = window.frame()
+            let size = frame.isNull ? "unknown" : "\(Int(frame.width))x\(Int(frame.height))"
+            os_log("Floating a window of %{public}@ (pid %d) by default, size %{public}@", log: applicationLog, type: .default, application.title() ?? "<unknown>", window.pid(), size)
             windows.setFloating(true, forWindow: window)
         case .reliable(.notFloating), .unreliable(.notFloating):
             windows.setFloating(false, forWindow: window)

@@ -98,5 +98,19 @@ class ApplicationAdoptionTests: QuickSpec {
                 expect(ApplicationAdoption.delays.reduce(0, +)).to(equal(63))
             }
         }
+
+        describe("window tracking retries") {
+            it("start quickly and end with the application adoption waits") {
+                expect(windowTrackingDelays.first).to(equal(0))
+                expect(Array(windowTrackingDelays.suffix(ApplicationAdoption.delays.count))).to(equal(ApplicationAdoption.delays))
+                expect(windowTrackingDelays.reduce(0, +)).to(beCloseTo(68.5, within: 0.01))
+            }
+
+            it("stop once the waits are used up") {
+                expect(windowTrackingDelay(afterFailures: 0)).to(equal(.milliseconds(0)))
+                expect(windowTrackingDelay(afterFailures: windowTrackingDelays.count - 1)).to(equal(.milliseconds(32_000)))
+                expect(windowTrackingDelay(afterFailures: windowTrackingDelays.count)).to(beNil())
+            }
+        }
     }
 }

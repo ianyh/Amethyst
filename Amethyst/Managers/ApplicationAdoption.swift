@@ -9,7 +9,7 @@
 import Foundation
 import os.log
 
-/// Log for how applications come under management: adoption attempts, the waits between them, and the reasons they fail.
+/// Log for how applications and their windows come under management: adoption attempts, the waits between them, the reasons they fail, and windows that float by default.
 let applicationLog = OSLog(subsystem: "com.amethyst.Amethyst", category: "applications")
 
 /**
