@@ -288,6 +288,11 @@ extension AXWindow: WindowType {
         let frame = self.frame()
         let threshold = userConfiguration.smallWindowSize()
 
+        // A frame the window did not report says nothing about its size.
+        guard !frame.isNull else {
+            return false
+        }
+
         if userConfiguration.floatSmallWindows() && frame.size.width < threshold && frame.size.height < threshold {
             return true
         }
