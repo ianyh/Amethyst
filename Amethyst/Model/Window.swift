@@ -256,11 +256,17 @@ extension AXWindow: WindowType {
     }
 
     func screen() -> AMScreen? {
-        // With separate Spaces per display, the Space a window is on names its display, and that stays true while the window straddles another display. Otherwise every display shows the same Space, and the display showing most of the window is the best guess.
+        // A window lying wholly within one display is on that display whatever its Space says: the window server moves a window to the destination display's Space a moment after the window itself has moved, and a reflow can run in between.
+        if let screen = AMScreen.screen(containing: frame()) {
+            return screen
+        }
+
+        // A window straddling displays is on the display its Space belongs to, when displays have separate Spaces. The Space stays with the window's display while an application pushes its own window over the edge.
         if let spaceID = CGWindowsInfo<AXWindow>.windowSpace(self), let screen = CGSpacesInfo<AXWindow>.screenForSpaceID(spaceID) {
             return screen
         }
 
+        // Otherwise the display showing most of the window is the best guess.
         let nsScreen: NSScreen? = screen()
         return nsScreen.flatMap { AMScreen(screen: $0) }
     }

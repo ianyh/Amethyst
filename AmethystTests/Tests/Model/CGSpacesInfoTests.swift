@@ -52,5 +52,32 @@ class CGSpacesInfoTests: QuickSpec {
                 expect(CGSpacesInfo<TestWindow>.screenForSpaceID(12)).to(beNil())
             }
         }
+
+        describe("the screen containing a frame") {
+            let first = TestScreen(frame: CGRect(x: 0, y: 0, width: 1000, height: 1000))
+            let second = TestScreen(frame: CGRect(x: 1000, y: 0, width: 1000, height: 1000))
+
+            beforeEach {
+                TestScreen.availableScreens = [first, second]
+            }
+
+            afterEach {
+                TestScreen.availableScreens = []
+            }
+
+            it("is the screen whose display holds the whole frame") {
+                expect(TestScreen.screen(containing: CGRect(x: 100, y: 100, width: 200, height: 200))).to(equal(first))
+                expect(TestScreen.screen(containing: CGRect(x: 1200, y: 100, width: 100, height: 100))).to(equal(second))
+            }
+
+            it("is unknown for a frame straddling two displays") {
+                expect(TestScreen.screen(containing: CGRect(x: 900, y: 100, width: 200, height: 200))).to(beNil())
+            }
+
+            it("is unknown for a frame outside every display or with no frame at all") {
+                expect(TestScreen.screen(containing: CGRect(x: 5000, y: 100, width: 100, height: 100))).to(beNil())
+                expect(TestScreen.screen(containing: CGRect.null)).to(beNil())
+            }
+        }
     }
 }
