@@ -102,6 +102,7 @@ enum ConfigurationKey: String {
     case hideMenuBarIcon = "hide-menu-bar-icon"
     case animateWindows = "animate-windows"
     case windowAnimationDuration = "window-animation-duration"
+    case startWithTilingDisabled = "start-with-tiling-disabled"
 }
 
 extension ConfigurationKey: CaseIterable {}
@@ -809,6 +810,10 @@ class UserConfiguration: NSObject {
 
     func toggleAnimateWindows() {
         setConfigurationValueWithKVO(!animatesWindowMovement(), forKey: .animateWindows)
+    }
+
+    func startWithTilingDisabled() -> Bool {
+        return storage.bool(forKey: .startWithTilingDisabled)
     }
 }
 
