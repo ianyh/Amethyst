@@ -100,6 +100,7 @@ enum ConfigurationKey: String {
     case restoreLayoutsOnLaunch = "restore-layouts-on-launch"
     case disablePaddingOnBuiltinDisplay = "disable-padding-on-builtin-display"
     case hideMenuBarIcon = "hide-menu-bar-icon"
+    case startWithTilingDisabled = "start-with-tiling-disabled"
 }
 
 extension ConfigurationKey: CaseIterable {}
@@ -774,6 +775,10 @@ class UserConfiguration: NSObject {
 
     func hideMenuBarIcon() -> Bool {
         return storage.bool(forKey: .hideMenuBarIcon)
+    }
+
+    func startWithTilingDisabled() -> Bool {
+        return storage.bool(forKey: .startWithTilingDisabled)
     }
 }
 

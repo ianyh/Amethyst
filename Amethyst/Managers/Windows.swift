@@ -108,6 +108,26 @@ extension WindowManager {
             windows.remove(at: windowIndex)
         }
 
+        /**
+         Swaps the stored instance of an already-tracked window for `window`, which has
+         the same identity but a fresh AX element. Order and floating state are untouched.
+         See `WindowManager.refreshTrackedWindow` for why elements go stale.
+
+         - Returns: The replaced instance, or `nil` if the window is untracked or already
+         stored as this exact element.
+         */
+        func refreshWindow(_ window: Window) -> Window? {
+            guard let index = windows.firstIndex(where: { $0.id() == window.id() }),
+                  windows[index] != window else {
+                return nil
+            }
+
+            let staleWindow = windows[index]
+            windows[index] = window
+            return staleWindow
+        }
+
+        /// Replaces `window` in the tracking order with `otherWindow`, dropping `window`.
         @discardableResult func replace(window: Window, withWindow otherWindow: Window) -> Bool {
             if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(),
                let firstActiveWindow = activeWindowOnCurrentScreen(atIndex: 0) {
@@ -116,16 +136,16 @@ extension WindowManager {
                 }
             }
 
-            guard let otherWindowIndex = windows.firstIndex(of: otherWindow) else {
+            guard let windowIndex = windows.firstIndex(of: window) else {
                 windows.append(otherWindow)
                 return false
             }
 
-            let windowIndex = windows.firstIndex(of: window)
-            windows[otherWindowIndex] = window
+            let otherWindowIndex = windows.firstIndex(of: otherWindow)
+            windows[windowIndex] = otherWindow
 
-            if let windowIndex {
-                windows.remove(at: windowIndex)
+            if let otherWindowIndex {
+                windows.remove(at: otherWindowIndex)
             }
 
             return true
