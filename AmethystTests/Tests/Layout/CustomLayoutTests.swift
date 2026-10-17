@@ -13,8 +13,29 @@ import Quick
 
 class CustomLayoutTests: QuickSpec {
     override func spec() {
+        // The expected frames assume no window margins. The tests run inside the app, where the shared configuration reads the machine's own preferences, so the margin settings are turned off for the duration of each test and put back afterwards.
+        let marginKeys = ["window-margins", "window-margin-size", "smart-window-margins"]
+        var savedMargins: [String: Any?] = [:]
+
+        beforeEach {
+            let defaults = UserDefaults.standard
+            for key in marginKeys {
+                savedMargins[key] = defaults.object(forKey: key)
+                defaults.removeObject(forKey: key)
+            }
+        }
+
         afterEach {
             TestScreen.availableScreens = []
+
+            let defaults = UserDefaults.standard
+            for key in marginKeys {
+                if let value = savedMargins[key] ?? nil {
+                    defaults.set(value, forKey: key)
+                } else {
+                    defaults.removeObject(forKey: key)
+                }
+            }
         }
 
         describe("undefined layout") {
