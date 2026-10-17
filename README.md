@@ -121,6 +121,7 @@ And defines the following commands, mostly a mapping to xmonad key combinations.
 | `none` | Select floating layout |
 | `none` | Select widescreen-tall layout |
 | `none` | Select bsp layout |
+| `none` | Select tsp layout |
 
 ### Available Layouts
 
@@ -196,6 +197,10 @@ This mode makes all windows "floating", allowing you to move and resize them as 
 #### Binary Space Partitioning (BSP)
 
 This layout does not have a main pane in the way that other layouts do. When adding windows, any given pane can be split evenly into two panes along whatever axis is longer. This is recursive such that pane A can be split in the middle into pane A on the left and pane B on the right; pane B can then be split into pane B on top and pane C on bottom; pane C can then be split into pane C on the left and pane D on the right; and so on.
+
+#### Tertiary Split Partition (TSP)
+
+Panes are divided three ways instead of two. The first window fills the screen. The second takes a third on the left, or at the top when the screen is taller than it is wide (a square screen counts as tall), and the third takes a third on the opposite side, leaving the first window in the middle. Further windows divide the side panes the same way, choosing columns or rows from the shape of each pane: the fourth window divides the second window's pane, the fifth divides the third window's, the sixth and seventh take the remaining sides of those two panes, and so on, level by level. The "shrink/expand the main pane" shortcuts change the middle pane's share of the screen, and the main pane count shortcuts move more windows into the middle pane, where they are stacked across the direction of the split.
 
 #### Custom (beta)
 

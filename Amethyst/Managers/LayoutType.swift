@@ -59,6 +59,7 @@ enum LayoutType<Window: WindowType> {
     case widescreenTallLeft
     case widescreenTallRight
     case binarySpacePartitioning
+    case tertiarySplitPartition
 
     case custom(key: String)
 
@@ -80,7 +81,8 @@ enum LayoutType<Window: WindowType> {
             .floating,
             .widescreenTallLeft,
             .widescreenTallRight,
-            .binarySpacePartitioning
+            .binarySpacePartitioning,
+            .tertiarySplitPartition
         ]
     }
 
@@ -120,6 +122,8 @@ enum LayoutType<Window: WindowType> {
             return "widescreen-tall-right"
         case .binarySpacePartitioning:
             return "bsp"
+        case .tertiarySplitPartition:
+            return "tsp"
         case .custom(let key):
             return key
         }
@@ -161,6 +165,8 @@ enum LayoutType<Window: WindowType> {
             return WidescreenTallLayoutRight<Window>.self
         case .binarySpacePartitioning:
             return BinarySpacePartitioningLayout<Window>.self
+        case .tertiarySplitPartition:
+            return TertiarySplitPartitionLayout<Window>.self
         case .custom:
             return CustomLayout<Window>.self
         }
@@ -202,6 +208,8 @@ enum LayoutType<Window: WindowType> {
             return .widescreenTallRight
         case "bsp":
             return .binarySpacePartitioning
+        case "tsp":
+            return .tertiarySplitPartition
         default:
             return .custom(key: key)
         }

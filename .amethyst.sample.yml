@@ -32,6 +32,7 @@ layouts:
   # - widescreen-tall
   # - widescreen-tall-right
   # - bsp
+  # - tsp
 
 # First mod (default option + shift).
 mod1:
