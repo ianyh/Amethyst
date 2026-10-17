@@ -85,10 +85,10 @@
     {
       "identity" : "silica",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/djp3/Silica",
+      "location" : "https://github.com/ianyh/silica",
       "state" : {
-        "branch" : "fix-observer-callback-after-unobserve",
-        "revision" : "dc8fc62a883efd67caa86550f60e0e74f923f70d"
+        "branch" : "master",
+        "revision" : "09353df41c25ecaf5ab76b2a7db6d6d5de142f4a"
       }
     },
     {

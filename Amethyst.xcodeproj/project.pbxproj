@@ -1260,9 +1260,9 @@
 		};
 		402DA3D82F53DCFE00B08CA2 /* XCRemoteSwiftPackageReference "silica" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/djp3/Silica";
+			repositoryURL = "https://github.com/ianyh/silica";
 			requirement = {
-				branch = "fix-observer-callback-after-unobserve";
+				branch = master;
 				kind = branch;
 			};
 		};
