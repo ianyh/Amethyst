@@ -464,7 +464,7 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R8T-3J-dLf">
-                    <rect key="frame" x="192" y="432" width="265" height="18"/>
+                    <rect key="frame" x="192" y="452" width="265" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Start with tiling disabled" bezelStyle="regularSquare" imagePosition="left" inset="2" id="A9W-Ze-p4M">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
