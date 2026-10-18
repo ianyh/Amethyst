@@ -16,6 +16,8 @@ extension WindowManager {
         private var activeIDCache: Set<CGWindowID> = Set()
         private var deactivatedPIDs: Set<pid_t> = Set()
         private var floatingMap: [Window.WindowID: Bool] = [:]
+        /// The screen whose layout last placed each window.
+        private var screenIDs: [Window.WindowID: String] = [:]
 
         // MARK: Window Filters
 
@@ -55,7 +57,21 @@ extension WindowManager {
                 return windowScreen.screenID() == screen.screenID() && isActive && !isHidden && !isFloating
             }
 
+            for window in screenWindows {
+                screenIDs[window.id()] = screenID
+            }
+
             return screenWindows
+        }
+
+        /// The identifier of the screen whose layout last placed the window, if any has.
+        func screenID(for window: Window) -> String? {
+            return screenIDs[window.id()]
+        }
+
+        /// Records the screen whose layout the window now belongs to.
+        func setScreenID(_ screenID: String?, for window: Window) {
+            screenIDs[window.id()] = screenID
         }
 
         func activeWindowOnCurrentScreen(atIndex: Int) -> Window? {
@@ -94,6 +110,8 @@ extension WindowManager {
         }
 
         func remove(window: Window) {
+            screenIDs.removeValue(forKey: window.id())
+
             for (_, lastMainWindow) in lastMainWindows where lastMainWindow?.id() == window.id() {
                 if let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace() {
                     let secondWindow = activeWindowOnCurrentScreen(atIndex: 1)

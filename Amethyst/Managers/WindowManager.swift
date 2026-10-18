@@ -67,6 +67,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     private var pendingTabDetection: [Window.WindowID: Window] = [:]
     private var earlyFocusedWindows: Set<Window.WindowID> = []
     private var eventQueue: [PendingEvent] = []
+    private var pendingHandOvers: Set<Window.WindowID> = []
 
     private lazy var mouseStateKeeper = MouseStateKeeper(delegate: self)
     private lazy var applicationEventHandler = ApplicationEventHandler(delegate: self)
@@ -790,6 +791,8 @@ extension WindowManager: MouseStateKeeperDelegate {
     }
 
     func swapDraggedWindowWithDropzone(_ draggedWindow: Window) {
+        handOverIfMoved(draggedWindow)
+
         guard let screen = draggedWindow.screen() else { return }
 
         let windows = activeWindows(on: screen)
@@ -857,6 +860,8 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func application(_ application: AnyApplication<Application>, didMoveWindow window: Window) {
+        handOverIfMoved(window)
+
         guard userConfiguration.mouseSwapsWindows() else {
             return
         }
@@ -979,6 +984,7 @@ extension WindowManager: WindowTransitionTarget {
         case let .moveWindowToScreen(window, screen):
             let currentScreen = window.screen()
             window.moveScaled(to: screen)
+            windows.setScreenID(screen.screenID(), for: window)
             if let currentScreen = currentScreen {
                 distributeEventToScreen(currentScreen, change: .remove(window: window))
                 markScreenForReflow(currentScreen)
@@ -1031,6 +1037,54 @@ extension WindowManager: WindowTransitionTarget {
         return windows.activeWindows(onScreen: screen).filter { window in
             return window.shouldBeManaged() && !self.windows.isWindowFloating(window)
         }
+    }
+
+    /**
+     Hands a window over to the screen it now lies on when that is not the screen whose layout holds it, the way a throw does: the old screen drops it, the new screen takes it, and both reflow.
+
+     A window still being dragged is left where the user has it; the check runs again once the mouse button is up.
+     */
+    private func handOverIfMoved(_ window: Window) {
+        guard windows.isWindowTracked(window), !windows.isWindowFloating(window) else {
+            return
+        }
+
+        guard NSEvent.pressedMouseButtons == 0 else {
+            let id = window.id()
+            guard !pendingHandOvers.contains(id) else {
+                return
+            }
+            pendingHandOvers.insert(id)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+                self?.pendingHandOvers.remove(id)
+                self?.handOverIfMoved(window)
+            }
+            return
+        }
+
+        guard
+            let screen = window.screen(),
+            let screenID = screen.screenID(),
+            let previousScreenID = windows.screenID(for: window),
+            previousScreenID != screenID
+        else {
+            return
+        }
+
+        log.debug("Handing window over from screen \(previousScreenID) to screen \(screenID): \(window)")
+        windows.setScreenID(screenID, for: window)
+
+        if let previousScreen = self.screen(withID: previousScreenID) {
+            distributeEventToScreen(previousScreen, change: .remove(window: window))
+            markScreenForReflow(previousScreen)
+        }
+
+        distributeEventToScreen(screen, change: .add(window: window))
+        markScreenForReflow(screen)
+    }
+
+    private func screen(withID screenID: String) -> Screen? {
+        return screens.screenManagers.first { $0.screen?.screenID() == screenID }?.screen
     }
 
     func nextScreenIndexClockwise(from screen: Screen) -> Int {
