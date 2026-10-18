@@ -477,7 +477,7 @@
                 <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anm-du-fld">
                     <rect key="frame" x="396" y="470" width="50" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="0.3" drawsBackground="YES" usesSingleLineMode="YES" id="anm-du-cel">
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="right" title="0.3" drawsBackground="YES" usesSingleLineMode="YES" id="anm-du-cel">
                         <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="1" minimumFractionDigits="1" maximumFractionDigits="2" id="anm-du-fmt">
                             <real key="minimum" value="0.05"/>
                             <real key="maximum" value="1.0"/>
@@ -491,8 +491,17 @@
                         <binding destination="XhK-Tn-zrU" name="enabled" keyPath="values.animate-windows" id="anm-du-enb"/>
                     </connections>
                 </textField>
+                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anm-du-stp">
+                    <rect key="frame" x="444" y="467" width="19" height="27"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <stepperCell key="cell" continuous="YES" alignment="left" increment="0.05" minValue="0.050000000000000003" maxValue="1" doubleValue="0.29999999999999999" id="anm-du-stc"/>
+                    <connections>
+                        <binding destination="XhK-Tn-zrU" name="value" keyPath="values.window-animation-duration" id="anm-du-sbd"/>
+                        <binding destination="XhK-Tn-zrU" name="enabled" keyPath="values.animate-windows" id="anm-du-sen"/>
+                    </connections>
+                </stepper>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="anm-du-lbl">
-                    <rect key="frame" x="450" y="473" width="60" height="17"/>
+                    <rect key="frame" x="466" y="473" width="60" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="seconds" id="anm-du-lbc">
                         <font key="font" metaFont="system"/>
