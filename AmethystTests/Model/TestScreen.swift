@@ -13,9 +13,10 @@ import SwiftyJSON
 final class TestScreen: ScreenType {
     static var availableScreens: [TestScreen] = []
     static var screensHaveSeparateSpaces = true
+    static var descriptions: [JSON] = []
 
     static func screenDescriptions() -> [JSON]? {
-        return []
+        return descriptions
     }
 
     private let id: String = UUID().uuidString

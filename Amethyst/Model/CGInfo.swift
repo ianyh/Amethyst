@@ -187,6 +187,28 @@ struct CGSpacesInfo<Window: WindowType> {
         return Screen.availableScreens.first { spacesForScreen($0)?.contains { $0.id == space.id } ?? false }
     }
 
+    /**
+     The screen of the display that the Space with `id` belongs to.
+
+     - Returns:
+     The screen, or `nil` when no display lists the Space or when displays share their Spaces, since then a Space names no display.
+     */
+    static func screenForSpaceID(_ id: CGSSpaceID) -> Screen? {
+        guard Screen.screensHaveSeparateSpaces, let screenDescriptions = Screen.screenDescriptions() else {
+            return nil
+        }
+
+        let screenDescription = screenDescriptions.first { screenDescription in
+            allSpaces(fromScreenDescription: screenDescription)?.contains { $0.id == id } ?? false
+        }
+
+        guard let screenID = screenDescription?["Display Identifier"].string else {
+            return nil
+        }
+
+        return Screen.availableScreens.first { $0.screenID() == screenID }
+    }
+
     static func space(fromScreenDescription screenDictionary: JSON) -> Space {
         return space(fromSpaceDescription: screenDictionary["Current Space"])
     }
