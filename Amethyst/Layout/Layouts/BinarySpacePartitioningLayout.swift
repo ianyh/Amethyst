@@ -90,13 +90,13 @@ class TreeNode<Window: WindowType>: Codable {
         }
 
         guard let grandparent = parent.parent else {
-            if node == parent.left {
-                parent.windowID = parent.right?.windowID
-            } else {
-                parent.windowID = parent.left?.windowID
-            }
-            parent.left = nil
-            parent.right = nil
+            // Parent is the root node. Promote the sibling into the root.
+            let sibling: TreeNode? = (node == parent.left) ? parent.right : parent.left
+            parent.windowID = sibling?.windowID
+            parent.left = sibling?.left
+            parent.right = sibling?.right
+            parent.left?.parent = parent
+            parent.right?.parent = parent
             return
         }
 
