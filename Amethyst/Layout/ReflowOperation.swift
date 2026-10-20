@@ -9,6 +9,19 @@
 import Foundation
 import Silica
 
+/**
+ Runs `block` synchronously on the main thread.
+
+ Frame application happens on the main thread, but reflow operations execute on a background queue. Executing inline when already on main means callers (including tests that drive operations directly) never deadlock.
+ */
+func runOnMainSync(_ block: () -> Void) {
+    if Thread.isMainThread {
+        block()
+    } else {
+        DispatchQueue.main.sync(execute: block)
+    }
+}
+
 /// Possible dimensions without constraints.
 enum UnconstrainedDimension: Int {
     /// The dimension along the x-axis.
@@ -93,12 +106,21 @@ struct WindowSet<Window: WindowType> {
         return isWindowWithIDFloating(window.id)
     }
 
-    func perform(frameAssignment: FrameAssignment<Window>) {
+    /// Resolves the live window for a frame assignment, or `nil` if the window is gone, inactive, or floating.
+    func window(for frameAssignment: FrameAssignment<Window>) -> Window? {
         guard let window = windowForID(frameAssignment.window.id) else {
-            return
+            return nil
         }
 
         guard isWindowWithIDActive(frameAssignment.window.id), !isWindowWithIDFloating(frameAssignment.window.id) else {
+            return nil
+        }
+
+        return window
+    }
+
+    func perform(frameAssignment: FrameAssignment<Window>) {
+        guard let window = window(for: frameAssignment) else {
             return
         }
 
@@ -142,36 +164,41 @@ struct FrameAssignment<Window: WindowType> {
     /// If `true`, then  window margins won't be applied
     let disableWindowMargins: Bool
 
-    init(frame: CGRect, window: LayoutWindow<Window>, screenFrame: CGRect, resizeRules: ResizeRules) {
+    /// The settings the final frame applies: window margins and minimum sizes. Tests pass a blank configuration so their frames do not depend on the preferences of whoever runs them.
+    let configuration: UserConfiguration
+
+    init(frame: CGRect, window: LayoutWindow<Window>, screenFrame: CGRect, resizeRules: ResizeRules, configuration: UserConfiguration = .shared) {
         self.frame = frame
         self.window =  window
         self.screenFrame = screenFrame
         self.resizeRules = resizeRules
         self.disableWindowMargins = false
+        self.configuration = configuration
     }
 
-    init(frame: CGRect, window: LayoutWindow<Window>, screenFrame: CGRect, resizeRules: ResizeRules, disableWindowMargins: Bool) {
+    init(frame: CGRect, window: LayoutWindow<Window>, screenFrame: CGRect, resizeRules: ResizeRules, disableWindowMargins: Bool, configuration: UserConfiguration = .shared) {
         self.frame = frame
         self.window =  window
         self.screenFrame = screenFrame
         self.resizeRules = resizeRules
         self.disableWindowMargins = disableWindowMargins
+        self.configuration = configuration
     }
 
     /// The final frame is the desired frame, but transformed to provide desired padding
     var finalFrame: CGRect {
         var ret = frame
-        let padding = floor(UserConfiguration.shared.windowMarginSize() / 2)
+        let padding = floor(configuration.windowMarginSize() / 2)
 
-        if UserConfiguration.shared.windowMargins() && !disableWindowMargins {
+        if configuration.windowMargins() && !disableWindowMargins {
             ret.origin.x += padding
             ret.origin.y += padding
             ret.size.width -= 2 * padding
             ret.size.height -= 2 * padding
         }
 
-        let windowMinimumWidth = UserConfiguration.shared.windowMinimumWidth()
-        let windowMinimumHeight = UserConfiguration.shared.windowMinimumHeight()
+        let windowMinimumWidth = configuration.windowMinimumWidth()
+        let windowMinimumHeight = configuration.windowMinimumHeight()
 
         if windowMinimumWidth > ret.size.width {
             ret.origin.x -= ((windowMinimumWidth - ret.size.width) / 2)
@@ -204,6 +231,29 @@ struct FrameAssignment<Window: WindowType> {
         return resizeRules.isMain ? implied : 1 - implied
     }
 
+    /**
+     The frame shifted, if this is the focused window, so that it lies within the screen.
+
+     Applications may keep a larger size than assigned; the focused window must remain fully on screen regardless, so its origin
+     is moved to fit. This is the one rule every path that positions the focused window shares: the settle pass, the animated
+     glide, and the corrections that follow an application's actual size.
+     */
+    func keepingFocusedWindowOnScreen(_ frame: CGRect) -> CGRect {
+        guard window.isFocused else {
+            return frame
+        }
+
+        return keptOnScreen(frame)
+    }
+
+    /// The frame shifted so that it lies within the screen, whichever window it is for. The settle applies this on the window's live focus rather than the layout-time snapshot, which may be stale by the time an animation ends.
+    func keptOnScreen(_ frame: CGRect) -> CGRect {
+        var kept = frame
+        kept.origin.x = max(screenFrame.minX, min(frame.origin.x, screenFrame.maxX - frame.width))
+        kept.origin.y = max(screenFrame.minY, min(frame.origin.y, screenFrame.maxY - frame.height))
+        return kept
+    }
+
     /// Perform the actual application of the frame to the window
     func perform(withWindow window: Window) {
         var finalFrame = self.finalFrame
@@ -215,7 +265,7 @@ struct FrameAssignment<Window: WindowType> {
             // Just resize the window first to see what the dimensions end up being
             // Sometimes applications have internal window requirements that are not exposed to us directly
             finalFrame.origin = window.frame().origin
-            DispatchQueue.main.sync {
+            runOnMainSync {
                 window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
             }
 
@@ -224,13 +274,12 @@ struct FrameAssignment<Window: WindowType> {
                 width: max(window.frame().width, finalFrame.width),
                 height: max(window.frame().height, finalFrame.height)
             )
-            finalOrigin.x = max(screenFrame.minX, min(finalOrigin.x, screenFrame.maxX - finalFrame.size.width))
-            finalOrigin.y = max(screenFrame.minY, min(finalOrigin.y, screenFrame.maxY - finalFrame.size.height))
+            finalOrigin = keptOnScreen(CGRect(origin: finalOrigin, size: finalFrame.size)).origin
         }
 
         // Move the window to its final frame
         finalFrame.origin = finalOrigin
-        DispatchQueue.main.sync {
+        runOnMainSync {
             window.setFrame(finalFrame, withThreshold: CGSize(width: 1, height: 1))
         }
     }
