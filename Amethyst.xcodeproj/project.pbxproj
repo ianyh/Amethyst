@@ -14,6 +14,7 @@
 		4006CF881CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */; };
 		4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */; };
 		4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */; };
+		AE12830000000000000000A2 /* ConfigurationExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE12830000000000000000A1 /* ConfigurationExporter.swift */; };
 		400A5E9D2327350C00F0A2C3 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400A5E9C2327350C00F0A2C3 /* Space.swift */; };
 		400D48F42A92AF1E0082750F /* Cartography in Frameworks */ = {isa = PBXBuildFile; productRef = 400D48F32A92AF1E0082750F /* Cartography */; };
 		400D48F72A92AF9B0082750F /* LoginServiceKit in Frameworks */ = {isa = PBXBuildFile; productRef = 400D48F62A92AF9B0082750F /* LoginServiceKit */; };
@@ -34,6 +35,7 @@
 		401BC8A61CE8E65D00F89B3F /* LayoutNameWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A51CE8E65D00F89B3F /* LayoutNameWindow.swift */; };
 		401BC8A81CE8E94000F89B3F /* WindowsInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8A71CE8E94000F89B3F /* WindowsInformation.swift */; };
 		401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */; };
+		AE12830000000000000000A4 /* ConfigurationExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE12830000000000000000A3 /* ConfigurationExporterTests.swift */; };
 		401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */; };
 		401BC8B61CE9259000F89B3F /* LayoutType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B51CE9259000F89B3F /* LayoutType.swift */; };
 		401BC8BA1CE9319500F89B3F /* FocusFollowsMouseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */; };
@@ -152,6 +154,7 @@
 		4006CF871CDFF5F6004CA512 /* NSRunningApplication+Manageable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRunningApplication+Manageable.swift"; sourceTree = "<group>"; };
 		4006CF8D1CDFFE90004CA512 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4006CF8F1CE017BA004CA512 /* UserConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfiguration.swift; sourceTree = "<group>"; };
+		AE12830000000000000000A1 /* ConfigurationExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationExporter.swift; sourceTree = "<group>"; };
 		400A5E9C2327350C00F0A2C3 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SIWindow+AmethystTests.swift"; sourceTree = "<group>"; };
 		40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPreferencesViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +172,7 @@
 		401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Amethyst-Bridging-Header.h"; sourceTree = "<group>"; };
 		401BC8AC1CE8FD4600F89B3F /* AmethystTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AmethystTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserConfigurationTests.swift; sourceTree = "<group>"; };
+		AE12830000000000000000A3 /* ConfigurationExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationExporterTests.swift; sourceTree = "<group>"; };
 		401BC8B31CE9250800F89B3F /* HotKeyRegistrar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyRegistrar.swift; sourceTree = "<group>"; };
 		401BC8B51CE9259000F89B3F /* LayoutType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutType.swift; sourceTree = "<group>"; };
 		401BC8B91CE9319500F89B3F /* FocusFollowsMouseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusFollowsMouseManager.swift; sourceTree = "<group>"; };
@@ -317,6 +321,7 @@
 				40AF71DC20BB401400F58EA9 /* FloatingPreferencesViewController.xib */,
 				401BC8A31CE8DB0800F89B3F /* GeneralPreferencesViewController.swift */,
 				4058C4791C54113D00B19D26 /* GeneralPreferencesViewController.xib */,
+				AE12830000000000000000A1 /* ConfigurationExporter.swift */,
 				40A88002240C40BC005EE9C6 /* LayoutsPreferencesViewController.swift */,
 				40A88004240C40D0005EE9C6 /* LayoutsPreferencesViewController.xib */,
 				40A87FFE240AF2BC005EE9C6 /* MousePreferencesViewController.swift */,
@@ -367,6 +372,7 @@
 		401BC8AB1CE8F84500F89B3F /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
+				AE12830000000000000000A3 /* ConfigurationExporterTests.swift */,
 				401BC8AD1CE8FD4700F89B3F /* UserConfigurationTests.swift */,
 			);
 			name = Preferences;
@@ -839,6 +845,7 @@
 				4062AD371C1FA83300DB612B /* RowLayout.swift in Sources */,
 				4006CF8E1CDFFE90004CA512 /* AppDelegate.swift in Sources */,
 				4006CF901CE017BA004CA512 /* UserConfiguration.swift in Sources */,
+				AE12830000000000000000A2 /* ConfigurationExporter.swift in Sources */,
 				4062AD2B1C1F99EA00DB612B /* FloatingLayout.swift in Sources */,
 				401BC8A21CE8D86B00F89B3F /* ShortcutsPreferencesViewController.swift in Sources */,
 				401BC8A81CE8E94000F89B3F /* WindowsInformation.swift in Sources */,
@@ -867,6 +874,7 @@
 				40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */,
 				401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */,
 				401BC8AE1CE8FD4700F89B3F /* UserConfigurationTests.swift in Sources */,
+				AE12830000000000000000A4 /* ConfigurationExporterTests.swift in Sources */,
 				AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */,
 				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
