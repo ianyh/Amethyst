@@ -85,36 +85,31 @@ class TreeNode<Window: WindowType>: Codable {
             return
         }
 
+        // The tree's only window: the root becomes empty, ready for the next window to take the whole screen.
         guard let parent = node.parent else {
+            node.windowID = nil
             return
         }
 
+        let sibling = node === parent.left ? parent.right : parent.left
+
+        // The parent is the root: the sibling's contents, a window or a whole subtree, become the root's contents.
         guard let grandparent = parent.parent else {
-            if node == parent.left {
-                parent.windowID = parent.right?.windowID
-            } else {
-                parent.windowID = parent.left?.windowID
-            }
-            parent.left = nil
-            parent.right = nil
+            parent.windowID = sibling?.windowID
+            parent.left = sibling?.left
+            parent.right = sibling?.right
+            parent.left?.parent = parent
+            parent.right?.parent = parent
             return
         }
 
-        if parent == grandparent.left {
-            if node == parent.left {
-                grandparent.left = parent.right
-            } else {
-                grandparent.left = parent.left
-            }
-            grandparent.left?.parent = grandparent
+        // Otherwise the sibling takes the parent's place under the grandparent.
+        if parent === grandparent.left {
+            grandparent.left = sibling
         } else {
-            if node == parent.left {
-                grandparent.right = parent.right
-            } else {
-                grandparent.right = parent.left
-            }
-            grandparent.right?.parent = grandparent
+            grandparent.right = sibling
         }
+        sibling?.parent = grandparent
     }
 
     func insertWindowID(_ windowID: WindowID) {
