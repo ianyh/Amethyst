@@ -62,6 +62,15 @@ extension ScreenType {
         return maxY - minY
     }
 
+    /// The screen whose display holds the whole of `frame`, or `nil` when the frame straddles displays, lies outside them all, or is null.
+    static func screen(containing frame: CGRect) -> Self? {
+        guard !frame.isNull else {
+            return nil
+        }
+
+        return availableScreens.first { $0.frameIncludingDockAndMenu().contains(frame) }
+    }
+
     /// The frame adjusted for app modifiers; e.g., window margins.
     func adjustedFrame() -> CGRect {
         return adjustedFrame(disableWindowMargins: false)
