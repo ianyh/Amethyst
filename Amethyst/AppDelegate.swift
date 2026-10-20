@@ -275,6 +275,8 @@ extension AppDelegate: UserConfigurationDelegate {
         }
         statusItemImage?.isTemplate = true
         statusItem?.image = statusItemImage
+
+        windowManager?.displayTilingState()
     }
 
     func configurationAccessibilityPermissionsDidChange(_ userConfiguration: UserConfiguration) {
