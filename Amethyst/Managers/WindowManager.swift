@@ -9,6 +9,7 @@
 import AppKit
 import Carbon
 import Foundation
+import os.log
 import RxSwift
 import Silica
 import SwiftyJSON
@@ -30,6 +31,18 @@ enum TrackingError: Error {
  This value is an approximation of the time between a fast click and the focus event being processed. For values larger than this we would expect the mouse to still be clicked.
  */
 private let mouseMoveClickSpeedTolerance: TimeInterval = 0.3
+
+/// The waits before each repeated attempt to decide a window's float state or to track it, in seconds. The quick ones cover a window that is still appearing; the application adoption waits follow for an application that is not answering Accessibility.
+let windowTrackingDelays: [TimeInterval] = [0, 0.1, 0.4, 0.9, 1.6, 2.5] + ApplicationAdoption.delays
+
+/// The wait before the attempt after `count` failures, or `nil` once the attempts are used up.
+func windowTrackingDelay(afterFailures count: Int) -> DispatchTimeInterval? {
+    guard count < windowTrackingDelays.count else {
+        return nil
+    }
+
+    return .milliseconds(Int(windowTrackingDelays[count] * 1000))
+}
 
 final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     typealias Window = Application.Window
@@ -60,6 +73,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
     private var applications: [pid_t: AnyApplication<Application>] = [:]
     private var applicationObservations: [pid_t: UndeterminedApplication] = [:]
+    private var adoptionsInProgress: Set<pid_t> = []
     private var screens: Screens
     private let windows = Windows()
     private var lastReflowTime = Date()
@@ -98,6 +112,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
         addWorkspaceNotificationObserver(NSWorkspace.didHideApplicationNotification, selector: #selector(applicationDidHide(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.didUnhideApplicationNotification, selector: #selector(applicationDidUnhide(_:)))
+        addWorkspaceNotificationObserver(NSWorkspace.didActivateApplicationNotification, selector: #selector(workspaceApplicationDidActivate(_:)))
         addWorkspaceNotificationObserver(NSWorkspace.activeSpaceDidChangeNotification, selector: #selector(activeSpaceDidChange(_:)))
 
         NotificationCenter.default.addObserver(
@@ -154,6 +169,20 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         }
 
         remove(application: application)
+    }
+
+    @objc func workspaceApplicationDidActivate(_ notification: Notification) {
+        guard let activatedApplication = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication else {
+            return
+        }
+
+        let pid = activatedApplication.processIdentifier
+        guard applications[pid] == nil, !adoptionsInProgress.contains(pid), activatedApplication.isManageable == .manageable else {
+            return
+        }
+
+        os_log("Adopting %{public}@ (pid %d) on activation", log: applicationLog, type: .default, activatedApplication.localizedName ?? "<unknown>", pid)
+        add(runningApplication: activatedApplication)
     }
 
     @objc func applicationDidHide(_ notification: Notification) {
@@ -267,25 +296,61 @@ extension WindowManager {
     }
 
     fileprivate func add(application: AnyApplication<Application>) {
-        guard applications[application.pid()] == nil else {
+        let pid = application.pid()
+
+        guard applications[pid] == nil else {
             for window in application.windows() {
                 add(window: window)
             }
             return
         }
 
-        ApplicationObservation(application: application, delegate: self)
-            .addObservers()
-            .subscribe(
-                onCompleted: { [weak self] in
-                    self?.applications[application.pid()] = application
+        guard !adoptionsInProgress.contains(pid) else {
+            return
+        }
 
-                    for window in application.windows() {
-                        self?.add(window: window)
-                    }
+        adoptionsInProgress.insert(pid)
+
+        ApplicationAdoption(
+            name: "\(application.title() ?? "<unknown>") (pid \(pid))",
+            attempt: { [weak self] completion in
+                guard let self = self else {
+                    return
                 }
-            )
-            .disposed(by: disposeBag)
+
+                ApplicationObservation(application: application, delegate: self)
+                    .addObservers()
+                    .subscribe(
+                        onError: { error in
+                            completion(error)
+                        },
+                        onCompleted: { [weak self] in
+                            guard let self = self else {
+                                return
+                            }
+
+                            self.applications[pid] = application
+
+                            for window in application.windows() {
+                                self.add(window: window)
+                            }
+
+                            completion(nil)
+                        }
+                    )
+                    .disposed(by: self.disposeBag)
+            },
+            isRunning: {
+                guard let runningApplication = NSRunningApplication(processIdentifier: pid) else {
+                    return false
+                }
+
+                return !runningApplication.isTerminated
+            },
+            finished: { [weak self] in
+                self?.adoptionsInProgress.remove(pid)
+            }
+        ).start()
     }
 
     fileprivate func remove(application: AnyApplication<Application>) {
@@ -436,6 +501,13 @@ extension WindowManager {
             activationPolicyObservation: activationPolicyObservation,
             isFinishedLaunchingObservation: isFinishedLaunchingObservation
         )
+
+        // The application may have become manageable while the observations were being set up, in which case no change will be observed.
+        if runningApplication.isManageable == .manageable {
+            applicationObservations[pid]?.invalidate()
+            applicationObservations.removeValue(forKey: pid)
+            add(runningApplication: runningApplication)
+        }
     }
 
     func reevaluateWindows() {
@@ -454,6 +526,8 @@ extension WindowManager {
 
         guard let application = applicationWithPID(window.pid()) else {
             log.error("Tried to add a window without an application: \(window)")
+            let applicationName = NSRunningApplication(processIdentifier: window.pid())?.localizedName ?? "<unknown>"
+            os_log("A window of %{public}@ (pid %d) has no adopted application", log: applicationLog, type: .error, applicationName, window.pid())
             return
         }
 
@@ -472,12 +546,12 @@ extension WindowManager {
             .map { try self.determineFloatForWindow(window, application: application, force: false) }
             .retry { error in
                 error.enumerated().flatMap { count, error -> Observable<Int> in
-                    guard error is TrackingError, count < 6 else {
+                    guard error is TrackingError, let delay = windowTrackingDelay(afterFailures: count) else {
                         return .error(error)
                     }
 
                     log.debug("error in determining float for window: \(window) - \(error)")
-                    return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
+                    return .timer(delay, scheduler: MainScheduler.instance)
                 }
             }
             .catch { error in
@@ -491,16 +565,18 @@ extension WindowManager {
             .map { try self.track(window: window, application: application, afterWindow: otherWindow) }
             .retry { error in
                 error.enumerated().flatMap { count, error -> Observable<Int> in
-                    guard error is TrackingError, count < 6 else {
+                    guard error is TrackingError, let delay = windowTrackingDelay(afterFailures: count) else {
                         return .error(error)
                     }
 
                     log.debug("encountered an error trying to track window: \(error)")
-                    return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
+                    return .timer(delay, scheduler: MainScheduler.instance)
                 }
             }
             .subscribe(
                 onError: { error in
+                    let applicationName = application.title() ?? "<unknown>"
+                    os_log("Could not track a window of %{public}@ (pid %d): %{public}@", log: applicationLog, type: .error, applicationName, window.pid(), "\(error)")
                     log.error("Failed to track window: \(window) - \(error)")
                 }
             )
@@ -546,6 +622,9 @@ extension WindowManager {
         case .unreliable where !force:
             throw TrackingError.unreliableFloating
         case .reliable(.floating), .unreliable(.floating):
+            let frame = window.frame()
+            let size = frame.isNull ? "unknown" : "\(Int(frame.width))x\(Int(frame.height))"
+            os_log("Floating a window of %{public}@ (pid %d) by default, size %{public}@", log: applicationLog, type: .default, application.title() ?? "<unknown>", window.pid(), size)
             windows.setFloating(true, forWindow: window)
         case .reliable(.notFloating), .unreliable(.notFloating):
             windows.setFloating(false, forWindow: window)
