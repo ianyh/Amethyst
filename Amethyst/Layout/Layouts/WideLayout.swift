@@ -56,6 +56,7 @@ class WideLayout<Window: WindowType>: Layout<Window>, PanedLayout {
             return []
         }
 
+        let mainPaneCount = min(windows.count, self.mainPaneCount)
         let secondaryPaneCount = windows.count - mainPaneCount
         let hasSecondaryPane = secondaryPaneCount > 0
 
