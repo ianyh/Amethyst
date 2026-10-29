@@ -160,6 +160,41 @@ class WideLayoutTests: QuickSpec {
                 ])
             }
 
+            it("does not leave empty space when the main pane count exceeds the number of windows") {
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!,
+                    TestWindow(element: nil)!
+                ]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = WideLayout<TestWindow>()
+
+                layout.increaseMainPaneCount()
+                layout.increaseMainPaneCount()
+                layout.increaseMainPaneCount()
+                expect(layout.mainPaneCount).to(equal(4))
+
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                let mainAssignments = frameAssignments.forWindows(windows[...])
+
+                mainAssignments.verify(frames: [
+                    CGRect(x: 0, y: 0, width: 667, height: 1000),
+                    CGRect(x: 667, y: 0, width: 667, height: 1000),
+                    CGRect(x: 1334, y: 0, width: 667, height: 1000)
+                ])
+            }
+
             it("changes distribution based on pane ratio") {
                 let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
                 TestScreen.availableScreens = [screen]
