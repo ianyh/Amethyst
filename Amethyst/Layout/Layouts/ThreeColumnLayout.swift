@@ -54,7 +54,7 @@ struct TriplePaneArrangement {
         self.panePosition = {
             switch mainPane {
             case .left:   return [.main: .left, .secondary: .middle, .tertiary: .right]
-            case .middle: return [.main: .middle, .secondary: .left, .tertiary: .right]
+            case .middle: return [.main: .middle, .secondary: .right, .tertiary: .left]
             case .right:  return [.main: .right, .secondary: .left, .tertiary: .middle]
             }
         }()
