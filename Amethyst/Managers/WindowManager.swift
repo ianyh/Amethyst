@@ -508,6 +508,44 @@ extension WindowManager {
     }
 
     /**
+     Gives a destroyed window's slot to the tab its closing revealed.
+
+     Sibling tabs can each be tracked with their own slot (e.g., after a rescan on space
+     change). Only a tab group's visible tab is in the on-screen list at any cache regen, so a
+     tracked sibling that the active cache still marks inactive, but that is on screen now, is
+     the tab revealed by the close. Without this it would reappear at its own older slot and
+     shift every window in between. Must run before `remove(window:)` regenerates the cache.
+     */
+    private func swapInRevealedTab(of applicationWindows: [Window], forDestroyedWindow window: Window) {
+        let revealedWindow = applicationWindows.first { candidate in
+            candidate.id() != window.id()
+                && windows.isWindowTracked(candidate)
+                && !windows.isWindowActive(candidate)
+                && candidate.isOnScreen()
+        }
+
+        guard let revealedWindow, let screen = revealedWindow.screen() else {
+            return
+        }
+
+        // `replace` matches by element, so use the stored instances. This also skips the swap
+        // when the destroyed window is untracked, where `replace` would append a duplicate.
+        guard let trackedWindow = windows.window(withID: revealedWindow.id()),
+              let destroyedWindow = windows.window(withID: window.id()) else {
+            return
+        }
+
+        log.debug("Swapping revealed tab \(trackedWindow) into slot of destroyed \(destroyedWindow)")
+
+        pendingTabDetection.removeValue(forKey: trackedWindow.id())
+        earlyFocusedWindows.remove(trackedWindow.id())
+        windows.replace(window: destroyedWindow, withWindow: trackedWindow)
+        windows.regenerateActiveIDCache()
+        distributeEventToScreen(screen, change: .tabChange(window: trackedWindow, previousWindow: destroyedWindow))
+        markScreenForReflow(screen)
+    }
+
+    /**
      Re-points an already-tracked window at a live AX element.
 
      Apps that hide their windows on close (e.g., Telegram, Slack) can invalidate the
@@ -821,6 +859,28 @@ extension WindowManager: ApplicationObservationDelegate {
 
     func application(_ application: AnyApplication<Application>, didRemoveWindow window: Window) {
         remove(window: window)
+    }
+
+    func application(_ application: AnyApplication<Application>, didDestroyWindow window: Window) {
+        application.dropWindowsCache()
+        let applicationWindows = application.windows()
+
+        swapInRevealedTab(of: applicationWindows, forDestroyedWindow: window)
+        remove(window: window)
+
+        // Closing a tab can also reveal a sibling that was never tracked, and the app may fire
+        // no notification for it. Pick up any window of this app that is on screen and untracked.
+        // `remove` has just regenerated the active cache, so `isWindowActive` here means
+        // "on screen now".
+        for candidate in applicationWindows {
+            guard candidate.id() != window.id() else { continue }
+            guard !windows.isWindowTracked(candidate) else { continue }
+            guard windows.isWindowActive(candidate) else { continue }
+
+            pendingTabDetection.removeValue(forKey: candidate.id())
+            earlyFocusedWindows.remove(candidate.id())
+            add(window: candidate)
+        }
     }
 
     func application(_ application: AnyApplication<Application>, didFocusWindow window: Window) {
