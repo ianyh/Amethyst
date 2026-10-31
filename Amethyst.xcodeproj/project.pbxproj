@@ -83,6 +83,7 @@
 		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
 		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
+		DE5C0A2400000000000000A4 /* ApplicationAdoptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A2300000000000000A3 /* ApplicationAdoptionTests.swift */; };
 		DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */; };
 		4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */; };
 		4087BB042D447F480062A52B /* static-ratio-tall-native-commands.js in Resources */ = {isa = PBXBuildFile; fileRef = 4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */; };
@@ -115,6 +116,7 @@
 		40C3F9231BD1B35E00F58660 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9221BD1B35E00F58660 /* libc++.tbd */; };
 		40C3F9251BD1B36C00F58660 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C3F9241BD1B36C00F58660 /* libz.tbd */; };
 		40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */; };
+		DE5C0A2200000000000000A2 /* ApplicationAdoption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A2100000000000000A1 /* ApplicationAdoption.swift */; };
 		40CF37C029B440A100CDB07A /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = 40CF37BF29B440A100CDB07A /* ArgumentParser */; };
 		40CF37C229B58C7400CDB07A /* WindowsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C129B58C7400CDB07A /* WindowsInfo.swift */; };
 		40CF37C429BAC18300CDB07A /* ScreensInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40CF37C329BAC18300CDB07A /* ScreensInfo.swift */; };
@@ -222,6 +224,7 @@
 		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4076368C2394BFB500308336 /* AmethystDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmethystDebug.entitlements; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
+		DE5C0A2300000000000000A3 /* ApplicationAdoptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationAdoptionTests.swift; sourceTree = "<group>"; };
 		DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSpacesInfoTests.swift; sourceTree = "<group>"; };
 		DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTests.swift; sourceTree = "<group>"; };
 		4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall-native-commands.js"; sourceTree = "<group>"; };
@@ -249,6 +252,7 @@
 		40C3F9221BD1B35E00F58660 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		40C3F9241BD1B36C00F58660 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenManager.swift; sourceTree = "<group>"; usesTabs = 0; };
+		DE5C0A2100000000000000A1 /* ApplicationAdoption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationAdoption.swift; sourceTree = "<group>"; };
 		40CF37C129B58C7400CDB07A /* WindowsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsInfo.swift; sourceTree = "<group>"; };
 		40CF37C329BAC18300CDB07A /* ScreensInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreensInfo.swift; sourceTree = "<group>"; };
 		40CF37C529BACD1800CDB07A /* AppsInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsInfo.swift; sourceTree = "<group>"; };
@@ -359,6 +363,7 @@
 				401BC8B51CE9259000F89B3F /* LayoutType.swift */,
 				409645B21CEE8D950042F459 /* LogManager.swift */,
 				40CEF42F1C2B8D21004C3297 /* ScreenManager.swift */,
+				DE5C0A2100000000000000A1 /* ApplicationAdoption.swift */,
 				40637076224F0EFF0081299D /* Screens.swift */,
 				401BC8971CE7E45300F89B3F /* WindowManager.swift */,
 				40A7AEA6232ECF3000E79964 /* Windows.swift */,
@@ -532,6 +537,7 @@
 			isa = PBXGroup;
 			children = (
 				4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */,
+				DE5C0A2300000000000000A3 /* ApplicationAdoptionTests.swift */,
 				40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */,
 			);
 			path = Managers;
@@ -825,6 +831,7 @@
 				401BC8B41CE9250800F89B3F /* HotKeyRegistrar.swift in Sources */,
 				40637073224EF9B20081299D /* Change.swift in Sources */,
 				40CEF4301C2B8D21004C3297 /* ScreenManager.swift in Sources */,
+				DE5C0A2200000000000000A2 /* ApplicationAdoption.swift in Sources */,
 				401C35B522482EAF0019ED07 /* WindowTransitionCoordinator.swift in Sources */,
 				40CF37C629BACD1800CDB07A /* AppsInfo.swift in Sources */,
 				40A87FFD2404B1B4005EE9C6 /* DebugInfo.swift in Sources */,
@@ -873,6 +880,7 @@
 				AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */,
 				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
+				DE5C0A2400000000000000A4 /* ApplicationAdoptionTests.swift in Sources */,
 				DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */,
 				4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
