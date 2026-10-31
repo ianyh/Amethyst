@@ -30,6 +30,30 @@ private final class TestDelegate: ScreenManagerDelegate {
 
 class ScreenManagerTests: QuickSpec {
     override func spec() {
+        describe("layout HUD") {
+            func screenManager(with configuration: UserConfiguration) -> ScreenManager<TestDelegate> {
+                configuration.setLayoutKeys(["tall"])
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                return ScreenManager<TestDelegate>(screen: screen, delegate: TestDelegate(), userConfiguration: configuration)
+            }
+
+            it("names the layout while tiling is enabled") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                let content = screenManager(with: configuration).layoutHUDContent()
+
+                expect(content.title).to(equal("Tall"))
+            }
+
+            it("says that tiling is disabled instead of naming the layout") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                configuration.tilingEnabled = false
+                let content = screenManager(with: configuration).layoutHUDContent()
+
+                expect(content.title).to(equal("Tiling Disabled"))
+                expect(content.description).to(equal("Tall"))
+            }
+        }
+
         describe("coding") {
             it("decodes layouts") {
                 let configuration = UserConfiguration(storage: TestConfigurationStorage())
