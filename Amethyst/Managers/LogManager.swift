@@ -40,3 +40,66 @@ final class SystemLogDestination: BaseDestination {
         return formatted
     }
 }
+
+/// Connects the system log destination according to the Debug preferences and the `--log` argument, and follows the preferences as they change.
+final class DiagnosticLogging {
+    static let shared = DiagnosticLogging()
+
+    private var destination: SystemLogDestination?
+    private var commandLineRequestsDetails = false
+    private var preferencesObserver: NSObjectProtocol?
+
+    /// The lowest level worth writing for the preferences, or nil when nothing is to be written.
+    static func threshold(details: Bool, warnings: Bool) -> SwiftyBeaver.Level? {
+        if details {
+            return .verbose
+        }
+        if warnings {
+            return .warning
+        }
+        return nil
+    }
+
+    func start(commandLineRequestsDetails: Bool) {
+        self.commandLineRequestsDetails = commandLineRequestsDetails
+        if preferencesObserver == nil {
+            preferencesObserver = NotificationCenter.default.addObserver(
+                forName: UserDefaults.didChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.apply()
+            }
+        }
+        apply()
+    }
+
+    private func apply() {
+        let configuration = UserConfiguration.shared
+
+        // Every detail includes the warnings and errors, and the preference says so.
+        if configuration.logsDiagnosticDetails(), !configuration.logsWarningsAndErrors() {
+            configuration.setLogsWarningsAndErrors(true)
+        }
+
+        let threshold = DiagnosticLogging.threshold(
+            details: commandLineRequestsDetails || configuration.logsDiagnosticDetails(),
+            warnings: configuration.logsWarningsAndErrors()
+        )
+
+        switch (threshold, destination) {
+        case let (level?, connected?):
+            connected.minLevel = level
+        case let (level?, nil):
+            let connected = SystemLogDestination()
+            connected.minLevel = level
+            log.addDestination(connected)
+            destination = connected
+        case let (nil, connected?):
+            log.removeDestination(connected)
+            destination = nil
+        case (nil, nil):
+            break
+        }
+    }
+}

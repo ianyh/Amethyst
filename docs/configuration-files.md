@@ -40,6 +40,8 @@ Amethyst will pick up a config file located at `~/.amethyst.yml` or `~/.config/a
 | `screen-padding-bottom` | Padding to apply between windows and the bottom edge of the screen (in px, default `0`).
 | `restore-layouts-on-launch` | `true` to maintain layout state across application executions (default `true`). |
 | `debug-layout-info` | `true` to display some optional debug information in the layout HUD (default `false`). |
+| `debug-log-details` | `true` to write every log line, including debugging detail, to the system log under the app's subsystem, as starting the app with `--log` does (default `false`). Window titles appear in those lines. |
+| `debug-log-warnings` | `true` to write warnings and errors to the system log (default `false`). Turned on together with `debug-log-details`. |
 | `disable-padding-on-builtin-display` |  `true` to disable screen padding on in-built display (default `false`). |
 | `hide-menu-bar-icon` | `true` to hide the menu bar icon (default `false`). |
 
