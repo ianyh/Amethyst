@@ -1251,6 +1251,9 @@ extension WindowManager: ScreenManagerDelegate {
 
     func activeWindowSet(forScreenManager screenManager: ScreenManager<WindowManager<Application>>, on screen: Screen) -> WindowSet<Window> {
         let activeWindows = windows.activeWindows(onScreen: screen)
+        if let screenID = screen.screenID() {
+            windows.setScreenID(screenID, forAll: activeWindows)
+        }
         log.debug("Reflowing screen \(screen.screenID() ?? "unknown") with \(activeWindows.count) windows: \(activeWindows)")
         return windows.windowSet(forWindows: activeWindows)
     }

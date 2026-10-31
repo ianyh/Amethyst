@@ -57,10 +57,6 @@ extension WindowManager {
                 return windowScreen.screenID() == screen.screenID() && isActive && !isHidden && !isFloating
             }
 
-            for window in screenWindows {
-                screenIDs[window.id()] = screenID
-            }
-
             return screenWindows
         }
 
@@ -72,6 +68,13 @@ extension WindowManager {
         /// Records the screen whose layout the window now belongs to.
         func setScreenID(_ screenID: String?, for window: Window) {
             screenIDs[window.id()] = screenID
+        }
+
+        /// Records that the screen's layout is placing these windows.
+        func setScreenID(_ screenID: String, forAll windows: [Window]) {
+            for window in windows {
+                screenIDs[window.id()] = screenID
+            }
         }
 
         func activeWindowOnCurrentScreen(atIndex: Int) -> Window? {
