@@ -83,6 +83,8 @@
 		40637075224EFED70081299D /* CGInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637074224EFED70081299D /* CGInfo.swift */; };
 		40637077224F0EFF0081299D /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40637076224F0EFF0081299D /* Screens.swift */; };
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
+		DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */; };
+		4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */; };
 		4087BB042D447F480062A52B /* static-ratio-tall-native-commands.js in Resources */ = {isa = PBXBuildFile; fileRef = 4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
 		40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A7AEA6232ECF3000E79964 /* Windows.swift */; };
@@ -220,6 +222,8 @@
 		40637076224F0EFF0081299D /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
 		4076368C2394BFB500308336 /* AmethystDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AmethystDebug.entitlements; sourceTree = "<group>"; };
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
+		DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSpacesInfoTests.swift; sourceTree = "<group>"; };
+		DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTests.swift; sourceTree = "<group>"; };
 		4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall-native-commands.js"; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		40A7AEA6232ECF3000E79964 /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
@@ -333,6 +337,15 @@
 				40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */,
 			);
 			path = Categories;
+			sourceTree = "<group>";
+		};
+		DE5C0A3300000000000000B3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */,
+				DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		401BC8AA1CE8F82700F89B3F /* Managers */ = {
@@ -542,6 +555,7 @@
 				404BE9CF1CFBDEFD00D6C537 /* Layout */,
 				401BC8AB1CE8F84500F89B3F /* Preferences */,
 				40111CC7223370E1003D20BD /* Categories */,
+				DE5C0A3300000000000000B3 /* Model */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -859,6 +873,8 @@
 				AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */,
 				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
+				DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */,
+				4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
 				404541762697C62400861BE8 /* TestBundle.swift in Sources */,
@@ -1054,7 +1070,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11;
+				MACOSX_DEPLOYMENT_TARGET = 12;
 				MARKETING_VERSION = 0.24.3;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++14";
@@ -1099,7 +1115,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11;
+				MACOSX_DEPLOYMENT_TARGET = 12;
 				MARKETING_VERSION = 0.24.3;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++14";
@@ -1134,7 +1150,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AmethystTests/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 11;
+				MACOSX_DEPLOYMENT_TARGET = 12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;
@@ -1167,7 +1183,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = AmethystTests/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 11;
+				MACOSX_DEPLOYMENT_TARGET = 12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.amethyst.AmethystTests;

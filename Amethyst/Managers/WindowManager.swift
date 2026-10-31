@@ -361,6 +361,19 @@ extension WindowManager {
         }
     }
 
+    func displayNewWindowsToMainHUD() {
+        guard userConfiguration.enablesNewWindowsToMainHUD() else {
+            return
+        }
+
+        for screenManager in screens.screenManagers {
+            let isEnabled = userConfiguration.sendNewWindowsToMainPane()
+            let statusText = isEnabled ? "On" : "Off"
+            let title = "New Windows to Main Pane: \(statusText)"
+            screenManager.displayCustomHUD(title: title)
+        }
+    }
+
     func displayWindowCountHUD() {
         guard userConfiguration.enablesWindowCountHUD() else {
             return
@@ -450,6 +463,7 @@ extension WindowManager {
 
         guard !windows.isWindowTracked(window) else {
             log.debug("Window was already tracked: \(window)")
+            refreshTrackedWindow(window, application: application)
             return
         }
 
@@ -485,8 +499,46 @@ extension WindowManager {
                     return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
                 }
             }
+            .subscribe(
+                onError: { error in
+                    log.error("Failed to track window: \(window) - \(error)")
+                }
+            )
+            .disposed(by: disposeBag)
+    }
+
+    /**
+     Re-points an already-tracked window at a live AX element.
+
+     Apps that hide their windows on close (e.g., Telegram, Slack) can invalidate the
+     tracked element while the window — identified by (pid, CGWindowID) — lives on and
+     is revived later. The stale element still answers identity checks (the pid is baked
+     into the element ref and Silica caches the CGWindowID) but fails every attribute
+     read, so it can neither be laid out nor be replaced by normal tracking. When an
+     event hands us a live element for a window we already track, swap it in, move the
+     destroyed observation over to it, and re-tile.
+     */
+    private func refreshTrackedWindow(_ window: Window, application: AnyApplication<Application>) {
+        guard let staleWindow = windows.refreshWindow(window) else {
+            return
+        }
+
+        log.debug("Refreshed stale element for tracked window: \(window)")
+
+        // The destroyed observation belongs to the element, not the window identity.
+        // Drop the stale element's observation so a late notification from it cannot
+        // remove the live window, and observe the new element instead.
+        let observation = ApplicationObservation(application: application, delegate: self)
+        observation.removeObserversForWindow(staleWindow)
+        observation
+            .addObserversForWindow(window)
             .subscribe()
             .disposed(by: disposeBag)
+
+        windows.regenerateActiveIDCache()
+        if let screen = window.screen() {
+            markScreenForReflow(screen)
+        }
     }
 
     private func determineFloatForWindow(_ window: Window, application: AnyApplication<Application>, force: Bool) throws {
@@ -515,7 +567,7 @@ extension WindowManager {
         }
 
         if let otherWindow = otherWindow {
-            _ = windows.replace(window: window, withWindow: otherWindow)
+            _ = windows.replace(window: otherWindow, withWindow: window)
             distributeEventToScreen(screen, change: .tabChange(window: window, previousWindow: otherWindow))
         } else {
             windows.add(window: window, atFront: userConfiguration.sendNewWindowsToMainPane())
@@ -740,15 +792,13 @@ extension WindowManager: MouseStateKeeperDelegate {
     func swapDraggedWindowWithDropzone(_ draggedWindow: Window) {
         guard let screen = draggedWindow.screen() else { return }
 
-        let windows: [Window] = self.windows.windows(onScreen: screen)
+        let windows = activeWindows(on: screen)
 
         // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
-        let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
-        let unflippedY = Screen.globalHeight() - flippedPointerLocation.y + screen.frameIncludingDockAndMenu().origin.y
-        let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
+        let pointerLocation = Screen.convertFromCocoa(NSPointToCGPoint(NSEvent.mouseLocation))
 
         if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(), let layout = screenManager.currentLayout {
-            let windowSet = self.windows.windowSet(forWindowsOnScreen: screen)
+            let windowSet = self.windows.windowSet(forActiveWindowsOnScreen: screen)
             if let layoutWindow = layout.windowAtPoint(pointerLocation, of: windowSet, on: screen), let framedWindow = self.windows.window(withID: layoutWindow.id) {
                 executeTransition(.switchWindows(draggedWindow, framedWindow))
                 return
@@ -783,6 +833,7 @@ extension WindowManager: ApplicationObservationDelegate {
         if pendingTabDetection.removeValue(forKey: window.id()) != nil {
             completeTabDetection(for: window, on: screen)
         } else if windows.isWindowTracked(window) {
+            refreshTrackedWindow(window, application: application)
             distributeEventToScreen(screen, change: .focusChanged(window: window))
             markScreenForReflow(screen)
         } else {
@@ -798,6 +849,7 @@ extension WindowManager: ApplicationObservationDelegate {
 
     func application(_ application: AnyApplication<Application>, didFindPotentiallyNewWindow window: Window) {
         guard !windows.isWindowTracked(window) else {
+            refreshTrackedWindow(window, application: application)
             return
         }
 
@@ -927,11 +979,12 @@ extension WindowManager: WindowTransitionTarget {
         case let .moveWindowToScreen(window, screen):
             let currentScreen = window.screen()
             window.moveScaled(to: screen)
-            if currentScreen != nil {
-                distributeEventToScreen(screen, change: .remove(window: window))
-                markScreenForReflow(screen)
+            if let currentScreen = currentScreen {
+                distributeEventToScreen(currentScreen, change: .remove(window: window))
+                markScreenForReflow(currentScreen)
             }
             distributeEventToScreen(screen, change: .add(window: window))
+            markScreenForReflow(screen)
             window.focus()
         case let .moveWindowToSpaceAtIndex(window, spaceIndex, sourceSpaceIndex):
             guard

@@ -87,6 +87,7 @@ enum ConfigurationKey: String {
     case layoutHUD = "enables-layout-hud"
     case layoutHUDOnSpaceChange = "enables-layout-hud-on-space-change"
     case windowCountHUD = "enables-window-count-hud"
+    case newWindowsToMainHUD = "enables-new-windows-to-main-hud"
     case useCanaryBuild = "use-canary-build"
     case newWindowsToMain = "new-windows-to-main"
     case followSpaceThrownWindows = "follow-space-thrown-windows"
@@ -99,6 +100,7 @@ enum ConfigurationKey: String {
     case restoreLayoutsOnLaunch = "restore-layouts-on-launch"
     case disablePaddingOnBuiltinDisplay = "disable-padding-on-builtin-display"
     case hideMenuBarIcon = "hide-menu-bar-icon"
+    case startWithTilingDisabled = "start-with-tiling-disabled"
 }
 
 extension ConfigurationKey: CaseIterable {}
@@ -139,6 +141,7 @@ enum CommandKey: String {
     case relaunchAmethyst = "relaunch-amethyst"
     case increaseWindowMaxCount = "increase-window-max-count"
     case decreaseWindowMaxCount = "decrease-window-max-count"
+    case toggleNewWindowsToMain = "toggle-new-windows-to-main"
 }
 
 protocol UserConfigurationDelegate: AnyObject {
@@ -640,6 +643,10 @@ class UserConfiguration: NSObject {
         return storage.bool(forKey: .windowCountHUD)
     }
 
+    func enablesNewWindowsToMainHUD() -> Bool {
+        return storage.bool(forKey: .newWindowsToMainHUD)
+    }
+
     func useCanaryBuild() -> Bool {
         return storage.bool(forKey: .useCanaryBuild)
     }
@@ -706,6 +713,11 @@ class UserConfiguration: NSObject {
         setConfigurationValueWithKVO(Float(newCount), forKey: .windowMaxCount)
     }
 
+    func toggleNewWindowsToMain() {
+        let currentValue = sendNewWindowsToMainPane()
+        setConfigurationValueWithKVO(!currentValue, forKey: .newWindowsToMain)
+    }
+
     func windowResizeStep() -> CGFloat {
         return CGFloat(storage.float(forKey: .windowResizeStep) / 100.0)
     }
@@ -763,6 +775,10 @@ class UserConfiguration: NSObject {
 
     func hideMenuBarIcon() -> Bool {
         return storage.bool(forKey: .hideMenuBarIcon)
+    }
+
+    func startWithTilingDisabled() -> Bool {
+        return storage.bool(forKey: .startWithTilingDisabled)
     }
 }
 
