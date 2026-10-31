@@ -97,6 +97,8 @@ enum ConfigurationKey: String {
     case screenPaddingTop = "screen-padding-top"
     case screenPaddingBottom = "screen-padding-bottom"
     case debugLayoutInfo = "debug-layout-info"
+    case debugLogDetails = "debug-log-details"
+    case debugLogWarnings = "debug-log-warnings"
     case restoreLayoutsOnLaunch = "restore-layouts-on-launch"
     case disablePaddingOnBuiltinDisplay = "disable-padding-on-builtin-display"
     case hideMenuBarIcon = "hide-menu-bar-icon"
@@ -629,6 +631,18 @@ class UserConfiguration: NSObject {
 
     func mouseResizesWindows() -> Bool {
         return storage.bool(forKey: .mouseResizesWindows)
+    }
+
+    func logsDiagnosticDetails() -> Bool {
+        return storage.bool(forKey: .debugLogDetails)
+    }
+
+    func logsWarningsAndErrors() -> Bool {
+        return storage.bool(forKey: .debugLogWarnings)
+    }
+
+    func setLogsWarningsAndErrors(_ logsWarningsAndErrors: Bool) {
+        storage.set(logsWarningsAndErrors, forKey: .debugLogWarnings)
     }
 
     func enablesLayoutHUD() -> Bool {
