@@ -237,6 +237,11 @@ toggle-focus-follows-mouse:
   mod: mod2
   key: x
 
+# Turn on or off animate-windows (unbound by default; uncomment and set a mod and key to enable).
+# toggle-animate-windows:
+#   mod: mod2
+#   key: <NONE>
+
 # Automatically quit and reopen Amethyst.
 relaunch-amethyst:
   mod: mod2
@@ -278,6 +283,14 @@ ignore-menu-bar: false
 
 # true if menu bar icon should be hidden (default false).
 hide-menu-bar-icon: false
+
+# true if windows should animate to their new frames when the layout changes (default false). Granting Amethyst the
+# Screen Recording permission enables smooth snapshot-based motion; without it the real windows are moved instead.
+# Respects the system Reduce Motion setting.
+animate-windows: false
+
+# Duration of the window movement animation in seconds, between 0.05 and 1.0 (default 0.3)
+window-animation-duration: 0.3
 
 # true if windows smaller than the small-window-size threshold should be floating by default (default true)
 float-small-windows: true
