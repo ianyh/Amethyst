@@ -234,7 +234,7 @@
     "screen-padding-right": 0,
     "debug-layout-info": false,
     "debug-log-details": false,
-    "debug-log-warnings": false,
+    "debug-log-warnings": true,
     "restore-layouts-on-launch": true,
     "start-with-tiling-disabled": false
 }

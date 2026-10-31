@@ -30,7 +30,15 @@ class DiagnosticLoggingTests: QuickSpec {
         }
 
         describe("the logging preferences") {
-            it("are off until set and read back once set") {
+            it("ship with warnings and errors on and every detail off") {
+                let url = Bundle.main.url(forResource: "default", withExtension: "amethyst")!
+                let defaults = try! JSONSerialization.jsonObject(with: Data(contentsOf: url)) as! [String: Any]
+
+                expect(defaults["debug-log-warnings"] as? Bool).to(beTrue())
+                expect(defaults["debug-log-details"] as? Bool).to(beFalse())
+            }
+
+            it("read back what is set") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
 
