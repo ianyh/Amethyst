@@ -34,7 +34,7 @@ private final class AdoptionHarness {
                 self.delays.append(delay)
                 self.pending.append(work)
             },
-            report: { self.reports.append($0) },
+            report: { message, _ in self.reports.append(message) },
             finished: { self.finishedCount += 1 }
         )
     }

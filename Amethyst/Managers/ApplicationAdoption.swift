@@ -7,10 +7,6 @@
 //
 
 import Foundation
-import os.log
-
-/// Log for how applications and their windows come under management: adoption attempts, the waits between them, the reasons they fail, and windows that float by default.
-let applicationLog = OSLog(subsystem: "com.amethyst.Amethyst", category: "applications")
 
 /**
  Repeats an attempt to bring an application under management until it succeeds.
@@ -27,7 +23,7 @@ final class ApplicationAdoption {
     private let attempt: (_ completion: @escaping (Error?) -> Void) -> Void
     private let isRunning: () -> Bool
     private let schedule: (_ delay: TimeInterval, _ work: @escaping () -> Void) -> Void
-    private let report: (String) -> Void
+    private let report: (_ message: String, _ isGiveUp: Bool) -> Void
     private let finished: () -> Void
     private var failures = 0
 
@@ -37,7 +33,7 @@ final class ApplicationAdoption {
          - attempt: Makes one attempt and passes `nil` to its completion on success, or the error on failure.
          - isRunning: Whether the application is still running. A repeated attempt is skipped once it is not.
          - schedule: Runs work after a delay. The default waits on the main queue.
-         - report: Receives one line per failure, give-up, late success, or quit. The default writes to the unified log.
+         - report: Receives one line per failure, give-up, late success, or quit, and whether the line reports a give-up. The default logs give-ups as warnings and the rest as information.
          - finished: Called once, when the attempts stop for any reason.
      */
     init(
@@ -47,8 +43,12 @@ final class ApplicationAdoption {
         schedule: @escaping (_ delay: TimeInterval, _ work: @escaping () -> Void) -> Void = { delay, work in
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
         },
-        report: @escaping (String) -> Void = { message in
-            os_log("%{public}@", log: applicationLog, type: .default, message)
+        report: @escaping (_ message: String, _ isGiveUp: Bool) -> Void = { message, isGiveUp in
+            if isGiveUp {
+                log.warning(message)
+            } else {
+                log.info(message)
+            }
         },
         finished: @escaping () -> Void = {}
     ) {
@@ -70,7 +70,7 @@ final class ApplicationAdoption {
     private func handle(_ error: Error?) {
         guard let error = error else {
             if failures > 0 {
-                report("Observing \(name) after \(failures) failed attempt\(failures == 1 ? "" : "s")")
+                report("Observing \(name) after \(failures) failed attempt\(failures == 1 ? "" : "s")", false)
             }
             finished()
             return
@@ -79,16 +79,16 @@ final class ApplicationAdoption {
         failures += 1
 
         guard failures <= Self.delays.count else {
-            report("Gave up observing \(name) after \(failures) attempts: \(error)")
+            report("Gave up observing \(name) after \(failures) attempts: \(error)", true)
             finished()
             return
         }
 
         let delay = Self.delays[failures - 1]
-        report("Could not observe \(name) on attempt \(failures): \(error); trying again in \(Int(delay))s")
+        report("Could not observe \(name) on attempt \(failures): \(error); trying again in \(Int(delay))s", false)
         schedule(delay) {
             guard self.isRunning() else {
-                self.report("Stopped trying to observe \(self.name): it has quit")
+                self.report("Stopped trying to observe \(self.name): it has quit", false)
                 self.finished()
                 return
             }

@@ -9,7 +9,6 @@
 import AppKit
 import Cocoa
 import Foundation
-import os.log
 import RxSwift
 
 /// Delegate for handling application observer events.
@@ -252,15 +251,6 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
                 } catch {
                     let applicationTitle = self.application.title() ?? "<unknown>"
                     log.error("Failed to add observer \(notification) on application \(applicationTitle) (\(self.application.pid())): \(error)")
-                    os_log(
-                        "Failed to add observer %{public}@ on application %{public}@ (pid %d): %{public}@",
-                        log: applicationLog,
-                        type: .error,
-                        notification.string,
-                        applicationTitle,
-                        self.application.pid(),
-                        "\(error)"
-                    )
                     self.removeObservers(notifications: notifications)
                     throw error
                 }

@@ -9,7 +9,6 @@
 import AppKit
 import Carbon
 import Foundation
-import os.log
 import RxSwift
 import Silica
 import SwiftyJSON
@@ -181,7 +180,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
             return
         }
 
-        os_log("Adopting %{public}@ (pid %d) on activation", log: applicationLog, type: .default, activatedApplication.localizedName ?? "<unknown>", pid)
+        log.info("Adopting \(activatedApplication.localizedName ?? "<unknown>") (pid \(pid)) on activation")
         add(runningApplication: activatedApplication)
     }
 
@@ -527,7 +526,7 @@ extension WindowManager {
         guard let application = applicationWithPID(window.pid()) else {
             log.error("Tried to add a window without an application: \(window)")
             let applicationName = NSRunningApplication(processIdentifier: window.pid())?.localizedName ?? "<unknown>"
-            os_log("A window of %{public}@ (pid %d) has no adopted application", log: applicationLog, type: .error, applicationName, window.pid())
+            log.error("A window of \(applicationName) (pid \(window.pid())) has no adopted application")
             return
         }
 
@@ -576,7 +575,7 @@ extension WindowManager {
             .subscribe(
                 onError: { error in
                     let applicationName = application.title() ?? "<unknown>"
-                    os_log("Could not track a window of %{public}@ (pid %d): %{public}@", log: applicationLog, type: .error, applicationName, window.pid(), "\(error)")
+                    log.error("Could not track a window of \(applicationName) (pid \(window.pid())): \(error)")
                     log.error("Failed to track window: \(window) - \(error)")
                 }
             )
@@ -624,7 +623,7 @@ extension WindowManager {
         case .reliable(.floating), .unreliable(.floating):
             let frame = window.frame()
             let size = frame.isNull ? "unknown" : "\(Int(frame.width))x\(Int(frame.height))"
-            os_log("Floating a window of %{public}@ (pid %d) by default, size %{public}@", log: applicationLog, type: .default, application.title() ?? "<unknown>", window.pid(), size)
+            log.info("Floating a window of \(application.title() ?? "<unknown>") (pid \(window.pid())) by default, size \(size)")
             windows.setFloating(true, forWindow: window)
         case .reliable(.notFloating), .unreliable(.notFloating):
             windows.setFloating(false, forWindow: window)
