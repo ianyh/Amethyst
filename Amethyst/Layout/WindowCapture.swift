@@ -7,13 +7,10 @@
 //
 
 import Cocoa
-import os.log
 
-private let captureLog = OSLog(subsystem: "com.amethyst.Amethyst", category: "animation")
-
-/// Writes a line about window capture to the system log, in the same category as the animation timings.
+/// Logs a line about window capture as a warning: a pause means the window server stopped answering, and the resume closes it.
 private func logCapture(_ message: String) {
-    os_log("%{public}s", log: captureLog, type: .info, message)
+    log.warning(message)
 }
 
 /**

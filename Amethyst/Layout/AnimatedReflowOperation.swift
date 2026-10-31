@@ -8,15 +8,14 @@
 
 import CoreGraphics
 import Foundation
-import os.log
 
-/// Unified-log channel for animation timing, readable with `log stream --info --predicate 'subsystem == "com.amethyst.Amethyst"'` even in release builds.
-private let animationLog = OSLog(subsystem: "com.amethyst.Amethyst", category: "animation")
-
-/// Records an animation event on both channels: the app's logger, which only prints in debug builds, and the unified log, which is all a release build has.
-private func logAnimation(_ message: String) {
-    log.debug(message)
-    os_log("%{public}s", log: animationLog, type: .info, message)
+/// Records an animation event through the app's logger: as a warning when something went wrong, otherwise as debugging detail.
+private func logAnimation(_ message: String, asWarning: Bool = false) {
+    if asWarning {
+        log.warning(message)
+    } else {
+        log.debug(message)
+    }
 }
 
 /// How long to wait for slow applications to apply their last frame before moving on.
@@ -766,7 +765,7 @@ final class AnimatedReflowOperation<Window: WindowType>: Operation, @unchecked S
             // The render server pauses animations, and their completions, while a display sleeps or the main thread stalls.
             // That is not a cancellation: the motion is over as far as anyone can see, so carry on to the exact placement.
             if remainingWaits <= 0 {
-                logAnimation("Animated reflow: the glide never reported completion; settling anyway")
+                logAnimation("Animated reflow: the glide never reported completion; settling anyway", asWarning: true)
                 stalled = true
                 break
             }
@@ -995,7 +994,7 @@ final class AnimatedReflowOperation<Window: WindowType>: Operation, @unchecked S
         guard let captureImages = captureImages, let fresh = captureImages(requests), fresh.count == indices.count else {
             if isFinalAttempt {
                 let pids = indices.map { String(participants[$0].pid) }.joined(separator: ", ")
-                logAnimation("Animated reflow: recapture failed for pids \(pids)")
+                logAnimation("Animated reflow: recapture failed for pids \(pids)", asWarning: true)
             }
             return (nil, [], unverifiable)
         }
@@ -1021,7 +1020,7 @@ final class AnimatedReflowOperation<Window: WindowType>: Operation, @unchecked S
         }
 
         if isFinalAttempt, !stale.isEmpty {
-            logAnimation("Animated reflow: window still not redrawn at handoff, keeping old image: \(stale.joined(separator: "; "))")
+            logAnimation("Animated reflow: window still not redrawn at handoff, keeping old image: \(stale.joined(separator: "; "))", asWarning: true)
         }
 
         guard !dissolved.isEmpty else {
