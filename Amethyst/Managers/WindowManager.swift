@@ -970,6 +970,33 @@ extension WindowManager {
     }
 }
 
+// MARK: Drag hand-over
+
+/// What a move notification for a tracked, tiled window calls for.
+enum HandOverOutcome: Equatable {
+    /// The window is still in the user's hand; it is checked again once the mouse button is up.
+    case checkAgain
+    /// The window lies on the screen whose layout holds it, or on no screen that can be named.
+    case stay
+    /// The window lies on another screen than the one whose layout holds it.
+    case move(fromScreen: String, toScreen: String)
+
+    /// Decides what a move notification calls for. The screen lookups run only once the mouse button is up, so a window being dragged costs no frame read.
+    static func decide(
+        mouseButtonsArePressed: Bool,
+        currentScreenID: () -> String?,
+        previousScreenID: () -> String?
+    ) -> HandOverOutcome {
+        guard !mouseButtonsArePressed else {
+            return .checkAgain
+        }
+        guard let current = currentScreenID(), let previous = previousScreenID(), previous != current else {
+            return .stay
+        }
+        return .move(fromScreen: previous, toScreen: current)
+    }
+}
+
 // MARK: Window Transition
 extension WindowManager: WindowTransitionTarget {
     func executeTransition(_ transition: WindowTransition<Window>) {
@@ -1042,45 +1069,51 @@ extension WindowManager: WindowTransitionTarget {
     /**
      Hands a window over to the screen it now lies on when that is not the screen whose layout holds it, the way a throw does: the old screen drops it, the new screen takes it, and both reflow.
 
-     A window still being dragged is left where the user has it; the check runs again once the mouse button is up.
+     A window still being dragged is left where the user has it; the check runs again a quarter of a second later, and keeps doing so until the mouse button is up.
      */
     private func handOverIfMoved(_ window: Window) {
         guard windows.isWindowTracked(window), !windows.isWindowFloating(window) else {
             return
         }
 
-        guard NSEvent.pressedMouseButtons == 0 else {
-            let id = window.id()
-            guard !pendingHandOvers.contains(id) else {
-                return
+        let outcome = HandOverOutcome.decide(
+            mouseButtonsArePressed: NSEvent.pressedMouseButtons != 0,
+            currentScreenID: { window.screen()?.screenID() },
+            previousScreenID: { self.windows.screenID(for: window) }
+        )
+
+        switch outcome {
+        case .stay:
+            return
+        case .checkAgain:
+            checkHandOverAgain(for: window)
+        case let .move(previousScreenID, screenID):
+            log.debug("Handing window over from screen \(previousScreenID) to screen \(screenID): \(window)")
+            windows.setScreenID(screenID, for: window)
+
+            if let previousScreen = self.screen(withID: previousScreenID) {
+                distributeEventToScreen(previousScreen, change: .remove(window: window))
+                markScreenForReflow(previousScreen)
             }
-            pendingHandOvers.insert(id)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
-                self?.pendingHandOvers.remove(id)
-                self?.handOverIfMoved(window)
+
+            if let screen = self.screen(withID: screenID) {
+                distributeEventToScreen(screen, change: .add(window: window))
+                markScreenForReflow(screen)
             }
+        }
+    }
+
+    /// Runs the hand-over check for the window again after a quarter of a second, with one check waiting per window at a time.
+    private func checkHandOverAgain(for window: Window) {
+        let id = window.id()
+        guard !pendingHandOvers.contains(id) else {
             return
         }
-
-        guard
-            let screen = window.screen(),
-            let screenID = screen.screenID(),
-            let previousScreenID = windows.screenID(for: window),
-            previousScreenID != screenID
-        else {
-            return
+        pendingHandOvers.insert(id)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            self?.pendingHandOvers.remove(id)
+            self?.handOverIfMoved(window)
         }
-
-        log.debug("Handing window over from screen \(previousScreenID) to screen \(screenID): \(window)")
-        windows.setScreenID(screenID, for: window)
-
-        if let previousScreen = self.screen(withID: previousScreenID) {
-            distributeEventToScreen(previousScreen, change: .remove(window: window))
-            markScreenForReflow(previousScreen)
-        }
-
-        distributeEventToScreen(screen, change: .add(window: window))
-        markScreenForReflow(screen)
     }
 
     private func screen(withID screenID: String) -> Screen? {
