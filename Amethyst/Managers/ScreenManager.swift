@@ -7,12 +7,9 @@
 //
 
 import Foundation
-import os.log
 import Silica
 
 /// Records reflow requests that were dropped before any window moved.
-private let reflowLog = OSLog(subsystem: "com.amethyst.Amethyst", category: "reflow")
-
 /// Information about a layout for display in menus
 struct LayoutMenuItemInfo {
     let key: String
@@ -263,7 +260,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
 
         guard space?.type == CGSSpaceTypeUser else {
-            logSkippedReflow("the current Space is not a user Space", on: screenID, type: .info)
+            logSkippedReflow("the current Space is not a user Space", on: screenID, expected: true)
             return
         }
 
@@ -323,10 +320,14 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         reflowOperationQueue.addOperation(completeOperation)
     }
 
-    /// Writes a line to the system log saying why a reflow request was dropped. Expected drops, such as a full-screen
-    /// Space being frontmost, are logged at the info level so that they stay out of the persisted log.
-    private func logSkippedReflow(_ reason: String, on screenID: String = "unknown", type: OSLogType = .default) {
-        os_log("Reflow skipped on screen %{public}@: %{public}@", log: reflowLog, type: type, screenID, reason)
+    /// Logs why a reflow request was dropped: as a warning, or as information for an expected drop such as a full-screen Space being frontmost.
+    private func logSkippedReflow(_ reason: String, on screenID: String = "unknown", expected: Bool = false) {
+        let message = "Reflow skipped on screen \(screenID): \(reason)"
+        if expected {
+            log.info(message)
+        } else {
+            log.warning(message)
+        }
     }
 
     func updateCurrentLayout(_ updater: (Layout<Window>) -> Void) {
