@@ -56,16 +56,15 @@ class FocusFollowsMouseManager<Delegate: FocusFollowsMouseManagerDelegate> {
             return
         }
 
-        guard let screen = Screen.availableScreens.first(where: { $0.frameIncludingDockAndMenu().contains(event.locationInWindow) }) else {
+        let mousePoint = Screen.convertFromCocoa(NSPointToCGPoint(event.locationInWindow))
+
+        guard let screen = Screen.availableScreens.first(where: { $0.frameIncludingDockAndMenu().contains(mousePoint) }) else {
             return
         }
 
         guard let windows = delegate?.windows(onScreen: screen) else {
             return
         }
-
-        var mousePoint = NSPointToCGPoint(event.locationInWindow)
-        mousePoint.y = Screen.globalHeight() - mousePoint.y + screen.frameIncludingDockAndMenu().origin.y
 
         if let focusedWindow = Window.currentlyFocused() {
             // If the point is already in the frame of the focused window do nothing.

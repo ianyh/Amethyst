@@ -52,14 +52,25 @@ protocol ScreenType: Equatable {
 
 extension ScreenType {
     /**
-     The total height of all screens taking relative layout into account.
-     
-     Depending on the arrangement of multiple screens, it is possible to get a height that is larger than any of the individual screens. This function looks at each display frame's y-coordinates to calculate that height.
+     Converts a point from Cocoa's global coordinates (e.g., `NSEvent.mouseLocation`) to the coordinates used by screen and window frames.
+
+     Cocoa puts the origin at the bottom-left of the primary screen with y increasing upwards; screen and window frames put it at the top-left of the primary screen with y increasing downwards. Both systems share the primary screen as their reference, so the flip only depends on its height, regardless of how other screens are arranged.
      */
-    static func globalHeight() -> CGFloat {
-        let maxY = availableScreens.map { $0.frameIncludingDockAndMenu().maxY }.max() ?? 0
-        let minY = availableScreens.map { $0.frameIncludingDockAndMenu().minY }.min() ?? 0
-        return maxY - minY
+    static func convertFromCocoa(_ point: CGPoint) -> CGPoint {
+        guard let primaryScreen = availableScreens.first(where: { $0.frameIncludingDockAndMenu().origin == .zero }) else {
+            return point
+        }
+
+        return CGPoint(x: point.x, y: primaryScreen.frameIncludingDockAndMenu().height - point.y)
+    }
+
+    /// The screen whose display holds the whole of `frame`, or `nil` when the frame straddles displays, lies outside them all, or is null.
+    static func screen(containing frame: CGRect) -> Self? {
+        guard !frame.isNull else {
+            return nil
+        }
+
+        return availableScreens.first { $0.frameIncludingDockAndMenu().contains(frame) }
     }
 
     /// The frame adjusted for app modifiers; e.g., window margins.
