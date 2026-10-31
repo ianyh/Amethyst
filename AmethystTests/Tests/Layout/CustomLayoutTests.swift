@@ -157,6 +157,66 @@ class CustomLayoutTests: QuickSpec {
             }
         }
 
+        describe("scale factor") {
+            it("uses a frame's own scale factor and otherwise derives one from the frame") {
+                let screen = TestScreen(frame: CGRect(x: 0, y: 0, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [TestWindow(element: nil)!, TestWindow(element: nil)!]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = CustomLayout<TestWindow>(key: "scale-factor", fileURL: Bundle.layoutFile(key: "scale-factor")!)
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(frameAssignments.count).to(equal(2))
+                expect(frameAssignments[0].frameAssignment.resizeRules.scaleFactor).to(equal(2))
+                expect(frameAssignments[1].frameAssignment.resizeRules.scaleFactor).to(equal(4))
+            }
+        }
+
+        describe("resize step") {
+            it("hands commands the user's resize step") {
+                let defaults = UserDefaults.standard
+                let savedStep = defaults.object(forKey: "window-resize-step")
+                defaults.set(10, forKey: "window-resize-step")
+                defer { defaults.set(savedStep, forKey: "window-resize-step") }
+
+                let screen = TestScreen(frame: CGRect(x: 0, y: 0, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [TestWindow(element: nil)!, TestWindow(element: nil)!]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = CustomLayout<TestWindow>(key: "resize-step-commands", fileURL: Bundle.layoutFile(key: "resize-step-commands")!)
+
+                var frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                expect(frameAssignments[0].frameAssignment.frame.width).to(equal(1000))
+
+                layout.expandMainPane()
+                frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                expect(frameAssignments[0].frameAssignment.frame.width).to(equal(1200))
+
+                layout.shrinkMainPane()
+                layout.shrinkMainPane()
+                frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                expect(frameAssignments[0].frameAssignment.frame.width).to(equal(800))
+            }
+        }
+
         describe("columns layout") {
             it("defines a name") {
                 let layout = CustomLayout<TestWindow>(key: "uniform-columns", fileURL: Bundle.layoutFile(key: "uniform-columns")!)

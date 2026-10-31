@@ -31,9 +31,40 @@ extension FileManager {
         return layoutsDirectory
     }
 
+    /// The folder of layouts shipped inside the app, when the app carries one.
+    var bundledLayoutsDirectory: URL? {
+        return Bundle.main.url(forResource: "Layouts", withExtension: nil)
+    }
+
+    /// Every folder custom layouts are read from, the user's own folder first so that a file there takes precedence over a bundled one of the same key.
+    func layoutsDirectories() throws -> [URL] {
+        return [try layoutsDirectory()] + (bundledLayoutsDirectory.map { [$0] } ?? [])
+    }
+
+    /// The file for a custom layout key: the first of the folders that holds `<key>.js`, or the user's folder when none does.
     func layoutFile(key: String) throws -> URL {
-        let layoutsDirectory = try self.layoutsDirectory()
-        return layoutsDirectory.appendingPathComponent("\(key).js")
+        return layoutFile(key: key, in: try layoutsDirectories())
+    }
+
+    /// The file named `<key>.js` in the first of `directories` that holds one, or in the first directory when none does.
+    func layoutFile(key: String, in directories: [URL]) -> URL {
+        let candidates = directories.map { $0.appendingPathComponent("\(key).js") }
+        return candidates.first { fileExists(atPath: $0.path) } ?? candidates[0]
+    }
+
+    /// The keys of the layout files in `directories`, each key once, in the order of the first directory that holds it.
+    func customLayoutKeys(in directories: [URL]) -> [String] {
+        var keys: [String] = []
+        for directory in directories {
+            let files = (try? contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: [])) ?? []
+            for file in files where file.pathExtension == "js" {
+                let key = file.deletingPathExtension().lastPathComponent
+                if !keys.contains(key) {
+                    keys.append(key)
+                }
+            }
+        }
+        return keys
     }
 }
 
@@ -248,16 +279,9 @@ enum LayoutType<Window: WindowType> {
             .map { ($0.layoutKey, $0.layoutName) }
 
         do {
-            let layoutsDirectory = try FileManager.default.layoutsDirectory()
-            let customLayoutFiles = try FileManager.default.contentsOfDirectory(
-                at: layoutsDirectory,
-                includingPropertiesForKeys: nil,
-                options: []
-            ).filter { $0.pathExtension == "js" }
-
-            let customLayouts = customLayoutFiles
-                .map { $0.deletingPathExtension().lastPathComponent }
-                .map { ($0, layoutNameForKey($0)!) }
+            let directories = try FileManager.default.layoutsDirectories()
+            let customLayouts = FileManager.default.customLayoutKeys(in: directories)
+                .compactMap { key in layoutNameForKey(key).map { (key, $0) } }
             layoutTypes.append(contentsOf: customLayouts)
         } catch {
             log.error("failed to parse custom layouts")

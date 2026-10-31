@@ -8,6 +8,8 @@ Layouts are located in `~/Library/Application Support/Amethyst/Layouts/`. This d
 
 At the moment, files must be manually moved to this directory. There is no way to import them through the app.
 
+An app build can also ship layouts of its own in a `Layouts` folder inside the app bundle's resources. Those are picked up the same way. A file in your own layouts directory takes precedence over a bundled file with the same name.
+
 ## Defining a Layout
 
 At the root of the file you must define a function named `layout`. This function should return an object with the following properties.
@@ -26,10 +28,12 @@ An object defining any initial state to be tracked by the layout.
 
 An object defining the commands the layout responds to. There are four available custom commands keyed as `command1`, `command2`, `command3`, and `command4`, in addition to paned layout commands keyed as `expandMain`, `shrinkMain`, `increaseMain`, and `decreaseMain`. Commands are objects with a `description` string to describe what the command does and an `updateState` function.
 
-The `updateState` function takes two arguments—`state` and `focusedWindowID`—and must return a new state object.
+The `updateState` function takes three arguments—`state`, `focusedWindowID`, and `settings`—and must return a new state object.
 
 * `state`: the current layout state
-* `focusedWindowID`: the currently focused window
+* `focusedWindowID`: the currently focused window, or `undefined` when no window is focused
+* `settings`: the user's preferences that bear on commands
+    * `windowResizeStep`: the fraction of the screen, between 0 and 1, that the expand and shrink commands are expected to move the main pane by
 
 #### `extends`
 
@@ -86,6 +90,7 @@ A frame is an object with four required properties and two optional properties.
 * `height`: pixel height
 * (optional) `isMain`: boolean indicating whether the window is in the main pane (default: `true`)
 * (optional) `unconstrainedDimension`: a string indicating on which axis the window is able to be resized via mouse (values: `horizontal`, `vertical`; default: `horizontal`)
+* (optional) `scaleFactor`: the number of times the pane that the ratio governs fits across the screen along the unconstrained dimension (default: the screen's width or height divided by the frame's). Set it when that pane is larger than the window, for example when several windows stack inside the main pane or two side panes share the space the ratio leaves.
 
 Note that frames are in a global space, not relative to a given screen.
 
