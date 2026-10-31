@@ -873,9 +873,7 @@ extension WindowManager: MouseStateKeeperDelegate {
         let windows = activeWindows(on: screen)
 
         // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
-        let flippedPointerLocation = NSPointToCGPoint(NSEvent.mouseLocation)
-        let unflippedY = Screen.globalHeight() - flippedPointerLocation.y + screen.frameIncludingDockAndMenu().origin.y
-        let pointerLocation = NSPointToCGPoint(NSPoint(x: flippedPointerLocation.x, y: unflippedY))
+        let pointerLocation = Screen.convertFromCocoa(NSPointToCGPoint(NSEvent.mouseLocation))
 
         if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(), let layout = screenManager.currentLayout {
             let windowSet = self.windows.windowSet(forActiveWindowsOnScreen: screen)

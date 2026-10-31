@@ -85,6 +85,7 @@
 		4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */; };
 		DE5C0A2400000000000000A4 /* ApplicationAdoptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A2300000000000000A3 /* ApplicationAdoptionTests.swift */; };
 		DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */; };
+		4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */; };
 		4087BB042D447F480062A52B /* static-ratio-tall-native-commands.js in Resources */ = {isa = PBXBuildFile; fileRef = 4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */; };
 		409645B31CEE8D950042F459 /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 409645B21CEE8D950042F459 /* LogManager.swift */; };
 		40A7AEA7232ECF3000E79964 /* Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A7AEA6232ECF3000E79964 /* Windows.swift */; };
@@ -225,6 +226,7 @@
 		4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotKeyManagerTests.swift; sourceTree = "<group>"; };
 		DE5C0A2300000000000000A3 /* ApplicationAdoptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationAdoptionTests.swift; sourceTree = "<group>"; };
 		DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSpacesInfoTests.swift; sourceTree = "<group>"; };
+		DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTests.swift; sourceTree = "<group>"; };
 		4087BB032D447F480062A52B /* static-ratio-tall-native-commands.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "static-ratio-tall-native-commands.js"; sourceTree = "<group>"; };
 		409645B21CEE8D950042F459 /* LogManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
 		40A7AEA6232ECF3000E79964 /* Windows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Windows.swift; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 			isa = PBXGroup;
 			children = (
 				DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */,
+				DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -879,6 +882,7 @@
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
 				DE5C0A2400000000000000A4 /* ApplicationAdoptionTests.swift in Sources */,
 				DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */,
+				4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
 				404541762697C62400861BE8 /* TestBundle.swift in Sources */,
