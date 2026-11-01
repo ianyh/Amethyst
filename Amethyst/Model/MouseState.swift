@@ -29,6 +29,7 @@ protocol MouseStateKeeperDelegate: AnyObject {
     associatedtype Window: WindowType
     func recommendMainPaneRatio(_ ratio: CGFloat)
     func swapDraggedWindowWithDropzone(_ draggedWindow: Window)
+    func didReleaseLeftMouseButton()
 }
 
 /**
@@ -96,6 +97,7 @@ class MouseStateKeeper<Delegate: MouseStateKeeperDelegate> {
             case .pointing:
                 self.state = .pointing
             }
+            delegate?.didReleaseLeftMouseButton()
 
         default: ()
         }
