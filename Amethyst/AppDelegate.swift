@@ -37,11 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             log.addDestination(ConsoleDestination())
         #endif
 
-        if CommandLine.arguments.contains("--log") {
-            let destination = ConsoleDestination()
-            destination.useNSLog = true
-            log.addDestination(destination)
-        }
+        DiagnosticLogging.shared.start(commandLineRequestsDetails: CommandLine.arguments.contains("--log"))
 
         log.info("Logging is enabled")
         log.debug("Debug logging is enabled")
