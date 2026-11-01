@@ -233,6 +233,10 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
                 }
             }
 
+            if let factor = frame.objectForKeyedSubscript("scaleFactor"), factor.isNumber, factor.toDouble() > 0 {
+                scaleFactor = CGFloat(factor.toDouble())
+            }
+
             let isMain = frame.objectForKeyedSubscript("isMain")?.toBool() ?? true
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: unconstrainedDimension, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment<Window>(
@@ -298,12 +302,15 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
 
         let focusedWindowID = Window.currentlyFocused().flatMap { idHash(forWindowID: $0.id()) }
+        let settings: [String: Any] = [
+            "windowResizeStep": UserConfiguration.shared.windowResizeStep()
+        ]
         let updateStateArgs: [Any]? = state.flatMap { state in
-            if let id = focusedWindowID {
-                return [state, id]
-            } else {
-                return [state]
+            guard let context = self.context else {
+                return nil
             }
+            let undefinedValue = JSValue(undefinedIn: context) ?? JSValue(nullIn: context)!
+            return [state, focusedWindowID ?? undefinedValue, settings]
         }
 
         guard let updatedState = updateState.call(withArguments: updateStateArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
