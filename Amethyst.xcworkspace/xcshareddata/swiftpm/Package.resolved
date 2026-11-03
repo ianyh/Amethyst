@@ -1,5 +1,5 @@
 {
-  "originHash" : "4ec027773e6442b62f78345d83f316698c344b03f17ee2f3a3a5933991b6cb9d",
+  "originHash" : "6302ab652ab50a266ce27f12e0cbb59ff237c8eaadefaf96bfadd086d7a29e7c",
   "pins" : [
     {
       "identity" : "cartography",
@@ -44,15 +44,6 @@
       "state" : {
         "branch" : "master",
         "revision" : "8fd8237c48c4c04bd25ef8bf073c6dd293d30a2c"
-      }
-    },
-    {
-      "identity" : "masshortcut",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/shpakovski/MASShortcut",
-      "state" : {
-        "branch" : "master",
-        "revision" : "6f2603c6b6cc18f64a799e5d2c9d3bbc467c413a"
       }
     },
     {

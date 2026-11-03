@@ -250,6 +250,37 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                     expect(rootNode.windowID).to(equal("0"))
                 }
 
+                it("keeps a sibling subtree when removing a leaf whose parent is the root") {
+                    let rootNode = TreeNode<TestWindow>()
+                    rootNode.insertWindowIDAtEnd("a")
+                    rootNode.insertWindowIDAtEnd("c")
+                    rootNode.insertWindowID("d", atPoint: "c")
+                    expect(rootNode.orderedWindowIDs()).to(equal(["a", "c", "d"]))
+
+                    // The root's other child is a subtree, not a leaf; it must become the root's contents, not vanish.
+                    rootNode.removeWindowID("a")
+
+                    expect(rootNode.treeIsValid()).to(beTrue())
+                    expect(rootNode.orderedWindowIDs()).to(equal(["c", "d"]))
+                    expect(rootNode.left?.parent).to(be(rootNode))
+                    expect(rootNode.right?.parent).to(be(rootNode))
+                }
+
+                it("empties the tree when the last window is removed") {
+                    let rootNode = TreeNode<TestWindow>()
+                    rootNode.insertWindowIDAtEnd("a")
+
+                    rootNode.removeWindowID("a")
+
+                    expect(rootNode.findWindowID("a")).to(beNil())
+                    expect(rootNode.orderedWindowIDs()).to(beEmpty())
+
+                    // A window added afterwards has the tree to itself rather than sharing it with a ghost.
+                    rootNode.insertWindowIDAtEnd("b")
+                    expect(rootNode.orderedWindowIDs()).to(equal(["b"]))
+                    expect(rootNode.windowID).to(equal("b"))
+                }
+
                 it("removes from a deep tree") {
                     let rootNode = TreeNode<TestWindow>()
 
@@ -538,6 +569,34 @@ class BinarySpacePartitioningLayoutTests: QuickSpec {
                         CGRect(x: 1000, y: 500, width: 1000, height: 500)
                     ]
                     expect(assignments.frames()).to(equal(expectedFrames), description: assignments.description(withExpectedFrames: expectedFrames))
+                }
+            }
+
+            describe("removing the last window") {
+                it("gives the next window the whole screen") {
+                    let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                    TestScreen.availableScreens = [screen]
+
+                    let first = TestWindow(element: nil)!
+                    let second = TestWindow(element: nil)!
+                    let windowSet = { (windows: [TestWindow]) -> WindowSet<TestWindow> in
+                        WindowSet<TestWindow>(
+                            windows: windows.map { LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false) },
+                            isWindowWithIDActive: { _ in return true },
+                            isWindowWithIDFloating: { _ in return false },
+                            windowForID: { id in return windows.first { $0.id() == id } }
+                        )
+                    }
+
+                    let layout = BinarySpacePartitioningLayout<TestWindow>()
+                    layout.updateWithChange(.add(window: first))
+                    expect(layout.frameAssignments(windowSet([first]), on: screen)!.frames()).to(equal([CGRect(x: 0, y: 0, width: 2000, height: 1000)]))
+
+                    layout.updateWithChange(.remove(window: first))
+                    layout.updateWithChange(.add(window: second))
+
+                    let assignments = layout.frameAssignments(windowSet([second]), on: screen)!
+                    expect(assignments.frames()).to(equal([CGRect(x: 0, y: 0, width: 2000, height: 1000)]))
                 }
             }
 
