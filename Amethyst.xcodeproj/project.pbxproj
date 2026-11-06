@@ -24,6 +24,7 @@
 		40111CC9223370FD003D20BD /* SIWindow+AmethystTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CC8223370FD003D20BD /* SIWindow+AmethystTests.swift */; };
 		40111CCB22342CC4003D20BD /* DebugPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40111CCA22342CC4003D20BD /* DebugPreferencesViewController.swift */; };
 		40111CCD22342CF3003D20BD /* DebugPreferencesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40111CCC22342CF3003D20BD /* DebugPreferencesViewController.xib */; };
+		C14F383574B14EDB835F21E9 /* RevealWindowTitles.mobileconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6144D410AD954B7890055821 /* RevealWindowTitles.mobileconfig */; };
 		401ADBAF2D55A1B6001FF53A /* recommended-main-pane-ratio.js in Resources */ = {isa = PBXBuildFile; fileRef = 401ADBAE2D55A1B6001FF53A /* recommended-main-pane-ratio.js */; };
 		401BBCB62333067F005118F8 /* ColumnLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BBCB52333067F005118F8 /* ColumnLayoutTests.swift */; };
 		401BC8981CE7E45300F89B3F /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401BC8971CE7E45300F89B3F /* WindowManager.swift */; };
@@ -185,6 +186,7 @@
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		402DB6E61742E41A00D1C936 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Amethyst-Info.plist"; sourceTree = "<group>"; };
+		6144D410AD954B7890055821 /* RevealWindowTitles.mobileconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = RevealWindowTitles.mobileconfig; sourceTree = "<group>"; };
 		402DB6EB1742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		402DB6F11742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -460,6 +462,7 @@
 			children = (
 				401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */,
 				402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */,
+				6144D410AD954B7890055821 /* RevealWindowTitles.mobileconfig */,
 				402DB6EA1742E41A00D1C936 /* InfoPlist.strings */,
 				402DB6F01742E41A00D1C936 /* Credits.rtf */,
 				40E705D7176EAD7800850DA6 /* default.amethyst */,
@@ -749,6 +752,7 @@
 			files = (
 				4058C47A1C54113D00B19D26 /* GeneralPreferencesViewController.xib in Resources */,
 				40111CCD22342CF3003D20BD /* DebugPreferencesViewController.xib in Resources */,
+				C14F383574B14EDB835F21E9 /* RevealWindowTitles.mobileconfig in Resources */,
 				40A88001240AF2D5005EE9C6 /* MousePreferencesViewController.xib in Resources */,
 				402DB6EC1742E41A00D1C936 /* InfoPlist.strings in Resources */,
 				402DB6F21742E41A00D1C936 /* Credits.rtf in Resources */,

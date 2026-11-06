@@ -83,5 +83,27 @@ class SystemLogDestinationTests: QuickSpec {
                 expect(title.title).to(equal("Set after the line was queued"))
             }
         }
+
+        describe("the profile that reveals window titles") {
+            it("is bundled with the app and turns on private data for the app's log lines only") {
+                guard let url = Bundle.main.url(forResource: "RevealWindowTitles", withExtension: "mobileconfig"),
+                      let data = try? Data(contentsOf: url),
+                      let profile = (try? PropertyListSerialization.propertyList(from: data, format: nil)) as? [String: Any],
+                      let payloads = profile["PayloadContent"] as? [[String: Any]],
+                      let logging = payloads.first,
+                      let subsystems = logging["Subsystems"] as? [String: [String: Any]],
+                      let options = subsystems[SystemLogDestination.subsystem]?["DEFAULT-OPTIONS"] as? [String: Any] else {
+                    fail("the profile is missing from the bundle or not in the expected shape")
+                    return
+                }
+
+                expect(profile["PayloadType"] as? String).to(equal("Configuration"))
+                expect(profile["PayloadScope"] as? String).to(equal("System"))
+                expect(payloads.count).to(equal(1))
+                expect(logging["PayloadType"] as? String).to(equal("com.apple.system.logging"))
+                expect(Array(subsystems.keys)).to(equal([SystemLogDestination.subsystem]))
+                expect(options["Enable-Private-Data"] as? Bool).to(beTrue())
+            }
+        }
     }
 }
