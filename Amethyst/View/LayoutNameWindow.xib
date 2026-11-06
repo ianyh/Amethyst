@@ -42,13 +42,6 @@
                             <color key="textColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
-                        <connections>
-                            <binding destination="UXh-pR-GPs" name="hidden" keyPath="values.debug-layout-info" id="aEw-Xh-xc7">
-                                <dictionary key="options">
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
-                                </dictionary>
-                            </binding>
-                        </connections>
                     </textField>
                 </subviews>
                 <constraints>
@@ -68,7 +61,6 @@
             </connections>
             <point key="canvasLocation" x="255.5" y="295"/>
         </window>
-        <userDefaultsController representsSharedInstance="YES" id="UXh-pR-GPs"/>
     </objects>
     <resources>
         <image name="amethyst" width="32" height="32"/>

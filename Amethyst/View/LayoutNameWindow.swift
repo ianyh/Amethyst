@@ -36,9 +36,9 @@ class LayoutNameWindow: NSWindow {
 
     // Display custom notification with dynamic sizing
     func displayNotification(title: String, description: String) {
-        // layoutDescriptionLabel?.isHidden = false
         layoutNameField?.stringValue = title
         layoutDescriptionLabel?.stringValue = description
+        layoutDescriptionLabel?.isHidden = description.isEmpty
 
         // Calculate size needed for both name and description
         let longerText = title.count > description.count ? title : description
