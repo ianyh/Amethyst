@@ -12,6 +12,24 @@ import SwiftyBeaver
 
 let log = SwiftyBeaver.self
 
+/// A window's title handed to a log line separately from its text, so the system log can store it as private data.
+/// The title is read only when a destination writes the line.
+struct PrivateWindowTitle: CustomStringConvertible {
+    private let read: () -> String
+
+    init<Window: WindowType>(of windows: Window...) {
+        read = { windows.compactMap { $0.title() }.joined(separator: " / ") }
+    }
+
+    var title: String {
+        return read()
+    }
+
+    var description: String {
+        return title
+    }
+}
+
 /// Writes log lines to the unified system log under the app's bundle identifier, in the category `diagnostics`.
 final class SystemLogDestination: BaseDestination {
     static let subsystem = Bundle.main.bundleIdentifier ?? "com.amethyst.Amethyst"
@@ -35,9 +53,23 @@ final class SystemLogDestination: BaseDestination {
     ) -> String? {
         let formatted = super.send(level, msg: msg, thread: thread, file: file, function: function, line: line, context: context)
         if let formatted = formatted {
-            os_log("%{public}s", log: systemLog, type: level == .error ? .error : .default, formatted)
+            let type: OSLogType = level == .error ? .error : .default
+            let fields = SystemLogDestination.fields(text: formatted, context: context)
+            if let title = fields.privateTitle {
+                os_log("%{public}s title: %{private}s", log: systemLog, type: type, fields.text, title)
+            } else {
+                os_log("%{public}s", log: systemLog, type: type, fields.text)
+            }
         }
         return formatted
+    }
+
+    /// The text of a line and, when the line names a window, the title to store as private data beside it.
+    static func fields(text: String, context: Any?) -> (text: String, privateTitle: String?) {
+        guard let title = (context as? PrivateWindowTitle)?.title, !title.isEmpty else {
+            return (text, nil)
+        }
+        return (text, title)
     }
 }
 
