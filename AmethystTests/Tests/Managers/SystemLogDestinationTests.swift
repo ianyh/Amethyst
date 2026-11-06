@@ -10,6 +10,7 @@
 import Foundation
 import Nimble
 import Quick
+import Security
 import SwiftyBeaver
 
 class SystemLogDestinationTests: QuickSpec {
@@ -85,10 +86,39 @@ class SystemLogDestinationTests: QuickSpec {
         }
 
         describe("the profile that reveals window titles") {
+            // A release build signs the profile, which wraps the property list in a CMS envelope.
+            func profileContents(of data: Data) -> Data? {
+                if (try? PropertyListSerialization.propertyList(from: data, format: nil)) != nil {
+                    return data
+                }
+
+                var decoder: CMSDecoder?
+                guard CMSDecoderCreate(&decoder) == errSecSuccess, let decoder = decoder else {
+                    return nil
+                }
+
+                let updated = data.withUnsafeBytes { bytes -> OSStatus in
+                    guard let base = bytes.baseAddress else {
+                        return errSecParam
+                    }
+                    return CMSDecoderUpdateMessage(decoder, base, data.count)
+                }
+                guard updated == errSecSuccess, CMSDecoderFinalizeMessage(decoder) == errSecSuccess else {
+                    return nil
+                }
+
+                var contents: CFData?
+                guard CMSDecoderCopyContent(decoder, &contents) == errSecSuccess else {
+                    return nil
+                }
+                return contents as Data?
+            }
+
             it("is bundled with the app and turns on private data for the app's log lines only") {
                 guard let url = Bundle.main.url(forResource: "RevealWindowTitles", withExtension: "mobileconfig"),
                       let data = try? Data(contentsOf: url),
-                      let profile = (try? PropertyListSerialization.propertyList(from: data, format: nil)) as? [String: Any],
+                      let contents = profileContents(of: data),
+                      let profile = (try? PropertyListSerialization.propertyList(from: contents, format: nil)) as? [String: Any],
                       let payloads = profile["PayloadContent"] as? [[String: Any]],
                       let logging = payloads.first,
                       let subsystems = logging["Subsystems"] as? [String: [String: Any]],
