@@ -34,5 +34,7 @@
 	<string>https://ianyh.com/amethyst/canary-appcast.xml</string>
 	<key>SUFeedURL</key>
 	<string>https://ianyh.com/amethyst/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>Wvk1l8PWrEoJOQYDykStt1MTYj0J8k7zcSyu73//05Y=</string>
 </dict>
 </plist>
