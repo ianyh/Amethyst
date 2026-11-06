@@ -44,13 +44,13 @@ class ScreenManagerTests: QuickSpec {
                 expect(content.title).to(equal("Tall"))
             }
 
-            it("says that tiling is disabled instead of naming the layout") {
+            it("says that tiling is disabled ahead of the layout name") {
                 let configuration = UserConfiguration(storage: TestConfigurationStorage())
                 configuration.tilingEnabled = false
                 let content = screenManager(with: configuration).layoutHUDContent()
 
-                expect(content.title).to(equal("Tiling Disabled"))
-                expect(content.description).to(equal("Tall"))
+                expect(content.title).to(equal("Tiling Disabled: Tall"))
+                expect(content.description).to(equal(""))
             }
         }
 
