@@ -85,6 +85,54 @@ class SystemLogDestinationTests: QuickSpec {
             }
         }
 
+        describe("the Debug tab") {
+            it("offers the profile only while something is written to the system log") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                var enabledWhileOff: Bool?
+                var enabledWhileWarningsOn: Bool?
+                var enabledWhileDetailsOn: Bool?
+                let work = {
+                    let controller = DebugPreferencesViewController(nibName: "DebugPreferencesViewController", bundle: nil)
+                    controller.configuration = configuration
+                    _ = controller.view
+
+                    storage.set(false, forKey: .debugLogDetails)
+                    storage.set(false, forKey: .debugLogWarnings)
+                    controller.updateRevealWindowTitlesButton()
+                    enabledWhileOff = controller.revealWindowTitlesButton?.isEnabled
+
+                    storage.set(true, forKey: .debugLogWarnings)
+                    controller.updateRevealWindowTitlesButton()
+                    enabledWhileWarningsOn = controller.revealWindowTitlesButton?.isEnabled
+
+                    storage.set(false, forKey: .debugLogWarnings)
+                    storage.set(true, forKey: .debugLogDetails)
+                    controller.updateRevealWindowTitlesButton()
+                    enabledWhileDetailsOn = controller.revealWindowTitlesButton?.isEnabled
+                }
+                if Thread.isMainThread {
+                    work()
+                } else {
+                    DispatchQueue.main.sync(execute: work)
+                }
+
+                expect(enabledWhileOff).to(beFalse())
+                expect(enabledWhileWarningsOn).to(beTrue())
+                expect(enabledWhileDetailsOn).to(beTrue())
+            }
+        }
+
+        describe("the pane the button opens") {
+            it("is System Settings' profiles pane") {
+                let pane = DebugPreferencesViewController.profilesPaneURL
+
+                expect(pane?.scheme).to(equal("x-apple.systempreferences"))
+                expect(pane?.absoluteString).to(contain("Profiles"))
+            }
+        }
+
         describe("the profile that reveals window titles") {
             // A release build signs the profile, which wraps the property list in a CMS envelope.
             func profileContents(of data: Data) -> Data? {
