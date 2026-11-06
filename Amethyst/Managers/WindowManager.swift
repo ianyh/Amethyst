@@ -361,6 +361,12 @@ extension WindowManager {
         }
     }
 
+    func displayTilingState() {
+        for screenManager in screens.screenManagers {
+            screenManager.displayTilingStateHUD()
+        }
+    }
+
     func displayNewWindowsToMainHUD() {
         guard userConfiguration.enablesNewWindowsToMainHUD() else {
             return
