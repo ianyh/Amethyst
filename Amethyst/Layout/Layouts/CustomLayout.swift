@@ -290,6 +290,14 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         return nil
     }
 
+    /// The user preferences handed to a custom layout's command functions as their `settings` argument.
+    /// Every value that commands may read is listed here and documented in docs/custom-layouts.md.
+    func commandSettings() -> [String: Any] {
+        return [
+            "windowResizeStep": UserConfiguration.shared.windowResizeStep()
+        ]
+    }
+
     private func command(key: String) {
         guard let command = commands?.objectForKeyedSubscript(key), command.isObject else {
             log.debug("\(layoutKey) — \(key): no command defined")
@@ -302,9 +310,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
 
         let focusedWindowID = Window.currentlyFocused().flatMap { idHash(forWindowID: $0.id()) }
-        let settings: [String: Any] = [
-            "windowResizeStep": UserConfiguration.shared.windowResizeStep()
-        ]
+        let settings = commandSettings()
         let updateStateArgs: [Any]? = state.flatMap { state in
             guard let context = self.context else {
                 return nil

@@ -182,6 +182,14 @@ class CustomLayoutTests: QuickSpec {
         }
 
         describe("resize step") {
+            it("passes commands exactly the documented settings") {
+                let layout = CustomLayout<TestWindow>(key: "resize-step-commands", fileURL: Bundle.layoutFile(key: "resize-step-commands")!)
+                let settings = layout.commandSettings()
+
+                expect(Array(settings.keys)).to(equal(["windowResizeStep"]))
+                expect(settings["windowResizeStep"] as? CGFloat).to(equal(UserConfiguration.shared.windowResizeStep()))
+            }
+
             it("hands commands the user's resize step") {
                 let defaults = UserDefaults.standard
                 let savedStep = defaults.object(forKey: "window-resize-step")
