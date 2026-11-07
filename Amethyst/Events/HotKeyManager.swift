@@ -20,19 +20,30 @@ typealias AMModifierFlags = NSEvent.ModifierFlags
 // Can be used to identify if a returned key code is valid or not.
 private let AMKeyCodeInvalid: AMKeyCode = 0xFF
 
+// Names the configuration file uses for keys that produce no printable character.
+private let specialKeyNamesToKeyCodes: [String: AMKeyCode] = [
+    "space": kVK_Space,
+    "enter": kVK_Return,
+    "up": kVK_UpArrow,
+    "right": kVK_RightArrow,
+    "down": kVK_DownArrow,
+    "left": kVK_LeftArrow,
+    "delete": kVK_Delete
+]
+
 typealias HotKeyHandler = () -> Void
 
 class HotKeyManager<Application: ApplicationType>: NSObject {
     private let userConfiguration: UserConfiguration
 
     private(set) lazy var stringToKeyCodes: [String: [AMKeyCode]] = {
-        return self.constructKeyCodeMap()
+        return HotKeyManager.constructKeyCodeMap()
     }()
 
     init(userConfiguration: UserConfiguration) {
         self.userConfiguration = userConfiguration
         super.init()
-        _ = constructKeyCodeMap()
+        _ = HotKeyManager.constructKeyCodeMap()
     }
 
     private static func keyCodeForNumber(_ number: NSNumber) -> AMKeyCode {
@@ -290,7 +301,38 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
         }
     }
 
-    private func constructKeyCodeMap() -> [String: [AMKeyCode]] {
+    /// The inverse of `constructKeyCodeMap()`, mapping each key code to the string that the
+    /// configuration file uses to refer to it.
+    ///
+    /// Only key codes that the configuration file can actually name are included. That is a single
+    /// printable character — e.g., `a` or `,` — or one of the special names such as `space`. Key
+    /// codes with no textual representation, like the function keys, are left out entirely.
+    static func constructKeyCodeToStringMap() -> [AMKeyCode: String] {
+        var keyCodeToString: [AMKeyCode: String] = [:]
+
+        for (string, keyCodes) in constructKeyCodeMap() {
+            // Anything that is not a single printable character is either a special name, which is
+            // added below, or a key the configuration file has no way of naming.
+            guard let keyCode = keyCodes.first,
+                  let scalar = string.unicodeScalars.first,
+                  string.unicodeScalars.count == 1,
+                  (0x21...0x7E).contains(scalar.value) else {
+                continue
+            }
+
+            keyCodeToString[keyCode] = string
+        }
+
+        // A key code can be reachable both through the character it produces and through a special
+        // name, in which case the special name is the one the configuration file documents.
+        for (name, keyCode) in specialKeyNamesToKeyCodes {
+            keyCodeToString[keyCode] = name
+        }
+
+        return keyCodeToString
+    }
+
+    static func constructKeyCodeMap() -> [String: [AMKeyCode]] {
         var stringToKeyCodes: [String: [AMKeyCode]] = [:]
 
         // Generate unicode character keymapping from keyboard layout data.  We go
@@ -356,13 +398,9 @@ class HotKeyManager<Application: ApplicationType>: NSObject {
 
         // Add codes for non-printable characters. They are not printable so they
         // are not generated from the keyboard layout data.
-        stringToKeyCodes["space"] = [kVK_Space]
-        stringToKeyCodes["enter"] = [kVK_Return]
-        stringToKeyCodes["up"] = [kVK_UpArrow]
-        stringToKeyCodes["right"] = [kVK_RightArrow]
-        stringToKeyCodes["down"] = [kVK_DownArrow]
-        stringToKeyCodes["left"] = [kVK_LeftArrow]
-        stringToKeyCodes["delete"] = [kVK_Delete]
+        for (name, keyCode) in specialKeyNamesToKeyCodes {
+            stringToKeyCodes[name] = [keyCode]
+        }
 
         return stringToKeyCodes
     }

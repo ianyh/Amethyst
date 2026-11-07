@@ -105,6 +105,63 @@ enum ConfigurationKey: String {
 
 extension ConfigurationKey: CaseIterable {}
 
+extension ConfigurationKey {
+    /// The shape of the value that the configuration file holds for a key.
+    enum ValueType {
+        case bool
+        case number
+        case stringList
+        /// A list of bundle identifiers, optionally paired with window titles.
+        case floatingBundleList
+        /// Not a top-level value; only meaningful as part of a command definition.
+        case commandComponent
+    }
+
+    /// Used when writing preferences back out as a configuration file. The switch is exhaustive so
+    /// that adding a key without deciding how it is written out is a compile error.
+    var valueType: ValueType {
+        switch self {
+        case .commandMod, .commandKey:
+            return .commandComponent
+        case .layouts, .mod1, .mod2, .mod3, .mod4:
+            return .stringList
+        case .floatingBundleIdentifiers:
+            return .floatingBundleList
+        case .windowMarginSize,
+             .windowMinimumHeight,
+             .windowMinimumWidth,
+             .windowMaxCount,
+             .smallWindowSize,
+             .windowResizeStep,
+             .screenPaddingLeft,
+             .screenPaddingRight,
+             .screenPaddingTop,
+             .screenPaddingBottom:
+            return .number
+        case .windowMargins,
+             .smartWindowMargins,
+             .floatingBundleIdentifiersIsBlacklist,
+             .ignoreMenuBar,
+             .floatSmallWindows,
+             .mouseFollowsFocus,
+             .focusFollowsMouse,
+             .mouseSwapsWindows,
+             .mouseResizesWindows,
+             .layoutHUD,
+             .layoutHUDOnSpaceChange,
+             .windowCountHUD,
+             .useCanaryBuild,
+             .newWindowsToMain,
+             .followSpaceThrownWindows,
+             .debugLayoutInfo,
+             .restoreLayoutsOnLaunch,
+             .disablePaddingOnBuiltinDisplay,
+             .hideMenuBarIcon:
+            return .bool
+        }
+    }
+}
+
 enum CommandKey: String {
     case cycleLayoutForward = "cycle-layout"
     case cycleLayoutBackward = "cycle-layout-backward"
@@ -202,7 +259,7 @@ class FloatingBundle: NSObject {
 
 class UserConfiguration: NSObject {
     static let shared = UserConfiguration()
-    private let storage: ConfigurationStorage
+    let storage: ConfigurationStorage
 
     weak var delegate: UserConfigurationDelegate?
 
@@ -275,6 +332,30 @@ class UserConfiguration: NSObject {
             }
         }
         return flags
+    }
+
+    /// The inverse of `modifierFlagsForStrings(_:)`. The order matches the order the
+    /// configuration file documents so that exported modifiers read the way the sample does.
+    func modifierStringsForFlags(_ flags: AMModifierFlags) -> [String] {
+        var modifierStrings: [String] = []
+
+        if flags.contains(.option) {
+            modifierStrings.append("option")
+        }
+
+        if flags.contains(.shift) {
+            modifierStrings.append("shift")
+        }
+
+        if flags.contains(.control) {
+            modifierStrings.append("control")
+        }
+
+        if flags.contains(.command) {
+            modifierStrings.append("command")
+        }
+
+        return modifierStrings
     }
 
     func load() {
