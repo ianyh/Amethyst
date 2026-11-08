@@ -55,7 +55,7 @@ class LayoutNameWindow: NSWindow {
 
         // Add padding (40px on each side + extra space)
         let minWidth: CGFloat = 200
-        let maxWidth: CGFloat = 500
+        let maxWidth: CGFloat = 720
         let padding: CGFloat = 80
         let calculatedWidth = textSize.width + padding
 
