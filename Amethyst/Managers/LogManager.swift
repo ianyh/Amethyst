@@ -71,6 +71,21 @@ final class SystemLogDestination: BaseDestination {
         }
         return (text, title)
     }
+
+    /// The file where macOS keeps the logging options for the app's subsystem. Installing the profile that reveals
+    /// window titles writes it.
+    static var optionsURL: URL {
+        return URL(fileURLWithPath: "/Library/Preferences/Logging/Subsystems/\(subsystem).plist")
+    }
+
+    /// Whether the logging options at `url` make the system log show private data, window titles among them.
+    static func showsPrivateData(optionsAt url: URL = optionsURL) -> Bool {
+        guard let options = NSDictionary(contentsOf: url),
+              let defaults = options["DEFAULT-OPTIONS"] as? [String: Any] else {
+            return false
+        }
+        return defaults["Enable-Private-Data"] as? Bool ?? false
+    }
 }
 
 /// Connects the system log destination according to the Debug preferences and the `--log` argument, and follows the preferences as they change.

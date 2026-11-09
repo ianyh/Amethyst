@@ -15,6 +15,23 @@ import SwiftyBeaver
 
 class SystemLogDestinationTests: QuickSpec {
     override func spec() {
+        // AppKit views are made on the main thread, which is not where a test body runs.
+        func onMainThread(_ work: () -> Void) {
+            if Thread.isMainThread {
+                work()
+            } else {
+                DispatchQueue.main.sync(execute: work)
+            }
+        }
+
+        // A stand-in for the file macOS writes when a logging profile for the app is installed.
+        func loggingOptions(privateData: Bool) -> URL {
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("logging-options-\(UUID().uuidString).plist")
+            let options: NSDictionary = ["DEFAULT-OPTIONS": ["Enable-Private-Data": privateData]]
+            options.write(to: url, atomically: true)
+            return url
+        }
+
         describe("a line for the system log") {
             it("carries the level, the source and the message, and no time of its own") {
                 let destination = SystemLogDestination()
@@ -85,22 +102,45 @@ class SystemLogDestinationTests: QuickSpec {
             }
         }
 
+        describe("the system's logging options") {
+            it("are looked for under the app's subsystem") {
+                expect(SystemLogDestination.optionsURL.path).to(equal("/Library/Preferences/Logging/Subsystems/com.amethyst.Amethyst.plist"))
+            }
+
+            it("show private data only when a file turns it on") {
+                let missing = FileManager.default.temporaryDirectory.appendingPathComponent("logging-options-\(UUID().uuidString).plist")
+                let turnedOn = loggingOptions(privateData: true)
+                let turnedOff = loggingOptions(privateData: false)
+                defer {
+                    try? FileManager.default.removeItem(at: turnedOn)
+                    try? FileManager.default.removeItem(at: turnedOff)
+                }
+
+                expect(SystemLogDestination.showsPrivateData(optionsAt: missing)).to(beFalse())
+                expect(SystemLogDestination.showsPrivateData(optionsAt: turnedOn)).to(beTrue())
+                expect(SystemLogDestination.showsPrivateData(optionsAt: turnedOff)).to(beFalse())
+            }
+        }
+
         describe("the Debug tab") {
             it("offers the profile only while something is written to the system log") {
                 let storage = TestConfigurationStorage()
                 let configuration = UserConfiguration(storage: storage)
 
+                var title: String?
                 var enabledWhileOff: Bool?
                 var enabledWhileWarningsOn: Bool?
                 var enabledWhileDetailsOn: Bool?
-                let work = {
+                onMainThread {
                     let controller = DebugPreferencesViewController(nibName: "DebugPreferencesViewController", bundle: nil)
                     controller.configuration = configuration
+                    controller.loggingOptionsURL = FileManager.default.temporaryDirectory.appendingPathComponent("logging-options-\(UUID().uuidString).plist")
                     _ = controller.view
 
                     storage.set(false, forKey: .debugLogDetails)
                     storage.set(false, forKey: .debugLogWarnings)
                     controller.updateRevealWindowTitlesButton()
+                    title = controller.revealWindowTitlesButton?.title
                     enabledWhileOff = controller.revealWindowTitlesButton?.isEnabled
 
                     storage.set(true, forKey: .debugLogWarnings)
@@ -112,15 +152,64 @@ class SystemLogDestinationTests: QuickSpec {
                     controller.updateRevealWindowTitlesButton()
                     enabledWhileDetailsOn = controller.revealWindowTitlesButton?.isEnabled
                 }
-                if Thread.isMainThread {
-                    work()
-                } else {
-                    DispatchQueue.main.sync(execute: work)
-                }
 
+                expect(title).to(equal("Reveal Window Titles in System Logs"))
                 expect(enabledWhileOff).to(beFalse())
                 expect(enabledWhileWarningsOn).to(beTrue())
                 expect(enabledWhileDetailsOn).to(beTrue())
+            }
+
+            it("offers to hide the titles while the profile is installed, whatever is being logged") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+                let options = loggingOptions(privateData: true)
+
+                var titleWhileInstalled: String?
+                var noteWhileInstalled: String?
+                var enabledWhileInstalled: Bool?
+                var titleOnceRemoved: String?
+                var noteOnceRemoved: String?
+                var enabledOnceRemoved: Bool?
+                onMainThread {
+                    let controller = DebugPreferencesViewController(nibName: "DebugPreferencesViewController", bundle: nil)
+                    controller.configuration = configuration
+                    controller.loggingOptionsURL = options
+                    _ = controller.view
+
+                    storage.set(false, forKey: .debugLogDetails)
+                    storage.set(false, forKey: .debugLogWarnings)
+                    controller.updateRevealWindowTitlesButton()
+                    titleWhileInstalled = controller.revealWindowTitlesButton?.title
+                    noteWhileInstalled = controller.revealWindowTitlesNote?.stringValue
+                    enabledWhileInstalled = controller.revealWindowTitlesButton?.isEnabled
+
+                    try? FileManager.default.removeItem(at: options)
+                    controller.updateRevealWindowTitlesButton()
+                    titleOnceRemoved = controller.revealWindowTitlesButton?.title
+                    noteOnceRemoved = controller.revealWindowTitlesNote?.stringValue
+                    enabledOnceRemoved = controller.revealWindowTitlesButton?.isEnabled
+                }
+
+                expect(titleWhileInstalled).to(equal("Hide Window Titles in System Logs"))
+                expect(noteWhileInstalled).to(contain("remove the profile"))
+                expect(enabledWhileInstalled).to(beTrue())
+                expect(titleOnceRemoved).to(equal("Reveal Window Titles in System Logs"))
+                expect(noteOnceRemoved).to(contain("<private>"))
+                expect(enabledOnceRemoved).to(beFalse())
+            }
+
+            it("explains how to remove the profile and offers to open System Settings") {
+                var text: String?
+                var buttons: [String]?
+                onMainThread {
+                    let controller = DebugPreferencesViewController(nibName: "DebugPreferencesViewController", bundle: nil)
+                    let alert = controller.removalInstructions()
+                    text = alert.informativeText
+                    buttons = alert.buttons.map { $0.title }
+                }
+
+                expect(text).to(contain(DebugPreferencesViewController.profileName))
+                expect(buttons).to(equal(["Open System Settings", "Cancel"]))
             }
         }
 
@@ -175,6 +264,7 @@ class SystemLogDestinationTests: QuickSpec {
                     return
                 }
 
+                expect(profile["PayloadDisplayName"] as? String).to(equal(DebugPreferencesViewController.profileName))
                 expect(profile["PayloadType"] as? String).to(equal("Configuration"))
                 expect(profile["PayloadScope"] as? String).to(equal("System"))
                 expect(payloads.count).to(equal(1))

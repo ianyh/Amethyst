@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="DebugPreferencesViewController" customModule="Amethyst" customModuleProvider="target">
             <connections>
                 <outlet property="revealWindowTitlesButton" destination="Lg5-bt-prf" id="Lg5-ot-prf"/>
+                <outlet property="revealWindowTitlesNote" destination="Lg6-tx-prf" id="Lg6-ot-prf"/>
                 <outlet property="view" destination="gFQ-ju-I7J" id="le4-d2-9j1"/>
             </connections>
         </customObject>
@@ -58,7 +59,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="revealWindowTitles:" target="-2" id="Lg5-ac-prf"/>
+                        <action selector="revealOrHideWindowTitles:" target="-2" id="Lg5-ac-prf"/>
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Lg6-tx-prf">
