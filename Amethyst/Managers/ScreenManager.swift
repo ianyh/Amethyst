@@ -410,17 +410,20 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         return statefulLayout.nextWindowIDClockwise()
     }
 
-    /// The title and description the layout HUD shows. While tiling is disabled the title says so ahead of the layout
-    /// name, since the layout is not being applied. The description is whatever the layout reports about itself.
+    /// The title and description the layout HUD shows: the layout name, and under it either "Tiling Disabled" while
+    /// tiling is off, or the layout's own description when the About layouts debug option asks for it.
     func layoutHUDContent() -> (title: String, description: String) {
         let currentLayoutName = currentLayout.flatMap({ $0.layoutName }) ?? "None"
-        let currentLayoutDescription = currentLayout?.layoutDescription ?? ""
 
         guard userConfiguration.tilingEnabled else {
-            return ("Tiling Disabled: \(currentLayoutName)", currentLayoutDescription)
+            return (currentLayoutName, "Tiling Disabled")
         }
 
-        return (currentLayoutName, currentLayoutDescription)
+        guard userConfiguration.showsLayoutDebugInfo() else {
+            return (currentLayoutName, "")
+        }
+
+        return (currentLayoutName, currentLayout?.layoutDescription ?? "")
     }
 
     func displayLayoutHUD() {
