@@ -74,12 +74,62 @@ class DebugPreferencesViewController: NSViewController {
         return URL(string: "x-apple.systempreferences:com.apple.preferences.configurationprofiles")
     }
 
-    /// Offers the profile while the titles are hidden, and explains how to remove it once they are revealed.
+    /// Explains how to install the profile while the titles are hidden, and how to remove it once they are revealed.
+    /// Either way, System Settings opens only when the instructions are accepted.
     @IBAction func revealOrHideWindowTitles(_ sender: AnyObject) {
         if windowTitlesAreRevealed {
-            showRemovalInstructions()
+            show(removalInstructions()) {
+                DebugPreferencesViewController.openProfilesPane()
+            }
         } else {
-            offerProfile()
+            show(installationInstructions()) { [weak self] in
+                self?.offerProfile()
+            }
+        }
+    }
+
+    /// The steps for installing the profile, with a button that hands the profile to macOS and opens the System
+    /// Settings pane where it waits.
+    func installationInstructions() -> NSAlert {
+        return instructions(
+            title: "Install the profile to reveal window titles",
+            text: "The system log on this Mac hides window titles until the profile "
+                + "“\(DebugPreferencesViewController.profileName)” is installed. To show them, open System Settings, "
+                + "double-click that profile and click Install. Installing it needs an administrator."
+        )
+    }
+
+    /// The steps for removing the profile, with a button that opens the System Settings pane that lists it.
+    func removalInstructions() -> NSAlert {
+        return instructions(
+            title: "Remove the profile to hide window titles",
+            text: "The system log on this Mac shows window titles because the profile "
+                + "“\(DebugPreferencesViewController.profileName)” is installed. To hide them again, open System Settings, "
+                + "select that profile and remove it with the minus (–) button. Removing it needs an administrator."
+        )
+    }
+
+    private func instructions(title: String, text: String) -> NSAlert {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = text
+        alert.addButton(withTitle: "Open System Settings")
+        alert.addButton(withTitle: "Cancel")
+        return alert
+    }
+
+    /// Shows the instructions on the preferences window, and carries on only if Open System Settings is chosen.
+    private func show(_ instructions: NSAlert, thenOpenSystemSettings open: @escaping () -> Void) {
+        guard let window = view.window else {
+            return
+        }
+
+        instructions.beginSheetModal(for: window) { response in
+            guard response == .alertFirstButtonReturn else {
+                return
+            }
+
+            open()
         }
     }
 
@@ -96,34 +146,12 @@ class DebugPreferencesViewController: NSViewController {
 
         // macOS needs a moment to file the profile before the pane can show it.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            if let pane = DebugPreferencesViewController.profilesPaneURL {
-                NSWorkspace.shared.open(pane)
-            }
+            DebugPreferencesViewController.openProfilesPane()
         }
     }
 
-    /// The steps for removing the profile, with a button that opens the System Settings pane that lists it.
-    func removalInstructions() -> NSAlert {
-        let alert = NSAlert()
-        alert.messageText = "Remove the profile to hide window titles"
-        alert.informativeText = "The system log on this Mac shows window titles because the profile "
-            + "“\(DebugPreferencesViewController.profileName)” is installed. To hide them again, open System Settings, "
-            + "select that profile and remove it with the minus (–) button. Removing it needs an administrator."
-        alert.addButton(withTitle: "Open System Settings")
-        alert.addButton(withTitle: "Cancel")
-        return alert
-    }
-
-    private func showRemovalInstructions() {
-        guard let window = view.window else {
-            return
-        }
-
-        removalInstructions().beginSheetModal(for: window) { response in
-            guard response == .alertFirstButtonReturn, let pane = DebugPreferencesViewController.profilesPaneURL else {
-                return
-            }
-
+    private static func openProfilesPane() {
+        if let pane = profilesPaneURL {
             NSWorkspace.shared.open(pane)
         }
     }

@@ -198,18 +198,23 @@ class SystemLogDestinationTests: QuickSpec {
                 expect(enabledOnceRemoved).to(beFalse())
             }
 
-            it("explains how to remove the profile and offers to open System Settings") {
-                var text: String?
-                var buttons: [String]?
+            it("explains how to install and how to remove the profile, and offers to open System Settings either way") {
+                var installation: (title: String, text: String, buttons: [String])?
+                var removal: (title: String, text: String, buttons: [String])?
                 onMainThread {
                     let controller = DebugPreferencesViewController(nibName: "DebugPreferencesViewController", bundle: nil)
-                    let alert = controller.removalInstructions()
-                    text = alert.informativeText
-                    buttons = alert.buttons.map { $0.title }
+                    let installing = controller.installationInstructions()
+                    installation = (installing.messageText, installing.informativeText, installing.buttons.map { $0.title })
+                    let removing = controller.removalInstructions()
+                    removal = (removing.messageText, removing.informativeText, removing.buttons.map { $0.title })
                 }
 
-                expect(text).to(contain(DebugPreferencesViewController.profileName))
-                expect(buttons).to(equal(["Open System Settings", "Cancel"]))
+                expect(installation?.title).to(equal("Install the profile to reveal window titles"))
+                expect(installation?.text).to(contain(DebugPreferencesViewController.profileName))
+                expect(installation?.buttons).to(equal(["Open System Settings", "Cancel"]))
+                expect(removal?.title).to(equal("Remove the profile to hide window titles"))
+                expect(removal?.text).to(contain(DebugPreferencesViewController.profileName))
+                expect(removal?.buttons).to(equal(["Open System Settings", "Cancel"]))
             }
         }
 
