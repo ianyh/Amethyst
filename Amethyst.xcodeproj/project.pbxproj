@@ -130,6 +130,7 @@
 		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
 		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
 		DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */; };
+		DE5C0A6A00000000000000EA /* ApplicationEventHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A6900000000000000E9 /* ApplicationEventHandlerTests.swift */; };
 		F0B42E352A3CA45E00298E30 /* TwoPaneRightLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B42E342A3CA45E00298E30 /* TwoPaneRightLayout.swift */; };
 		F46629C4272AD7A30040C275 /* FourColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46629C3272AD7A30040C275 /* FourColumnLayout.swift */; };
 /* End PBXBuildFile section */
@@ -262,6 +263,7 @@
 		AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayoutTests.swift; sourceTree = "<group>"; };
 		DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTests.swift; sourceTree = "<group>"; };
 		DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSpacesInfoTests.swift; sourceTree = "<group>"; };
+		DE5C0A6900000000000000E9 /* ApplicationEventHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationEventHandlerTests.swift; sourceTree = "<group>"; };
 		F0B42E342A3CA45E00298E30 /* TwoPaneRightLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneRightLayout.swift; sourceTree = "<group>"; };
 		F46629C3272AD7A30040C275 /* FourColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FourColumnLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -613,6 +615,7 @@
 		DE5C0A3300000000000000B3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DE5C0A6900000000000000E9 /* ApplicationEventHandlerTests.swift */,
 				DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */,
 				DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */,
 			);
@@ -869,6 +872,7 @@
 				AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */,
 				404BE9D11CFBDF1900D6C537 /* BinarySpacePartitioningLayoutTests.swift in Sources */,
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
+				DE5C0A6A00000000000000EA /* ApplicationEventHandlerTests.swift in Sources */,
 				DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */,
 				4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,

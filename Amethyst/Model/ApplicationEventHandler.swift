@@ -17,6 +17,9 @@ func GetProcessPID(_ psn: inout ProcessSerialNumber, _ pid: inout pid_t) -> OSSt
 protocol ApplicationEventHandlerDelegate: AnyObject {
     func add(applicationWithPID: pid_t)
     func remove(applicationWithPID: pid_t)
+
+    /// Removes every tracked application whose process is no longer running.
+    func removeTerminatedApplications()
 }
 
 func applicationEventHandlerUPP(_ call: EventHandlerCallRef?, _ event: EventRef?, _ data: UnsafeMutableRawPointer?) -> OSStatus {
@@ -94,6 +97,9 @@ class ApplicationEventHandler {
             case .applicationTerminated:
                 delegate?.remove(applicationWithPID: pid)
             }
+        } catch EventError.processNotFound where event.eventType == .applicationTerminated {
+            // The system no longer knows the process, so the event cannot say which one exited.
+            delegate?.removeTerminatedApplications()
         } catch {
             log.error(error)
             return OSStatus(eventNotHandledErr)
