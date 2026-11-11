@@ -30,6 +30,48 @@ private final class TestDelegate: ScreenManagerDelegate {
 
 class ScreenManagerTests: QuickSpec {
     override func spec() {
+        describe("reflow queue") {
+            func screenManager() -> ScreenManager<TestDelegate> {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                return ScreenManager<TestDelegate>(screen: screen, delegate: TestDelegate(), userConfiguration: configuration)
+            }
+
+            /// Whether operations given to the queue together run strictly one after another.
+            func runsOperationsOneAtATime(_ queue: OperationQueue) -> Bool {
+                let lock = NSLock()
+                var running = 0
+                var overlapped = false
+                let operations = (0..<4).map { _ in
+                    BlockOperation {
+                        lock.lock()
+                        running += 1
+                        overlapped = overlapped || running > 1
+                        lock.unlock()
+
+                        Thread.sleep(forTimeInterval: 0.02)
+
+                        lock.lock()
+                        running -= 1
+                        lock.unlock()
+                    }
+                }
+                queue.addOperations(operations, waitUntilFinished: true)
+                return !overlapped
+            }
+
+            it("runs reflows one at a time") {
+                expect(runsOperationsOneAtATime(screenManager().reflowOperationQueue)).to(beTrue())
+            }
+
+            it("runs reflows one at a time after being restored from saved state") {
+                let encoded = try! JSONEncoder().encode(screenManager())
+                let restored = try! JSONDecoder().decode(ScreenManager<TestDelegate>.self, from: encoded)
+
+                expect(runsOperationsOneAtATime(restored.reflowOperationQueue)).to(beTrue())
+            }
+        }
+
         describe("coding") {
             it("decodes layouts") {
                 let configuration = UserConfiguration(storage: TestConfigurationStorage())
