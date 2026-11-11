@@ -409,7 +409,21 @@ extension AXWindow: WindowType {
 }
 
 extension AXWindow {
+    /// The window's process, number and frame, for log lines. The title is left out so that a line can hand it to the
+    /// system log separately as private data; see `PrivateWindowTitle`.
     override var description: String {
-        return "\(super.description) (\(cgID()))"
+        return windowLogDescription(pid: pid(), windowID: cgID(), frame: frame())
     }
+}
+
+/// Describes a window for a log line as "pid 4821, window 318, frame 0,0 1280x800".
+func windowLogDescription(pid: pid_t, windowID: CGWindowID, frame: CGRect) -> String {
+    func number(_ value: CGFloat) -> String {
+        return value.isFinite ? String(Int(value.rounded())) : "?"
+    }
+
+    let frameText = frame.isNull
+        ? "frame unknown"
+        : "frame \(number(frame.origin.x)),\(number(frame.origin.y)) \(number(frame.width))x\(number(frame.height))"
+    return "pid \(pid), window \(windowID), \(frameText)"
 }

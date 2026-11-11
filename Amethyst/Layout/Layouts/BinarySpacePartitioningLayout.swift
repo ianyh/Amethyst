@@ -214,10 +214,10 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             }
 
             if let insertionPoint = lastKnownFocusedWindowID, window.id() != insertionPoint, rootNode.findWindowID(insertionPoint) != nil {
-                log.info("insert \(window) - \(window.id()) at point: \(insertionPoint)")
+                log.info("insert \(window) - \(window.id()) at point: \(insertionPoint)", context: PrivateWindowTitle(of: window))
                 rootNode.insertWindowID(window.id(), atPoint: insertionPoint)
             } else {
-                log.info("insert \(window) - \(window.id()) at end")
+                log.info("insert \(window) - \(window.id()) at end", context: PrivateWindowTitle(of: window))
                 rootNode.insertWindowIDAtEnd(window.id())
             }
 
@@ -225,7 +225,7 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
                 lastKnownFocusedWindowID = window.id()
             }
         case let .remove(window):
-            log.info("remove: \(window) - \(window.id())")
+            log.info("remove: \(window) - \(window.id())", context: PrivateWindowTitle(of: window))
             rootNode.removeWindowID(window.id())
         case let .focusChanged(window):
             lastKnownFocusedWindowID = window.id()
@@ -242,12 +242,12 @@ class BinarySpacePartitioningLayout<Window: WindowType>: StatefulLayout<Window> 
             otherWindowNode.windowID = windowID
         case let .tabChange(window, previousWindow):
             if rootNode.findWindowID(window.id()) != nil {
-                log.warning("Trying to swap a tab in that is already in the tree: \(window)")
+                log.warning("Trying to swap a tab in that is already in the tree: \(window)", context: PrivateWindowTitle(of: window))
                 rootNode.removeWindowID(window.id())
             }
 
             guard let previousWindowNode = rootNode.findWindowID(previousWindow.id()) else {
-                log.error("Trying to change tab from a window that is not in the tree: \(previousWindow)")
+                log.error("Trying to change tab from a window that is not in the tree: \(previousWindow)", context: PrivateWindowTitle(of: previousWindow))
                 return
             }
 
