@@ -792,24 +792,44 @@ extension WindowManager: MouseStateKeeperDelegate {
     func swapDraggedWindowWithDropzone(_ draggedWindow: Window) {
         guard let screen = draggedWindow.screen() else { return }
 
-        let windows = activeWindows(on: screen)
-
         // need to flip mouse coordinate system to fit Amethyst https://stackoverflow.com/a/45289010/2063546
         let pointerLocation = Screen.convertFromCocoa(NSPointToCGPoint(NSEvent.mouseLocation))
 
+        // A window dragged against the menu bar or the edge of the screen stops while the pointer carries on, so when nothing lies under the pointer the drop point is the point of the window nearest to it.
+        var dropPoints = [pointerLocation]
+        let nearestPoint = draggedWindow.frame().nearestPoint(to: pointerLocation)
+        if nearestPoint != pointerLocation {
+            dropPoints.append(nearestPoint)
+        }
+
+        for dropPoint in dropPoints {
+            guard let targetWindow = window(under: dropPoint, on: screen, besides: draggedWindow) else {
+                continue
+            }
+
+            // Dropped back on its own tile: the reflow puts it in place.
+            guard targetWindow != draggedWindow else {
+                break
+            }
+
+            executeTransition(.switchWindows(draggedWindow, targetWindow))
+            return
+        }
+
+        // Dropped on no other window: the reflow puts it back where the layout has it.
+        markScreenForReflow(screen)
+    }
+
+    /// The window whose tile holds `point` according to the current layout, or failing that the window on screen whose frame holds it, other than `draggedWindow`.
+    private func window(under point: CGPoint, on screen: Screen, besides draggedWindow: Window) -> Window? {
         if let screenManager: ScreenManager<WindowManager<Application>> = focusedScreenManager(), let layout = screenManager.currentLayout {
-            let windowSet = self.windows.windowSet(forActiveWindowsOnScreen: screen)
-            if let layoutWindow = layout.windowAtPoint(pointerLocation, of: windowSet, on: screen), let framedWindow = self.windows.window(withID: layoutWindow.id) {
-                executeTransition(.switchWindows(draggedWindow, framedWindow))
-                return
+            let windowSet = windows.windowSet(forActiveWindowsOnScreen: screen)
+            if let layoutWindow = layout.windowAtPoint(point, of: windowSet, on: screen), let framedWindow = windows.window(withID: layoutWindow.id) {
+                return framedWindow
             }
         }
 
-        // Ignore if there is no window at that point
-        guard let secondWindow = WindowsInformation.alternateWindowForScreenAtPoint(pointerLocation, withWindows: windows, butNot: draggedWindow) else {
-            return
-        }
-        executeTransition(.switchWindows(draggedWindow, secondWindow))
+        return WindowsInformation.alternateWindowForScreenAtPoint(point, withWindows: activeWindows(on: screen), butNot: draggedWindow)
     }
 }
 

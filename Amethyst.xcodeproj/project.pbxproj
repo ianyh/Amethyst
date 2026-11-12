@@ -126,6 +126,7 @@
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
 		40EFFB4A2F0226EF00EDD929 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 40EFFB492F0226EF00EDD929 /* Silica */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
+		DE20261112000000000000B2 /* WindowsInformationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE20261112000000000000B1 /* WindowsInformationTests.swift */; };
 		4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */; };
 		AA4AF40D26717DA900D2AE1B /* TwoPaneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */; };
 		AAAC6BAC2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */; };
@@ -260,6 +261,7 @@
 		4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayout.swift; sourceTree = "<group>"; };
 		AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayout.swift; sourceTree = "<group>"; };
 		AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayoutTests.swift; sourceTree = "<group>"; };
+		DE20261112000000000000B1 /* WindowsInformationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowsInformationTests.swift; sourceTree = "<group>"; };
 		DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTests.swift; sourceTree = "<group>"; };
 		DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSpacesInfoTests.swift; sourceTree = "<group>"; };
 		F0B42E342A3CA45E00298E30 /* TwoPaneRightLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneRightLayout.swift; sourceTree = "<group>"; };
@@ -615,6 +617,7 @@
 			children = (
 				DE5C0A3100000000000000B1 /* CGSpacesInfoTests.swift */,
 				DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */,
+				DE20261112000000000000B1 /* WindowsInformationTests.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -871,6 +874,7 @@
 				4085824C1EA673AE0075A2C3 /* HotKeyManagerTests.swift in Sources */,
 				DE5C0A3200000000000000B2 /* CGSpacesInfoTests.swift in Sources */,
 				4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */,
+				DE20261112000000000000B2 /* WindowsInformationTests.swift in Sources */,
 				40578C1B232DC607006553A0 /* TestScreen.swift in Sources */,
 				40B0D145232D2E630021E0A7 /* FullscreenLayoutTests.swift in Sources */,
 				404541762697C62400861BE8 /* TestBundle.swift in Sources */,
