@@ -176,12 +176,23 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         }
 
         let pid = activatedApplication.processIdentifier
-        guard applications[pid] == nil, !adoptionsInProgress.contains(pid), activatedApplication.isManageable == .manageable else {
+        guard applications[pid] == nil, !adoptionsInProgress.contains(pid), applicationObservations[pid] == nil else {
             return
         }
 
-        log.info("Adopting \(activatedApplication.localizedName ?? "<unknown>") (pid \(pid)) on activation")
-        add(runningApplication: activatedApplication)
+        let name = activatedApplication.localizedName ?? "<unknown>"
+
+        switch activatedApplication.isManageable {
+        case .manageable:
+            log.info("Adopting \(name) (pid \(pid)) on activation")
+            add(runningApplication: activatedApplication)
+        case .undetermined where !activatedApplication.isFinishedLaunching:
+            // The application came to the front before it finished launching; it is adopted once it has.
+            log.info("Watching \(name) (pid \(pid)), activated before it finished launching")
+            monitorUndeterminedApplication(activatedApplication)
+        case .undetermined, .unmanageable:
+            break
+        }
     }
 
     @objc func applicationDidHide(_ notification: Notification) {
