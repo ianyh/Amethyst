@@ -918,6 +918,9 @@ extension WindowManager: ApplicationObservationDelegate {
     }
 
     func application(_ application: AnyApplication<Application>, didResizeWindow window: Window) {
+        // Some applications report a drag to another display only as a resize, so a resize is checked for a change of screen as well.
+        handOverIfMoved(window)
+
         guard userConfiguration.mouseResizesWindows() else {
             return
         }
