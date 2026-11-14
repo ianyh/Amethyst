@@ -233,6 +233,10 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
                 }
             }
 
+            if let factor = frame.objectForKeyedSubscript("scaleFactor"), factor.isNumber, factor.toDouble() > 0 {
+                scaleFactor = CGFloat(factor.toDouble())
+            }
+
             let isMain = frame.objectForKeyedSubscript("isMain")?.toBool() ?? true
             let resizeRules = ResizeRules(isMain: isMain, unconstrainedDimension: unconstrainedDimension, scaleFactor: scaleFactor)
             let frameAssignment = FrameAssignment<Window>(
@@ -286,6 +290,14 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         return nil
     }
 
+    /// The user preferences handed to a custom layout's command functions as their `settings` argument.
+    /// Every value that commands may read is listed here and documented in docs/custom-layouts.md.
+    func commandSettings() -> [String: Any] {
+        return [
+            "windowResizeStep": UserConfiguration.shared.windowResizeStep()
+        ]
+    }
+
     private func command(key: String) {
         guard let command = commands?.objectForKeyedSubscript(key), command.isObject else {
             log.debug("\(layoutKey) — \(key): no command defined")
@@ -298,12 +310,13 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
 
         let focusedWindowID = Window.currentlyFocused().flatMap { idHash(forWindowID: $0.id()) }
+        let settings = commandSettings()
         let updateStateArgs: [Any]? = state.flatMap { state in
-            if let id = focusedWindowID {
-                return [state, id]
-            } else {
-                return [state]
+            guard let context = self.context else {
+                return nil
             }
+            let undefinedValue = JSValue(undefinedIn: context) ?? JSValue(nullIn: context)!
+            return [state, focusedWindowID ?? undefinedValue, settings]
         }
 
         guard let updatedState = updateState.call(withArguments: updateStateArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
