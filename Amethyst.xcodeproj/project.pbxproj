@@ -124,6 +124,8 @@
 		40E2D2302D544F1E00D16B87 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 40E2D22F2D544F1E00D16B87 /* Silica */; };
 		40E705D8176EAD7800850DA6 /* default.amethyst in Resources */ = {isa = PBXBuildFile; fileRef = 40E705D7176EAD7800850DA6 /* default.amethyst */; };
 		40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */; };
+		DE5C0A6600000000000000E6 /* SystemLogDestinationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A6500000000000000E5 /* SystemLogDestinationTests.swift */; };
+		DE5C0A6800000000000000E8 /* DiagnosticLoggingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5C0A6700000000000000E7 /* DiagnosticLoggingTests.swift */; };
 		40EFFB4A2F0226EF00EDD929 /* Silica in Frameworks */ = {isa = PBXBuildFile; productRef = 40EFFB492F0226EF00EDD929 /* Silica */; };
 		4493EAA22139D9F000AA9623 /* ThreeColumnLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */; };
 		4B93B9CF7AC5567D12746D21 /* ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1519A9BEAE6DD1BF6BC232 /* ScreenTests.swift */; };
@@ -183,6 +185,8 @@
 		402DB6E41742E41A00D1C936 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		402DB6E61742E41A00D1C936 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Amethyst-Info.plist"; sourceTree = "<group>"; };
+		6144D410AD954B7890055821 /* RevealWindowTitles.mobileconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = RevealWindowTitles.mobileconfig; sourceTree = "<group>"; };
+		788139FDD0404691ACA2D260 /* sign-window-titles-profile.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; name = "sign-window-titles-profile.sh"; path = "scripts/sign-window-titles-profile.sh"; sourceTree = SOURCE_ROOT; };
 		402DB6EB1742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		402DB6F11742E41A00D1C936 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		402DB6FE1742E44E00D1C936 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -257,6 +261,8 @@
 		40DA8B6D27D5AA7300C291AF /* subset.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = subset.js; sourceTree = "<group>"; };
 		40E705D7176EAD7800850DA6 /* default.amethyst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = default.amethyst; sourceTree = "<group>"; };
 		40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenManagerTests.swift; sourceTree = "<group>"; };
+		DE5C0A6500000000000000E5 /* SystemLogDestinationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLogDestinationTests.swift; sourceTree = "<group>"; };
+		DE5C0A6700000000000000E7 /* DiagnosticLoggingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticLoggingTests.swift; sourceTree = "<group>"; };
 		4493EAA12139D9EF00AA9623 /* ThreeColumnLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeColumnLayout.swift; sourceTree = "<group>"; };
 		AA4AF40C26717DA900D2AE1B /* TwoPaneLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayout.swift; sourceTree = "<group>"; };
 		AAAC6BAB2677DF7B00BEC1B0 /* TwoPaneLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoPaneLayoutTests.swift; sourceTree = "<group>"; };
@@ -456,6 +462,8 @@
 			children = (
 				401BC8A91CE8F49200F89B3F /* Amethyst-Bridging-Header.h */,
 				402DB6E91742E41A00D1C936 /* Amethyst-Info.plist */,
+				6144D410AD954B7890055821 /* RevealWindowTitles.mobileconfig */,
+				788139FDD0404691ACA2D260 /* sign-window-titles-profile.sh */,
 				402DB6EA1742E41A00D1C936 /* InfoPlist.strings */,
 				402DB6F01742E41A00D1C936 /* Credits.rtf */,
 				40E705D7176EAD7800850DA6 /* default.amethyst */,
@@ -522,6 +530,8 @@
 			children = (
 				4085824B1EA673AE0075A2C3 /* HotKeyManagerTests.swift */,
 				40EC47F323F3A30100048B4F /* ScreenManagerTests.swift */,
+				DE5C0A6500000000000000E5 /* SystemLogDestinationTests.swift */,
+				DE5C0A6700000000000000E7 /* DiagnosticLoggingTests.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -630,6 +640,7 @@
 				402DB6DA1742E41A00D1C936 /* Sources */,
 				402DB6DB1742E41A00D1C936 /* Frameworks */,
 				402DB6DC1742E41A00D1C936 /* Resources */,
+				1C7F14CE76AA4346ADAEF228 /* Sign the window titles profile */,
 			);
 			buildRules = (
 			);
@@ -790,6 +801,23 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nswiftlint --fix\nswiftlint\n";
 		};
+		1C7F14CE76AA4346ADAEF228 /* Sign the window titles profile */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Amethyst/RevealWindowTitles.mobileconfig",
+				"$(SRCROOT)/scripts/sign-window-titles-profile.sh",
+			);
+			name = "Sign the window titles profile";
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/RevealWindowTitles.mobileconfig",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/scripts/sign-window-titles-profile.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -881,6 +909,8 @@
 				4000DB10239CA07000365A0C /* WideLayoutTests.swift in Sources */,
 				40AB5BEB23AB182300E29346 /* WidescreenTallLayoutTests.swift in Sources */,
 				40EC47F423F3A30100048B4F /* ScreenManagerTests.swift in Sources */,
+				DE5C0A6600000000000000E6 /* SystemLogDestinationTests.swift in Sources */,
+				DE5C0A6800000000000000E8 /* DiagnosticLoggingTests.swift in Sources */,
 				40D491DB23367630007E0CCB /* FrameAssignmentVerification.swift in Sources */,
 				40AB5BED23AC3CF800E29346 /* ThreeColumnLayoutTests.swift in Sources */,
 				40AB5BE923AB0A2B00E29346 /* TallRightLayoutTests.swift in Sources */,
