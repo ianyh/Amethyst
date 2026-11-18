@@ -42,8 +42,10 @@ final class TestWindow: WindowType {
         return _frame
     }
 
+    var testScreen: Screen?
+
     func screen() -> Screen? {
-        return nil
+        return testScreen
     }
 
     func setFrame(_ frame: CGRect, withThreshold threshold: CGSize) {

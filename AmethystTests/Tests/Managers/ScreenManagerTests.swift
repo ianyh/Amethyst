@@ -30,6 +30,39 @@ private final class TestDelegate: ScreenManagerDelegate {
 
 class ScreenManagerTests: QuickSpec {
     override func spec() {
+        describe("cycling layouts") {
+            it("leaves the layout empty when both cycle commands are used") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                configuration.setLayoutKeys([])
+                let manager = ScreenManager(screen: TestScreen(), delegate: TestDelegate(), userConfiguration: configuration)
+                manager.cycleLayoutForward()
+                manager.cycleLayoutBackward()
+                expect(manager.currentLayout).to(beNil())
+            }
+        }
+
+        describe("window tracking") {
+            it("forgets destroyed windows even after tab replacement") {
+                let windows = TrackedWindows<TestWindow>()
+                let closing = TestWindow(element: nil)!
+                let remaining = TestWindow(element: nil)!
+                windows.add(window: closing, atFront: false)
+                windows.setFloating(true, forWindow: closing)
+                windows.replace(window: closing, withWindow: remaining)
+                windows.rememberMainWindow(closing, on: 1)
+                windows.rememberMainWindow(remaining, on: 2)
+                windows.rememberMainWindow(closing, on: 3)
+
+                windows.remove(window: closing)
+
+                expect(windows.lastMainWindows[1]).to(beNil())
+                expect(windows.lastMainWindows[2]).to(equal(remaining))
+                expect(windows.lastMainWindows[3]).to(beNil())
+                expect(windows.isWindowFloating(closing)).to(beFalse())
+                expect(windows.isWindowTracked(remaining)).to(beTrue())
+            }
+        }
+
         describe("coding") {
             it("decodes layouts") {
                 let configuration = UserConfiguration(storage: TestConfigurationStorage())

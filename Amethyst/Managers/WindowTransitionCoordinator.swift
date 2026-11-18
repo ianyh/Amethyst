@@ -155,11 +155,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func pushFocusedWindowToSpace(_ space: Int) {
-        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(), let spaces = CGSpacesInfo<Window>.spacesForAllScreens() else {
-            return
-        }
-
-        guard let index = spaces.firstIndex(of: currentFocusedSpace), index < spaces.count else {
+        guard let (index, _) = CGSpacesInfo<Window>.focusedUserSpacePosition() else {
             return
         }
 
@@ -175,12 +171,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func pushFocusedWindowToSpaceLeft() {
-        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(), let spaces = CGSpacesInfo<Window>.spacesForAllScreens() else {
-            return
-        }
-
-        let filteredSpaces = spaces.filter { $0.type == CGSSpaceTypeUser }
-        guard let index = filteredSpaces.firstIndex(of: currentFocusedSpace), index > 0 else {
+        guard let (index, _) = CGSpacesInfo<Window>.focusedUserSpacePosition(), index > 0 else {
             return
         }
 
@@ -188,12 +179,7 @@ class WindowTransitionCoordinator<Target: WindowTransitionTarget> {
     }
 
     func pushFocusedWindowToSpaceRight() {
-        guard let currentFocusedSpace = CGSpacesInfo<Window>.currentFocusedSpace(), let spaces = CGSpacesInfo<Window>.spacesForAllScreens() else {
-            return
-        }
-
-        let filteredSpaces = spaces.filter { $0.type == CGSSpaceTypeUser }
-        guard let index = filteredSpaces.firstIndex(of: currentFocusedSpace), index + 1 < spaces.count else {
+        guard let (index, count) = CGSpacesInfo<Window>.focusedUserSpacePosition(), index + 1 < count else {
             return
         }
 

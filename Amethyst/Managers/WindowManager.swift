@@ -61,7 +61,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
     private var applications: [pid_t: AnyApplication<Application>] = [:]
     private var applicationObservations: [pid_t: UndeterminedApplication] = [:]
     private var screens: Screens
-    private let windows = Windows()
+    private let windows = TrackedWindows<Window>()
     private var lastReflowTime = Date()
     private var lastFocusDate: Date?
     private var pendingTabDetection: [Window.WindowID: Window] = [:]
@@ -990,7 +990,7 @@ extension WindowManager: WindowTransitionTarget {
             guard
                 let screen = window.screen(),
                 let spaces = CGSpacesInfo<Window>.spacesForAllScreens(includeOnlyUserSpaces: true),
-                spaceIndex < spaces.count
+                spaces.indices.contains(spaceIndex)
             else {
                 return
             }

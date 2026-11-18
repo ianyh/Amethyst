@@ -308,11 +308,13 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     func cycleLayoutForward() {
+        guard !layouts.isEmpty else { return }
         setCurrentLayoutIndex((currentLayoutIndex + 1) % layouts.count)
         setNeedsReflow()
     }
 
     func cycleLayoutBackward() {
+        guard !layouts.isEmpty else { return }
         setCurrentLayoutIndex((currentLayoutIndex == 0 ? layouts.count : currentLayoutIndex) - 1)
         setNeedsReflow()
     }
