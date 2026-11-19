@@ -38,6 +38,18 @@ class CGSpacesInfoTests: QuickSpec {
                 TestScreen.descriptions = []
             }
 
+            it("indexes the focused desktop among user Spaces across displays") {
+                let window = TestWindow(element: nil)!
+                window.testScreen = second
+                let originalFocus = TestWindow.focused
+                TestWindow.focused = window
+                defer { TestWindow.focused = originalFocus }
+                TestScreen.descriptions[0]["Spaces"][1]["type"] = 4
+                let position = CGSpacesInfo<TestWindow>.focusedUserSpacePosition()
+                expect(position?.index).to(equal(1))
+                expect(position?.count).to(equal(3))
+            }
+
             it("is the screen of the display that lists the Space") {
                 expect(CGSpacesInfo<TestWindow>.screenForSpaceID(12)).to(equal(first))
                 expect(CGSpacesInfo<TestWindow>.screenForSpaceID(21)).to(equal(second))

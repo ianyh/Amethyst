@@ -133,41 +133,9 @@ extension WindowsInformation {
 
     // find a window based on its window description within an array of Window objects
     static func windowInWindows(_ windows: [Window], withCGWindowDescription windowDescription: [String: AnyObject]) -> Window? {
-        let potentialWindows = windows.filter {
-            guard let windowOwnerPID = windowDescription[kCGWindowOwnerPID as String] as? NSNumber else {
-                return false
-            }
-
-            guard windowOwnerPID.int32Value == $0.pid() else {
-                return false
-            }
-
-            guard let boundsDictionary = windowDescription[kCGWindowBounds as String] as? [String: Any] else {
-                return false
-            }
-
-            let windowFrame = CGRect(dictionaryRepresentation: boundsDictionary as CFDictionary)!
-
-            guard windowFrame.equalTo($0.frame()) else {
-                return false
-            }
-
-            return true
+        guard let number = windowDescription[kCGWindowNumber as String] as? NSNumber else {
+            return nil
         }
-
-        guard potentialWindows.count > 1 else {
-            return potentialWindows.first
-        }
-
-        return potentialWindows.first {
-            guard let describedTitle = windowDescription[kCGWindowName as String] as? String else {
-                return false
-            }
-
-            let describedOwner = windowDescription[kCGWindowOwnerName as String] as? String
-            let describedOwnedTitle = describedOwner.flatMap { "\(describedTitle) - \($0)" }
-
-            return describedTitle == $0.title() || describedOwnedTitle == $0.title()
-        }
+        return windows.first { $0.cgID() == number.uint32Value }
     }
 }

@@ -30,6 +30,102 @@ private final class TestDelegate: ScreenManagerDelegate {
 
 class ScreenManagerTests: QuickSpec {
     override func spec() {
+        describe("cycling layouts") {
+            it("leaves the layout empty when both cycle commands are used") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                configuration.setLayoutKeys([])
+                let manager = ScreenManager(screen: TestScreen(), delegate: TestDelegate(), userConfiguration: configuration)
+                manager.cycleLayoutForward()
+                manager.cycleLayoutBackward()
+                expect(manager.currentLayout).to(beNil())
+            }
+        }
+
+        it("looks up coincident same-app windows by their Core Graphics number") {
+            let first = TestWindow(element: nil)!
+            let second = TestWindow(element: nil)!
+            first.cgWindowID = 101
+            second.cgWindowID = 102
+            for window in [first, second] {
+                let description = [kCGWindowNumber as String: NSNumber(value: window.cgID())]
+                expect(WindowsInformation.windowInWindows([first, second], withCGWindowDescription: description)).to(equal(window))
+            }
+        }
+
+        it("delivers moves to the destination Space even while another Space is active") {
+            let configuration = UserConfiguration(storage: TestConfigurationStorage())
+            configuration.setLayoutKeys(["bsp"])
+            let manager = ScreenManager(screen: TestScreen(), delegate: TestDelegate(), userConfiguration: configuration)
+            let first = Space(id: 1, type: CGSSpaceTypeUser, uuid: "first")
+            let second = Space(id: 2, type: CGSSpaceTypeUser, uuid: "second")
+            let firstWindow = TestWindow(element: nil)!
+            let secondWindow = TestWindow(element: nil)!
+            let savedFocus = TestWindow.focused
+            defer { TestWindow.focused = savedFocus }
+
+            manager.updateSpace(to: first)
+            manager.distributeEvent(.add(window: firstWindow), to: first)
+            manager.distributeEvent(.add(window: secondWindow), to: second)
+            expect(manager.lastFocusedWindow).to(equal(firstWindow))
+            TestWindow.focused = firstWindow
+            expect(manager.nextWindowIDClockwise()).to(equal(firstWindow.id()))
+            manager.updateSpace(to: second)
+            expect(manager.nextWindowIDClockwise()).to(beNil())
+            TestWindow.focused = secondWindow
+            expect(manager.nextWindowIDClockwise()).to(equal(secondWindow.id()))
+        }
+
+        it("restores each Space's selected layout after configuration reordering") {
+            let configuration = UserConfiguration(storage: TestConfigurationStorage())
+            configuration.setLayoutKeys(["tall", "wide", "fullscreen"])
+            let manager = ScreenManager(screen: TestScreen(), delegate: TestDelegate(), userConfiguration: configuration)
+            let first = Space(id: 1, type: CGSSpaceTypeUser, uuid: "first")
+            let second = Space(id: 2, type: CGSSpaceTypeUser, uuid: "second")
+            manager.updateSpace(to: first)
+            manager.selectLayout("wide")
+            manager.updateSpace(to: second)
+            manager.selectLayout("fullscreen")
+            let data = try JSONEncoder().encode(manager)
+
+            let saved = UserDefaults.standard.object(forKey: ConfigurationKey.layouts.rawValue)
+            defer { UserDefaults.standard.set(saved, forKey: ConfigurationKey.layouts.rawValue) }
+            UserConfiguration.shared.setLayoutKeys(["fullscreen", "tall", "wide"])
+            let restored = try JSONDecoder().decode(ScreenManager<TestDelegate>.self, from: data)
+            restored.updateSpace(to: first)
+            expect(restored.currentLayout?.layoutKey).to(equal("wide"))
+            restored.updateSpace(to: second)
+            expect(restored.currentLayout?.layoutKey).to(equal("fullscreen"))
+
+            var legacy = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+            legacy.removeValue(forKey: "selectionsBySpaceUUID")
+            let legacyData = try JSONSerialization.data(withJSONObject: legacy)
+            let old = try JSONDecoder().decode(ScreenManager<TestDelegate>.self, from: legacyData)
+            old.updateSpace(to: first)
+            expect(old.currentLayout?.layoutKey).to(equal("fullscreen"))
+        }
+
+        describe("window tracking") {
+            it("forgets destroyed windows even after tab replacement") {
+                let windows = TrackedWindows<TestWindow>()
+                let closing = TestWindow(element: nil)!
+                let remaining = TestWindow(element: nil)!
+                windows.add(window: closing, atFront: false)
+                windows.setFloating(true, forWindow: closing)
+                windows.replace(window: closing, withWindow: remaining)
+                windows.rememberMainWindow(closing, on: 1)
+                windows.rememberMainWindow(remaining, on: 2)
+                windows.rememberMainWindow(closing, on: 3)
+
+                windows.remove(window: closing)
+
+                expect(windows.lastMainWindows[1]).to(beNil())
+                expect(windows.lastMainWindows[2]).to(equal(remaining))
+                expect(windows.lastMainWindows[3]).to(beNil())
+                expect(windows.isWindowFloating(closing)).to(beFalse())
+                expect(windows.isWindowTracked(remaining)).to(beTrue())
+            }
+        }
+
         describe("coding") {
             it("decodes layouts") {
                 let configuration = UserConfiguration(storage: TestConfigurationStorage())

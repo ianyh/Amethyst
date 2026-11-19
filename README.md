@@ -20,7 +20,7 @@ Amethyst is available for direct download on the [releases page](https://github.
 brew install --cask amethyst
 ```
 
-Note: that Amethyst now is only supported on macOS 10.15+.
+Amethyst v0.25.0 requires macOS 12 or later.
 
 ## Using Amethyst
 

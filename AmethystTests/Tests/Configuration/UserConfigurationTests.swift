@@ -69,6 +69,17 @@ class UserConfigurationTests: QuickSpec {
     }
 
     override func spec() {
+        it("disables invalid window limits and preserves positive whole-window counts") {
+            let storage = TestConfigurationStorage()
+            let configuration = UserConfiguration(storage: storage)
+            for value in [Float(-1), 0, 0.5, .nan, .infinity, -.infinity, .greatestFiniteMagnitude] {
+                storage.set(value, forKey: .windowMaxCount)
+                expect(configuration.windowMaxCount()).to(beNil())
+            }
+            storage.set(Float(3.5), forKey: .windowMaxCount)
+            expect(configuration.windowMaxCount()).to(equal(3))
+        }
+
         describe("constructing commands") {
             context("overrides") {
                 it("when user configuration exists") {

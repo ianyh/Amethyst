@@ -13,6 +13,25 @@ import Silica
 
 class ThreeColumnLayoutTests: QuickSpec {
     override func spec() {
+        it("allocates the requested main width and tiles the full width in both four-column layouts") {
+            let screen = TestScreen(frame: CGRect(x: 17, y: 0, width: 1001, height: 750))
+            let windows = layoutTestWindowSet(count: 4)
+            let layouts: [FourColumnLayout<TestWindow>] = [FourColumnLeftLayout(), FourColumnRightLayout()]
+            for layout in layouts {
+                for ratio in [CGFloat(0.25), 0.60] {
+                    layout.recommendMainPaneRawRatio(rawRatio: ratio)
+                    let frames = layout.frameAssignments(windows, on: screen)!.frames()
+                    expect(frames[0].width).to(equal(round(1001 * ratio)))
+                    var edge = CGFloat(17)
+                    for frame in frames.sorted(by: { $0.minX < $1.minX }) {
+                        expect(frame.minX).to(equal(edge))
+                        edge = frame.maxX
+                    }
+                    expect(edge).to(equal(1018))
+                }
+            }
+        }
+
         afterEach {
             TestScreen.availableScreens = []
         }

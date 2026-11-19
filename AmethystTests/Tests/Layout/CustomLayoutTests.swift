@@ -38,6 +38,15 @@ class CustomLayoutTests: QuickSpec {
             }
         }
 
+        it("uses the documented main-pane default and honors explicit resize rules") {
+            let screen = TestScreen()
+            let windows = layoutTestWindowSet(count: 2)
+            let implicit = CustomLayout<TestWindow>(key: "fullscreen", fileURL: Bundle.layoutFile(key: "fullscreen")!)
+            let explicit = CustomLayout<TestWindow>(key: "ratio", fileURL: Bundle.layoutFile(key: "recommended-main-pane-ratio")!)
+            expect(implicit.frameAssignments(windows, on: screen)!.map { $0.frameAssignment.resizeRules.isMain }).to(equal([true, true]))
+            expect(explicit.frameAssignments(windows, on: screen)!.map { $0.frameAssignment.resizeRules.isMain }).to(equal([true, false]))
+        }
+
         describe("undefined layout") {
             it("defines a name") {
                 let layout = CustomLayout<TestWindow>(key: "undefined", fileURL: Bundle.layoutFile(key: "undefined")!)

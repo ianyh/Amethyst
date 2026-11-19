@@ -175,6 +175,15 @@ struct CGSpacesInfo<Window: WindowType> {
         return nil
     }
 
+    static func focusedUserSpacePosition() -> (index: Int, count: Int)? {
+        guard let current = currentFocusedSpace(),
+              let desktops = spacesForAllScreens(includeOnlyUserSpaces: true),
+              let index = desktops.firstIndex(of: current) else {
+            return nil
+        }
+        return (index, desktops.count)
+    }
+
     static func currentFocusedSpace() -> Space? {
         guard let focusedWindow = Window.currentlyFocused(), let screen = focusedWindow.screen() else {
             return nil
