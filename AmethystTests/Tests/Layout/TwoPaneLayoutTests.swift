@@ -32,10 +32,10 @@ class TwoPaneLayoutTests: QuickSpec {
         }
 
         it("preserves duplicate counts when comparing unordered frames") {
-            let a = CGRect.zero
-            let b = CGRect(x: 10, y: 0, width: 20, height: 30)
-            expect(sameUnorderedFrames([a, b, b], [a, a, b])).to(beFalse())
-            expect(sameUnorderedFrames([a, b, a], [a, a, b])).to(beTrue())
+            let firstFrame = CGRect.zero
+            let secondFrame = CGRect(x: 10, y: 0, width: 20, height: 30)
+            expect(sameUnorderedFrames([firstFrame, secondFrame, secondFrame], [firstFrame, firstFrame, secondFrame])).to(beFalse())
+            expect(sameUnorderedFrames([firstFrame, secondFrame, firstFrame], [firstFrame, firstFrame, secondFrame])).to(beTrue())
         }
 
         describe("layout horizontal") {

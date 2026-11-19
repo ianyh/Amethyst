@@ -58,21 +58,21 @@ class ScreenManagerTests: QuickSpec {
             let manager = ScreenManager(screen: TestScreen(), delegate: TestDelegate(), userConfiguration: configuration)
             let first = Space(id: 1, type: CGSSpaceTypeUser, uuid: "first")
             let second = Space(id: 2, type: CGSSpaceTypeUser, uuid: "second")
-            let a = TestWindow(element: nil)!
-            let b = TestWindow(element: nil)!
+            let firstWindow = TestWindow(element: nil)!
+            let secondWindow = TestWindow(element: nil)!
             let savedFocus = TestWindow.focused
             defer { TestWindow.focused = savedFocus }
 
             manager.updateSpace(to: first)
-            manager.distributeEvent(.add(window: a), to: first)
-            manager.distributeEvent(.add(window: b), to: second)
-            expect(manager.lastFocusedWindow).to(equal(a))
-            TestWindow.focused = a
-            expect(manager.nextWindowIDClockwise()).to(equal(a.id()))
+            manager.distributeEvent(.add(window: firstWindow), to: first)
+            manager.distributeEvent(.add(window: secondWindow), to: second)
+            expect(manager.lastFocusedWindow).to(equal(firstWindow))
+            TestWindow.focused = firstWindow
+            expect(manager.nextWindowIDClockwise()).to(equal(firstWindow.id()))
             manager.updateSpace(to: second)
             expect(manager.nextWindowIDClockwise()).to(beNil())
-            TestWindow.focused = b
-            expect(manager.nextWindowIDClockwise()).to(equal(b.id()))
+            TestWindow.focused = secondWindow
+            expect(manager.nextWindowIDClockwise()).to(equal(secondWindow.id()))
         }
 
         it("restores each Space's selected layout after configuration reordering") {
