@@ -30,6 +30,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
     enum CodingKeys: String, CodingKey {
         case layoutsBySpaceUUID
+        case selectionsBySpaceUUID
     }
 
     weak var delegate: Delegate?
@@ -52,7 +53,12 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private let reflowOperationQueue = OperationQueue()
 
     private var layouts: [Layout<Window>] = []
-    private var currentLayoutIndexBySpaceUUID: [String: Int] = [:]
+    private struct Selection: Codable {
+        let key: String
+        let occurrence: Int
+    }
+
+    private var selectionsBySpaceUUID: [String: Selection] = [:]
     private var layoutsBySpaceUUID: [String: [Layout<Window>]] = [:]
     private var currentLayoutIndex: Int = 0
     var previousLayoutKey: String?
@@ -94,6 +100,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let layoutsBySpaceUUID = try values.decode([String: [[String: Data]]].self, forKey: .layoutsBySpaceUUID)
 
+        selectionsBySpaceUUID = try values.decodeIfPresent([String: Selection].self, forKey: .selectionsBySpaceUUID) ?? [:]
         self.userConfiguration = UserConfiguration.shared
         self.layoutsBySpaceUUID = try layoutsBySpaceUUID.mapValues { keyedLayouts -> [Layout<Window>] in
             return try ScreenManager<Delegate>.decodedLayouts(from: keyedLayouts, userConfiguration: UserConfiguration.shared)
@@ -148,6 +155,7 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
                 return ["key": layoutKey, "data": encodedLayout]
             }
         }
+        try values.encode(selectionsBySpaceUUID, forKey: .selectionsBySpaceUUID)
         try values.encode(layoutsBySpaceUUID, forKey: .layoutsBySpaceUUID)
     }
 
@@ -156,23 +164,36 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     }
 
     func updateSpace(to space: Space) {
-        if let currentSpace = self.space {
-            currentLayoutIndexBySpaceUUID[currentSpace.uuid] = currentLayoutIndex
-        }
-
         self.space = space
+        layouts = layouts(for: space)
+        let selection = selectionsBySpaceUUID[space.uuid]
+        let matches = layouts.indices.filter { layouts[$0].layoutKey == selection?.key }
+        let occurrence = selection?.occurrence ?? 0
+        currentLayoutIndex = 0
+        setCurrentLayoutIndex(matches.indices.contains(occurrence) ? matches[occurrence] : 0, changingSpace: true)
+    }
 
-        setCurrentLayoutIndex(currentLayoutIndexBySpaceUUID[space.uuid] ?? 0, changingSpace: true)
+    private func layouts(for space: Space) -> [Layout<Window>] {
+        if let cached = layoutsBySpaceUUID[space.uuid] {
+            return cached
+        }
+        let configured: [Layout<Window>] = LayoutType.layoutsWithConfiguration(userConfiguration)
+        layoutsBySpaceUUID[space.uuid] = configured
+        return configured
+    }
 
-        if let layouts = layoutsBySpaceUUID[space.uuid] {
-            self.layouts = layouts
-        } else {
-            self.layouts = LayoutType.layoutsWithConfiguration(userConfiguration)
-            layoutsBySpaceUUID[space.uuid] = layouts
+    func distributeEvent(_ change: Change<Window>, to destination: Space? = nil) {
+        guard let destination = destination ?? space else { return }
+        if destination == space {
+            updateFocus(for: change)
+        }
+        log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow -- Window Change: \(change)")
+        for case let layout as StatefulLayout<Window> in layouts(for: destination) {
+            layout.updateWithChange(change)
         }
     }
 
-    func distributeEvent(_ change: Change<Window>) {
+    private func updateFocus(for change: Change<Window>) {
         switch change {
         case let .add(window: window):
             lastFocusedWindow = window
@@ -186,18 +207,6 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
             break
         }
 
-        log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow -- Window Change: \(change)")
-
-        guard let space, let layouts = layoutsBySpaceUUID[space.uuid] else {
-            log.warning("Trying to distribute an event to a screen with no space")
-            return
-        }
-
-        for layout in layouts {
-            if let layout = layout as? StatefulLayout {
-                layout.updateWithChange(change)
-            }
-        }
     }
 
     func setNeedsReflow() {
@@ -341,6 +350,11 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         }
 
         currentLayoutIndex = index
+        if let space {
+            let key = layouts[index].layoutKey
+            let occurrence = layouts[..<index].filter { $0.layoutKey == key }.count
+            selectionsBySpaceUUID[space.uuid] = Selection(key: key, occurrence: occurrence)
+        }
 
         guard !changingSpace || userConfiguration.enablesLayoutHUDOnSpaceChange() else {
             return

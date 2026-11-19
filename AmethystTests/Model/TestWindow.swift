@@ -17,7 +17,7 @@ final class TestWindow: WindowType {
     static var focused: TestWindow?
 
     private let element: SIAccessibilityElement?
-    private let cgWindowID = CGWindowID(Int.random(in: 1...1000))
+    var cgWindowID = CGWindowID(Int.random(in: 1...1000))
     private let uuid = UUID().uuidString
     private var _frame: CGRect = .zero
     var isFocusedValue = false

@@ -17,6 +17,27 @@ class TwoPaneLayoutTests: QuickSpec {
             TestScreen.availableScreens = []
         }
 
+        it("measures portrait drags along the vertical split in both two-pane layouts") {
+            let screen = TestScreen(frame: CGRect(x: 0, y: 0, width: 1000, height: 2000))
+            let windows = layoutTestWindowSet(count: 2)
+            let layouts: [Layout<TestWindow>] = [TwoPaneLayout(), TwoPaneRightLayout()]
+            for layout in layouts {
+                let assignments = layout.frameAssignments(windows, on: screen)!
+                let padding = UserConfiguration.shared.windowMargins() ? UserConfiguration.shared.windowMarginSize() : 0
+                for (index, height) in [CGFloat(1200), 800].enumerated() {
+                    let dragged = CGRect(x: 0, y: 0, width: 1000, height: height - padding)
+                    expect(assignments[index].frameAssignment.impliedMainPaneRatio(windowFrame: dragged)).to(beCloseTo(0.6))
+                }
+            }
+        }
+
+        it("preserves duplicate counts when comparing unordered frames") {
+            let a = CGRect.zero
+            let b = CGRect(x: 10, y: 0, width: 20, height: 30)
+            expect(sameUnorderedFrames([a, b, b], [a, a, b])).to(beFalse())
+            expect(sameUnorderedFrames([a, b, a], [a, a, b])).to(beTrue())
+        }
+
         describe("layout horizontal") {
             it("separates into a main pane and a secondary pane") {
                 let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))

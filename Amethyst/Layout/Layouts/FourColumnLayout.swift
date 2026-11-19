@@ -93,13 +93,15 @@ struct QuadruplePaneArrangement {
 
         // calculate widths
         let screenWidth = screenSize.width
-        let mainWindowWidth = round(screenWidth / 4)
-        let nonMainWindowWidth = round(screenWidth / 4)
+        let mainWindowWidth = round(screenWidth * mainPaneRatio)
+        let remainingWidth = screenWidth - mainWindowWidth
+        let firstBoundary = round(remainingWidth / 3)
+        let secondBoundary = round(2 * remainingWidth / 3)
         self.paneWindowWidth = [
             .main: mainWindowWidth,
-            .secondary: nonMainWindowWidth,
-            .tertiary: nonMainWindowWidth,
-            .quaternary: nonMainWindowWidth
+            .secondary: firstBoundary,
+            .tertiary: secondBoundary - firstBoundary,
+            .quaternary: remainingWidth - secondBoundary
         ]
    }
 
@@ -178,7 +180,7 @@ class FourColumnLayout<Window: WindowType>: Layout<Window> {
     }
 
     private(set) var mainPaneCount: Int = 1
-    private(set) var mainPaneRatio: CGFloat = 0.5
+    private(set) var mainPaneRatio: CGFloat = 0.25
 
     required init() {
         super.init()

@@ -10,6 +10,25 @@
 import Foundation
 import Nimble
 
+func layoutTestWindowSet(count: Int) -> WindowSet<TestWindow> {
+    let windows = (0..<count).map { _ in TestWindow(element: nil)! }
+    return WindowSet(
+        windows: windows.map { LayoutWindow(id: $0.id(), frame: $0.frame(), isFocused: false) },
+        isWindowWithIDActive: { _ in true },
+        isWindowWithIDFloating: { _ in false },
+        windowForID: { id in windows.first { $0.id() == id } }
+    )
+}
+
+func sameUnorderedFrames(_ actual: [CGRect], _ expected: [CGRect]) -> Bool {
+    var remaining = actual
+    for frame in expected {
+        guard let index = remaining.firstIndex(of: frame) else { return false }
+        remaining.remove(at: index)
+    }
+    return remaining.isEmpty
+}
+
 extension RandomAccessCollection where Element == FrameAssignmentOperation<TestWindow>, Index == Int {
     func filtered(byIDs ids: [TestWindow.WindowID]) -> [Element] {
         return filter { ids.contains($0.frameAssignment.window.id) }
@@ -43,9 +62,7 @@ extension RandomAccessCollection where Element == FrameAssignmentOperation<TestW
             }
         } else {
             let currentFrames = map { $0.frameAssignment.frame }
-            for frame in frames {
-                expect(currentFrames).to(contain(frame))
-            }
+            expect(sameUnorderedFrames(currentFrames, frames)).to(beTrue(), description: description(withExpectedFrames: frames))
         }
     }
 

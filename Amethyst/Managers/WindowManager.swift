@@ -37,6 +37,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
 
     struct PendingEvent {
         let screen: Screen
+        let space: Space
         let event: Change<Window>
     }
 
@@ -189,7 +190,7 @@ final class WindowManager<Application: ApplicationType>: NSObject, Codable {
         screens.updateSpaces()
 
         for pendingEvent in eventQueue {
-            distributeEventToScreen(pendingEvent.screen, change: pendingEvent.event)
+            screenManager(for: pendingEvent.screen)?.distributeEvent(pendingEvent.event, to: pendingEvent.space)
         }
         eventQueue.removeAll()
 
@@ -1000,7 +1001,7 @@ extension WindowManager: WindowTransitionTarget {
                 return
             }
             distributeEventToScreen(screen, change: .remove(window: window))
-            eventQueue.append(PendingEvent(screen: targetScreen, event: .add(window: window)))
+            eventQueue.append(PendingEvent(screen: targetScreen, space: targetSpace, event: .add(window: window)))
             window.move(toSpaceAtIndex: UInt(spaceIndex + 1))
             if targetScreen.screenID() != screen.screenID() {
                 // necessary to set frame here as window is expected to be at origin relative to targe screen when moved, can be improved.

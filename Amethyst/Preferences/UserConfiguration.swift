@@ -685,8 +685,11 @@ class UserConfiguration: NSObject {
     }
 
     func windowMaxCount() -> Int? {
-        let int = Int(storage.float(forKey: .windowMaxCount))
-        return int == 0 ? nil : int
+        let value = storage.float(forKey: .windowMaxCount)
+        guard let count = Int(exactly: value.rounded(.towardZero)), count > 0 else {
+            return nil
+        }
+        return count
     }
 
     private func setConfigurationValueWithKVO(_ value: Any?, forKey key: ConfigurationKey) {
