@@ -249,6 +249,22 @@ extension WindowManager: ApplicationEventHandlerDelegate {
 
         remove(application: application)
     }
+
+    func removeTerminatedApplications() {
+        for (pid, application) in applications where !WindowManager.isProcessRunning(pid) {
+            log.debug("Removing application \(pid), whose process has exited")
+            remove(application: application)
+        }
+    }
+
+    /// Whether the system still lists a running application with this pid.
+    private static func isProcessRunning(_ pid: pid_t) -> Bool {
+        guard let runningApplication = NSRunningApplication(processIdentifier: pid) else {
+            return false
+        }
+
+        return !runningApplication.isTerminated
+    }
 }
 
 extension WindowManager {
@@ -289,10 +305,13 @@ extension WindowManager {
     }
 
     fileprivate func remove(application: AnyApplication<Application>) {
-        for window in application.windows() {
+        let pid = application.pid()
+
+        // The tracked windows are found by pid: once the process has exited, its own window list can no longer identify them.
+        for window in windows.windows(forApplicationWithPID: pid) {
             remove(window: window)
         }
-        applications.removeValue(forKey: application.pid())
+        applications.removeValue(forKey: pid)
     }
 
     fileprivate func activate(application: AnyApplication<Application>) {
