@@ -37,6 +37,16 @@ protocol ApplicationObservationDelegate: AnyObject {
     func application(_ application: AnyApplication<Application>, didRemoveWindow window: Window)
 
     /**
+     Called when a window's accessibility element has been destroyed (e.g. the window
+     was closed), as opposed to minimized.
+
+     - Parameters:
+         - application: The application the event occurred in.
+         - window: The window that was destroyed.
+     */
+    func application(_ application: AnyApplication<Application>, didDestroyWindow window: Window)
+
+    /**
      Called when the application has focused a window.
      
      - Parameters:
@@ -350,7 +360,7 @@ struct ApplicationObservation<Delegate: ApplicationObservationDelegate> {
         case .mainWindowChanged:
             delegate?.application(application, didFindPotentiallyNewWindow: window)
         case .elementDestroyed:
-            delegate?.application(application, didRemoveWindow: window)
+            delegate?.application(application, didDestroyWindow: window)
         }
     }
 }
