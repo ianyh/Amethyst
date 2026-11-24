@@ -36,9 +36,9 @@ class LayoutNameWindow: NSWindow {
 
     // Display custom notification with dynamic sizing
     func displayNotification(title: String, description: String) {
-        // layoutDescriptionLabel?.isHidden = false
         layoutNameField?.stringValue = title
         layoutDescriptionLabel?.stringValue = description
+        layoutDescriptionLabel?.isHidden = description.isEmpty
 
         // Calculate size needed for both name and description
         let longerText = title.count > description.count ? title : description
@@ -55,7 +55,7 @@ class LayoutNameWindow: NSWindow {
 
         // Add padding (40px on each side + extra space)
         let minWidth: CGFloat = 200
-        let maxWidth: CGFloat = 500
+        let maxWidth: CGFloat = 720
         let padding: CGFloat = 80
         let calculatedWidth = textSize.width + padding
 
