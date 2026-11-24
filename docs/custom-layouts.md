@@ -32,8 +32,7 @@ The `updateState` function takes three arguments—`state`, `focusedWindowID`, a
 
 * `state`: the current layout state
 * `focusedWindowID`: the currently focused window, or `undefined` when no window is focused
-* `settings`: the user's preferences that bear on commands
-    * `windowResizeStep`: the fraction of the screen, between 0 and 1, that the expand and shrink commands are expected to move the main pane by
+* `settings`: the user's preferences that bear on layouts (see [Settings](#settings))
 
 #### `extends`
 
@@ -41,12 +40,13 @@ The key for a layout that the custom layout extends. Each call to `getFrameAssig
 
 #### `getFrameAssignments`
 
-A function that takes four arguments—`windows`, `screenFrame`, `state`, and `extendedFrames`—and returns a mapping of window ids to window frames.
+A function that takes five arguments—`windows`, `screenFrame`, `state`, `extendedFrames`, and `settings`—and returns a mapping of window ids to window frames.
 
 * `windows`: the list of active windows on the screen
 * `screenFrame`: the frame of the screen containing the layout
 * `state`: the current layout state
 * `extendedFrames`: the frames that are inherited from the extended layout if any is defined
+* `settings`: the user's preferences that bear on layouts (see [Settings](#settings))
 
 The return should be an object with _new_ frames keyed by the window id.
 
@@ -93,6 +93,13 @@ A frame is an object with four required properties and two optional properties.
 * (optional) `scaleFactor`: the number of times the pane that the ratio governs fits across the screen along the unconstrained dimension (default: the screen's width or height divided by the frame's). Set it when that pane is larger than the window, for example when several windows stack inside the main pane or two side panes share the space the ratio leaves.
 
 Note that frames are in a global space, not relative to a given screen.
+
+#### Settings
+
+The user's preferences that bear on layouts, passed to `getFrameAssignments` and to every command's `updateState`. It is an object with two properties.
+
+* `windowResizeStep`: the fraction of the screen, between 0 and 1, that the expand and shrink commands are expected to move the main pane by
+* `newWindowsToMain`: `true` when new windows join the front of `windows` and take the main pane, `false` when they join the end (the `new-windows-to-main` preference). A layout that places windows by their position in `windows` can use it to leave the windows already on the screen where they are when a new one arrives.
 
 #### Changes
 

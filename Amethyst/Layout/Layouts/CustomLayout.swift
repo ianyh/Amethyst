@@ -195,7 +195,8 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
             jsWindowsArg,
             jsScreenFrameArg,
             state ?? undefinedValue,
-            extendedFrames ?? undefinedValue
+            extendedFrames ?? undefinedValue,
+            layoutSettings()
         ]
 
         guard let getAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"), !getAssignments.isNull && !getAssignments.isUndefined else {
@@ -288,11 +289,12 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         return nil
     }
 
-    /// The user preferences handed to a custom layout's command functions as their `settings` argument.
-    /// Every value that commands may read is listed here and documented in docs/custom-layouts.md.
-    func commandSettings() -> [String: Any] {
+    /// The user preferences handed to a custom layout as the `settings` argument of `getFrameAssignments` and of its
+    /// command functions. Every value a layout may read is listed here and documented in docs/custom-layouts.md.
+    func layoutSettings() -> [String: Any] {
         return [
-            "windowResizeStep": UserConfiguration.shared.windowResizeStep()
+            "windowResizeStep": UserConfiguration.shared.windowResizeStep(),
+            "newWindowsToMain": UserConfiguration.shared.sendNewWindowsToMainPane()
         ]
     }
 
@@ -308,7 +310,7 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
 
         let focusedWindowID = Window.currentlyFocused().flatMap { idHash(forWindowID: $0.id()) }
-        let settings = commandSettings()
+        let settings = layoutSettings()
         let updateStateArgs: [Any]? = state.flatMap { state in
             guard let context = self.context else {
                 return nil
