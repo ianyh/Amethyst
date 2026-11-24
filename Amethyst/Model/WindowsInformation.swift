@@ -17,6 +17,15 @@ extension CGRect {
         abs(width - otherRect.width) < tolerance.width &&
         abs(height - otherRect.height) < tolerance.height
     }
+
+    /// The point of the rect closest to `point`: the point itself when it lies inside, otherwise the nearest point on the edge. A null rect has no points, so `point` comes back unchanged.
+    func nearestPoint(to point: CGPoint) -> CGPoint {
+        guard !isNull else {
+            return point
+        }
+
+        return CGPoint(x: min(max(point.x, minX), maxX), y: min(max(point.y, minY), maxY))
+    }
 }
 
 struct WindowsInformation<Window: WindowType> {
