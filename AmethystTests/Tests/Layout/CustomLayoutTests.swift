@@ -823,5 +823,50 @@ class CustomLayoutTests: QuickSpec {
                 ])
             }
         }
+
+        describe("coding") {
+            var key: String!
+            var installedFileURL: URL!
+
+            beforeEach {
+                key = "coding-test-\(UUID().uuidString)"
+                installedFileURL = try! FileManager.default.layoutFile(key: key)
+                try! FileManager.default.copyItem(at: Bundle.layoutFile(key: "fullscreen")!, to: installedFileURL)
+            }
+
+            afterEach {
+                try? FileManager.default.removeItem(at: installedFileURL)
+            }
+
+            it("encodes only the key") {
+                let layout = CustomLayout<TestWindow>(key: key, fileURL: installedFileURL)
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let json = try! JSONSerialization.jsonObject(with: encodedLayout) as! [String: Any]
+
+                expect(json.keys.sorted()).to(equal(["key"]))
+                expect(json["key"] as? String).to(equal(key))
+            }
+
+            it("decodes the layout file from the layouts directory") {
+                let layout = CustomLayout<TestWindow>(key: key, fileURL: Bundle.layoutFile(key: "fullscreen")!)
+                let encodedLayout = try! JSONEncoder().encode(layout)
+                let decodedLayout = try! JSONDecoder().decode(CustomLayout<TestWindow>.self, from: encodedLayout)
+
+                expect(decodedLayout.layoutKey).to(equal(key))
+                expect(decodedLayout.layoutName).to(equal("Fullscreen"))
+            }
+
+            it("ignores a file URL from previously encoded layouts") {
+                let staleFileURL = Bundle.layoutFile(key: "undefined")!
+                let legacyJSON = try! JSONSerialization.data(withJSONObject: [
+                    "key": key!,
+                    "fileURL": staleFileURL.absoluteString
+                ])
+                let decodedLayout = try! JSONDecoder().decode(CustomLayout<TestWindow>.self, from: legacyJSON)
+
+                expect(decodedLayout.layoutKey).to(equal(key))
+                expect(decodedLayout.layoutName).to(equal("Fullscreen"))
+            }
+        }
     }
 }
