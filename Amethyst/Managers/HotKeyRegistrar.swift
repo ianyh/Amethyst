@@ -15,31 +15,34 @@ protocol HotKeyRegistrar {
 
 extension HotKeyManager: HotKeyRegistrar {
     func registerHotKey(with string: String?, modifiers: AMModifierFlags?, handler: @escaping () -> Void, defaultsKey: String, override: Bool) {
-        let name = KeyboardShortcuts.Name(defaultsKey)
-        let migrationKey = "migrated-\(name.rawValue)"
-        let isMigrated = UserDefaults.standard.bool(forKey: migrationKey)
+        // Shortcuts are registered on the main thread, at launch and when the configuration is reloaded, which the shortcut library requires of every call.
+        MainActor.assumeIsolated {
+            let name = KeyboardShortcuts.Name(defaultsKey)
+            let migrationKey = "migrated-\(name.rawValue)"
+            let isMigrated = UserDefaults.standard.bool(forKey: migrationKey)
 
-        defer {
-            UserDefaults.standard.set(true, forKey: migrationKey)
-            KeyboardShortcuts.onKeyUp(for: name, action: handler)
-        }
+            defer {
+                UserDefaults.standard.set(true, forKey: migrationKey)
+                KeyboardShortcuts.onKeyUp(for: name, action: handler)
+            }
 
-        if override {
-            UserDefaults.standard.removeObject(forKey: defaultsKey)
-            KeyboardShortcuts.setShortcut(nil, for: name)
-        }
+            if override {
+                UserDefaults.standard.removeObject(forKey: defaultsKey)
+                KeyboardShortcuts.setShortcut(nil, for: name)
+            }
 
-        guard KeyboardShortcuts.getShortcut(for: name) == nil && (!isMigrated || override) else {
-            return
-        }
+            guard KeyboardShortcuts.getShortcut(for: name) == nil && (!isMigrated || override) else {
+                return
+            }
 
-        if let string = string, let modifiers = modifiers {
-            if let keyCodes = stringToKeyCodes[string.lowercased()], !keyCodes.isEmpty {
-                let shortcutKey = KeyboardShortcuts.Key(rawValue: keyCodes[0])
-                let shortcut = KeyboardShortcuts.Shortcut(shortcutKey, modifiers: modifiers)
-                KeyboardShortcuts.setShortcut(shortcut, for: name)
-            } else {
-                log.warning("String \"\(string)\" does not map to any keycodes")
+            if let string = string, let modifiers = modifiers {
+                if let keyCodes = stringToKeyCodes[string.lowercased()], !keyCodes.isEmpty {
+                    let shortcutKey = KeyboardShortcuts.Key(rawValue: keyCodes[0])
+                    let shortcut = KeyboardShortcuts.Shortcut(shortcutKey, modifiers: modifiers)
+                    KeyboardShortcuts.setShortcut(shortcut, for: name)
+                } else {
+                    log.warning("String \"\(string)\" does not map to any keycodes")
+                }
             }
         }
     }
