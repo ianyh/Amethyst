@@ -14,8 +14,10 @@ import Silica
 private final class TestDelegate: ScreenManagerDelegate {
     typealias Window = TestWindow
 
+    private(set) var applyWindowLimitCallCount = 0
+
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<TestDelegate>, minimizingIn range: (Int) -> Range<Int>) {
-        fatalError()
+        applyWindowLimitCallCount += 1
     }
     func activeWindowSet(forScreenManager screenManager: ScreenManager<TestDelegate>, on screen: TestScreen) -> WindowSet<TestWindow> {
         fatalError()
@@ -259,6 +261,71 @@ class ScreenManagerTests: QuickSpec {
                     expect((decodedLayouts.first as? WideLayout<TestWindow>)?.mainPaneCount).to(equal(2))
                     expect((decodedLayouts.last as? TallLayout<TestWindow>)?.mainPaneCount).to(equal(2))
                 }
+            }
+        }
+
+        describe("reflow requests") {
+            func makeScreenManager() -> (ScreenManager<TestDelegate>, TestDelegate) {
+                let storage = TestConfigurationStorage()
+                storage.set(Float(1), forKey: .windowMaxCount)
+                let configuration = UserConfiguration(storage: storage)
+                configuration.tilingEnabled = true
+                let delegate = TestDelegate()
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                let screenManager = ScreenManager(screen: screen, delegate: delegate, userConfiguration: configuration)
+                return (screenManager, delegate)
+            }
+
+            func requestReflows(_ count: Int, on screenManager: ScreenManager<TestDelegate>) {
+                var didDrain = false
+                DispatchQueue.main.async {
+                    for _ in 0..<count {
+                        screenManager.setNeedsReflow()
+                    }
+                    DispatchQueue.main.async {
+                        didDrain = true
+                    }
+                }
+                expect { didDrain }.toEventually(beTrue())
+            }
+
+            it("coalesces requests waiting on the main queue") {
+                let (screenManager, delegate) = makeScreenManager()
+
+                requestReflows(3, on: screenManager)
+
+                expect(delegate.applyWindowLimitCallCount).to(equal(1))
+            }
+
+            it("runs another reflow for a request after the first pass") {
+                let (screenManager, delegate) = makeScreenManager()
+
+                requestReflows(1, on: screenManager)
+                expect(delegate.applyWindowLimitCallCount).to(equal(1))
+
+                requestReflows(1, on: screenManager)
+                expect(delegate.applyWindowLimitCallCount).to(equal(2))
+            }
+
+            it("coalesces requests from a background queue") {
+                let (screenManager, delegate) = makeScreenManager()
+                let requests = DispatchGroup()
+
+                DispatchQueue.global().async(group: requests) {
+                    for _ in 0..<3 {
+                        screenManager.setNeedsReflow()
+                    }
+                }
+                expect(requests.wait(timeout: .now() + 5)).to(equal(.success))
+
+                var didDrain = false
+                DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        didDrain = true
+                    }
+                }
+                expect { didDrain }.toEventually(beTrue())
+                expect(delegate.applyWindowLimitCallCount).to(equal(1))
             }
         }
     }

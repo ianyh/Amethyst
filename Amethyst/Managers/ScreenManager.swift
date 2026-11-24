@@ -38,6 +38,9 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private(set) var screen: Screen?
     private(set) var space: Space?
 
+    /// Coalesces reflow requests for this screen and is accessed only on the main thread.
+    private var isReflowPending = false
+
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
     private(set) var lastFocusedWindow: Window?
@@ -206,7 +209,23 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
         log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow")
 
+        if Thread.isMainThread {
+            scheduleReflow()
+        } else {
+            DispatchQueue.main.async {
+                self.scheduleReflow()
+            }
+        }
+    }
+
+    private func scheduleReflow() {
+        guard !isReflowPending else {
+            return
+        }
+        isReflowPending = true
+
         DispatchQueue.main.async {
+            self.isReflowPending = false
             self.minimizeWindows()
             self.reflow()
         }
@@ -215,10 +234,10 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private func minimizeWindows() {
         let mainPaneCount = (currentLayout as? PanedLayout)?.mainPaneCount ?? 0
 
-        guard UserConfiguration.shared.tilingEnabled, let windowLimit = UserConfiguration.shared.windowMaxCount() else {
+        guard userConfiguration.tilingEnabled, let windowLimit = userConfiguration.windowMaxCount() else {
             return
         }
-        let shouldInsertAtFront = UserConfiguration.shared.sendNewWindowsToMainPane()
+        let shouldInsertAtFront = userConfiguration.sendNewWindowsToMainPane()
         delegate?.applyWindowLimit(forScreenManager: self, minimizingIn: { windowCount in
             if windowLimit > windowCount {
                 // Not enough windows to minimize.
