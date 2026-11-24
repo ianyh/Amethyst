@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PayloadContent</key>
+	<array>
+		<dict>
+			<key>PayloadDisplayName</key>
+			<string>Amethyst system log</string>
+			<key>PayloadIdentifier</key>
+			<string>com.amethyst.Amethyst.reveal-window-titles.logging</string>
+			<key>PayloadType</key>
+			<string>com.apple.system.logging</string>
+			<key>PayloadUUID</key>
+			<string>77EDCECE-CC3A-421D-9955-DC226860B312</string>
+			<key>PayloadVersion</key>
+			<integer>1</integer>
+			<key>Subsystems</key>
+			<dict>
+				<key>com.amethyst.Amethyst</key>
+				<dict>
+					<key>DEFAULT-OPTIONS</key>
+					<dict>
+						<key>Enable-Private-Data</key>
+						<true/>
+					</dict>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+	<key>PayloadDescription</key>
+	<string>Lets the system log on this Mac show the window titles that Amethyst stores as private data. Only Amethyst's log lines are affected. Remove the profile to hide the titles again.</string>
+	<key>PayloadDisplayName</key>
+	<string>Amethyst: Reveal Window Titles in the System Log</string>
+	<key>PayloadIdentifier</key>
+	<string>com.amethyst.Amethyst.reveal-window-titles</string>
+	<key>PayloadRemovalDisallowed</key>
+	<false/>
+	<key>PayloadScope</key>
+	<string>System</string>
+	<key>PayloadType</key>
+	<string>Configuration</string>
+	<key>PayloadUUID</key>
+	<string>A5A1FF6F-7414-4BFF-B379-193B78D62530</string>
+	<key>PayloadVersion</key>
+	<integer>1</integer>
+</dict>
+</plist>

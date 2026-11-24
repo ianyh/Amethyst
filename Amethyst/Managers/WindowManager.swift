@@ -326,7 +326,7 @@ extension WindowManager {
     }
 
     fileprivate func remove(window: Window) {
-        log.debug("Removing window: \(window)")
+        log.debug("Removing window: \(window)", context: PrivateWindowTitle(of: window))
         pendingTabDetection.removeValue(forKey: window.id())
         earlyFocusedWindows.remove(window.id())
         distributeEventToAllScreens(.remove(window: window))
@@ -471,14 +471,14 @@ extension WindowManager {
     }
 
     private func add(window: Window, afterWindow otherWindow: Window? = nil) {
-        log.debug("Adding window: \(window)")
+        log.debug("Adding window: \(window)", context: PrivateWindowTitle(of: window))
         guard window.shouldBeManaged() else {
-            log.debug("Window should not be managed: \(window)")
+            log.debug("Window should not be managed: \(window)", context: PrivateWindowTitle(of: window))
             return
         }
 
         guard let application = applicationWithPID(window.pid()) else {
-            log.error("Tried to add a window without an application: \(window)")
+            log.error("Tried to add a window without an application: \(window)", context: PrivateWindowTitle(of: window))
             return
         }
 
@@ -487,7 +487,7 @@ extension WindowManager {
         }
 
         guard !windows.isWindowTracked(window) else {
-            log.debug("Window was already tracked: \(window)")
+            log.debug("Window was already tracked: \(window)", context: PrivateWindowTitle(of: window))
             refreshTrackedWindow(window, application: application)
             return
         }
@@ -501,7 +501,7 @@ extension WindowManager {
                         return .error(error)
                     }
 
-                    log.debug("error in determining float for window: \(window) - \(error)")
+                    log.debug("error in determining float for window: \(window) - \(error)", context: PrivateWindowTitle(of: window))
                     return .timer(.milliseconds((count * count * 100)), scheduler: MainScheduler.instance)
                 }
             }
@@ -509,7 +509,7 @@ extension WindowManager {
                 guard error is TrackingError else {
                     throw error
                 }
-                log.debug("forcing float for window: \(window)")
+                log.debug("forcing float for window: \(window)", context: PrivateWindowTitle(of: window))
                 try self.determineFloatForWindow(window, application: application, force: true)
                 return .just(())
             }
@@ -526,7 +526,7 @@ extension WindowManager {
             }
             .subscribe(
                 onError: { error in
-                    log.error("Failed to track window: \(window) - \(error)")
+                    log.error("Failed to track window: \(window) - \(error)", context: PrivateWindowTitle(of: window))
                 }
             )
             .disposed(by: disposeBag)
@@ -548,7 +548,7 @@ extension WindowManager {
             return
         }
 
-        log.debug("Refreshed stale element for tracked window: \(window)")
+        log.debug("Refreshed stale element for tracked window: \(window)", context: PrivateWindowTitle(of: window))
 
         // The destroyed observation belongs to the element, not the window identity.
         // Drop the stale element's observation so a late notification from it cannot
@@ -579,7 +579,7 @@ extension WindowManager {
 
     private func track(window: Window, application: AnyApplication<Application>, afterWindow otherWindow: Window? = nil) throws {
         guard !windows.isWindowTracked(window) else {
-            log.warning("Trying to track a window that is already tracked: \(window)")
+            log.warning("Trying to track a window that is already tracked: \(window)", context: PrivateWindowTitle(of: window))
             throw TrackingError.alreadyTracked
         }
 
@@ -652,7 +652,7 @@ extension WindowManager {
 
         for (existingWindow, isActive, isOnScreen) in applicationWindows {
             guard existingWindow != window else {
-                log.debug("Windows are the same:\n\tNew: \(window)\n\t\(existingWindow)")
+                log.debug("Windows are the same:\n\tNew: \(window)\n\t\(existingWindow)", context: PrivateWindowTitle(of: window, existingWindow))
                 continue
             }
 
@@ -669,7 +669,7 @@ extension WindowManager {
             // The window needs to have either left the screen and therefore is being replaced
             // or be invalid and therefore being removed and can be replaced.
             guard didLeaveScreen || isInvalid else {
-                log.debug("Window candidate discarded: \(existingWindow)")
+                log.debug("Window candidate discarded: \(existingWindow)", context: PrivateWindowTitle(of: existingWindow))
                 continue
             }
 
@@ -686,7 +686,7 @@ extension WindowManager {
                 continue
             }
 
-            log.debug("Selected existing window: \(existingWindow)")
+            log.debug("Selected existing window: \(existingWindow)", context: PrivateWindowTitle(of: existingWindow))
 
             guard windows.isWindowTracked(window) else {
                 // If the window isn't tracked we add it in relation to the existing one.
@@ -734,7 +734,7 @@ extension WindowManager {
 
             guard didLeaveScreen || isInvalid else { continue }
 
-            log.debug("completeTabDetection: selected candidate \(existingWindow) for \(window)")
+            log.debug("completeTabDetection: selected candidate \(existingWindow) for \(window)", context: PrivateWindowTitle(of: window, existingWindow))
 
             guard windows.isWindowTracked(window) else {
                 pendingTabDetection.removeValue(forKey: window.id())
@@ -865,7 +865,7 @@ extension WindowManager: ApplicationObservationDelegate {
             // Focus notification arrived before the creation notification.
             // Record this so swapInTab can call completeTabDetection immediately
             // rather than deferring to a focus event that has already passed.
-            log.debug("Focused untracked window before creation notification - recording early focus: \(window)")
+            log.debug("Focused untracked window before creation notification - recording early focus: \(window)", context: PrivateWindowTitle(of: window))
             earlyFocusedWindows.insert(window.id())
         }
 
