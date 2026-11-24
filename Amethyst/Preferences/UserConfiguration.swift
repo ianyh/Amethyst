@@ -653,6 +653,10 @@ class UserConfiguration: NSObject {
         return storage.bool(forKey: .layoutHUDOnSpaceChange)
     }
 
+    func showsLayoutDebugInfo() -> Bool {
+        return storage.bool(forKey: .debugLayoutInfo)
+    }
+
     func enablesWindowCountHUD() -> Bool {
         return storage.bool(forKey: .windowCountHUD)
     }

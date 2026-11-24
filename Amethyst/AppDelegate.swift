@@ -30,8 +30,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet var toggleGlobalTilingMenuItem: NSMenuItem?
     @IBOutlet var layoutsMenuItem: NSMenuItem?
 
-    private var isFirstLaunch = true
-
     func applicationDidFinishLaunching(_ notification: Notification) {
         #if DEBUG
             log.addDestination(ConsoleDestination())
@@ -101,13 +99,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItemMenu?.delegate = self
     }
 
-    func applicationDidBecomeActive(_ notification: Notification) {
-        guard !isFirstLaunch else {
-            isFirstLaunch = false
-            return
-        }
-
+    /// Opening Amethyst while it is already running, from the Finder, Spotlight or `open`, shows Preferences, since the app has no Dock icon or main window to come forward.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         showPreferencesWindow(self)
+        return false
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -271,6 +266,8 @@ extension AppDelegate: UserConfigurationDelegate {
         }
         statusItemImage?.isTemplate = true
         statusItem?.image = statusItemImage
+
+        windowManager?.displayTilingState()
     }
 
     func configurationAccessibilityPermissionsDidChange(_ userConfiguration: UserConfiguration) {
