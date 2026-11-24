@@ -233,12 +233,19 @@ extension WindowManager: ApplicationEventHandlerDelegate {
     }
 
     func add(applicationWithPID pid: pid_t) {
-        guard let runningApplication = NSRunningApplication(processIdentifier: pid) else {
-            log.warning("process launched with no application: \(pid)")
-            return
-        }
-
-        add(runningApplication: runningApplication)
+        LaunchedApplicationLookup(pid: pid) { [weak self] outcome in
+            switch outcome {
+            case .found(let runningApplication, let emptyLookups):
+                if emptyLookups > 0 {
+                    log.info("process \(pid) was listed as an application after \(emptyLookups) empty lookup\(emptyLookups == 1 ? "" : "s")")
+                }
+                self?.add(runningApplication: runningApplication)
+            case .processExited:
+                log.debug("process \(pid) exited before it was listed as an application")
+            case .notListed:
+                log.warning("process launched with no application: \(pid)")
+            }
+        }.start()
     }
 
     func remove(applicationWithPID pid: pid_t) {
