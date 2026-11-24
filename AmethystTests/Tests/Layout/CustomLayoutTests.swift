@@ -157,6 +157,122 @@ class CustomLayoutTests: QuickSpec {
             }
         }
 
+        describe("scale factor") {
+            it("uses a frame's own scale factor and otherwise derives one from the frame") {
+                let screen = TestScreen(frame: CGRect(x: 0, y: 0, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [TestWindow(element: nil)!, TestWindow(element: nil)!]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = CustomLayout<TestWindow>(key: "scale-factor", fileURL: Bundle.layoutFile(key: "scale-factor")!)
+                let frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+
+                expect(frameAssignments.count).to(equal(2))
+                expect(frameAssignments[0].frameAssignment.resizeRules.scaleFactor).to(equal(2))
+                expect(frameAssignments[1].frameAssignment.resizeRules.scaleFactor).to(equal(4))
+            }
+        }
+
+        describe("settings") {
+            it("passes layouts exactly the documented settings") {
+                let layout = CustomLayout<TestWindow>(key: "resize-step-commands", fileURL: Bundle.layoutFile(key: "resize-step-commands")!)
+                let settings = layout.layoutSettings()
+
+                expect(Set(settings.keys)).to(equal(Set(["windowResizeStep", "newWindowsToMain"])))
+                expect(settings["windowResizeStep"] as? CGFloat).to(equal(UserConfiguration.shared.windowResizeStep()))
+                expect(settings["newWindowsToMain"] as? Bool).to(equal(UserConfiguration.shared.sendNewWindowsToMainPane()))
+            }
+
+            it("hands getFrameAssignments the user's choice of where new windows go") {
+                let defaults = UserDefaults.standard
+                let savedNewWindowsToMain = defaults.object(forKey: "new-windows-to-main")
+                defer { defaults.set(savedNewWindowsToMain, forKey: "new-windows-to-main") }
+
+                // A layout that reports the setting through the width it gives every window.
+                let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+                try! FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+                defer { try? FileManager.default.removeItem(at: directory) }
+                let fileURL = directory.appendingPathComponent("settings-reporter.js")
+                try! """
+                function layout() {
+                    return {
+                        name: "Settings Reporter",
+                        getFrameAssignments: (windows, screenFrame, state, extendedFrames, settings) =>
+                            windows.reduce((frames, window) => ({
+                                ...frames,
+                                [window.id]: { x: 0, y: 0, width: settings.newWindowsToMain ? 200 : 100, height: 100 }
+                            }), {})
+                    };
+                }
+                """.write(to: fileURL, atomically: true, encoding: .utf8)
+
+                let screen = TestScreen(frame: CGRect(x: 0, y: 0, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [TestWindow(element: nil)!]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = CustomLayout<TestWindow>(key: "settings-reporter", fileURL: fileURL)
+
+                defaults.set(true, forKey: "new-windows-to-main")
+                expect(layout.frameAssignments(windowSet, on: screen)?.first?.frameAssignment.frame.width).to(equal(200))
+
+                defaults.set(false, forKey: "new-windows-to-main")
+                expect(layout.frameAssignments(windowSet, on: screen)?.first?.frameAssignment.frame.width).to(equal(100))
+            }
+        }
+
+        describe("resize step") {
+            it("hands commands the user's resize step") {
+                let defaults = UserDefaults.standard
+                let savedStep = defaults.object(forKey: "window-resize-step")
+                defaults.set(10, forKey: "window-resize-step")
+                defer { defaults.set(savedStep, forKey: "window-resize-step") }
+
+                let screen = TestScreen(frame: CGRect(x: 0, y: 0, width: 2000, height: 1000))
+                TestScreen.availableScreens = [screen]
+
+                let windows = [TestWindow(element: nil)!, TestWindow(element: nil)!]
+                let layoutWindows = windows.map {
+                    LayoutWindow<TestWindow>(id: $0.id(), frame: $0.frame(), isFocused: false)
+                }
+                let windowSet = WindowSet<TestWindow>(
+                    windows: layoutWindows,
+                    isWindowWithIDActive: { _ in return true },
+                    isWindowWithIDFloating: { _ in return false },
+                    windowForID: { id in return windows.first { $0.id() == id } }
+                )
+                let layout = CustomLayout<TestWindow>(key: "resize-step-commands", fileURL: Bundle.layoutFile(key: "resize-step-commands")!)
+
+                var frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                expect(frameAssignments[0].frameAssignment.frame.width).to(equal(1000))
+
+                layout.expandMainPane()
+                frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                expect(frameAssignments[0].frameAssignment.frame.width).to(equal(1200))
+
+                layout.shrinkMainPane()
+                layout.shrinkMainPane()
+                frameAssignments = layout.frameAssignments(windowSet, on: screen)!
+                expect(frameAssignments[0].frameAssignment.frame.width).to(equal(800))
+            }
+        }
+
         describe("columns layout") {
             it("defines a name") {
                 let layout = CustomLayout<TestWindow>(key: "uniform-columns", fileURL: Bundle.layoutFile(key: "uniform-columns")!)

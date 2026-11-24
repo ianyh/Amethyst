@@ -195,7 +195,8 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
             jsWindowsArg,
             jsScreenFrameArg,
             state ?? undefinedValue,
-            extendedFrames ?? undefinedValue
+            extendedFrames ?? undefinedValue,
+            layoutSettings()
         ]
 
         guard let getAssignments = layout?.objectForKeyedSubscript("getFrameAssignments"), !getAssignments.isNull && !getAssignments.isUndefined else {
@@ -229,6 +230,10 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
                     log.warning("Encountered unknown unconstrainedDimension value: \(dimension), defaulting to horizontal")
                     unconstrainedDimension = .horizontal
                 }
+            }
+
+            if let factor = frame.objectForKeyedSubscript("scaleFactor"), factor.isNumber, factor.toDouble() > 0 {
+                scaleFactor = CGFloat(factor.toDouble())
             }
 
             let isMain = frame.objectForKeyedSubscript("isMain")?.toBool() ?? true
@@ -284,6 +289,15 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         return nil
     }
 
+    /// The user preferences handed to a custom layout as the `settings` argument of `getFrameAssignments` and of its
+    /// command functions. Every value a layout may read is listed here and documented in docs/custom-layouts.md.
+    func layoutSettings() -> [String: Any] {
+        return [
+            "windowResizeStep": UserConfiguration.shared.windowResizeStep(),
+            "newWindowsToMain": UserConfiguration.shared.sendNewWindowsToMainPane()
+        ]
+    }
+
     private func command(key: String) {
         guard let command = commands?.objectForKeyedSubscript(key), command.isObject else {
             log.debug("\(layoutKey) — \(key): no command defined")
@@ -296,12 +310,13 @@ class CustomLayout<Window: WindowType>: StatefulLayout<Window>, PanedLayout {
         }
 
         let focusedWindowID = Window.currentlyFocused().flatMap { idHash(forWindowID: $0.id()) }
+        let settings = layoutSettings()
         let updateStateArgs: [Any]? = state.flatMap { state in
-            if let id = focusedWindowID {
-                return [state, id]
-            } else {
-                return [state]
+            guard let context = self.context else {
+                return nil
             }
+            let undefinedValue = JSValue(undefinedIn: context) ?? JSValue(nullIn: context)!
+            return [state, focusedWindowID ?? undefinedValue, settings]
         }
 
         guard let updatedState = updateState.call(withArguments: updateStateArgs ?? []), !updatedState.isNull && !updatedState.isUndefined else {
