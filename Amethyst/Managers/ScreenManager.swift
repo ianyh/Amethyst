@@ -9,6 +9,7 @@
 import Foundation
 import Silica
 
+/// Records reflow requests that were dropped before any window moved.
 /// Information about a layout for display in menus
 struct LayoutMenuItemInfo {
     let key: String
@@ -36,6 +37,9 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
     private(set) var screen: Screen?
     private(set) var space: Space?
+
+    /// Coalesces reflow requests for this screen and is accessed only on the main thread.
+    private var isReflowPending = false
 
     /// The last window that has been focused on the screen. This value is updated by the notification observations in
     /// `ObserveApplicationNotifications`.
@@ -205,7 +209,23 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
         log.debug("Screen: \(screen?.screenID() ?? "unknown") reflow")
 
+        if Thread.isMainThread {
+            scheduleReflow()
+        } else {
+            DispatchQueue.main.async {
+                self.scheduleReflow()
+            }
+        }
+    }
+
+    private func scheduleReflow() {
+        guard !isReflowPending else {
+            return
+        }
+        isReflowPending = true
+
         DispatchQueue.main.async {
+            self.isReflowPending = false
             self.minimizeWindows()
             self.reflow()
         }
@@ -214,10 +234,10 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
     private func minimizeWindows() {
         let mainPaneCount = (currentLayout as? PanedLayout)?.mainPaneCount ?? 0
 
-        guard UserConfiguration.shared.tilingEnabled, let windowLimit = UserConfiguration.shared.windowMaxCount() else {
+        guard userConfiguration.tilingEnabled, let windowLimit = userConfiguration.windowMaxCount() else {
             return
         }
-        let shouldInsertAtFront = UserConfiguration.shared.sendNewWindowsToMainPane()
+        let shouldInsertAtFront = userConfiguration.sendNewWindowsToMainPane()
         delegate?.applyWindowLimit(forScreenManager: self, minimizingIn: { windowCount in
             if windowLimit > windowCount {
                 // Not enough windows to minimize.
@@ -247,24 +267,44 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
 
     private func reflow() {
         guard let screen = screen else {
+            logSkippedReflow("the screen manager has no screen")
             return
         }
 
-        guard userConfiguration.tilingEnabled, space?.type == CGSSpaceTypeUser else {
+        let screenID = screen.screenID() ?? "unknown"
+
+        guard userConfiguration.tilingEnabled else {
+            logSkippedReflow("tiling is disabled", on: screenID)
+            return
+        }
+
+        guard space?.type == CGSSpaceTypeUser else {
+            logSkippedReflow("the current Space is not a user Space", on: screenID, expected: true)
             return
         }
 
         // During rapid Space transitions, activation/focus notifications can arrive before
         // this screen manager updates its tracked Space. Skip reflow if state is stale.
-        guard let currentSpace = CGSpacesInfo<Window>.currentSpaceForScreen(screen), currentSpace.id == space?.id else {
+        let currentSpace = CGSpacesInfo<Window>.currentSpaceForScreen(screen)
+        guard let currentSpace = currentSpace, currentSpace.id == space?.id else {
+            let tracked = space.map { String($0.id) } ?? "none"
+            let current = currentSpace.map { String($0.id) } ?? "none"
+            logSkippedReflow("the tracked Space \(tracked) is not the current Space \(current)", on: screenID)
             return
         }
 
         guard let windows = delegate?.activeWindowSet(forScreenManager: self, on: screen) else {
+            logSkippedReflow("no window set is available", on: screenID)
             return
         }
 
-        guard let layout = currentLayout, let frameAssignments = layout.frameAssignments(windows, on: screen) else {
+        guard let layout = currentLayout else {
+            logSkippedReflow("no layout is selected", on: screenID)
+            return
+        }
+
+        guard let frameAssignments = layout.frameAssignments(windows, on: screen) else {
+            logSkippedReflow("the \(layout.layoutName) layout produced no frame assignments", on: screenID)
             return
         }
 
@@ -297,6 +337,16 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         delegate?.onReflowInitiation()
         reflowOperationQueue.addOperations(frameAssignments, waitUntilFinished: false)
         reflowOperationQueue.addOperation(completeOperation)
+    }
+
+    /// Logs why a reflow request was dropped: as a warning, or as information for an expected drop such as a full-screen Space being frontmost.
+    private func logSkippedReflow(_ reason: String, on screenID: String = "unknown", expected: Bool = false) {
+        let message = "Reflow skipped on screen \(screenID): \(reason)"
+        if expected {
+            log.info(message)
+        } else {
+            log.warning(message)
+        }
     }
 
     func updateCurrentLayout(_ updater: (Layout<Window>) -> Void) {
@@ -379,15 +429,42 @@ final class ScreenManager<Delegate: ScreenManagerDelegate>: NSObject, Codable {
         return statefulLayout.nextWindowIDClockwise()
     }
 
+    /// The title and description the layout HUD shows: the layout name, and under it either "Tiling Disabled" while
+    /// tiling is off, or the layout's own description when the About layouts debug option asks for it.
+    func layoutHUDContent() -> (title: String, description: String) {
+        let currentLayoutName = currentLayout.flatMap({ $0.layoutName }) ?? "None"
+
+        guard userConfiguration.tilingEnabled else {
+            return (currentLayoutName, "Tiling Disabled")
+        }
+
+        guard userConfiguration.showsLayoutDebugInfo() else {
+            return (currentLayoutName, "")
+        }
+
+        return (currentLayoutName, currentLayout?.layoutDescription ?? "")
+    }
+
     func displayLayoutHUD() {
         guard userConfiguration.enablesLayoutHUD(), space?.type == CGSSpaceTypeUser else {
             return
         }
 
-        let currentLayoutName = currentLayout.flatMap({ $0.layoutName }) ?? "None"
-        let currentLayoutDescription = currentLayout?.layoutDescription ?? ""
+        let content = layoutHUDContent()
+        displayCustomHUD(title: content.title, description: content.description)
+    }
 
-        displayCustomHUD(title: currentLayoutName, description: currentLayoutDescription)
+    /// Shows whether tiling is enabled or disabled, following the same preference as the layout HUD. The HUD window is
+    /// created and shown on the main thread, whichever thread toggled tiling.
+    func displayTilingStateHUD() {
+        guard userConfiguration.enablesLayoutHUD() else {
+            return
+        }
+
+        let title = userConfiguration.tilingEnabled ? "Tiling Enabled" : "Tiling Disabled"
+        DispatchQueue.main.async {
+            self.displayCustomHUD(title: title)
+        }
     }
 
     @objc func hideLayoutHUD(_ sender: AnyObject) {

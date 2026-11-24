@@ -14,8 +14,10 @@ import Silica
 private final class TestDelegate: ScreenManagerDelegate {
     typealias Window = TestWindow
 
+    private(set) var applyWindowLimitCallCount = 0
+
     func applyWindowLimit(forScreenManager screenManager: ScreenManager<TestDelegate>, minimizingIn range: (Int) -> Range<Int>) {
-        fatalError()
+        applyWindowLimitCallCount += 1
     }
     func activeWindowSet(forScreenManager screenManager: ScreenManager<TestDelegate>, on screen: TestScreen) -> WindowSet<TestWindow> {
         fatalError()
@@ -30,6 +32,82 @@ private final class TestDelegate: ScreenManagerDelegate {
 
 class ScreenManagerTests: QuickSpec {
     override func spec() {
+        describe("layout HUD") {
+            func screenManager(with configuration: UserConfiguration, layoutKey: String = "tall") -> ScreenManager<TestDelegate> {
+                configuration.setLayoutKeys([layoutKey])
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                return ScreenManager<TestDelegate>(screen: screen, delegate: TestDelegate(), userConfiguration: configuration)
+            }
+
+            it("names the layout and leaves the description empty while tiling is enabled") {
+                let configuration = UserConfiguration(storage: TestConfigurationStorage())
+                let content = screenManager(with: configuration).layoutHUDContent()
+
+                expect(content.title).to(equal("Tall"))
+                expect(content.description).to(equal(""))
+            }
+
+            it("shows the layout's own description only when the About layouts debug option is on") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+
+                expect(screenManager(with: configuration, layoutKey: "bsp").layoutHUDContent().description).to(equal(""))
+
+                storage.set(true, forKey: .debugLayoutInfo)
+                expect(screenManager(with: configuration, layoutKey: "bsp").layoutHUDContent().description).toNot(beEmpty())
+            }
+
+            it("says that tiling is disabled under the layout name, whatever the debug option says") {
+                let storage = TestConfigurationStorage()
+                let configuration = UserConfiguration(storage: storage)
+                configuration.tilingEnabled = false
+
+                var content = screenManager(with: configuration, layoutKey: "bsp").layoutHUDContent()
+                expect(content.title).to(equal("Binary Space Partitioning"))
+                expect(content.description).to(equal("Tiling Disabled"))
+
+                storage.set(true, forKey: .debugLayoutInfo)
+                content = screenManager(with: configuration, layoutKey: "bsp").layoutHUDContent()
+                expect(content.description).to(equal("Tiling Disabled"))
+            }
+        }
+
+        describe("layout HUD window") {
+            // AppKit allows windows and views to be touched on the main thread only, and the examples may run elsewhere.
+            func onMainThread(_ work: () -> Void) {
+                if Thread.isMainThread {
+                    work()
+                } else {
+                    DispatchQueue.main.sync(execute: work)
+                }
+            }
+
+            func descriptionLine(after title: String, description: String) -> (hidden: Bool?, text: String?) {
+                var result: (hidden: Bool?, text: String?) = (nil, nil)
+                onMainThread {
+                    guard let window = LayoutNameWindowController(windowNibName: "LayoutNameWindow").window as? LayoutNameWindow else {
+                        return
+                    }
+                    window.displayNotification(title: title, description: description)
+                    result = (window.layoutDescriptionLabel?.isHidden, window.layoutDescriptionLabel?.stringValue)
+                }
+                return result
+            }
+
+            it("hides the description line when there is nothing to say") {
+                let line = descriptionLine(after: "Tall", description: "")
+
+                expect(line.hidden).to(beTrue())
+            }
+
+            it("shows the description line when there is something to say") {
+                let line = descriptionLine(after: "Tall", description: "Tiling Disabled")
+
+                expect(line.hidden).to(beFalse())
+                expect(line.text).to(equal("Tiling Disabled"))
+            }
+        }
+
         describe("coding") {
             it("decodes layouts") {
                 let configuration = UserConfiguration(storage: TestConfigurationStorage())
@@ -183,6 +261,71 @@ class ScreenManagerTests: QuickSpec {
                     expect((decodedLayouts.first as? WideLayout<TestWindow>)?.mainPaneCount).to(equal(2))
                     expect((decodedLayouts.last as? TallLayout<TestWindow>)?.mainPaneCount).to(equal(2))
                 }
+            }
+        }
+
+        describe("reflow requests") {
+            func makeScreenManager() -> (ScreenManager<TestDelegate>, TestDelegate) {
+                let storage = TestConfigurationStorage()
+                storage.set(Float(1), forKey: .windowMaxCount)
+                let configuration = UserConfiguration(storage: storage)
+                configuration.tilingEnabled = true
+                let delegate = TestDelegate()
+                let screen = TestScreen(frame: CGRect(origin: .zero, size: CGSize(width: 2000, height: 1000)))
+                let screenManager = ScreenManager(screen: screen, delegate: delegate, userConfiguration: configuration)
+                return (screenManager, delegate)
+            }
+
+            func requestReflows(_ count: Int, on screenManager: ScreenManager<TestDelegate>) {
+                var didDrain = false
+                DispatchQueue.main.async {
+                    for _ in 0..<count {
+                        screenManager.setNeedsReflow()
+                    }
+                    DispatchQueue.main.async {
+                        didDrain = true
+                    }
+                }
+                expect { didDrain }.toEventually(beTrue())
+            }
+
+            it("coalesces requests waiting on the main queue") {
+                let (screenManager, delegate) = makeScreenManager()
+
+                requestReflows(3, on: screenManager)
+
+                expect(delegate.applyWindowLimitCallCount).to(equal(1))
+            }
+
+            it("runs another reflow for a request after the first pass") {
+                let (screenManager, delegate) = makeScreenManager()
+
+                requestReflows(1, on: screenManager)
+                expect(delegate.applyWindowLimitCallCount).to(equal(1))
+
+                requestReflows(1, on: screenManager)
+                expect(delegate.applyWindowLimitCallCount).to(equal(2))
+            }
+
+            it("coalesces requests from a background queue") {
+                let (screenManager, delegate) = makeScreenManager()
+                let requests = DispatchGroup()
+
+                DispatchQueue.global().async(group: requests) {
+                    for _ in 0..<3 {
+                        screenManager.setNeedsReflow()
+                    }
+                }
+                expect(requests.wait(timeout: .now() + 5)).to(equal(.success))
+
+                var didDrain = false
+                DispatchQueue.main.async {
+                    DispatchQueue.main.async {
+                        didDrain = true
+                    }
+                }
+                expect { didDrain }.toEventually(beTrue())
+                expect(delegate.applyWindowLimitCallCount).to(equal(1))
             }
         }
     }
