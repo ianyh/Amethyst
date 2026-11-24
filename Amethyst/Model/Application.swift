@@ -208,6 +208,11 @@ extension SIApplication: ApplicationType {
     }
 
     func defaultFloatForWindow(_ window: Window) -> Reliable<DefaultFloat> {
+        // A window whose frame cannot be read cannot be measured, so the decision is left open for a later attempt.
+        guard !window.frame().isNull else {
+            return .unreliable(.notFloating)
+        }
+
         if window.shouldFloat() {
             return .reliable(.floating)
         }
